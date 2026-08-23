@@ -306,7 +306,7 @@ private fun BattleDialogue(message: String, isTyping: Boolean, modifier: Modifie
         androidx.compose.material3.Text(
             text = message,
             style = TextStyle(fontFamily = font, fontSize = 18.sp, lineHeight = 21.sp, color = Color.Black),
-            modifier = Modifier.padding(10.dp)
+            modifier = Modifier.padding(5.dp)
         )
     }
 }
