@@ -2,5 +2,5 @@
 <resources>
     <string name="app_name">MonsterDialer</string>
     <string name="hang_up">Hang up</string>
-    <string name="font_credit" translatable="false">Typography: Johto Mono by Superpencil</string>
+    <string name="font_credit" translatable="false">Johto Mono by Superpencil</string>
 </resources>
