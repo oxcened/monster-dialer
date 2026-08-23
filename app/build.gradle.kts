@@ -8,7 +8,7 @@ plugins {
 
 android {
     namespace = "dev.alenajam.monsterdialer"
-    compileSdk = 35
+    compileSdk = 37
 
     defaultConfig {
         applicationId = "dev.alenajam.monsterdialer"
