@@ -97,6 +97,7 @@ class MonsterInCallUI @Inject constructor() : InCallUI {
                         InCallControls(
                             isMuted = uiState.isMuted,
                             isSpeaker = uiState.isSpeaker,
+                            audioRoutes = uiState.audioRoutes,
                             isHolding = uiState.isHolding,
                             canManageConference = canManageConference,
                             canMerge = uiState.canMerge,
@@ -106,6 +107,7 @@ class MonsterInCallUI @Inject constructor() : InCallUI {
                             onHangup = viewModel::hangup,
                             onMute = viewModel::turnMute,
                             onSpeaker = viewModel::turnSpeaker,
+                            onAudioRouteSelected = viewModel::selectAudioRoute,
                             onHold = viewModel::hold,
                             onAddCall = { viewModel.addCall(context.getActivity() as Activity) },
                             onMerge = viewModel::merge,
