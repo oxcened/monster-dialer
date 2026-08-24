@@ -43,8 +43,8 @@ class BattleSequenceCoordinatorTest {
 
         assertEquals(BattlePhase.Ready, coordinator.state.value.phase)
         assertEquals("What will you do?", coordinator.state.value.message)
-        assertEquals(BattlePanel.Pokemon, coordinator.state.value.enemyPanel)
-        assertEquals(BattlePanel.Pokemon, coordinator.state.value.playerPanel)
+        assertEquals(BattlePanel.Monster, coordinator.state.value.enemyPanel)
+        assertEquals(BattlePanel.Monster, coordinator.state.value.playerPanel)
     }
 
     @Test
@@ -82,19 +82,19 @@ class BattleSequenceCoordinatorTest {
     private fun encounter(id: String, type: EncounterType) = BattleEncounter(
         id = id,
         type = type,
-        player = pokemon("Player"),
-        enemy = pokemon(if (type == EncounterType.Anonymous) "MissingNo." else "Enemy"),
-        enemyTrainerName = "Red",
+        player = monster("Player"),
+        enemy = monster(if (type == EncounterType.Anonymous) "Unknown" else "Enemy"),
+        enemyTrainerName = "Alex",
         playerTrainerSprite = BattleVisualAsset.AppDrawable(R.drawable.battle_player_trainer),
         enemyTrainerSprite = BattleVisualAsset.AppDrawable(R.drawable.battle_enemy_trainer)
     )
 
-    private fun pokemon(name: String) = BattlePokemon(
+    private fun monster(name: String) = BattleMonster(
         name = name,
         level = 5,
         hp = 20,
         maxHp = 20,
-        frontSprite = BattleVisualAsset.AppDrawable(R.drawable.battle_enemy_pokemon),
-        backSprite = BattleVisualAsset.AppDrawable(R.drawable.battle_player_pokemon)
+        frontSprite = BattleVisualAsset.AppDrawable(R.drawable.battle_enemy_monster),
+        backSprite = BattleVisualAsset.AppDrawable(R.drawable.battle_player_monster)
     )
 }

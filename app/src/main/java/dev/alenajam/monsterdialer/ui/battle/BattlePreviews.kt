@@ -18,8 +18,8 @@ private fun TrainerBattlePreview() {
             runId = 1,
             phase = BattlePhase.EnemyReady,
             encounter = encounter,
-            message = "Trainer Red sent out BULBASAUR!",
-            enemyPanel = BattlePanel.Pokemon,
+            message = "Trainer Alex sent out SHELKURL!",
+            enemyPanel = BattlePanel.Monster,
             enemyRevealFrame = 4
         )
     )
@@ -34,16 +34,16 @@ private fun ShinyBattlePreview() {
             runId = 1,
             phase = BattlePhase.IntroMessage,
             encounter = encounter,
-            message = "Wild shiny BULBASAUR appeared!",
-            playerPanel = BattlePanel.Pokeballs,
+            message = "Wild shiny SHELKURL appeared!",
+            playerPanel = BattlePanel.Roster,
             showEnemySparkles = true
         )
     )
 }
 
-@Preview(name = "MissingNo encounter", showBackground = true, widthDp = 400, heightDp = 600)
+@Preview(name = "Unknown encounter", showBackground = true, widthDp = 400, heightDp = 600)
 @Composable
-private fun MissingNoBattlePreview() {
+private fun UnknownBattlePreview() {
     val encounter = BattleEncounterFactory.preview(EncounterType.Anonymous)
     BattleScene(
         BattleUiState(
@@ -51,8 +51,8 @@ private fun MissingNoBattlePreview() {
             phase = BattlePhase.Ready,
             encounter = encounter,
             message = "What will you do?",
-            playerPanel = BattlePanel.Pokemon,
-            enemyPanel = BattlePanel.Pokemon,
+            playerPanel = BattlePanel.Monster,
+            enemyPanel = BattlePanel.Monster,
             playerRevealFrame = 4
         )
     )
@@ -62,8 +62,8 @@ private fun MissingNoBattlePreview() {
 @Composable
 private fun EnemyStatusPanelPreview() {
     BattlePanelView(
-        pokemon = BattleEncounterFactory.preview(EncounterType.Trainer).enemy,
-        panel = BattlePanel.Pokemon,
+        monster = BattleEncounterFactory.preview(EncounterType.Trainer).enemy,
+        panel = BattlePanel.Monster,
         isEnemy = true,
         modifier = Modifier.padding(16.dp)
     )
@@ -73,16 +73,16 @@ private fun EnemyStatusPanelPreview() {
 @Composable
 private fun PlayerStatusPanelPreview() {
     BattlePanelView(
-        pokemon = BattleEncounterFactory.preview(EncounterType.Trainer).player,
-        panel = BattlePanel.Pokemon,
+        monster = BattleEncounterFactory.preview(EncounterType.Trainer).player,
+        panel = BattlePanel.Monster,
         isEnemy = false,
         modifier = Modifier.padding(16.dp)
     )
 }
 
-@Preview(name = "Pokéball panels", showBackground = true, backgroundColor = 0xFFF8F8F0)
+@Preview(name = "Roster panels", showBackground = true, backgroundColor = 0xFFF8F8F0)
 @Composable
-private fun PokeballPanelsPreview() {
+private fun RosterPanelsPreview() {
     val encounter = BattleEncounterFactory.preview(EncounterType.Trainer)
     Column(
         modifier = Modifier
@@ -90,13 +90,13 @@ private fun PokeballPanelsPreview() {
             .padding(16.dp)
     ) {
         BattlePanelView(
-            pokemon = encounter.enemy,
-            panel = BattlePanel.Pokeballs,
+            monster = encounter.enemy,
+            panel = BattlePanel.Roster,
             isEnemy = true
         )
         BattlePanelView(
-            pokemon = encounter.player,
-            panel = BattlePanel.Pokeballs,
+            monster = encounter.player,
+            panel = BattlePanel.Roster,
             isEnemy = false,
             modifier = Modifier.padding(top = 16.dp)
         )

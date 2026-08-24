@@ -159,6 +159,7 @@ fun ColumnScope.ContactCharacterSettingsContent() {
 
         ContactCharacterTypeSection(
             title = "Trainer",
+            defaultName = "Default trainer",
             defaultArtwork = R.drawable.battle_enemy_trainer,
             characters = trainers,
             selected = assignedTrainer,
@@ -180,7 +181,8 @@ fun ColumnScope.ContactCharacterSettingsContent() {
         )
         ContactCharacterTypeSection(
             title = "Monster",
-            defaultArtwork = R.drawable.battle_enemy_pokemon,
+            defaultName = "Shelkurl",
+            defaultArtwork = R.drawable.battle_enemy_monster,
             characters = monsters,
             selected = assignedMonster,
             onSelect = { reference ->
@@ -205,6 +207,7 @@ fun ColumnScope.ContactCharacterSettingsContent() {
 @Composable
 private fun ContactCharacterTypeSection(
     title: String,
+    defaultName: String,
     defaultArtwork: Int,
     characters: List<InstalledPackCharacter>,
     selected: CharacterReference?,
@@ -214,7 +217,7 @@ private fun ContactCharacterTypeSection(
         Text(title, style = MaterialTheme.typography.titleMedium)
         Column {
             CharacterOptionCard(
-                name = "Default ${title.lowercase()}",
+                name = defaultName,
                 subtitle = "Built-in character",
                 isSelected = selected == null,
                 roundTop = true,

@@ -56,7 +56,7 @@ class BattleSequenceCoordinator(
         phase(runId, BattlePhase.PlayerRevealing)
         reveal(runId, player = true)
         if (encounter.player.isShiny) sparkle(runId, player = true)
-        update(runId) { copy(playerPanel = BattlePanel.Pokemon) }
+        update(runId) { copy(playerPanel = BattlePanel.Monster) }
         pause(timing.readyHoldMillis)
         typeMessage(runId, "What will you do?")
         phase(runId, BattlePhase.Ready)
@@ -65,33 +65,33 @@ class BattleSequenceCoordinator(
     private suspend fun runTrainerIntro(runId: Long, encounter: BattleEncounter) {
         val trainer = encounter.enemyTrainerName.orEmpty().ifBlank { "Unknown" }
         phase(runId, BattlePhase.IntroMessage)
-        update(runId) { copy(playerPanel = BattlePanel.Pokeballs, enemyPanel = BattlePanel.Pokeballs) }
+        update(runId) { copy(playerPanel = BattlePanel.Roster, enemyPanel = BattlePanel.Roster) }
         typeMessage(runId, "Trainer $trainer wants to battle!")
         pause(timing.introHoldMillis)
         update(runId) { copy(playerPanel = BattlePanel.Hidden, enemyPanel = BattlePanel.Hidden, message = "") }
         phase(runId, BattlePhase.EnemyTrainerLeaving)
         awaitAnimation(runId, BattlePhase.EnemyTrainerLeaving)
-        val enemyName = encounter.enemy?.name.orEmpty().ifBlank { "MissingNo." }
+        val enemyName = encounter.enemy?.name.orEmpty().ifBlank { "Unknown" }
         typeMessage(runId, "Trainer $trainer sent out ${enemyName.uppercase()}!")
         pause(timing.panelHoldMillis)
         phase(runId, BattlePhase.EnemyRevealing)
         reveal(runId, player = false)
         if (encounter.enemy?.isShiny == true) sparkle(runId, player = false)
         phase(runId, BattlePhase.EnemyReady)
-        update(runId) { copy(enemyPanel = BattlePanel.Pokemon) }
+        update(runId) { copy(enemyPanel = BattlePanel.Monster) }
     }
 
     private suspend fun runWildIntro(runId: Long, encounter: BattleEncounter, shiny: Boolean) {
         phase(runId, BattlePhase.IntroMessage)
         if (shiny) sparkle(runId, player = false)
-        val enemyName = encounter.enemy?.name.orEmpty().ifBlank { "MissingNo." }.uppercase()
+        val enemyName = encounter.enemy?.name.orEmpty().ifBlank { "Unknown" }.uppercase()
         val text = if (shiny) "Wild shiny $enemyName appeared!" else "Wild $enemyName appeared!"
-        update(runId) { copy(playerPanel = BattlePanel.Pokeballs) }
+        update(runId) { copy(playerPanel = BattlePanel.Roster) }
         typeMessage(runId, text)
         pause(timing.introHoldMillis)
         update(runId) { copy(playerPanel = BattlePanel.Hidden, message = "") }
         phase(runId, BattlePhase.EnemyReady)
-        update(runId) { copy(enemyPanel = BattlePanel.Pokemon) }
+        update(runId) { copy(enemyPanel = BattlePanel.Monster) }
     }
 
     private suspend fun reveal(runId: Long, player: Boolean) {
