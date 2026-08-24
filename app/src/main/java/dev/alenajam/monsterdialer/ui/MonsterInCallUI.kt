@@ -1,6 +1,7 @@
 package dev.alenajam.monsterdialer.ui
 
 import android.app.Activity
+import java.io.File
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.WindowInsets
@@ -25,7 +26,9 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
-import dev.alenajam.monsterdialer.ui.battle.BattleEncounterFactory
+import dev.alenajam.monsterdialer.ui.battle.AssignedCharacterEncounterFactory
+import dev.alenajam.monsterdialer.packs.CharacterAssignmentStore
+import dev.alenajam.monsterdialer.packs.CharacterPackRepository
 import dev.alenajam.monsterdialer.ui.battle.BattleScreen
 import dev.alenajam.opendialer.core.common.getActivity
 import dev.alenajam.opendialer.core.common.ui.AppProviders
@@ -48,6 +51,13 @@ class MonsterInCallUI @Inject constructor() : InCallUI {
         val uiState by viewModel.uiState.collectAsStateWithLifecycle()
         val durationMillis by viewModel.activeCallDuration.collectAsStateWithLifecycle(0L)
         val context = LocalContext.current
+        val encounterFactory = remember(context.filesDir) {
+            val characterPackRoot = File(context.filesDir, "character-packs")
+            AssignedCharacterEncounterFactory(
+                assignments = CharacterAssignmentStore(characterPackRoot),
+                characters = CharacterPackRepository(characterPackRoot)
+            )
+        }
 
         val hasSecondaryCall = uiState.hasSecondaryCall
         val secondaryCallerName = uiState.secondaryCallerName
@@ -163,8 +173,9 @@ class MonsterInCallUI @Inject constructor() : InCallUI {
                             contentAlignment = Alignment.Center
                         ) {
                             BattleScreen(
-                                encounter = BattleEncounterFactory.forCall(
+                                encounter = encounterFactory.forCall(
                                     callId = "${uiState.callerName}:${uiState.callerNumber}",
+                                    contactKey = uiState.callerNumber,
                                     callerName = uiState.callerName.ifBlank { uiState.callerNumber.ifBlank { "Unknown" } },
                                     isAnonymous = uiState.callerName.isBlank() && uiState.callerNumber.isBlank()
                                 ),
