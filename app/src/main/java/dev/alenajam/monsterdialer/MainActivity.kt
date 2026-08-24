@@ -6,6 +6,8 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import dagger.hilt.android.AndroidEntryPoint
 import dev.alenajam.monsterdialer.ui.MonsterIcons
+import dev.alenajam.monsterdialer.ui.CharacterPackSettingsContent
+import dev.alenajam.opendialer.feature.settings.SettingsSubpage
 import dev.alenajam.opendialer.feature.appShell.DialerApp
 
 @AndroidEntryPoint
@@ -19,7 +21,16 @@ class MainActivity : ComponentActivity() {
         }
 
         setContent {
-            DialerApp(icons = MonsterIcons)
+            DialerApp(
+                icons = MonsterIcons,
+                settingsSubpages = listOf(
+                    SettingsSubpage(
+                        title = "Character Packs",
+                        description = "Import and manage custom character artwork.",
+                        content = { CharacterPackSettingsContent() }
+                    )
+                )
+            )
         }
     }
 }
