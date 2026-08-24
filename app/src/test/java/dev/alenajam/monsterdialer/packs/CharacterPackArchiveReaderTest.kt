@@ -28,9 +28,50 @@ class CharacterPackArchiveReaderTest {
         val pack = reader.read(archive)
 
         assertEquals("com.example.forest", pack.manifest.id)
+        assertEquals(12, pack.manifest.characters.single().level)
+        assertEquals(45, pack.manifest.characters.single().maxHp)
         assertEquals(
             setOf("manifest.json", "art/mossling.png", "art/mossling-back.png", "audio/mossling.ogg"),
             pack.files
+        )
+    }
+
+    @Test
+    fun acceptsCharactersWithoutOptionalBattleStats() {
+        val archive = archive(
+            "manifest.json" to validManifest(battleStats = ""),
+            "art/mossling.png" to "image",
+            "art/mossling-back.png" to "image",
+            "audio/mossling.ogg" to "sound"
+        )
+
+        val character = reader.read(archive).manifest.characters.single()
+
+        assertEquals(null, character.level)
+        assertEquals(null, character.maxHp)
+    }
+
+    @Test(expected = CharacterPackValidationException::class)
+    fun rejectsInvalidBattleStats() {
+        reader.read(
+            archive(
+                "manifest.json" to validManifest(battleStats = "\"level\": 0,"),
+                "art/mossling.png" to "image",
+                "art/mossling-back.png" to "image",
+                "audio/mossling.ogg" to "sound"
+            )
+        )
+    }
+
+    @Test(expected = CharacterPackValidationException::class)
+    fun rejectsBattleStatsLongerThanThreeDigits() {
+        reader.read(
+            archive(
+                "manifest.json" to validManifest(battleStats = "\"level\": 12, \"maxHp\": 1000,"),
+                "art/mossling.png" to "image",
+                "art/mossling-back.png" to "image",
+                "audio/mossling.ogg" to "sound"
+            )
         )
     }
 
@@ -156,7 +197,10 @@ class CharacterPackArchiveReaderTest {
         return file
     }
 
-    private fun validManifest(frontImage: String = "art/mossling.png") = """
+    private fun validManifest(
+        frontImage: String = "art/mossling.png",
+        battleStats: String = "\"level\": 12, \"maxHp\": 45,"
+    ) = """
         {
           "formatVersion": 2,
           "id": "com.example.forest",
@@ -167,6 +211,7 @@ class CharacterPackArchiveReaderTest {
             "id": "mossling",
             "name": "Mossling",
             "type": "monster",
+            $battleStats
             "assignableTo": ["contact", "player"],
             "frontImage": "$frontImage",
             "backImage": "art/mossling-back.png",

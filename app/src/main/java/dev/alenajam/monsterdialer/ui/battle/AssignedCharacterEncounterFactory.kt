@@ -47,9 +47,9 @@ class AssignedCharacterEncounterFactory(
 
     private fun InstalledPackCharacter.asBattlePokemon() = BattlePokemon(
         name = character.name,
-        level = 5,
-        hp = 20,
-        maxHp = 20,
+        level = character.level ?: DefaultLevel,
+        hp = character.maxHp ?: DefaultMaxHp,
+        maxHp = character.maxHp ?: DefaultMaxHp,
         frontSprite = BattleVisualAsset.LocalFile(imageFile(character.frontImage).path),
         backSprite = BattleVisualAsset.LocalFile(imageFile(character.backImage ?: character.frontImage).path)
     )
@@ -59,4 +59,9 @@ class AssignedCharacterEncounterFactory(
 
     private fun InstalledPackCharacter.contactTrainerSprite() =
         BattleVisualAsset.LocalFile(imageFile(character.frontImage).path)
+
+    private companion object {
+        const val DefaultLevel = 5
+        const val DefaultMaxHp = 20
+    }
 }
