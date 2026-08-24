@@ -4,5 +4,7 @@
     <string name="default_phone_title">Set MonsterDialer as default</string>
     <string name="default_phone_description">MonsterDialer can only make and receive calls when it’s your default phone app.</string>
     <string name="open_source_description">MonsterDialer is based on OpenDialer. Explore the source code and contribute on GitHub.</string>
+    <string name="feature_requests_description">Propose and vote on ideas for MonsterDialer.</string>
+    <string name="url_feature_requests" translatable="false">https://monsterdialer.fider.io/</string>
     <string name="hang_up">Hang up</string>
 </resources>
