@@ -2,6 +2,16 @@ package dev.alenajam.monsterdialer.ui.battle
 
 import androidx.annotation.DrawableRes
 
+sealed interface BattleVisualAsset {
+    data class AppDrawable(
+        @param:DrawableRes val resource: Int,
+        val fallbackName: String? = null
+    ) : BattleVisualAsset
+
+    /** A file extracted by [dev.alenajam.monsterdialer.packs.CharacterPackInstaller]. */
+    data class LocalFile(val path: String) : BattleVisualAsset
+}
+
 enum class BattlePhase {
     Idle,
     TrainersEntering,
@@ -24,10 +34,8 @@ data class BattlePokemon(
     val level: Int,
     val hp: Int,
     val maxHp: Int,
-    @param:DrawableRes val frontSprite: Int,
-    @param:DrawableRes val backSprite: Int,
-    val frontSpriteName: String? = null,
-    val backSpriteName: String? = null,
+    val frontSprite: BattleVisualAsset,
+    val backSprite: BattleVisualAsset,
     val isShiny: Boolean = false
 )
 
@@ -37,10 +45,8 @@ data class BattleEncounter(
     val player: BattlePokemon,
     val enemy: BattlePokemon?,
     val enemyTrainerName: String?,
-    @param:DrawableRes val playerTrainerSprite: Int,
-    @param:DrawableRes val enemyTrainerSprite: Int,
-    val playerTrainerSpriteName: String? = null,
-    val enemyTrainerSpriteName: String? = null
+    val playerTrainerSprite: BattleVisualAsset,
+    val enemyTrainerSprite: BattleVisualAsset
 )
 
 data class BattleUiState(

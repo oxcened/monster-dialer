@@ -177,7 +177,7 @@ fun BattleScene(
 
 @Composable
 private fun BattleSprite(
-    sprite: BattleSpriteResource,
+    sprite: BattleVisualAsset,
     description: String,
     colorFilter: ColorFilter?,
     sparkles: Boolean,
@@ -185,7 +185,7 @@ private fun BattleSprite(
 ) {
     Box(modifier.size(116.dp), contentAlignment = Alignment.Center) {
         Image(
-            bitmap = pixelBitmapResource(sprite.resource, sprite.fallbackName),
+            bitmap = pixelBitmapResource(sprite),
             contentDescription = description,
             contentScale = ContentScale.Fit,
             colorFilter = colorFilter,
@@ -211,7 +211,9 @@ private fun Sparkles(modifier: Modifier = Modifier) {
     }
     if (resource != 0) {
         Image(
-            bitmap = pixelBitmapResource(resource, "battle_shiny_sparkles_$frame"),
+            bitmap = pixelBitmapResource(
+                BattleVisualAsset.AppDrawable(resource, "battle_shiny_sparkles_$frame")
+            ),
             contentDescription = "Shiny sparkle",
             filterQuality = FilterQuality.None,
             modifier = modifier
@@ -231,8 +233,10 @@ internal fun BattlePanelView(
         val resourceName = if (isEnemy) "battle_enemy_pokeballs" else "battle_player_pokeballs"
         Image(
             bitmap = pixelBitmapResource(
-                resource = if (isEnemy) R.drawable.battle_enemy_pokeballs else R.drawable.battle_player_pokeballs,
-                fallbackName = resourceName
+                BattleVisualAsset.AppDrawable(
+                    if (isEnemy) R.drawable.battle_enemy_pokeballs else R.drawable.battle_player_pokeballs,
+                    resourceName
+                )
             ),
             contentDescription = "Available Poké Balls",
             contentScale = ContentScale.FillWidth,
@@ -247,7 +251,7 @@ internal fun BattlePanelView(
     val font = battleFontFamily()
     Box(modifier.width(160.dp).height(if (isEnemy) 62.dp else 79.dp)) {
         Image(
-            bitmap = pixelBitmapResource(image, imageName),
+            bitmap = pixelBitmapResource(BattleVisualAsset.AppDrawable(image, imageName)),
             contentDescription = "${pokemon.name} status",
             contentScale = ContentScale.FillBounds,
             filterQuality = FilterQuality.None,
@@ -310,31 +314,29 @@ private fun BattleDialogue(message: String, isTyping: Boolean, modifier: Modifie
     }
 }
 
-private fun enemySprite(state: BattleUiState): BattleSpriteResource {
+private fun enemySprite(state: BattleUiState): BattleVisualAsset {
     val encounter = requireNotNull(state.encounter)
     if (encounter.type != EncounterType.Trainer) {
         val enemy = requireNotNull(encounter.enemy)
-        return BattleSpriteResource(enemy.frontSprite, enemy.frontSpriteName)
+        return enemy.frontSprite
     }
     return when {
-        state.enemyRevealFrame == 1 -> BattleSpriteResource(R.drawable.battle_reveal_1, "battle_reveal_1")
-        state.enemyRevealFrame == 2 -> BattleSpriteResource(R.drawable.battle_reveal_2, "battle_reveal_2")
-        state.enemyRevealFrame == 3 -> BattleSpriteResource(R.drawable.battle_reveal_3, "battle_reveal_3")
-        state.enemyRevealFrame >= 4 -> requireNotNull(encounter.enemy).let {
-            BattleSpriteResource(it.frontSprite, it.frontSpriteName)
-        }
-        else -> BattleSpriteResource(encounter.enemyTrainerSprite, encounter.enemyTrainerSpriteName)
+        state.enemyRevealFrame == 1 -> BattleVisualAsset.AppDrawable(R.drawable.battle_reveal_1, "battle_reveal_1")
+        state.enemyRevealFrame == 2 -> BattleVisualAsset.AppDrawable(R.drawable.battle_reveal_2, "battle_reveal_2")
+        state.enemyRevealFrame == 3 -> BattleVisualAsset.AppDrawable(R.drawable.battle_reveal_3, "battle_reveal_3")
+        state.enemyRevealFrame >= 4 -> requireNotNull(encounter.enemy).frontSprite
+        else -> encounter.enemyTrainerSprite
     }
 }
 
-private fun playerSprite(state: BattleUiState): BattleSpriteResource {
+private fun playerSprite(state: BattleUiState): BattleVisualAsset {
     val encounter = requireNotNull(state.encounter)
     return when (state.playerRevealFrame) {
-        1 -> BattleSpriteResource(R.drawable.battle_reveal_1, "battle_reveal_1")
-        2 -> BattleSpriteResource(R.drawable.battle_reveal_2, "battle_reveal_2")
-        3 -> BattleSpriteResource(R.drawable.battle_reveal_3, "battle_reveal_3")
-        4 -> BattleSpriteResource(encounter.player.backSprite, encounter.player.backSpriteName)
-        else -> BattleSpriteResource(encounter.playerTrainerSprite, encounter.playerTrainerSpriteName)
+        1 -> BattleVisualAsset.AppDrawable(R.drawable.battle_reveal_1, "battle_reveal_1")
+        2 -> BattleVisualAsset.AppDrawable(R.drawable.battle_reveal_2, "battle_reveal_2")
+        3 -> BattleVisualAsset.AppDrawable(R.drawable.battle_reveal_3, "battle_reveal_3")
+        4 -> encounter.player.backSprite
+        else -> encounter.playerTrainerSprite
     }
 }
 
@@ -348,14 +350,20 @@ private fun enemyDescription(state: BattleUiState): String {
 }
 
 @Composable
-private fun pixelBitmapResource(resource: Int, fallbackName: String? = null): ImageBitmap {
+private fun pixelBitmapResource(asset: BattleVisualAsset): ImageBitmap {
     val context = LocalContext.current
-    return remember(context.resources, resource, fallbackName) {
-        val resolvedResource = resource.takeIf { it != 0 } ?: fallbackName?.let { name ->
-            context.resources.getIdentifier(name, "drawable", context.packageName)
-        } ?: 0
-        requireNotNull(BitmapFactory.decodeResource(context.resources, resolvedResource)) {
-            "Unable to decode bitmap resource $resource${fallbackName?.let { " ($it)" }.orEmpty()}"
+    return remember(context.resources, asset) {
+        val bitmap = when (asset) {
+            is BattleVisualAsset.AppDrawable -> {
+                val resolvedResource = asset.resource.takeIf { it != 0 } ?: asset.fallbackName?.let { name ->
+                    context.resources.getIdentifier(name, "drawable", context.packageName)
+                } ?: 0
+                BitmapFactory.decodeResource(context.resources, resolvedResource)
+            }
+            is BattleVisualAsset.LocalFile -> BitmapFactory.decodeFile(asset.path)
+        }
+        requireNotNull(bitmap) {
+            "Unable to decode battle asset $asset"
         }.asImageBitmap()
     }
 }
@@ -367,8 +375,3 @@ private fun battleFontFamily(): FontFamily = if (LocalInspectionMode.current) {
 } else {
     FontFamily(Font(R.font.johto_mono))
 }
-
-private data class BattleSpriteResource(
-    val resource: Int,
-    val fallbackName: String?
-)

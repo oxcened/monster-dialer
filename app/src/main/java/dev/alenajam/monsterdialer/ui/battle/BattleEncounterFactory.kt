@@ -9,10 +9,8 @@ object BattleEncounterFactory {
             level = 5,
             hp = 20,
             maxHp = 20,
-            frontSprite = R.drawable.battle_enemy_pokemon,
-            backSprite = R.drawable.battle_player_pokemon,
-            frontSpriteName = "battle_enemy_pokemon",
-            backSpriteName = "battle_player_pokemon"
+            frontSprite = BattleVisualAsset.AppDrawable(R.drawable.battle_enemy_pokemon, "battle_enemy_pokemon"),
+            backSprite = BattleVisualAsset.AppDrawable(R.drawable.battle_player_pokemon, "battle_player_pokemon")
         )
         val enemy = if (isAnonymous) {
             BattlePokemon(
@@ -20,10 +18,8 @@ object BattleEncounterFactory {
                 level = 236,
                 hp = 33,
                 maxHp = 33,
-                frontSprite = R.drawable.battle_missing_no,
-                backSprite = R.drawable.battle_missing_no,
-                frontSpriteName = "battle_missing_no",
-                backSpriteName = "battle_missing_no"
+                frontSprite = BattleVisualAsset.AppDrawable(R.drawable.battle_missing_no, "battle_missing_no"),
+                backSprite = BattleVisualAsset.AppDrawable(R.drawable.battle_missing_no, "battle_missing_no")
             )
         } else {
             player.copy(name = "Bulbasaur", level = 5)
@@ -34,10 +30,11 @@ object BattleEncounterFactory {
             player = player,
             enemy = enemy,
             enemyTrainerName = callerName.takeUnless { isAnonymous },
-            playerTrainerSprite = R.drawable.battle_player_trainer,
-            enemyTrainerSprite = if (isAnonymous) R.drawable.battle_missing_no else R.drawable.battle_enemy_trainer,
-            playerTrainerSpriteName = "battle_player_trainer",
-            enemyTrainerSpriteName = if (isAnonymous) "battle_missing_no" else "battle_enemy_trainer"
+            playerTrainerSprite = BattleVisualAsset.AppDrawable(R.drawable.battle_player_trainer, "battle_player_trainer"),
+            enemyTrainerSprite = BattleVisualAsset.AppDrawable(
+                if (isAnonymous) R.drawable.battle_missing_no else R.drawable.battle_enemy_trainer,
+                if (isAnonymous) "battle_missing_no" else "battle_enemy_trainer"
+            )
         )
     }
 
@@ -48,8 +45,7 @@ object BattleEncounterFactory {
                 type = type,
                 enemyTrainerName = null,
                 enemy = encounter.enemy?.copy(name = "Bulbasaur", isShiny = true),
-                enemyTrainerSprite = R.drawable.battle_enemy_pokemon,
-                enemyTrainerSpriteName = "battle_enemy_pokemon"
+                enemyTrainerSprite = BattleVisualAsset.AppDrawable(R.drawable.battle_enemy_pokemon, "battle_enemy_pokemon")
             )
         } else encounter.copy(type = type)
     }

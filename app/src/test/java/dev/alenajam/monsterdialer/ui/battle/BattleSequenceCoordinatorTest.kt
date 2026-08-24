@@ -85,8 +85,8 @@ class BattleSequenceCoordinatorTest {
         player = pokemon("Player"),
         enemy = pokemon(if (type == EncounterType.Anonymous) "MissingNo." else "Enemy"),
         enemyTrainerName = "Red",
-        playerTrainerSprite = R.drawable.battle_player_trainer,
-        enemyTrainerSprite = R.drawable.battle_enemy_trainer
+        playerTrainerSprite = BattleVisualAsset.AppDrawable(R.drawable.battle_player_trainer),
+        enemyTrainerSprite = BattleVisualAsset.AppDrawable(R.drawable.battle_enemy_trainer)
     )
 
     private fun pokemon(name: String) = BattlePokemon(
@@ -94,7 +94,7 @@ class BattleSequenceCoordinatorTest {
         level = 5,
         hp = 20,
         maxHp = 20,
-        frontSprite = R.drawable.battle_enemy_pokemon,
-        backSprite = R.drawable.battle_player_pokemon
+        frontSprite = BattleVisualAsset.AppDrawable(R.drawable.battle_enemy_pokemon),
+        backSprite = BattleVisualAsset.AppDrawable(R.drawable.battle_player_pokemon)
     )
 }
