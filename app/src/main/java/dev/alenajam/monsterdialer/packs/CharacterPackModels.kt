@@ -29,7 +29,9 @@ data class PackCharacter(
     val assignableTo: List<CharacterAssignmentTarget>,
     val frontImage: String,
     val backImage: String? = null,
-    val callSound: String? = null
+    val callSound: String? = null,
+    val level: Int? = null,
+    val maxHp: Int? = null
 )
 
 @Serializable

@@ -46,6 +46,8 @@ Unknown properties are invalid.
       "id": "mossling",
       "name": "Mossling",
       "type": "monster",
+      "level": 12,
+      "maxHp": 45,
       "assignableTo": ["contact", "player"],
       "frontImage": "art/mossling.png",
       "backImage": "art/mossling-back.png",
@@ -55,7 +57,7 @@ Unknown properties are invalid.
 }
 ```
 
-`creator`, `backImage`, and `callSound` are optional. `frontImage` is required.
+`creator`, `backImage`, `callSound`, `level`, and `maxHp` are optional. `frontImage` is required.
 
 | Field | Constraint |
 | --- | --- |
@@ -64,6 +66,8 @@ Unknown properties are invalid.
 | `name`, `license` | Non-empty text, maximum 120 characters. |
 | `version` | Non-empty text, maximum 64 characters. |
 | `type` | Exactly `"trainer"` or `"monster"`. This describes what the character is. |
+| `level` | Optional integer from 1 through 999. Defaults to 5 during battle. |
+| `maxHp` | Optional integer from 1 through 999. Defaults to 20 during battle. |
 | `assignableTo` | Non-empty array containing `"contact"`, `"player"`, or both exactly once. |
 | `frontImage`, `backImage` | Relative ZIP path to a `.png` or `.webp` file. |
 | `callSound` | Relative ZIP path to an `.ogg` file. |
@@ -87,6 +91,9 @@ the contact. Therefore, never combine a trainer and its monster into one image o
 entry. Give each independently selectable subject its own character entry, ID, type, and image
 files.
 
+`level` and `maxHp` affect monster battle data. Omit either field to use its default. They do not
+change trainer rendering, even if included on a trainer entry.
+
 ## Archive contract
 
 The ZIP must use this layout. `manifest.json` must be at the archive root—never inside a parent
@@ -106,7 +113,7 @@ or empty path segments.
 Every path named by the manifest must exist exactly once in the ZIP. Keep the compressed archive
 at or below 24 MB; each file at or below 8 MB; and uncompressed content at or below 48 MB.
 Images must decode correctly, be no larger than 4096 × 4096 pixels, and contain no more than
-16 million pixels.
+16,777,216 pixels.
 
 After all validation succeeds, delete the staging directory `test-packs/<pack-file-name>/` and
 retain only `test-packs/<pack-file-name>.zip`. In the handoff, link or report only the ZIP file;

@@ -6,6 +6,8 @@ object CharacterPackValidator {
     const val SupportedFormatVersion = 2
     const val ManifestPath = "manifest.json"
     const val MaxCharacters = 200
+    const val MaxLevel = 999
+    const val MaxHp = 999
 
     private val idPattern = Regex("[a-z0-9][a-z0-9._-]{1,63}")
     private val mediaExtensions = setOf("png", "webp")
@@ -33,6 +35,12 @@ object CharacterPackValidator {
                 CharacterAssignmentTarget.Player !in character.assignableTo || character.backImage != null,
                 "Player-assignable character '${character.id}' must provide backImage"
             )
+            character.level?.let {
+                requireThat(it in 1..MaxLevel, "Character '${character.id}' level must be between 1 and $MaxLevel")
+            }
+            character.maxHp?.let {
+                requireThat(it in 1..MaxHp, "Character '${character.id}' maxHp must be between 1 and $MaxHp")
+            }
             files += validatePath(character.frontImage, mediaExtensions, "frontImage")
             character.backImage?.let { files += validatePath(it, mediaExtensions, "backImage") }
             character.callSound?.let { files += validatePath(it, audioExtensions, "callSound") }
