@@ -9,16 +9,21 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBarsPadding
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import dev.alenajam.monsterdialer.ui.battle.BattleEncounterFactory
 import dev.alenajam.monsterdialer.ui.battle.BattleScreen
@@ -26,26 +31,51 @@ import dev.alenajam.opendialer.core.common.getActivity
 import dev.alenajam.opendialer.core.common.ui.AppProviders
 import dev.alenajam.opendialer.core.common.ui.AppThemeExtension
 import dev.alenajam.opendialer.core.common.ui.InCallUI
+import dev.alenajam.opendialer.feature.inCall.ui.CallStatus
 import dev.alenajam.opendialer.feature.inCall.ui.InCallControls
 import dev.alenajam.opendialer.feature.inCall.ui.InCallDetails
 import dev.alenajam.opendialer.feature.inCall.ui.InCallViewModel
 import dev.alenajam.opendialer.feature.inCall.ui.IncomingCallControls
+import dev.alenajam.opendialer.feature.inCall.ui.ManageConferenceSheet
+import dev.alenajam.opendialer.feature.inCall.ui.SecondaryCallBanner
 import javax.inject.Inject
 
 class MonsterInCallUI @Inject constructor() : InCallUI {
+    @OptIn(ExperimentalMaterial3Api::class)
     @Composable
     override fun Content() {
         val viewModel: InCallViewModel = viewModel()
-        val call = viewModel.primaryCall.observeAsState().value
-        val isHolding = viewModel.isHolding.observeAsState().value
-        val isSpeaker = viewModel.isSpeaker.observeAsState().value
-        val isMuted = viewModel.isMuted.observeAsState().value
-        val isIncoming = viewModel.isIncoming.observeAsState(false).value
-        val stateLabel = viewModel.stateLabel.observeAsState("").value
-        val callerName = viewModel.callerName.observeAsState("").value
-        val callerNumber = viewModel.callerNumber.observeAsState("").value
-        val callerImageUri = viewModel.callerImageUri.observeAsState().value
-        val activity = LocalContext.current.getActivity() as Activity
+        val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+        val durationMillis by viewModel.activeCallDuration.collectAsStateWithLifecycle(0L)
+        val context = LocalContext.current
+
+        val hasSecondaryCall = uiState.hasSecondaryCall
+        val secondaryCallerName = uiState.secondaryCallerName
+        val canSwap = hasSecondaryCall
+        val canManageConference = uiState.canManageConference
+        val canAddCall = uiState.canAddCall && !hasSecondaryCall
+        val canHold = uiState.canHold && !canSwap
+        val showSplitInManage = canManageConference && !hasSecondaryCall
+        var showManageSheet by remember { mutableStateOf(false) }
+        val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
+
+        LaunchedEffect(canManageConference) {
+            if (!canManageConference) showManageSheet = false
+        }
+
+        if (showManageSheet && canManageConference) {
+            ModalBottomSheet(
+                onDismissRequest = { showManageSheet = false },
+                sheetState = sheetState
+            ) {
+                ManageConferenceSheet(
+                    participants = uiState.conferenceParticipants,
+                    showSplit = showSplitInManage,
+                    onSplit = viewModel::split,
+                    onHangup = { call -> viewModel.hangup(call) }
+                )
+            }
+        }
 
         // Here you provide the MonsterDialer specific UI!
         AppProviders(
@@ -58,28 +88,36 @@ class MonsterInCallUI @Inject constructor() : InCallUI {
                 modifier = Modifier.fillMaxSize(),
                 contentWindowInsets = WindowInsets(0, 0, 0, 0),
                 bottomBar = {
-                    if (isIncoming) {
+                    if (uiState.isIncoming) {
                         IncomingCallControls(
                             onHangup = viewModel::hangup,
                             onAnswer = viewModel::answer
                         )
                     } else {
                         InCallControls(
-                            isMuted = isMuted,
-                            isSpeaker = isSpeaker,
-                            isHolding = isHolding,
+                            isMuted = uiState.isMuted,
+                            isSpeaker = uiState.isSpeaker,
+                            isHolding = uiState.isHolding,
+                            canManageConference = canManageConference,
+                            canMerge = uiState.canMerge,
+                            canSwap = canSwap,
+                            canHold = canHold,
+                            canAddCall = canAddCall,
                             onHangup = viewModel::hangup,
                             onMute = viewModel::turnMute,
                             onSpeaker = viewModel::turnSpeaker,
                             onHold = viewModel::hold,
-                            onAddCall = { viewModel.addCall(activity) },
+                            onAddCall = { viewModel.addCall(context.getActivity() as Activity) },
+                            onMerge = viewModel::merge,
+                            onSwap = viewModel::swap,
+                            onManageConference = { showManageSheet = true },
                             onDigit = viewModel::playDtmf
                         )
                     }
                 }
             ) { innerPadding ->
                 val measuredBottomPadding = innerPadding.calculateBottomPadding()
-                val collapsedBottomPadding = remember(isIncoming) {
+                val collapsedBottomPadding = remember(uiState.isIncoming) {
                     mutableStateOf(measuredBottomPadding)
                 }
                 LaunchedEffect(measuredBottomPadding) {
@@ -93,12 +131,21 @@ class MonsterInCallUI @Inject constructor() : InCallUI {
                         .fillMaxSize()
                         .padding(bottom = collapsedBottomPadding.value)
                 ) {
-                    call?.let { ongoingCall ->
+                    if (hasSecondaryCall && secondaryCallerName != null && !uiState.isIncoming) {
+                        SecondaryCallBanner(
+                            callerName = secondaryCallerName,
+                            modifier = Modifier.statusBarsPadding()
+                        )
+                    }
+
+                    if (uiState.status != CallStatus.IDLE) {
                         InCallDetails(
-                            callerName = callerName,
-                            callerNumber = callerNumber,
-                            stateLabel = stateLabel,
-                            callerImageUri = callerImageUri,
+                            callerName = uiState.callerName,
+                            callerNumber = uiState.callerNumber,
+                            callerNumberLabel = uiState.callerNumberLabel,
+                            status = uiState.status,
+                            durationMillis = durationMillis,
+                            callerImageUri = uiState.callerImageUri,
                             showCallerImage = false,
                             modifier = Modifier
                                 .statusBarsPadding()
@@ -113,9 +160,9 @@ class MonsterInCallUI @Inject constructor() : InCallUI {
                         ) {
                             BattleScreen(
                                 encounter = BattleEncounterFactory.forCall(
-                                    callId = "${System.identityHashCode(ongoingCall)}:${ongoingCall.callerNumber}",
-                                    callerName = callerName.ifBlank { "Unknown" },
-                                    isAnonymous = ongoingCall.isAnonymous
+                                    callId = "${uiState.callerName}:${uiState.callerNumber}",
+                                    callerName = uiState.callerName.ifBlank { uiState.callerNumber.ifBlank { "Unknown" } },
+                                    isAnonymous = uiState.callerName.isBlank() && uiState.callerNumber.isBlank()
                                 ),
                                 modifier = Modifier
                                     .heightIn(max = 355.dp)
