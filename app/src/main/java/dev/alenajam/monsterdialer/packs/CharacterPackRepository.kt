@@ -10,19 +10,31 @@ class CharacterPackRepository(
     private val storageRoot: File,
     private val catalog: CharacterPackCatalog = CharacterPackCatalog(storageRoot)
 ) {
-    fun find(reference: CharacterReference, role: CharacterAssignmentTarget): InstalledPackCharacter? =
-        charactersAssignableTo(role).firstOrNull {
+    fun find(
+        reference: CharacterReference,
+        role: CharacterAssignmentTarget,
+        type: CharacterType
+    ): InstalledPackCharacter? =
+        charactersAssignableTo(role, type).firstOrNull {
             it.packId == reference.packId && it.character.id == reference.characterId
         }
 
-    fun charactersAssignableTo(role: CharacterAssignmentTarget): List<InstalledPackCharacter> =
+    fun charactersAssignableTo(
+        role: CharacterAssignmentTarget,
+        type: CharacterType? = null
+    ): List<InstalledPackCharacter> =
         catalog.list()
             .asSequence()
             .filter { it.enabled }
             .flatMap { record -> readPack(record.id, record.name).asSequence() }
             .filter { role in it.character.assignableTo }
+            .filter { type == null || it.character.type == type }
             .sortedWith(compareBy({ it.packName.lowercase() }, { it.character.name.lowercase() }))
             .toList()
+
+    /** Returns a pack's characters for management UIs, whether the pack is enabled or not. */
+    fun charactersInPack(packId: String, packName: String): List<InstalledPackCharacter> =
+        readPack(packId, packName)
 
     private fun readPack(packId: String, packName: String): List<InstalledPackCharacter> {
         val directory = File(File(storageRoot, packId), ActiveDirectory)
