@@ -1,5 +1,6 @@
 package dev.alenajam.monsterdialer.ui
 
+import android.widget.Toast
 import java.io.File
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
@@ -62,10 +63,14 @@ fun ColumnScope.CharacterPackSettingsContent() {
                 }
             }
             packs = result.fold(onSuccess = { catalog.list() }, onFailure = { packs })
-            message = result.fold(
+            val importMessage = result.fold(
                 onSuccess = { "Character pack imported" },
                 onFailure = { error -> error.message ?: "Could not import character pack" }
             )
+            message = importMessage
+            if (result.isFailure) {
+                Toast.makeText(context, importMessage, Toast.LENGTH_LONG).show()
+            }
         }
     }
 
