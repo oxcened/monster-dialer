@@ -58,6 +58,12 @@ data class InstalledPackCharacter(
     fun imageFile(relativePath: String): java.io.File = java.io.File(directory, relativePath)
 }
 
+@Serializable
+data class CharacterReference(
+    val packId: String,
+    val characterId: String
+)
+
 internal object CharacterPackManifestCodec {
     private val json = Json {
         ignoreUnknownKeys = false
