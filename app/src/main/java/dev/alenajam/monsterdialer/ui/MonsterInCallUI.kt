@@ -91,7 +91,8 @@ class MonsterInCallUI @Inject constructor() : InCallUI {
                     if (uiState.isIncoming) {
                         IncomingCallControls(
                             onHangup = viewModel::hangup,
-                            onAnswer = viewModel::answer
+                            onAnswer = viewModel::answer,
+                            onMessage = { viewModel.hangup(it) }
                         )
                     } else {
                         InCallControls(
@@ -152,7 +153,7 @@ class MonsterInCallUI @Inject constructor() : InCallUI {
                             showCallerImage = false,
                             modifier = Modifier
                                 .statusBarsPadding()
-                                .padding(horizontal = 16.dp, vertical = 12.dp)
+                                .padding(start = 16.dp, top = 32.dp, end = 16.dp, bottom = 12.dp)
                                 .align(Alignment.CenterHorizontally)
                         )
 
