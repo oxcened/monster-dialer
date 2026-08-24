@@ -12,11 +12,14 @@ import androidx.compose.material.icons.outlined.Block
 import androidx.compose.material.icons.outlined.CallEnd
 import androidx.compose.material.icons.outlined.Dialpad
 import androidx.compose.material.icons.outlined.History
+import androidx.compose.material.icons.outlined.Merge
 import androidx.compose.material.icons.outlined.MicOff
 import androidx.compose.material.icons.outlined.MoreVert
 import androidx.compose.material.icons.outlined.Pause
 import androidx.compose.material.icons.outlined.PersonAddAlt
 import androidx.compose.material.icons.outlined.Phone
+import androidx.compose.material.icons.outlined.PhonePaused
+import androidx.compose.material.icons.outlined.SwapCalls
 import androidx.compose.material.icons.outlined.Voicemail
 import dev.alenajam.opendialer.core.common.ui.AppIcons
 
@@ -38,5 +41,8 @@ val MonsterIcons = AppIcons(
     phone = Icons.Outlined.Phone,
     message = Icons.AutoMirrored.Outlined.Message,
     personAdd = Icons.Outlined.PersonAddAlt,
-    history = Icons.Outlined.History
+    history = Icons.Outlined.History,
+    merge = Icons.Outlined.Merge,
+    swapCalls = Icons.Outlined.SwapCalls,
+    phonePaused = Icons.Outlined.PhonePaused
 )
