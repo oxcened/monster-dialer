@@ -10,6 +10,11 @@ class CharacterPackRepository(
     private val storageRoot: File,
     private val catalog: CharacterPackCatalog = CharacterPackCatalog(storageRoot)
 ) {
+    fun find(reference: CharacterReference, role: CharacterAssignmentTarget): InstalledPackCharacter? =
+        charactersAssignableTo(role).firstOrNull {
+            it.packId == reference.packId && it.character.id == reference.characterId
+        }
+
     fun charactersAssignableTo(role: CharacterAssignmentTarget): List<InstalledPackCharacter> =
         catalog.list()
             .asSequence()
