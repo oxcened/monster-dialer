@@ -4,12 +4,15 @@ import java.io.File
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.ColumnScope
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -66,6 +69,29 @@ fun ColumnScope.CharacterPackSettingsContent() {
                 Text(pack.name, style = MaterialTheme.typography.titleMedium)
                 Text("${pack.characterCount} characters · v${pack.version}")
                 Text(pack.license, style = MaterialTheme.typography.bodySmall)
+                Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                    TextButton(onClick = {
+                        scope.launch {
+                            withContext(Dispatchers.IO) { catalog.setEnabled(pack.id, !pack.enabled) }
+                            packs = catalog.list()
+                        }
+                    }) { Text(if (pack.enabled) "Disable" else "Enable") }
+                    TextButton(onClick = {
+                        scope.launch {
+                            val result = withContext(Dispatchers.IO) {
+                                runCatching {
+                                    catalog.remove(pack.id)
+                                    File(root, pack.id).deleteRecursively()
+                                }
+                            }
+                            packs = catalog.list()
+                            message = result.fold(
+                                onSuccess = { "Character pack removed" },
+                                onFailure = { it.message ?: "Could not remove character pack" }
+                            )
+                        }
+                    }) { Text("Remove") }
+                }
             }
         }
     }
