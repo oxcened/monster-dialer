@@ -103,6 +103,7 @@ class MonsterInCallUI @Inject constructor() : InCallUI {
                             canMerge = uiState.canMerge,
                             canSwap = canSwap,
                             canHold = canHold,
+                            showAddCall = !hasSecondaryCall,
                             canAddCall = canAddCall,
                             onHangup = viewModel::hangup,
                             onMute = viewModel::turnMute,
