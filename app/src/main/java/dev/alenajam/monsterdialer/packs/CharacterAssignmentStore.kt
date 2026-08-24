@@ -28,15 +28,15 @@ class CharacterAssignmentStore(
     }
 
     @Synchronized
-    fun characterForContact(contactKey: String): CharacterReference? = read().contacts[contactKey]
+    fun characterForContact(contactKey: String): CharacterReference? = read().contacts[normalizeContactKey(contactKey)]
 
     @Synchronized
     fun assignContact(contactKey: String, character: CharacterReference?) {
-        require(contactKey.isNotBlank() && contactKey.length <= MaxContactKeyLength) { "Contact key is invalid" }
+        val normalizedKey = normalizeContactKey(contactKey)
         character?.validate()
         val document = read()
         val updated = document.contacts.toMutableMap().apply {
-            if (character == null) remove(contactKey) else put(contactKey, character)
+            if (character == null) remove(normalizedKey) else put(normalizedKey, character)
         }
         write(document.copy(contacts = updated))
     }
@@ -44,6 +44,17 @@ class CharacterAssignmentStore(
     private fun CharacterReference.validate() {
         require(packId.isNotBlank() && packId.length <= MaxIdentifierLength) { "Pack id is invalid" }
         require(characterId.isNotBlank() && characterId.length <= MaxIdentifierLength) { "Character id is invalid" }
+    }
+
+    private fun normalizeContactKey(value: String): String {
+        val trimmed = value.trim()
+        val normalized = buildString {
+            trimmed.forEachIndexed { index, character ->
+                if (character.isDigit() || (character == '+' && index == 0)) append(character)
+            }
+        }
+        require(normalized.isNotBlank() && normalized.length <= MaxContactKeyLength) { "Contact key is invalid" }
+        return normalized
     }
 
     private fun read(): CharacterAssignmentsDocument {

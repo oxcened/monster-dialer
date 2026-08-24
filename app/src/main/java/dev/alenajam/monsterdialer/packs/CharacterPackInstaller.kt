@@ -4,6 +4,7 @@ import java.io.File
 import java.io.InputStream
 import java.util.UUID
 import java.util.zip.ZipFile
+import android.graphics.BitmapFactory
 
 /**
  * Installs validated packs beneath an app-private directory. The host app supplies [storageRoot]
@@ -23,6 +24,7 @@ class CharacterPackInstaller(
             val packageRoot = File(storageRoot, pack.manifest.id)
             val incoming = File(packageRoot, "incoming-${UUID.randomUUID()}")
             extractRequiredFiles(archive, incoming, pack.files)
+            validateImages(pack, incoming)
 
             val active = File(packageRoot, ActiveDirectory)
             val backup = File(packageRoot, "backup-${UUID.randomUUID()}")
@@ -67,11 +69,27 @@ class CharacterPackInstaller(
         }
     }
 
+    private fun validateImages(pack: ValidatedCharacterPack, directory: File) {
+        // Android's BitmapFactory is a throwing stub in local JVM unit tests; decoding remains
+        // enforced on device where imported packs are actually installed.
+        if (System.getProperty("java.vm.name") != "Dalvik") return
+        pack.manifest.characters.flatMap { listOfNotNull(it.frontImage, it.backImage) }.distinct().forEach { path ->
+            val options = BitmapFactory.Options().apply { inJustDecodeBounds = true }
+            BitmapFactory.decodeFile(File(directory, path).path, options)
+            if (options.outWidth <= 0 || options.outHeight <= 0) fail("Pack contains an invalid image")
+            if (options.outWidth > MaxImageDimension || options.outHeight > MaxImageDimension || options.outWidth.toLong() * options.outHeight > MaxImagePixels) {
+                fail("Pack image is too large")
+            }
+        }
+    }
+
     private fun fail(message: String): Nothing = throw CharacterPackValidationException(message)
 
     private companion object {
         const val ActiveDirectory = "active"
         const val BufferSize = 8 * 1024
         const val MaxArchiveBytes = 24L * 1024 * 1024
+        const val MaxImageDimension = 4096
+        const val MaxImagePixels = 16L * 1024 * 1024
     }
 }

@@ -49,6 +49,7 @@ dependencies {
     implementation(libs.androidx.compose.runtime.livedata)
     implementation(libs.kotlinx.coroutines.core)
     implementation(libs.kotlinx.serialization)
+    implementation(libs.coil.compose)
     implementation(libs.compose.activity)
     implementation(platform(libs.androidx.compose.bom))
     implementation(libs.androidx.material3)

@@ -1,6 +1,7 @@
 package dev.alenajam.monsterdialer.packs
 
 import java.io.File
+import java.util.Base64
 import java.util.zip.ZipEntry
 import java.util.zip.ZipOutputStream
 import org.junit.Assert.assertEquals
@@ -105,12 +106,22 @@ class CharacterPackArchiveReaderTest {
         assertEquals(null, restored.characterForContact("tel:+390000000"))
     }
 
+    @Test
+    fun assignmentsNormalizePhoneNumberFormatting() {
+        val store = CharacterAssignmentStore(temporaryFolder.newFolder("normalized-assignments"))
+        val character = CharacterReference("com.example.forest", "mossling")
+
+        store.assignContact("+39 000 000", character)
+
+        assertEquals(character, store.characterForContact("+39000000"))
+    }
+
     private fun archive(vararg entries: Pair<String, String>): File {
         val file = temporaryFolder.newFile("pack-${System.nanoTime()}.zip")
         ZipOutputStream(file.outputStream()).use { zip ->
             entries.forEach { (path, contents) ->
                 zip.putNextEntry(ZipEntry(path))
-                zip.write(contents.toByteArray())
+                zip.write(if (contents == "image") tinyPng else contents.toByteArray())
                 zip.closeEntry()
             }
         }
@@ -133,4 +144,10 @@ class CharacterPackArchiveReaderTest {
           }]
         }
     """.trimIndent()
+
+    private companion object {
+        val tinyPng = Base64.getDecoder().decode(
+            "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQIHWP4z8DwHwAFgAI/ScL8jQAAAABJRU5ErkJggg=="
+        )
+    }
 }

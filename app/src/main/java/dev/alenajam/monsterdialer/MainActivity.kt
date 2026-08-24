@@ -7,6 +7,8 @@ import androidx.activity.enableEdgeToEdge
 import dagger.hilt.android.AndroidEntryPoint
 import dev.alenajam.monsterdialer.ui.MonsterIcons
 import dev.alenajam.monsterdialer.ui.CharacterPackSettingsContent
+import dev.alenajam.monsterdialer.ui.PlayerCharacterSettingsContent
+import dev.alenajam.monsterdialer.ui.ContactCharacterSettingsContent
 import dev.alenajam.opendialer.feature.settings.SettingsSubpage
 import dev.alenajam.opendialer.feature.appShell.DialerApp
 
@@ -28,6 +30,16 @@ class MainActivity : ComponentActivity() {
                         title = "Character Packs",
                         description = "Import and manage custom character artwork.",
                         content = { CharacterPackSettingsContent() }
+                    ),
+                    SettingsSubpage(
+                        title = "Player Character",
+                        description = "Choose who represents you during calls.",
+                        content = { PlayerCharacterSettingsContent() }
+                    ),
+                    SettingsSubpage(
+                        title = "Contact Characters",
+                        description = "Assign characters to incoming callers.",
+                        content = { ContactCharacterSettingsContent() }
                     )
                 )
             )
