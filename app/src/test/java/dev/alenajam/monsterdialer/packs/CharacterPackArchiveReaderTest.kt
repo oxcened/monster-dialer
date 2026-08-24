@@ -20,6 +20,7 @@ class CharacterPackArchiveReaderTest {
         val archive = archive(
             "manifest.json" to validManifest(),
             "art/mossling.png" to "image",
+            "art/mossling-back.png" to "image",
             "audio/mossling.ogg" to "sound",
             "notes.txt" to "not installed"
         )
@@ -27,7 +28,10 @@ class CharacterPackArchiveReaderTest {
         val pack = reader.read(archive)
 
         assertEquals("com.example.forest", pack.manifest.id)
-        assertEquals(setOf("manifest.json", "art/mossling.png", "audio/mossling.ogg"), pack.files)
+        assertEquals(
+            setOf("manifest.json", "art/mossling.png", "art/mossling-back.png", "audio/mossling.ogg"),
+            pack.files
+        )
     }
 
     @Test(expected = CharacterPackValidationException::class)
@@ -46,6 +50,7 @@ class CharacterPackArchiveReaderTest {
             archive(
                 "manifest.json" to validManifest().dropLast(1) + ",\"unexpected\":true}",
                 "art/mossling.png" to "image",
+                "art/mossling-back.png" to "image",
                 "audio/mossling.ogg" to "sound"
             )
         )
@@ -57,6 +62,7 @@ class CharacterPackArchiveReaderTest {
         val archive = archive(
             "manifest.json" to validManifest(),
             "art/mossling.png" to "image",
+            "art/mossling-back.png" to "image",
             "audio/mossling.ogg" to "sound",
             "notes.txt" to "not installed"
         )
@@ -75,6 +81,7 @@ class CharacterPackArchiveReaderTest {
         val archive = archive(
             "manifest.json" to validManifest(),
             "art/mossling.png" to "image",
+            "art/mossling-back.png" to "image",
             "audio/mossling.ogg" to "sound"
         )
         CharacterPackInstaller(storage).install(archive.inputStream())
@@ -96,11 +103,15 @@ class CharacterPackArchiveReaderTest {
         val contact = CharacterReference("com.example.forest", "fernfox")
 
         store.setPlayer(player)
-        store.assignContact("tel:+390000000", contact)
+        store.assignContact("tel:+390000000", contact, label = "Alex")
+        store.setSelectedContact("Alex", listOf("tel:+390000000"))
 
         val restored = CharacterAssignmentStore(storage)
         assertEquals(player, restored.player())
         assertEquals(contact, restored.characterForContact("tel:+390000000"))
+        assertEquals("Alex", restored.contactAssignments().single().label)
+        assertEquals("Alex", restored.selectedContact()?.label)
+        assertEquals(listOf("390000000"), restored.selectedContact()?.contactKeys)
 
         restored.assignContact("tel:+390000000", null)
         assertEquals(null, restored.characterForContact("tel:+390000000"))
@@ -114,6 +125,23 @@ class CharacterPackArchiveReaderTest {
         store.assignContact("+39 000 000", character)
 
         assertEquals(character, store.characterForContact("+39000000"))
+    }
+
+    @Test
+    fun trainerAndMonsterAssignmentsPersistIndependently() {
+        val store = CharacterAssignmentStore(temporaryFolder.newFolder("typed-assignments"))
+        val trainer = CharacterReference("com.example.forest", "ranger")
+        val monster = CharacterReference("com.example.forest", "mossling")
+
+        store.setPlayer(CharacterType.Trainer, trainer)
+        store.setPlayer(CharacterType.Monster, monster)
+        store.assignContact("123", CharacterType.Trainer, trainer)
+        store.assignContact("123", CharacterType.Monster, monster)
+
+        assertEquals(trainer, store.player(CharacterType.Trainer))
+        assertEquals(monster, store.player(CharacterType.Monster))
+        assertEquals(trainer, store.characterForContact("123", CharacterType.Trainer))
+        assertEquals(monster, store.characterForContact("123", CharacterType.Monster))
     }
 
     private fun archive(vararg entries: Pair<String, String>): File {
@@ -130,7 +158,7 @@ class CharacterPackArchiveReaderTest {
 
     private fun validManifest(frontImage: String = "art/mossling.png") = """
         {
-          "formatVersion": 1,
+          "formatVersion": 2,
           "id": "com.example.forest",
           "name": "Forest Characters",
           "version": "1.0.0",
@@ -138,8 +166,10 @@ class CharacterPackArchiveReaderTest {
           "characters": [{
             "id": "mossling",
             "name": "Mossling",
+            "type": "monster",
             "assignableTo": ["contact", "player"],
             "frontImage": "$frontImage",
+            "backImage": "art/mossling-back.png",
             "callSound": "audio/mossling.ogg"
           }]
         }

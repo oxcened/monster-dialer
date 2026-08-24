@@ -9,7 +9,9 @@ import dev.alenajam.monsterdialer.ui.MonsterIcons
 import dev.alenajam.monsterdialer.ui.CharacterPackSettingsContent
 import dev.alenajam.monsterdialer.ui.PlayerCharacterSettingsContent
 import dev.alenajam.monsterdialer.ui.ContactCharacterSettingsContent
+import dev.alenajam.monsterdialer.ui.ContactPickerDestination
 import dev.alenajam.opendialer.feature.settings.SettingsSubpage
+import dev.alenajam.opendialer.feature.settings.SettingsSubpageDestination
 import dev.alenajam.opendialer.feature.appShell.DialerApp
 
 @AndroidEntryPoint
@@ -39,7 +41,12 @@ class MainActivity : ComponentActivity() {
                     SettingsSubpage(
                         title = "Contact Characters",
                         description = "Assign characters to incoming callers.",
-                        content = { ContactCharacterSettingsContent() }
+                        content = { ContactCharacterSettingsContent() },
+                        destinations = listOf(
+                            SettingsSubpageDestination(title = "Choose contact") { onNavigateBack ->
+                                ContactPickerDestination(onNavigateBack)
+                            }
+                        )
                     )
                 )
             )

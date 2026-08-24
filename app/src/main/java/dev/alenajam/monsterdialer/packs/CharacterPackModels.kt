@@ -25,11 +25,18 @@ data class CharacterPackManifest(
 data class PackCharacter(
     val id: String,
     val name: String,
+    val type: CharacterType,
     val assignableTo: List<CharacterAssignmentTarget>,
     val frontImage: String,
     val backImage: String? = null,
     val callSound: String? = null
 )
+
+@Serializable
+enum class CharacterType {
+    @SerialName("trainer") Trainer,
+    @SerialName("monster") Monster
+}
 
 @Serializable
 enum class CharacterAssignmentTarget {

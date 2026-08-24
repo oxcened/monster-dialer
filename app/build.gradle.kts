@@ -42,7 +42,9 @@ dependencies {
     implementation(project(":feature:appShell"))
     implementation(project(":feature:settings"))
     implementation(project(":feature:calls"))
+    implementation(project(":feature:contacts"))
     implementation(project(":feature:inCall"))
+    implementation(project(":data:contacts"))
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.viewmodel.compose)
