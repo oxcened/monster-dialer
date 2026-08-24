@@ -82,6 +82,7 @@ fun ColumnScope.PlayerCharacterSettingsContent() {
     Column(verticalArrangement = Arrangement.spacedBy(24.dp)) {
         CharacterTypeSection(
             title = "Trainer",
+            defaultName = "Default trainer",
             defaultArtwork = R.drawable.battle_player_trainer,
             characters = trainers,
             selected = selectedTrainer,
@@ -94,7 +95,8 @@ fun ColumnScope.PlayerCharacterSettingsContent() {
         )
         CharacterTypeSection(
             title = "Monster",
-            defaultArtwork = R.drawable.battle_player_pokemon,
+            defaultName = "Shelkurl",
+            defaultArtwork = R.drawable.battle_player_monster,
             characters = monsters,
             selected = selectedMonster,
             onSelect = { reference ->
@@ -110,6 +112,7 @@ fun ColumnScope.PlayerCharacterSettingsContent() {
 @Composable
 private fun CharacterTypeSection(
     title: String,
+    defaultName: String,
     defaultArtwork: Int,
     characters: List<InstalledPackCharacter>,
     selected: CharacterReference?,
@@ -119,7 +122,7 @@ private fun CharacterTypeSection(
         Text(title, style = MaterialTheme.typography.titleMedium)
         Column {
             CharacterOptionCard(
-                name = "Default ${title.lowercase()}",
+                name = defaultName,
                 subtitle = "Built-in character",
                 isSelected = selected == null,
                 roundTop = true,

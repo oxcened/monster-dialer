@@ -15,14 +15,14 @@ class AssignedCharacterEncounterFactory(
         val fallback = BattleEncounterFactory.forCall(callId, callerName, isAnonymous)
         val player = assignments.player(CharacterType.Monster)
             ?.let { characters.find(it, CharacterAssignmentTarget.Player, CharacterType.Monster) }
-            ?.asPlayerBattlePokemon()
+            ?.asPlayerBattleMonster()
             ?: fallback.player
         val enemy = if (isAnonymous) {
             fallback.enemy
         } else {
             assignments.characterForContact(contactKey, CharacterType.Monster)
                 ?.let { characters.find(it, CharacterAssignmentTarget.Contact, CharacterType.Monster) }
-                ?.asContactBattlePokemon()
+                ?.asContactBattleMonster()
                 ?: fallback.enemy
         }
         val playerTrainer = assignments.player(CharacterType.Trainer)
@@ -45,26 +45,26 @@ class AssignedCharacterEncounterFactory(
         )
     }
 
-    private fun InstalledPackCharacter.asPlayerBattlePokemon(): BattlePokemon {
+    private fun InstalledPackCharacter.asPlayerBattleMonster(): BattleMonster {
         val backImage = requireNotNull(character.backImage)
-        return asBattlePokemon(
+        return asBattleMonster(
             frontImage = character.frontImage ?: backImage,
             backImage = backImage
         )
     }
 
-    private fun InstalledPackCharacter.asContactBattlePokemon(): BattlePokemon {
+    private fun InstalledPackCharacter.asContactBattleMonster(): BattleMonster {
         val frontImage = requireNotNull(character.frontImage)
-        return asBattlePokemon(
+        return asBattleMonster(
             frontImage = frontImage,
             backImage = character.backImage ?: frontImage
         )
     }
 
-    private fun InstalledPackCharacter.asBattlePokemon(
+    private fun InstalledPackCharacter.asBattleMonster(
         frontImage: String,
         backImage: String
-    ) = BattlePokemon(
+    ) = BattleMonster(
         name = character.name,
         level = character.level ?: DefaultLevel,
         hp = character.maxHp ?: DefaultMaxHp,

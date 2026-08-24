@@ -131,10 +131,10 @@ fun BattleScene(
         modifier = modifier
             .fillMaxSize()
             .clipToBounds()
-            .semantics { contentDescription = "Pokémon battle scene" }
+            .semantics { contentDescription = "Monster battle scene" }
     ) {
         BattlePanelView(
-            pokemon = encounter.enemy,
+            monster = encounter.enemy,
             panel = state.enemyPanel,
             isEnemy = true,
             modifier = Modifier.align(Alignment.TopStart).padding(top = 28.dp, start = 12.dp)
@@ -160,7 +160,7 @@ fun BattleScene(
                 .offset { IntOffset(playerOffset.value.roundToInt(), 0) }
         )
         BattlePanelView(
-            pokemon = encounter.player,
+            monster = encounter.player,
             panel = state.playerPanel,
             isEnemy = false,
             modifier = Modifier.align(Alignment.CenterEnd).padding(end = 12.dp, top = 52.dp)
@@ -223,22 +223,22 @@ private fun Sparkles(modifier: Modifier = Modifier) {
 
 @Composable
 internal fun BattlePanelView(
-    pokemon: BattlePokemon?,
+    monster: BattleMonster?,
     panel: BattlePanel,
     isEnemy: Boolean,
     modifier: Modifier = Modifier
 ) {
-    if (panel == BattlePanel.Hidden || pokemon == null) return
-    if (panel == BattlePanel.Pokeballs) {
-        val resourceName = if (isEnemy) "battle_enemy_pokeballs" else "battle_player_pokeballs"
+    if (panel == BattlePanel.Hidden || monster == null) return
+    if (panel == BattlePanel.Roster) {
+        val resourceName = if (isEnemy) "battle_enemy_roster" else "battle_player_roster"
         Image(
             bitmap = pixelBitmapResource(
                 BattleVisualAsset.AppDrawable(
-                    if (isEnemy) R.drawable.battle_enemy_pokeballs else R.drawable.battle_player_pokeballs,
+                    if (isEnemy) R.drawable.battle_enemy_roster else R.drawable.battle_player_roster,
                     resourceName
                 )
             ),
-            contentDescription = "Available Poké Balls",
+            contentDescription = "Available monsters",
             contentScale = ContentScale.FillWidth,
             filterQuality = FilterQuality.None,
             modifier = modifier.width(152.dp)
@@ -252,7 +252,7 @@ internal fun BattlePanelView(
     Box(modifier.width(160.dp).height(if (isEnemy) 62.dp else 79.dp)) {
         Image(
             bitmap = pixelBitmapResource(BattleVisualAsset.AppDrawable(image, imageName)),
-            contentDescription = "${pokemon.name} status",
+            contentDescription = "${monster.name} status",
             contentScale = ContentScale.FillBounds,
             filterQuality = FilterQuality.None,
             modifier = Modifier
@@ -261,12 +261,12 @@ internal fun BattlePanelView(
                 .height(if (isEnemy) 62.dp else 79.dp)
         )
         androidx.compose.material3.Text(
-            text = pokemon.name.uppercase(),
+            text = monster.name.uppercase(),
             style = TextStyle(fontFamily = font, fontSize = 16.sp, color = Color.Black),
             modifier = Modifier.align(if (isEnemy) Alignment.TopStart else Alignment.TopEnd)
         )
         androidx.compose.material3.Text(
-            text = pokemon.level.toString(),
+            text = monster.level.toString(),
             style = TextStyle(fontFamily = font, fontSize = 16.sp, color = Color.Black),
             modifier = Modifier.offset(x = 105.dp, y = 14.dp)
         )
@@ -278,11 +278,11 @@ internal fun BattlePanelView(
                     .width(85.dp)
             ) {
                 androidx.compose.material3.Text(
-                    text = pokemon.hp.toString(),
+                    text = monster.hp.toString(),
                     style = TextStyle(fontFamily = font, fontSize = 16.sp, color = Color.Black),
                 )
                 androidx.compose.material3.Text(
-                    text = pokemon.maxHp.toString(),
+                    text = monster.maxHp.toString(),
                     style = TextStyle(fontFamily = font, fontSize = 16.sp, color = Color.Black),
                 )
             }

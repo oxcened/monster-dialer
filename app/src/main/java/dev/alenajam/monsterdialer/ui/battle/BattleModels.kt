@@ -27,9 +27,9 @@ enum class BattlePhase {
 
 enum class EncounterType { Trainer, ShinyWild, Anonymous }
 
-enum class BattlePanel { Hidden, Pokeballs, Pokemon }
+enum class BattlePanel { Hidden, Roster, Monster }
 
-data class BattlePokemon(
+data class BattleMonster(
     val name: String,
     val level: Int,
     val hp: Int,
@@ -42,8 +42,8 @@ data class BattlePokemon(
 data class BattleEncounter(
     val id: String,
     val type: EncounterType,
-    val player: BattlePokemon,
-    val enemy: BattlePokemon?,
+    val player: BattleMonster,
+    val enemy: BattleMonster?,
     val enemyTrainerName: String?,
     val playerTrainerSprite: BattleVisualAsset,
     val enemyTrainerSprite: BattleVisualAsset
