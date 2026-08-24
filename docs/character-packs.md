@@ -1,9 +1,9 @@
-# Building an OpenDialer / MonsterDialer character pack
+# Building a MonsterDialer character pack
 
 A character pack is a ZIP file containing one UTF-8 `manifest.json` and the local artwork and
 sounds referenced by that manifest. It contains data only: no code, remote URLs, or contact data.
 
-This guide describes pack format version 2 exactly as the app imports it.
+This guide describes pack format exactly as the app imports it.
 
 ## Fast path
 
