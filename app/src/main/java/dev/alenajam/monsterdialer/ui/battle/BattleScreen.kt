@@ -131,7 +131,6 @@ fun BattleScene(
         modifier = modifier
             .fillMaxSize()
             .clipToBounds()
-            .background(Color.White)
             .semantics { contentDescription = "Pokémon battle scene" }
     ) {
         BattlePanelView(
