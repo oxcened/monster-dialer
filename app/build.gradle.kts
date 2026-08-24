@@ -40,6 +40,7 @@ dependencies {
     // For now, we assume they are included in the settings.gradle.kts
     implementation(project(":core:common"))
     implementation(project(":feature:appShell"))
+    implementation(project(":feature:settings"))
     implementation(project(":feature:calls"))
     implementation(project(":feature:inCall"))
 
