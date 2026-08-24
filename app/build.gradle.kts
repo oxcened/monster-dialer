@@ -4,6 +4,7 @@ plugins {
     id("kotlin-kapt")
     alias(libs.plugins.hilt)
     alias(libs.plugins.compose.compiler)
+    alias(libs.plugins.kotlin.serialization)
 }
 
 android {
@@ -46,6 +47,7 @@ dependencies {
     implementation(libs.androidx.lifecycle.viewmodel.compose)
     implementation(libs.androidx.compose.runtime.livedata)
     implementation(libs.kotlinx.coroutines.core)
+    implementation(libs.kotlinx.serialization)
     implementation(libs.compose.activity)
     implementation(platform(libs.androidx.compose.bom))
     implementation(libs.androidx.material3)
