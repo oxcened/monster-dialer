@@ -27,7 +27,7 @@ data class PackCharacter(
     val name: String,
     val type: CharacterType,
     val assignableTo: List<CharacterAssignmentTarget>,
-    val frontImage: String,
+    val frontImage: String? = null,
     val backImage: String? = null,
     val callSound: String? = null,
     val level: Int? = null,

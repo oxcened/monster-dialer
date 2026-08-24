@@ -46,7 +46,7 @@ class CharacterPackRepository(
             if (manifest.id != packId) return emptyList()
             manifest.characters
                 .filter { character ->
-                    File(directory, character.frontImage).isFile &&
+                    (character.frontImage == null || File(directory, character.frontImage).isFile) &&
                         (character.backImage == null || File(directory, character.backImage).isFile)
                 }
                 .map { character -> InstalledPackCharacter(packId, packName, character, directory) }

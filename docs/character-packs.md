@@ -8,8 +8,8 @@ This guide describes pack format exactly as the app imports it.
 ## Fast path
 
 1. Create a folder containing `manifest.json` and an `art` folder.
-2. Add one front image for every character. Add a genuinely different rear image for every
-   character assignable to the player.
+2. Add a front image for every character assignable to a contact. Add a genuinely different
+   rear image for every character assignable to the player.
 3. Copy the manifest below and replace every example value.
 4. ZIP the **contents** of the folder, not the folder itself.
 5. Verify the archive, then import it from **Settings → Character Packs → Import**.
@@ -36,7 +36,7 @@ Unknown properties cause the entire pack to be rejected.
 
 ```json
 {
-  "formatVersion": 2,
+  "formatVersion": 1,
   "id": "com.example.forest-friends",
   "name": "Forest Friends",
   "version": "1.0.0",
@@ -72,7 +72,7 @@ Unknown properties cause the entire pack to be rejected.
 
 | Field | Required | Exact rule |
 | --- | --- | --- |
-| `formatVersion` | Yes | JSON integer `2`. No other version is accepted. |
+| `formatVersion` | Yes | JSON integer `1`. No other version is accepted. |
 | `id` | Yes | 2–64 characters matching `[a-z0-9][a-z0-9._-]{1,63}`. Use a stable, globally distinctive ID such as reverse-domain notation. |
 | `name` | Yes | Non-blank string, at most 120 characters. |
 | `version` | Yes | Non-blank string, at most 64 characters. Semantic versioning such as `1.0.0` is recommended but not required. |
@@ -92,7 +92,7 @@ preserved. Changing the ID installs a separate pack. The app does not compare or
 | `name` | Yes | Non-blank string, at most 120 characters. |
 | `type` | Yes | Exactly `"trainer"` or `"monster"`. |
 | `assignableTo` | Yes | Non-empty array containing `"contact"`, `"player"`, or both. Each value may appear only once. |
-| `frontImage` | Yes | Exact, relative ZIP path to a `.png` or `.webp` image. |
+| `frontImage` | Sometimes | Exact, relative ZIP path to a `.png` or `.webp` image. Required whenever `assignableTo` contains `"contact"`; otherwise optional. |
 | `backImage` | Sometimes | Relative path to a `.png` or `.webp` image. Required whenever `assignableTo` contains `"player"`; otherwise optional. |
 | `level` | No | JSON integer from 1 through 999. A monster defaults to level 5 when omitted. |
 | `maxHp` | No | JSON integer from 1 through 999. A monster defaults to 20 maximum HP when omitted. |
@@ -128,6 +128,18 @@ For a contact-only character, this is valid and needs no rear image:
   "type": "monster",
   "assignableTo": ["contact"],
   "frontImage": "art/mossling-front.png"
+}
+```
+
+For a player-only character, this is valid and needs no front image:
+
+```json
+{
+  "id": "mossling-player",
+  "name": "Mossling",
+  "type": "monster",
+  "assignableTo": ["player"],
+  "backImage": "art/mossling-back.png"
 }
 ```
 
