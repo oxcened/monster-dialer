@@ -68,6 +68,25 @@ class CharacterPackArchiveReaderTest {
         assertEquals("com.example.forest", CharacterPackCatalog(storage).list().single().id)
     }
 
+    @Test
+    fun repositoryExposesOnlyEnabledCharactersForTheirAllowedRoles() {
+        val storage = temporaryFolder.newFolder("character-packs")
+        val archive = archive(
+            "manifest.json" to validManifest(),
+            "art/mossling.png" to "image",
+            "audio/mossling.ogg" to "sound"
+        )
+        CharacterPackInstaller(storage).install(archive.inputStream())
+        val catalog = CharacterPackCatalog(storage)
+        val repository = CharacterPackRepository(storage, catalog)
+
+        assertEquals(1, repository.charactersAssignableTo(CharacterAssignmentTarget.Contact).size)
+        assertEquals(1, repository.charactersAssignableTo(CharacterAssignmentTarget.Player).size)
+
+        catalog.setEnabled("com.example.forest", enabled = false)
+        assertTrue(repository.charactersAssignableTo(CharacterAssignmentTarget.Contact).isEmpty())
+    }
+
     private fun archive(vararg entries: Pair<String, String>): File {
         val file = temporaryFolder.newFile("pack-${System.nanoTime()}.zip")
         ZipOutputStream(file.outputStream()).use { zip ->

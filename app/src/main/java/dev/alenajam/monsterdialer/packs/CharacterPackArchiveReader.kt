@@ -2,15 +2,9 @@ package dev.alenajam.monsterdialer.packs
 
 import java.io.File
 import java.util.zip.ZipFile
-import kotlinx.serialization.json.Json
 
 /** Reads and validates archive structure without extracting untrusted paths to disk. */
-class CharacterPackArchiveReader(
-    private val json: Json = Json {
-        ignoreUnknownKeys = false
-        explicitNulls = false
-    }
-) {
+class CharacterPackArchiveReader {
     fun read(archive: File): ValidatedCharacterPack {
         ZipFile(archive).use { zip ->
             val entries = zip.entries().asSequence().toList()
@@ -39,11 +33,7 @@ class CharacterPackArchiveReader(
                     if (it.toByteArray(Charsets.UTF_8).size > MaxManifestBytes) fail("Pack manifest is too large")
                 }
             }
-            val manifest = try {
-                json.decodeFromString<CharacterPackManifest>(manifestText)
-            } catch (exception: Exception) {
-                throw CharacterPackValidationException("Pack manifest is not valid: ${exception.message}")
-            }
+            val manifest = CharacterPackManifestCodec.decode(manifestText)
             val validated = CharacterPackValidator.validate(manifest)
             if (!names.containsAll(validated.files)) fail("Pack manifest refers to missing files")
             return validated

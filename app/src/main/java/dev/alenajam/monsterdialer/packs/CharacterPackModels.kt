@@ -2,6 +2,7 @@ package dev.alenajam.monsterdialer.packs
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
+import kotlinx.serialization.json.Json
 
 /**
  * The on-disk format for a local, user-provided character pack.
@@ -46,3 +47,26 @@ data class InstalledCharacterPack(
     val manifest: CharacterPackManifest,
     val directory: java.io.File
 )
+
+/** One validated character together with the private directory that owns its media. */
+data class InstalledPackCharacter(
+    val packId: String,
+    val packName: String,
+    val character: PackCharacter,
+    val directory: java.io.File
+) {
+    fun imageFile(relativePath: String): java.io.File = java.io.File(directory, relativePath)
+}
+
+internal object CharacterPackManifestCodec {
+    private val json = Json {
+        ignoreUnknownKeys = false
+        explicitNulls = false
+    }
+
+    fun decode(text: String): CharacterPackManifest = try {
+        json.decodeFromString<CharacterPackManifest>(text)
+    } catch (exception: Exception) {
+        throw CharacterPackValidationException("Pack manifest is not valid: ${exception.message}")
+    }
+}
