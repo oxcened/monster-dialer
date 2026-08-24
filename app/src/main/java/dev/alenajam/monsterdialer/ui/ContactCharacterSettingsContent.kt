@@ -238,7 +238,7 @@ private fun ContactCharacterTypeSection(
                     roundBottom = index == characters.lastIndex,
                     artwork = {
                         AsyncImage(
-                            model = item.imageFile(item.character.frontImage),
+                            model = item.imageFile(requireNotNull(item.character.frontImage)),
                             contentDescription = "${item.character.name} artwork",
                             modifier = Modifier.size(72.dp)
                         )

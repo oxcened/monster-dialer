@@ -3,7 +3,7 @@ package dev.alenajam.monsterdialer.packs
 class CharacterPackValidationException(message: String) : IllegalArgumentException(message)
 
 object CharacterPackValidator {
-    const val SupportedFormatVersion = 2
+    const val SupportedFormatVersion = 1
     const val ManifestPath = "manifest.json"
     const val MaxCharacters = 200
     const val MaxLevel = 999
@@ -32,6 +32,10 @@ object CharacterPackValidator {
             requireThat(character.assignableTo.isNotEmpty(), "Character assignableTo must not be empty")
             requireThat(character.assignableTo.distinct().size == character.assignableTo.size, "Character assignableTo contains duplicates")
             requireThat(
+                CharacterAssignmentTarget.Contact !in character.assignableTo || character.frontImage != null,
+                "Contact-assignable character '${character.id}' must provide frontImage"
+            )
+            requireThat(
                 CharacterAssignmentTarget.Player !in character.assignableTo || character.backImage != null,
                 "Player-assignable character '${character.id}' must provide backImage"
             )
@@ -41,7 +45,7 @@ object CharacterPackValidator {
             character.maxHp?.let {
                 requireThat(it in 1..MaxHp, "Character '${character.id}' maxHp must be between 1 and $MaxHp")
             }
-            files += validatePath(character.frontImage, mediaExtensions, "frontImage")
+            character.frontImage?.let { files += validatePath(it, mediaExtensions, "frontImage") }
             character.backImage?.let { files += validatePath(it, mediaExtensions, "backImage") }
             character.callSound?.let { files += validatePath(it, audioExtensions, "callSound") }
         }

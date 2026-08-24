@@ -18,7 +18,7 @@ licensed to use. Do not use protected franchise characters, names, logos, or cop
 Build the following staging contents in `test-packs/<pack-file-name>/`:
 
 1. `manifest.json`, encoded as UTF-8.
-2. A transparent front-view PNG for every trainer and monster.
+2. A transparent front-view PNG for every character assignable to `contact`.
 3. A distinct transparent rear-view PNG for every character assignable to `player`.
    The rear image must be a true back view—not a front image, mirror, or three-quarter pose.
 4. Optional `.ogg` call sounds only when explicitly requested.
@@ -35,7 +35,7 @@ Unknown properties are invalid.
 
 ```json
 {
-  "formatVersion": 2,
+  "formatVersion": 1,
   "id": "com.example.forest-friends",
   "name": "Forest Friends",
   "version": "1.0.0",
@@ -57,11 +57,13 @@ Unknown properties are invalid.
 }
 ```
 
-`creator`, `backImage`, `callSound`, `level`, and `maxHp` are optional. `frontImage` is required.
+`creator`, `frontImage`, `backImage`, `callSound`, `level`, and `maxHp` are optional fields.
+`frontImage` becomes required when `assignableTo` contains `"contact"`; `backImage` becomes
+required when it contains `"player"`.
 
 | Field | Constraint |
 | --- | --- |
-| `formatVersion` | The JSON number `2`. |
+| `formatVersion` | The JSON number `1`. |
 | Pack and character `id` | 2–64 characters; lowercase letters, digits, `.`, `_`, or `-`; begins with a letter or digit. Character IDs are unique within a pack. |
 | `name`, `license` | Non-empty text, maximum 120 characters. |
 | `version` | Non-empty text, maximum 64 characters. |
@@ -74,8 +76,8 @@ Unknown properties are invalid.
 | `characters` | One to 200 entries. |
 
 `type` and `assignableTo` are independent. A trainer or monster may be available to contacts,
-the player, or both. Every character assignable to `player` must provide `backImage`; the player
-side is rendered from behind. Contact assignments use `frontImage`.
+the player, or both. Every character assignable to `contact` must provide `frontImage`. Every
+character assignable to `player` must provide `backImage`.
 
 Do not use `assignableTo` to infer `type`, and do not use `type` to restrict `assignableTo`.
 MonsterDialer resolves the two types into separate battle slots:

@@ -15,14 +15,14 @@ class AssignedCharacterEncounterFactory(
         val fallback = BattleEncounterFactory.forCall(callId, callerName, isAnonymous)
         val player = assignments.player(CharacterType.Monster)
             ?.let { characters.find(it, CharacterAssignmentTarget.Player, CharacterType.Monster) }
-            ?.asBattlePokemon()
+            ?.asPlayerBattlePokemon()
             ?: fallback.player
         val enemy = if (isAnonymous) {
             fallback.enemy
         } else {
             assignments.characterForContact(contactKey, CharacterType.Monster)
                 ?.let { characters.find(it, CharacterAssignmentTarget.Contact, CharacterType.Monster) }
-                ?.asBattlePokemon()
+                ?.asContactBattlePokemon()
                 ?: fallback.enemy
         }
         val playerTrainer = assignments.player(CharacterType.Trainer)
@@ -45,20 +45,39 @@ class AssignedCharacterEncounterFactory(
         )
     }
 
-    private fun InstalledPackCharacter.asBattlePokemon() = BattlePokemon(
+    private fun InstalledPackCharacter.asPlayerBattlePokemon(): BattlePokemon {
+        val backImage = requireNotNull(character.backImage)
+        return asBattlePokemon(
+            frontImage = character.frontImage ?: backImage,
+            backImage = backImage
+        )
+    }
+
+    private fun InstalledPackCharacter.asContactBattlePokemon(): BattlePokemon {
+        val frontImage = requireNotNull(character.frontImage)
+        return asBattlePokemon(
+            frontImage = frontImage,
+            backImage = character.backImage ?: frontImage
+        )
+    }
+
+    private fun InstalledPackCharacter.asBattlePokemon(
+        frontImage: String,
+        backImage: String
+    ) = BattlePokemon(
         name = character.name,
         level = character.level ?: DefaultLevel,
         hp = character.maxHp ?: DefaultMaxHp,
         maxHp = character.maxHp ?: DefaultMaxHp,
-        frontSprite = BattleVisualAsset.LocalFile(imageFile(character.frontImage).path),
-        backSprite = BattleVisualAsset.LocalFile(imageFile(character.backImage ?: character.frontImage).path)
+        frontSprite = BattleVisualAsset.LocalFile(imageFile(frontImage).path),
+        backSprite = BattleVisualAsset.LocalFile(imageFile(backImage).path)
     )
 
     private fun InstalledPackCharacter.playerTrainerSprite() =
         BattleVisualAsset.LocalFile(imageFile(requireNotNull(character.backImage)).path)
 
     private fun InstalledPackCharacter.contactTrainerSprite() =
-        BattleVisualAsset.LocalFile(imageFile(character.frontImage).path)
+        BattleVisualAsset.LocalFile(imageFile(requireNotNull(character.frontImage)).path)
 
     private companion object {
         const val DefaultLevel = 5

@@ -152,7 +152,9 @@ fun ColumnScope.CharacterPackSettingsContent() {
                             ) {
                                 if (preview != null) {
                                     AsyncImage(
-                                        model = preview.imageFile(preview.character.frontImage),
+                                        model = preview.imageFile(
+                                            preview.character.frontImage ?: requireNotNull(preview.character.backImage)
+                                        ),
                                         contentDescription = "${preview.character.name} artwork",
                                         modifier = Modifier
                                             .size(64.dp)

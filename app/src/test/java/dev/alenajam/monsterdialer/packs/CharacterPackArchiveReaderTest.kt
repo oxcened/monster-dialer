@@ -80,6 +80,37 @@ class CharacterPackArchiveReaderTest {
         reader.read(archive("manifest.json" to validManifest(frontImage = "../outside.png")))
     }
 
+    @Test
+    fun acceptsPlayerOnlyCharacterWithoutFrontImage() {
+        val archive = archive(
+            "manifest.json" to validManifest(
+                frontImage = null,
+                assignableTo = "[\"player\"]"
+            ),
+            "art/mossling-back.png" to "image",
+            "audio/mossling.ogg" to "sound"
+        )
+
+        val character = reader.read(archive).manifest.characters.single()
+
+        assertEquals(null, character.frontImage)
+        assertEquals("art/mossling-back.png", character.backImage)
+    }
+
+    @Test(expected = CharacterPackValidationException::class)
+    fun rejectsContactCharacterWithoutFrontImage() {
+        reader.read(
+            archive(
+                "manifest.json" to validManifest(
+                    frontImage = null,
+                    assignableTo = "[\"contact\"]"
+                ),
+                "art/mossling-back.png" to "image",
+                "audio/mossling.ogg" to "sound"
+            )
+        )
+    }
+
     @Test(expected = CharacterPackValidationException::class)
     fun rejectsManifestReferencesToMissingFiles() {
         reader.read(archive("manifest.json" to validManifest()))
@@ -198,11 +229,14 @@ class CharacterPackArchiveReaderTest {
     }
 
     private fun validManifest(
-        frontImage: String = "art/mossling.png",
+        frontImage: String? = "art/mossling.png",
+        assignableTo: String = "[\"contact\", \"player\"]",
         battleStats: String = "\"level\": 12, \"maxHp\": 45,"
-    ) = """
+    ): String {
+        val frontImageField = frontImage?.let { "\"frontImage\": \"$it\"," }.orEmpty()
+        return """
         {
-          "formatVersion": 2,
+          "formatVersion": 1,
           "id": "com.example.forest",
           "name": "Forest Characters",
           "version": "1.0.0",
@@ -212,13 +246,14 @@ class CharacterPackArchiveReaderTest {
             "name": "Mossling",
             "type": "monster",
             $battleStats
-            "assignableTo": ["contact", "player"],
-            "frontImage": "$frontImage",
+            "assignableTo": $assignableTo,
+            $frontImageField
             "backImage": "art/mossling-back.png",
             "callSound": "audio/mossling.ogg"
           }]
         }
     """.trimIndent()
+    }
 
     private companion object {
         val tinyPng = Base64.getDecoder().decode(
