@@ -54,7 +54,6 @@ fun ColumnScope.CharacterPackSettingsContent() {
         }
     }
 
-    Text("Character Packs", style = MaterialTheme.typography.titleMedium)
     Text(
         "Import only artwork and sounds you created or are licensed to use.",
         style = MaterialTheme.typography.bodyMedium
