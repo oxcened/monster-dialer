@@ -87,6 +87,24 @@ class CharacterPackArchiveReaderTest {
         assertTrue(repository.charactersAssignableTo(CharacterAssignmentTarget.Contact).isEmpty())
     }
 
+    @Test
+    fun assignmentsPersistPlayerAndContactCharactersSeparately() {
+        val storage = temporaryFolder.newFolder("character-assignments")
+        val store = CharacterAssignmentStore(storage)
+        val player = CharacterReference("com.example.forest", "mossling")
+        val contact = CharacterReference("com.example.forest", "fernfox")
+
+        store.setPlayer(player)
+        store.assignContact("tel:+390000000", contact)
+
+        val restored = CharacterAssignmentStore(storage)
+        assertEquals(player, restored.player())
+        assertEquals(contact, restored.characterForContact("tel:+390000000"))
+
+        restored.assignContact("tel:+390000000", null)
+        assertEquals(null, restored.characterForContact("tel:+390000000"))
+    }
+
     private fun archive(vararg entries: Pair<String, String>): File {
         val file = temporaryFolder.newFile("pack-${System.nanoTime()}.zip")
         ZipOutputStream(file.outputStream()).use { zip ->
