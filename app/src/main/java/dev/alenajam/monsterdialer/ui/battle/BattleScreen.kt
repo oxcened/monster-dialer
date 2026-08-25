@@ -335,7 +335,7 @@ private fun playerSprite(state: BattleUiState): BattleVisualAsset {
         1 -> BattleVisualAsset.AppDrawable(R.drawable.battle_reveal_1, "battle_reveal_1")
         2 -> BattleVisualAsset.AppDrawable(R.drawable.battle_reveal_2, "battle_reveal_2")
         3 -> BattleVisualAsset.AppDrawable(R.drawable.battle_reveal_3, "battle_reveal_3")
-        4 -> encounter.player.backSprite
+        4 -> requireNotNull(encounter.player.backSprite) { "Player monster requires a back sprite." }
         else -> encounter.playerTrainerSprite
     }
 }
