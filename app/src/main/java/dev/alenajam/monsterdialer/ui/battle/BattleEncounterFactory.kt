@@ -1,28 +1,30 @@
 package dev.alenajam.monsterdialer.ui.battle
 
-import dev.alenajam.monsterdialer.R
+import dev.alenajam.monsterdialer.characters.BuiltInArtwork
+import dev.alenajam.monsterdialer.characters.BuiltInCharacters
 
 object BattleEncounterFactory {
     fun forCall(callId: String, callerName: String, isAnonymous: Boolean): BattleEncounter {
+        val defaultMonster = BuiltInCharacters.monster
+        val anonymousMonster = BuiltInCharacters.anonymousMonster
         val player = BattleMonster(
-            name = DefaultMonsterName,
-            level = 5,
-            hp = 20,
-            maxHp = 20,
-            frontSprite = BattleVisualAsset.AppDrawable(R.drawable.battle_enemy_monster, "battle_enemy_monster"),
-            backSprite = BattleVisualAsset.AppDrawable(R.drawable.battle_player_monster, "battle_player_monster")
+            name = defaultMonster.character.name,
+            level = defaultMonster.level,
+            hp = defaultMonster.maxHp,
+            maxHp = defaultMonster.maxHp,
+            frontSprite = defaultMonster.character.contactArtwork.asBattleVisualAsset(),
+            backSprite = defaultMonster.character.playerArtwork.asBattleVisualAsset()
         )
         val enemy = if (isAnonymous) {
             BattleMonster(
-                name = "Unknown",
-                level = 236,
-                hp = 33,
-                maxHp = 33,
-                frontSprite = BattleVisualAsset.AppDrawable(R.drawable.battle_unknown_monster, "battle_unknown_monster"),
-                backSprite = BattleVisualAsset.AppDrawable(R.drawable.battle_unknown_monster, "battle_unknown_monster")
+                name = anonymousMonster.name,
+                level = anonymousMonster.level,
+                hp = anonymousMonster.maxHp,
+                maxHp = anonymousMonster.maxHp,
+                frontSprite = anonymousMonster.enemyArtwork.asBattleVisualAsset()
             )
         } else {
-            player.copy(name = DefaultMonsterName, level = 5)
+            player.copy(name = defaultMonster.character.name, level = defaultMonster.level)
         }
         return BattleEncounter(
             id = callId,
@@ -30,11 +32,12 @@ object BattleEncounterFactory {
             player = player,
             enemy = enemy,
             enemyTrainerName = callerName.takeUnless { isAnonymous },
-            playerTrainerSprite = BattleVisualAsset.AppDrawable(R.drawable.battle_player_trainer, "battle_player_trainer"),
-            enemyTrainerSprite = BattleVisualAsset.AppDrawable(
-                if (isAnonymous) R.drawable.battle_unknown_monster else R.drawable.battle_enemy_trainer,
-                if (isAnonymous) "battle_unknown_monster" else "battle_enemy_trainer"
-            )
+            playerTrainerSprite = BuiltInCharacters.trainer.playerArtwork.asBattleVisualAsset(),
+            enemyTrainerSprite = if (isAnonymous) {
+                anonymousMonster.enemyArtwork.asBattleVisualAsset()
+            } else {
+                BuiltInCharacters.trainer.contactArtwork.asBattleVisualAsset()
+            }
         )
     }
 
@@ -44,11 +47,12 @@ object BattleEncounterFactory {
             encounter.copy(
                 type = type,
                 enemyTrainerName = null,
-                enemy = encounter.enemy?.copy(name = DefaultMonsterName, isShiny = true),
-                enemyTrainerSprite = BattleVisualAsset.AppDrawable(R.drawable.battle_enemy_monster, "battle_enemy_monster")
+                enemy = encounter.enemy?.copy(name = BuiltInCharacters.monster.character.name, isShiny = true),
+                enemyTrainerSprite = BuiltInCharacters.monster.character.contactArtwork.asBattleVisualAsset()
             )
         } else encounter.copy(type = type)
     }
 
-    private const val DefaultMonsterName = "Muzzard"
+    private fun BuiltInArtwork.asBattleVisualAsset() =
+        BattleVisualAsset.AppDrawable(resource, resourceName)
 }

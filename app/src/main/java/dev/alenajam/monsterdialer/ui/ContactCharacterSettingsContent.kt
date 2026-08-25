@@ -40,7 +40,8 @@ import dev.alenajam.monsterdialer.packs.CharacterPackRepository
 import dev.alenajam.monsterdialer.packs.CharacterReference
 import dev.alenajam.monsterdialer.packs.CharacterType
 import dev.alenajam.monsterdialer.packs.InstalledPackCharacter
-import dev.alenajam.monsterdialer.R
+import dev.alenajam.monsterdialer.characters.BuiltInCharacter
+import dev.alenajam.monsterdialer.characters.BuiltInCharacters
 import dev.alenajam.opendialer.feature.settings.LocalSettingsSubpageNavigator
 import dev.alenajam.opendialer.feature.contacts.ContactPickerScreen
 import androidx.lifecycle.Lifecycle
@@ -105,16 +106,14 @@ fun ColumnScope.ContactCharacterSettingsContent() {
         Column(verticalArrangement = Arrangement.spacedBy(24.dp)) {
             ContactCharacterTypeSection(
                 title = "Trainer",
-                defaultName = "Default trainer",
-                defaultArtwork = R.drawable.battle_enemy_trainer,
+                defaultCharacter = BuiltInCharacters.trainer,
                 characters = emptyList(),
                 selected = null,
                 onSelect = {}
             )
             ContactCharacterTypeSection(
                 title = "Monster",
-                defaultName = "Muzzard",
-                defaultArtwork = R.drawable.battle_enemy_monster,
+                defaultCharacter = BuiltInCharacters.monster.character,
                 characters = emptyList(),
                 selected = null,
                 onSelect = {}
@@ -162,8 +161,7 @@ fun ColumnScope.ContactCharacterSettingsContent() {
 
         ContactCharacterTypeSection(
             title = "Trainer",
-            defaultName = "Default trainer",
-            defaultArtwork = R.drawable.battle_enemy_trainer,
+            defaultCharacter = BuiltInCharacters.trainer,
             characters = trainers,
             selected = assignedTrainer,
             onSelect = { reference ->
@@ -184,8 +182,7 @@ fun ColumnScope.ContactCharacterSettingsContent() {
         )
         ContactCharacterTypeSection(
             title = "Monster",
-            defaultName = "Muzzard",
-            defaultArtwork = R.drawable.battle_enemy_monster,
+            defaultCharacter = BuiltInCharacters.monster.character,
             characters = monsters,
             selected = assignedMonster,
             onSelect = { reference ->
@@ -210,8 +207,7 @@ fun ColumnScope.ContactCharacterSettingsContent() {
 @Composable
 private fun ContactCharacterTypeSection(
     title: String,
-    defaultName: String,
-    defaultArtwork: Int,
+    defaultCharacter: BuiltInCharacter,
     characters: List<InstalledPackCharacter>,
     selected: CharacterReference?,
     onSelect: (CharacterReference?) -> Unit
@@ -223,14 +219,14 @@ private fun ContactCharacterTypeSection(
         Text(title, style = MaterialTheme.typography.titleMedium)
         Column {
             CharacterOptionCard(
-                name = defaultName,
+                name = defaultCharacter.name,
                 subtitle = "Built-in character",
                 isSelected = availableSelection == null,
                 roundTop = true,
                 roundBottom = false,
                 artwork = {
                     Image(
-                        painter = painterResource(defaultArtwork),
+                        painter = painterResource(defaultCharacter.contactArtwork.resource),
                         contentDescription = "Default ${title.lowercase()} artwork",
                         modifier = Modifier.size(72.dp)
                     )

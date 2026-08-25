@@ -32,7 +32,8 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
-import dev.alenajam.monsterdialer.R
+import dev.alenajam.monsterdialer.characters.BuiltInCharacter
+import dev.alenajam.monsterdialer.characters.BuiltInCharacters
 import dev.alenajam.monsterdialer.packs.CharacterAssignmentStore
 import dev.alenajam.monsterdialer.packs.CharacterAssignmentTarget
 import dev.alenajam.monsterdialer.packs.CharacterPackRepository
@@ -63,8 +64,7 @@ fun ColumnScope.PlayerCharacterSettingsContent() {
     Column(verticalArrangement = Arrangement.spacedBy(24.dp)) {
         CharacterTypeSection(
             title = "Trainer",
-            defaultName = "Default trainer",
-            defaultArtwork = R.drawable.battle_player_trainer,
+            defaultCharacter = BuiltInCharacters.trainer,
             characters = trainers,
             selected = selectedTrainer,
             onSelect = { reference ->
@@ -76,8 +76,7 @@ fun ColumnScope.PlayerCharacterSettingsContent() {
         )
         CharacterTypeSection(
             title = "Monster",
-            defaultName = "Muzzard",
-            defaultArtwork = R.drawable.battle_player_monster,
+            defaultCharacter = BuiltInCharacters.monster.character,
             characters = monsters,
             selected = selectedMonster,
             onSelect = { reference ->
@@ -93,8 +92,7 @@ fun ColumnScope.PlayerCharacterSettingsContent() {
 @Composable
 private fun CharacterTypeSection(
     title: String,
-    defaultName: String,
-    defaultArtwork: Int,
+    defaultCharacter: BuiltInCharacter,
     characters: List<InstalledPackCharacter>,
     selected: CharacterReference?,
     onSelect: (CharacterReference?) -> Unit
@@ -106,14 +104,14 @@ private fun CharacterTypeSection(
         Text(title, style = MaterialTheme.typography.titleMedium)
         Column {
             CharacterOptionCard(
-                name = defaultName,
+                name = defaultCharacter.name,
                 subtitle = "Built-in character",
                 isSelected = availableSelection == null,
                 roundTop = true,
                 roundBottom = false,
                 artwork = {
                     Image(
-                        painter = painterResource(defaultArtwork),
+                        painter = painterResource(defaultCharacter.playerArtwork.resource),
                         contentDescription = "Default ${title.lowercase()} artwork",
                         modifier = Modifier.size(72.dp)
                     )

@@ -35,7 +35,8 @@ data class BattleMonster(
     val hp: Int,
     val maxHp: Int,
     val frontSprite: BattleVisualAsset,
-    val backSprite: BattleVisualAsset,
+    /** Only player-controlled monsters need a rear sprite. */
+    val backSprite: BattleVisualAsset? = null,
     val isShiny: Boolean = false
 )
 
