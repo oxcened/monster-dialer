@@ -25,18 +25,18 @@ private fun TrainerBattlePreview() {
     )
 }
 
-@Preview(name = "Shiny encounter", showBackground = true, widthDp = 400, heightDp = 600)
+@Preview(name = "Radiant encounter", showBackground = true, widthDp = 400, heightDp = 600)
 @Composable
-private fun ShinyBattlePreview() {
-    val encounter = BattleEncounterFactory.preview(EncounterType.ShinyWild)
+private fun RadiantBattlePreview() {
+    val encounter = BattleEncounterFactory.preview(EncounterType.RadiantWild)
     BattleScene(
         BattleUiState(
             runId = 1,
             phase = BattlePhase.IntroMessage,
             encounter = encounter,
-            message = "Wild shiny SHELKURL appeared!",
+            message = "Wild radiant SHELKURL appeared!",
             playerPanel = BattlePanel.Roster,
-            showEnemySparkles = true
+            showEnemyRadiance = true
         )
     )
 }

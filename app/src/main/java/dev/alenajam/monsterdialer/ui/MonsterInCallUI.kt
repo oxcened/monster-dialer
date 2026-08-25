@@ -169,7 +169,8 @@ class MonsterInCallUI @Inject constructor() : InCallUI {
 
                         Box(
                             modifier = Modifier
-                                .fillMaxSize(),
+                                .fillMaxSize()
+                                .padding(horizontal = 4.dp, vertical = 4.dp),
                             contentAlignment = Alignment.Center
                         ) {
                             BattleScreen(
@@ -180,7 +181,7 @@ class MonsterInCallUI @Inject constructor() : InCallUI {
                                     isAnonymous = uiState.callerName.isBlank() && uiState.callerNumber.isBlank()
                                 ),
                                 modifier = Modifier
-                                    .heightIn(max = 355.dp)
+                                    .heightIn(max = 380.dp)
                                     .aspectRatio(160f / 144f)
                                     .fillMaxSize()
                             )

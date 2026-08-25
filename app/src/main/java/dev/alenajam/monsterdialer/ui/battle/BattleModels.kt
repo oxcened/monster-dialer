@@ -25,7 +25,7 @@ enum class BattlePhase {
     Ready
 }
 
-enum class EncounterType { Trainer, ShinyWild, Anonymous }
+enum class EncounterType { Trainer, RadiantWild, Anonymous }
 
 enum class BattlePanel { Hidden, Roster, Monster }
 
@@ -37,7 +37,7 @@ data class BattleMonster(
     val frontSprite: BattleVisualAsset,
     /** Only player-controlled monsters need a rear sprite. */
     val backSprite: BattleVisualAsset? = null,
-    val isShiny: Boolean = false
+    val isRadiant: Boolean = false
 )
 
 data class BattleEncounter(
@@ -60,8 +60,8 @@ data class BattleUiState(
     val enemyPanel: BattlePanel = BattlePanel.Hidden,
     val enemyRevealFrame: Int = 0,
     val playerRevealFrame: Int = 0,
-    val showEnemySparkles: Boolean = false,
-    val showPlayerSparkles: Boolean = false
+    val showEnemyRadiance: Boolean = false,
+    val showPlayerRadiance: Boolean = false
 )
 
 data class BattleTiming(
@@ -72,7 +72,7 @@ data class BattleTiming(
     val introHoldMillis: Long = 1_500,
     val panelHoldMillis: Long = 700,
     val revealFrameMillis: Long = 70,
-    val sparkleMillis: Long = 480,
+    val radianceMillis: Long = 480,
     val readyHoldMillis: Long = 700
 ) {
     companion object {
@@ -84,7 +84,7 @@ data class BattleTiming(
             introHoldMillis = 0,
             panelHoldMillis = 0,
             revealFrameMillis = 0,
-            sparkleMillis = 0,
+            radianceMillis = 0,
             readyHoldMillis = 0
         )
     }

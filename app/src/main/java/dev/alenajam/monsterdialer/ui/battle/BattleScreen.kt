@@ -16,6 +16,9 @@ import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
@@ -27,6 +30,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.clipToBounds
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
@@ -68,12 +72,22 @@ fun BattleScreen(
     LaunchedEffect(encounter.id, encounter.type) { coordinator.start(encounter) }
     DisposableEffect(coordinator) { onDispose(coordinator::stop) }
 
-    BattleScene(
-        state = state,
-        timing = timing,
-        onAnimationCompleted = coordinator::animationCompleted,
-        modifier = modifier
-    )
+    Surface(
+        modifier = modifier,
+        color = MaterialTheme.colorScheme.surfaceContainer,
+        shape = RoundedCornerShape(36.dp),
+        tonalElevation = 8.dp
+    ) {
+        BattleScene(
+            state = state,
+            timing = timing,
+            onAnimationCompleted = coordinator::animationCompleted,
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(6.dp)
+                .clip(RoundedCornerShape(30.dp))
+        )
+    }
 }
 
 @Composable
@@ -130,6 +144,7 @@ fun BattleScene(
     Box(
         modifier = modifier
             .fillMaxSize()
+            .background(Color(0xFFFFFBF2))
             .clipToBounds()
             .semantics { contentDescription = "Monster battle scene" }
     ) {
@@ -143,7 +158,7 @@ fun BattleScene(
             sprite = enemySprite(state),
             description = enemyDescription(state),
             colorFilter = if (state.phase <= BattlePhase.TrainersColorizing) grayscale else null,
-            sparkles = state.showEnemySparkles,
+            radiant = state.showEnemyRadiance,
             modifier = Modifier
                 .align(Alignment.TopEnd)
                 .padding(top = 24.dp, end = 24.dp)
@@ -153,7 +168,7 @@ fun BattleScene(
             sprite = playerSprite(state),
             description = "Your ${encounter.player.name}",
             colorFilter = if (state.phase <= BattlePhase.TrainersColorizing) grayscale else null,
-            sparkles = state.showPlayerSparkles,
+            radiant = state.showPlayerRadiance,
             modifier = Modifier
                 .align(Alignment.CenterStart)
                 .padding(start = 28.dp, top = 28.dp)
@@ -169,8 +184,8 @@ fun BattleScene(
             message = state.message,
             isTyping = state.isTyping,
             modifier = Modifier
-                .align(Alignment.Center)
-                .offset(y = 124.dp)
+                .align(Alignment.BottomCenter)
+                .padding(8.dp)
         )
     }
 }
@@ -180,7 +195,7 @@ private fun BattleSprite(
     sprite: BattleVisualAsset,
     description: String,
     colorFilter: ColorFilter?,
-    sparkles: Boolean,
+    radiant: Boolean,
     modifier: Modifier = Modifier
 ) {
     Box(modifier.size(116.dp), contentAlignment = Alignment.Center) {
@@ -192,12 +207,12 @@ private fun BattleSprite(
             filterQuality = FilterQuality.None,
             modifier = Modifier.fillMaxSize()
         )
-        if (sparkles) Sparkles(Modifier.fillMaxSize())
+        if (radiant) Radiance(Modifier.fillMaxSize())
     }
 }
 
 @Composable
-private fun Sparkles(modifier: Modifier = Modifier) {
+private fun Radiance(modifier: Modifier = Modifier) {
     val context = LocalContext.current
     var frame by remember { mutableIntStateOf(0) }
     LaunchedEffect(Unit) {
@@ -207,14 +222,14 @@ private fun Sparkles(modifier: Modifier = Modifier) {
         }
     }
     val resource = remember(frame) {
-        context.resources.getIdentifier("battle_shiny_sparkles_$frame", "drawable", context.packageName)
+        context.resources.getIdentifier("battle_radiant_sparkles_$frame", "drawable", context.packageName)
     }
     if (resource != 0) {
         Image(
             bitmap = pixelBitmapResource(
-                BattleVisualAsset.AppDrawable(resource, "battle_shiny_sparkles_$frame")
+                BattleVisualAsset.AppDrawable(resource, "battle_radiant_sparkles_$frame")
             ),
-            contentDescription = "Shiny sparkle",
+            contentDescription = "Radiant sparkle",
             filterQuality = FilterQuality.None,
             modifier = modifier
         )

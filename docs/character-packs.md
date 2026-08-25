@@ -60,6 +60,7 @@ Unknown properties cause the entire pack to be rejected.
       "backImage": "art/mossling-back.png",
       "level": 12,
       "maxHp": 45,
+      "isRadiant": true,
       "callSound": "audio/mossling.ogg"
     }
   ]
@@ -96,6 +97,7 @@ preserved. Changing the ID installs a separate pack. The app does not compare or
 | `backImage` | Sometimes | Relative path to a `.png` or `.webp` image. Required whenever `assignableTo` contains `"player"`; otherwise optional. |
 | `level` | No | JSON integer from 1 through 999. A monster defaults to level 5 when omitted. |
 | `maxHp` | No | JSON integer from 1 through 999. A monster defaults to 20 maximum HP when omitted. |
+| `isRadiant` | No | Boolean, defaulting to `false`. Only valid for monsters. When `true`, the monster displays a radiant sparkle animation on entering battle. |
 | `callSound` | No | Relative ZIP path to an `.ogg` file. The importer accepts and stores it, but the current call UI does not yet play it. |
 
 `level` and `maxHp` must be integers, not quoted strings or decimals. Zero, negative numbers, and

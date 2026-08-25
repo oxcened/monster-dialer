@@ -43,11 +43,11 @@ object BattleEncounterFactory {
 
     fun preview(type: EncounterType): BattleEncounter {
         val encounter = forCall(type.name, "Alex", type == EncounterType.Anonymous)
-        return if (type == EncounterType.ShinyWild) {
+        return if (type == EncounterType.RadiantWild) {
             encounter.copy(
                 type = type,
                 enemyTrainerName = null,
-                enemy = encounter.enemy?.copy(name = BuiltInCharacters.monster.character.name, isShiny = true),
+                enemy = encounter.enemy?.copy(name = BuiltInCharacters.monster.character.name, isRadiant = true),
                 enemyTrainerSprite = BuiltInCharacters.monster.character.contactArtwork.asBattleVisualAsset()
             )
         } else encounter.copy(type = type)

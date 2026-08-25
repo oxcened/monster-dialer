@@ -69,7 +69,7 @@ class BattleSequenceCoordinatorTest {
     fun stopCancelsSequenceAndReturnsToIdle() = runTest {
         val timing = BattleTiming.Instant.copy(characterMillis = 100)
         val coordinator = BattleSequenceCoordinator(this, timing)
-        coordinator.start(encounter("battle", EncounterType.ShinyWild))
+        coordinator.start(encounter("battle", EncounterType.RadiantWild))
         runCurrent()
 
         coordinator.stop()
