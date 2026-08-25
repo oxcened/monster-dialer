@@ -50,5 +50,5 @@ object BattleEncounterFactory {
         } else encounter.copy(type = type)
     }
 
-    private const val DefaultMonsterName = "Shelkurl"
+    private const val DefaultMonsterName = "Muzzard"
 }

@@ -102,20 +102,23 @@ fun ColumnScope.ContactCharacterSettingsContent() {
     }
 
     if (trainers.isEmpty() && monsters.isEmpty()) {
-        Card(modifier = Modifier.fillMaxWidth()) {
-            Box(
-                modifier = Modifier.fillMaxWidth().heightIn(min = 160.dp),
-                contentAlignment = Alignment.Center
-            ) {
-                Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                    Icon(Icons.Outlined.Person, contentDescription = null)
-                    Text(
-                        "Import and enable a pack containing a contact-assignable character first.",
-                        modifier = Modifier.fillMaxWidth().padding(horizontal = 24.dp),
-                        textAlign = TextAlign.Center
-                    )
-                }
-            }
+        Column(verticalArrangement = Arrangement.spacedBy(24.dp)) {
+            ContactCharacterTypeSection(
+                title = "Trainer",
+                defaultName = "Default trainer",
+                defaultArtwork = R.drawable.battle_enemy_trainer,
+                characters = emptyList(),
+                selected = null,
+                onSelect = {}
+            )
+            ContactCharacterTypeSection(
+                title = "Monster",
+                defaultName = "Muzzard",
+                defaultArtwork = R.drawable.battle_enemy_monster,
+                characters = emptyList(),
+                selected = null,
+                onSelect = {}
+            )
         }
         return
     }
@@ -181,7 +184,7 @@ fun ColumnScope.ContactCharacterSettingsContent() {
         )
         ContactCharacterTypeSection(
             title = "Monster",
-            defaultName = "Shelkurl",
+            defaultName = "Muzzard",
             defaultArtwork = R.drawable.battle_enemy_monster,
             characters = monsters,
             selected = assignedMonster,
@@ -213,15 +216,18 @@ private fun ContactCharacterTypeSection(
     selected: CharacterReference?,
     onSelect: (CharacterReference?) -> Unit
 ) {
+    val availableSelection = selected?.takeIf { reference ->
+        characters.any { CharacterReference(it.packId, it.character.id) == reference }
+    }
     Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
         Text(title, style = MaterialTheme.typography.titleMedium)
         Column {
             CharacterOptionCard(
                 name = defaultName,
                 subtitle = "Built-in character",
-                isSelected = selected == null,
+                isSelected = availableSelection == null,
                 roundTop = true,
-                roundBottom = characters.isEmpty(),
+                roundBottom = false,
                 artwork = {
                     Image(
                         painter = painterResource(defaultArtwork),
@@ -236,7 +242,7 @@ private fun ContactCharacterTypeSection(
                 CharacterOptionCard(
                     name = item.character.name,
                     subtitle = item.packName,
-                    isSelected = selected == reference,
+                    isSelected = availableSelection == reference,
                     roundTop = false,
                     roundBottom = index == characters.lastIndex,
                     artwork = {
@@ -248,6 +254,9 @@ private fun ContactCharacterTypeSection(
                     },
                     onSelect = { onSelect(reference) }
                 )
+            }
+            if (characters.isEmpty()) {
+                NoAdditionalCharacterOptionsCard(title)
             }
         }
     }

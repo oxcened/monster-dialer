@@ -60,25 +60,6 @@ fun ColumnScope.PlayerCharacterSettingsContent() {
     var selectedMonster by remember { mutableStateOf(assignments.player(CharacterType.Monster)) }
     val scope = rememberCoroutineScope()
 
-    if (trainers.isEmpty() && monsters.isEmpty()) {
-        Card(modifier = Modifier.fillMaxWidth()) {
-            Box(
-                modifier = Modifier.fillMaxWidth().heightIn(min = 160.dp),
-                contentAlignment = Alignment.Center
-            ) {
-                Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                    Icon(Icons.Outlined.Person, contentDescription = null)
-                    Text(
-                        "Import and enable a pack containing a player-assignable character first.",
-                        modifier = Modifier.fillMaxWidth().padding(horizontal = 24.dp),
-                        textAlign = TextAlign.Center
-                    )
-                }
-            }
-        }
-        return
-    }
-
     Column(verticalArrangement = Arrangement.spacedBy(24.dp)) {
         CharacterTypeSection(
             title = "Trainer",
@@ -95,7 +76,7 @@ fun ColumnScope.PlayerCharacterSettingsContent() {
         )
         CharacterTypeSection(
             title = "Monster",
-            defaultName = "Shelkurl",
+            defaultName = "Muzzard",
             defaultArtwork = R.drawable.battle_player_monster,
             characters = monsters,
             selected = selectedMonster,
@@ -118,15 +99,18 @@ private fun CharacterTypeSection(
     selected: CharacterReference?,
     onSelect: (CharacterReference?) -> Unit
 ) {
+    val availableSelection = selected?.takeIf { reference ->
+        characters.any { CharacterReference(it.packId, it.character.id) == reference }
+    }
     Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
         Text(title, style = MaterialTheme.typography.titleMedium)
         Column {
             CharacterOptionCard(
                 name = defaultName,
                 subtitle = "Built-in character",
-                isSelected = selected == null,
+                isSelected = availableSelection == null,
                 roundTop = true,
-                roundBottom = characters.isEmpty(),
+                roundBottom = false,
                 artwork = {
                     Image(
                         painter = painterResource(defaultArtwork),
@@ -141,7 +125,7 @@ private fun CharacterTypeSection(
                 CharacterOptionCard(
                     name = installed.character.name,
                     subtitle = installed.packName,
-                    isSelected = selected == reference,
+                    isSelected = availableSelection == reference,
                     roundTop = false,
                     roundBottom = index == characters.lastIndex,
                     artwork = {
@@ -152,6 +136,43 @@ private fun CharacterTypeSection(
                         )
                     },
                     onSelect = { onSelect(reference) }
+                )
+            }
+            if (characters.isEmpty()) {
+                NoAdditionalCharacterOptionsCard(title)
+            }
+        }
+    }
+}
+
+@Composable
+internal fun NoAdditionalCharacterOptionsCard(title: String) {
+    Card(
+        modifier = Modifier.fillMaxWidth().padding(vertical = 1.dp),
+        shape = RoundedCornerShape(
+            topStart = 2.dp,
+            topEnd = 2.dp,
+            bottomStart = 20.dp,
+            bottomEnd = 20.dp
+        ),
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainerLow),
+        elevation = CardDefaults.cardElevation(defaultElevation = 0.5.dp)
+    ) {
+        Box(
+            modifier = Modifier.fillMaxWidth().heightIn(min = 104.dp).padding(horizontal = 24.dp),
+            contentAlignment = Alignment.Center
+        ) {
+            Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                Text(
+                    "No other ${title.lowercase()} options",
+                    style = MaterialTheme.typography.titleSmall,
+                    textAlign = TextAlign.Center
+                )
+                Text(
+                    "Import and enable a character pack to add more.",
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    textAlign = TextAlign.Center
                 )
             }
         }
