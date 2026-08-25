@@ -6,6 +6,8 @@
     <string name="open_source_description">MonsterDialer is based on OpenDialer. Explore the source code and contribute on GitHub.</string>
     <string name="feature_requests_description">Propose and vote on ideas for MonsterDialer.</string>
     <string name="url_feature_requests" translatable="false">https://monsterdialer.fider.io/</string>
+    <string name="team_member_name" translatable="false">Alessandro Pusceddu</string>
+    <string name="team_member_description">Collaborator</string>
     <string name="hang_up">Hang up</string>
     <string name="font_credit" translatable="false">Johto Mono by Superpencil</string>
 </resources>
