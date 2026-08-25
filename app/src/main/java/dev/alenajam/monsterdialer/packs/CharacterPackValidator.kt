@@ -14,7 +14,10 @@ object CharacterPackValidator {
     private val audioExtensions = setOf("ogg")
 
     fun validate(manifest: CharacterPackManifest): ValidatedCharacterPack {
-        requireThat(manifest.formatVersion == SupportedFormatVersion, "Unsupported pack format version")
+        requireThat(
+            manifest.formatVersion == SupportedFormatVersion,
+            "Unsupported pack format version: pack uses ${manifest.formatVersion}, but this app supports $SupportedFormatVersion"
+        )
         requireThat(idPattern.matches(manifest.id), "Pack id must be 2–64 lowercase letters, digits, dots, dashes, or underscores")
         requireText(manifest.name, "Pack name")
         requireText(manifest.version, "Pack version")

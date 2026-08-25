@@ -75,6 +75,33 @@ class CharacterPackArchiveReaderTest {
         )
     }
 
+    @Test
+    fun reportsBothPackAndSupportedFormatVersions() {
+        val error = try {
+            reader.read(
+                archive(
+                    "manifest.json" to validManifest(formatVersion = 2),
+                    "art/mossling.png" to "image",
+                    "art/mossling-back.png" to "image",
+                    "audio/mossling.ogg" to "sound"
+                )
+            )
+            throw AssertionError("Expected the unsupported format version to fail")
+        } catch (exception: CharacterPackValidationException) {
+            exception
+        }
+
+        assertEquals(
+            "Unsupported pack format version: pack uses 2, but this app supports 1",
+            error.message
+        )
+        val diagnostic = CharacterPackImportDiagnostic.from("forest.zip", error)
+        assertTrue(diagnostic.report.contains("File: forest.zip"))
+        assertTrue(diagnostic.report.contains("Supported formatVersion: 1"))
+        assertTrue(diagnostic.report.contains("pack uses 2"))
+        assertTrue(diagnostic.report.contains("Stack trace:"))
+    }
+
     @Test(expected = CharacterPackValidationException::class)
     fun rejectsTraversalPathsBeforeExtraction() {
         reader.read(archive("manifest.json" to validManifest(frontImage = "../outside.png")))
@@ -231,12 +258,13 @@ class CharacterPackArchiveReaderTest {
     private fun validManifest(
         frontImage: String? = "art/mossling.png",
         assignableTo: String = "[\"contact\", \"player\"]",
-        battleStats: String = "\"level\": 12, \"maxHp\": 45,"
+        battleStats: String = "\"level\": 12, \"maxHp\": 45,",
+        formatVersion: Int = 1
     ): String {
         val frontImageField = frontImage?.let { "\"frontImage\": \"$it\"," }.orEmpty()
         return """
         {
-          "formatVersion": 1,
+          "formatVersion": $formatVersion,
           "id": "com.example.forest",
           "name": "Forest Characters",
           "version": "1.0.0",
