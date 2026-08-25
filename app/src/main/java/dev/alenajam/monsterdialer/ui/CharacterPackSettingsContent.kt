@@ -1,9 +1,17 @@
 package dev.alenajam.monsterdialer.ui
 
-import android.widget.Toast
+import android.content.ClipData
+import android.content.ClipboardManager
+import android.content.Context
+import android.content.Intent
+import android.net.Uri
+import android.provider.OpenableColumns
 import java.io.File
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
+import androidx.compose.foundation.text.selection.SelectionContainer
 import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -15,7 +23,11 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.ContentCopy
+import androidx.compose.material.icons.outlined.ErrorOutline
 import androidx.compose.material.icons.outlined.FolderOpen
+import androidx.compose.material.icons.outlined.Share
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -34,10 +46,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import dev.alenajam.monsterdialer.packs.CharacterPackCatalog
 import dev.alenajam.monsterdialer.packs.CharacterPackInstaller
+import dev.alenajam.monsterdialer.packs.CharacterPackImportDiagnostic
 import dev.alenajam.monsterdialer.packs.CharacterPackRepository
 import coil.compose.AsyncImage
 import kotlinx.coroutines.Dispatchers
@@ -52,9 +66,11 @@ fun ColumnScope.CharacterPackSettingsContent() {
     val installer = remember(root) { CharacterPackInstaller(root, catalog = catalog) }
     var packs by remember { mutableStateOf(catalog.list()) }
     var message by remember { mutableStateOf<String?>(null) }
+    var importDiagnostic by remember { mutableStateOf<CharacterPackImportDiagnostic?>(null) }
     val scope = rememberCoroutineScope()
     val picker = rememberLauncherForActivityResult(ActivityResultContracts.OpenDocument()) { uri ->
         if (uri == null) return@rememberLauncherForActivityResult
+        val fileName = context.displayNameFor(uri)
         scope.launch {
             val result = withContext(Dispatchers.IO) {
                 runCatching {
@@ -62,19 +78,22 @@ fun ColumnScope.CharacterPackSettingsContent() {
                         .use(installer::install)
                 }
             }
-            packs = result.fold(onSuccess = { catalog.list() }, onFailure = { packs })
-            val importMessage = result.fold(
-                onSuccess = { "Character pack imported" },
-                onFailure = { error -> error.message ?: "Could not import character pack" }
-            )
-            message = importMessage
-            if (result.isFailure) {
-                Toast.makeText(context, importMessage, Toast.LENGTH_LONG).show()
+            result.onSuccess {
+                packs = catalog.list()
+                message = "Character pack imported"
+            }.onFailure { error ->
+                importDiagnostic = CharacterPackImportDiagnostic.from(fileName, error)
             }
         }
     }
 
     val importPack = { picker.launch(arrayOf("application/zip", "application/x-zip-compressed")) }
+    importDiagnostic?.let { diagnostic ->
+        CharacterPackImportFailureDialog(
+            diagnostic = diagnostic,
+            onDismiss = { importDiagnostic = null }
+        )
+    }
     if (packs.isEmpty()) {
         Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
             Column(
@@ -218,4 +237,97 @@ fun ColumnScope.CharacterPackSettingsContent() {
             }
         }
     }
+}
+
+@Composable
+private fun CharacterPackImportFailureDialog(
+    diagnostic: CharacterPackImportDiagnostic,
+    onDismiss: () -> Unit
+) {
+    val context = LocalContext.current
+    var copied by remember(diagnostic.report) { mutableStateOf(false) }
+    AlertDialog(
+        onDismissRequest = onDismiss,
+        icon = {
+            Icon(
+                Icons.Outlined.ErrorOutline,
+                contentDescription = null,
+                tint = MaterialTheme.colorScheme.error
+            )
+        },
+        title = { Text("Couldn’t import pack") },
+        text = {
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .verticalScroll(rememberScrollState()),
+                verticalArrangement = Arrangement.spacedBy(12.dp)
+            ) {
+                Text(diagnostic.summary, style = MaterialTheme.typography.bodyLarge)
+                Text(
+                    "File: ${diagnostic.fileName}",
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                )
+                Text(
+                    "Copy or share this report with the pack creator. It contains error details, not your pack contents.",
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                )
+                SelectionContainer {
+                    Text(
+                        diagnostic.report,
+                        style = MaterialTheme.typography.bodySmall,
+                        fontFamily = FontFamily.Monospace,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                    )
+                }
+            }
+        },
+        confirmButton = {
+            Button(onClick = {
+                context.copyToClipboard("Character pack import diagnostic", diagnostic.report)
+                copied = true
+            }) {
+                Icon(Icons.Outlined.ContentCopy, contentDescription = null, modifier = Modifier.size(18.dp))
+                Text(if (copied) "Copied" else "Copy report", modifier = Modifier.padding(start = 8.dp))
+            }
+        },
+        dismissButton = {
+            Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                TextButton(onClick = { context.shareImportDiagnostic(diagnostic.report) }) {
+                    Icon(Icons.Outlined.Share, contentDescription = null, modifier = Modifier.size(18.dp))
+                    Text("Share", modifier = Modifier.padding(start = 6.dp))
+                }
+                TextButton(onClick = onDismiss) { Text("Close") }
+            }
+        }
+    )
+}
+
+private fun Context.displayNameFor(uri: Uri): String {
+    val projection = arrayOf(OpenableColumns.DISPLAY_NAME)
+    contentResolver.query(uri, projection, null, null, null)?.use { cursor ->
+        val nameColumn = cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME)
+        if (nameColumn >= 0 && cursor.moveToFirst()) {
+            cursor.getString(nameColumn)?.takeIf { it.isNotBlank() }?.let { return it }
+        }
+    }
+    return uri.lastPathSegment?.substringAfterLast('/') ?: "Selected file"
+}
+
+private fun Context.copyToClipboard(label: String, text: String) {
+    val clipboard = getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+    clipboard.setPrimaryClip(ClipData.newPlainText(label, text))
+}
+
+private fun Context.shareImportDiagnostic(report: String) {
+    startActivity(
+        Intent.createChooser(
+            Intent(Intent.ACTION_SEND)
+                .setType("text/plain")
+                .putExtra(Intent.EXTRA_TEXT, report),
+            "Share pack import diagnostic"
+        )
+    )
 }
