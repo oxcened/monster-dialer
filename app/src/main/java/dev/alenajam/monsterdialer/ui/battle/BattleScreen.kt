@@ -249,7 +249,7 @@ internal fun BattlePanelView(
     val image = if (isEnemy) R.drawable.battle_enemy_life_bar else R.drawable.battle_player_life_bar
     val imageName = if (isEnemy) "battle_enemy_life_bar" else "battle_player_life_bar"
     val font = battleFontFamily()
-    Box(modifier.width(160.dp).height(if (isEnemy) 62.dp else 79.dp)) {
+    Box(modifier.width(160.dp).height(if (isEnemy) 72.dp else 89.dp)) {
         Image(
             bitmap = pixelBitmapResource(BattleVisualAsset.AppDrawable(image, imageName)),
             contentDescription = "${monster.name} status",
@@ -268,14 +268,14 @@ internal fun BattlePanelView(
         androidx.compose.material3.Text(
             text = monster.level.toString(),
             style = TextStyle(fontFamily = font, fontSize = 16.sp, color = Color.Black),
-            modifier = Modifier.offset(x = 105.dp, y = 14.dp)
+            modifier = Modifier.offset(x = if (isEnemy) 105.dp else 100.dp, y = if (isEnemy) 18.dp else 16.dp)
         )
         if (!isEnemy) {
             Row(
                 horizontalArrangement = Arrangement.SpaceBetween,
                 modifier = Modifier
-                    .offset(x = 43.dp, y = 45.dp)
-                    .width(85.dp)
+                    .offset(x = 31.dp, y = 50.dp)
+                    .width(97.dp)
             ) {
                 androidx.compose.material3.Text(
                     text = monster.hp.toString(),
