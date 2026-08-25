@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.AutoAwesome
 import androidx.compose.material.icons.outlined.Person
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -123,6 +124,7 @@ private fun CharacterTypeSection(
                 CharacterOptionCard(
                     name = installed.character.name,
                     subtitle = installed.packName,
+                    isRadiant = installed.character.isRadiant,
                     isSelected = availableSelection == reference,
                     roundTop = false,
                     roundBottom = index == characters.lastIndex,
@@ -181,6 +183,7 @@ internal fun NoAdditionalCharacterOptionsCard(title: String) {
 internal fun CharacterOptionCard(
     name: String,
     subtitle: String,
+    isRadiant: Boolean = false,
     isSelected: Boolean,
     roundTop: Boolean,
     roundBottom: Boolean,
@@ -211,7 +214,20 @@ internal fun CharacterOptionCard(
         ) {
             artwork()
             Column(modifier = Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(2.dp)) {
-                Text(name, style = MaterialTheme.typography.titleMedium)
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.spacedBy(6.dp)
+                ) {
+                    Text(name, style = MaterialTheme.typography.titleMedium)
+                    if (isRadiant) {
+                        Icon(
+                            imageVector = Icons.Outlined.AutoAwesome,
+                            contentDescription = "Radiant",
+                            modifier = Modifier.size(18.dp),
+                            tint = MaterialTheme.colorScheme.primary
+                        )
+                    }
+                }
                 Text(
                     subtitle,
                     style = MaterialTheme.typography.bodySmall,

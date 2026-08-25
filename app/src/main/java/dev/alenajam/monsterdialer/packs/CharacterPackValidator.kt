@@ -35,6 +35,10 @@ object CharacterPackValidator {
             requireThat(character.assignableTo.isNotEmpty(), "Character assignableTo must not be empty")
             requireThat(character.assignableTo.distinct().size == character.assignableTo.size, "Character assignableTo contains duplicates")
             requireThat(
+                !character.isRadiant || character.type == CharacterType.Monster,
+                "Only monster character '${character.id}' may be radiant"
+            )
+            requireThat(
                 CharacterAssignmentTarget.Contact !in character.assignableTo || character.frontImage != null,
                 "Contact-assignable character '${character.id}' must provide frontImage"
             )

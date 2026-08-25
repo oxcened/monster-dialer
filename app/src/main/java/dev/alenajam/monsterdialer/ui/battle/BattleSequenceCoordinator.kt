@@ -46,8 +46,8 @@ class BattleSequenceCoordinator(
 
         when (encounter.type) {
             EncounterType.Trainer -> runTrainerIntro(runId, encounter)
-            EncounterType.ShinyWild -> runWildIntro(runId, encounter, shiny = true)
-            EncounterType.Anonymous -> runWildIntro(runId, encounter, shiny = false)
+            EncounterType.RadiantWild -> runWildIntro(runId, encounter, radiant = true)
+            EncounterType.Anonymous -> runWildIntro(runId, encounter, radiant = false)
         }
 
         phase(runId, BattlePhase.PlayerTrainerLeaving)
@@ -55,7 +55,7 @@ class BattleSequenceCoordinator(
         typeMessage(runId, "Go! ${encounter.player.name.uppercase()}!")
         phase(runId, BattlePhase.PlayerRevealing)
         reveal(runId, player = true)
-        if (encounter.player.isShiny) sparkle(runId, player = true)
+        if (encounter.player.isRadiant) showRadiance(runId, player = true)
         update(runId) { copy(playerPanel = BattlePanel.Monster) }
         pause(timing.readyHoldMillis)
         typeMessage(runId, "What will you do?")
@@ -76,16 +76,16 @@ class BattleSequenceCoordinator(
         pause(timing.panelHoldMillis)
         phase(runId, BattlePhase.EnemyRevealing)
         reveal(runId, player = false)
-        if (encounter.enemy?.isShiny == true) sparkle(runId, player = false)
+        if (encounter.enemy?.isRadiant == true) showRadiance(runId, player = false)
         phase(runId, BattlePhase.EnemyReady)
         update(runId) { copy(enemyPanel = BattlePanel.Monster) }
     }
 
-    private suspend fun runWildIntro(runId: Long, encounter: BattleEncounter, shiny: Boolean) {
+    private suspend fun runWildIntro(runId: Long, encounter: BattleEncounter, radiant: Boolean) {
         phase(runId, BattlePhase.IntroMessage)
-        if (shiny) sparkle(runId, player = false)
+        if (radiant) showRadiance(runId, player = false)
         val enemyName = encounter.enemy?.name.orEmpty().ifBlank { "Unknown" }.uppercase()
-        val text = if (shiny) "Wild shiny $enemyName appeared!" else "Wild $enemyName appeared!"
+        val text = if (radiant) "Wild radiant $enemyName appeared!" else "Wild $enemyName appeared!"
         update(runId) { copy(playerPanel = BattlePanel.Roster) }
         typeMessage(runId, text)
         pause(timing.introHoldMillis)
@@ -103,13 +103,13 @@ class BattleSequenceCoordinator(
         }
     }
 
-    private suspend fun sparkle(runId: Long, player: Boolean) {
+    private suspend fun showRadiance(runId: Long, player: Boolean) {
         update(runId) {
-            if (player) copy(showPlayerSparkles = true) else copy(showEnemySparkles = true)
+            if (player) copy(showPlayerRadiance = true) else copy(showEnemyRadiance = true)
         }
-        pause(timing.sparkleMillis)
+        pause(timing.radianceMillis)
         update(runId) {
-            if (player) copy(showPlayerSparkles = false) else copy(showEnemySparkles = false)
+            if (player) copy(showPlayerRadiance = false) else copy(showEnemyRadiance = false)
         }
     }
 

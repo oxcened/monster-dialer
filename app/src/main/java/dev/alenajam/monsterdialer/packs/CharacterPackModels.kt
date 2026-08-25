@@ -31,7 +31,9 @@ data class PackCharacter(
     val backImage: String? = null,
     val callSound: String? = null,
     val level: Int? = null,
-    val maxHp: Int? = null
+    val maxHp: Int? = null,
+    /** Whether this monster plays the radiant animation when it enters battle. */
+    val isRadiant: Boolean = false
 )
 
 @Serializable

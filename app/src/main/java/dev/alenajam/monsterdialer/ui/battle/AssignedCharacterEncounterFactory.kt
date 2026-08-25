@@ -70,7 +70,8 @@ class AssignedCharacterEncounterFactory(
         hp = character.maxHp ?: DefaultMaxHp,
         maxHp = character.maxHp ?: DefaultMaxHp,
         frontSprite = BattleVisualAsset.LocalFile(imageFile(frontImage).path),
-        backSprite = BattleVisualAsset.LocalFile(imageFile(backImage).path)
+        backSprite = BattleVisualAsset.LocalFile(imageFile(backImage).path),
+        isRadiant = character.isRadiant
     )
 
     private fun InstalledPackCharacter.playerTrainerSprite() =

@@ -50,6 +50,30 @@ class CharacterPackArchiveReaderTest {
         assertEquals(null, character.maxHp)
     }
 
+    @Test
+    fun acceptsRadiantMonsters() {
+        val archive = archive(
+            "manifest.json" to validManifest(battleStats = "\"level\": 12, \"maxHp\": 45, \"isRadiant\": true,"),
+            "art/mossling.png" to "image",
+            "art/mossling-back.png" to "image",
+            "audio/mossling.ogg" to "sound"
+        )
+
+        assertTrue(reader.read(archive).manifest.characters.single().isRadiant)
+    }
+
+    @Test(expected = CharacterPackValidationException::class)
+    fun rejectsRadiantTrainers() {
+        reader.read(
+            archive(
+                "manifest.json" to validManifest(type = "trainer", battleStats = "\"isRadiant\": true,"),
+                "art/mossling.png" to "image",
+                "art/mossling-back.png" to "image",
+                "audio/mossling.ogg" to "sound"
+            )
+        )
+    }
+
     @Test(expected = CharacterPackValidationException::class)
     fun rejectsInvalidBattleStats() {
         reader.read(
@@ -269,7 +293,8 @@ class CharacterPackArchiveReaderTest {
         frontImage: String? = "art/mossling.png",
         assignableTo: String = "[\"contact\", \"player\"]",
         battleStats: String = "\"level\": 12, \"maxHp\": 45,",
-        formatVersion: Int = 1
+        formatVersion: Int = 1,
+        type: String = "monster"
     ): String {
         val frontImageField = frontImage?.let { "\"frontImage\": \"$it\"," }.orEmpty()
         return """
@@ -282,7 +307,7 @@ class CharacterPackArchiveReaderTest {
           "characters": [{
             "id": "mossling",
             "name": "Mossling",
-            "type": "monster",
+            "type": "$type",
             $battleStats
             "assignableTo": $assignableTo,
             $frontImageField

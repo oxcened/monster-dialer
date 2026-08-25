@@ -238,6 +238,7 @@ private fun ContactCharacterTypeSection(
                 CharacterOptionCard(
                     name = item.character.name,
                     subtitle = item.packName,
+                    isRadiant = item.character.isRadiant,
                     isSelected = availableSelection == reference,
                     roundTop = false,
                     roundBottom = index == characters.lastIndex,
