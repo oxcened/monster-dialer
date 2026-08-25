@@ -80,7 +80,7 @@ fun ColumnScope.CharacterPackSettingsContent() {
             }
             result.onSuccess {
                 packs = catalog.list()
-                message = "Character pack imported"
+                message = null
             }.onFailure { error ->
                 importDiagnostic = CharacterPackImportDiagnostic.from(fileName, error)
             }

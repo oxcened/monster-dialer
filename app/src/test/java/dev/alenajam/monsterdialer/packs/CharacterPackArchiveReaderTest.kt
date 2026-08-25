@@ -16,13 +16,12 @@ class CharacterPackArchiveReaderTest {
     private val reader = CharacterPackArchiveReader()
 
     @Test
-    fun readsAValidPackAndIncludesOnlyReferencedFiles() {
+    fun readsAValidPack() {
         val archive = archive(
             "manifest.json" to validManifest(),
             "art/mossling.png" to "image",
             "art/mossling-back.png" to "image",
-            "audio/mossling.ogg" to "sound",
-            "notes.txt" to "not installed"
+            "audio/mossling.ogg" to "sound"
         )
 
         val pack = reader.read(archive)
@@ -144,6 +143,19 @@ class CharacterPackArchiveReaderTest {
     }
 
     @Test(expected = CharacterPackValidationException::class)
+    fun rejectsUnreferencedFilesIncludingExecutables() {
+        reader.read(
+            archive(
+                "manifest.json" to validManifest(),
+                "art/mossling.png" to "image",
+                "art/mossling-back.png" to "image",
+                "audio/mossling.ogg" to "sound",
+                "bin/unexpected.exe" to "not executable"
+            )
+        )
+    }
+
+    @Test(expected = CharacterPackValidationException::class)
     fun rejectsUnknownManifestFields() {
         reader.read(
             archive(
@@ -156,21 +168,19 @@ class CharacterPackArchiveReaderTest {
     }
 
     @Test
-    fun installerKeepsOnlyValidatedFilesInPrivateStorage() {
+    fun installerStoresAllPackFilesInPrivateStorage() {
         val storage = temporaryFolder.newFolder("character-packs")
         val archive = archive(
             "manifest.json" to validManifest(),
             "art/mossling.png" to "image",
             "art/mossling-back.png" to "image",
-            "audio/mossling.ogg" to "sound",
-            "notes.txt" to "not installed"
+            "audio/mossling.ogg" to "sound"
         )
 
         val installed = CharacterPackInstaller(storage).install(archive.inputStream())
 
         assertTrue(File(installed.directory, "art/mossling.png").isFile)
         assertTrue(File(installed.directory, "audio/mossling.ogg").isFile)
-        assertTrue(!File(installed.directory, "notes.txt").exists())
         assertEquals("com.example.forest", CharacterPackCatalog(storage).list().single().id)
     }
 

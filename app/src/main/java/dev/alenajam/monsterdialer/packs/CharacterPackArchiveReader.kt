@@ -36,6 +36,7 @@ class CharacterPackArchiveReader {
             val manifest = CharacterPackManifestCodec.decode(manifestText)
             val validated = CharacterPackValidator.validate(manifest)
             if (!names.containsAll(validated.files)) fail("Pack manifest refers to missing files")
+            if (names != validated.files) fail("Pack contains files that are not referenced by manifest.json")
             return validated
         }
     }

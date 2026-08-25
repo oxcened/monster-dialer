@@ -170,8 +170,8 @@ rights holders.
   `..` segments.
 - Duplicate ZIP paths are invalid.
 - Every file referenced by the manifest must be present.
-- Extra unreferenced files are ignored during installation, but still count against limits; do
-  not include them.
+- Every non-directory entry must be either `manifest.json` or a file referenced by the manifest.
+  Extra files, including executables, scripts, and unsupported formats, cause import to fail.
 - The ZIP may contain at most 512 entries, including directory entries.
 - The compressed ZIP may be at most 24 MiB.
 - Its total uncompressed file content may be at most 48 MiB.
