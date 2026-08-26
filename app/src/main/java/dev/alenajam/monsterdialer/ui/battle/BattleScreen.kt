@@ -397,5 +397,5 @@ private fun battleFontFamily(): FontFamily = if (LocalInspectionMode.current) {
     // Layoutlib can replace generated font IDs with 0 while rendering previews.
     FontFamily.Monospace
 } else {
-    FontFamily(Font(R.font.johto_mono))
+    FontFamily(Font(R.font.ui_pixel_font))
 }

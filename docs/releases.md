@@ -44,6 +44,32 @@ Copy the resulting single line into `ANDROID_KEYSTORE_BASE64`. Keep the
 original keystore backed up securely: losing it prevents signing updates that
 Android accepts as upgrades.
 
+## Licensed font for CI
+
+The app's licensed font is intentionally not tracked in Git. Place your
+licensed copy at `app/src/main/res/font/ui_pixel_font.otf` for local builds.
+
+CI and release builds restore the same file from a private asset location. Add
+these Actions secrets:
+
+| Secret | Value |
+| --- | --- |
+| `FONT_ASSET_URL` | Private download URL for the font asset |
+| `FONT_ASSET_TOKEN` | Read-only token authorized to download that asset |
+| `FONT_ASSET_SHA256` | SHA-256 digest of the original font file, without a filename |
+
+For a private GitHub Release asset, use its API asset URL as
+`FONT_ASSET_URL` and a fine-grained token with read-only **Contents** access to
+the private asset repository as `FONT_ASSET_TOKEN`. Generate the checksum with:
+
+```bash
+shasum -a 256 app/src/main/res/font/ui_pixel_font.otf
+```
+
+The workflow verifies this digest after download and before Gradle runs. Do not
+store the font itself in a GitHub Actions secret: it exceeds the secret size
+limit and is not source material that can be publicly redistributed.
+
 ## Make a release
 
 Use the helper script to prepare the version-change commit:

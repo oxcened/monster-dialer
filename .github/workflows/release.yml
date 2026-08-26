@@ -62,6 +62,23 @@ jobs:
           test -n "$GOOGLE_SERVICES_JSON_BASE64"
           printf '%s' "$GOOGLE_SERVICES_JSON_BASE64" | base64 --decode > app/google-services.json
 
+      - name: Restore licensed font
+        working-directory: monster-dialer
+        env:
+          FONT_ASSET_URL: ${{ secrets.FONT_ASSET_URL }}
+          FONT_ASSET_TOKEN: ${{ secrets.FONT_ASSET_TOKEN }}
+          FONT_ASSET_SHA256: ${{ secrets.FONT_ASSET_SHA256 }}
+        run: |
+          test -n "$FONT_ASSET_URL"
+          test -n "$FONT_ASSET_TOKEN"
+          test -n "$FONT_ASSET_SHA256"
+          curl --fail --location --retry 3 --silent --show-error \
+            --header "Authorization: Bearer $FONT_ASSET_TOKEN" \
+            --header "Accept: application/octet-stream" \
+            "$FONT_ASSET_URL" \
+            --output app/src/main/res/font/ui_pixel_font.otf
+          printf '%s  %s\n' "$FONT_ASSET_SHA256" "app/src/main/res/font/ui_pixel_font.otf" | sha256sum --check --status
+
       - name: Decode release keystore
         env:
           ANDROID_KEYSTORE_BASE64: ${{ secrets.ANDROID_KEYSTORE_BASE64 }}
