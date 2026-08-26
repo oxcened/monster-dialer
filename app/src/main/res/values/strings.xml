@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name" comment="Application name shown by Android and in the About screen.">MonsterDialer</string>
+    <string name="app_name" comment="Application name shown by Android and in the About screen." translatable="false">MonsterDialer</string>
     <string name="default_phone_title" comment="Title of the default phone app prompt.">Set MonsterDialer as default</string>
     <string name="default_phone_description" comment="Explanation shown below the default-phone prompt.">MonsterDialer can only make and receive calls when it’s your default phone app.</string>
     <string name="open_source_description" comment="Description of the OpenDialer source-code card in About.">MonsterDialer is based on OpenDialer. Explore the source code and contribute on GitHub.</string>

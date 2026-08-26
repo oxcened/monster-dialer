@@ -23,10 +23,12 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import dev.alenajam.monsterdialer.ui.battle.AssignedCharacterEncounterFactory
+import dev.alenajam.monsterdialer.R
 import dev.alenajam.monsterdialer.packs.CharacterAssignmentStore
 import dev.alenajam.monsterdialer.packs.CharacterPackRepository
 import dev.alenajam.monsterdialer.ui.battle.BattleScreen
@@ -177,7 +179,9 @@ class MonsterInCallUI @Inject constructor() : InCallUI {
                                 encounter = encounterFactory.forCall(
                                     callId = "${uiState.callerName}:${uiState.callerNumber}",
                                     contactKey = uiState.callerNumber,
-                                    callerName = uiState.callerName.ifBlank { uiState.callerNumber.ifBlank { "Unknown" } },
+                                    callerName = uiState.callerName.ifBlank {
+                                        uiState.callerNumber.ifBlank { stringResource(R.string.unknown) }
+                                    },
                                     isAnonymous = uiState.callerName.isBlank() && uiState.callerNumber.isBlank()
                                 ),
                                 modifier = Modifier

@@ -1,6 +1,14 @@
 [versions]
 # Extensions and overrides for MonsterDialer
+firebase-bom = "34.18.0"
+firebase-crashlytics-plugin = "3.0.8"
+google-services = "4.5.0"
 
 [libraries]
+firebase-analytics = { module = "com.google.firebase:firebase-analytics" }
+firebase-bom = { module = "com.google.firebase:firebase-bom", version.ref = "firebase-bom" }
+firebase-crashlytics = { module = "com.google.firebase:firebase-crashlytics" }
 
 [plugins]
+firebase-crashlytics = { id = "com.google.firebase.crashlytics", version.ref = "firebase-crashlytics-plugin" }
+google-services = { id = "com.google.gms.google-services", version.ref = "google-services" }
