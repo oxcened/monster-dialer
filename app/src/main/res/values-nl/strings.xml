@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="contribute_translations" comment="Title of the OpenDialer translation contribution link on the About screen.">Bijdragen aan OpenDialer-vertalingen</string>
+</resources>

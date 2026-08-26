@@ -4,6 +4,7 @@
     <string name="default_phone_description" comment="Explanation shown below the default-phone prompt.">MonsterDialer kann nur Anrufe tätigen und annehmen, wenn es deine Standard-Telefon-App ist.</string>
     <string name="open_source_description" comment="Description of the OpenDialer source-code card in About.">MonsterDialer basiert auf OpenDialer. Sieh dir den Quellcode an und wirke auf GitHub mit.</string>
     <string name="contribute_monsterdialer_translations" comment="Title of the MonsterDialer translation contribution card.">Zu MonsterDialer-Übersetzungen beitragen</string>
+    <string name="contribute_translations" comment="Title of the OpenDialer translation contribution link on the About screen.">Zu OpenDialer-Übersetzungen beitragen</string>
     <string name="contribute_monsterdialer_translations_description" comment="Description of the MonsterDialer translation contribution card.">Hilf mit, MonsterDialer in mehr Sprachen verfügbar zu machen.</string>
     <string name="feature_requests_description" comment="Description of the feature-request card in About.">Schlage Ideen für MonsterDialer vor und stimme darüber ab.</string>
     <string name="hang_up" comment="Button to end the current phone call.">Auflegen</string>
