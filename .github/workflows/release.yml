@@ -121,6 +121,7 @@ jobs:
           subject-path: ${{ steps.assets.outputs.directory }}/*
 
       - name: Create GitHub Release and upload assets
+        working-directory: monster-dialer
         env:
           GH_TOKEN: ${{ github.token }}
           RELEASE_TAG: ${{ github.ref_name }}
