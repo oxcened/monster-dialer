@@ -1,4 +1,4 @@
-# Contributing to OpenDialer
+# Contributing to MonsterDialer
 
 Thank you for your interest in contributing!
 
