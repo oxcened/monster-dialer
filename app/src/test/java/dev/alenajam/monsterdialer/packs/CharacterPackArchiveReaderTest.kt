@@ -261,6 +261,14 @@ class CharacterPackArchiveReaderTest {
     }
 
     @Test
+    fun contactLookupIgnoresCallerLabelsWithoutPhoneNumbers() {
+        val store = CharacterAssignmentStore(temporaryFolder.newFolder("non-phone-caller-label"))
+
+        assertEquals(null, store.characterForContact("Private number"))
+        assertEquals(null, store.characterForContact("   "))
+    }
+
+    @Test
     fun trainerAndMonsterAssignmentsPersistIndependently() {
         val store = CharacterAssignmentStore(temporaryFolder.newFolder("typed-assignments"))
         val trainer = CharacterReference("com.example.forest", "ranger")
