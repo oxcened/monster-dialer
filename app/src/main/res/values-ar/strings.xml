@@ -1,2 +1,84 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources>
+    <string name="default_phone_title" comment="Title of the default phone app prompt.">تعيين MonsterDialer كتطبيق افتراضي</string>
+    <string name="default_phone_description" comment="Explanation shown below the default-phone prompt.">لا يمكن لـ MonsterDialer إجراء المكالمات واستقبالها إلا عندما يكون تطبيق الهاتف الافتراضي لديك.</string>
+    <string name="open_source_description" comment="Description of the OpenDialer source-code card in About.">يعتمد MonsterDialer على OpenDialer. استكشف الشفرة المصدرية وساهم على GitHub.</string>
+    <string name="contribute_monsterdialer_translations" comment="Title of the MonsterDialer translation contribution card.">المساهمة في ترجمة MonsterDialer</string>
+    <string name="contribute_monsterdialer_translations_description" comment="Description of the MonsterDialer translation contribution card.">ساعد في إتاحة MonsterDialer بمزيد من اللغات.</string>
+    <string name="feature_requests_description" comment="Description of the feature-request card in About.">اقترح وصوّت على أفكار لـ MonsterDialer.</string>
+    <string name="hang_up" comment="Button to end the current phone call.">إنهاء</string>
+    <string name="settings_character_packs_title" comment="Settings title for managing character packs.">حزم الشخصيات</string>
+    <string name="settings_character_packs_description" comment="Settings description for character packs.">استورد وأدر رسومات الشخصيات المخصصة.</string>
+    <string name="settings_player_character_title" comment="Settings title for the player's battle character.">شخصية اللاعب</string>
+    <string name="settings_player_character_description" comment="Settings description for the player's battle character.">اختر من يمثلك أثناء المكالمات.</string>
+    <string name="settings_contact_characters_title" comment="Settings title for assigning characters to contacts.">شخصيات جهات الاتصال</string>
+    <string name="settings_contact_characters_description" comment="Settings description for assigning characters to contacts.">عيّن شخصيات للمتصلين الواردين.</string>
+    <string name="choose_contact" comment="Button that opens the contact picker.">اختر جهة اتصال</string>
+    <string name="character_type_trainer" comment="Character category for a human battle character.">مدرب</string>
+    <string name="character_type_monster" comment="Character category for a creature battle character.">وحش</string>
+    <string name="built_in_character" comment="Label for a character included with the app.">شخصية مضمّنة</string>
+    <string name="default_character_artwork" comment="%1$s is a character type, such as Trainer or Monster.">رسم %1$s الافتراضي</string>
+    <string name="character_artwork" comment="%1$s is a character name.">رسم %1$s</string>
+    <string name="no_other_character_options" comment="%1$s is a character type, such as Trainer or Monster.">لا توجد خيارات أخرى لـ %1$s</string>
+    <string name="import_and_enable_character_pack" comment="Empty-state message in the character selector.">استورد وفعّل حزمة شخصيات لإضافة المزيد.</string>
+    <string name="radiant" comment="Adjective for a rare, sparkling character variant.">متألق</string>
+    <string name="selected" comment="Status label for the currently chosen option.">محدد</string>
+    <string name="select" comment="Button label to choose an option.">اختيار</string>
+    <string name="change" comment="Button label to change the current selection.">تغيير</string>
+    <string name="contact_chooser_prompt" comment="Prompt above the contact picker.">اختر جهة اتصال لتعيين شخصية لها.</string>
+    <string name="contact_chooser_title" comment="Title of the contact-character assignment screen.">تخصيص جهة اتصال</string>
+    <string name="contact_chooser_empty_prompt" comment="Empty state when no assignable characters are available.">استورد وفعّل أولاً حزمة تتضمن شخصية قابلة للتعيين لجهات الاتصال.</string>
+    <string name="pack_collection_empty_title" comment="Title of the empty character-pack collection screen.">مجموعتك تبدأ من هنا</string>
+    <string name="pack_collection_empty_description" comment="Description of the empty character-pack collection screen.">استورد حزمة شخصيات لتخصيص تجربة مكالماتك.</string>
+    <string name="import_character_pack" comment="Button that starts selecting a character-pack file.">استيراد حزمة شخصيات</string>
+    <string name="pack_import_license_notice" comment="Legal notice shown before importing a character pack.">استورد فقط الرسومات والأصوات التي أنشأتها أو لديك ترخيص لاستخدامها.</string>
+    <string name="your_character_packs" comment="Heading above installed character packs.">حزم شخصياتك</string>
+    <plurals name="installed_pack_count" comment="Number of installed character packs. %d is the count.">
+        <item quantity="zero">%d حزمة مثبتة</item>
+        <item quantity="one">%d حزمة مثبتة</item>
+        <item quantity="two">%d حزمتان مثبتتان</item>
+        <item quantity="few">%d حزم مثبتة</item>
+        <item quantity="many">%d حزمة مثبتة</item>
+        <item quantity="other">%d حزمة مثبتة</item>
+    </plurals>
+    <plurals name="pack_character_count" comment="%1$d is the number of characters; %2$s is the pack version.">
+        <item quantity="zero">%1$d شخصية · v%2$s</item>
+        <item quantity="one">%1$d شخصية · v%2$s</item>
+        <item quantity="two">%1$d شخصيتان · v%2$s</item>
+        <item quantity="few">%1$d شخصيات · v%2$s</item>
+        <item quantity="many">%1$d شخصية · v%2$s</item>
+        <item quantity="other">%1$d شخصية · v%2$s</item>
+    </plurals>
+    <string name="import_pack" comment="Short button label to import a selected pack.">استيراد</string>
+    <string name="enabled" comment="Status label for an active character pack.">مفعّل</string>
+    <string name="disabled" comment="Status label for an inactive character pack.">معطّل</string>
+    <string name="enable" comment="Button label to activate a character pack.">تفعيل</string>
+    <string name="disable" comment="Button label to deactivate a character pack.">تعطيل</string>
+    <string name="remove" comment="Button label to permanently remove a character pack.">إزالة</string>
+    <string name="character_pack_removed" comment="Confirmation after a character pack is removed.">تمت إزالة حزمة الشخصيات</string>
+    <string name="character_pack_remove_failed" comment="Error when a character pack cannot be removed.">تعذرت إزالة حزمة الشخصيات</string>
+    <string name="pack_import_failed_title" comment="Title of the character-pack import error dialog.">تعذر استيراد الحزمة</string>
+    <string name="file_label" comment="%1$s is the selected file name.">الملف: %1$s</string>
+    <string name="pack_import_report_notice" comment="Explains that an import diagnostic excludes the user's pack contents.">انسخ هذا التقرير أو شاركه مع منشئ الحزمة. يحتوي على تفاصيل الخطأ، وليس محتوى الحزمة.</string>
+    <string name="pack_import_diagnostic_label" comment="Label for a failed character-pack import report.">تشخيص استيراد الحزمة</string>
+    <string name="copied" comment="Brief confirmation after text is copied.">تم النسخ</string>
+    <string name="copy_report" comment="Button to copy the import diagnostic.">نسخ التقرير</string>
+    <string name="share" comment="Button to share the import diagnostic.">مشاركة</string>
+    <string name="close" comment="Button to dismiss a dialog.">إغلاق</string>
+    <string name="selected_file" comment="Label before the selected file name.">الملف المحدد</string>
+    <string name="share_pack_import_diagnostic" comment="Title of Android's share sheet for an import diagnostic.">مشاركة تشخيص الاستيراد</string>
+    <string name="battle_scene_description" comment="Accessibility description for the battle scene image.">مشهد معركة الوحوش</string>
+    <string name="your_monster" comment="%1$s is the player's monster name.">وحشك %1$s</string>
+    <string name="radiant_sparkle" comment="Accessibility description for a rare-variant sparkle.">وميض متألق</string>
+    <string name="available_monsters" comment="Heading for the selectable monster roster.">الوحوش المتاحة</string>
+    <string name="monster_status" comment="%1$s is a monster name.">حالة %1$s</string>
+    <string name="opponent_monster" comment="%1$s is the opposing monster name.">وحش الخصم: %1$s</string>
+    <string name="opponent_trainer" comment="%1$s is the opposing trainer name.">مدرب الخصم: %1$s</string>
+    <string name="unknown" comment="Fallback label when a value is not known.">غير معروف</string>
+    <string name="battle_player_send_out" comment="Battle announcement; %1$s is the player's monster name.">انطلق، %1$s!</string>
+    <string name="battle_prompt" comment="Prompt shown to the player during a battle.">ماذا ستفعل؟</string>
+    <string name="battle_trainer_challenge" comment="Battle announcement; %1$s is the opposing trainer name.">المدرب %1$s يريد القتال!</string>
+    <string name="battle_trainer_sent_out" comment="Battle announcement; %1$s is the trainer name and %2$s is the monster name.">أرسل المدرب %1$s ‏%2$s!</string>
+    <string name="battle_wild_radiant_appeared" comment="Battle announcement; %1$s is the wild monster name and radiant is its rare variant.">ظهر %1$s بري متألق!</string>
+    <string name="battle_wild_appeared" comment="Battle announcement; %1$s is the wild monster name.">ظهر %1$s بري!</string>
+</resources>
