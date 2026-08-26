@@ -5,8 +5,8 @@ plugins {
     alias(libs.plugins.hilt)
     alias(libs.plugins.compose.compiler)
     alias(libs.plugins.kotlin.serialization)
-    alias(monster.plugins.firebase.crashlytics)
-    alias(monster.plugins.google.services)
+    alias(libs.plugins.firebase.crashlytics)
+    alias(libs.plugins.google.services)
 }
 
 val appVersionName = providers.gradleProperty("appVersionName").orNull
@@ -92,9 +92,9 @@ tasks.register("validateReleaseVersion") {
 }
 
 dependencies {
-    implementation(platform(monster.firebase.bom))
-    implementation(monster.firebase.crashlytics)
-    implementation(monster.firebase.analytics)
+    implementation(platform(libs.firebase.bom))
+    implementation(libs.firebase.crashlytics)
+    implementation(libs.firebase.analytics)
 
     // These would be Maven dependencies if OpenDialer were published
     // For now, we assume they are included in the settings.gradle.kts
