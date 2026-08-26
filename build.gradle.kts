@@ -6,6 +6,6 @@ plugins {
     alias(libs.plugins.compose.compiler) apply false
     alias(libs.plugins.navigation.safe.args) apply false
     alias(libs.plugins.kotlin.serialization) apply false
-    alias(monster.plugins.firebase.crashlytics) apply false
-    alias(monster.plugins.google.services) apply false
+    alias(libs.plugins.firebase.crashlytics) apply false
+    alias(libs.plugins.google.services) apply false
 }
