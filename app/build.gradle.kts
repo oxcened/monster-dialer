@@ -9,6 +9,22 @@ plugins {
     alias(monster.plugins.google.services)
 }
 
+val appVersionName = providers.gradleProperty("appVersionName").orNull
+    ?: error("appVersionName must be set in gradle.properties")
+val semanticVersion = Regex("""(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)""")
+    .matchEntire(appVersionName)
+    ?: error("appVersionName must use MAJOR.MINOR.PATCH semantic versioning")
+val appVersionCode = semanticVersion.groupValues.drop(1).map(String::toLong).let { (major, minor, patch) ->
+    require(minor <= 999 && patch <= 999) {
+        "appVersionName minor and patch values must be at most 999"
+    }
+    val code = major * 1_000_000 + minor * 1_000 + patch
+    require(code in 1..Int.MAX_VALUE.toLong()) {
+        "appVersionName is too large to derive an Android versionCode"
+    }
+    code.toInt()
+}
+
 android {
     namespace = "dev.alenajam.monsterdialer"
     compileSdk = 37
@@ -17,8 +33,8 @@ android {
         applicationId = "dev.alenajam.monsterdialer"
         minSdk = 24
         targetSdk = 37
-        versionCode = 1
-        versionName = "0.1.0"
+        versionCode = appVersionCode
+        versionName = appVersionName
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
@@ -31,10 +47,48 @@ android {
         targetCompatibility = JavaVersion.VERSION_21
         isCoreLibraryDesugaringEnabled = true
     }
+
+    val keystorePath = providers.environmentVariable("ANDROID_KEYSTORE_PATH").orNull
+    if (keystorePath != null) {
+        signingConfigs {
+            create("release") {
+                storeFile = file(keystorePath)
+                storePassword = providers.environmentVariable("ANDROID_KEYSTORE_PASSWORD").orNull
+                    ?: error("ANDROID_KEYSTORE_PASSWORD must be set when signing a release")
+                keyAlias = providers.environmentVariable("ANDROID_KEY_ALIAS").orNull
+                    ?: error("ANDROID_KEY_ALIAS must be set when signing a release")
+                keyPassword = providers.environmentVariable("ANDROID_KEY_PASSWORD").orNull
+                    ?: error("ANDROID_KEY_PASSWORD must be set when signing a release")
+            }
+        }
+        buildTypes.named("release") {
+            signingConfig = signingConfigs.getByName("release")
+        }
+    }
 }
 
 kotlin {
     jvmToolchain(21)
+}
+
+tasks.register("printReleaseVersion") {
+    group = "release"
+    description = "Prints the semantic version used for release validation."
+    doLast {
+        println(appVersionName)
+    }
+}
+
+tasks.register("validateReleaseVersion") {
+    group = "release"
+    description = "Validates that RELEASE_TAG matches appVersionName."
+    doLast {
+        val releaseTag = providers.environmentVariable("RELEASE_TAG").orNull
+            ?: error("RELEASE_TAG must be set, for example RELEASE_TAG=v$appVersionName")
+        require(releaseTag == "v$appVersionName") {
+            "Release tag $releaseTag does not match appVersionName $appVersionName"
+        }
+    }
 }
 
 dependencies {
