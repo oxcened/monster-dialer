@@ -26,6 +26,7 @@
     <string name="select">Select</string>
     <string name="change">Change</string>
     <string name="contact_chooser_prompt">Choose a contact to assign a character.</string>
+    <string name="contact_chooser_title">Personalize a contact</string>
     <string name="contact_chooser_empty_prompt">Import and enable a pack containing a contact-assignable character first.</string>
     <string name="pack_collection_empty_title">Your collection starts here</string>
     <string name="pack_collection_empty_description">Import a character pack to personalize your call experience.</string>

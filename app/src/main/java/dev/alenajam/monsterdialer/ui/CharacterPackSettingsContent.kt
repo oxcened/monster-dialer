@@ -105,13 +105,18 @@ fun ColumnScope.CharacterPackSettingsContent() {
                 verticalArrangement = Arrangement.spacedBy(16.dp)
             ) {
                 Icon(Icons.Outlined.FolderOpen, null, modifier = Modifier.size(56.dp), tint = MaterialTheme.colorScheme.primary)
-                Text(stringResource(R.string.pack_collection_empty_title), style = MaterialTheme.typography.headlineSmall, textAlign = TextAlign.Center)
-                Text(
-                    stringResource(R.string.pack_collection_empty_description),
-                    style = MaterialTheme.typography.bodyLarge,
-                    textAlign = TextAlign.Center,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant
-                )
+                Column(
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.spacedBy(8.dp)
+                ) {
+                    Text(stringResource(R.string.pack_collection_empty_title), style = MaterialTheme.typography.headlineSmall, textAlign = TextAlign.Center)
+                    Text(
+                        stringResource(R.string.pack_collection_empty_description),
+                        style = MaterialTheme.typography.bodyLarge,
+                        textAlign = TextAlign.Center,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                    )
+                }
                 Button(onClick = importPack) { Text(stringResource(R.string.import_character_pack)) }
                 Text(
                     stringResource(R.string.pack_import_license_notice),
