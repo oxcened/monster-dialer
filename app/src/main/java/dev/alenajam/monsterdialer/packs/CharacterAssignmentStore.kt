@@ -67,7 +67,7 @@ class CharacterAssignmentStore(
     @Synchronized
     fun characterForContact(contactKey: String, type: CharacterType): CharacterReference? {
         val document = read()
-        val normalizedKey = normalizeContactKey(contactKey)
+        val normalizedKey = normalizeContactKeyOrNull(contactKey) ?: return null
         return document.contactsByType[normalizedKey]?.get(type)
             ?: document.contacts[normalizedKey].takeIf { type == CharacterType.Monster }
     }
@@ -160,14 +160,21 @@ class CharacterAssignmentStore(
     }
 
     private fun normalizeContactKey(value: String): String {
+        return requireNotNull(normalizeContactKeyOrNull(value)) { "Contact key is invalid" }
+    }
+
+    /**
+     * Incoming call providers can expose labels such as "Private number" instead of a phone
+     * number. Those values cannot have an assignment and must not crash the in-call UI.
+     */
+    private fun normalizeContactKeyOrNull(value: String): String? {
         val trimmed = value.trim()
         val normalized = buildString {
             trimmed.forEachIndexed { index, character ->
                 if (character.isDigit() || (character == '+' && index == 0)) append(character)
             }
         }
-        require(normalized.isNotBlank() && normalized.length <= MaxContactKeyLength) { "Contact key is invalid" }
-        return normalized
+        return normalized.takeIf { it.isNotBlank() && it.length <= MaxContactKeyLength }
     }
 
     private fun read(): CharacterAssignmentsDocument {
