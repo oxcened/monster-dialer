@@ -47,6 +47,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -136,7 +137,7 @@ fun ColumnScope.CharacterPackSettingsContent() {
                 Column(verticalArrangement = Arrangement.spacedBy(2.dp)) {
                     Text(stringResource(R.string.your_character_packs), style = MaterialTheme.typography.titleMedium)
                     Text(
-                        stringResource(R.plurals.installed_pack_count, packs.size, packs.size),
+                        pluralStringResource(R.plurals.installed_pack_count, packs.size, packs.size),
                         style = MaterialTheme.typography.bodyMedium,
                         color = MaterialTheme.colorScheme.onSurfaceVariant
                     )
@@ -190,7 +191,7 @@ fun ColumnScope.CharacterPackSettingsContent() {
                                 Column(modifier = Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(2.dp)) {
                                     Text(pack.name, style = MaterialTheme.typography.titleMedium)
                                     Text(
-                                        stringResource(R.plurals.pack_character_count, pack.characterCount, pack.characterCount, pack.version),
+                                        pluralStringResource(R.plurals.pack_character_count, pack.characterCount, pack.characterCount, pack.version),
                                         style = MaterialTheme.typography.bodyMedium,
                                         color = MaterialTheme.colorScheme.onSurfaceVariant
                                     )
