@@ -1,2 +1,78 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources>
+    <string name="default_phone_title" comment="Title of the default phone app prompt.">Setează MonsterDialer ca implicit</string>
+    <string name="default_phone_description" comment="Explanation shown below the default-phone prompt.">MonsterDialer poate efectua și primi apeluri doar când este aplicația ta de telefon implicită.</string>
+    <string name="open_source_description" comment="Description of the OpenDialer source-code card in About.">MonsterDialer are la bază OpenDialer. Explorează codul sursă și contribuie pe GitHub.</string>
+    <string name="contribute_monsterdialer_translations" comment="Title of the MonsterDialer translation contribution card.">Contribuie la traducerile MonsterDialer</string>
+    <string name="contribute_monsterdialer_translations_description" comment="Description of the MonsterDialer translation contribution card.">Ajută MonsterDialer să fie disponibil în mai multe limbi.</string>
+    <string name="feature_requests_description" comment="Description of the feature-request card in About.">Propune și votează idei pentru MonsterDialer.</string>
+    <string name="hang_up" comment="Button to end the current phone call.">Închide</string>
+    <string name="settings_character_packs_title" comment="Settings title for managing character packs.">Pachete de personaje</string>
+    <string name="settings_character_packs_description" comment="Settings description for character packs.">Importă și gestionează ilustrații personalizate ale personajelor.</string>
+    <string name="settings_player_character_title" comment="Settings title for the player's battle character.">Personajul jucătorului</string>
+    <string name="settings_player_character_description" comment="Settings description for the player's battle character.">Alege cine te reprezintă în timpul apelurilor.</string>
+    <string name="settings_contact_characters_title" comment="Settings title for assigning characters to contacts.">Personajele contactelor</string>
+    <string name="settings_contact_characters_description" comment="Settings description for assigning characters to contacts.">Atribuie personaje apelanților.</string>
+    <string name="choose_contact" comment="Button that opens the contact picker.">Alege contactul</string>
+    <string name="character_type_trainer" comment="Character category for a human battle character.">Antrenor</string>
+    <string name="character_type_monster" comment="Character category for a creature battle character.">Monstru</string>
+    <string name="built_in_character" comment="Label for a character included with the app.">Personaj inclus</string>
+    <string name="default_character_artwork" comment="%1$s is a character type, such as Trainer or Monster.">Ilustrarea implicită pentru %1$s</string>
+    <string name="character_artwork" comment="%1$s is a character name.">Ilustrarea lui %1$s</string>
+    <string name="no_other_character_options" comment="%1$s is a character type, such as Trainer or Monster.">Nicio altă opțiune pentru %1$s</string>
+    <string name="import_and_enable_character_pack" comment="Empty-state message in the character selector.">Importă și activează un pachet de personaje pentru a adăuga mai multe.</string>
+    <string name="radiant" comment="Adjective for a rare, sparkling character variant.">Radiant</string>
+    <string name="selected" comment="Status label for the currently chosen option.">Selectat</string>
+    <string name="select" comment="Button label to choose an option.">Selectează</string>
+    <string name="change" comment="Button label to change the current selection.">Schimbă</string>
+    <string name="contact_chooser_prompt" comment="Prompt above the contact picker.">Alege un contact căruia să îi atribui un personaj.</string>
+    <string name="contact_chooser_title" comment="Title of the contact-character assignment screen.">Personalizează un contact</string>
+    <string name="contact_chooser_empty_prompt" comment="Empty state when no assignable characters are available.">Mai întâi importă și activează un pachet cu un personaj atribuibil unui contact.</string>
+    <string name="pack_collection_empty_title" comment="Title of the empty character-pack collection screen.">Colecția ta începe aici</string>
+    <string name="pack_collection_empty_description" comment="Description of the empty character-pack collection screen.">Importă un pachet de personaje pentru a-ți personaliza apelurile.</string>
+    <string name="import_character_pack" comment="Button that starts selecting a character-pack file.">Importă pachetul</string>
+    <string name="pack_import_license_notice" comment="Legal notice shown before importing a character pack.">Importă doar ilustrații și sunete create de tine sau pentru care ai licență de utilizare.</string>
+    <string name="your_character_packs" comment="Heading above installed character packs.">Pachetele tale de personaje</string>
+    <plurals name="installed_pack_count" comment="Number of installed character packs. %d is the count.">
+        <item quantity="one">%d instalat</item>
+        <item quantity="few">%d instalate</item>
+        <item quantity="other">%d instalate</item>
+    </plurals>
+    <plurals name="pack_character_count" comment="%1$d is the number of characters; %2$s is the pack version.">
+        <item quantity="one">%1$d personaj · v%2$s</item>
+        <item quantity="few">%1$d personaje · v%2$s</item>
+        <item quantity="other">%1$d personaje · v%2$s</item>
+    </plurals>
+    <string name="import_pack" comment="Short button label to import a selected pack.">Importă</string>
+    <string name="enabled" comment="Status label for an active character pack.">Activat</string>
+    <string name="disabled" comment="Status label for an inactive character pack.">Dezactivat</string>
+    <string name="enable" comment="Button label to activate a character pack.">Activează</string>
+    <string name="disable" comment="Button label to deactivate a character pack.">Dezactivează</string>
+    <string name="remove" comment="Button label to permanently remove a character pack.">Elimină</string>
+    <string name="character_pack_removed" comment="Confirmation after a character pack is removed.">Pachet de personaje eliminat</string>
+    <string name="character_pack_remove_failed" comment="Error when a character pack cannot be removed.">Pachetul de personaje nu a putut fi eliminat</string>
+    <string name="pack_import_failed_title" comment="Title of the character-pack import error dialog.">Pachetul nu a putut fi importat</string>
+    <string name="file_label" comment="%1$s is the selected file name.">Fișier: %1$s</string>
+    <string name="pack_import_report_notice" comment="Explains that an import diagnostic excludes the user's pack contents.">Copiază sau partajează acest raport cu creatorul pachetului. Conține detalii despre eroare, nu conținutul pachetului.</string>
+    <string name="pack_import_diagnostic_label" comment="Label for a failed character-pack import report.">Diagnostic de import al pachetului</string>
+    <string name="copied" comment="Brief confirmation after text is copied.">Copiat</string>
+    <string name="copy_report" comment="Button to copy the import diagnostic.">Copiază raportul</string>
+    <string name="share" comment="Button to share the import diagnostic.">Partajează</string>
+    <string name="close" comment="Button to dismiss a dialog.">Închide</string>
+    <string name="selected_file" comment="Label before the selected file name.">Fișier selectat</string>
+    <string name="share_pack_import_diagnostic" comment="Title of Android's share sheet for an import diagnostic.">Partajează diagnosticul importului</string>
+    <string name="battle_scene_description" comment="Accessibility description for the battle scene image.">Scenă de luptă cu monștri</string>
+    <string name="your_monster" comment="%1$s is the player's monster name.">Monstrul tău: %1$s</string>
+    <string name="radiant_sparkle" comment="Accessibility description for a rare-variant sparkle.">Sclipire radiantă</string>
+    <string name="available_monsters" comment="Heading for the selectable monster roster.">Monștri disponibili</string>
+    <string name="monster_status" comment="%1$s is a monster name.">Starea lui %1$s</string>
+    <string name="opponent_monster" comment="%1$s is the opposing monster name.">Monstrul advers: %1$s</string>
+    <string name="opponent_trainer" comment="%1$s is the opposing trainer name.">Antrenor advers: %1$s</string>
+    <string name="unknown" comment="Fallback label when a value is not known.">Necunoscut</string>
+    <string name="battle_player_send_out" comment="Battle announcement; %1$s is the player's monster name.">Du-te, %1$s!</string>
+    <string name="battle_prompt" comment="Prompt shown to the player during a battle.">Ce vei face?</string>
+    <string name="battle_trainer_challenge" comment="Battle announcement; %1$s is the opposing trainer name.">Antrenorul %1$s vrea să lupte!</string>
+    <string name="battle_trainer_sent_out" comment="Battle announcement; %1$s is the trainer name and %2$s is the monster name.">Antrenorul %1$s îl trimite pe %2$s!</string>
+    <string name="battle_wild_radiant_appeared" comment="Battle announcement; %1$s is the wild monster name and radiant is its rare variant.">A apărut un %1$s sălbatic radiant!</string>
+    <string name="battle_wild_appeared" comment="Battle announcement; %1$s is the wild monster name.">A apărut un %1$s sălbatic!</string>
+</resources>
