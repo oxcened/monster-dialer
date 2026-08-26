@@ -50,7 +50,7 @@ class BattleSequenceCoordinatorTest {
 
     @Test
     fun startingNewBattleCancelsOldSequence() = runTest {
-        val timing = BattleTiming.Instant.copy(characterMillis = 100, introHoldMillis = 1_000)
+        val timing = BattleTiming.Instant.copy(introHoldMillis = 1_000)
         val coordinator = coordinator(this, timing)
         coordinator.start(encounter("old", EncounterType.Trainer))
         runCurrent()

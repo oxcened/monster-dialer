@@ -20,6 +20,7 @@ class BattleSequenceCoordinator(
     val state: StateFlow<BattleUiState> = mutableState.asStateFlow()
 
     private val animationCompletions = Channel<AnimationCompletion>(Channel.UNLIMITED)
+    private val dialogueCompletions = Channel<DialogueCompletion>(Channel.UNLIMITED)
     private var sequenceJob: Job? = null
     private var nextRunId = 0L
 
@@ -38,6 +39,10 @@ class BattleSequenceCoordinator(
 
     fun animationCompleted(runId: Long, phase: BattlePhase) {
         animationCompletions.trySend(AnimationCompletion(runId, phase))
+    }
+
+    fun dialogueCompleted(runId: Long, dialogueId: Long) {
+        dialogueCompletions.trySend(DialogueCompletion(runId, dialogueId))
     }
 
     private suspend fun runSequence(runId: Long, encounter: BattleEncounter) {
@@ -116,11 +121,13 @@ class BattleSequenceCoordinator(
     }
 
     private suspend fun typeMessage(runId: Long, text: String) {
-        update(runId) { copy(message = "", isTyping = true) }
-        text.forEachIndexed { index, _ ->
-            update(runId) { copy(message = text.take(index + 1)) }
-            pause(timing.characterMillis)
+        val dialogueId = mutableState.value.dialogueId + 1
+        update(runId) { copy(message = text, dialogueId = dialogueId, isTyping = true) }
+        if (timing.characterMillis == 0L && timing.dialoguePageHoldMillis == 0L) {
+            update(runId) { copy(isTyping = false) }
+            return
         }
+        awaitDialogue(runId, dialogueId)
         update(runId) { copy(isTyping = false) }
     }
 
@@ -138,6 +145,13 @@ class BattleSequenceCoordinator(
         }
     }
 
+    private suspend fun awaitDialogue(runId: Long, dialogueId: Long) {
+        while (true) {
+            val completion = dialogueCompletions.receive()
+            if (completion.runId == runId && completion.dialogueId == dialogueId) return
+        }
+    }
+
     private fun durationFor(phase: BattlePhase) = when (phase) {
         BattlePhase.TrainersEntering -> timing.trainerEnterMillis
         BattlePhase.TrainersColorizing -> timing.colorizeMillis
@@ -146,4 +160,5 @@ class BattleSequenceCoordinator(
     }
 
     private data class AnimationCompletion(val runId: Long, val phase: BattlePhase)
+    private data class DialogueCompletion(val runId: Long, val dialogueId: Long)
 }

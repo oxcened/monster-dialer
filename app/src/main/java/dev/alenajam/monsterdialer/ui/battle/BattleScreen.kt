@@ -8,6 +8,7 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.fillMaxSize
@@ -26,6 +27,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
@@ -41,6 +43,7 @@ import androidx.compose.ui.graphics.ColorMatrix
 import androidx.compose.ui.graphics.FilterQuality
 import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.graphics.asImageBitmap
+import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalResources
@@ -54,6 +57,9 @@ import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.liveRegion
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.text.rememberTextMeasurer
+import androidx.compose.ui.unit.Constraints
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.unit.IntOffset
@@ -93,6 +99,7 @@ fun BattleScreen(
             state = state,
             timing = timing,
             onAnimationCompleted = coordinator::animationCompleted,
+            onDialogueCompleted = coordinator::dialogueCompleted,
             modifier = Modifier
                 .fillMaxSize()
                 .padding(6.dp)
@@ -106,7 +113,8 @@ fun BattleScene(
     state: BattleUiState,
     modifier: Modifier = Modifier,
     timing: BattleTiming = BattleTiming(),
-    onAnimationCompleted: (Long, BattlePhase) -> Unit = { _, _ -> }
+    onAnimationCompleted: (Long, BattlePhase) -> Unit = { _, _ -> },
+    onDialogueCompleted: (Long, Long) -> Unit = { _, _ -> }
 ) {
     val encounter = state.encounter ?: return
     val configuration = LocalConfiguration.current
@@ -194,7 +202,10 @@ fun BattleScene(
         )
         BattleDialogue(
             message = state.message,
+            dialogueId = state.dialogueId,
             isTyping = state.isTyping,
+            timing = timing,
+            onCompleted = { onDialogueCompleted(state.runId, state.dialogueId) },
             modifier = Modifier
                 .align(Alignment.BottomCenter)
                 .padding(8.dp)
@@ -337,9 +348,18 @@ internal fun BattlePanelView(
 }
 
 @Composable
-private fun BattleDialogue(message: String, isTyping: Boolean, modifier: Modifier = Modifier) {
+private fun BattleDialogue(
+    message: String,
+    dialogueId: Long,
+    isTyping: Boolean,
+    timing: BattleTiming,
+    onCompleted: () -> Unit,
+    modifier: Modifier = Modifier
+) {
     val font = battleFontFamily()
-    Box(
+    val style = TextStyle(fontFamily = font, fontSize = 18.sp, lineHeight = 21.sp, color = Color.Black)
+    val textMeasurer = rememberTextMeasurer()
+    BoxWithConstraints(
         modifier = modifier
             .fillMaxWidth(0.95f)
             .height(104.dp)
@@ -352,12 +372,65 @@ private fun BattleDialogue(message: String, isTyping: Boolean, modifier: Modifie
             .background(Color.White)
             .semantics { if (!isTyping) liveRegion = LiveRegionMode.Polite }
     ) {
+        val textWidth = with(LocalDensity.current) { (maxWidth - 10.dp).roundToPx() }
+        val pages = remember(message, textWidth) {
+            measuredDialoguePages(message, textMeasurer, style, textWidth)
+        }
+        var displayedMessage by remember(dialogueId) { mutableStateOf("") }
+        LaunchedEffect(dialogueId, pages) {
+            if (message.isBlank()) {
+                displayedMessage = ""
+                return@LaunchedEffect
+            }
+            pages.forEachIndexed { pageIndex, page ->
+                page.indices.forEach { index ->
+                    displayedMessage = page.take(index + 1)
+                    delay(timing.characterMillis)
+                }
+                if (pageIndex < pages.lastIndex) delay(timing.dialoguePageHoldMillis)
+            }
+            onCompleted()
+        }
         androidx.compose.material3.Text(
-            text = message,
-            style = TextStyle(fontFamily = font, fontSize = 18.sp, lineHeight = 21.sp, color = Color.Black),
+            text = displayedMessage,
+            style = style,
+            maxLines = 3,
+            overflow = TextOverflow.Clip,
             modifier = Modifier.padding(5.dp)
         )
     }
+}
+
+private fun measuredDialoguePages(
+    text: String,
+    textMeasurer: androidx.compose.ui.text.TextMeasurer,
+    style: TextStyle,
+    maxWidth: Int
+): List<String> {
+    if (text.isBlank()) return emptyList()
+    fun fits(page: String) = !textMeasurer.measure(
+        text = AnnotatedString(page),
+        style = style,
+        overflow = TextOverflow.Clip,
+        maxLines = 3,
+        constraints = Constraints(maxWidth = maxWidth)
+    ).hasVisualOverflow
+
+    val pages = mutableListOf<String>()
+    var remaining = text.trim()
+    while (remaining.isNotEmpty()) {
+        if (fits(remaining)) {
+            pages += remaining
+            break
+        }
+        var end = remaining.length
+        while (end > 1 && !fits(remaining.substring(0, end))) end--
+        val wordBoundary = remaining.lastIndexOfAny(charArrayOf(' ', '\n', '\t'), end - 1)
+        val pageEnd = if (wordBoundary > 0) wordBoundary else end
+        pages += remaining.substring(0, pageEnd).trimEnd()
+        remaining = remaining.substring(if (wordBoundary > 0) wordBoundary + 1 else pageEnd).trimStart()
+    }
+    return pages
 }
 
 private fun enemySprite(state: BattleUiState): BattleVisualAsset {
