@@ -12,6 +12,14 @@ dependencyResolutionManagement {
         google()
         mavenCentral()
     }
+    versionCatalogs {
+        create("libs") {
+            from(files("../opendialer/gradle/libs.versions.toml"))
+        }
+        create("monster") {
+            from(files("gradle/monster.versions.toml"))
+        }
+    }
 }
 
 rootProject.name = "MonsterDialer"
