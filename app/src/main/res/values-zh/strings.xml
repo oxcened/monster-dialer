@@ -1,2 +1,74 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources>
+    <string name="default_phone_title" comment="Title of the default phone app prompt.">将 MonsterDialer 设为默认应用</string>
+    <string name="default_phone_description" comment="Explanation shown below the default-phone prompt.">只有将 MonsterDialer 设为默认电话应用后，才能拨打和接听电话。</string>
+    <string name="open_source_description" comment="Description of the OpenDialer source-code card in About.">MonsterDialer 基于 OpenDialer。浏览源代码并在 GitHub 上参与贡献。</string>
+    <string name="contribute_monsterdialer_translations" comment="Title of the MonsterDialer translation contribution card.">参与 MonsterDialer 翻译</string>
+    <string name="contribute_monsterdialer_translations_description" comment="Description of the MonsterDialer translation contribution card.">帮助 MonsterDialer 支持更多语言。</string>
+    <string name="feature_requests_description" comment="Description of the feature-request card in About.">为 MonsterDialer 提出建议并投票。</string>
+    <string name="hang_up" comment="Button to end the current phone call.">挂断</string>
+    <string name="settings_character_packs_title" comment="Settings title for managing character packs.">角色包</string>
+    <string name="settings_character_packs_description" comment="Settings description for character packs.">导入和管理自定义角色插图。</string>
+    <string name="settings_player_character_title" comment="Settings title for the player's battle character.">玩家角色</string>
+    <string name="settings_player_character_description" comment="Settings description for the player's battle character.">选择通话时代表你的角色。</string>
+    <string name="settings_contact_characters_title" comment="Settings title for assigning characters to contacts.">联系人角色</string>
+    <string name="settings_contact_characters_description" comment="Settings description for assigning characters to contacts.">为来电者分配角色。</string>
+    <string name="choose_contact" comment="Button that opens the contact picker.">选择联系人</string>
+    <string name="character_type_trainer" comment="Character category for a human battle character.">训练师</string>
+    <string name="character_type_monster" comment="Character category for a creature battle character.">怪物</string>
+    <string name="built_in_character" comment="Label for a character included with the app.">内置角色</string>
+    <string name="default_character_artwork" comment="%1$s is a character type, such as Trainer or Monster.">默认 %1$s 插图</string>
+    <string name="character_artwork" comment="%1$s is a character name.">%1$s 插图</string>
+    <string name="no_other_character_options" comment="%1$s is a character type, such as Trainer or Monster.">没有其他 %1$s 选项</string>
+    <string name="import_and_enable_character_pack" comment="Empty-state message in the character selector.">导入并启用角色包以添加更多角色。</string>
+    <string name="radiant" comment="Adjective for a rare, sparkling character variant.">闪耀</string>
+    <string name="selected" comment="Status label for the currently chosen option.">已选择</string>
+    <string name="select" comment="Button label to choose an option.">选择</string>
+    <string name="change" comment="Button label to change the current selection.">更改</string>
+    <string name="contact_chooser_prompt" comment="Prompt above the contact picker.">选择要分配角色的联系人。</string>
+    <string name="contact_chooser_title" comment="Title of the contact-character assignment screen.">个性化联系人</string>
+    <string name="contact_chooser_empty_prompt" comment="Empty state when no assignable characters are available.">请先导入并启用含有可分配联系人角色的角色包。</string>
+    <string name="pack_collection_empty_title" comment="Title of the empty character-pack collection screen.">你的收藏从这里开始</string>
+    <string name="pack_collection_empty_description" comment="Description of the empty character-pack collection screen.">导入角色包以个性化通话体验。</string>
+    <string name="import_character_pack" comment="Button that starts selecting a character-pack file.">导入角色包</string>
+    <string name="pack_import_license_notice" comment="Legal notice shown before importing a character pack.">只能导入你创建的或获授权使用的插图和声音。</string>
+    <string name="your_character_packs" comment="Heading above installed character packs.">你的角色包</string>
+    <plurals name="installed_pack_count" comment="Number of installed character packs. %d is the count.">
+        <item quantity="other">已安装 %d 个</item>
+    </plurals>
+    <plurals name="pack_character_count" comment="%1$d is the number of characters; %2$s is the pack version.">
+        <item quantity="other">%1$d 个角色 · v%2$s</item>
+    </plurals>
+    <string name="import_pack" comment="Short button label to import a selected pack.">导入</string>
+    <string name="enabled" comment="Status label for an active character pack.">已启用</string>
+    <string name="disabled" comment="Status label for an inactive character pack.">已停用</string>
+    <string name="enable" comment="Button label to activate a character pack.">启用</string>
+    <string name="disable" comment="Button label to deactivate a character pack.">停用</string>
+    <string name="remove" comment="Button label to permanently remove a character pack.">移除</string>
+    <string name="character_pack_removed" comment="Confirmation after a character pack is removed.">角色包已移除</string>
+    <string name="character_pack_remove_failed" comment="Error when a character pack cannot be removed.">无法移除角色包</string>
+    <string name="pack_import_failed_title" comment="Title of the character-pack import error dialog.">无法导入角色包</string>
+    <string name="file_label" comment="%1$s is the selected file name.">文件：%1$s</string>
+    <string name="pack_import_report_notice" comment="Explains that an import diagnostic excludes the user's pack contents.">请将此报告复制或分享给角色包创建者。其中包含错误详情，不含角色包内容。</string>
+    <string name="pack_import_diagnostic_label" comment="Label for a failed character-pack import report.">角色包导入诊断</string>
+    <string name="copied" comment="Brief confirmation after text is copied.">已复制</string>
+    <string name="copy_report" comment="Button to copy the import diagnostic.">复制报告</string>
+    <string name="share" comment="Button to share the import diagnostic.">分享</string>
+    <string name="close" comment="Button to dismiss a dialog.">关闭</string>
+    <string name="selected_file" comment="Label before the selected file name.">所选文件</string>
+    <string name="share_pack_import_diagnostic" comment="Title of Android's share sheet for an import diagnostic.">分享导入诊断</string>
+    <string name="battle_scene_description" comment="Accessibility description for the battle scene image.">怪物对战场景</string>
+    <string name="your_monster" comment="%1$s is the player's monster name.">你的 %1$s</string>
+    <string name="radiant_sparkle" comment="Accessibility description for a rare-variant sparkle.">闪耀光芒</string>
+    <string name="available_monsters" comment="Heading for the selectable monster roster.">可用怪物</string>
+    <string name="monster_status" comment="%1$s is a monster name.">%1$s 状态</string>
+    <string name="opponent_monster" comment="%1$s is the opposing monster name.">对手怪物：%1$s</string>
+    <string name="opponent_trainer" comment="%1$s is the opposing trainer name.">对手训练师：%1$s</string>
+    <string name="unknown" comment="Fallback label when a value is not known.">未知</string>
+    <string name="battle_player_send_out" comment="Battle announcement; %1$s is the player's monster name.">去吧，%1$s！</string>
+    <string name="battle_prompt" comment="Prompt shown to the player during a battle.">你要做什么？</string>
+    <string name="battle_trainer_challenge" comment="Battle announcement; %1$s is the opposing trainer name.">训练师 %1$s 要对战！</string>
+    <string name="battle_trainer_sent_out" comment="Battle announcement; %1$s is the trainer name and %2$s is the monster name.">训练师 %1$s 派出了 %2$s！</string>
+    <string name="battle_wild_radiant_appeared" comment="Battle announcement; %1$s is the wild monster name and radiant is its rare variant.">闪耀的野生 %1$s 出现了！</string>
+    <string name="battle_wild_appeared" comment="Battle announcement; %1$s is the wild monster name.">野生 %1$s 出现了！</string>
+</resources>
