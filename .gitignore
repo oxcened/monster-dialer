@@ -12,3 +12,6 @@ local.properties
 
 # OS files
 .DS_Store
+
+# Local agent artifacts
+.artifacts/
