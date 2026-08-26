@@ -5,6 +5,7 @@ import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.LinearEasing
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
@@ -30,6 +31,8 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.clipToBounds
 import androidx.compose.ui.graphics.Color
@@ -231,27 +234,37 @@ private fun BattleSprite(
 
 @Composable
 private fun Radiance(modifier: Modifier = Modifier) {
-    val context = LocalContext.current
     var frame by remember { mutableIntStateOf(0) }
+    val description = stringResource(R.string.radiant_sparkle)
     LaunchedEffect(Unit) {
         repeat(48) {
             frame = it
             delay(10)
         }
     }
-    val resource = remember(frame) {
-        context.resources.getIdentifier("battle_radiant_sparkles_$frame", "drawable", context.packageName)
+    Canvas(modifier = modifier.semantics { contentDescription = description }) {
+        val unit = size.minDimension / 58f
+        val center = Offset(size.width / 2f, size.height / 2f)
+        val colors = listOf(Color(0xFFFFF03D), Color(0xFFFFC928), Color(0xFFFFF9B0))
+        repeat(6) { index ->
+            val progress = ((frame + index * 8) % 48) / 47f
+            val angle = index * 1.0472f + progress * 1.8f
+            val distance = unit * (4f + progress * 24f)
+            val sparkleCenter = Offset(
+                x = center.x + kotlin.math.cos(angle) * distance,
+                y = center.y + kotlin.math.sin(angle) * distance
+            )
+            val alpha = if (progress < 0.18f) progress / 0.18f else (1f - progress) / 0.82f
+            val sparkleUnit = unit * (0.65f + (1f - progress) * 1.15f)
+            drawCrystalSparkle(sparkleCenter, sparkleUnit, colors[index % colors.size].copy(alpha = alpha))
+        }
     }
-    if (resource != 0) {
-        Image(
-            bitmap = pixelBitmapResource(
-                BattleVisualAsset.AppDrawable(resource, "battle_radiant_sparkles_$frame")
-            ),
-            contentDescription = stringResource(R.string.radiant_sparkle),
-            filterQuality = FilterQuality.None,
-            modifier = modifier
-        )
-    }
+}
+
+private fun DrawScope.drawCrystalSparkle(center: Offset, unit: Float, color: Color) {
+    drawRect(color, topLeft = Offset(center.x - unit, center.y - unit * 3f), size = androidx.compose.ui.geometry.Size(unit * 2f, unit * 6f))
+    drawRect(color, topLeft = Offset(center.x - unit * 3f, center.y - unit), size = androidx.compose.ui.geometry.Size(unit * 6f, unit * 2f))
+    drawRect(color.copy(alpha = color.alpha * 0.7f), topLeft = Offset(center.x - unit * 2f, center.y - unit * 2f), size = androidx.compose.ui.geometry.Size(unit * 4f, unit * 4f))
 }
 
 @Composable
