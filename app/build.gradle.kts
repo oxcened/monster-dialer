@@ -5,6 +5,8 @@ plugins {
     alias(libs.plugins.hilt)
     alias(libs.plugins.compose.compiler)
     alias(libs.plugins.kotlin.serialization)
+    alias(monster.plugins.firebase.crashlytics)
+    alias(monster.plugins.google.services)
 }
 
 android {
@@ -36,6 +38,10 @@ kotlin {
 }
 
 dependencies {
+    implementation(platform(monster.firebase.bom))
+    implementation(monster.firebase.crashlytics)
+    implementation(monster.firebase.analytics)
+
     // These would be Maven dependencies if OpenDialer were published
     // For now, we assume they are included in the settings.gradle.kts
     implementation(project(":core:common"))
