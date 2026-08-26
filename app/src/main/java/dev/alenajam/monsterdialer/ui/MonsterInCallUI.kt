@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBarsPadding
@@ -22,6 +23,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
@@ -141,6 +143,14 @@ class MonsterInCallUI @Inject constructor() : InCallUI {
                         collapsedBottomPadding.value = measuredBottomPadding
                     }
                 }
+                val configuration = LocalConfiguration.current
+                val isCompactLayout = configuration.screenHeightDp <= 720 ||
+                    configuration.screenWidthDp <= 360
+                val callerDetailsBottomPadding = if (isCompactLayout) {
+                    0.dp
+                } else {
+                    12.dp
+                }
 
                 Column(
                     modifier = Modifier
@@ -163,15 +173,22 @@ class MonsterInCallUI @Inject constructor() : InCallUI {
                             durationMillis = durationMillis,
                             callerImageUri = uiState.callerImageUri,
                             showCallerImage = false,
+                            useCompactCallerText = isCompactLayout,
                             modifier = Modifier
                                 .statusBarsPadding()
-                                .padding(start = 16.dp, top = 32.dp, end = 16.dp, bottom = 12.dp)
+                                .padding(
+                                    start = 16.dp,
+                                    top = 32.dp,
+                                    end = 16.dp,
+                                    bottom = callerDetailsBottomPadding,
+                                )
                                 .align(Alignment.CenterHorizontally)
                         )
 
                         Box(
                             modifier = Modifier
-                                .fillMaxSize()
+                                .fillMaxWidth()
+                                .weight(1f)
                                 .padding(horizontal = 4.dp, vertical = 4.dp),
                             contentAlignment = Alignment.Center
                         ) {

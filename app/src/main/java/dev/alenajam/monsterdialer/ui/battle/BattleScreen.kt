@@ -9,6 +9,7 @@ import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxWithConstraints
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.fillMaxSize
@@ -37,12 +38,14 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.clipToBounds
+import androidx.compose.ui.graphics.TransformOrigin
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.ColorMatrix
 import androidx.compose.ui.graphics.FilterQuality
 import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.graphics.asImageBitmap
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
@@ -161,18 +164,28 @@ fun BattleScene(
 
     val grayscale = ColorFilter.colorMatrix(ColorMatrix().apply { setToSaturation(saturation.value) })
     val sceneDescription = stringResource(R.string.battle_scene_description)
-    Box(
+    BoxWithConstraints(
         modifier = modifier
             .fillMaxSize()
             .background(Color(0xFFFFFBF2))
             .clipToBounds()
             .semantics { contentDescription = sceneDescription }
     ) {
+        val availableScale = minOf(1f, maxWidth / 360.dp, maxHeight / 320.dp)
+        val scale = if (availableScale < 1f) availableScale * 0.95f else 1f
+        val dialogueHeight = 104.dp
         BattlePanelView(
             monster = encounter.enemy,
             panel = state.enemyPanel,
             isEnemy = true,
-            modifier = Modifier.align(Alignment.TopStart).padding(top = 28.dp, start = 12.dp)
+            modifier = Modifier
+                .align(Alignment.TopStart)
+                .padding(top = 28.dp, start = 12.dp)
+                .graphicsLayer {
+                    scaleX = scale
+                    scaleY = scale
+                    transformOrigin = TransformOrigin(0f, 0f)
+                }
         )
         BattleSprite(
             sprite = enemySprite(state),
@@ -183,33 +196,63 @@ fun BattleScene(
                 .align(Alignment.TopEnd)
                 .padding(top = 24.dp, end = 24.dp)
                 .offset { IntOffset(enemyOffset.value.roundToInt(), 0) }
+                .graphicsLayer {
+                    scaleX = scale
+                    scaleY = scale
+                    transformOrigin = TransformOrigin(1f, 0f)
+                }
         )
-        BattleSprite(
-            sprite = playerSprite(state),
-            description = stringResource(R.string.your_monster, encounter.player.name),
-            colorFilter = if (state.phase <= BattlePhase.TrainersColorizing) grayscale else null,
-            radiant = state.showPlayerRadiance,
-            modifier = Modifier
-                .align(Alignment.CenterStart)
-                .padding(start = 28.dp, top = 28.dp)
-                .offset { IntOffset(playerOffset.value.roundToInt(), 0) }
-        )
-        BattlePanelView(
-            monster = encounter.player,
-            panel = state.playerPanel,
-            isEnemy = false,
-            modifier = Modifier.align(Alignment.CenterEnd).padding(end = 12.dp, top = 52.dp)
-        )
-        BattleDialogue(
-            message = state.message,
-            dialogueId = state.dialogueId,
-            isTyping = state.isTyping,
-            timing = timing,
-            onCompleted = { onDialogueCompleted(state.runId, state.dialogueId) },
+        Column(
             modifier = Modifier
                 .align(Alignment.BottomCenter)
-                .padding(8.dp)
-        )
+                .fillMaxWidth(),
+            horizontalAlignment = Alignment.CenterHorizontally,
+        ) {
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(116.dp * scale),
+            ) {
+                BattleSprite(
+                    sprite = playerSprite(state),
+                    description = stringResource(R.string.your_monster, encounter.player.name),
+                    colorFilter = if (state.phase <= BattlePhase.TrainersColorizing) grayscale else null,
+                    radiant = state.showPlayerRadiance,
+                    modifier = Modifier
+                        .align(Alignment.BottomStart)
+                        .padding(start = 28.dp)
+                        .offset { IntOffset(playerOffset.value.roundToInt(), 0) }
+                        .graphicsLayer {
+                            scaleX = scale
+                            scaleY = scale
+                            transformOrigin = TransformOrigin(0f, 1f)
+                        }
+                )
+                BattlePanelView(
+                    monster = encounter.player,
+                    panel = state.playerPanel,
+                    isEnemy = false,
+                    modifier = Modifier
+                        .align(Alignment.BottomEnd)
+                        .padding(end = 12.dp)
+                        .graphicsLayer {
+                            scaleX = scale
+                            scaleY = scale
+                            transformOrigin = TransformOrigin(1f, 1f)
+                        }
+                )
+            }
+            BattleDialogue(
+                message = state.message,
+                dialogueId = state.dialogueId,
+                isTyping = state.isTyping,
+                timing = timing,
+                onCompleted = { onDialogueCompleted(state.runId, state.dialogueId) },
+                height = dialogueHeight * scale,
+                textScale = scale,
+                modifier = Modifier.padding(start = 8.dp, end = 8.dp, bottom = 8.dp)
+            )
+        }
     }
 }
 
@@ -354,15 +397,22 @@ private fun BattleDialogue(
     isTyping: Boolean,
     timing: BattleTiming,
     onCompleted: () -> Unit,
+    height: androidx.compose.ui.unit.Dp = 104.dp,
+    textScale: Float = 1f,
     modifier: Modifier = Modifier
 ) {
     val font = battleFontFamily()
-    val style = TextStyle(fontFamily = font, fontSize = 18.sp, lineHeight = 21.sp, color = Color.Black)
+    val style = TextStyle(
+        fontFamily = font,
+        fontSize = 18.sp * textScale,
+        lineHeight = 21.sp * textScale,
+        color = Color.Black,
+    )
     val textMeasurer = rememberTextMeasurer()
     BoxWithConstraints(
-        modifier = modifier
-            .fillMaxWidth(0.95f)
-            .height(104.dp)
+            modifier = modifier
+                .fillMaxWidth(0.95f)
+            .height(height)
             .background(Color.Black)
             .padding(2.dp)
             .background(Color.White)
