@@ -4,6 +4,8 @@ MonsterDialer is an open-source Android phone app that turns calls into a retro 
 
 MonsterDialer is built on [OpenDialer](https://github.com/oxcened/opendialer) and must be selected as the device's default phone app to make and receive calls.
 
+[Join our community on Discord](https://discord.gg/hKXzFFMTFN)
+
 ## Features
 
 - Phone, contacts, and call-history features provided by OpenDialer
