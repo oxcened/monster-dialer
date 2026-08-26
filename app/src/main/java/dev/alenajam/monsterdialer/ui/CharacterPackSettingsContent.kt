@@ -71,6 +71,8 @@ fun ColumnScope.CharacterPackSettingsContent() {
     var message by remember { mutableStateOf<String?>(null) }
     var importDiagnostic by remember { mutableStateOf<CharacterPackImportDiagnostic?>(null) }
     val scope = rememberCoroutineScope()
+    val characterPackRemoved = stringResource(R.string.character_pack_removed)
+    val characterPackRemoveFailed = stringResource(R.string.character_pack_remove_failed)
     val picker = rememberLauncherForActivityResult(ActivityResultContracts.OpenDocument()) { uri ->
         if (uri == null) return@rememberLauncherForActivityResult
         val fileName = context.displayNameFor(uri)
@@ -233,8 +235,8 @@ fun ColumnScope.CharacterPackSettingsContent() {
                                         }
                                         packs = catalog.list()
                                         message = result.fold(
-                                            onSuccess = { context.getString(R.string.character_pack_removed) },
-                                            onFailure = { it.message ?: context.getString(R.string.character_pack_remove_failed) }
+                                            onSuccess = { characterPackRemoved },
+                                            onFailure = { it.message ?: characterPackRemoveFailed }
                                         )
                                     }
                                 }) { Text(stringResource(R.string.remove)) }
@@ -253,6 +255,7 @@ private fun CharacterPackImportFailureDialog(
     onDismiss: () -> Unit
 ) {
     val context = LocalContext.current
+    val diagnosticLabel = stringResource(R.string.pack_import_diagnostic_label)
     var copied by remember(diagnostic.report) { mutableStateOf(false) }
     AlertDialog(
         onDismissRequest = onDismiss,
@@ -294,7 +297,7 @@ private fun CharacterPackImportFailureDialog(
         },
         confirmButton = {
             Button(onClick = {
-                context.copyToClipboard(context.getString(R.string.pack_import_diagnostic_label), diagnostic.report)
+                context.copyToClipboard(diagnosticLabel, diagnostic.report)
                 copied = true
             }) {
                 Icon(Icons.Outlined.ContentCopy, contentDescription = null, modifier = Modifier.size(18.dp))

@@ -40,6 +40,7 @@ import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalResources
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalInspectionMode
@@ -67,10 +68,10 @@ fun BattleScreen(
     timing: BattleTiming = BattleTiming()
 ) {
     val scope = rememberCoroutineScope()
-    val context = LocalContext.current
-    val coordinator = remember(scope, timing, context) {
+    val resources = LocalResources.current
+    val coordinator = remember(scope, timing, resources) {
         BattleSequenceCoordinator(scope, timing, string = { resource, arguments ->
-            context.getString(resource, *arguments)
+            resources.getString(resource, *arguments)
         })
     }
     val state by coordinator.state.collectAsState()
@@ -104,7 +105,6 @@ fun BattleScene(
     onAnimationCompleted: (Long, BattlePhase) -> Unit = { _, _ -> }
 ) {
     val encounter = state.encounter ?: return
-    val context = LocalContext.current
     val configuration = LocalConfiguration.current
     val density = LocalDensity.current
     val entranceDistancePx = with(density) { configuration.screenWidthDp.dp.toPx() }
@@ -148,12 +148,13 @@ fun BattleScene(
     }
 
     val grayscale = ColorFilter.colorMatrix(ColorMatrix().apply { setToSaturation(saturation.value) })
+    val sceneDescription = stringResource(R.string.battle_scene_description)
     Box(
         modifier = modifier
             .fillMaxSize()
             .background(Color(0xFFFFFBF2))
             .clipToBounds()
-            .semantics { contentDescription = context.getString(R.string.battle_scene_description) }
+            .semantics { contentDescription = sceneDescription }
     ) {
         BattlePanelView(
             monster = encounter.enemy,
