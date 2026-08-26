@@ -237,7 +237,7 @@ class CharacterPackArchiveReaderTest {
 
         store.setPlayer(player)
         store.assignContact("tel:+390000000", contact, label = "Alex")
-        store.setSelectedContact("Alex", listOf("tel:+390000000"))
+        store.setSelectedContact("Alex", listOf("tel:+390000000"), contactId = 42)
 
         val restored = CharacterAssignmentStore(storage)
         assertEquals(player, restored.player())
@@ -245,9 +245,20 @@ class CharacterPackArchiveReaderTest {
         assertEquals("Alex", restored.contactAssignments().single().label)
         assertEquals("Alex", restored.selectedContact()?.label)
         assertEquals(listOf("390000000"), restored.selectedContact()?.contactKeys)
+        assertEquals(42, restored.selectedContact()?.contactId)
 
         restored.assignContact("tel:+390000000", null)
         assertEquals(null, restored.characterForContact("tel:+390000000"))
+    }
+
+    @Test
+    fun selectedContactCanBeCleared() {
+        val store = CharacterAssignmentStore(temporaryFolder.newFolder("selected-contact"))
+        store.setSelectedContact("Alex", listOf("+390000000"), contactId = 42)
+
+        store.clearSelectedContact()
+
+        assertEquals(null, store.selectedContact())
     }
 
     @Test

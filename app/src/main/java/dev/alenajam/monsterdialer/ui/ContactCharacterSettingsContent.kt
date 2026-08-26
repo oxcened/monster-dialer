@@ -1,6 +1,8 @@
 package dev.alenajam.monsterdialer.ui
 
 import android.provider.ContactsContract
+import android.content.ContentUris
+import android.net.Uri
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -50,12 +52,13 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.LaunchedEffect
 import java.io.File
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-private data class PickedContact(val id: String, val name: String, val numbers: List<String>)
+private data class PickedContact(val name: String, val numbers: List<String>)
 
 @Composable
 fun ColumnScope.ContactCharacterSettingsContent() {
@@ -69,35 +72,47 @@ fun ColumnScope.ContactCharacterSettingsContent() {
     val monsters = remember(root) {
         repository.charactersAssignableTo(CharacterAssignmentTarget.Contact, CharacterType.Monster)
     }
-    val restoredContact = remember(root) { assignments.selectedContact() }
     var contact by remember {
-        mutableStateOf(restoredContact?.let { PickedContact("saved:${it.contactKeys.first()}", it.label, it.contactKeys) })
+        mutableStateOf<PickedContact?>(null)
     }
     var assignedTrainer by remember {
-        mutableStateOf(restoredContact?.contactKeys?.firstNotNullOfOrNull {
-            assignments.characterForContact(it, CharacterType.Trainer)
-        })
+        mutableStateOf<CharacterReference?>(null)
     }
     var assignedMonster by remember {
-        mutableStateOf(restoredContact?.contactKeys?.firstNotNullOfOrNull {
-            assignments.characterForContact(it, CharacterType.Monster)
-        })
+        mutableStateOf<CharacterReference?>(null)
     }
     val lifecycleOwner = LocalLifecycleOwner.current
     val navigator = LocalSettingsSubpageNavigator.current
     val scope = rememberCoroutineScope()
+
+    fun restoreSelectedContact() {
+        scope.launch {
+            val restored = withContext(Dispatchers.IO) { assignments.selectedContact() }
+            val exists = restored == null || withContext(Dispatchers.IO) {
+                contactExists(context, restored)
+            }
+            if (!exists) {
+                withContext(Dispatchers.IO) { assignments.clearSelectedContact() }
+                contact = null
+                assignedTrainer = null
+                assignedMonster = null
+                return@launch
+            }
+            contact = restored?.let { PickedContact(it.label, it.contactKeys) }
+            assignedTrainer = restored?.contactKeys?.firstNotNullOfOrNull {
+                assignments.characterForContact(it, CharacterType.Trainer)
+            }
+            assignedMonster = restored?.contactKeys?.firstNotNullOfOrNull {
+                assignments.characterForContact(it, CharacterType.Monster)
+            }
+        }
+    }
+
+    LaunchedEffect(assignments) { restoreSelectedContact() }
     DisposableEffect(lifecycleOwner, assignments) {
         val observer = LifecycleEventObserver { _, event ->
             if (event == Lifecycle.Event.ON_RESUME) {
-                assignments.selectedContact()?.let { restored ->
-                    contact = PickedContact("saved:${restored.contactKeys.first()}", restored.label, restored.contactKeys)
-                    assignedTrainer = restored.contactKeys.firstNotNullOfOrNull {
-                        assignments.characterForContact(it, CharacterType.Trainer)
-                    }
-                    assignedMonster = restored.contactKeys.firstNotNullOfOrNull {
-                        assignments.characterForContact(it, CharacterType.Monster)
-                    }
-                }
+                restoreSelectedContact()
             }
         }
         lifecycleOwner.lifecycle.addObserver(observer)
@@ -323,6 +338,31 @@ private fun readContactNumbers(context: android.content.Context, contactId: Int,
     return (numbers + selectedNumber).distinct()
 }
 
+private fun contactExists(context: android.content.Context, contact: dev.alenajam.monsterdialer.packs.SelectedContact): Boolean {
+    return try {
+        contact.contactId?.let { contactId ->
+            context.contentResolver.query(
+                ContentUris.withAppendedId(ContactsContract.Contacts.CONTENT_URI, contactId.toLong()),
+                arrayOf(ContactsContract.Contacts._ID),
+                null,
+                null,
+                null
+            )?.use { it.moveToFirst() } ?: false
+        } ?: contact.contactKeys.any { number ->
+            context.contentResolver.query(
+                Uri.withAppendedPath(ContactsContract.PhoneLookup.CONTENT_FILTER_URI, Uri.encode(number)),
+                arrayOf(ContactsContract.PhoneLookup._ID),
+                null,
+                null,
+                null
+            )?.use { it.moveToFirst() } == true
+        }
+    } catch (_: SecurityException) {
+        // Without contacts permission, the contact's existence cannot be determined.
+        true
+    }
+}
+
 @Composable
 fun ContactPickerDestination(onNavigateBack: () -> Unit) {
     val context = LocalContext.current
@@ -336,7 +376,8 @@ fun ContactPickerDestination(onNavigateBack: () -> Unit) {
                 withContext(Dispatchers.IO) {
                     assignments.setSelectedContact(
                         label = selectedContact.name,
-                        contactKeys = readContactNumbers(context, selectedContact.id, selectedContact.number)
+                        contactKeys = readContactNumbers(context, selectedContact.id, selectedContact.number),
+                        contactId = selectedContact.id
                     )
                 }
                 onNavigateBack()
