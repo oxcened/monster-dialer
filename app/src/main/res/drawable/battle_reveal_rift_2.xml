@@ -1,0 +1,13 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="40dp"
+    android:height="40dp"
+    android:viewportWidth="40"
+    android:viewportHeight="40">
+    <!-- Second pulse: the facets stretch into an angular spiral. -->
+    <path android:fillColor="#74787E" android:pathData="M17,3L23,3L25,12L22,15L19,11Z" />
+    <path android:fillColor="#74787E" android:pathData="M37,17L37,23L28,25L25,22L29,19Z" />
+    <path android:fillColor="#74787E" android:pathData="M23,37L17,37L15,28L18,25L21,29Z" />
+    <path android:fillColor="#74787E" android:pathData="M3,23L3,17L12,15L15,18L11,21Z" />
+    <path android:fillColor="#9FA4AA" android:pathData="M20,10L25,15L30,20L25,25L20,30L15,25L10,20L15,15Z" android:fillType="evenOdd" />
+    <path android:fillColor="#F0F2F3" android:pathData="M20,14L26,20L20,26L14,20Z" />
+</vector>

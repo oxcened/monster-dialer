@@ -8,6 +8,9 @@ sealed interface BattleVisualAsset {
         val fallbackName: String? = null
     ) : BattleVisualAsset
 
+    /** A density-independent illustration rendered directly by Compose. */
+    data class VectorDrawable(@param:DrawableRes val resource: Int) : BattleVisualAsset
+
     /** A file extracted by [dev.alenajam.monsterdialer.packs.CharacterPackInstaller]. */
     data class LocalFile(val path: String) : BattleVisualAsset
 }

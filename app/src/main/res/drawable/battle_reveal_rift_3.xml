@@ -1,0 +1,12 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="40dp"
+    android:height="40dp"
+    android:viewportWidth="40"
+    android:viewportHeight="40">
+    <!-- Final pulse: a complete faceted portal, not a circular ring. -->
+    <path android:fillColor="#74787E" android:pathData="M14,3L26,3L37,14L37,26L26,37L14,37L3,26L3,14Z" />
+    <path android:fillColor="#F5F6F7" android:pathData="M15,7L25,7L33,15L33,25L25,33L15,33L7,25L7,15Z" />
+    <path android:fillColor="#74787E" android:pathData="M16,11L24,11L29,16L29,24L24,29L16,29L11,24L11,16Z" />
+    <path android:fillColor="#BFC3C7" android:pathData="M20,14L26,20L20,26L14,20Z" />
+    <path android:fillColor="#F5F6F7" android:pathData="M19,18L21,18L22,20L21,22L19,22L18,20Z" />
+</vector>

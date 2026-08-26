@@ -1,0 +1,12 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="40dp"
+    android:height="40dp"
+    android:viewportWidth="40"
+    android:viewportHeight="40">
+    <!-- First pulse: four loose facets gathering into a rift. -->
+    <path android:fillColor="#74787E" android:pathData="M18,4L22,4L24,11L20,14L16,11Z" />
+    <path android:fillColor="#74787E" android:pathData="M36,18L36,22L29,24L26,20L29,16Z" />
+    <path android:fillColor="#74787E" android:pathData="M18,36L22,36L24,29L20,26L16,29Z" />
+    <path android:fillColor="#74787E" android:pathData="M4,18L4,22L11,24L14,20L11,16Z" />
+    <path android:fillColor="#A9ADB2" android:pathData="M18,15L22,15L25,20L22,25L18,25L15,20Z" />
+</vector>

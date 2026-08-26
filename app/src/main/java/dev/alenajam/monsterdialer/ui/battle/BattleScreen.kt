@@ -42,6 +42,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalResources
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalInspectionMode
 import androidx.compose.ui.platform.LocalDensity
@@ -207,14 +208,23 @@ private fun BattleSprite(
     modifier: Modifier = Modifier
 ) {
     Box(modifier.size(116.dp), contentAlignment = Alignment.Center) {
-        Image(
-            bitmap = pixelBitmapResource(sprite),
-            contentDescription = description,
-            contentScale = ContentScale.Fit,
-            colorFilter = colorFilter,
-            filterQuality = FilterQuality.None,
-            modifier = Modifier.fillMaxSize()
-        )
+        when (sprite) {
+            is BattleVisualAsset.VectorDrawable -> Image(
+                painter = painterResource(sprite.resource),
+                contentDescription = description,
+                contentScale = ContentScale.Fit,
+                colorFilter = colorFilter,
+                modifier = Modifier.fillMaxSize()
+            )
+            else -> Image(
+                bitmap = pixelBitmapResource(sprite),
+                contentDescription = description,
+                contentScale = ContentScale.Fit,
+                colorFilter = colorFilter,
+                filterQuality = FilterQuality.None,
+                modifier = Modifier.fillMaxSize()
+            )
+        }
         if (radiant) Radiance(Modifier.fillMaxSize())
     }
 }
@@ -344,9 +354,9 @@ private fun enemySprite(state: BattleUiState): BattleVisualAsset {
         return enemy.frontSprite
     }
     return when {
-        state.enemyRevealFrame == 1 -> BattleVisualAsset.AppDrawable(R.drawable.battle_reveal_1, "battle_reveal_1")
-        state.enemyRevealFrame == 2 -> BattleVisualAsset.AppDrawable(R.drawable.battle_reveal_2, "battle_reveal_2")
-        state.enemyRevealFrame == 3 -> BattleVisualAsset.AppDrawable(R.drawable.battle_reveal_3, "battle_reveal_3")
+        state.enemyRevealFrame == 1 -> BattleVisualAsset.VectorDrawable(R.drawable.battle_reveal_rift_1)
+        state.enemyRevealFrame == 2 -> BattleVisualAsset.VectorDrawable(R.drawable.battle_reveal_rift_2)
+        state.enemyRevealFrame == 3 -> BattleVisualAsset.VectorDrawable(R.drawable.battle_reveal_rift_3)
         state.enemyRevealFrame >= 4 -> requireNotNull(encounter.enemy).frontSprite
         else -> encounter.enemyTrainerSprite
     }
@@ -355,9 +365,9 @@ private fun enemySprite(state: BattleUiState): BattleVisualAsset {
 private fun playerSprite(state: BattleUiState): BattleVisualAsset {
     val encounter = requireNotNull(state.encounter)
     return when (state.playerRevealFrame) {
-        1 -> BattleVisualAsset.AppDrawable(R.drawable.battle_reveal_1, "battle_reveal_1")
-        2 -> BattleVisualAsset.AppDrawable(R.drawable.battle_reveal_2, "battle_reveal_2")
-        3 -> BattleVisualAsset.AppDrawable(R.drawable.battle_reveal_3, "battle_reveal_3")
+        1 -> BattleVisualAsset.VectorDrawable(R.drawable.battle_reveal_rift_1)
+        2 -> BattleVisualAsset.VectorDrawable(R.drawable.battle_reveal_rift_2)
+        3 -> BattleVisualAsset.VectorDrawable(R.drawable.battle_reveal_rift_3)
         4 -> requireNotNull(encounter.player.backSprite) { "Player monster requires a back sprite." }
         else -> encounter.playerTrainerSprite
     }
@@ -385,6 +395,7 @@ private fun pixelBitmapResource(asset: BattleVisualAsset): ImageBitmap {
                 BitmapFactory.decodeResource(context.resources, resolvedResource)
             }
             is BattleVisualAsset.LocalFile -> BitmapFactory.decodeFile(asset.path)
+            is BattleVisualAsset.VectorDrawable -> error("Vector drawables must be rendered with painterResource.")
         }
         requireNotNull(bitmap) {
             "Unable to decode battle asset $asset"
