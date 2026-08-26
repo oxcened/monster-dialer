@@ -7,5 +7,6 @@
     <string name="feature_requests_description">Propose and vote on ideas for MonsterDialer.</string>
     <string name="url_feature_requests" translatable="false">https://monsterdialer.fider.io/</string>
     <string name="hang_up">Hang up</string>
-    <string name="font_credit" translatable="false">Johto Mono by Superpencil</string>
+    <string name="font_name" translatable="false">Johto Mono</string>
+    <string name="font_author" translatable="false">Superpencil</string>
 </resources>
