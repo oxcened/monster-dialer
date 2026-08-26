@@ -6,8 +6,8 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.Image
@@ -263,23 +263,45 @@ private fun ContactCharacterTypeSection(
 
 @Composable
 private fun ContactChooser(hasCharacters: Boolean, onChooseContact: () -> Unit) {
-    Card(modifier = Modifier.fillMaxWidth()) {
-        Box(
-            modifier = Modifier.fillMaxWidth().heightIn(min = 160.dp),
-            contentAlignment = Alignment.Center
+    Box(
+        modifier = Modifier.fillMaxSize(),
+        contentAlignment = Alignment.Center
+    ) {
+        Column(
+            modifier = Modifier.fillMaxWidth().padding(horizontal = 24.dp),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
-            Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                Icon(Icons.Outlined.Person, contentDescription = null)
+            Icon(
+                Icons.Outlined.Person,
+                contentDescription = null,
+                modifier = Modifier.size(56.dp),
+                tint = MaterialTheme.colorScheme.primary
+            )
+            Column(
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.spacedBy(8.dp)
+            ) {
+                Text(
+                    stringResource(R.string.contact_chooser_title),
+                    style = MaterialTheme.typography.headlineSmall,
+                    textAlign = TextAlign.Center
+                )
                 Text(
                     if (hasCharacters) {
                         stringResource(R.string.contact_chooser_prompt)
                     } else {
                         stringResource(R.string.contact_chooser_empty_prompt)
                     },
-                    modifier = Modifier.fillMaxWidth().padding(horizontal = 24.dp),
-                    textAlign = TextAlign.Center
+                    style = MaterialTheme.typography.bodyLarge,
+                    textAlign = TextAlign.Center,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
-                if (hasCharacters) Button(onClick = onChooseContact) { Text(stringResource(R.string.choose_contact)) }
+            }
+            if (hasCharacters) {
+                Button(onClick = onChooseContact) {
+                    Text(stringResource(R.string.choose_contact))
+                }
             }
         }
     }
