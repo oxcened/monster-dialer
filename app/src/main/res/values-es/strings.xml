@@ -1,2 +1,76 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources>
+    <string name="default_phone_title" comment="Title of the default phone app prompt.">Establece MonsterDialer como predeterminada</string>
+    <string name="default_phone_description" comment="Explanation shown below the default-phone prompt.">MonsterDialer solo puede hacer y recibir llamadas cuando es tu aplicación de teléfono predeterminada.</string>
+    <string name="open_source_description" comment="Description of the OpenDialer source-code card in About.">MonsterDialer se basa en OpenDialer. Explora el código fuente y contribuye en GitHub.</string>
+    <string name="contribute_monsterdialer_translations" comment="Title of the MonsterDialer translation contribution card.">Contribuye a las traducciones de MonsterDialer</string>
+    <string name="contribute_monsterdialer_translations_description" comment="Description of the MonsterDialer translation contribution card.">Ayuda a que MonsterDialer esté disponible en más idiomas.</string>
+    <string name="feature_requests_description" comment="Description of the feature-request card in About.">Propón y vota ideas para MonsterDialer.</string>
+    <string name="hang_up" comment="Button to end the current phone call.">Colgar</string>
+    <string name="settings_character_packs_title" comment="Settings title for managing character packs.">Paquetes de personajes</string>
+    <string name="settings_character_packs_description" comment="Settings description for character packs.">Importa y gestiona ilustraciones de personajes personalizadas.</string>
+    <string name="settings_player_character_title" comment="Settings title for the player's battle character.">Personaje del jugador</string>
+    <string name="settings_player_character_description" comment="Settings description for the player's battle character.">Elige quién te representa durante las llamadas.</string>
+    <string name="settings_contact_characters_title" comment="Settings title for assigning characters to contacts.">Personajes de contactos</string>
+    <string name="settings_contact_characters_description" comment="Settings description for assigning characters to contacts.">Asigna personajes a quienes te llaman.</string>
+    <string name="choose_contact" comment="Button that opens the contact picker.">Elegir contacto</string>
+    <string name="character_type_trainer" comment="Character category for a human battle character.">Entrenador</string>
+    <string name="character_type_monster" comment="Character category for a creature battle character.">Monstruo</string>
+    <string name="built_in_character" comment="Label for a character included with the app.">Personaje incluido</string>
+    <string name="default_character_artwork" comment="%1$s is a character type, such as Trainer or Monster.">Ilustración predeterminada de %1$s</string>
+    <string name="character_artwork" comment="%1$s is a character name.">Ilustración de %1$s</string>
+    <string name="no_other_character_options" comment="%1$s is a character type, such as Trainer or Monster.">No hay más opciones de %1$s</string>
+    <string name="import_and_enable_character_pack" comment="Empty-state message in the character selector.">Importa y activa un paquete de personajes para añadir más.</string>
+    <string name="radiant" comment="Adjective for a rare, sparkling character variant.">Radiante</string>
+    <string name="selected" comment="Status label for the currently chosen option.">Seleccionado</string>
+    <string name="select" comment="Button label to choose an option.">Elegir</string>
+    <string name="change" comment="Button label to change the current selection.">Cambiar</string>
+    <string name="contact_chooser_prompt" comment="Prompt above the contact picker.">Elige un contacto al que asignar un personaje.</string>
+    <string name="contact_chooser_title" comment="Title of the contact-character assignment screen.">Personaliza un contacto</string>
+    <string name="contact_chooser_empty_prompt" comment="Empty state when no assignable characters are available.">Primero importa y activa un paquete con un personaje asignable a contactos.</string>
+    <string name="pack_collection_empty_title" comment="Title of the empty character-pack collection screen.">Tu colección empieza aquí</string>
+    <string name="pack_collection_empty_description" comment="Description of the empty character-pack collection screen.">Importa un paquete de personajes para personalizar tus llamadas.</string>
+    <string name="import_character_pack" comment="Button that starts selecting a character-pack file.">Importar paquete</string>
+    <string name="pack_import_license_notice" comment="Legal notice shown before importing a character pack.">Importa solo ilustraciones y sonidos creados por ti o que tengas licencia para usar.</string>
+    <string name="your_character_packs" comment="Heading above installed character packs.">Tus paquetes de personajes</string>
+    <plurals name="installed_pack_count" comment="Number of installed character packs. %d is the count.">
+        <item quantity="one">%d instalado</item>
+        <item quantity="other">%d instalados</item>
+    </plurals>
+    <plurals name="pack_character_count" comment="%1$d is the number of characters; %2$s is the pack version.">
+        <item quantity="one">%1$d personaje · v%2$s</item>
+        <item quantity="other">%1$d personajes · v%2$s</item>
+    </plurals>
+    <string name="import_pack" comment="Short button label to import a selected pack.">Importar</string>
+    <string name="enabled" comment="Status label for an active character pack.">Activo</string>
+    <string name="disabled" comment="Status label for an inactive character pack.">Inactivo</string>
+    <string name="enable" comment="Button label to activate a character pack.">Activar</string>
+    <string name="disable" comment="Button label to deactivate a character pack.">Desactivar</string>
+    <string name="remove" comment="Button label to permanently remove a character pack.">Eliminar</string>
+    <string name="character_pack_removed" comment="Confirmation after a character pack is removed.">Paquete de personajes eliminado</string>
+    <string name="character_pack_remove_failed" comment="Error when a character pack cannot be removed.">No se pudo eliminar el paquete de personajes</string>
+    <string name="pack_import_failed_title" comment="Title of the character-pack import error dialog.">No se pudo importar el paquete</string>
+    <string name="file_label" comment="%1$s is the selected file name.">Archivo: %1$s</string>
+    <string name="pack_import_report_notice" comment="Explains that an import diagnostic excludes the user's pack contents.">Copia o comparte este informe con el creador del paquete. Incluye detalles del error, no el contenido del paquete.</string>
+    <string name="pack_import_diagnostic_label" comment="Label for a failed character-pack import report.">Diagnóstico de importación del paquete</string>
+    <string name="copied" comment="Brief confirmation after text is copied.">Copiado</string>
+    <string name="copy_report" comment="Button to copy the import diagnostic.">Copiar informe</string>
+    <string name="share" comment="Button to share the import diagnostic.">Compartir</string>
+    <string name="close" comment="Button to dismiss a dialog.">Cerrar</string>
+    <string name="selected_file" comment="Label before the selected file name.">Archivo seleccionado</string>
+    <string name="share_pack_import_diagnostic" comment="Title of Android's share sheet for an import diagnostic.">Compartir diagnóstico de importación</string>
+    <string name="battle_scene_description" comment="Accessibility description for the battle scene image.">Escena de combate de monstruos</string>
+    <string name="your_monster" comment="%1$s is the player's monster name.">Tu %1$s</string>
+    <string name="radiant_sparkle" comment="Accessibility description for a rare-variant sparkle.">Destello radiante</string>
+    <string name="available_monsters" comment="Heading for the selectable monster roster.">Monstruos disponibles</string>
+    <string name="monster_status" comment="%1$s is a monster name.">Estado de %1$s</string>
+    <string name="opponent_monster" comment="%1$s is the opposing monster name.">Monstruo rival: %1$s</string>
+    <string name="opponent_trainer" comment="%1$s is the opposing trainer name.">Entrenador rival: %1$s</string>
+    <string name="unknown" comment="Fallback label when a value is not known.">Desconocido</string>
+    <string name="battle_player_send_out" comment="Battle announcement; %1$s is the player's monster name.">¡Adelante, %1$s!</string>
+    <string name="battle_prompt" comment="Prompt shown to the player during a battle.">¿Qué harás?</string>
+    <string name="battle_trainer_challenge" comment="Battle announcement; %1$s is the opposing trainer name.">¡El entrenador %1$s quiere luchar!</string>
+    <string name="battle_trainer_sent_out" comment="Battle announcement; %1$s is the trainer name and %2$s is the monster name.">¡El entrenador %1$s envió a %2$s!</string>
+    <string name="battle_wild_radiant_appeared" comment="Battle announcement; %1$s is the wild monster name and radiant is its rare variant.">¡Apareció un %1$s salvaje radiante!</string>
+    <string name="battle_wild_appeared" comment="Battle announcement; %1$s is the wild monster name.">¡Apareció un %1$s salvaje!</string>
+</resources>
