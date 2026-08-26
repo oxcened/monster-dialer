@@ -40,6 +40,7 @@ import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalInspectionMode
 import androidx.compose.ui.platform.LocalDensity
@@ -66,7 +67,12 @@ fun BattleScreen(
     timing: BattleTiming = BattleTiming()
 ) {
     val scope = rememberCoroutineScope()
-    val coordinator = remember(scope, timing) { BattleSequenceCoordinator(scope, timing) }
+    val context = LocalContext.current
+    val coordinator = remember(scope, timing, context) {
+        BattleSequenceCoordinator(scope, timing, string = { resource, arguments ->
+            context.getString(resource, *arguments)
+        })
+    }
     val state by coordinator.state.collectAsState()
 
     LaunchedEffect(encounter.id, encounter.type) { coordinator.start(encounter) }
@@ -98,6 +104,7 @@ fun BattleScene(
     onAnimationCompleted: (Long, BattlePhase) -> Unit = { _, _ -> }
 ) {
     val encounter = state.encounter ?: return
+    val context = LocalContext.current
     val configuration = LocalConfiguration.current
     val density = LocalDensity.current
     val entranceDistancePx = with(density) { configuration.screenWidthDp.dp.toPx() }
@@ -146,7 +153,7 @@ fun BattleScene(
             .fillMaxSize()
             .background(Color(0xFFFFFBF2))
             .clipToBounds()
-            .semantics { contentDescription = "Monster battle scene" }
+            .semantics { contentDescription = context.getString(R.string.battle_scene_description) }
     ) {
         BattlePanelView(
             monster = encounter.enemy,
@@ -166,7 +173,7 @@ fun BattleScene(
         )
         BattleSprite(
             sprite = playerSprite(state),
-            description = "Your ${encounter.player.name}",
+            description = stringResource(R.string.your_monster, encounter.player.name),
             colorFilter = if (state.phase <= BattlePhase.TrainersColorizing) grayscale else null,
             radiant = state.showPlayerRadiance,
             modifier = Modifier
@@ -229,7 +236,7 @@ private fun Radiance(modifier: Modifier = Modifier) {
             bitmap = pixelBitmapResource(
                 BattleVisualAsset.AppDrawable(resource, "battle_radiant_sparkles_$frame")
             ),
-            contentDescription = "Radiant sparkle",
+            contentDescription = stringResource(R.string.radiant_sparkle),
             filterQuality = FilterQuality.None,
             modifier = modifier
         )
@@ -253,7 +260,7 @@ internal fun BattlePanelView(
                     resourceName
                 )
             ),
-            contentDescription = "Available monsters",
+            contentDescription = stringResource(R.string.available_monsters),
             contentScale = ContentScale.FillWidth,
             filterQuality = FilterQuality.None,
             modifier = modifier.width(152.dp)
@@ -267,7 +274,7 @@ internal fun BattlePanelView(
     Box(modifier.width(160.dp).height(if (isEnemy) 72.dp else 89.dp)) {
         Image(
             bitmap = pixelBitmapResource(BattleVisualAsset.AppDrawable(image, imageName)),
-            contentDescription = "${monster.name} status",
+            contentDescription = stringResource(R.string.monster_status, monster.name),
             contentScale = ContentScale.FillBounds,
             filterQuality = FilterQuality.None,
             modifier = Modifier
@@ -355,12 +362,13 @@ private fun playerSprite(state: BattleUiState): BattleVisualAsset {
     }
 }
 
+@Composable
 private fun enemyDescription(state: BattleUiState): String {
     val encounter = requireNotNull(state.encounter)
     return if (state.enemyRevealFrame > 0 || encounter.type != EncounterType.Trainer) {
-        "Opponent ${encounter.enemy?.name.orEmpty()}"
+        stringResource(R.string.opponent_monster, encounter.enemy?.name.orEmpty())
     } else {
-        "Opponent trainer ${encounter.enemyTrainerName.orEmpty()}"
+        stringResource(R.string.opponent_trainer, encounter.enemyTrainerName.orEmpty())
     }
 }
 

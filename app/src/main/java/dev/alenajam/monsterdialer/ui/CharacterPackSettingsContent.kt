@@ -46,6 +46,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -53,6 +54,7 @@ import dev.alenajam.monsterdialer.packs.CharacterPackCatalog
 import dev.alenajam.monsterdialer.packs.CharacterPackInstaller
 import dev.alenajam.monsterdialer.packs.CharacterPackImportDiagnostic
 import dev.alenajam.monsterdialer.packs.CharacterPackRepository
+import dev.alenajam.monsterdialer.R
 import coil.compose.AsyncImage
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -102,16 +104,16 @@ fun ColumnScope.CharacterPackSettingsContent() {
                 verticalArrangement = Arrangement.spacedBy(16.dp)
             ) {
                 Icon(Icons.Outlined.FolderOpen, null, modifier = Modifier.size(56.dp), tint = MaterialTheme.colorScheme.primary)
-                Text("Your collection starts here", style = MaterialTheme.typography.headlineSmall, textAlign = TextAlign.Center)
+                Text(stringResource(R.string.pack_collection_empty_title), style = MaterialTheme.typography.headlineSmall, textAlign = TextAlign.Center)
                 Text(
-                    "Import a character pack to personalize your call experience.",
+                    stringResource(R.string.pack_collection_empty_description),
                     style = MaterialTheme.typography.bodyLarge,
                     textAlign = TextAlign.Center,
                     color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
-                Button(onClick = importPack) { Text("Import character pack") }
+                Button(onClick = importPack) { Text(stringResource(R.string.import_character_pack)) }
                 Text(
-                    "Only import artwork and sounds you created or are licensed to use.",
+                    stringResource(R.string.pack_import_license_notice),
                     style = MaterialTheme.typography.bodySmall,
                     textAlign = TextAlign.Center,
                     color = MaterialTheme.colorScheme.onSurfaceVariant
@@ -132,16 +134,16 @@ fun ColumnScope.CharacterPackSettingsContent() {
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Column(verticalArrangement = Arrangement.spacedBy(2.dp)) {
-                    Text("Your character packs", style = MaterialTheme.typography.titleMedium)
+                    Text(stringResource(R.string.your_character_packs), style = MaterialTheme.typography.titleMedium)
                     Text(
-                        "${packs.size} installed",
+                        stringResource(R.plurals.installed_pack_count, packs.size, packs.size),
                         style = MaterialTheme.typography.bodyMedium,
                         color = MaterialTheme.colorScheme.onSurfaceVariant
                     )
                 }
                 OutlinedButton(onClick = importPack) {
                     Icon(Icons.Outlined.FolderOpen, contentDescription = null, modifier = Modifier.size(18.dp))
-                    Text("Import", modifier = Modifier.padding(start = 8.dp))
+                    Text(stringResource(R.string.import_pack), modifier = Modifier.padding(start = 8.dp))
                 }
             }
             message?.let { status ->
@@ -179,7 +181,7 @@ fun ColumnScope.CharacterPackSettingsContent() {
                                         model = preview.imageFile(
                                             preview.character.frontImage ?: requireNotNull(preview.character.backImage)
                                         ),
-                                        contentDescription = "${preview.character.name} artwork",
+                                        contentDescription = stringResource(R.string.character_artwork, preview.character.name),
                                         modifier = Modifier
                                             .size(64.dp)
                                             .clip(RoundedCornerShape(16.dp))
@@ -188,13 +190,13 @@ fun ColumnScope.CharacterPackSettingsContent() {
                                 Column(modifier = Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(2.dp)) {
                                     Text(pack.name, style = MaterialTheme.typography.titleMedium)
                                     Text(
-                                        "${pack.characterCount} character${if (pack.characterCount == 1) "" else "s"} · v${pack.version}",
+                                        stringResource(R.plurals.pack_character_count, pack.characterCount, pack.characterCount, pack.version),
                                         style = MaterialTheme.typography.bodyMedium,
                                         color = MaterialTheme.colorScheme.onSurfaceVariant
                                     )
                                 }
                                 Text(
-                                    if (pack.enabled) "Enabled" else "Disabled",
+                                    stringResource(if (pack.enabled) R.string.enabled else R.string.disabled),
                                     style = MaterialTheme.typography.labelLarge,
                                     color = if (pack.enabled) {
                                         MaterialTheme.colorScheme.primary
@@ -214,7 +216,7 @@ fun ColumnScope.CharacterPackSettingsContent() {
                                         withContext(Dispatchers.IO) { catalog.setEnabled(pack.id, !pack.enabled) }
                                         packs = catalog.list()
                                     }
-                                }) { Text(if (pack.enabled) "Disable" else "Enable") }
+                                }) { Text(stringResource(if (pack.enabled) R.string.disable else R.string.enable)) }
                                 OutlinedButton(onClick = {
                                     scope.launch {
                                         val result = withContext(Dispatchers.IO) {
@@ -225,11 +227,11 @@ fun ColumnScope.CharacterPackSettingsContent() {
                                         }
                                         packs = catalog.list()
                                         message = result.fold(
-                                            onSuccess = { "Character pack removed" },
-                                            onFailure = { it.message ?: "Could not remove character pack" }
+                                            onSuccess = { context.getString(R.string.character_pack_removed) },
+                                            onFailure = { it.message ?: context.getString(R.string.character_pack_remove_failed) }
                                         )
                                     }
-                                }) { Text("Remove") }
+                                }) { Text(stringResource(R.string.remove)) }
                             }
                         }
                     }
@@ -255,7 +257,7 @@ private fun CharacterPackImportFailureDialog(
                 tint = MaterialTheme.colorScheme.error
             )
         },
-        title = { Text("Couldn’t import pack") },
+        title = { Text(stringResource(R.string.pack_import_failed_title)) },
         text = {
             Column(
                 modifier = Modifier
@@ -265,12 +267,12 @@ private fun CharacterPackImportFailureDialog(
             ) {
                 Text(diagnostic.summary, style = MaterialTheme.typography.bodyLarge)
                 Text(
-                    "File: ${diagnostic.fileName}",
+                    stringResource(R.string.file_label, diagnostic.fileName),
                     style = MaterialTheme.typography.bodyMedium,
                     color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
                 Text(
-                    "Copy or share this report with the pack creator. It contains error details, not your pack contents.",
+                    stringResource(R.string.pack_import_report_notice),
                     style = MaterialTheme.typography.bodySmall,
                     color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
@@ -286,20 +288,20 @@ private fun CharacterPackImportFailureDialog(
         },
         confirmButton = {
             Button(onClick = {
-                context.copyToClipboard("Character pack import diagnostic", diagnostic.report)
+                context.copyToClipboard(context.getString(R.string.pack_import_diagnostic_label), diagnostic.report)
                 copied = true
             }) {
                 Icon(Icons.Outlined.ContentCopy, contentDescription = null, modifier = Modifier.size(18.dp))
-                Text(if (copied) "Copied" else "Copy report", modifier = Modifier.padding(start = 8.dp))
+                Text(stringResource(if (copied) R.string.copied else R.string.copy_report), modifier = Modifier.padding(start = 8.dp))
             }
         },
         dismissButton = {
             Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                 TextButton(onClick = { context.shareImportDiagnostic(diagnostic.report) }) {
                     Icon(Icons.Outlined.Share, contentDescription = null, modifier = Modifier.size(18.dp))
-                    Text("Share", modifier = Modifier.padding(start = 6.dp))
+                    Text(stringResource(R.string.share), modifier = Modifier.padding(start = 6.dp))
                 }
-                TextButton(onClick = onDismiss) { Text("Close") }
+                TextButton(onClick = onDismiss) { Text(stringResource(R.string.close)) }
             }
         }
     )
@@ -313,7 +315,7 @@ private fun Context.displayNameFor(uri: Uri): String {
             cursor.getString(nameColumn)?.takeIf { it.isNotBlank() }?.let { return it }
         }
     }
-    return uri.lastPathSegment?.substringAfterLast('/') ?: "Selected file"
+    return uri.lastPathSegment?.substringAfterLast('/') ?: getString(R.string.selected_file)
 }
 
 private fun Context.copyToClipboard(label: String, text: String) {
@@ -327,7 +329,7 @@ private fun Context.shareImportDiagnostic(report: String) {
             Intent(Intent.ACTION_SEND)
                 .setType("text/plain")
                 .putExtra(Intent.EXTRA_TEXT, report),
-            "Share pack import diagnostic"
+            getString(R.string.share_pack_import_diagnostic)
         )
     )
 }

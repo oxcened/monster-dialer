@@ -31,6 +31,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
+import dev.alenajam.monsterdialer.R
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
@@ -105,14 +107,14 @@ fun ColumnScope.ContactCharacterSettingsContent() {
     if (trainers.isEmpty() && monsters.isEmpty()) {
         Column(verticalArrangement = Arrangement.spacedBy(24.dp)) {
             ContactCharacterTypeSection(
-                title = "Trainer",
+                title = stringResource(R.string.character_type_trainer),
                 defaultCharacter = BuiltInCharacters.trainer,
                 characters = emptyList(),
                 selected = null,
                 onSelect = {}
             )
             ContactCharacterTypeSection(
-                title = "Monster",
+                title = stringResource(R.string.character_type_monster),
                 defaultCharacter = BuiltInCharacters.monster.character,
                 characters = emptyList(),
                 selected = null,
@@ -155,12 +157,12 @@ fun ColumnScope.ContactCharacterSettingsContent() {
                         color = MaterialTheme.colorScheme.onSurfaceVariant
                     )
                 }
-                TextButton(onClick = { navigator?.navigateTo(0) }) { Text("Change") }
+                TextButton(onClick = { navigator?.navigateTo(0) }) { Text(stringResource(R.string.change)) }
             }
         }
 
         ContactCharacterTypeSection(
-            title = "Trainer",
+            title = stringResource(R.string.character_type_trainer),
             defaultCharacter = BuiltInCharacters.trainer,
             characters = trainers,
             selected = assignedTrainer,
@@ -181,7 +183,7 @@ fun ColumnScope.ContactCharacterSettingsContent() {
             }
         )
         ContactCharacterTypeSection(
-            title = "Monster",
+            title = stringResource(R.string.character_type_monster),
             defaultCharacter = BuiltInCharacters.monster.character,
             characters = monsters,
             selected = assignedMonster,
@@ -220,14 +222,14 @@ private fun ContactCharacterTypeSection(
         Column {
             CharacterOptionCard(
                 name = defaultCharacter.name,
-                subtitle = "Built-in character",
+                subtitle = stringResource(R.string.built_in_character),
                 isSelected = availableSelection == null,
                 roundTop = true,
                 roundBottom = false,
                 artwork = {
                     Image(
                         painter = painterResource(defaultCharacter.contactArtwork.resource),
-                        contentDescription = "Default ${title.lowercase()} artwork",
+                        contentDescription = stringResource(R.string.default_character_artwork, title.lowercase()),
                         modifier = Modifier.size(72.dp)
                     )
                 },
@@ -245,7 +247,7 @@ private fun ContactCharacterTypeSection(
                     artwork = {
                         AsyncImage(
                             model = item.imageFile(requireNotNull(item.character.frontImage)),
-                            contentDescription = "${item.character.name} artwork",
+                            contentDescription = stringResource(R.string.character_artwork, item.character.name),
                             modifier = Modifier.size(72.dp)
                         )
                     },
@@ -270,14 +272,14 @@ private fun ContactChooser(hasCharacters: Boolean, onChooseContact: () -> Unit) 
                 Icon(Icons.Outlined.Person, contentDescription = null)
                 Text(
                     if (hasCharacters) {
-                        "Choose a contact to assign a character."
+                        stringResource(R.string.contact_chooser_prompt)
                     } else {
-                        "Import and enable a pack containing a contact-assignable character first."
+                        stringResource(R.string.contact_chooser_empty_prompt)
                     },
                     modifier = Modifier.fillMaxWidth().padding(horizontal = 24.dp),
                     textAlign = TextAlign.Center
                 )
-                if (hasCharacters) Button(onClick = onChooseContact) { Text("Choose contact") }
+                if (hasCharacters) Button(onClick = onChooseContact) { Text(stringResource(R.string.choose_contact)) }
             }
         }
     }
