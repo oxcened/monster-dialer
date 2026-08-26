@@ -33,6 +33,7 @@ keystore or any of these values.
 | `ANDROID_KEYSTORE_PASSWORD` | Keystore password |
 | `ANDROID_KEY_ALIAS` | Alias of the signing key |
 | `ANDROID_KEY_PASSWORD` | Password for that key |
+| `DISCORD_WEBHOOK` | Discord webhook URL for published-release notifications |
 
 On macOS or Linux, create the first value without line wrapping:
 

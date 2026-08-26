@@ -72,6 +72,7 @@ jobs:
           test -n "$FONT_ASSET_URL"
           test -n "$FONT_ASSET_TOKEN"
           test -n "$FONT_ASSET_SHA256"
+          mkdir -p app/src/main/res/font
           curl --fail --location --retry 3 --silent --show-error \
             --header "Authorization: Bearer $FONT_ASSET_TOKEN" \
             --header "Accept: application/octet-stream" \
