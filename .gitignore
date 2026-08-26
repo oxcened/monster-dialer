@@ -6,6 +6,9 @@ build/
 # Local Android SDK configuration
 local.properties
 
+# Google Services (e.g. APIs or Firebase)
+google-services.json
+
 # Android Studio
 .idea/
 *.iml
