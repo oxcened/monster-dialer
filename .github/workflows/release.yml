@@ -130,6 +130,7 @@ jobs:
         run: gh release create "$RELEASE_TAG" "$RELEASE_APK" "$RELEASE_CHECKSUM" --generate-notes --verify-tag
 
       - name: Build Discord payload
+        working-directory: monster-dialer
         env:
           GH_TOKEN: ${{ github.token }}
           RELEASE_TAG: ${{ github.ref_name }}
@@ -152,12 +153,13 @@ jobs:
                     title: ("MonsterDialer " + $release_name),
                     url: .url,
                     fields: (
-                      {
-                        name: "Tag",
-                        value: $tag,
-                        inline: true
-                      }
-                    ]
+                      [
+                        {
+                          name: "Tag",
+                          value: $tag,
+                          inline: true
+                        }
+                      ]
                     + (if $apk == null then [] else [
                       {
                         name: "Download APK",
