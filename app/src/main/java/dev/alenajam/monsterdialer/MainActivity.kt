@@ -4,6 +4,7 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.compose.ui.res.stringResource
 import dagger.hilt.android.AndroidEntryPoint
 import dev.alenajam.monsterdialer.ui.MonsterIcons
 import dev.alenajam.monsterdialer.ui.CharacterPackSettingsContent
@@ -35,21 +36,21 @@ class MainActivity : ComponentActivity() {
                 icons = MonsterIcons,
                 settingsSubpages = listOf(
                     SettingsSubpage(
-                        title = "Character Packs",
-                        description = "Import and manage custom character artwork.",
+                        title = stringResource(R.string.settings_character_packs_title),
+                        description = stringResource(R.string.settings_character_packs_description),
                         content = { CharacterPackSettingsContent() }
                     ),
                     SettingsSubpage(
-                        title = "Player Character",
-                        description = "Choose who represents you during calls.",
+                        title = stringResource(R.string.settings_player_character_title),
+                        description = stringResource(R.string.settings_player_character_description),
                         content = { PlayerCharacterSettingsContent() }
                     ),
                     SettingsSubpage(
-                        title = "Contact Characters",
-                        description = "Assign characters to incoming callers.",
+                        title = stringResource(R.string.settings_contact_characters_title),
+                        description = stringResource(R.string.settings_contact_characters_description),
                         content = { ContactCharacterSettingsContent() },
                         destinations = listOf(
-                            SettingsSubpageDestination(title = "Choose contact") { onNavigateBack ->
+                            SettingsSubpageDestination(title = stringResource(R.string.choose_contact)) { onNavigateBack ->
                                 ContactPickerDestination(onNavigateBack)
                             }
                         )

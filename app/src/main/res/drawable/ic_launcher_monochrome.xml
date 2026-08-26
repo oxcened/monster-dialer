@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+    <!-- Mossling Receiver (Monochrome) -->
+    <path
+        android:fillColor="#000000"
+        android:pathData="M40,40h28v12h-28z M32,36h8v28h-8z M68,36h8v28h-8z M48,32h12v8h-12z" />
+</vector>

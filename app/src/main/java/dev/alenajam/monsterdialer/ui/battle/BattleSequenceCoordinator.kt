@@ -1,5 +1,6 @@
 package dev.alenajam.monsterdialer.ui.battle
 
+import dev.alenajam.monsterdialer.R
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.channels.Channel
@@ -12,6 +13,7 @@ import kotlinx.coroutines.launch
 class BattleSequenceCoordinator(
     private val scope: CoroutineScope,
     private val timing: BattleTiming = BattleTiming(),
+    private val string: (Int, Array<out Any>) -> String = { _, _ -> error("A battle string resolver is required") },
     private val pause: suspend (Long) -> Unit = { delay(it) }
 ) {
     private val mutableState = MutableStateFlow(BattleUiState())
@@ -52,27 +54,27 @@ class BattleSequenceCoordinator(
 
         phase(runId, BattlePhase.PlayerTrainerLeaving)
         awaitAnimation(runId, BattlePhase.PlayerTrainerLeaving)
-        typeMessage(runId, "Go! ${encounter.player.name.uppercase()}!")
+        typeMessage(runId, string(R.string.battle_player_send_out, arrayOf(encounter.player.name.uppercase())))
         phase(runId, BattlePhase.PlayerRevealing)
         reveal(runId, player = true)
         if (encounter.player.isRadiant) showRadiance(runId, player = true)
         update(runId) { copy(playerPanel = BattlePanel.Monster) }
         pause(timing.readyHoldMillis)
-        typeMessage(runId, "What will you do?")
+        typeMessage(runId, string(R.string.battle_prompt, emptyArray()))
         phase(runId, BattlePhase.Ready)
     }
 
     private suspend fun runTrainerIntro(runId: Long, encounter: BattleEncounter) {
-        val trainer = encounter.enemyTrainerName.orEmpty().ifBlank { "Unknown" }
+        val trainer = encounter.enemyTrainerName.orEmpty().ifBlank { string(R.string.unknown, emptyArray()) }
         phase(runId, BattlePhase.IntroMessage)
         update(runId) { copy(playerPanel = BattlePanel.Roster, enemyPanel = BattlePanel.Roster) }
-        typeMessage(runId, "Trainer $trainer wants to battle!")
+        typeMessage(runId, string(R.string.battle_trainer_challenge, arrayOf(trainer)))
         pause(timing.introHoldMillis)
         update(runId) { copy(playerPanel = BattlePanel.Hidden, enemyPanel = BattlePanel.Hidden, message = "") }
         phase(runId, BattlePhase.EnemyTrainerLeaving)
         awaitAnimation(runId, BattlePhase.EnemyTrainerLeaving)
-        val enemyName = encounter.enemy?.name.orEmpty().ifBlank { "Unknown" }
-        typeMessage(runId, "Trainer $trainer sent out ${enemyName.uppercase()}!")
+        val enemyName = encounter.enemy?.name.orEmpty().ifBlank { string(R.string.unknown, emptyArray()) }
+        typeMessage(runId, string(R.string.battle_trainer_sent_out, arrayOf(trainer, enemyName.uppercase())))
         pause(timing.panelHoldMillis)
         phase(runId, BattlePhase.EnemyRevealing)
         reveal(runId, player = false)
@@ -84,8 +86,8 @@ class BattleSequenceCoordinator(
     private suspend fun runWildIntro(runId: Long, encounter: BattleEncounter, radiant: Boolean) {
         phase(runId, BattlePhase.IntroMessage)
         if (radiant) showRadiance(runId, player = false)
-        val enemyName = encounter.enemy?.name.orEmpty().ifBlank { "Unknown" }.uppercase()
-        val text = if (radiant) "Wild radiant $enemyName appeared!" else "Wild $enemyName appeared!"
+        val enemyName = encounter.enemy?.name.orEmpty().ifBlank { string(R.string.unknown, emptyArray()) }.uppercase()
+        val text = string(if (radiant) R.string.battle_wild_radiant_appeared else R.string.battle_wild_appeared, arrayOf(enemyName))
         update(runId) { copy(playerPanel = BattlePanel.Roster) }
         typeMessage(runId, text)
         pause(timing.introHoldMillis)

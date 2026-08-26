@@ -1,6 +1,7 @@
 package dev.alenajam.monsterdialer.ui.battle
 
 import dev.alenajam.monsterdialer.R
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.advanceTimeBy
 import kotlinx.coroutines.test.advanceUntilIdle
@@ -19,7 +20,7 @@ class BattleSequenceCoordinatorTest {
             colorizeMillis = 1,
             trainerExitMillis = 1
         )
-        val coordinator = BattleSequenceCoordinator(this, timing)
+        val coordinator = coordinator(this, timing)
 
         coordinator.start(encounter("first", EncounterType.Trainer))
         runCurrent()
@@ -50,7 +51,7 @@ class BattleSequenceCoordinatorTest {
     @Test
     fun startingNewBattleCancelsOldSequence() = runTest {
         val timing = BattleTiming.Instant.copy(characterMillis = 100, introHoldMillis = 1_000)
-        val coordinator = BattleSequenceCoordinator(this, timing)
+        val coordinator = coordinator(this, timing)
         coordinator.start(encounter("old", EncounterType.Trainer))
         runCurrent()
         advanceTimeBy(200)
@@ -68,7 +69,7 @@ class BattleSequenceCoordinatorTest {
     @Test
     fun stopCancelsSequenceAndReturnsToIdle() = runTest {
         val timing = BattleTiming.Instant.copy(characterMillis = 100)
-        val coordinator = BattleSequenceCoordinator(this, timing)
+        val coordinator = coordinator(this, timing)
         coordinator.start(encounter("battle", EncounterType.RadiantWild))
         runCurrent()
 
@@ -97,4 +98,17 @@ class BattleSequenceCoordinatorTest {
         frontSprite = BattleVisualAsset.AppDrawable(R.drawable.battle_enemy_monster),
         backSprite = BattleVisualAsset.AppDrawable(R.drawable.battle_player_monster)
     )
+
+    private fun coordinator(scope: CoroutineScope, timing: BattleTiming) = BattleSequenceCoordinator(scope, timing, ::string)
+
+    private fun string(resource: Int, arguments: Array<out Any>) = when (resource) {
+        R.string.unknown -> "Unknown"
+        R.string.battle_prompt -> "What will you do?"
+        R.string.battle_player_send_out -> "Go! ${arguments[0]}!"
+        R.string.battle_trainer_challenge -> "Trainer ${arguments[0]} wants to battle!"
+        R.string.battle_trainer_sent_out -> "Trainer ${arguments[0]} sent out ${arguments[1]}!"
+        R.string.battle_wild_radiant_appeared -> "Wild radiant ${arguments[0]} appeared!"
+        R.string.battle_wild_appeared -> "Wild ${arguments[0]} appeared!"
+        else -> error("Unexpected resource $resource")
+    }
 }

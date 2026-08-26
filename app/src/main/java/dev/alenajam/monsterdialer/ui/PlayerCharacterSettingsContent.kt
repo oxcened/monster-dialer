@@ -30,6 +30,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
+import dev.alenajam.monsterdialer.R
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
@@ -64,7 +66,7 @@ fun ColumnScope.PlayerCharacterSettingsContent() {
 
     Column(verticalArrangement = Arrangement.spacedBy(24.dp)) {
         CharacterTypeSection(
-            title = "Trainer",
+            title = stringResource(R.string.character_type_trainer),
             defaultCharacter = BuiltInCharacters.trainer,
             characters = trainers,
             selected = selectedTrainer,
@@ -76,7 +78,7 @@ fun ColumnScope.PlayerCharacterSettingsContent() {
             }
         )
         CharacterTypeSection(
-            title = "Monster",
+            title = stringResource(R.string.character_type_monster),
             defaultCharacter = BuiltInCharacters.monster.character,
             characters = monsters,
             selected = selectedMonster,
@@ -106,14 +108,14 @@ private fun CharacterTypeSection(
         Column {
             CharacterOptionCard(
                 name = defaultCharacter.name,
-                subtitle = "Built-in character",
+                subtitle = stringResource(R.string.built_in_character),
                 isSelected = availableSelection == null,
                 roundTop = true,
                 roundBottom = false,
                 artwork = {
                     Image(
                         painter = painterResource(defaultCharacter.playerArtwork.resource),
-                        contentDescription = "Default ${title.lowercase()} artwork",
+                        contentDescription = stringResource(R.string.default_character_artwork, title.lowercase()),
                         modifier = Modifier.size(72.dp)
                     )
                 },
@@ -131,7 +133,7 @@ private fun CharacterTypeSection(
                     artwork = {
                         AsyncImage(
                             model = installed.imageFile(requireNotNull(installed.character.backImage)),
-                            contentDescription = "${installed.character.name} artwork",
+                            contentDescription = stringResource(R.string.character_artwork, installed.character.name),
                             modifier = Modifier.size(72.dp)
                         )
                     },
@@ -164,12 +166,12 @@ internal fun NoAdditionalCharacterOptionsCard(title: String) {
         ) {
             Column(horizontalAlignment = Alignment.CenterHorizontally) {
                 Text(
-                    "No other ${title.lowercase()} options",
+                    stringResource(R.string.no_other_character_options, title.lowercase()),
                     style = MaterialTheme.typography.titleSmall,
                     textAlign = TextAlign.Center
                 )
                 Text(
-                    "Import and enable a character pack to add more.",
+                    stringResource(R.string.import_and_enable_character_pack),
                     style = MaterialTheme.typography.bodySmall,
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                     textAlign = TextAlign.Center
@@ -222,7 +224,7 @@ internal fun CharacterOptionCard(
                     if (isRadiant) {
                         Icon(
                             imageVector = Icons.Outlined.AutoAwesome,
-                            contentDescription = "Radiant",
+                            contentDescription = stringResource(R.string.radiant),
                             modifier = Modifier.size(18.dp),
                             tint = MaterialTheme.colorScheme.primary
                         )
@@ -235,14 +237,14 @@ internal fun CharacterOptionCard(
                 )
                 if (isSelected) {
                     Text(
-                        "Selected",
+                        stringResource(R.string.selected),
                         style = MaterialTheme.typography.labelLarge,
                         color = MaterialTheme.colorScheme.primary
                     )
                 }
             }
             if (!isSelected) {
-                OutlinedButton(onClick = onSelect) { Text("Select") }
+                OutlinedButton(onClick = onSelect) { Text(stringResource(R.string.select)) }
             }
         }
     }
