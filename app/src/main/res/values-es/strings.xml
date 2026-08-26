@@ -33,8 +33,14 @@
     <string name="import_character_pack" comment="Button that starts selecting a character-pack file.">Importar paquete</string>
     <string name="pack_import_license_notice" comment="Legal notice shown before importing a character pack.">Importa solo ilustraciones y sonidos creados por ti o que tengas licencia para usar.</string>
     <string name="your_character_packs" comment="Heading above installed character packs.">Tus paquetes de personajes</string>
-    <plurals name="installed_pack_count" comment="Number of installed character packs. %d is the count."><item quantity="one">%d instalado</item><item quantity="other">%d instalados</item></plurals>
-    <plurals name="pack_character_count" comment="%1$d is the number of characters; %2$s is the pack version."><item quantity="one">%1$d personaje · v%2$s</item><item quantity="other">%1$d personajes · v%2$s</item></plurals>
+    <plurals name="installed_pack_count" comment="Number of installed character packs. %d is the count.">
+        <item quantity="one">%d instalado</item>
+        <item quantity="other">%d instalados</item>
+    </plurals>
+    <plurals name="pack_character_count" comment="%1$d is the number of characters; %2$s is the pack version.">
+        <item quantity="one">%1$d personaje · v%2$s</item>
+        <item quantity="other">%1$d personajes · v%2$s</item>
+    </plurals>
     <string name="import_pack" comment="Short button label to import a selected pack.">Importar</string>
     <string name="enabled" comment="Status label for an active character pack.">Activo</string>
     <string name="disabled" comment="Status label for an inactive character pack.">Inactivo</string>
