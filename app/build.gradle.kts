@@ -5,13 +5,14 @@ plugins {
     alias(libs.plugins.hilt)
     alias(libs.plugins.compose.compiler)
     alias(libs.plugins.kotlin.serialization)
-    alias(libs.plugins.firebase.crashlytics)
+    alias(libs.plugins.firebase.crashlytics) apply false
 }
 
 // Firebase is used for production telemetry, but local debug builds should not
 // require credentials that are intentionally excluded from source control.
 if (file("google-services.json").isFile) {
     apply(plugin = "com.google.gms.google-services")
+    apply(plugin = "com.google.firebase.crashlytics")
 }
 
 val appVersionName = providers.gradleProperty("appVersionName").orNull
@@ -54,6 +55,15 @@ android {
     }
 
     val keystorePath = providers.environmentVariable("ANDROID_KEYSTORE_PATH").orNull
+    buildTypes {
+        release {
+            isMinifyEnabled = true
+            proguardFiles(
+                getDefaultProguardFile("proguard-android-optimize.txt"),
+                "proguard-rules.pro"
+            )
+        }
+    }
     if (keystorePath != null) {
         signingConfigs {
             create("release") {
