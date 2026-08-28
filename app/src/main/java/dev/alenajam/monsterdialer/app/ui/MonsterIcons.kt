@@ -1,18 +1,9 @@
 package dev.alenajam.monsterdialer.app.ui
 
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.outlined.CallMade
-import androidx.compose.material.icons.automirrored.outlined.CallMissed
-import androidx.compose.material.icons.automirrored.outlined.CallReceived
-import androidx.compose.material.icons.automirrored.outlined.VolumeUp
-import androidx.compose.material.icons.outlined.AddIcCall
 import androidx.compose.material.icons.outlined.Block
-import androidx.compose.material.icons.outlined.CallEnd
-import androidx.compose.material.icons.outlined.Dialpad
 import androidx.compose.material.icons.outlined.Merge
-import androidx.compose.material.icons.outlined.MicOff
 import androidx.compose.material.icons.outlined.MoreVert
-import androidx.compose.material.icons.outlined.Pause
 import androidx.compose.material.icons.outlined.PhonePaused
 import androidx.compose.material.icons.outlined.SwapCalls
 import androidx.compose.runtime.Composable
@@ -27,20 +18,25 @@ fun rememberMonsterIcons(): AppIcons {
     val isDarkTheme = rememberAppIsDarkTheme()
     return remember(isDarkTheme) {
         AppIcons(
-            hangup = IconSource.Vector(Icons.Outlined.CallEnd),
-            dialpad = IconSource.Vector(Icons.Outlined.Dialpad),
-            mute = IconSource.Vector(Icons.Outlined.MicOff),
-            speaker = IconSource.Vector(Icons.AutoMirrored.Outlined.VolumeUp),
+            hangup = IconSource.Resource(R.drawable.hangup, tintable = false),
+            dialpad = IconSource.Resource(
+                if (isDarkTheme) R.drawable.dial_on_dark else R.drawable.dial_on_light,
+                tintable = false,
+            ),
+            dialpadActive = IconSource.Resource(R.drawable.dial_on_dark, tintable = false),
+            mute = IconSource.Resource(R.drawable.mic_off, tintable = false),
+            speaker = IconSource.Resource(R.drawable.speaker, tintable = false),
             more = IconSource.Vector(Icons.Outlined.MoreVert),
-            pause = IconSource.Vector(Icons.Outlined.Pause),
-            addCall = IconSource.Vector(Icons.Outlined.AddIcCall),
-            accountCircle = IconSource.Resource(R.drawable.player, tintable = false),
-            callReceived = IconSource.Vector(Icons.AutoMirrored.Outlined.CallReceived),
-            callMade = IconSource.Vector(Icons.AutoMirrored.Outlined.CallMade),
-            callMissed = IconSource.Vector(Icons.AutoMirrored.Outlined.CallMissed),
+            pause = IconSource.Resource(R.drawable.hold, tintable = false),
+            addCall = IconSource.Resource(R.drawable.add_call, tintable = false),
+            person = IconSource.Resource(R.drawable.player, tintable = false),
+            callReceived = IconSource.Resource(R.drawable.incoming, tintable = false),
+            callMade = IconSource.Resource(R.drawable.outgoing, tintable = false),
+            callMissed = IconSource.Resource(R.drawable.missed, tintable = false),
             voicemail = IconSource.Resource(R.drawable.voicemail, tintable = false),
             voicemailSelected = IconSource.Resource(R.drawable.voicemail, tintable = false),
-            block = IconSource.Vector(Icons.Outlined.Block),
+            block = IconSource.Resource(R.drawable.block, tintable = false),
+            blockCall = IconSource.Resource(R.drawable.block_call, tintable = false),
             phone = IconSource.Resource(R.drawable.phone, tintable = false),
             message = IconSource.Resource(R.drawable.message, tintable = false),
             personAdd = IconSource.Resource(

@@ -231,7 +231,7 @@ private fun ContactChooser(hasCharacters: Boolean, onChooseContact: () -> Unit) 
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
             AppIcon(
-                LocalAppIcons.current.accountCircle,
+                LocalAppIcons.current.person,
                 contentDescription = null,
                 modifier = Modifier.size(56.dp)
             )
