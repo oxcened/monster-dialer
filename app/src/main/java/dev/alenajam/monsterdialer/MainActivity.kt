@@ -7,10 +7,10 @@ import androidx.activity.enableEdgeToEdge
 import androidx.compose.ui.res.stringResource
 import dagger.hilt.android.AndroidEntryPoint
 import dev.alenajam.monsterdialer.ui.MonsterIcons
-import dev.alenajam.monsterdialer.ui.CharacterPackSettingsContent
-import dev.alenajam.monsterdialer.ui.PlayerCharacterSettingsContent
-import dev.alenajam.monsterdialer.ui.ContactCharacterSettingsContent
-import dev.alenajam.monsterdialer.ui.ContactPickerDestination
+import dev.alenajam.monsterdialer.packs.ui.CharacterPackSettingsContent
+import dev.alenajam.monsterdialer.characters.ui.PlayerCharacterSettingsContent
+import dev.alenajam.monsterdialer.characters.ui.ContactCharacterSettingsContent
+import dev.alenajam.monsterdialer.characters.ui.ContactPickerDestination
 import dev.alenajam.opendialer.core.common.DefaultPhoneManager
 import dev.alenajam.opendialer.feature.settings.SettingsSubpage
 import dev.alenajam.opendialer.feature.settings.SettingsSubpageDestination

@@ -5,6 +5,12 @@ import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithText
 import androidx.test.ext.junit.runners.AndroidJUnit4
+import dev.alenajam.monsterdialer.battle.data.BattleEncounter
+import dev.alenajam.monsterdialer.battle.data.BattleMonster
+import dev.alenajam.monsterdialer.battle.data.BattleTiming
+import dev.alenajam.monsterdialer.battle.data.BattleVisualAsset
+import dev.alenajam.monsterdialer.battle.data.EncounterType
+import dev.alenajam.monsterdialer.battle.ui.BattleScreen
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith

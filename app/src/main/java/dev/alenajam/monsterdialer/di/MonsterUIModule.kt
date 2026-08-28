@@ -5,7 +5,7 @@ import dagger.Module
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import dev.alenajam.opendialer.core.common.ui.InCallUI
-import dev.alenajam.monsterdialer.ui.MonsterInCallUI
+import dev.alenajam.monsterdialer.battle.ui.MonsterInCallUI
 import javax.inject.Singleton
 
 @Module
