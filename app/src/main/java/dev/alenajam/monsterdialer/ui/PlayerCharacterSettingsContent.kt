@@ -20,6 +20,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
@@ -27,6 +28,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil.compose.AsyncImage
 import dev.alenajam.monsterdialer.R
 import dev.alenajam.monsterdialer.characters.BuiltInCharacter
@@ -38,8 +40,8 @@ import dev.alenajam.monsterdialer.packs.InstalledPackCharacter
 fun ColumnScope.PlayerCharacterSettingsContent(
     viewModel: PlayerCharacterSettingsViewModel = hiltViewModel()
 ) {
-    val assignedTrainer = viewModel.assignedTrainer
-    val assignedMonster = viewModel.assignedMonster
+    val assignedTrainer by viewModel.assignedTrainer.collectAsStateWithLifecycle()
+    val assignedMonster by viewModel.assignedMonster.collectAsStateWithLifecycle()
     val trainers = viewModel.trainers
     val monsters = viewModel.monsters
 

@@ -13,7 +13,6 @@ import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
@@ -35,7 +34,6 @@ import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -50,6 +48,7 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil.compose.AsyncImage
 import dev.alenajam.monsterdialer.R
 import dev.alenajam.monsterdialer.packs.CharacterPackImportDiagnostic
@@ -59,9 +58,9 @@ fun ColumnScope.CharacterPackSettingsContent(
     viewModel: CharacterPackSettingsViewModel = hiltViewModel()
 ) {
     val context = LocalContext.current
-    val packs by viewModel.packs.collectAsState()
-    val message = viewModel.message
-    val importDiagnostic = viewModel.importDiagnostic
+    val packs by viewModel.packs.collectAsStateWithLifecycle()
+    val message by viewModel.message.collectAsStateWithLifecycle()
+    val importDiagnostic by viewModel.importDiagnostic.collectAsStateWithLifecycle()
     
     val picker = rememberLauncherForActivityResult(ActivityResultContracts.OpenDocument()) { uri ->
         if (uri == null) return@rememberLauncherForActivityResult
@@ -138,7 +137,7 @@ fun ColumnScope.CharacterPackSettingsContent(
             }
             Column {
                 packs.forEachIndexed { index, pack ->
-                    val preview = viewModel.getPreviewCharacter(pack.id, pack.name)
+                    val preview = viewModel.getPreviewCharacter(pack.id)
                     Card(
                         modifier = Modifier.fillMaxWidth().padding(vertical = 1.dp),
                         shape = RoundedCornerShape(

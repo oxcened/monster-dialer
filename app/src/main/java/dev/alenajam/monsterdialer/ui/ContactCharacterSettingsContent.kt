@@ -21,6 +21,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
@@ -31,6 +32,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.compose.LocalLifecycleOwner
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil.compose.AsyncImage
 import dev.alenajam.monsterdialer.R
 import dev.alenajam.monsterdialer.characters.BuiltInCharacter
@@ -44,9 +46,9 @@ import dev.alenajam.opendialer.feature.settings.LocalSettingsSubpageNavigator
 fun ColumnScope.ContactCharacterSettingsContent(
     viewModel: ContactCharacterSettingsViewModel = hiltViewModel()
 ) {
-    val contact = viewModel.contact
-    val assignedTrainer = viewModel.assignedTrainer
-    val assignedMonster = viewModel.assignedMonster
+    val contact by viewModel.contact.collectAsStateWithLifecycle()
+    val assignedTrainer by viewModel.assignedTrainer.collectAsStateWithLifecycle()
+    val assignedMonster by viewModel.assignedMonster.collectAsStateWithLifecycle()
     val trainers = viewModel.trainers
     val monsters = viewModel.monsters
 
@@ -83,7 +85,8 @@ fun ColumnScope.ContactCharacterSettingsContent(
         return
     }
 
-    if (contact == null) {
+    val currentContact = contact
+    if (currentContact == null) {
         ContactChooser(
             hasCharacters = true,
             onChooseContact = { navigator?.navigateTo(0) }
@@ -108,9 +111,9 @@ fun ColumnScope.ContactCharacterSettingsContent(
                     tint = MaterialTheme.colorScheme.primary
                 )
                 Column(modifier = Modifier.weight(1f)) {
-                    Text(contact.name, style = MaterialTheme.typography.titleMedium)
+                    Text(currentContact.name, style = MaterialTheme.typography.titleMedium)
                     Text(
-                        contact.numbers.joinToString(),
+                        currentContact.numbers.joinToString(),
                         style = MaterialTheme.typography.bodySmall,
                         color = MaterialTheme.colorScheme.onSurfaceVariant
                     )

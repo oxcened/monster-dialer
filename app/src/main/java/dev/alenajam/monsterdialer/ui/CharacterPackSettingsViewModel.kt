@@ -3,9 +3,6 @@ package dev.alenajam.monsterdialer.ui
 import android.content.Context
 import android.net.Uri
 import android.provider.OpenableColumns
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dev.alenajam.monsterdialer.data.characters.CharactersRepository
@@ -14,10 +11,10 @@ import dev.alenajam.monsterdialer.data.characters.PacksRepository
 import dev.alenajam.monsterdialer.data.characters.PacksRepositoryImpl
 import dev.alenajam.monsterdialer.packs.CharacterAssignmentTarget
 import dev.alenajam.monsterdialer.packs.CharacterPackImportDiagnostic
-import dev.alenajam.monsterdialer.packs.CharacterType
-import dev.alenajam.monsterdialer.packs.InstalledPackCharacter
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -32,20 +29,20 @@ class CharacterPackSettingsViewModel @Inject constructor(
     val packs: StateFlow<List<MonsterPack>> = packsRepository.getPacks()
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), emptyList())
 
-    var message by mutableStateOf<String?>(null)
-        private set
+    private val _message = MutableStateFlow<String?>(null)
+    val message: StateFlow<String?> = _message.asStateFlow()
 
-    var importDiagnostic by mutableStateOf<CharacterPackImportDiagnostic?>(null)
-        private set
+    private val _importDiagnostic = MutableStateFlow<CharacterPackImportDiagnostic?>(null)
+    val importDiagnostic: StateFlow<CharacterPackImportDiagnostic?> = _importDiagnostic.asStateFlow()
 
     fun importPack(context: Context, uri: Uri) {
         val fileName = context.displayNameFor(uri)
         viewModelScope.launch {
             val result = (packsRepository as PacksRepositoryImpl).importPackFromUri(uri)
             result.onSuccess {
-                message = null
+                _message.value = null
             }.onFailure { error ->
-                importDiagnostic = CharacterPackImportDiagnostic.from(fileName, error)
+                _importDiagnostic.value = CharacterPackImportDiagnostic.from(fileName, error)
             }
         }
     }
@@ -59,15 +56,15 @@ class CharacterPackSettingsViewModel @Inject constructor(
     fun deletePack(packId: String, successMessage: String, failureMessage: String) {
         viewModelScope.launch {
             val result = runCatching { packsRepository.deletePack(packId) }
-            message = if (result.isSuccess) successMessage else failureMessage
+            _message.value = if (result.isSuccess) successMessage else failureMessage
         }
     }
 
     fun dismissDiagnostic() {
-        importDiagnostic = null
+        _importDiagnostic.value = null
     }
 
-    fun getPreviewCharacter(packId: String, packName: String): InstalledPackCharacter? {
+    fun getPreviewCharacter(packId: String): dev.alenajam.monsterdialer.packs.InstalledPackCharacter? {
         return charactersRepository.getCharactersAssignableTo(CharacterAssignmentTarget.Contact)
             .firstOrNull { it.packId == packId }
     }
