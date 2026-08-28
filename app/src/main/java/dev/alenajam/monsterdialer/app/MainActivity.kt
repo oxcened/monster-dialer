@@ -44,12 +44,14 @@ class MainActivity : ComponentActivity() {
                     SettingsSubpage(
                         title = stringResource(R.string.settings_player_character_title),
                         description = stringResource(R.string.settings_player_character_description),
-                        content = { PlayerCharacterSettingsContent() }
+                        content = { PlayerCharacterSettingsContent() },
+                        isScrollable = false
                     ),
                     SettingsSubpage(
                         title = stringResource(R.string.settings_contact_characters_title),
                         description = stringResource(R.string.settings_contact_characters_description),
                         content = { ContactCharacterSettingsContent() },
+                        isScrollable = false,
                         destinations = listOf(
                             SettingsSubpageDestination(title = stringResource(R.string.choose_contact)) { onNavigateBack ->
                                 ContactPickerDestination(onNavigateBack)

@@ -1,6 +1,9 @@
 package dev.alenajam.monsterdialer.characters.ui
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyListScope
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -50,19 +53,21 @@ fun ColumnScope.PlayerCharacterSettingsContent(
     val trainers = viewModel.trainers
     val monsters = viewModel.monsters
     var selectedTab by rememberSaveable { mutableIntStateOf(0) }
+    val trainerTitle = stringResource(R.string.character_type_trainer)
+    val monsterTitle = stringResource(R.string.character_type_monster)
 
-    Column(verticalArrangement = Arrangement.spacedBy(16.dp)) {
-        CharacterTypeTabs(selectedTab = selectedTab, onTabSelected = { selectedTab = it })
+    CharacterTypeTabs(selectedTab = selectedTab, onTabSelected = { selectedTab = it })
+    LazyColumn(modifier = Modifier.fillMaxWidth().weight(1f)) {
         when (selectedTab) {
-            0 -> CharacterTypeSection(
-                title = stringResource(R.string.character_type_trainer),
+            0 -> characterTypeItems(
+                title = trainerTitle,
                 defaultCharacter = BuiltInCharacters.trainer,
                 characters = trainers,
                 selected = assignedTrainer,
                 onSelect = viewModel::assignTrainer
             )
-            1 -> CharacterTypeSection(
-                title = stringResource(R.string.character_type_monster),
+            1 -> characterTypeItems(
+                title = monsterTitle,
                 defaultCharacter = BuiltInCharacters.monster.character,
                 characters = monsters,
                 selected = assignedMonster,
@@ -91,8 +96,7 @@ internal fun CharacterTypeTabs(selectedTab: Int, onTabSelected: (Int) -> Unit) {
     }
 }
 
-@Composable
-private fun CharacterTypeSection(
+private fun LazyListScope.characterTypeItems(
     title: String,
     defaultCharacter: BuiltInCharacter,
     characters: List<InstalledPackCharacter>,
@@ -102,47 +106,47 @@ private fun CharacterTypeSection(
     val availableSelection = selected?.takeIf { reference ->
         characters.any { CharacterReference(it.packId, it.character.id) == reference }
     }
-    Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
-        Text(title, style = MaterialTheme.typography.titleMedium)
-        Column {
-            CharacterOptionCard(
-                name = defaultCharacter.name,
-                subtitle = stringResource(R.string.built_in_character),
-                isSelected = availableSelection == null,
-                roundTop = true,
-                roundBottom = false,
-                artwork = {
-                    Image(
-                        painter = painterResource(defaultCharacter.playerArtwork.resource),
-                        contentDescription = stringResource(R.string.default_character_artwork, title.lowercase()),
-                        modifier = Modifier.size(72.dp)
-                    )
-                },
-                onSelect = { onSelect(null) }
-            )
-            characters.forEachIndexed { index, installed ->
-                val reference = CharacterReference(installed.packId, installed.character.id)
-                CharacterOptionCard(
-                    name = installed.character.name,
-                    subtitle = installed.packName,
-                    isRadiant = installed.character.isRadiant,
-                    isSelected = availableSelection == reference,
-                    roundTop = false,
-                    roundBottom = index == characters.lastIndex,
-                    artwork = {
-                        AsyncImage(
-                            model = installed.imageFile(requireNotNull(installed.character.backImage)),
-                            contentDescription = stringResource(R.string.character_artwork, installed.character.name),
-                            modifier = Modifier.size(72.dp)
-                        )
-                    },
-                    onSelect = { onSelect(reference) }
+    item(key = "default") {
+        CharacterOptionCard(
+            name = defaultCharacter.name,
+            subtitle = stringResource(R.string.built_in_character),
+            isSelected = availableSelection == null,
+            roundTop = true,
+            roundBottom = false,
+            artwork = {
+                Image(
+                    painter = painterResource(defaultCharacter.playerArtwork.resource),
+                    contentDescription = stringResource(R.string.default_character_artwork, title.lowercase()),
+                    modifier = Modifier.size(72.dp)
                 )
-            }
-            if (characters.isEmpty()) {
-                NoAdditionalCharacterOptionsCard(title)
-            }
-        }
+            },
+            onSelect = { onSelect(null) }
+        )
+    }
+    itemsIndexed(
+        items = characters,
+        key = { _, character -> "${character.packId}:${character.character.id}" }
+    ) { index, installed ->
+        val reference = CharacterReference(installed.packId, installed.character.id)
+        CharacterOptionCard(
+            name = installed.character.name,
+            subtitle = installed.packName,
+            isRadiant = installed.character.isRadiant,
+            isSelected = availableSelection == reference,
+            roundTop = false,
+            roundBottom = index == characters.lastIndex,
+            artwork = {
+                AsyncImage(
+                    model = installed.imageFile(requireNotNull(installed.character.backImage)),
+                    contentDescription = stringResource(R.string.character_artwork, installed.character.name),
+                    modifier = Modifier.size(72.dp)
+                )
+            },
+            onSelect = { onSelect(reference) }
+        )
+    }
+    if (characters.isEmpty()) {
+        item(key = "empty") { NoAdditionalCharacterOptionsCard(title) }
     }
 }
 

@@ -1,6 +1,9 @@
 package dev.alenajam.monsterdialer.characters.ui
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyListScope
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -55,6 +58,8 @@ fun ColumnScope.ContactCharacterSettingsContent(
     val trainers = viewModel.trainers
     val monsters = viewModel.monsters
     var selectedTab by rememberSaveable { mutableIntStateOf(0) }
+    val trainerTitle = stringResource(R.string.character_type_trainer)
+    val monsterTitle = stringResource(R.string.character_type_monster)
 
     val lifecycleOwner = LocalLifecycleOwner.current
     val navigator = LocalSettingsSubpageNavigator.current
@@ -70,18 +75,18 @@ fun ColumnScope.ContactCharacterSettingsContent(
     }
 
     if (trainers.isEmpty() && monsters.isEmpty()) {
-        Column(verticalArrangement = Arrangement.spacedBy(16.dp)) {
-            CharacterTypeTabs(selectedTab = selectedTab, onTabSelected = { selectedTab = it })
+        CharacterTypeTabs(selectedTab = selectedTab, onTabSelected = { selectedTab = it })
+        LazyColumn(modifier = Modifier.fillMaxWidth().weight(1f)) {
             when (selectedTab) {
-                0 -> ContactCharacterTypeSection(
-                    title = stringResource(R.string.character_type_trainer),
+                0 -> contactCharacterTypeItems(
+                    title = trainerTitle,
                     defaultCharacter = BuiltInCharacters.trainer,
                     characters = emptyList(),
                     selected = null,
                     onSelect = {}
                 )
-                1 -> ContactCharacterTypeSection(
-                    title = stringResource(R.string.character_type_monster),
+                1 -> contactCharacterTypeItems(
+                    title = monsterTitle,
                     defaultCharacter = BuiltInCharacters.monster.character,
                     characters = emptyList(),
                     selected = null,
@@ -101,7 +106,10 @@ fun ColumnScope.ContactCharacterSettingsContent(
         return
     }
 
-    Column(verticalArrangement = Arrangement.spacedBy(16.dp)) {
+    Column(
+        modifier = Modifier.fillMaxSize(),
+        verticalArrangement = Arrangement.spacedBy(16.dp)
+    ) {
         Card(
             modifier = Modifier.fillMaxWidth(),
             colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainerLow)
@@ -130,28 +138,28 @@ fun ColumnScope.ContactCharacterSettingsContent(
         }
 
         CharacterTypeTabs(selectedTab = selectedTab, onTabSelected = { selectedTab = it })
-
+        LazyColumn(modifier = Modifier.fillMaxWidth().weight(1f)) {
         when (selectedTab) {
-            0 -> ContactCharacterTypeSection(
-                title = stringResource(R.string.character_type_trainer),
+            0 -> contactCharacterTypeItems(
+                title = trainerTitle,
                 defaultCharacter = BuiltInCharacters.trainer,
                 characters = trainers,
                 selected = assignedTrainer,
                 onSelect = viewModel::assignTrainer
             )
-            1 -> ContactCharacterTypeSection(
-                title = stringResource(R.string.character_type_monster),
+            1 -> contactCharacterTypeItems(
+                title = monsterTitle,
                 defaultCharacter = BuiltInCharacters.monster.character,
                 characters = monsters,
                 selected = assignedMonster,
                 onSelect = viewModel::assignMonster
             )
         }
+        }
     }
 }
 
-@Composable
-private fun ContactCharacterTypeSection(
+private fun LazyListScope.contactCharacterTypeItems(
     title: String,
     defaultCharacter: BuiltInCharacter,
     characters: List<InstalledPackCharacter>,
@@ -161,47 +169,47 @@ private fun ContactCharacterTypeSection(
     val availableSelection = selected?.takeIf { reference ->
         characters.any { CharacterReference(it.packId, it.character.id) == reference }
     }
-    Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
-        Text(title, style = MaterialTheme.typography.titleMedium)
-        Column {
-            CharacterOptionCard(
-                name = defaultCharacter.name,
-                subtitle = stringResource(R.string.built_in_character),
-                isSelected = availableSelection == null,
-                roundTop = true,
-                roundBottom = false,
-                artwork = {
-                    Image(
-                        painter = painterResource(defaultCharacter.contactArtwork.resource),
-                        contentDescription = stringResource(R.string.default_character_artwork, title.lowercase()),
-                        modifier = Modifier.size(72.dp)
-                    )
-                },
-                onSelect = { onSelect(null) }
-            )
-            characters.forEachIndexed { index, item ->
-                val reference = CharacterReference(item.packId, item.character.id)
-                CharacterOptionCard(
-                    name = item.character.name,
-                    subtitle = item.packName,
-                    isRadiant = item.character.isRadiant,
-                    isSelected = availableSelection == reference,
-                    roundTop = false,
-                    roundBottom = index == characters.lastIndex,
-                    artwork = {
-                        AsyncImage(
-                            model = item.imageFile(requireNotNull(item.character.frontImage)),
-                            contentDescription = stringResource(R.string.character_artwork, item.character.name),
-                            modifier = Modifier.size(72.dp)
-                        )
-                    },
-                    onSelect = { onSelect(reference) }
+    item(key = "default") {
+        CharacterOptionCard(
+            name = defaultCharacter.name,
+            subtitle = stringResource(R.string.built_in_character),
+            isSelected = availableSelection == null,
+            roundTop = true,
+            roundBottom = false,
+            artwork = {
+                Image(
+                    painter = painterResource(defaultCharacter.contactArtwork.resource),
+                    contentDescription = stringResource(R.string.default_character_artwork, title.lowercase()),
+                    modifier = Modifier.size(72.dp)
                 )
-            }
-            if (characters.isEmpty()) {
-                NoAdditionalCharacterOptionsCard(title)
-            }
-        }
+            },
+            onSelect = { onSelect(null) }
+        )
+    }
+    itemsIndexed(
+        items = characters,
+        key = { _, character -> "${character.packId}:${character.character.id}" }
+    ) { index, item ->
+        val reference = CharacterReference(item.packId, item.character.id)
+        CharacterOptionCard(
+            name = item.character.name,
+            subtitle = item.packName,
+            isRadiant = item.character.isRadiant,
+            isSelected = availableSelection == reference,
+            roundTop = false,
+            roundBottom = index == characters.lastIndex,
+            artwork = {
+                AsyncImage(
+                    model = item.imageFile(requireNotNull(item.character.frontImage)),
+                    contentDescription = stringResource(R.string.character_artwork, item.character.name),
+                    modifier = Modifier.size(72.dp)
+                )
+            },
+            onSelect = { onSelect(reference) }
+        )
+    }
+    if (characters.isEmpty()) {
+        item(key = "empty") { NoAdditionalCharacterOptionsCard(title) }
     }
 }
 
