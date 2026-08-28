@@ -1,4 +1,4 @@
-package dev.alenajam.monsterdialer.ui
+package dev.alenajam.monsterdialer.app.ui
 
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.outlined.CallMade

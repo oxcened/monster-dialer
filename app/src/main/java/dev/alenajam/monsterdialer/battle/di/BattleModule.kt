@@ -1,4 +1,4 @@
-package dev.alenajam.monsterdialer.di
+package dev.alenajam.monsterdialer.battle.di
 
 import dagger.Binds
 import dagger.Module
@@ -10,7 +10,7 @@ import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
-abstract class MonsterUIModule {
+abstract class BattleModule {
     @Binds
     @Singleton
     abstract fun bindInCallUI(impl: MonsterInCallUI): InCallUI

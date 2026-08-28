@@ -1,4 +1,4 @@
-package dev.alenajam.monsterdialer
+package dev.alenajam.monsterdialer.app
 
 import android.app.Application
 import dagger.hilt.android.HiltAndroidApp

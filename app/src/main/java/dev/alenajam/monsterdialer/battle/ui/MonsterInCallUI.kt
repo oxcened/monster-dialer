@@ -33,7 +33,7 @@ import dev.alenajam.monsterdialer.characters.data.CharactersRepository
 import dev.alenajam.monsterdialer.battle.data.AssignedCharacterEncounterFactory
 import dev.alenajam.monsterdialer.R
 import dev.alenajam.monsterdialer.battle.ui.BattleScreen
-import dev.alenajam.monsterdialer.ui.MonsterIcons
+import dev.alenajam.monsterdialer.app.ui.MonsterIcons
 import dev.alenajam.opendialer.core.common.getActivity
 import dev.alenajam.opendialer.core.common.ui.AppProviders
 import dev.alenajam.opendialer.core.common.ui.AppThemeExtension

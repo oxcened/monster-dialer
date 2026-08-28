@@ -1,4 +1,4 @@
-package dev.alenajam.monsterdialer
+package dev.alenajam.monsterdialer.app
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -6,7 +6,8 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.ui.res.stringResource
 import dagger.hilt.android.AndroidEntryPoint
-import dev.alenajam.monsterdialer.ui.MonsterIcons
+import dev.alenajam.monsterdialer.R
+import dev.alenajam.monsterdialer.app.ui.MonsterIcons
 import dev.alenajam.monsterdialer.packs.ui.CharacterPackSettingsContent
 import dev.alenajam.monsterdialer.characters.ui.PlayerCharacterSettingsContent
 import dev.alenajam.monsterdialer.characters.ui.ContactCharacterSettingsContent
