@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name" comment="Application name shown by Android and in the About screen." translatable="false">MonsterDialer</string>
-    <string name="contribute_monsterdialer_translations" comment="Title of the MonsterDialer translation contribution card.">Contribute MonsterDialer translations</string>
+    <string name="additional_translation_project_title" comment="Title of the additional translation contribution card.">Contribute MonsterDialer translations</string>
     <string name="contribute_translations" comment="Title of the OpenDialer translation contribution link on the About screen.">Contribute OpenDialer translations</string>
-    <string name="contribute_monsterdialer_translations_description" comment="Description of the MonsterDialer translation contribution card.">Help make MonsterDialer available in more languages.</string>
-    <string name="url_crowdin_monsterdialer" translatable="false">https://crowdin.com/project/monsterdialer</string>
+    <string name="url_additional_translation_project" translatable="false">https://crowdin.com/project/monsterdialer</string>
     <string name="url_github_opendialer" translatable="false">https://github.com/oxcened/monster-dialer</string>
     <string name="url_feature_requests" translatable="false">https://monsterdialer.fider.io/</string>
     <string name="hang_up" comment="Button to end the current phone call.">Hang up</string>

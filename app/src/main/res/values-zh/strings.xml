@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="contribute_monsterdialer_translations" comment="Title of the MonsterDialer translation contribution card.">参与 MonsterDialer 翻译</string>
+    <string name="additional_translation_project_title" comment="Title of the additional translation contribution card.">参与 MonsterDialer 翻译</string>
     <string name="contribute_translations" comment="Title of the OpenDialer translation contribution link on the About screen.">参与 OpenDialer 翻译</string>
-    <string name="contribute_monsterdialer_translations_description" comment="Description of the MonsterDialer translation contribution card.">帮助 MonsterDialer 支持更多语言。</string>
     <string name="hang_up" comment="Button to end the current phone call.">挂断</string>
     <string name="settings_character_packs_title" comment="Settings title for managing character packs.">角色包</string>
     <string name="settings_character_packs_description" comment="Settings description for character packs.">导入和管理自定义角色插图。</string>

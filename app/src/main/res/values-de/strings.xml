@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="contribute_monsterdialer_translations" comment="Title of the MonsterDialer translation contribution card.">Zu MonsterDialer-Übersetzungen beitragen</string>
+    <string name="additional_translation_project_title" comment="Title of the additional translation contribution card.">Zu MonsterDialer-Übersetzungen beitragen</string>
     <string name="contribute_translations" comment="Title of the OpenDialer translation contribution link on the About screen.">Zu OpenDialer-Übersetzungen beitragen</string>
-    <string name="contribute_monsterdialer_translations_description" comment="Description of the MonsterDialer translation contribution card.">Hilf mit, MonsterDialer in mehr Sprachen verfügbar zu machen.</string>
     <string name="hang_up" comment="Button to end the current phone call.">Auflegen</string>
     <string name="settings_character_packs_title" comment="Settings title for managing character packs.">Charakterpakete</string>
     <string name="settings_character_packs_description" comment="Settings description for character packs.">Importiere und verwalte eigene Charaktergrafiken.</string>
