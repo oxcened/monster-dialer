@@ -69,6 +69,11 @@ fun rememberMonsterIcons(): AppIcons {
                 if (isDarkTheme) R.drawable.delete_on_dark else R.drawable.delete_on_light,
                 tintable = false,
             ),
+            arrowLeft = IconSource.Resource(R.drawable.arrow_left, tintable = false),
+            arrowRight = IconSource.Resource(R.drawable.arrow_right, tintable = false),
+            arrowUp = IconSource.Resource(R.drawable.arrow_up, tintable = false),
+            arrowDown = IconSource.Resource(R.drawable.arrow_down, tintable = false),
+            favorite = IconSource.Resource(R.drawable.star, tintable = false),
         )
     }
 }
