@@ -190,11 +190,20 @@ private fun CharacterOptionCard(
         elevation = CardDefaults.cardElevation(defaultElevation = 0.5.dp)
     ) {
         Row(modifier = Modifier.padding(16.dp), verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(16.dp)) {
-            artwork()
+            Box(modifier = Modifier.size(72.dp)) {
+                artwork()
+                if (isRadiant) {
+                    Icon(
+                        imageVector = Icons.Outlined.AutoAwesome,
+                        contentDescription = stringResource(R.string.radiant),
+                        modifier = Modifier.align(Alignment.TopEnd).size(20.dp),
+                        tint = MaterialTheme.colorScheme.primary
+                    )
+                }
+            }
             Column(modifier = Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(2.dp)) {
                 Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(6.dp)) {
                     Text(name, style = MaterialTheme.typography.titleMedium)
-                    if (isRadiant) Icon(Icons.Outlined.AutoAwesome, stringResource(R.string.radiant), Modifier.size(18.dp), MaterialTheme.colorScheme.primary)
                 }
                 Text(subtitle, style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
                 if (isSelected) Text(stringResource(R.string.selected), style = MaterialTheme.typography.labelLarge, color = MaterialTheme.colorScheme.primary)

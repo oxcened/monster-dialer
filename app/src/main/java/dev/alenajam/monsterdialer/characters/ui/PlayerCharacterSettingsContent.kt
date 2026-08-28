@@ -12,7 +12,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.key
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
@@ -36,12 +35,12 @@ fun ColumnScope.PlayerCharacterSettingsContent(
     var selectedTab by rememberSaveable { mutableIntStateOf(0) }
     val trainerSelectedItemIndex = selectedCharacterIndex(trainers, assignedTrainer)
     val monsterSelectedItemIndex = selectedCharacterIndex(monsters, assignedMonster)
-    val trainerListState = key(trainerSelectedItemIndex) {
-        rememberLazyListState(initialFirstVisibleItemIndex = trainerSelectedItemIndex)
-    }
-    val monsterListState = key(monsterSelectedItemIndex) {
-        rememberLazyListState(initialFirstVisibleItemIndex = monsterSelectedItemIndex)
-    }
+    val trainerListState = rememberLazyListState(
+        initialFirstVisibleItemIndex = trainerSelectedItemIndex
+    )
+    val monsterListState = rememberLazyListState(
+        initialFirstVisibleItemIndex = monsterSelectedItemIndex
+    )
     val trainerTitle = stringResource(R.string.character_type_trainer)
     val monsterTitle = stringResource(R.string.character_type_monster)
 
