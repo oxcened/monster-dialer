@@ -42,7 +42,8 @@ fun rememberMonsterIcons(): AppIcons {
             callMissed = IconSource.Vector(Icons.AutoMirrored.Outlined.CallMissed),
             voicemail = IconSource.Resource(R.drawable.voicemail, tintable = false),
             voicemailSelected = IconSource.Resource(R.drawable.voicemail, tintable = false),
-            block = IconSource.Vector(Icons.Outlined.Block),
+            block = IconSource.Resource(R.drawable.block, tintable = false),
+            blockCall = IconSource.Resource(R.drawable.block_call, tintable = false),
             phone = IconSource.Resource(R.drawable.phone, tintable = false),
             message = IconSource.Resource(R.drawable.message, tintable = false),
             personAdd = IconSource.Resource(
