@@ -322,7 +322,7 @@ private fun ContactChooser(hasCharacters: Boolean, onChooseContact: () -> Unit) 
     }
 }
 
-private fun readContactNumbers(context: android.content.Context, contactId: Int, selectedNumber: String): List<String> {
+private fun readContactNumbers(context: android.content.Context, contactId: Int): List<String> {
     val numbers = mutableListOf<String>()
     context.contentResolver.query(
         ContactsContract.CommonDataKinds.Phone.CONTENT_URI,
@@ -335,7 +335,7 @@ private fun readContactNumbers(context: android.content.Context, contactId: Int,
             cursor.getString(0)?.takeIf { it.isNotBlank() }?.let(numbers::add)
         }
     }
-    return (numbers + selectedNumber).distinct()
+    return numbers.distinct()
 }
 
 private fun contactExists(context: android.content.Context, contact: dev.alenajam.monsterdialer.packs.SelectedContact): Boolean {
@@ -376,7 +376,7 @@ fun ContactPickerDestination(onNavigateBack: () -> Unit) {
                 withContext(Dispatchers.IO) {
                     assignments.setSelectedContact(
                         label = selectedContact.name,
-                        contactKeys = readContactNumbers(context, selectedContact.id, selectedContact.number),
+                        contactKeys = readContactNumbers(context, selectedContact.id),
                         contactId = selectedContact.id
                     )
                 }

@@ -129,7 +129,8 @@ class MonsterInCallUI @Inject constructor() : InCallUI {
                             onMerge = viewModel::merge,
                             onSwap = viewModel::swap,
                             onManageConference = { showManageSheet = true },
-                            onDigit = viewModel::playDtmf
+                            onDigitPress = viewModel::startDtmf,
+                            onDigitRelease = viewModel::stopDtmf
                         )
                     }
                 }
