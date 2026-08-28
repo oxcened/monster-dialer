@@ -19,6 +19,9 @@
     <string name="import_and_enable_character_pack" comment="Empty-state message in the character selector.">Importér og aktivér en figurpakke for at tilføje flere.</string>
     <string name="radiant" comment="Adjective for a rare, sparkling character variant.">Strålende</string>
     <string name="selected" comment="Status label for the currently chosen option.">Valgt</string>
+    <string name="show_grid_view" comment="Accessibility label for the control that switches the character selector to a grid.">Vis gittervisning</string>
+    <string name="show_list_view" comment="Accessibility label for the control that switches the character selector to a list.">Vis listevisning</string>
+    <string name="jump_to_selected_character" comment="Accessibility label for a button that scrolls to the selected character.">Gå til valgt figur</string>
     <string name="select" comment="Button label to choose an option.">Vælg</string>
     <string name="change" comment="Button label to change the current selection.">Skift</string>
     <string name="contact_chooser_prompt" comment="Prompt above the contact picker.">Vælg en kontakt, der skal tildeles en figur.</string>
