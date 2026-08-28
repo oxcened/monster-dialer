@@ -22,6 +22,9 @@ import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.setValue
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
@@ -51,6 +54,7 @@ fun ColumnScope.ContactCharacterSettingsContent(
     val assignedMonster by viewModel.assignedMonster.collectAsStateWithLifecycle()
     val trainers = viewModel.trainers
     val monsters = viewModel.monsters
+    var selectedTab by rememberSaveable { mutableIntStateOf(0) }
 
     val lifecycleOwner = LocalLifecycleOwner.current
     val navigator = LocalSettingsSubpageNavigator.current
@@ -66,21 +70,24 @@ fun ColumnScope.ContactCharacterSettingsContent(
     }
 
     if (trainers.isEmpty() && monsters.isEmpty()) {
-        Column(verticalArrangement = Arrangement.spacedBy(24.dp)) {
-            ContactCharacterTypeSection(
-                title = stringResource(R.string.character_type_trainer),
-                defaultCharacter = BuiltInCharacters.trainer,
-                characters = emptyList(),
-                selected = null,
-                onSelect = {}
-            )
-            ContactCharacterTypeSection(
-                title = stringResource(R.string.character_type_monster),
-                defaultCharacter = BuiltInCharacters.monster.character,
-                characters = emptyList(),
-                selected = null,
-                onSelect = {}
-            )
+        Column(verticalArrangement = Arrangement.spacedBy(16.dp)) {
+            CharacterTypeTabs(selectedTab = selectedTab, onTabSelected = { selectedTab = it })
+            when (selectedTab) {
+                0 -> ContactCharacterTypeSection(
+                    title = stringResource(R.string.character_type_trainer),
+                    defaultCharacter = BuiltInCharacters.trainer,
+                    characters = emptyList(),
+                    selected = null,
+                    onSelect = {}
+                )
+                1 -> ContactCharacterTypeSection(
+                    title = stringResource(R.string.character_type_monster),
+                    defaultCharacter = BuiltInCharacters.monster.character,
+                    characters = emptyList(),
+                    selected = null,
+                    onSelect = {}
+                )
+            }
         }
         return
     }
@@ -122,20 +129,24 @@ fun ColumnScope.ContactCharacterSettingsContent(
             }
         }
 
-        ContactCharacterTypeSection(
-            title = stringResource(R.string.character_type_trainer),
-            defaultCharacter = BuiltInCharacters.trainer,
-            characters = trainers,
-            selected = assignedTrainer,
-            onSelect = viewModel::assignTrainer
-        )
-        ContactCharacterTypeSection(
-            title = stringResource(R.string.character_type_monster),
-            defaultCharacter = BuiltInCharacters.monster.character,
-            characters = monsters,
-            selected = assignedMonster,
-            onSelect = viewModel::assignMonster
-        )
+        CharacterTypeTabs(selectedTab = selectedTab, onTabSelected = { selectedTab = it })
+
+        when (selectedTab) {
+            0 -> ContactCharacterTypeSection(
+                title = stringResource(R.string.character_type_trainer),
+                defaultCharacter = BuiltInCharacters.trainer,
+                characters = trainers,
+                selected = assignedTrainer,
+                onSelect = viewModel::assignTrainer
+            )
+            1 -> ContactCharacterTypeSection(
+                title = stringResource(R.string.character_type_monster),
+                defaultCharacter = BuiltInCharacters.monster.character,
+                characters = monsters,
+                selected = assignedMonster,
+                onSelect = viewModel::assignMonster
+            )
+        }
     }
 }
 
