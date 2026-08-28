@@ -28,6 +28,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
+import dev.alenajam.monsterdialer.data.characters.CharacterAssignmentRepository
 import dev.alenajam.monsterdialer.data.characters.CharactersRepository
 import dev.alenajam.monsterdialer.ui.battle.AssignedCharacterEncounterFactory
 import dev.alenajam.monsterdialer.R
@@ -46,7 +47,8 @@ import dev.alenajam.opendialer.feature.inCall.ui.SecondaryCallBanner
 import javax.inject.Inject
 
 class MonsterInCallUI @Inject constructor(
-    private val repository: CharactersRepository
+    private val charactersRepository: CharactersRepository,
+    private val assignmentRepository: CharacterAssignmentRepository
 ) : InCallUI {
     @OptIn(ExperimentalMaterial3Api::class)
     @Composable
@@ -55,8 +57,11 @@ class MonsterInCallUI @Inject constructor(
         val uiState by viewModel.uiState.collectAsStateWithLifecycle()
         val durationMillis by viewModel.activeCallDuration.collectAsStateWithLifecycle(0L)
         val context = LocalContext.current
-        val encounterFactory = remember(repository) {
-            AssignedCharacterEncounterFactory(repository = repository)
+        val encounterFactory = remember(charactersRepository, assignmentRepository) {
+            AssignedCharacterEncounterFactory(
+                charactersRepository = charactersRepository,
+                assignmentRepository = assignmentRepository
+            )
         }
 
         val hasSecondaryCall = uiState.hasSecondaryCall

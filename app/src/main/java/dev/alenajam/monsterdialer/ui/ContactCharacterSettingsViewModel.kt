@@ -2,7 +2,9 @@ package dev.alenajam.monsterdialer.ui
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import dev.alenajam.monsterdialer.data.characters.CharacterAssignmentRepository
 import dev.alenajam.monsterdialer.data.characters.CharactersRepository
+import dev.alenajam.monsterdialer.data.characters.ContactSelectionRepository
 import dev.alenajam.monsterdialer.data.characters.MonsterContact
 import dev.alenajam.monsterdialer.packs.CharacterAssignmentTarget
 import dev.alenajam.monsterdialer.packs.CharacterReference
@@ -18,7 +20,9 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 
 @HiltViewModel
 class ContactCharacterSettingsViewModel @Inject constructor(
-    private val repository: CharactersRepository
+    private val charactersRepository: CharactersRepository,
+    private val assignmentRepository: CharacterAssignmentRepository,
+    private val selectionRepository: ContactSelectionRepository
 ) : ViewModel() {
 
     private val _contact = MutableStateFlow<MonsterContact?>(null)
@@ -30,11 +34,11 @@ class ContactCharacterSettingsViewModel @Inject constructor(
     private val _assignedMonster = MutableStateFlow<CharacterReference?>(null)
     val assignedMonster: StateFlow<CharacterReference?> = _assignedMonster.asStateFlow()
 
-    val trainers: List<InstalledPackCharacter> = repository.getCharactersAssignableTo(
+    val trainers: List<InstalledPackCharacter> = charactersRepository.getCharactersAssignableTo(
         CharacterAssignmentTarget.Contact, CharacterType.Trainer
     )
 
-    val monsters: List<InstalledPackCharacter> = repository.getCharactersAssignableTo(
+    val monsters: List<InstalledPackCharacter> = charactersRepository.getCharactersAssignableTo(
         CharacterAssignmentTarget.Contact, CharacterType.Monster
     )
 
@@ -44,21 +48,21 @@ class ContactCharacterSettingsViewModel @Inject constructor(
 
     fun restoreSelectedContact() {
         viewModelScope.launch {
-            val restored = repository.getSelectedContact()
+            val restored = selectionRepository.getSelectedContact()
             _contact.value = restored
             
             _assignedTrainer.value = restored?.contactKeys()?.firstNotNullOfOrNull {
-                repository.getAssignedCharacter(it, CharacterType.Trainer)
+                assignmentRepository.getAssignedCharacter(it, CharacterType.Trainer)
             }
             _assignedMonster.value = restored?.contactKeys()?.firstNotNullOfOrNull {
-                repository.getAssignedCharacter(it, CharacterType.Monster)
+                assignmentRepository.getAssignedCharacter(it, CharacterType.Monster)
             }
         }
     }
 
     fun onContactSelected(selectedContact: DialerContactSummary) {
         viewModelScope.launch {
-            repository.setSelectedContact(selectedContact)
+            selectionRepository.setSelectedContact(selectedContact)
             restoreSelectedContact()
         }
     }
@@ -67,7 +71,7 @@ class ContactCharacterSettingsViewModel @Inject constructor(
         val selected = _contact.value ?: return
         viewModelScope.launch {
             selected.numbers.forEach {
-                repository.assignCharacter(
+                assignmentRepository.assignCharacter(
                     it,
                     CharacterType.Trainer,
                     reference,
@@ -82,7 +86,7 @@ class ContactCharacterSettingsViewModel @Inject constructor(
         val selected = _contact.value ?: return
         viewModelScope.launch {
             selected.numbers.forEach {
-                repository.assignCharacter(
+                assignmentRepository.assignCharacter(
                     it,
                     CharacterType.Monster,
                     reference,

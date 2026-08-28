@@ -1,5 +1,6 @@
 package dev.alenajam.monsterdialer.ui.battle
 
+import dev.alenajam.monsterdialer.data.characters.CharacterAssignmentRepository
 import dev.alenajam.monsterdialer.data.characters.CharactersRepository
 import dev.alenajam.monsterdialer.packs.CharacterAssignmentTarget
 import dev.alenajam.monsterdialer.packs.CharacterType
@@ -8,7 +9,8 @@ import kotlinx.coroutines.runBlocking
 
 /** Builds a call encounter from local assignments, retaining the bundled fallback at all times. */
 class AssignedCharacterEncounterFactory(
-    private val repository: CharactersRepository
+    private val charactersRepository: CharactersRepository,
+    private val assignmentRepository: CharacterAssignmentRepository
 ) {
     fun forCall(callId: String, contactKey: String, callerName: String, isAnonymous: Boolean): BattleEncounter {
         val fallback = BattleEncounterFactory.forCall(callId, callerName, isAnonymous)
@@ -17,30 +19,30 @@ class AssignedCharacterEncounterFactory(
         // and currently the repository uses suspend functions. In a full architecture, 
         // the encounter might be part of the ViewModel state.
         return runBlocking {
-            val player = repository.getPlayerCharacter(CharacterType.Monster)
-                ?.let { repository.findCharacter(it, CharacterAssignmentTarget.Player, CharacterType.Monster) }
+            val player = assignmentRepository.getPlayerCharacter(CharacterType.Monster)
+                ?.let { charactersRepository.findCharacter(it, CharacterAssignmentTarget.Player, CharacterType.Monster) }
                 ?.asPlayerBattleMonster()
                 ?: fallback.player
             
             val enemy = if (isAnonymous) {
                 fallback.enemy
             } else {
-                repository.getAssignedCharacter(contactKey, CharacterType.Monster)
-                    ?.let { repository.findCharacter(it, CharacterAssignmentTarget.Contact, CharacterType.Monster) }
+                assignmentRepository.getAssignedCharacter(contactKey, CharacterType.Monster)
+                    ?.let { charactersRepository.findCharacter(it, CharacterAssignmentTarget.Contact, CharacterType.Monster) }
                     ?.asContactBattleMonster()
                     ?: fallback.enemy
             }
             
-            val playerTrainer = repository.getPlayerCharacter(CharacterType.Trainer)
-                ?.let { repository.findCharacter(it, CharacterAssignmentTarget.Player, CharacterType.Trainer) }
+            val playerTrainer = assignmentRepository.getPlayerCharacter(CharacterType.Trainer)
+                ?.let { charactersRepository.findCharacter(it, CharacterAssignmentTarget.Player, CharacterType.Trainer) }
                 ?.playerTrainerSprite()
                 ?: fallback.playerTrainerSprite
             
             val enemyTrainer = if (isAnonymous) {
                 fallback.enemyTrainerSprite
             } else {
-                repository.getAssignedCharacter(contactKey, CharacterType.Trainer)
-                    ?.let { repository.findCharacter(it, CharacterAssignmentTarget.Contact, CharacterType.Trainer) }
+                assignmentRepository.getAssignedCharacter(contactKey, CharacterType.Trainer)
+                    ?.let { charactersRepository.findCharacter(it, CharacterAssignmentTarget.Contact, CharacterType.Trainer) }
                     ?.contactTrainerSprite()
                     ?: fallback.enemyTrainerSprite
             }
