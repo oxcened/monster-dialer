@@ -24,6 +24,16 @@ class CharacterPackRepositoryTest {
     }
 
     @Test
+    fun charactersInPackReturnsCharactersWhenPackIsDisabled() {
+        setupPack("pack1", "c1", enabled = false)
+
+        val characters = repository.charactersInPack("pack1", "pack1 Pack")
+
+        assertEquals(1, characters.size)
+        assertEquals("c1", characters.single().character.id)
+    }
+
+    @Test
     fun findReturnsCorrectCharacter() {
         setupPack("pack1", "c1")
         val reference = CharacterReference("pack1", "c1")

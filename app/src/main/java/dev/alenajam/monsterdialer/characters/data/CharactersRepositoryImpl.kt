@@ -27,4 +27,11 @@ class CharactersRepositoryImpl @Inject constructor(
     ): InstalledPackCharacter? {
         return repository.find(reference, role, type)
     }
+
+    override fun getCharactersInPack(
+        packId: String,
+        packName: String
+    ): List<InstalledPackCharacter> {
+        return repository.charactersInPack(packId, packName)
+    }
 }

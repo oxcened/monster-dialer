@@ -65,9 +65,8 @@ class CharacterPackSettingsViewModel @Inject constructor(
         _importDiagnostic.value = null
     }
 
-    fun getPreviewCharacter(packId: String): InstalledPackCharacter? {
-        return charactersRepository.getCharactersAssignableTo(CharacterAssignmentTarget.Contact)
-            .firstOrNull { it.packId == packId }
+    fun getPreviewCharacter(packId: String, packName: String): InstalledPackCharacter? {
+        return charactersRepository.getCharactersInPack(packId, packName).firstOrNull()
     }
 
     private fun Context.displayNameFor(uri: Uri): String {
