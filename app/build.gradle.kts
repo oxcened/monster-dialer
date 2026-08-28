@@ -122,6 +122,7 @@ dependencies {
     implementation(project(":data:contacts"))
 
     implementation(libs.androidx.core.ktx)
+    implementation(libs.androidx.appcompat)
     implementation(libs.androidx.lifecycle.viewmodel.compose)
     implementation(libs.androidx.compose.runtime.livedata)
     implementation(libs.kotlinx.coroutines.core)

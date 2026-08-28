@@ -20,10 +20,8 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.selection.SelectionContainer
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.ContentCopy
 import androidx.compose.material.icons.outlined.ErrorOutline
 import androidx.compose.material.icons.outlined.FolderOpen
-import androidx.compose.material.icons.outlined.Share
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
@@ -52,6 +50,8 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil.compose.AsyncImage
 import dev.alenajam.monsterdialer.R
 import dev.alenajam.monsterdialer.packs.data.CharacterPackImportDiagnostic
+import dev.alenajam.opendialer.core.common.ui.AppIcon
+import dev.alenajam.opendialer.core.common.ui.LocalAppIcons
 
 @Composable
 fun ColumnScope.CharacterPackSettingsContent(
@@ -256,14 +256,22 @@ private fun CharacterPackImportFailureDialog(
                 context.copyToClipboard(diagnosticLabel, diagnostic.report)
                 copied = true
             }) {
-                Icon(Icons.Outlined.ContentCopy, contentDescription = null, modifier = Modifier.size(18.dp))
+                AppIcon(
+                    LocalAppIcons.current.copy,
+                    contentDescription = null,
+                    modifier = Modifier.size(18.dp)
+                )
                 Text(stringResource(if (copied) R.string.copied else R.string.copy_report), modifier = Modifier.padding(start = 8.dp))
             }
         },
         dismissButton = {
             Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                 TextButton(onClick = { context.shareImportDiagnostic(diagnostic.report) }) {
-                    Icon(Icons.Outlined.Share, contentDescription = null, modifier = Modifier.size(18.dp))
+                    AppIcon(
+                        LocalAppIcons.current.share,
+                        contentDescription = null,
+                        modifier = Modifier.size(18.dp)
+                    )
                     Text(stringResource(R.string.share), modifier = Modifier.padding(start = 6.dp))
                 }
                 TextButton(onClick = onDismiss) { Text(stringResource(R.string.close)) }

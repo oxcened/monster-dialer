@@ -1,26 +1,29 @@
 package dev.alenajam.monsterdialer.app
 
 import android.os.Bundle
-import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.appcompat.app.AppCompatActivity
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import dagger.hilt.android.AndroidEntryPoint
 import dev.alenajam.monsterdialer.R
-import dev.alenajam.monsterdialer.app.ui.MonsterIcons
+import dev.alenajam.monsterdialer.app.ui.rememberMonsterIcons
+import dev.alenajam.monsterdialer.app.ui.rememberMonsterTypography
 import dev.alenajam.monsterdialer.packs.ui.CharacterPackSettingsContent
 import dev.alenajam.monsterdialer.characters.ui.PlayerCharacterSettingsContent
 import dev.alenajam.monsterdialer.characters.ui.ContactCharacterSettingsContent
 import dev.alenajam.monsterdialer.characters.ui.ContactPickerDestination
 import dev.alenajam.opendialer.core.common.DefaultPhoneManager
+import dev.alenajam.opendialer.core.common.ui.AppThemeExtension
 import dev.alenajam.opendialer.feature.settings.SettingsSubpage
 import dev.alenajam.opendialer.feature.settings.SettingsSubpageDestination
 import dev.alenajam.opendialer.feature.appShell.DialerApp
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class MainActivity : ComponentActivity() {
+class MainActivity : AppCompatActivity() {
     @Inject
     lateinit var defaultPhoneManager: DefaultPhoneManager
 
@@ -35,7 +38,10 @@ class MainActivity : ComponentActivity() {
         setContent {
             DialerApp(
                 defaultPhoneManager = defaultPhoneManager,
-                icons = MonsterIcons,
+                icons = rememberMonsterIcons(),
+                themeExtension = AppThemeExtension(
+                    typography = rememberMonsterTypography(MaterialTheme.typography)
+                ),
                 settingsSubpages = listOf(
                     SettingsSubpage(
                         title = stringResource(R.string.settings_character_packs_title),
