@@ -25,8 +25,6 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.outlined.ViewList
 import androidx.compose.material.icons.outlined.AutoAwesome
 import androidx.compose.material.icons.outlined.GridView
-import androidx.compose.material.icons.outlined.KeyboardArrowDown
-import androidx.compose.material.icons.outlined.KeyboardArrowUp
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
@@ -51,6 +49,8 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import dev.alenajam.monsterdialer.R
+import dev.alenajam.opendialer.core.common.ui.AppIcon
+import dev.alenajam.opendialer.core.common.ui.LocalAppIcons
 import dev.alenajam.monsterdialer.characters.data.BuiltInArtwork
 import dev.alenajam.monsterdialer.characters.data.BuiltInCharacter
 import dev.alenajam.monsterdialer.packs.data.CharacterReference
@@ -243,11 +243,11 @@ internal fun JumpToSelectedCharacterButton(
             onClick = { coroutineScope.launch { listState.animateScrollToItem(selectedItemIndex) } },
             modifier = modifier
         ) {
-            Icon(
-                imageVector = if (isSelectedItemAbove) {
-                    Icons.Outlined.KeyboardArrowUp
+            AppIcon(
+                icon = if (isSelectedItemAbove) {
+                    LocalAppIcons.current.arrowUp
                 } else {
-                    Icons.Outlined.KeyboardArrowDown
+                    LocalAppIcons.current.arrowDown
                 },
                 contentDescription = stringResource(R.string.jump_to_selected_character)
             )
@@ -281,8 +281,8 @@ internal fun JumpToSelectedCharacterButton(
             onClick = { coroutineScope.launch { gridState.animateScrollToItem(selectedItemIndex) } },
             modifier = modifier
         ) {
-            Icon(
-                imageVector = if (isSelectedItemAbove) Icons.Outlined.KeyboardArrowUp else Icons.Outlined.KeyboardArrowDown,
+            AppIcon(
+                icon = if (isSelectedItemAbove) LocalAppIcons.current.arrowUp else LocalAppIcons.current.arrowDown,
                 contentDescription = stringResource(R.string.jump_to_selected_character)
             )
         }
