@@ -15,12 +15,9 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.Person
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
@@ -46,6 +43,8 @@ import dev.alenajam.monsterdialer.R
 import dev.alenajam.monsterdialer.characters.data.BuiltInCharacters
 import dev.alenajam.monsterdialer.contacts.ui.formatPhoneNumber
 import dev.alenajam.opendialer.core.common.ui.ContactAvatar
+import dev.alenajam.opendialer.core.common.ui.AppIcon
+import dev.alenajam.opendialer.core.common.ui.LocalAppIcons
 import dev.alenajam.opendialer.feature.contacts.ContactPickerScreen
 import dev.alenajam.opendialer.feature.settings.LocalSettingsSubpageNavigator
 
@@ -231,11 +230,10 @@ private fun ContactChooser(hasCharacters: Boolean, onChooseContact: () -> Unit) 
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
-            Icon(
-                Icons.Outlined.Person,
+            AppIcon(
+                LocalAppIcons.current.accountCircle,
                 contentDescription = null,
-                modifier = Modifier.size(56.dp),
-                tint = MaterialTheme.colorScheme.primary
+                modifier = Modifier.size(56.dp)
             )
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally,

@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.rememberModalBottomSheetState
@@ -33,7 +34,8 @@ import dev.alenajam.monsterdialer.characters.data.CharactersRepository
 import dev.alenajam.monsterdialer.battle.data.AssignedCharacterEncounterFactory
 import dev.alenajam.monsterdialer.R
 import dev.alenajam.monsterdialer.battle.ui.BattleScreen
-import dev.alenajam.monsterdialer.app.ui.MonsterIcons
+import dev.alenajam.monsterdialer.app.ui.rememberMonsterIcons
+import dev.alenajam.monsterdialer.app.ui.rememberMonsterTypography
 import dev.alenajam.opendialer.core.common.getActivity
 import dev.alenajam.opendialer.core.common.ui.AppProviders
 import dev.alenajam.opendialer.core.common.ui.AppThemeExtension
@@ -95,8 +97,9 @@ class MonsterInCallUI @Inject constructor(
 
         // Here you provide the MonsterDialer specific UI!
         AppProviders(
-            icons = MonsterIcons,
+            icons = rememberMonsterIcons(),
             themeExtension = AppThemeExtension(
+                typography = rememberMonsterTypography(MaterialTheme.typography)
                 // backgroundPainter = { painterResource(R.drawable.monster_bg) }
             )
         ) {

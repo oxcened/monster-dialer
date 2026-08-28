@@ -4,9 +4,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.outlined.CallMade
 import androidx.compose.material.icons.automirrored.outlined.CallMissed
 import androidx.compose.material.icons.automirrored.outlined.CallReceived
-import androidx.compose.material.icons.automirrored.outlined.Message
 import androidx.compose.material.icons.automirrored.outlined.VolumeUp
-import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material.icons.outlined.AddIcCall
 import androidx.compose.material.icons.outlined.Block
 import androidx.compose.material.icons.outlined.CallEnd
@@ -16,33 +14,59 @@ import androidx.compose.material.icons.outlined.Merge
 import androidx.compose.material.icons.outlined.MicOff
 import androidx.compose.material.icons.outlined.MoreVert
 import androidx.compose.material.icons.outlined.Pause
-import androidx.compose.material.icons.outlined.PersonAddAlt
-import androidx.compose.material.icons.outlined.Phone
 import androidx.compose.material.icons.outlined.PhonePaused
 import androidx.compose.material.icons.outlined.SwapCalls
-import androidx.compose.material.icons.outlined.Voicemail
+import androidx.compose.foundation.isSystemInDarkTheme
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
+import dev.alenajam.monsterdialer.R
 import dev.alenajam.opendialer.core.common.ui.AppIcons
+import dev.alenajam.opendialer.core.common.ui.IconSource
 
-// TODO: Replace these with Monster/Pixel-themed icons!
-val MonsterIcons = AppIcons(
-    hangup = Icons.Outlined.CallEnd,
-    dialpad = Icons.Outlined.Dialpad,
-    mute = Icons.Outlined.MicOff,
-    speaker = Icons.AutoMirrored.Outlined.VolumeUp,
-    more = Icons.Outlined.MoreVert,
-    pause = Icons.Outlined.Pause,
-    addCall = Icons.Outlined.AddIcCall,
-    accountCircle = Icons.Filled.AccountCircle,
-    callReceived = Icons.AutoMirrored.Outlined.CallReceived,
-    callMade = Icons.AutoMirrored.Outlined.CallMade,
-    callMissed = Icons.AutoMirrored.Outlined.CallMissed,
-    voicemail = Icons.Outlined.Voicemail,
-    block = Icons.Outlined.Block,
-    phone = Icons.Outlined.Phone,
-    message = Icons.AutoMirrored.Outlined.Message,
-    personAdd = Icons.Outlined.PersonAddAlt,
-    history = Icons.Outlined.History,
-    merge = Icons.Outlined.Merge,
-    swapCalls = Icons.Outlined.SwapCalls,
-    phonePaused = Icons.Outlined.PhonePaused
-)
+@Composable
+fun rememberMonsterIcons(): AppIcons {
+    val isDarkTheme = isSystemInDarkTheme()
+    return remember(isDarkTheme) {
+        AppIcons(
+            hangup = IconSource.Vector(Icons.Outlined.CallEnd),
+            dialpad = IconSource.Vector(Icons.Outlined.Dialpad),
+            mute = IconSource.Vector(Icons.Outlined.MicOff),
+            speaker = IconSource.Vector(Icons.AutoMirrored.Outlined.VolumeUp),
+            more = IconSource.Vector(Icons.Outlined.MoreVert),
+            pause = IconSource.Vector(Icons.Outlined.Pause),
+            addCall = IconSource.Vector(Icons.Outlined.AddIcCall),
+            accountCircle = IconSource.Resource(R.drawable.player, tintable = false),
+            callReceived = IconSource.Vector(Icons.AutoMirrored.Outlined.CallReceived),
+            callMade = IconSource.Vector(Icons.AutoMirrored.Outlined.CallMade),
+            callMissed = IconSource.Vector(Icons.AutoMirrored.Outlined.CallMissed),
+            voicemail = IconSource.Resource(R.drawable.voicemail, tintable = false),
+            voicemailSelected = IconSource.Resource(R.drawable.voicemail, tintable = false),
+            block = IconSource.Vector(Icons.Outlined.Block),
+            phone = IconSource.Resource(R.drawable.phone, tintable = false),
+            message = IconSource.Resource(R.drawable.message, tintable = false),
+            personAdd = IconSource.Resource(
+                if (isDarkTheme) R.drawable.add_contact_on_dark else R.drawable.add_contact_on_light,
+                tintable = false,
+            ),
+            personAddInContactsList = IconSource.Resource(
+                if (isDarkTheme) R.drawable.add_contact_on_light else R.drawable.add_contact_on_dark,
+                tintable = false,
+            ),
+            history = IconSource.Vector(Icons.Outlined.History),
+            merge = IconSource.Vector(Icons.Outlined.Merge),
+            swapCalls = IconSource.Vector(Icons.Outlined.SwapCalls),
+            phonePaused = IconSource.Vector(Icons.Outlined.PhonePaused),
+            recents = IconSource.Resource(R.drawable.clock, tintable = false),
+            recentsSelected = IconSource.Resource(R.drawable.clock, tintable = false),
+            contacts = IconSource.Resource(R.drawable.player, tintable = false),
+            contactsSelected = IconSource.Resource(R.drawable.player, tintable = false),
+            voicemailLarge = IconSource.Resource(R.drawable.voicemail, tintable = false),
+            search = IconSource.Resource(R.drawable.search, tintable = false),
+            close = IconSource.Resource(R.drawable.close, tintable = false),
+            share = IconSource.Resource(R.drawable.share, tintable = false),
+            edit = IconSource.Resource(R.drawable.edit, tintable = false),
+            copy = IconSource.Resource(R.drawable.copy, tintable = false),
+            delete = IconSource.Resource(R.drawable.delete, tintable = false),
+        )
+    }
+}
