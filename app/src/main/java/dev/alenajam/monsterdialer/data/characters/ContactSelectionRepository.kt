@@ -1,6 +1,6 @@
 package dev.alenajam.monsterdialer.data.characters
 
-import dev.alenajam.monsterdialer.data.contacts.ContactsRepository
+import dev.alenajam.opendialer.data.contacts.ContactsRepository
 import dev.alenajam.monsterdialer.packs.CharacterAssignmentStore
 import dev.alenajam.opendialer.data.contacts.DialerContactSummary
 import kotlinx.coroutines.Dispatchers
@@ -22,7 +22,7 @@ class ContactSelectionRepositoryImpl @Inject constructor(
 
     override suspend fun getSelectedContact(): MonsterContact? = withContext(Dispatchers.IO) {
         val restored = assignments.selectedContact()
-        val exists = restored == null || contactsRepository.contactExists(restored)
+        val exists = restored == null || contactsRepository.contactExists(restored.contactId, restored.contactKeys)
         if (!exists) {
             assignments.clearSelectedContact()
             null
@@ -32,7 +32,7 @@ class ContactSelectionRepositoryImpl @Inject constructor(
     }
 
     override suspend fun setSelectedContact(selectedContact: DialerContactSummary) = withContext(Dispatchers.IO) {
-        val numbers = contactsRepository.readContactNumbers(selectedContact.id)
+        val numbers = contactsRepository.getContactNumbers(selectedContact.id)
         assignments.setSelectedContact(
             label = selectedContact.name,
             contactKeys = numbers,

@@ -14,8 +14,6 @@ import dev.alenajam.monsterdialer.data.characters.ContactSelectionRepository
 import dev.alenajam.monsterdialer.data.characters.ContactSelectionRepositoryImpl
 import dev.alenajam.monsterdialer.data.characters.PacksRepository
 import dev.alenajam.monsterdialer.data.characters.PacksRepositoryImpl
-import dev.alenajam.monsterdialer.data.contacts.ContactsRepository
-import dev.alenajam.monsterdialer.data.contacts.ContactsRepositoryImpl
 import dev.alenajam.monsterdialer.packs.CharacterAssignmentStore
 import dev.alenajam.monsterdialer.packs.CharacterPackCatalog
 import dev.alenajam.monsterdialer.packs.CharacterPackRepository
@@ -63,12 +61,6 @@ object CharacterPacksModule {
     @Provides
     @Singleton
     fun provideContactSelectionRepository(impl: ContactSelectionRepositoryImpl): ContactSelectionRepository {
-        return impl
-    }
-
-    @Provides
-    @Singleton
-    fun provideContactsRepository(impl: ContactsRepositoryImpl): ContactsRepository {
         return impl
     }
 
