@@ -137,7 +137,7 @@ fun ColumnScope.CharacterPackSettingsContent(
             }
             Column {
                 packs.forEachIndexed { index, pack ->
-                    val preview = viewModel.getPreviewCharacter(pack.id)
+                    val preview = viewModel.getPreviewCharacter(pack.id, pack.name)
                     Card(
                         modifier = Modifier.fillMaxWidth().padding(vertical = 1.dp),
                         shape = RoundedCornerShape(

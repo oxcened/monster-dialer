@@ -16,4 +16,7 @@ interface CharactersRepository {
         role: CharacterAssignmentTarget,
         type: CharacterType
     ): InstalledPackCharacter?
+
+    /** Returns a pack's valid installed characters, including when the pack is disabled. */
+    fun getCharactersInPack(packId: String, packName: String): List<InstalledPackCharacter>
 }
