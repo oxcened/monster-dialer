@@ -9,23 +9,22 @@ import androidx.compose.material.icons.outlined.AddIcCall
 import androidx.compose.material.icons.outlined.Block
 import androidx.compose.material.icons.outlined.CallEnd
 import androidx.compose.material.icons.outlined.Dialpad
-import androidx.compose.material.icons.outlined.History
 import androidx.compose.material.icons.outlined.Merge
 import androidx.compose.material.icons.outlined.MicOff
 import androidx.compose.material.icons.outlined.MoreVert
 import androidx.compose.material.icons.outlined.Pause
 import androidx.compose.material.icons.outlined.PhonePaused
 import androidx.compose.material.icons.outlined.SwapCalls
-import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import dev.alenajam.monsterdialer.R
 import dev.alenajam.opendialer.core.common.ui.AppIcons
 import dev.alenajam.opendialer.core.common.ui.IconSource
+import dev.alenajam.opendialer.core.common.ui.rememberAppIsDarkTheme
 
 @Composable
 fun rememberMonsterIcons(): AppIcons {
-    val isDarkTheme = isSystemInDarkTheme()
+    val isDarkTheme = rememberAppIsDarkTheme()
     return remember(isDarkTheme) {
         AppIcons(
             hangup = IconSource.Vector(Icons.Outlined.CallEnd),
@@ -52,7 +51,7 @@ fun rememberMonsterIcons(): AppIcons {
                 if (isDarkTheme) R.drawable.add_contact_on_light else R.drawable.add_contact_on_dark,
                 tintable = false,
             ),
-            history = IconSource.Vector(Icons.Outlined.History),
+            history = IconSource.Resource(R.drawable.book, tintable = false),
             merge = IconSource.Vector(Icons.Outlined.Merge),
             swapCalls = IconSource.Vector(Icons.Outlined.SwapCalls),
             phonePaused = IconSource.Vector(Icons.Outlined.PhonePaused),
@@ -66,7 +65,10 @@ fun rememberMonsterIcons(): AppIcons {
             share = IconSource.Resource(R.drawable.share, tintable = false),
             edit = IconSource.Resource(R.drawable.edit, tintable = false),
             copy = IconSource.Resource(R.drawable.copy, tintable = false),
-            delete = IconSource.Resource(R.drawable.delete, tintable = false),
+            delete = IconSource.Resource(
+                if (isDarkTheme) R.drawable.delete_on_dark else R.drawable.delete_on_light,
+                tintable = false,
+            ),
         )
     }
 }
