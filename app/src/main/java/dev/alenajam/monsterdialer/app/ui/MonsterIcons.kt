@@ -28,6 +28,7 @@ fun rememberMonsterIcons(): AppIcons {
                 if (isDarkTheme) R.drawable.dial_on_dark else R.drawable.dial_on_light,
                 tintable = false,
             ),
+            dialpadActive = IconSource.Resource(R.drawable.dial_on_dark, tintable = false),
             mute = IconSource.Vector(Icons.Outlined.MicOff),
             speaker = IconSource.Vector(Icons.AutoMirrored.Outlined.VolumeUp),
             more = IconSource.Vector(Icons.Outlined.MoreVert),
