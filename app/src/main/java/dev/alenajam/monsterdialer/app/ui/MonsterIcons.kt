@@ -2,7 +2,6 @@ package dev.alenajam.monsterdialer.app.ui
 
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.outlined.CallMade
-import androidx.compose.material.icons.automirrored.outlined.CallReceived
 import androidx.compose.material.icons.automirrored.outlined.VolumeUp
 import androidx.compose.material.icons.outlined.AddIcCall
 import androidx.compose.material.icons.outlined.Block
@@ -36,7 +35,7 @@ fun rememberMonsterIcons(): AppIcons {
             pause = IconSource.Vector(Icons.Outlined.Pause),
             addCall = IconSource.Vector(Icons.Outlined.AddIcCall),
             accountCircle = IconSource.Resource(R.drawable.player, tintable = false),
-            callReceived = IconSource.Vector(Icons.AutoMirrored.Outlined.CallReceived),
+            callReceived = IconSource.Resource(R.drawable.incoming, tintable = false),
             callMade = IconSource.Vector(Icons.AutoMirrored.Outlined.CallMade),
             callMissed = IconSource.Resource(R.drawable.missed, tintable = false),
             voicemail = IconSource.Resource(R.drawable.voicemail, tintable = false),
