@@ -13,7 +13,6 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.AutoAwesome
-import androidx.compose.material.icons.outlined.Person
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
@@ -21,73 +20,43 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import dev.alenajam.monsterdialer.R
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.AsyncImage
+import dev.alenajam.monsterdialer.R
 import dev.alenajam.monsterdialer.characters.BuiltInCharacter
 import dev.alenajam.monsterdialer.characters.BuiltInCharacters
-import dev.alenajam.monsterdialer.packs.CharacterAssignmentStore
-import dev.alenajam.monsterdialer.packs.CharacterAssignmentTarget
-import dev.alenajam.monsterdialer.packs.CharacterPackRepository
 import dev.alenajam.monsterdialer.packs.CharacterReference
-import dev.alenajam.monsterdialer.packs.CharacterType
 import dev.alenajam.monsterdialer.packs.InstalledPackCharacter
-import java.io.File
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 
 @Composable
-fun ColumnScope.PlayerCharacterSettingsContent() {
-    val context = LocalContext.current
-    val root = remember(context.filesDir) { File(context.filesDir, "character-packs") }
-    val assignments = remember(root) { CharacterAssignmentStore(root) }
-    val repository = remember(root) { CharacterPackRepository(root) }
-    val trainers = remember(root) {
-        repository.charactersAssignableTo(CharacterAssignmentTarget.Player, CharacterType.Trainer)
-    }
-    val monsters = remember(root) {
-        repository.charactersAssignableTo(CharacterAssignmentTarget.Player, CharacterType.Monster)
-    }
-    var selectedTrainer by remember { mutableStateOf(assignments.player(CharacterType.Trainer)) }
-    var selectedMonster by remember { mutableStateOf(assignments.player(CharacterType.Monster)) }
-    val scope = rememberCoroutineScope()
+fun ColumnScope.PlayerCharacterSettingsContent(
+    viewModel: PlayerCharacterSettingsViewModel = hiltViewModel()
+) {
+    val assignedTrainer = viewModel.assignedTrainer
+    val assignedMonster = viewModel.assignedMonster
+    val trainers = viewModel.trainers
+    val monsters = viewModel.monsters
 
     Column(verticalArrangement = Arrangement.spacedBy(24.dp)) {
         CharacterTypeSection(
             title = stringResource(R.string.character_type_trainer),
             defaultCharacter = BuiltInCharacters.trainer,
             characters = trainers,
-            selected = selectedTrainer,
-            onSelect = { reference ->
-                scope.launch {
-                    withContext(Dispatchers.IO) { assignments.setPlayer(CharacterType.Trainer, reference) }
-                    selectedTrainer = reference
-                }
-            }
+            selected = assignedTrainer,
+            onSelect = viewModel::assignTrainer
         )
         CharacterTypeSection(
             title = stringResource(R.string.character_type_monster),
             defaultCharacter = BuiltInCharacters.monster.character,
             characters = monsters,
-            selected = selectedMonster,
-            onSelect = { reference ->
-                scope.launch {
-                    withContext(Dispatchers.IO) { assignments.setPlayer(CharacterType.Monster, reference) }
-                    selectedMonster = reference
-                }
-            }
+            selected = assignedMonster,
+            onSelect = viewModel::assignMonster
         )
     }
 }

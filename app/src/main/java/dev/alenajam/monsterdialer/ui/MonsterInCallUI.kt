@@ -1,7 +1,6 @@
 package dev.alenajam.monsterdialer.ui
 
 import android.app.Activity
-import java.io.File
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.WindowInsets
@@ -29,10 +28,9 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
+import dev.alenajam.monsterdialer.data.characters.CharactersRepository
 import dev.alenajam.monsterdialer.ui.battle.AssignedCharacterEncounterFactory
 import dev.alenajam.monsterdialer.R
-import dev.alenajam.monsterdialer.packs.CharacterAssignmentStore
-import dev.alenajam.monsterdialer.packs.CharacterPackRepository
 import dev.alenajam.monsterdialer.ui.battle.BattleScreen
 import dev.alenajam.opendialer.core.common.getActivity
 import dev.alenajam.opendialer.core.common.ui.AppProviders
@@ -47,7 +45,9 @@ import dev.alenajam.opendialer.feature.inCall.ui.ManageConferenceSheet
 import dev.alenajam.opendialer.feature.inCall.ui.SecondaryCallBanner
 import javax.inject.Inject
 
-class MonsterInCallUI @Inject constructor() : InCallUI {
+class MonsterInCallUI @Inject constructor(
+    private val repository: CharactersRepository
+) : InCallUI {
     @OptIn(ExperimentalMaterial3Api::class)
     @Composable
     override fun Content() {
@@ -55,12 +55,8 @@ class MonsterInCallUI @Inject constructor() : InCallUI {
         val uiState by viewModel.uiState.collectAsStateWithLifecycle()
         val durationMillis by viewModel.activeCallDuration.collectAsStateWithLifecycle(0L)
         val context = LocalContext.current
-        val encounterFactory = remember(context.filesDir) {
-            val characterPackRoot = File(context.filesDir, "character-packs")
-            AssignedCharacterEncounterFactory(
-                assignments = CharacterAssignmentStore(characterPackRoot),
-                characters = CharacterPackRepository(characterPackRoot)
-            )
+        val encounterFactory = remember(repository) {
+            AssignedCharacterEncounterFactory(repository = repository)
         }
 
         val hasSecondaryCall = uiState.hasSecondaryCall

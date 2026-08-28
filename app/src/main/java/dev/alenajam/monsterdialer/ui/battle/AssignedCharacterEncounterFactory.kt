@@ -1,48 +1,57 @@
 package dev.alenajam.monsterdialer.ui.battle
 
-import dev.alenajam.monsterdialer.packs.CharacterAssignmentStore
+import dev.alenajam.monsterdialer.data.characters.CharactersRepository
 import dev.alenajam.monsterdialer.packs.CharacterAssignmentTarget
-import dev.alenajam.monsterdialer.packs.CharacterPackRepository
 import dev.alenajam.monsterdialer.packs.CharacterType
 import dev.alenajam.monsterdialer.packs.InstalledPackCharacter
+import kotlinx.coroutines.runBlocking
 
 /** Builds a call encounter from local assignments, retaining the bundled fallback at all times. */
 class AssignedCharacterEncounterFactory(
-    private val assignments: CharacterAssignmentStore,
-    private val characters: CharacterPackRepository
+    private val repository: CharactersRepository
 ) {
     fun forCall(callId: String, contactKey: String, callerName: String, isAnonymous: Boolean): BattleEncounter {
         val fallback = BattleEncounterFactory.forCall(callId, callerName, isAnonymous)
-        val player = assignments.player(CharacterType.Monster)
-            ?.let { characters.find(it, CharacterAssignmentTarget.Player, CharacterType.Monster) }
-            ?.asPlayerBattleMonster()
-            ?: fallback.player
-        val enemy = if (isAnonymous) {
-            fallback.enemy
-        } else {
-            assignments.characterForContact(contactKey, CharacterType.Monster)
-                ?.let { characters.find(it, CharacterAssignmentTarget.Contact, CharacterType.Monster) }
-                ?.asContactBattleMonster()
-                ?: fallback.enemy
+        
+        // Note: Using runBlocking here because forCall is called from Composable composition/remember 
+        // and currently the repository uses suspend functions. In a full architecture, 
+        // the encounter might be part of the ViewModel state.
+        return runBlocking {
+            val player = repository.getPlayerCharacter(CharacterType.Monster)
+                ?.let { repository.findCharacter(it, CharacterAssignmentTarget.Player, CharacterType.Monster) }
+                ?.asPlayerBattleMonster()
+                ?: fallback.player
+            
+            val enemy = if (isAnonymous) {
+                fallback.enemy
+            } else {
+                repository.getAssignedCharacter(contactKey, CharacterType.Monster)
+                    ?.let { repository.findCharacter(it, CharacterAssignmentTarget.Contact, CharacterType.Monster) }
+                    ?.asContactBattleMonster()
+                    ?: fallback.enemy
+            }
+            
+            val playerTrainer = repository.getPlayerCharacter(CharacterType.Trainer)
+                ?.let { repository.findCharacter(it, CharacterAssignmentTarget.Player, CharacterType.Trainer) }
+                ?.playerTrainerSprite()
+                ?: fallback.playerTrainerSprite
+            
+            val enemyTrainer = if (isAnonymous) {
+                fallback.enemyTrainerSprite
+            } else {
+                repository.getAssignedCharacter(contactKey, CharacterType.Trainer)
+                    ?.let { repository.findCharacter(it, CharacterAssignmentTarget.Contact, CharacterType.Trainer) }
+                    ?.contactTrainerSprite()
+                    ?: fallback.enemyTrainerSprite
+            }
+            
+            fallback.copy(
+                player = player,
+                enemy = enemy,
+                playerTrainerSprite = playerTrainer,
+                enemyTrainerSprite = enemyTrainer
+            )
         }
-        val playerTrainer = assignments.player(CharacterType.Trainer)
-            ?.let { characters.find(it, CharacterAssignmentTarget.Player, CharacterType.Trainer) }
-            ?.playerTrainerSprite()
-            ?: fallback.playerTrainerSprite
-        val enemyTrainer = if (isAnonymous) {
-            fallback.enemyTrainerSprite
-        } else {
-            assignments.characterForContact(contactKey, CharacterType.Trainer)
-                ?.let { characters.find(it, CharacterAssignmentTarget.Contact, CharacterType.Trainer) }
-                ?.contactTrainerSprite()
-                ?: fallback.enemyTrainerSprite
-        }
-        return fallback.copy(
-            player = player,
-            enemy = enemy,
-            playerTrainerSprite = playerTrainer,
-            enemyTrainerSprite = enemyTrainer
-        )
     }
 
     private fun InstalledPackCharacter.asPlayerBattleMonster(): BattleMonster {

@@ -1,8 +1,6 @@
 package dev.alenajam.monsterdialer.ui
 
-import android.provider.ContactsContract
-import android.content.ContentUris
-import android.net.Uri
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -12,7 +10,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.Image
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Person
 import androidx.compose.material3.Button
@@ -20,99 +17,46 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.runtime.setValue
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import dev.alenajam.monsterdialer.R
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import coil.compose.AsyncImage
-import dev.alenajam.monsterdialer.packs.CharacterAssignmentStore
-import dev.alenajam.monsterdialer.packs.CharacterAssignmentTarget
-import dev.alenajam.monsterdialer.packs.CharacterPackRepository
-import dev.alenajam.monsterdialer.packs.CharacterReference
-import dev.alenajam.monsterdialer.packs.CharacterType
-import dev.alenajam.monsterdialer.packs.InstalledPackCharacter
-import dev.alenajam.monsterdialer.characters.BuiltInCharacter
-import dev.alenajam.monsterdialer.characters.BuiltInCharacters
-import dev.alenajam.opendialer.feature.settings.LocalSettingsSubpageNavigator
-import dev.alenajam.opendialer.feature.contacts.ContactPickerScreen
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.compose.LocalLifecycleOwner
-import androidx.compose.runtime.DisposableEffect
-import androidx.compose.runtime.LaunchedEffect
-import java.io.File
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
-
-private data class PickedContact(val name: String, val numbers: List<String>)
+import coil.compose.AsyncImage
+import dev.alenajam.monsterdialer.R
+import dev.alenajam.monsterdialer.characters.BuiltInCharacter
+import dev.alenajam.monsterdialer.characters.BuiltInCharacters
+import dev.alenajam.monsterdialer.packs.CharacterReference
+import dev.alenajam.monsterdialer.packs.InstalledPackCharacter
+import dev.alenajam.opendialer.feature.contacts.ContactPickerScreen
+import dev.alenajam.opendialer.feature.settings.LocalSettingsSubpageNavigator
 
 @Composable
-fun ColumnScope.ContactCharacterSettingsContent() {
-    val context = LocalContext.current
-    val root = remember(context.filesDir) { File(context.filesDir, "character-packs") }
-    val assignments = remember(root) { CharacterAssignmentStore(root) }
-    val repository = remember(root) { CharacterPackRepository(root) }
-    val trainers = remember(root) {
-        repository.charactersAssignableTo(CharacterAssignmentTarget.Contact, CharacterType.Trainer)
-    }
-    val monsters = remember(root) {
-        repository.charactersAssignableTo(CharacterAssignmentTarget.Contact, CharacterType.Monster)
-    }
-    var contact by remember {
-        mutableStateOf<PickedContact?>(null)
-    }
-    var assignedTrainer by remember {
-        mutableStateOf<CharacterReference?>(null)
-    }
-    var assignedMonster by remember {
-        mutableStateOf<CharacterReference?>(null)
-    }
+fun ColumnScope.ContactCharacterSettingsContent(
+    viewModel: ContactCharacterSettingsViewModel = hiltViewModel()
+) {
+    val contact = viewModel.contact
+    val assignedTrainer = viewModel.assignedTrainer
+    val assignedMonster = viewModel.assignedMonster
+    val trainers = viewModel.trainers
+    val monsters = viewModel.monsters
+
     val lifecycleOwner = LocalLifecycleOwner.current
     val navigator = LocalSettingsSubpageNavigator.current
-    val scope = rememberCoroutineScope()
 
-    fun restoreSelectedContact() {
-        scope.launch {
-            val restored = withContext(Dispatchers.IO) { assignments.selectedContact() }
-            val exists = restored == null || withContext(Dispatchers.IO) {
-                contactExists(context, restored)
-            }
-            if (!exists) {
-                withContext(Dispatchers.IO) { assignments.clearSelectedContact() }
-                contact = null
-                assignedTrainer = null
-                assignedMonster = null
-                return@launch
-            }
-            contact = restored?.let { PickedContact(it.label, it.contactKeys) }
-            assignedTrainer = restored?.contactKeys?.firstNotNullOfOrNull {
-                assignments.characterForContact(it, CharacterType.Trainer)
-            }
-            assignedMonster = restored?.contactKeys?.firstNotNullOfOrNull {
-                assignments.characterForContact(it, CharacterType.Monster)
-            }
-        }
-    }
-
-    LaunchedEffect(assignments) { restoreSelectedContact() }
-    DisposableEffect(lifecycleOwner, assignments) {
+    DisposableEffect(lifecycleOwner, viewModel) {
         val observer = LifecycleEventObserver { _, event ->
             if (event == Lifecycle.Event.ON_RESUME) {
-                restoreSelectedContact()
+                viewModel.restoreSelectedContact()
             }
         }
         lifecycleOwner.lifecycle.addObserver(observer)
@@ -147,7 +91,6 @@ fun ColumnScope.ContactCharacterSettingsContent() {
         return
     }
 
-    val selected = requireNotNull(contact)
     Column(verticalArrangement = Arrangement.spacedBy(16.dp)) {
         Card(
             modifier = Modifier.fillMaxWidth(),
@@ -165,9 +108,9 @@ fun ColumnScope.ContactCharacterSettingsContent() {
                     tint = MaterialTheme.colorScheme.primary
                 )
                 Column(modifier = Modifier.weight(1f)) {
-                    Text(selected.name, style = MaterialTheme.typography.titleMedium)
+                    Text(contact.name, style = MaterialTheme.typography.titleMedium)
                     Text(
-                        selected.numbers.joinToString(),
+                        contact.numbers.joinToString(),
                         style = MaterialTheme.typography.bodySmall,
                         color = MaterialTheme.colorScheme.onSurfaceVariant
                     )
@@ -181,42 +124,14 @@ fun ColumnScope.ContactCharacterSettingsContent() {
             defaultCharacter = BuiltInCharacters.trainer,
             characters = trainers,
             selected = assignedTrainer,
-            onSelect = { reference ->
-                scope.launch {
-                    withContext(Dispatchers.IO) {
-                        selected.numbers.forEach {
-                            assignments.assignContact(
-                                it,
-                                CharacterType.Trainer,
-                                reference,
-                                selected.name
-                            )
-                        }
-                    }
-                    assignedTrainer = reference
-                }
-            }
+            onSelect = viewModel::assignTrainer
         )
         ContactCharacterTypeSection(
             title = stringResource(R.string.character_type_monster),
             defaultCharacter = BuiltInCharacters.monster.character,
             characters = monsters,
             selected = assignedMonster,
-            onSelect = { reference ->
-                scope.launch {
-                    withContext(Dispatchers.IO) {
-                        selected.numbers.forEach {
-                            assignments.assignContact(
-                                it,
-                                CharacterType.Monster,
-                                reference,
-                                selected.name
-                            )
-                        }
-                    }
-                    assignedMonster = reference
-                }
-            }
+            onSelect = viewModel::assignMonster
         )
     }
 }
@@ -322,66 +237,16 @@ private fun ContactChooser(hasCharacters: Boolean, onChooseContact: () -> Unit) 
     }
 }
 
-private fun readContactNumbers(context: android.content.Context, contactId: Int): List<String> {
-    val numbers = mutableListOf<String>()
-    context.contentResolver.query(
-        ContactsContract.CommonDataKinds.Phone.CONTENT_URI,
-        arrayOf(ContactsContract.CommonDataKinds.Phone.NUMBER),
-        "${ContactsContract.CommonDataKinds.Phone.CONTACT_ID} = ?",
-        arrayOf(contactId.toString()),
-        null
-    )?.use { cursor ->
-        while (cursor.moveToNext()) {
-            cursor.getString(0)?.takeIf { it.isNotBlank() }?.let(numbers::add)
-        }
-    }
-    return numbers.distinct()
-}
-
-private fun contactExists(context: android.content.Context, contact: dev.alenajam.monsterdialer.packs.SelectedContact): Boolean {
-    return try {
-        contact.contactId?.let { contactId ->
-            context.contentResolver.query(
-                ContentUris.withAppendedId(ContactsContract.Contacts.CONTENT_URI, contactId.toLong()),
-                arrayOf(ContactsContract.Contacts._ID),
-                null,
-                null,
-                null
-            )?.use { it.moveToFirst() } ?: false
-        } ?: contact.contactKeys.any { number ->
-            context.contentResolver.query(
-                Uri.withAppendedPath(ContactsContract.PhoneLookup.CONTENT_FILTER_URI, Uri.encode(number)),
-                arrayOf(ContactsContract.PhoneLookup._ID),
-                null,
-                null,
-                null
-            )?.use { it.moveToFirst() } == true
-        }
-    } catch (_: SecurityException) {
-        // Without contacts permission, the contact's existence cannot be determined.
-        true
-    }
-}
-
 @Composable
-fun ContactPickerDestination(onNavigateBack: () -> Unit) {
-    val context = LocalContext.current
-    val root = remember(context.filesDir) { File(context.filesDir, "character-packs") }
-    val assignments = remember(root) { CharacterAssignmentStore(root) }
-    val scope = rememberCoroutineScope()
+fun ContactPickerDestination(
+    onNavigateBack: () -> Unit,
+    viewModel: ContactCharacterSettingsViewModel = hiltViewModel()
+) {
     ContactPickerScreen(
         onNavigateBack = onNavigateBack,
         onContactSelected = { selectedContact ->
-            scope.launch {
-                withContext(Dispatchers.IO) {
-                    assignments.setSelectedContact(
-                        label = selectedContact.name,
-                        contactKeys = readContactNumbers(context, selectedContact.id),
-                        contactId = selectedContact.id
-                    )
-                }
-                onNavigateBack()
-            }
+            viewModel.onContactSelected(selectedContact)
+            onNavigateBack()
         }
     )
 }
