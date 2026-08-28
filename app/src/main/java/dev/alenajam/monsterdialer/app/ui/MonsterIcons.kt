@@ -29,7 +29,7 @@ fun rememberMonsterIcons(): AppIcons {
             more = IconSource.Vector(Icons.Outlined.MoreVert),
             pause = IconSource.Resource(R.drawable.hold, tintable = false),
             addCall = IconSource.Resource(R.drawable.add_call, tintable = false),
-            accountCircle = IconSource.Resource(R.drawable.player, tintable = false),
+            person = IconSource.Resource(R.drawable.player, tintable = false),
             callReceived = IconSource.Resource(R.drawable.incoming, tintable = false),
             callMade = IconSource.Resource(R.drawable.outgoing, tintable = false),
             callMissed = IconSource.Resource(R.drawable.missed, tintable = false),
