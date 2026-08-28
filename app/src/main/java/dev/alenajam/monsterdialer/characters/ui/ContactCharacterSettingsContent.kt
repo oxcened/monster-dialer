@@ -99,7 +99,11 @@ fun ColumnScope.ContactCharacterSettingsContent(
             }
         )
         val listState = if (selectedTab == 0) trainerListState else monsterListState
-        LazyColumn(state = listState, modifier = Modifier.fillMaxWidth().weight(1f)) {
+        LazyColumn(
+            state = listState,
+            modifier = Modifier.fillMaxWidth().weight(1f),
+            contentPadding = PaddingValues(top = 8.dp)
+        ) {
             when (selectedTab) {
                 0 -> characterTypeItems(
                     title = trainerTitle,
