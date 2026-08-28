@@ -2,7 +2,6 @@ package dev.alenajam.monsterdialer.app.ui
 
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Block
-import androidx.compose.material.icons.outlined.CallEnd
 import androidx.compose.material.icons.outlined.Merge
 import androidx.compose.material.icons.outlined.MoreVert
 import androidx.compose.material.icons.outlined.PhonePaused
@@ -19,7 +18,7 @@ fun rememberMonsterIcons(): AppIcons {
     val isDarkTheme = rememberAppIsDarkTheme()
     return remember(isDarkTheme) {
         AppIcons(
-            hangup = IconSource.Vector(Icons.Outlined.CallEnd),
+            hangup = IconSource.Resource(R.drawable.hangup, tintable = false),
             dialpad = IconSource.Resource(
                 if (isDarkTheme) R.drawable.dial_on_dark else R.drawable.dial_on_light,
                 tintable = false,
