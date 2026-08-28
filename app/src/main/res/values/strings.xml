@@ -24,6 +24,7 @@
     <string name="import_and_enable_character_pack" comment="Empty-state message in the character selector.">Import and enable a character pack to add more.</string>
     <string name="radiant" comment="Adjective for a rare, sparkling character variant.">Radiant</string>
     <string name="selected" comment="Status label for the currently chosen option.">Selected</string>
+    <string name="jump_to_selected_character" comment="Accessibility label for a button that scrolls to the selected character.">Jump to selected character</string>
     <string name="select" comment="Button label to choose an option.">Select</string>
     <string name="change" comment="Button label to change the current selection.">Change</string>
     <string name="contact_chooser_prompt" comment="Prompt above the contact picker.">Choose a contact to assign a character.</string>

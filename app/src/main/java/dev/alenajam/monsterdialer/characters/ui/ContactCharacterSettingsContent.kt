@@ -1,10 +1,12 @@
 package dev.alenajam.monsterdialer.characters.ui
 
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -24,6 +26,7 @@ import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.key
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.saveable.rememberSaveable
@@ -55,6 +58,14 @@ fun ColumnScope.ContactCharacterSettingsContent(
     val trainers = viewModel.trainers
     val monsters = viewModel.monsters
     var selectedTab by rememberSaveable { mutableIntStateOf(0) }
+    val trainerSelectedItemIndex = selectedCharacterIndex(trainers, assignedTrainer)
+    val monsterSelectedItemIndex = selectedCharacterIndex(monsters, assignedMonster)
+    val trainerListState = key(trainerSelectedItemIndex) {
+        rememberLazyListState(initialFirstVisibleItemIndex = trainerSelectedItemIndex)
+    }
+    val monsterListState = key(monsterSelectedItemIndex) {
+        rememberLazyListState(initialFirstVisibleItemIndex = monsterSelectedItemIndex)
+    }
     val trainerTitle = stringResource(R.string.character_type_trainer)
     val monsterTitle = stringResource(R.string.character_type_monster)
     val locale = LocalConfiguration.current.locales[0]
@@ -73,8 +84,17 @@ fun ColumnScope.ContactCharacterSettingsContent(
     }
 
     if (trainers.isEmpty() && monsters.isEmpty()) {
-        CharacterTypeTabs(selectedTab = selectedTab, onTabSelected = { selectedTab = it })
-        LazyColumn(modifier = Modifier.fillMaxWidth().weight(1f)) {
+        CharacterTypeTabs(
+            selectedTab = selectedTab,
+            onTabSelected = { tab ->
+                val listState = if (tab == 0) trainerListState else monsterListState
+                val selectedItemIndex = if (tab == 0) trainerSelectedItemIndex else monsterSelectedItemIndex
+                listState.requestScrollToItem(selectedItemIndex)
+                selectedTab = tab
+            }
+        )
+        val listState = if (selectedTab == 0) trainerListState else monsterListState
+        LazyColumn(state = listState, modifier = Modifier.fillMaxWidth().weight(1f)) {
             when (selectedTab) {
                 0 -> characterTypeItems(
                     title = trainerTitle,
@@ -139,9 +159,27 @@ fun ColumnScope.ContactCharacterSettingsContent(
             }
         }
 
-        CharacterTypeTabs(selectedTab = selectedTab, onTabSelected = { selectedTab = it })
+        CharacterTypeTabs(
+            selectedTab = selectedTab,
+            onTabSelected = { tab ->
+                val listState = if (tab == 0) trainerListState else monsterListState
+                val selectedItemIndex = if (tab == 0) trainerSelectedItemIndex else monsterSelectedItemIndex
+                listState.requestScrollToItem(selectedItemIndex)
+                selectedTab = tab
+            }
+        )
         Spacer(modifier = Modifier.height(16.dp))
-        LazyColumn(modifier = Modifier.fillMaxWidth().weight(1f)) {
+        val selectedItemIndex = when (selectedTab) {
+            0 -> trainerSelectedItemIndex
+            else -> monsterSelectedItemIndex
+        }
+        val listState = if (selectedTab == 0) trainerListState else monsterListState
+        Box(modifier = Modifier.fillMaxWidth().weight(1f)) {
+        LazyColumn(
+            state = listState,
+            modifier = Modifier.fillMaxSize(),
+            contentPadding = PaddingValues(bottom = 72.dp)
+        ) {
         when (selectedTab) {
             0 -> characterTypeItems(
                 title = trainerTitle,
@@ -162,6 +200,12 @@ fun ColumnScope.ContactCharacterSettingsContent(
                 onSelect = viewModel::assignMonster
             )
         }
+        }
+        JumpToSelectedCharacterButton(
+            listState = listState,
+            selectedItemIndex = selectedItemIndex,
+            modifier = Modifier.align(Alignment.BottomEnd).padding(16.dp)
+        )
         }
     }
 }

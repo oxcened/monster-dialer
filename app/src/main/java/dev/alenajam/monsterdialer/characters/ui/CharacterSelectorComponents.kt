@@ -9,20 +9,28 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.AutoAwesome
+import androidx.compose.material.icons.outlined.KeyboardArrowDown
+import androidx.compose.material.icons.outlined.KeyboardArrowUp
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.PrimaryTabRow
+import androidx.compose.material3.SmallFloatingActionButton
 import androidx.compose.material3.Tab
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.derivedStateOf
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
@@ -36,6 +44,7 @@ import dev.alenajam.monsterdialer.characters.data.BuiltInCharacter
 import dev.alenajam.monsterdialer.packs.data.CharacterReference
 import dev.alenajam.monsterdialer.packs.data.InstalledPackCharacter
 import java.io.File
+import kotlinx.coroutines.launch
 
 @Composable
 internal fun CharacterTypeTabs(selectedTab: Int, onTabSelected: (Int) -> Unit) {
@@ -97,6 +106,53 @@ internal fun LazyListScope.characterTypeItems(
         )
     }
     if (characters.isEmpty()) item(key = "empty") { NoAdditionalCharacterOptionsCard(title) }
+}
+
+internal fun selectedCharacterIndex(
+    characters: List<InstalledPackCharacter>,
+    selected: CharacterReference?
+): Int = selected?.let { selectedReference ->
+    characters.indexOfFirst { character ->
+        CharacterReference(character.packId, character.character.id) == selectedReference
+    }.takeIf { it >= 0 }?.plus(1)
+} ?: 0
+
+@Composable
+internal fun JumpToSelectedCharacterButton(
+    listState: LazyListState,
+    selectedItemIndex: Int,
+    modifier: Modifier = Modifier
+) {
+    val isSelectedItemOffScreen by remember(listState, selectedItemIndex) {
+        derivedStateOf {
+            val visibleItems = listState.layoutInfo.visibleItemsInfo
+            visibleItems.isNotEmpty() && visibleItems.none { it.index == selectedItemIndex }
+        }
+    }
+    val isSelectedItemAbove by remember(listState, selectedItemIndex) {
+        derivedStateOf {
+            listState.layoutInfo.visibleItemsInfo.firstOrNull()?.index?.let { firstVisibleIndex ->
+                selectedItemIndex < firstVisibleIndex
+            } ?: false
+        }
+    }
+    val coroutineScope = rememberCoroutineScope()
+
+    if (isSelectedItemOffScreen) {
+        SmallFloatingActionButton(
+            onClick = { coroutineScope.launch { listState.animateScrollToItem(selectedItemIndex) } },
+            modifier = modifier
+        ) {
+            Icon(
+                imageVector = if (isSelectedItemAbove) {
+                    Icons.Outlined.KeyboardArrowUp
+                } else {
+                    Icons.Outlined.KeyboardArrowDown
+                },
+                contentDescription = stringResource(R.string.jump_to_selected_character)
+            )
+        }
+    }
 }
 
 @Composable
