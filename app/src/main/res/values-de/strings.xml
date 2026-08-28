@@ -19,6 +19,8 @@
     <string name="import_and_enable_character_pack" comment="Empty-state message in the character selector.">Importiere und aktiviere ein Charakterpaket, um weitere hinzuzufügen.</string>
     <string name="radiant" comment="Adjective for a rare, sparkling character variant.">Strahlend</string>
     <string name="selected" comment="Status label for the currently chosen option.">Ausgewählt</string>
+    <string name="show_grid_view">Rasteransicht anzeigen</string>
+    <string name="show_list_view">Listenansicht anzeigen</string>
     <string name="jump_to_selected_character">Zur ausgewählten Figur</string>
     <string name="select" comment="Button label to choose an option.">Auswählen</string>
     <string name="change" comment="Button label to change the current selection.">Ändern</string>

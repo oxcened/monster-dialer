@@ -2,13 +2,15 @@ package dev.alenajam.monsterdialer.characters.ui
 
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.rememberLazyGridState
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -17,6 +19,7 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -33,6 +36,7 @@ fun ColumnScope.PlayerCharacterSettingsContent(
     val trainers = viewModel.trainers
     val monsters = viewModel.monsters
     var selectedTab by rememberSaveable { mutableIntStateOf(0) }
+    val layout by viewModel.layout.collectAsStateWithLifecycle()
     val trainerSelectedItemIndex = selectedCharacterIndex(trainers, assignedTrainer)
     val monsterSelectedItemIndex = selectedCharacterIndex(monsters, assignedMonster)
     val trainerListState = rememberLazyListState(
@@ -41,55 +45,57 @@ fun ColumnScope.PlayerCharacterSettingsContent(
     val monsterListState = rememberLazyListState(
         initialFirstVisibleItemIndex = monsterSelectedItemIndex
     )
+    val trainerGridState = rememberLazyGridState(initialFirstVisibleItemIndex = trainerSelectedItemIndex)
+    val monsterGridState = rememberLazyGridState(initialFirstVisibleItemIndex = monsterSelectedItemIndex)
     val trainerTitle = stringResource(R.string.character_type_trainer)
     val monsterTitle = stringResource(R.string.character_type_monster)
+    val topContentPadding = with(LocalDensity.current) { 8.dp.roundToPx() }
 
     CharacterTypeTabs(
         selectedTab = selectedTab,
         onTabSelected = { tab ->
-            val listState = if (tab == 0) trainerListState else monsterListState
             val selectedItemIndex = if (tab == 0) trainerSelectedItemIndex else monsterSelectedItemIndex
-            listState.requestScrollToItem(selectedItemIndex)
+            if (layout == CharacterLayout.List) {
+                (if (tab == 0) trainerListState else monsterListState).requestScrollToItem(selectedItemIndex, topContentPadding)
+            } else {
+                (if (tab == 0) trainerGridState else monsterGridState).requestScrollToItem(selectedItemIndex, topContentPadding)
+            }
             selectedTab = tab
         }
     )
-    Spacer(modifier = Modifier.height(16.dp))
     val selectedItemIndex = when (selectedTab) {
         0 -> trainerSelectedItemIndex
         else -> monsterSelectedItemIndex
     }
     val listState = if (selectedTab == 0) trainerListState else monsterListState
+    val gridState = if (selectedTab == 0) trainerGridState else monsterGridState
     Box(modifier = Modifier.fillMaxWidth().weight(1f)) {
-        LazyColumn(
-            state = listState,
-            modifier = Modifier.fillMaxSize(),
-            contentPadding = PaddingValues(bottom = 72.dp)
-        ) {
-            when (selectedTab) {
-                0 -> characterTypeItems(
-                    title = trainerTitle,
-                    defaultCharacter = BuiltInCharacters.trainer,
-                    characters = trainers,
-                    selected = assignedTrainer,
-                    defaultArtwork = { it.playerArtwork },
-                    packArtwork = { it.imageFile(requireNotNull(it.character.backImage)) },
-                    onSelect = viewModel::assignTrainer
-                )
-                1 -> characterTypeItems(
-                    title = monsterTitle,
-                    defaultCharacter = BuiltInCharacters.monster.character,
-                    characters = monsters,
-                    selected = assignedMonster,
-                    defaultArtwork = { it.playerArtwork },
-                    packArtwork = { it.imageFile(requireNotNull(it.character.backImage)) },
-                    onSelect = viewModel::assignMonster
-                )
+        if (layout == CharacterLayout.List) {
+            LazyColumn(state = listState, modifier = Modifier.fillMaxSize(), contentPadding = PaddingValues(top = 8.dp, bottom = 72.dp)) {
+                when (selectedTab) {
+                    0 -> characterTypeItems(trainerTitle, BuiltInCharacters.trainer, trainers, assignedTrainer, { it.playerArtwork }, { it.imageFile(requireNotNull(it.character.backImage)) }, viewModel::assignTrainer)
+                    1 -> characterTypeItems(monsterTitle, BuiltInCharacters.monster.character, monsters, assignedMonster, { it.playerArtwork }, { it.imageFile(requireNotNull(it.character.backImage)) }, viewModel::assignMonster)
+                }
+            }
+        } else {
+            LazyVerticalGrid(columns = GridCells.Fixed(2), state = gridState, modifier = Modifier.fillMaxSize(), contentPadding = PaddingValues(top = 8.dp, bottom = 72.dp), horizontalArrangement = Arrangement.spacedBy(2.dp), verticalArrangement = Arrangement.spacedBy(2.dp)) {
+                when (selectedTab) {
+                    0 -> characterTypeGridItems(trainerTitle, BuiltInCharacters.trainer, trainers, assignedTrainer, { it.playerArtwork }, { it.imageFile(requireNotNull(it.character.backImage)) }, viewModel::assignTrainer)
+                    1 -> characterTypeGridItems(monsterTitle, BuiltInCharacters.monster.character, monsters, assignedMonster, { it.playerArtwork }, { it.imageFile(requireNotNull(it.character.backImage)) }, viewModel::assignMonster)
+                }
             }
         }
-        JumpToSelectedCharacterButton(
-            listState = listState,
-            selectedItemIndex = selectedItemIndex,
-            modifier = Modifier.align(Alignment.BottomEnd).padding(16.dp)
+        CharacterLayoutToggle(
+            layout,
+            onLayoutChanged = { nextLayout ->
+                val firstVisibleItemIndex = if (layout == CharacterLayout.List) listState.firstVisibleItemIndex else gridState.firstVisibleItemIndex
+                if (nextLayout == CharacterLayout.List) listState.requestScrollToItem(firstVisibleItemIndex)
+                else gridState.requestScrollToItem(firstVisibleItemIndex)
+                viewModel.setLayout(nextLayout)
+            },
+            modifier = Modifier.align(Alignment.BottomStart).padding(16.dp)
         )
+        if (layout == CharacterLayout.List) JumpToSelectedCharacterButton(listState, selectedItemIndex, Modifier.align(Alignment.BottomEnd).padding(16.dp))
+        else JumpToSelectedCharacterButton(gridState, selectedItemIndex, Modifier.align(Alignment.BottomEnd).padding(16.dp))
     }
 }
