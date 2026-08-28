@@ -1,12 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="default_phone_title" comment="Title of the default phone app prompt.">Establece MonsterDialer como predeterminada</string>
-    <string name="default_phone_description" comment="Explanation shown below the default-phone prompt.">MonsterDialer solo puede hacer y recibir llamadas cuando es tu aplicación de teléfono predeterminada.</string>
-    <string name="open_source_description" comment="Description of the OpenDialer source-code card in About.">MonsterDialer se basa en OpenDialer. Explora el código fuente y contribuye en GitHub.</string>
     <string name="contribute_monsterdialer_translations" comment="Title of the MonsterDialer translation contribution card.">Contribuye a las traducciones de MonsterDialer</string>
     <string name="contribute_translations" comment="Title of the OpenDialer translation contribution link on the About screen.">Contribuye a las traducciones de OpenDialer</string>
     <string name="contribute_monsterdialer_translations_description" comment="Description of the MonsterDialer translation contribution card.">Ayuda a que MonsterDialer esté disponible en más idiomas.</string>
-    <string name="feature_requests_description" comment="Description of the feature-request card in About.">Propón y vota ideas para MonsterDialer.</string>
     <string name="hang_up" comment="Button to end the current phone call.">Colgar</string>
     <string name="settings_character_packs_title" comment="Settings title for managing character packs.">Paquetes de personajes</string>
     <string name="settings_character_packs_description" comment="Settings description for character packs.">Importa y gestiona ilustraciones de personajes personalizadas.</string>

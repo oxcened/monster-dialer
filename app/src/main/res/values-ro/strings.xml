@@ -1,12 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="default_phone_title" comment="Title of the default phone app prompt.">Setează MonsterDialer ca implicit</string>
-    <string name="default_phone_description" comment="Explanation shown below the default-phone prompt.">MonsterDialer poate efectua și primi apeluri doar când este aplicația ta de telefon implicită.</string>
-    <string name="open_source_description" comment="Description of the OpenDialer source-code card in About.">MonsterDialer are la bază OpenDialer. Explorează codul sursă și contribuie pe GitHub.</string>
     <string name="contribute_monsterdialer_translations" comment="Title of the MonsterDialer translation contribution card.">Contribuie la traducerile MonsterDialer</string>
     <string name="contribute_translations" comment="Title of the OpenDialer translation contribution link on the About screen.">Contribuie la traducerile OpenDialer</string>
     <string name="contribute_monsterdialer_translations_description" comment="Description of the MonsterDialer translation contribution card.">Ajută MonsterDialer să fie disponibil în mai multe limbi.</string>
-    <string name="feature_requests_description" comment="Description of the feature-request card in About.">Propune și votează idei pentru MonsterDialer.</string>
     <string name="hang_up" comment="Button to end the current phone call.">Închide</string>
     <string name="settings_character_packs_title" comment="Settings title for managing character packs.">Pachete de personaje</string>
     <string name="settings_character_packs_description" comment="Settings description for character packs.">Importă și gestionează ilustrații personalizate ale personajelor.</string>

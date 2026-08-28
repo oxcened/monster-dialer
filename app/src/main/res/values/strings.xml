@@ -1,14 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name" comment="Application name shown by Android and in the About screen." translatable="false">MonsterDialer</string>
-    <string name="default_phone_title" comment="Title of the default phone app prompt.">Set MonsterDialer as default</string>
-    <string name="default_phone_description" comment="Explanation shown below the default-phone prompt.">MonsterDialer can only make and receive calls when it’s your default phone app.</string>
-    <string name="open_source_description" comment="Description of the OpenDialer source-code card in About.">MonsterDialer is based on OpenDialer. Explore the source code and contribute on GitHub.</string>
     <string name="contribute_monsterdialer_translations" comment="Title of the MonsterDialer translation contribution card.">Contribute MonsterDialer translations</string>
     <string name="contribute_translations" comment="Title of the OpenDialer translation contribution link on the About screen.">Contribute OpenDialer translations</string>
     <string name="contribute_monsterdialer_translations_description" comment="Description of the MonsterDialer translation contribution card.">Help make MonsterDialer available in more languages.</string>
     <string name="url_crowdin_monsterdialer" translatable="false">https://crowdin.com/project/monsterdialer</string>
-    <string name="feature_requests_description" comment="Description of the feature-request card in About.">Propose and vote on ideas for MonsterDialer.</string>
+    <string name="url_github_opendialer" translatable="false">https://github.com/oxcened/monster-dialer</string>
     <string name="url_feature_requests" translatable="false">https://monsterdialer.fider.io/</string>
     <string name="hang_up" comment="Button to end the current phone call.">Hang up</string>
     <string name="settings_character_packs_title" comment="Settings title for managing character packs.">Character Packs</string>

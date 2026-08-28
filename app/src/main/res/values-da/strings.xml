@@ -1,12 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="default_phone_title" comment="Title of the default phone app prompt.">Indstil MonsterDialer som standard</string>
-    <string name="default_phone_description" comment="Explanation shown below the default-phone prompt.">MonsterDialer kan kun foretage og modtage opkald, når den er din standardtelefonapp.</string>
-    <string name="open_source_description" comment="Description of the OpenDialer source-code card in About.">MonsterDialer er baseret på OpenDialer. Udforsk kildekoden og bidrag på GitHub.</string>
     <string name="contribute_monsterdialer_translations" comment="Title of the MonsterDialer translation contribution card.">Bidrag til MonsterDialer-oversættelser</string>
     <string name="contribute_translations" comment="Title of the OpenDialer translation contribution link on the About screen.">Bidrag til OpenDialer-oversættelser</string>
     <string name="contribute_monsterdialer_translations_description" comment="Description of the MonsterDialer translation contribution card.">Hjælp med at gøre MonsterDialer tilgængelig på flere sprog.</string>
-    <string name="feature_requests_description" comment="Description of the feature-request card in About.">Foreslå og stem om idéer til MonsterDialer.</string>
     <string name="hang_up" comment="Button to end the current phone call.">Læg på</string>
     <string name="settings_character_packs_title" comment="Settings title for managing character packs.">Figurpakker</string>
     <string name="settings_character_packs_description" comment="Settings description for character packs.">Importér og administrér brugerdefinerede figurillustrationer.</string>
