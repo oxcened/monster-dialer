@@ -1,9 +1,6 @@
 package dev.alenajam.monsterdialer.characters.ui
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.LazyListScope
-import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -30,7 +27,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -39,12 +35,8 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import coil.compose.AsyncImage
 import dev.alenajam.monsterdialer.R
-import dev.alenajam.monsterdialer.characters.data.BuiltInCharacter
 import dev.alenajam.monsterdialer.characters.data.BuiltInCharacters
-import dev.alenajam.monsterdialer.packs.data.CharacterReference
-import dev.alenajam.monsterdialer.packs.data.InstalledPackCharacter
 import dev.alenajam.opendialer.feature.contacts.ContactPickerScreen
 import dev.alenajam.opendialer.feature.settings.LocalSettingsSubpageNavigator
 
@@ -78,18 +70,22 @@ fun ColumnScope.ContactCharacterSettingsContent(
         CharacterTypeTabs(selectedTab = selectedTab, onTabSelected = { selectedTab = it })
         LazyColumn(modifier = Modifier.fillMaxWidth().weight(1f)) {
             when (selectedTab) {
-                0 -> contactCharacterTypeItems(
+                0 -> characterTypeItems(
                     title = trainerTitle,
                     defaultCharacter = BuiltInCharacters.trainer,
                     characters = emptyList(),
                     selected = null,
+                    defaultArtwork = { it.contactArtwork },
+                    packArtwork = { it.imageFile(requireNotNull(it.character.frontImage)) },
                     onSelect = {}
                 )
-                1 -> contactCharacterTypeItems(
+                1 -> characterTypeItems(
                     title = monsterTitle,
                     defaultCharacter = BuiltInCharacters.monster.character,
                     characters = emptyList(),
                     selected = null,
+                    defaultArtwork = { it.contactArtwork },
+                    packArtwork = { it.imageFile(requireNotNull(it.character.frontImage)) },
                     onSelect = {}
                 )
             }
@@ -140,76 +136,26 @@ fun ColumnScope.ContactCharacterSettingsContent(
         CharacterTypeTabs(selectedTab = selectedTab, onTabSelected = { selectedTab = it })
         LazyColumn(modifier = Modifier.fillMaxWidth().weight(1f)) {
         when (selectedTab) {
-            0 -> contactCharacterTypeItems(
+            0 -> characterTypeItems(
                 title = trainerTitle,
                 defaultCharacter = BuiltInCharacters.trainer,
                 characters = trainers,
                 selected = assignedTrainer,
+                defaultArtwork = { it.contactArtwork },
+                packArtwork = { it.imageFile(requireNotNull(it.character.frontImage)) },
                 onSelect = viewModel::assignTrainer
             )
-            1 -> contactCharacterTypeItems(
+            1 -> characterTypeItems(
                 title = monsterTitle,
                 defaultCharacter = BuiltInCharacters.monster.character,
                 characters = monsters,
                 selected = assignedMonster,
+                defaultArtwork = { it.contactArtwork },
+                packArtwork = { it.imageFile(requireNotNull(it.character.frontImage)) },
                 onSelect = viewModel::assignMonster
             )
         }
         }
-    }
-}
-
-private fun LazyListScope.contactCharacterTypeItems(
-    title: String,
-    defaultCharacter: BuiltInCharacter,
-    characters: List<InstalledPackCharacter>,
-    selected: CharacterReference?,
-    onSelect: (CharacterReference?) -> Unit
-) {
-    val availableSelection = selected?.takeIf { reference ->
-        characters.any { CharacterReference(it.packId, it.character.id) == reference }
-    }
-    item(key = "default") {
-        CharacterOptionCard(
-            name = defaultCharacter.name,
-            subtitle = stringResource(R.string.built_in_character),
-            isSelected = availableSelection == null,
-            roundTop = true,
-            roundBottom = false,
-            artwork = {
-                Image(
-                    painter = painterResource(defaultCharacter.contactArtwork.resource),
-                    contentDescription = stringResource(R.string.default_character_artwork, title.lowercase()),
-                    modifier = Modifier.size(72.dp)
-                )
-            },
-            onSelect = { onSelect(null) }
-        )
-    }
-    itemsIndexed(
-        items = characters,
-        key = { _, character -> "${character.packId}:${character.character.id}" }
-    ) { index, item ->
-        val reference = CharacterReference(item.packId, item.character.id)
-        CharacterOptionCard(
-            name = item.character.name,
-            subtitle = item.packName,
-            isRadiant = item.character.isRadiant,
-            isSelected = availableSelection == reference,
-            roundTop = false,
-            roundBottom = index == characters.lastIndex,
-            artwork = {
-                AsyncImage(
-                    model = item.imageFile(requireNotNull(item.character.frontImage)),
-                    contentDescription = stringResource(R.string.character_artwork, item.character.name),
-                    modifier = Modifier.size(72.dp)
-                )
-            },
-            onSelect = { onSelect(reference) }
-        )
-    }
-    if (characters.isEmpty()) {
-        item(key = "empty") { NoAdditionalCharacterOptionsCard(title) }
     }
 }
 
