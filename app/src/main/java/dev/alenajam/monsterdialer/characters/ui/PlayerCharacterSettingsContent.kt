@@ -19,7 +19,6 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -49,16 +48,15 @@ fun ColumnScope.PlayerCharacterSettingsContent(
     val monsterGridState = rememberLazyGridState(initialFirstVisibleItemIndex = monsterSelectedItemIndex)
     val trainerTitle = stringResource(R.string.character_type_trainer)
     val monsterTitle = stringResource(R.string.character_type_monster)
-    val topContentPadding = with(LocalDensity.current) { 8.dp.roundToPx() }
 
     CharacterTypeTabs(
         selectedTab = selectedTab,
         onTabSelected = { tab ->
             val selectedItemIndex = if (tab == 0) trainerSelectedItemIndex else monsterSelectedItemIndex
             if (layout == CharacterLayout.List) {
-                (if (tab == 0) trainerListState else monsterListState).requestScrollToItem(selectedItemIndex, topContentPadding)
+                (if (tab == 0) trainerListState else monsterListState).requestScrollToItem(selectedItemIndex)
             } else {
-                (if (tab == 0) trainerGridState else monsterGridState).requestScrollToItem(selectedItemIndex, topContentPadding)
+                (if (tab == 0) trainerGridState else monsterGridState).requestScrollToItem(selectedItemIndex)
             }
             selectedTab = tab
         }

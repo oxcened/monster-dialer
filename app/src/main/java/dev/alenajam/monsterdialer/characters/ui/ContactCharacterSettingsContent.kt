@@ -34,7 +34,6 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalConfiguration
-import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -75,7 +74,6 @@ fun ColumnScope.ContactCharacterSettingsContent(
     val trainerTitle = stringResource(R.string.character_type_trainer)
     val monsterTitle = stringResource(R.string.character_type_monster)
     val locale = LocalConfiguration.current.locales[0]
-    val topContentPadding = with(LocalDensity.current) { 8.dp.roundToPx() }
 
     val lifecycleOwner = LocalLifecycleOwner.current
     val navigator = LocalSettingsSubpageNavigator.current
@@ -95,8 +93,8 @@ fun ColumnScope.ContactCharacterSettingsContent(
             selectedTab = selectedTab,
             onTabSelected = { tab ->
                 val selectedItemIndex = if (tab == 0) trainerSelectedItemIndex else monsterSelectedItemIndex
-                if (layout == CharacterLayout.List) (if (tab == 0) trainerListState else monsterListState).requestScrollToItem(selectedItemIndex, topContentPadding)
-                else (if (tab == 0) trainerGridState else monsterGridState).requestScrollToItem(selectedItemIndex, topContentPadding)
+                if (layout == CharacterLayout.List) (if (tab == 0) trainerListState else monsterListState).requestScrollToItem(selectedItemIndex)
+                else (if (tab == 0) trainerGridState else monsterGridState).requestScrollToItem(selectedItemIndex)
                 selectedTab = tab
             }
         )
@@ -170,8 +168,8 @@ fun ColumnScope.ContactCharacterSettingsContent(
             selectedTab = selectedTab,
             onTabSelected = { tab ->
                 val selectedItemIndex = if (tab == 0) trainerSelectedItemIndex else monsterSelectedItemIndex
-                if (layout == CharacterLayout.List) (if (tab == 0) trainerListState else monsterListState).requestScrollToItem(selectedItemIndex, topContentPadding)
-                else (if (tab == 0) trainerGridState else monsterGridState).requestScrollToItem(selectedItemIndex, topContentPadding)
+                if (layout == CharacterLayout.List) (if (tab == 0) trainerListState else monsterListState).requestScrollToItem(selectedItemIndex)
+                else (if (tab == 0) trainerGridState else monsterGridState).requestScrollToItem(selectedItemIndex)
                 selectedTab = tab
             }
         )
@@ -183,8 +181,8 @@ fun ColumnScope.ContactCharacterSettingsContent(
         val gridState = if (selectedTab == 0) trainerGridState else monsterGridState
         LaunchedEffect(contactSelectionVersion) {
             val selectedItemIndex = if (selectedTab == 0) trainerSelectedItemIndex else monsterSelectedItemIndex
-            if (layout == CharacterLayout.List) listState.requestScrollToItem(selectedItemIndex, topContentPadding)
-            else gridState.requestScrollToItem(selectedItemIndex, topContentPadding)
+            if (layout == CharacterLayout.List) listState.requestScrollToItem(selectedItemIndex)
+            else gridState.requestScrollToItem(selectedItemIndex)
         }
         Box(modifier = Modifier.fillMaxWidth().weight(1f)) {
             if (layout == CharacterLayout.List) {

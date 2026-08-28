@@ -45,7 +45,6 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Shape
-import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
@@ -238,11 +237,10 @@ internal fun JumpToSelectedCharacterButton(
         }
     }
     val coroutineScope = rememberCoroutineScope()
-    val topContentPadding = with(LocalDensity.current) { 8.dp.roundToPx() }
 
     if (isSelectedItemOffScreen) {
         SmallFloatingActionButton(
-            onClick = { coroutineScope.launch { listState.animateScrollToItem(selectedItemIndex, topContentPadding) } },
+            onClick = { coroutineScope.launch { listState.animateScrollToItem(selectedItemIndex) } },
             modifier = modifier
         ) {
             Icon(
@@ -277,11 +275,10 @@ internal fun JumpToSelectedCharacterButton(
         }
     }
     val coroutineScope = rememberCoroutineScope()
-    val topContentPadding = with(LocalDensity.current) { 8.dp.roundToPx() }
 
     if (isSelectedItemOffScreen) {
         SmallFloatingActionButton(
-            onClick = { coroutineScope.launch { gridState.animateScrollToItem(selectedItemIndex, topContentPadding) } },
+            onClick = { coroutineScope.launch { gridState.animateScrollToItem(selectedItemIndex) } },
             modifier = modifier
         ) {
             Icon(
