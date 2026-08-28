@@ -8,7 +8,6 @@ import androidx.compose.material.icons.automirrored.outlined.VolumeUp
 import androidx.compose.material.icons.outlined.AddIcCall
 import androidx.compose.material.icons.outlined.Block
 import androidx.compose.material.icons.outlined.CallEnd
-import androidx.compose.material.icons.outlined.Dialpad
 import androidx.compose.material.icons.outlined.Merge
 import androidx.compose.material.icons.outlined.MicOff
 import androidx.compose.material.icons.outlined.MoreVert
@@ -28,7 +27,10 @@ fun rememberMonsterIcons(): AppIcons {
     return remember(isDarkTheme) {
         AppIcons(
             hangup = IconSource.Vector(Icons.Outlined.CallEnd),
-            dialpad = IconSource.Vector(Icons.Outlined.Dialpad),
+            dialpad = IconSource.Resource(
+                if (isDarkTheme) R.drawable.dial_on_dark else R.drawable.dial_on_light,
+                tintable = false,
+            ),
             mute = IconSource.Vector(Icons.Outlined.MicOff),
             speaker = IconSource.Vector(Icons.AutoMirrored.Outlined.VolumeUp),
             more = IconSource.Vector(Icons.Outlined.MoreVert),
