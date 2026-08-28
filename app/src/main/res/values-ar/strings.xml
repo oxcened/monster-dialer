@@ -19,6 +19,9 @@
     <string name="import_and_enable_character_pack" comment="Empty-state message in the character selector.">استورد وفعّل حزمة شخصيات لإضافة المزيد.</string>
     <string name="radiant" comment="Adjective for a rare, sparkling character variant.">متألق</string>
     <string name="selected" comment="Status label for the currently chosen option.">محدد</string>
+    <string name="show_grid_view">إظهار عرض الشبكة</string>
+    <string name="show_list_view">إظهار عرض القائمة</string>
+    <string name="jump_to_selected_character">الانتقال إلى الشخصية المحددة</string>
     <string name="select" comment="Button label to choose an option.">اختيار</string>
     <string name="change" comment="Button label to change the current selection.">تغيير</string>
     <string name="contact_chooser_prompt" comment="Prompt above the contact picker.">اختر جهة اتصال لتعيين شخصية لها.</string>

@@ -27,7 +27,7 @@ class ContactSelectionRepositoryImpl @Inject constructor(
             assignments.clearSelectedContact()
             null
         } else {
-            restored?.let { MonsterContact(it.label, it.contactKeys) }
+            restored?.let { MonsterContact(it.label, it.contactKeys, it.photoUri) }
         }
     }
 
@@ -36,7 +36,8 @@ class ContactSelectionRepositoryImpl @Inject constructor(
         assignments.setSelectedContact(
             label = selectedContact.name,
             contactKeys = numbers,
-            contactId = selectedContact.id
+            contactId = selectedContact.id,
+            photoUri = selectedContact.image
         )
     }
 

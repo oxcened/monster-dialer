@@ -21,3 +21,5 @@ google-services.json
 
 # Licensed font supplied locally or by CI; never commit this file.
 app/src/main/res/font/ui_pixel_font.otf
+
+.kotlin

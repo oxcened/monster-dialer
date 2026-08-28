@@ -25,7 +25,8 @@ private data class CharacterAssignmentsDocument(
 private data class StoredSelectedContact(
     val label: String,
     val contactKeys: List<String>,
-    val contactId: Int? = null
+    val contactId: Int? = null,
+    val photoUri: String? = null
 )
 
 data class ContactCharacterAssignment(
@@ -38,7 +39,8 @@ data class ContactCharacterAssignment(
 data class SelectedContact(
     val label: String,
     val contactKeys: List<String>,
-    val contactId: Int?
+    val contactId: Int?,
+    val photoUri: String?
 )
 
 /** Persists the user's selected player and contact mappings without putting personal data in packs. */
@@ -108,17 +110,23 @@ class CharacterAssignmentStore(
 
     @Synchronized
     fun selectedContact(): SelectedContact? = read().selectedContact?.let { selected ->
-        SelectedContact(selected.label, selected.contactKeys, selected.contactId)
+        SelectedContact(selected.label, selected.contactKeys, selected.contactId, selected.photoUri)
     }
 
     @Synchronized
-    fun setSelectedContact(label: String, contactKeys: List<String>, contactId: Int? = null) {
+    fun setSelectedContact(
+        label: String,
+        contactKeys: List<String>,
+        contactId: Int? = null,
+        photoUri: String? = null
+    ) {
         val normalizedKeys = contactKeys.map(::normalizeContactKey).distinct()
         require(normalizedKeys.isNotEmpty()) { "Selected contact must have a phone number" }
         val selected = StoredSelectedContact(
             label = label.trim().ifBlank { normalizedKeys.first() }.take(MaxContactLabelLength),
             contactKeys = normalizedKeys,
-            contactId = contactId
+            contactId = contactId,
+            photoUri = photoUri
         )
         val document = read()
         write(document.copy(selectedContact = selected))

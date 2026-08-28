@@ -19,6 +19,9 @@
     <string name="import_and_enable_character_pack" comment="Empty-state message in the character selector.">Importă și activează un pachet de personaje pentru a adăuga mai multe.</string>
     <string name="radiant" comment="Adjective for a rare, sparkling character variant.">Radiant</string>
     <string name="selected" comment="Status label for the currently chosen option.">Selectat</string>
+    <string name="show_grid_view">Afișează grila</string>
+    <string name="show_list_view">Afișează lista</string>
+    <string name="jump_to_selected_character">Salt la personajul selectat</string>
     <string name="select" comment="Button label to choose an option.">Selectează</string>
     <string name="change" comment="Button label to change the current selection.">Schimbă</string>
     <string name="contact_chooser_prompt" comment="Prompt above the contact picker.">Alege un contact căruia să îi atribui un personaj.</string>

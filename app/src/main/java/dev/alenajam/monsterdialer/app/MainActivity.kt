@@ -5,6 +5,7 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.dp
 import dagger.hilt.android.AndroidEntryPoint
 import dev.alenajam.monsterdialer.R
 import dev.alenajam.monsterdialer.app.ui.MonsterIcons
@@ -44,12 +45,16 @@ class MainActivity : ComponentActivity() {
                     SettingsSubpage(
                         title = stringResource(R.string.settings_player_character_title),
                         description = stringResource(R.string.settings_player_character_description),
-                        content = { PlayerCharacterSettingsContent() }
+                        content = { PlayerCharacterSettingsContent() },
+                        isScrollable = false,
+                        topContentPadding = 0.dp
                     ),
                     SettingsSubpage(
                         title = stringResource(R.string.settings_contact_characters_title),
                         description = stringResource(R.string.settings_contact_characters_description),
                         content = { ContactCharacterSettingsContent() },
+                        isScrollable = false,
+                        topContentPadding = 0.dp,
                         destinations = listOf(
                             SettingsSubpageDestination(title = stringResource(R.string.choose_contact)) { onNavigateBack ->
                                 ContactPickerDestination(onNavigateBack)

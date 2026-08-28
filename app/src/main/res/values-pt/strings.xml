@@ -19,6 +19,9 @@
     <string name="import_and_enable_character_pack" comment="Empty-state message in the character selector.">Importa e ativa um pacote de personagens para adicionar mais.</string>
     <string name="radiant" comment="Adjective for a rare, sparkling character variant.">Radiante</string>
     <string name="selected" comment="Status label for the currently chosen option.">Selecionado</string>
+    <string name="show_grid_view">Mostrar grelha</string>
+    <string name="show_list_view">Mostrar lista</string>
+    <string name="jump_to_selected_character">Ir para a personagem selecionada</string>
     <string name="select" comment="Button label to choose an option.">Selecionar</string>
     <string name="change" comment="Button label to change the current selection.">Alterar</string>
     <string name="contact_chooser_prompt" comment="Prompt above the contact picker.">Escolhe um contacto para atribuir um personagem.</string>

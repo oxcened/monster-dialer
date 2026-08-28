@@ -3,6 +3,7 @@ package dev.alenajam.monsterdialer.characters.ui
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dev.alenajam.monsterdialer.characters.data.CharacterAssignmentRepository
+import dev.alenajam.monsterdialer.characters.data.CharacterLayoutPreferences
 import dev.alenajam.monsterdialer.characters.data.CharactersRepository
 import dev.alenajam.monsterdialer.packs.data.CharacterAssignmentTarget
 import dev.alenajam.monsterdialer.packs.data.CharacterReference
@@ -18,7 +19,8 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 @HiltViewModel
 class PlayerCharacterSettingsViewModel @Inject constructor(
     private val charactersRepository: CharactersRepository,
-    private val assignmentRepository: CharacterAssignmentRepository
+    private val assignmentRepository: CharacterAssignmentRepository,
+    private val layoutPreferences: CharacterLayoutPreferences
 ) : ViewModel() {
 
     private val _assignedTrainer = MutableStateFlow<CharacterReference?>(null)
@@ -26,6 +28,9 @@ class PlayerCharacterSettingsViewModel @Inject constructor(
 
     private val _assignedMonster = MutableStateFlow<CharacterReference?>(null)
     val assignedMonster: StateFlow<CharacterReference?> = _assignedMonster.asStateFlow()
+
+    private val _layout = MutableStateFlow(if (layoutPreferences.isGridLayout()) CharacterLayout.Grid else CharacterLayout.List)
+    val layout: StateFlow<CharacterLayout> = _layout.asStateFlow()
 
     val trainers: List<InstalledPackCharacter> = charactersRepository.getCharactersAssignableTo(
         CharacterAssignmentTarget.Player, CharacterType.Trainer
@@ -54,5 +59,10 @@ class PlayerCharacterSettingsViewModel @Inject constructor(
             assignmentRepository.setPlayerCharacter(CharacterType.Monster, reference)
             _assignedMonster.value = reference
         }
+    }
+
+    fun setLayout(layout: CharacterLayout) {
+        layoutPreferences.setGridLayout(layout == CharacterLayout.Grid)
+        _layout.value = layout
     }
 }

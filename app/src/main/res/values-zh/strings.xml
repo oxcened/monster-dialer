@@ -19,6 +19,9 @@
     <string name="import_and_enable_character_pack" comment="Empty-state message in the character selector.">导入并启用角色包以添加更多角色。</string>
     <string name="radiant" comment="Adjective for a rare, sparkling character variant.">闪耀</string>
     <string name="selected" comment="Status label for the currently chosen option.">已选择</string>
+    <string name="show_grid_view">显示网格视图</string>
+    <string name="show_list_view">显示列表视图</string>
+    <string name="jump_to_selected_character">跳转到已选角色</string>
     <string name="select" comment="Button label to choose an option.">选择</string>
     <string name="change" comment="Button label to change the current selection.">更改</string>
     <string name="contact_chooser_prompt" comment="Prompt above the contact picker.">选择要分配角色的联系人。</string>

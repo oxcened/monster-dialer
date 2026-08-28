@@ -1,10 +1,15 @@
 package dev.alenajam.monsterdialer.characters.ui
 
-import androidx.compose.foundation.Image
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.rememberLazyGridState
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -21,10 +26,14 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.setValue
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -33,12 +42,10 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import coil.compose.AsyncImage
 import dev.alenajam.monsterdialer.R
-import dev.alenajam.monsterdialer.characters.data.BuiltInCharacter
 import dev.alenajam.monsterdialer.characters.data.BuiltInCharacters
-import dev.alenajam.monsterdialer.packs.data.CharacterReference
-import dev.alenajam.monsterdialer.packs.data.InstalledPackCharacter
+import dev.alenajam.monsterdialer.contacts.ui.formatPhoneNumber
+import dev.alenajam.opendialer.core.common.ui.ContactAvatar
 import dev.alenajam.opendialer.feature.contacts.ContactPickerScreen
 import dev.alenajam.opendialer.feature.settings.LocalSettingsSubpageNavigator
 
@@ -49,8 +56,24 @@ fun ColumnScope.ContactCharacterSettingsContent(
     val contact by viewModel.contact.collectAsStateWithLifecycle()
     val assignedTrainer by viewModel.assignedTrainer.collectAsStateWithLifecycle()
     val assignedMonster by viewModel.assignedMonster.collectAsStateWithLifecycle()
+    val contactSelectionVersion by viewModel.contactSelectionVersion.collectAsStateWithLifecycle()
     val trainers = viewModel.trainers
     val monsters = viewModel.monsters
+    var selectedTab by rememberSaveable { mutableIntStateOf(0) }
+    val layout by viewModel.layout.collectAsStateWithLifecycle()
+    val trainerSelectedItemIndex = selectedCharacterIndex(trainers, assignedTrainer)
+    val monsterSelectedItemIndex = selectedCharacterIndex(monsters, assignedMonster)
+    val trainerListState = rememberLazyListState(
+        initialFirstVisibleItemIndex = trainerSelectedItemIndex
+    )
+    val monsterListState = rememberLazyListState(
+        initialFirstVisibleItemIndex = monsterSelectedItemIndex
+    )
+    val trainerGridState = rememberLazyGridState(initialFirstVisibleItemIndex = trainerSelectedItemIndex)
+    val monsterGridState = rememberLazyGridState(initialFirstVisibleItemIndex = monsterSelectedItemIndex)
+    val trainerTitle = stringResource(R.string.character_type_trainer)
+    val monsterTitle = stringResource(R.string.character_type_monster)
+    val locale = LocalConfiguration.current.locales[0]
 
     val lifecycleOwner = LocalLifecycleOwner.current
     val navigator = LocalSettingsSubpageNavigator.current
@@ -66,21 +89,37 @@ fun ColumnScope.ContactCharacterSettingsContent(
     }
 
     if (trainers.isEmpty() && monsters.isEmpty()) {
-        Column(verticalArrangement = Arrangement.spacedBy(24.dp)) {
-            ContactCharacterTypeSection(
-                title = stringResource(R.string.character_type_trainer),
-                defaultCharacter = BuiltInCharacters.trainer,
-                characters = emptyList(),
-                selected = null,
-                onSelect = {}
-            )
-            ContactCharacterTypeSection(
-                title = stringResource(R.string.character_type_monster),
-                defaultCharacter = BuiltInCharacters.monster.character,
-                characters = emptyList(),
-                selected = null,
-                onSelect = {}
-            )
+        CharacterTypeTabs(
+            selectedTab = selectedTab,
+            onTabSelected = { tab ->
+                val selectedItemIndex = if (tab == 0) trainerSelectedItemIndex else monsterSelectedItemIndex
+                if (layout == CharacterLayout.List) (if (tab == 0) trainerListState else monsterListState).requestScrollToItem(selectedItemIndex)
+                else (if (tab == 0) trainerGridState else monsterGridState).requestScrollToItem(selectedItemIndex)
+                selectedTab = tab
+            }
+        )
+        val listState = if (selectedTab == 0) trainerListState else monsterListState
+        LazyColumn(state = listState, modifier = Modifier.fillMaxWidth().weight(1f)) {
+            when (selectedTab) {
+                0 -> characterTypeItems(
+                    title = trainerTitle,
+                    defaultCharacter = BuiltInCharacters.trainer,
+                    characters = emptyList(),
+                    selected = null,
+                    defaultArtwork = { it.contactArtwork },
+                    packArtwork = { it.imageFile(requireNotNull(it.character.frontImage)) },
+                    onSelect = {}
+                )
+                1 -> characterTypeItems(
+                    title = monsterTitle,
+                    defaultCharacter = BuiltInCharacters.monster.character,
+                    characters = emptyList(),
+                    selected = null,
+                    defaultArtwork = { it.contactArtwork },
+                    packArtwork = { it.imageFile(requireNotNull(it.character.frontImage)) },
+                    onSelect = {}
+                )
+            }
         }
         return
     }
@@ -94,26 +133,29 @@ fun ColumnScope.ContactCharacterSettingsContent(
         return
     }
 
-    Column(verticalArrangement = Arrangement.spacedBy(16.dp)) {
+    Column(
+        modifier = Modifier.fillMaxSize()
+    ) {
         Card(
-            modifier = Modifier.fillMaxWidth(),
+            modifier = Modifier.fillMaxWidth().padding(bottom = 8.dp),
             colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainerLow)
         ) {
             Row(
-                modifier = Modifier.padding(16.dp),
+                modifier = Modifier.padding(horizontal = 12.dp, vertical = 8.dp),
                 verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.spacedBy(12.dp)
+                horizontalArrangement = Arrangement.spacedBy(8.dp)
             ) {
-                Icon(
-                    Icons.Outlined.Person,
-                    contentDescription = null,
-                    modifier = Modifier.size(32.dp),
-                    tint = MaterialTheme.colorScheme.primary
+                ContactAvatar(
+                    name = currentContact.name,
+                    photoUri = currentContact.photoUri,
+                    modifier = Modifier.size(24.dp),
+                    initialTextStyle = MaterialTheme.typography.labelLarge
                 )
                 Column(modifier = Modifier.weight(1f)) {
                     Text(currentContact.name, style = MaterialTheme.typography.titleMedium)
                     Text(
-                        currentContact.numbers.joinToString(),
+                        currentContact.numbers.firstOrNull()?.let { formatPhoneNumber(it, locale) }
+                            ?: stringResource(R.string.unknown),
                         style = MaterialTheme.typography.bodySmall,
                         color = MaterialTheme.colorScheme.onSurfaceVariant
                     )
@@ -122,74 +164,54 @@ fun ColumnScope.ContactCharacterSettingsContent(
             }
         }
 
-        ContactCharacterTypeSection(
-            title = stringResource(R.string.character_type_trainer),
-            defaultCharacter = BuiltInCharacters.trainer,
-            characters = trainers,
-            selected = assignedTrainer,
-            onSelect = viewModel::assignTrainer
+        CharacterTypeTabs(
+            selectedTab = selectedTab,
+            onTabSelected = { tab ->
+                val selectedItemIndex = if (tab == 0) trainerSelectedItemIndex else monsterSelectedItemIndex
+                if (layout == CharacterLayout.List) (if (tab == 0) trainerListState else monsterListState).requestScrollToItem(selectedItemIndex)
+                else (if (tab == 0) trainerGridState else monsterGridState).requestScrollToItem(selectedItemIndex)
+                selectedTab = tab
+            }
         )
-        ContactCharacterTypeSection(
-            title = stringResource(R.string.character_type_monster),
-            defaultCharacter = BuiltInCharacters.monster.character,
-            characters = monsters,
-            selected = assignedMonster,
-            onSelect = viewModel::assignMonster
-        )
-    }
-}
-
-@Composable
-private fun ContactCharacterTypeSection(
-    title: String,
-    defaultCharacter: BuiltInCharacter,
-    characters: List<InstalledPackCharacter>,
-    selected: CharacterReference?,
-    onSelect: (CharacterReference?) -> Unit
-) {
-    val availableSelection = selected?.takeIf { reference ->
-        characters.any { CharacterReference(it.packId, it.character.id) == reference }
-    }
-    Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
-        Text(title, style = MaterialTheme.typography.titleMedium)
-        Column {
-            CharacterOptionCard(
-                name = defaultCharacter.name,
-                subtitle = stringResource(R.string.built_in_character),
-                isSelected = availableSelection == null,
-                roundTop = true,
-                roundBottom = false,
-                artwork = {
-                    Image(
-                        painter = painterResource(defaultCharacter.contactArtwork.resource),
-                        contentDescription = stringResource(R.string.default_character_artwork, title.lowercase()),
-                        modifier = Modifier.size(72.dp)
-                    )
+        val selectedItemIndex = when (selectedTab) {
+            0 -> trainerSelectedItemIndex
+            else -> monsterSelectedItemIndex
+        }
+        val listState = if (selectedTab == 0) trainerListState else monsterListState
+        val gridState = if (selectedTab == 0) trainerGridState else monsterGridState
+        LaunchedEffect(contactSelectionVersion) {
+            val selectedItemIndex = if (selectedTab == 0) trainerSelectedItemIndex else monsterSelectedItemIndex
+            if (layout == CharacterLayout.List) listState.requestScrollToItem(selectedItemIndex)
+            else gridState.requestScrollToItem(selectedItemIndex)
+        }
+        Box(modifier = Modifier.fillMaxWidth().weight(1f)) {
+            if (layout == CharacterLayout.List) {
+                LazyColumn(state = listState, modifier = Modifier.fillMaxSize(), contentPadding = PaddingValues(top = 8.dp, bottom = 72.dp)) {
+                    when (selectedTab) {
+                        0 -> characterTypeItems(trainerTitle, BuiltInCharacters.trainer, trainers, assignedTrainer, { it.contactArtwork }, { it.imageFile(requireNotNull(it.character.frontImage)) }, viewModel::assignTrainer)
+                        1 -> characterTypeItems(monsterTitle, BuiltInCharacters.monster.character, monsters, assignedMonster, { it.contactArtwork }, { it.imageFile(requireNotNull(it.character.frontImage)) }, viewModel::assignMonster)
+                    }
+                }
+            } else {
+                LazyVerticalGrid(columns = GridCells.Fixed(2), state = gridState, modifier = Modifier.fillMaxSize(), contentPadding = PaddingValues(top = 8.dp, bottom = 72.dp), horizontalArrangement = Arrangement.spacedBy(2.dp), verticalArrangement = Arrangement.spacedBy(2.dp)) {
+                    when (selectedTab) {
+                        0 -> characterTypeGridItems(trainerTitle, BuiltInCharacters.trainer, trainers, assignedTrainer, { it.contactArtwork }, { it.imageFile(requireNotNull(it.character.frontImage)) }, viewModel::assignTrainer)
+                        1 -> characterTypeGridItems(monsterTitle, BuiltInCharacters.monster.character, monsters, assignedMonster, { it.contactArtwork }, { it.imageFile(requireNotNull(it.character.frontImage)) }, viewModel::assignMonster)
+                    }
+                }
+            }
+            CharacterLayoutToggle(
+                layout,
+                onLayoutChanged = { nextLayout ->
+                    val firstVisibleItemIndex = if (layout == CharacterLayout.List) listState.firstVisibleItemIndex else gridState.firstVisibleItemIndex
+                    if (nextLayout == CharacterLayout.List) listState.requestScrollToItem(firstVisibleItemIndex)
+                    else gridState.requestScrollToItem(firstVisibleItemIndex)
+                viewModel.setLayout(nextLayout)
                 },
-                onSelect = { onSelect(null) }
+                modifier = Modifier.align(Alignment.BottomStart).padding(16.dp)
             )
-            characters.forEachIndexed { index, item ->
-                val reference = CharacterReference(item.packId, item.character.id)
-                CharacterOptionCard(
-                    name = item.character.name,
-                    subtitle = item.packName,
-                    isRadiant = item.character.isRadiant,
-                    isSelected = availableSelection == reference,
-                    roundTop = false,
-                    roundBottom = index == characters.lastIndex,
-                    artwork = {
-                        AsyncImage(
-                            model = item.imageFile(requireNotNull(item.character.frontImage)),
-                            contentDescription = stringResource(R.string.character_artwork, item.character.name),
-                            modifier = Modifier.size(72.dp)
-                        )
-                    },
-                    onSelect = { onSelect(reference) }
-                )
-            }
-            if (characters.isEmpty()) {
-                NoAdditionalCharacterOptionsCard(title)
-            }
+            if (layout == CharacterLayout.List) JumpToSelectedCharacterButton(listState, selectedItemIndex, Modifier.align(Alignment.BottomEnd).padding(16.dp))
+            else JumpToSelectedCharacterButton(gridState, selectedItemIndex, Modifier.align(Alignment.BottomEnd).padding(16.dp))
         }
     }
 }
