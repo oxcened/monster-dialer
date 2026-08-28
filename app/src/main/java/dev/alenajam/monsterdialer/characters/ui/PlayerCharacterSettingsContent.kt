@@ -18,7 +18,7 @@ import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
-import androidx.compose.material3.PrimaryTabRow
+import androidx.compose.material3.SecondaryTabRow
 import androidx.compose.material3.Tab
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -77,7 +77,10 @@ internal fun CharacterTypeTabs(selectedTab: Int, onTabSelected: (Int) -> Unit) {
     val trainerLabel = stringResource(R.string.character_type_trainer)
     val monsterLabel = stringResource(R.string.character_type_monster)
 
-    PrimaryTabRow(selectedTabIndex = selectedTab, modifier = Modifier.fillMaxWidth()) {
+    SecondaryTabRow(
+        selectedTabIndex = selectedTab,
+        modifier = Modifier.fillMaxWidth()
+    ) {
         Tab(
             selected = selectedTab == 0,
             onClick = { onTabSelected(0) },
