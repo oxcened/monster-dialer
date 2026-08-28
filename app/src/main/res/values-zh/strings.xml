@@ -1,12 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="default_phone_title" comment="Title of the default phone app prompt.">将 MonsterDialer 设为默认应用</string>
-    <string name="default_phone_description" comment="Explanation shown below the default-phone prompt.">只有将 MonsterDialer 设为默认电话应用后，才能拨打和接听电话。</string>
-    <string name="open_source_description" comment="Description of the OpenDialer source-code card in About.">MonsterDialer 基于 OpenDialer。浏览源代码并在 GitHub 上参与贡献。</string>
-    <string name="contribute_monsterdialer_translations" comment="Title of the MonsterDialer translation contribution card.">参与 MonsterDialer 翻译</string>
+    <string name="additional_translation_project_title" comment="Title of the additional translation contribution card.">参与 MonsterDialer 翻译</string>
     <string name="contribute_translations" comment="Title of the OpenDialer translation contribution link on the About screen.">参与 OpenDialer 翻译</string>
-    <string name="contribute_monsterdialer_translations_description" comment="Description of the MonsterDialer translation contribution card.">帮助 MonsterDialer 支持更多语言。</string>
-    <string name="feature_requests_description" comment="Description of the feature-request card in About.">为 MonsterDialer 提出建议并投票。</string>
     <string name="hang_up" comment="Button to end the current phone call.">挂断</string>
     <string name="settings_character_packs_title" comment="Settings title for managing character packs.">角色包</string>
     <string name="settings_character_packs_description" comment="Settings description for character packs.">导入和管理自定义角色插图。</string>

@@ -1,4 +1,4 @@
-package dev.alenajam.monsterdialer.packs
+package dev.alenajam.monsterdialer.packs.data
 
 import java.io.File
 import org.junit.Assert.*

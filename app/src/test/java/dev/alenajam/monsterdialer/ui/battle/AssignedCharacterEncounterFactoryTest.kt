@@ -1,14 +1,19 @@
 package dev.alenajam.monsterdialer.ui.battle
 
-import dev.alenajam.monsterdialer.packs.CharacterAssignmentStore
-import dev.alenajam.monsterdialer.packs.CharacterAssignmentTarget
-import dev.alenajam.monsterdialer.packs.CharacterPackCatalog
-import dev.alenajam.monsterdialer.packs.CharacterPackManifest
-import dev.alenajam.monsterdialer.packs.CharacterPackRepository
-import dev.alenajam.monsterdialer.packs.CharacterReference
-import dev.alenajam.monsterdialer.packs.CharacterType
-import dev.alenajam.monsterdialer.packs.InstalledPackCharacter
-import dev.alenajam.monsterdialer.packs.PackCharacter
+import dev.alenajam.monsterdialer.characters.data.CharacterAssignmentStore
+import dev.alenajam.monsterdialer.characters.data.CharactersRepositoryImpl
+import dev.alenajam.monsterdialer.characters.data.CharacterAssignmentRepositoryImpl
+import dev.alenajam.monsterdialer.battle.data.AssignedCharacterEncounterFactory
+import dev.alenajam.monsterdialer.battle.data.BattleEncounterFactory
+import dev.alenajam.monsterdialer.battle.data.EncounterType
+import dev.alenajam.monsterdialer.packs.data.CharacterAssignmentTarget
+import dev.alenajam.monsterdialer.packs.data.CharacterPackCatalog
+import dev.alenajam.monsterdialer.packs.data.CharacterPackManifest
+import dev.alenajam.monsterdialer.packs.data.CharacterPackRepository
+import dev.alenajam.monsterdialer.packs.data.CharacterReference
+import dev.alenajam.monsterdialer.packs.data.CharacterType
+import dev.alenajam.monsterdialer.packs.data.InstalledPackCharacter
+import dev.alenajam.monsterdialer.packs.data.PackCharacter
 import java.io.File
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNotEquals
@@ -24,7 +29,9 @@ class AssignedCharacterEncounterFactoryTest {
     private val assignmentsRoot by lazy { temporaryFolder.newFolder("assignments") }
     private val store by lazy { CharacterAssignmentStore(assignmentsRoot) }
     private val repository by lazy { CharacterPackRepository(storageRoot, catalog) }
-    private val factory by lazy { AssignedCharacterEncounterFactory(store, repository) }
+    private val charactersRepository by lazy { CharactersRepositoryImpl(repository) }
+    private val assignmentRepository by lazy { CharacterAssignmentRepositoryImpl(store) }
+    private val factory by lazy { AssignedCharacterEncounterFactory(charactersRepository, assignmentRepository) }
 
     @Test
     fun forCallPicksAssignedMonsters() {

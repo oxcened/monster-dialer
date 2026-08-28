@@ -1,5 +1,6 @@
-package dev.alenajam.monsterdialer.packs
+package dev.alenajam.monsterdialer.packs.data
 
+import dev.alenajam.monsterdialer.characters.data.CharacterAssignmentStore
 import java.io.File
 import java.util.Base64
 import java.util.zip.ZipEntry
