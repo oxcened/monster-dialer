@@ -48,22 +48,14 @@ class ContactCharacterSettingsViewModel @Inject constructor(
 
     fun restoreSelectedContact() {
         viewModelScope.launch {
-            val restored = selectionRepository.getSelectedContact()
-            _contact.value = restored
-            
-            _assignedTrainer.value = restored?.contactKeys()?.firstNotNullOfOrNull {
-                assignmentRepository.getAssignedCharacter(it, CharacterType.Trainer)
-            }
-            _assignedMonster.value = restored?.contactKeys()?.firstNotNullOfOrNull {
-                assignmentRepository.getAssignedCharacter(it, CharacterType.Monster)
-            }
+            restoreSelectedContactState()
         }
     }
 
     fun onContactSelected(selectedContact: DialerContactSummary) {
         viewModelScope.launch {
             selectionRepository.setSelectedContact(selectedContact)
-            restoreSelectedContact()
+            restoreSelectedContactState()
         }
     }
 
@@ -98,4 +90,16 @@ class ContactCharacterSettingsViewModel @Inject constructor(
     }
 
     private fun MonsterContact.contactKeys(): List<String> = numbers
+
+    private suspend fun restoreSelectedContactState() {
+        val restored = selectionRepository.getSelectedContact()
+        _contact.value = restored
+
+        _assignedTrainer.value = restored?.contactKeys()?.firstNotNullOfOrNull {
+            assignmentRepository.getAssignedCharacter(it, CharacterType.Trainer)
+        }
+        _assignedMonster.value = restored?.contactKeys()?.firstNotNullOfOrNull {
+            assignmentRepository.getAssignedCharacter(it, CharacterType.Monster)
+        }
+    }
 }

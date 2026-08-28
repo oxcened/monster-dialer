@@ -6,8 +6,10 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
@@ -27,6 +29,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -37,6 +40,8 @@ import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import dev.alenajam.monsterdialer.R
 import dev.alenajam.monsterdialer.characters.data.BuiltInCharacters
+import dev.alenajam.monsterdialer.contacts.ui.formatPhoneNumber
+import dev.alenajam.opendialer.core.common.ui.ContactAvatar
 import dev.alenajam.opendialer.feature.contacts.ContactPickerScreen
 import dev.alenajam.opendialer.feature.settings.LocalSettingsSubpageNavigator
 
@@ -52,6 +57,7 @@ fun ColumnScope.ContactCharacterSettingsContent(
     var selectedTab by rememberSaveable { mutableIntStateOf(0) }
     val trainerTitle = stringResource(R.string.character_type_trainer)
     val monsterTitle = stringResource(R.string.character_type_monster)
+    val locale = LocalConfiguration.current.locales[0]
 
     val lifecycleOwner = LocalLifecycleOwner.current
     val navigator = LocalSettingsSubpageNavigator.current
@@ -103,28 +109,28 @@ fun ColumnScope.ContactCharacterSettingsContent(
     }
 
     Column(
-        modifier = Modifier.fillMaxSize(),
-        verticalArrangement = Arrangement.spacedBy(16.dp)
+        modifier = Modifier.fillMaxSize()
     ) {
         Card(
-            modifier = Modifier.fillMaxWidth(),
+            modifier = Modifier.fillMaxWidth().padding(bottom = 8.dp),
             colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainerLow)
         ) {
             Row(
-                modifier = Modifier.padding(16.dp),
+                modifier = Modifier.padding(horizontal = 12.dp, vertical = 8.dp),
                 verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.spacedBy(12.dp)
+                horizontalArrangement = Arrangement.spacedBy(8.dp)
             ) {
-                Icon(
-                    Icons.Outlined.Person,
-                    contentDescription = null,
-                    modifier = Modifier.size(32.dp),
-                    tint = MaterialTheme.colorScheme.primary
+                ContactAvatar(
+                    name = currentContact.name,
+                    photoUri = currentContact.photoUri,
+                    modifier = Modifier.size(24.dp),
+                    initialTextStyle = MaterialTheme.typography.labelLarge
                 )
                 Column(modifier = Modifier.weight(1f)) {
                     Text(currentContact.name, style = MaterialTheme.typography.titleMedium)
                     Text(
-                        currentContact.numbers.joinToString(),
+                        currentContact.numbers.firstOrNull()?.let { formatPhoneNumber(it, locale) }
+                            ?: stringResource(R.string.unknown),
                         style = MaterialTheme.typography.bodySmall,
                         color = MaterialTheme.colorScheme.onSurfaceVariant
                     )
@@ -134,6 +140,7 @@ fun ColumnScope.ContactCharacterSettingsContent(
         }
 
         CharacterTypeTabs(selectedTab = selectedTab, onTabSelected = { selectedTab = it })
+        Spacer(modifier = Modifier.height(16.dp))
         LazyColumn(modifier = Modifier.fillMaxWidth().weight(1f)) {
         when (selectedTab) {
             0 -> characterTypeItems(
