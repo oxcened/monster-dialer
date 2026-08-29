@@ -27,6 +27,14 @@ class ContactCharacterSettingsViewModel @Inject constructor(
     private val layoutPreferences: CharacterLayoutPreferences
 ) : ViewModel() {
 
+    val trainers: List<InstalledPackCharacter> = charactersRepository.getCharactersAssignableTo(
+        CharacterAssignmentTarget.Contact, CharacterType.Trainer
+    )
+
+    val monsters: List<InstalledPackCharacter> = charactersRepository.getCharactersAssignableTo(
+        CharacterAssignmentTarget.Contact, CharacterType.Monster
+    )
+
     private val _contact = MutableStateFlow<MonsterContact?>(null)
     val contact: StateFlow<MonsterContact?> = _contact.asStateFlow()
 
@@ -36,19 +44,17 @@ class ContactCharacterSettingsViewModel @Inject constructor(
     private val _assignedMonster = MutableStateFlow<CharacterReference?>(null)
     val assignedMonster: StateFlow<CharacterReference?> = _assignedMonster.asStateFlow()
 
-    private val _layout = MutableStateFlow(if (layoutPreferences.isGridLayout()) CharacterLayout.Grid else CharacterLayout.List)
+    private val _layout = MutableStateFlow(
+        if (layoutPreferences.isGridLayout() && (trainers.isNotEmpty() || monsters.isNotEmpty())) {
+            CharacterLayout.Grid
+        } else {
+            CharacterLayout.List
+        }
+    )
     val layout: StateFlow<CharacterLayout> = _layout.asStateFlow()
 
     private val _contactSelectionVersion = MutableStateFlow(0)
     val contactSelectionVersion: StateFlow<Int> = _contactSelectionVersion.asStateFlow()
-
-    val trainers: List<InstalledPackCharacter> = charactersRepository.getCharactersAssignableTo(
-        CharacterAssignmentTarget.Contact, CharacterType.Trainer
-    )
-
-    val monsters: List<InstalledPackCharacter> = charactersRepository.getCharactersAssignableTo(
-        CharacterAssignmentTarget.Contact, CharacterType.Monster
-    )
 
     init {
         restoreSelectedContact()
