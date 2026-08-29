@@ -158,61 +158,67 @@ class MonsterInCallUI @Inject constructor(
                     12.dp
                 }
 
-                Column(
+                Box(
                     modifier = Modifier
                         .fillMaxSize()
                         .padding(bottom = collapsedBottomPadding.value)
                 ) {
+                    Column(
+                        modifier = Modifier.fillMaxSize()
+                    ) {
+                        if (uiState.status != CallStatus.IDLE) {
+                            InCallDetails(
+                                callerName = uiState.callerName,
+                                callerNumber = uiState.callerNumber,
+                                callerNumberLabel = uiState.callerNumberLabel,
+                                status = uiState.status,
+                                durationMillis = durationMillis,
+                                callerImageUri = uiState.callerImageUri,
+                                showCallerImage = false,
+                                useCompactCallerText = isCompactLayout,
+                                modifier = Modifier
+                                    .statusBarsPadding()
+                                    .padding(
+                                        start = 16.dp,
+                                        top = 32.dp,
+                                        end = 16.dp,
+                                        bottom = callerDetailsBottomPadding,
+                                    )
+                                    .align(Alignment.CenterHorizontally)
+                            )
+
+                            Box(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .weight(1f)
+                                    .padding(horizontal = 4.dp, vertical = 4.dp),
+                                contentAlignment = Alignment.Center
+                            ) {
+                                BattleScreen(
+                                    encounter = encounterFactory.forCall(
+                                        callId = "${uiState.callerName}:${uiState.callerNumber}",
+                                        contactKey = uiState.callerNumber,
+                                        callerName = uiState.callerName.ifBlank {
+                                            uiState.callerNumber.ifBlank { stringResource(R.string.unknown) }
+                                        },
+                                        isAnonymous = uiState.callerName.isBlank() && uiState.callerNumber.isBlank()
+                                    ),
+                                    modifier = Modifier
+                                        .heightIn(max = 380.dp)
+                                        .aspectRatio(160f / 144f)
+                                        .fillMaxSize()
+                                )
+                            }
+                        }
+                    }
+
                     if (hasSecondaryCall && secondaryCallerName != null && !uiState.isIncoming) {
                         SecondaryCallBanner(
                             callerName = secondaryCallerName,
-                            modifier = Modifier.statusBarsPadding()
-                        )
-                    }
-
-                    if (uiState.status != CallStatus.IDLE) {
-                        InCallDetails(
-                            callerName = uiState.callerName,
-                            callerNumber = uiState.callerNumber,
-                            callerNumberLabel = uiState.callerNumberLabel,
-                            status = uiState.status,
-                            durationMillis = durationMillis,
-                            callerImageUri = uiState.callerImageUri,
-                            showCallerImage = false,
-                            useCompactCallerText = isCompactLayout,
                             modifier = Modifier
                                 .statusBarsPadding()
-                                .padding(
-                                    start = 16.dp,
-                                    top = 32.dp,
-                                    end = 16.dp,
-                                    bottom = callerDetailsBottomPadding,
-                                )
-                                .align(Alignment.CenterHorizontally)
+                                .align(Alignment.TopCenter)
                         )
-
-                        Box(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .weight(1f)
-                                .padding(horizontal = 4.dp, vertical = 4.dp),
-                            contentAlignment = Alignment.Center
-                        ) {
-                            BattleScreen(
-                                encounter = encounterFactory.forCall(
-                                    callId = "${uiState.callerName}:${uiState.callerNumber}",
-                                    contactKey = uiState.callerNumber,
-                                    callerName = uiState.callerName.ifBlank {
-                                        uiState.callerNumber.ifBlank { stringResource(R.string.unknown) }
-                                    },
-                                    isAnonymous = uiState.callerName.isBlank() && uiState.callerNumber.isBlank()
-                                ),
-                                modifier = Modifier
-                                    .heightIn(max = 380.dp)
-                                    .aspectRatio(160f / 144f)
-                                    .fillMaxSize()
-                            )
-                        }
                     }
                 }
             }
