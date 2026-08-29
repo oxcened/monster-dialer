@@ -83,17 +83,19 @@ fun ColumnScope.PlayerCharacterSettingsContent(
                 }
             }
         }
-        CharacterLayoutToggle(
-            layout,
-            onLayoutChanged = { nextLayout ->
-                val firstVisibleItemIndex = if (layout == CharacterLayout.List) listState.firstVisibleItemIndex else gridState.firstVisibleItemIndex
-                if (nextLayout == CharacterLayout.List) listState.requestScrollToItem(firstVisibleItemIndex)
-                else gridState.requestScrollToItem(firstVisibleItemIndex)
-                viewModel.setLayout(nextLayout)
-            },
-            modifier = Modifier.align(Alignment.BottomStart).padding(16.dp)
-        )
-        if (layout == CharacterLayout.List) JumpToSelectedCharacterButton(listState, selectedItemIndex, Modifier.align(Alignment.BottomEnd).padding(16.dp))
-        else JumpToSelectedCharacterButton(gridState, selectedItemIndex, Modifier.align(Alignment.BottomEnd).padding(16.dp))
+        if (trainers.isNotEmpty() || monsters.isNotEmpty()) {
+            CharacterLayoutToggle(
+                layout,
+                onLayoutChanged = { nextLayout ->
+                    val firstVisibleItemIndex = if (layout == CharacterLayout.List) listState.firstVisibleItemIndex else gridState.firstVisibleItemIndex
+                    if (nextLayout == CharacterLayout.List) listState.requestScrollToItem(firstVisibleItemIndex)
+                    else gridState.requestScrollToItem(firstVisibleItemIndex)
+                    viewModel.setLayout(nextLayout)
+                },
+                modifier = Modifier.align(Alignment.BottomStart).padding(16.dp)
+            )
+            if (layout == CharacterLayout.List) JumpToSelectedCharacterButton(listState, selectedItemIndex, Modifier.align(Alignment.BottomEnd).padding(16.dp))
+            else JumpToSelectedCharacterButton(gridState, selectedItemIndex, Modifier.align(Alignment.BottomEnd).padding(16.dp))
+        }
     }
 }
