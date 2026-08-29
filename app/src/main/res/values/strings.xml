@@ -43,7 +43,7 @@
     <plurals name="installed_pack_count" comment="Number of installed character packs. %d is the count."><item quantity="one">%d installed</item><item quantity="other">%d installed</item></plurals>
     <plurals name="pack_character_count" comment="%1$d is the number of characters; %2$s is the pack version."><item quantity="one">%1$d character · v%2$s</item><item quantity="other">%1$d characters · v%2$s</item></plurals>
     <string name="pack_version" comment="%1$s is a character pack version number.">v%1$s</string>
-    <string name="import_pack" comment="Short button label to import a selected pack.">Import</string>
+    <string name="import_pack" comment="Button label to import a character pack.">Import pack</string>
     <string name="enabled" comment="Status label for an active character pack.">Enabled</string>
     <string name="disabled" comment="Status label for an inactive character pack.">Disabled</string>
     <string name="enable" comment="Button label to activate a character pack.">Enable</string>
