@@ -19,9 +19,9 @@
     <string name="import_and_enable_character_pack" comment="Empty-state message in the character selector.">导入并启用角色包以添加更多角色。</string>
     <string name="radiant" comment="Adjective for a rare, sparkling character variant.">闪耀</string>
     <string name="selected" comment="Status label for the currently chosen option.">已选择</string>
-    <string name="show_grid_view">显示网格视图</string>
-    <string name="show_list_view">显示列表视图</string>
-    <string name="jump_to_selected_character">跳转到已选角色</string>
+    <string name="show_grid_view" comment="Accessibility label for the control that switches the character selector to a grid.">显示网格视图</string>
+    <string name="show_list_view" comment="Accessibility label for the control that switches the character selector to a list.">显示列表视图</string>
+    <string name="jump_to_selected_character" comment="Accessibility label for a button that scrolls to the selected character.">跳转到已选角色</string>
     <string name="select" comment="Button label to choose an option.">选择</string>
     <string name="change" comment="Button label to change the current selection.">更改</string>
     <string name="contact_chooser_prompt" comment="Prompt above the contact picker.">选择要分配角色的联系人。</string>
@@ -38,22 +38,22 @@
     <plurals name="pack_character_count" comment="%1$d is the number of characters; %2$s is the pack version.">
         <item quantity="other">%1$d 个角色 · v%2$s</item>
     </plurals>
-    <string name="pack_version">v%1$s</string>
-    <string name="pack_creator_label">创建者</string>
-    <string name="pack_license_label">许可</string>
-    <string name="pack_identifier_label">角色包 ID</string>
-    <string name="pack_metadata">角色包元数据</string>
-    <string name="copy_pack_metadata">复制角色包元数据</string>
-    <string name="pack_metadata_copied">已复制角色包元数据</string>
-    <string name="remove_character_pack_title">要移除 %1$s 吗？</string>
-    <string name="remove_character_pack_message">这将从 MonsterDialer 中永久移除 %1$s 及其插图。</string>
-    <string name="cancel">取消</string>
-    <string name="import_pack" comment="Short button label to import a selected pack.">导入</string>
+    <string name="pack_version" comment="%1$s is a character pack version number.">v%1$s</string>
+    <string name="pack_creator_label" comment="Label above the creator name in character pack metadata.">创建者</string>
+    <string name="pack_license_label" comment="Label above the license in character pack metadata.">许可</string>
+    <string name="pack_identifier_label" comment="Label above the technical identifier in character pack metadata.">角色包 ID</string>
+    <string name="pack_metadata" comment="Label used for copied character-pack metadata.">角色包元数据</string>
+    <string name="copy_pack_metadata" comment="Accessibility label for the action that copies character-pack metadata.">复制角色包元数据</string>
+    <string name="pack_metadata_copied" comment="Brief confirmation after character-pack metadata is copied.">已复制角色包元数据</string>
+    <string name="import_pack" comment="Button label to import a character pack.">导入</string>
     <string name="enabled" comment="Status label for an active character pack.">已启用</string>
     <string name="disabled" comment="Status label for an inactive character pack.">已停用</string>
     <string name="enable" comment="Button label to activate a character pack.">启用</string>
     <string name="disable" comment="Button label to deactivate a character pack.">停用</string>
     <string name="remove" comment="Button label to permanently remove a character pack.">移除</string>
+    <string name="remove_character_pack_title" comment="Confirmation dialog title; %1$s is the character pack name.">要移除 %1$s 吗？</string>
+    <string name="remove_character_pack_message" comment="Confirmation dialog message; %1$s is the character pack name.">这将从 MonsterDialer 中永久移除 %1$s 及其插图。</string>
+    <string name="cancel" comment="Button label that dismisses an action without making changes.">取消</string>
     <string name="character_pack_removed" comment="Confirmation after a character pack is removed.">角色包已移除</string>
     <string name="character_pack_remove_failed" comment="Error when a character pack cannot be removed.">无法移除角色包</string>
     <string name="pack_import_failed_title" comment="Title of the character-pack import error dialog.">无法导入角色包</string>
