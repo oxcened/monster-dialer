@@ -40,6 +40,16 @@
         <item quantity="one">%1$d figur · v%2$s</item>
         <item quantity="other">%1$d figurer · v%2$s</item>
     </plurals>
+    <string name="pack_version">v%1$s</string>
+    <string name="pack_creator_label">Opretter</string>
+    <string name="pack_license_label">Licens</string>
+    <string name="pack_identifier_label">Pakke-id</string>
+    <string name="pack_metadata">Pakkemetadata</string>
+    <string name="copy_pack_metadata">Kopiér pakkemetadata</string>
+    <string name="pack_metadata_copied">Pakkemetadata kopieret</string>
+    <string name="remove_character_pack_title">Fjern %1$s?</string>
+    <string name="remove_character_pack_message">Dette fjerner %1$s og tilhørende illustrationer permanent fra MonsterDialer.</string>
+    <string name="cancel">Annuller</string>
     <string name="import_pack" comment="Short button label to import a selected pack.">Importér</string>
     <string name="enabled" comment="Status label for an active character pack.">Aktiveret</string>
     <string name="disabled" comment="Status label for an inactive character pack.">Deaktiveret</string>

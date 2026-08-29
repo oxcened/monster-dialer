@@ -42,6 +42,16 @@
         <item quantity="few">%1$d personaje · v%2$s</item>
         <item quantity="other">%1$d personaje · v%2$s</item>
     </plurals>
+    <string name="pack_version">v%1$s</string>
+    <string name="pack_creator_label">Creator</string>
+    <string name="pack_license_label">Licență</string>
+    <string name="pack_identifier_label">ID pachet</string>
+    <string name="pack_metadata">Metadate pachet</string>
+    <string name="copy_pack_metadata">Copiază metadatele pachetului</string>
+    <string name="pack_metadata_copied">Metadatele pachetului au fost copiate</string>
+    <string name="remove_character_pack_title">Elimini %1$s?</string>
+    <string name="remove_character_pack_message">Această acțiune elimină definitiv %1$s și ilustrațiile sale din MonsterDialer.</string>
+    <string name="cancel">Anulează</string>
     <string name="import_pack" comment="Short button label to import a selected pack.">Importă</string>
     <string name="enabled" comment="Status label for an active character pack.">Activat</string>
     <string name="disabled" comment="Status label for an inactive character pack.">Dezactivat</string>
