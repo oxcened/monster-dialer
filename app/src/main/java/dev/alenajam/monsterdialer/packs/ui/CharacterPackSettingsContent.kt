@@ -248,39 +248,41 @@ private fun CharacterPackDetailsSheet(
                 .verticalScroll(rememberScrollState()),
             verticalArrangement = Arrangement.spacedBy(12.dp)
         ) {
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Text(
-                    pack.name,
-                    modifier = Modifier.weight(1f),
-                    style = MaterialTheme.typography.headlineSmall
-                )
-                IconButton(onClick = {
-                    context.copyToClipboard(
-                        label = metadataLabel,
-                        text = pack.metadataText(
-                            version = version,
-                            creatorLabel = creatorLabel,
-                            licenseLabel = licenseLabel,
-                            identifierLabel = identifierLabel
+            Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Text(
+                        pack.name,
+                        modifier = Modifier.weight(1f),
+                        style = MaterialTheme.typography.headlineSmall
+                    )
+                    IconButton(onClick = {
+                        context.copyToClipboard(
+                            label = metadataLabel,
+                            text = pack.metadataText(
+                                version = version,
+                                creatorLabel = creatorLabel,
+                                licenseLabel = licenseLabel,
+                                identifierLabel = identifierLabel
+                            )
                         )
-                    )
-                    Toast.makeText(context, R.string.pack_metadata_copied, Toast.LENGTH_SHORT).show()
-                }) {
-                    AppIcon(
-                        LocalAppIcons.current.copy,
-                        contentDescription = stringResource(R.string.copy_pack_metadata),
-                        modifier = Modifier.size(24.dp)
-                    )
+                        Toast.makeText(context, R.string.pack_metadata_copied, Toast.LENGTH_SHORT).show()
+                    }) {
+                        AppIcon(
+                            LocalAppIcons.current.copy,
+                            contentDescription = stringResource(R.string.copy_pack_metadata),
+                            modifier = Modifier.size(24.dp)
+                        )
+                    }
                 }
+                Text(
+                    version,
+                    style = MaterialTheme.typography.bodyLarge,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                )
             }
-            Text(
-                version,
-                style = MaterialTheme.typography.bodyLarge,
-                color = MaterialTheme.colorScheme.onSurfaceVariant
-            )
             HorizontalDivider()
             pack.creator?.takeIf { it.isNotBlank() }?.let { creator ->
                 PackMetadataField(
