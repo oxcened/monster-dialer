@@ -53,7 +53,7 @@
     <string name="disable" comment="Button label to deactivate a character pack.">Disable</string>
     <string name="remove" comment="Button label to permanently remove a character pack.">Remove</string>
     <string name="remove_character_pack_title" comment="Confirmation dialog title; %1$s is the character pack name.">Remove %1$s?</string>
-    <string name="remove_character_pack_message" comment="Confirmation dialog message; %1$s is the character pack name.">This permanently removes %1$s and its artwork from Monster Dialer.</string>
+    <string name="remove_character_pack_message" comment="Confirmation dialog message; %1$s is the character pack name.">This permanently removes %1$s and its artwork from MonsterDialer.</string>
     <string name="cancel" comment="Button label that dismisses an action without making changes.">Cancel</string>
     <string name="character_pack_removed" comment="Confirmation after a character pack is removed.">Character pack removed</string>
     <string name="character_pack_remove_failed" comment="Error when a character pack cannot be removed.">Could not remove character pack</string>
