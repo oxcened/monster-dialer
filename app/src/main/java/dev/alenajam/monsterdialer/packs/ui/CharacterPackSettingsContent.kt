@@ -133,7 +133,7 @@ fun ColumnScope.CharacterPackSettingsContent(
             }
         }
     } else {
-        Column(verticalArrangement = Arrangement.spacedBy(16.dp)) {
+        Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
             Button(
                 onClick = importPack,
                 modifier = Modifier.fillMaxWidth()
