@@ -34,6 +34,7 @@ class PacksRepositoryImpl @Inject constructor(
                 name = record.name,
                 version = record.version,
                 creator = record.creator,
+                license = record.license,
                 enabled = record.enabled
             )
         }

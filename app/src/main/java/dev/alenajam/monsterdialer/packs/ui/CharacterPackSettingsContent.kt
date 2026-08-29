@@ -18,6 +18,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.selection.SelectionContainer
@@ -30,12 +31,15 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
+import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -70,6 +74,7 @@ fun ColumnScope.CharacterPackSettingsContent(
     val characterPackRemoved = stringResource(R.string.character_pack_removed)
     val characterPackRemoveFailed = stringResource(R.string.character_pack_remove_failed)
     var pendingDeletion by remember { mutableStateOf<MonsterPack?>(null) }
+    var selectedPack by remember { mutableStateOf<MonsterPack?>(null) }
     
     val picker = rememberLauncherForActivityResult(ActivityResultContracts.OpenDocument()) { uri ->
         if (uri == null) return@rememberLauncherForActivityResult
@@ -93,6 +98,13 @@ fun ColumnScope.CharacterPackSettingsContent(
                 pendingDeletion = null
             },
             onDismiss = { pendingDeletion = null }
+        )
+    }
+
+    selectedPack?.let { pack ->
+        CharacterPackDetailsSheet(
+            pack = pack,
+            onDismiss = { selectedPack = null }
         )
     }
 
@@ -175,7 +187,12 @@ fun ColumnScope.CharacterPackSettingsContent(
                                     )
                                     Spacer(Modifier.width(10.dp))
                                 }
-                                Column(modifier = Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(2.dp)) {
+                                Column(
+                                    modifier = Modifier
+                                        .weight(1f)
+                                        .clickable { selectedPack = pack },
+                                    verticalArrangement = Arrangement.spacedBy(2.dp)
+                                ) {
                                     Text(pack.name, style = MaterialTheme.typography.titleMedium)
                                     // In a real app we might want the character count in MonsterPack
                                     Text(
@@ -204,6 +221,40 @@ fun ColumnScope.CharacterPackSettingsContent(
                     }
                 }
             }
+        }
+    }
+}
+
+@Composable
+@OptIn(ExperimentalMaterial3Api::class)
+private fun CharacterPackDetailsSheet(
+    pack: MonsterPack,
+    onDismiss: () -> Unit
+) {
+    ModalBottomSheet(
+        onDismissRequest = onDismiss,
+        sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
+    ) {
+        Column(
+            modifier = Modifier.padding(start = 24.dp, top = 8.dp, end = 24.dp, bottom = 32.dp),
+            verticalArrangement = Arrangement.spacedBy(12.dp)
+        ) {
+            Text(stringResource(R.string.pack_details), style = MaterialTheme.typography.titleMedium)
+            Text(pack.name, style = MaterialTheme.typography.headlineSmall)
+            Text(
+                stringResource(R.string.pack_version, pack.version),
+                style = MaterialTheme.typography.bodyLarge,
+                color = MaterialTheme.colorScheme.onSurfaceVariant
+            )
+            pack.creator?.takeIf { it.isNotBlank() }?.let { creator ->
+                Text(stringResource(R.string.pack_creator, creator), style = MaterialTheme.typography.bodyLarge)
+            }
+            Text(stringResource(R.string.pack_license, pack.license), style = MaterialTheme.typography.bodyLarge)
+            Text(
+                stringResource(R.string.pack_identifier, pack.id),
+                style = MaterialTheme.typography.bodySmall,
+                color = MaterialTheme.colorScheme.onSurfaceVariant
+            )
         }
     }
 }
