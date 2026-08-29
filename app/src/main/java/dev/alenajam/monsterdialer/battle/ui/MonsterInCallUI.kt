@@ -81,20 +81,6 @@ class MonsterInCallUI @Inject constructor(
             if (!canManageConference) showManageSheet = false
         }
 
-        if (showManageSheet && canManageConference) {
-            ModalBottomSheet(
-                onDismissRequest = { showManageSheet = false },
-                sheetState = sheetState
-            ) {
-                ManageConferenceSheet(
-                    participants = uiState.conferenceParticipants,
-                    showSplit = showSplitInManage,
-                    onSplit = viewModel::split,
-                    onHangup = { call -> viewModel.hangup(call) }
-                )
-            }
-        }
-
         // Here you provide the MonsterDialer specific UI!
         AppProviders(
             icons = rememberMonsterIcons(),
@@ -103,6 +89,20 @@ class MonsterInCallUI @Inject constructor(
                 // backgroundPainter = { painterResource(R.drawable.monster_bg) }
             )
         ) {
+            if (showManageSheet && canManageConference) {
+                ModalBottomSheet(
+                    onDismissRequest = { showManageSheet = false },
+                    sheetState = sheetState
+                ) {
+                    ManageConferenceSheet(
+                        participants = uiState.conferenceParticipants,
+                        showSplit = showSplitInManage,
+                        onSplit = viewModel::split,
+                        onHangup = { call -> viewModel.hangup(call) }
+                    )
+                }
+            }
+
             Scaffold(
                 modifier = Modifier.fillMaxSize(),
                 contentWindowInsets = WindowInsets(0, 0, 0, 0),
