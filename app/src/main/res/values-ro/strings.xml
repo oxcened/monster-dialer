@@ -19,9 +19,9 @@
     <string name="import_and_enable_character_pack" comment="Empty-state message in the character selector.">Importă și activează un pachet de personaje pentru a adăuga mai multe.</string>
     <string name="radiant" comment="Adjective for a rare, sparkling character variant.">Radiant</string>
     <string name="selected" comment="Status label for the currently chosen option.">Selectat</string>
-    <string name="show_grid_view">Afișează grila</string>
-    <string name="show_list_view">Afișează lista</string>
-    <string name="jump_to_selected_character">Salt la personajul selectat</string>
+    <string name="show_grid_view" comment="Accessibility label for the control that switches the character selector to a grid.">Afișează grila</string>
+    <string name="show_list_view" comment="Accessibility label for the control that switches the character selector to a list.">Afișează lista</string>
+    <string name="jump_to_selected_character" comment="Accessibility label for a button that scrolls to the selected character.">Salt la personajul selectat</string>
     <string name="select" comment="Button label to choose an option.">Selectează</string>
     <string name="change" comment="Button label to change the current selection.">Schimbă</string>
     <string name="contact_chooser_prompt" comment="Prompt above the contact picker.">Alege un contact căruia să îi atribui un personaj.</string>
@@ -42,22 +42,22 @@
         <item quantity="few">%1$d personaje · v%2$s</item>
         <item quantity="other">%1$d personaje · v%2$s</item>
     </plurals>
-    <string name="pack_version">v%1$s</string>
-    <string name="pack_creator_label">Creator</string>
-    <string name="pack_license_label">Licență</string>
-    <string name="pack_identifier_label">ID pachet</string>
-    <string name="pack_metadata">Metadate pachet</string>
-    <string name="copy_pack_metadata">Copiază metadatele pachetului</string>
-    <string name="pack_metadata_copied">Metadatele pachetului au fost copiate</string>
-    <string name="remove_character_pack_title">Elimini %1$s?</string>
-    <string name="remove_character_pack_message">Această acțiune elimină definitiv %1$s și ilustrațiile sale din MonsterDialer.</string>
-    <string name="cancel">Anulează</string>
-    <string name="import_pack" comment="Short button label to import a selected pack.">Importă</string>
+    <string name="pack_version" comment="%1$s is a character pack version number.">v%1$s</string>
+    <string name="pack_creator_label" comment="Label above the creator name in character pack metadata.">Creator</string>
+    <string name="pack_license_label" comment="Label above the license in character pack metadata.">Licență</string>
+    <string name="pack_identifier_label" comment="Label above the technical identifier in character pack metadata.">ID pachet</string>
+    <string name="pack_metadata" comment="Label used for copied character-pack metadata.">Metadate pachet</string>
+    <string name="copy_pack_metadata" comment="Accessibility label for the action that copies character-pack metadata.">Copiază metadatele pachetului</string>
+    <string name="pack_metadata_copied" comment="Brief confirmation after character-pack metadata is copied.">Metadatele pachetului au fost copiate</string>
+    <string name="import_pack" comment="Button label to import a character pack.">Importă</string>
     <string name="enabled" comment="Status label for an active character pack.">Activat</string>
     <string name="disabled" comment="Status label for an inactive character pack.">Dezactivat</string>
     <string name="enable" comment="Button label to activate a character pack.">Activează</string>
     <string name="disable" comment="Button label to deactivate a character pack.">Dezactivează</string>
     <string name="remove" comment="Button label to permanently remove a character pack.">Elimină</string>
+    <string name="remove_character_pack_title" comment="Confirmation dialog title; %1$s is the character pack name.">Elimini %1$s?</string>
+    <string name="remove_character_pack_message" comment="Confirmation dialog message; %1$s is the character pack name.">Această acțiune elimină definitiv %1$s și ilustrațiile sale din MonsterDialer.</string>
+    <string name="cancel" comment="Button label that dismisses an action without making changes.">Anulează</string>
     <string name="character_pack_removed" comment="Confirmation after a character pack is removed.">Pachet de personaje eliminat</string>
     <string name="character_pack_remove_failed" comment="Error when a character pack cannot be removed.">Pachetul de personaje nu a putut fi eliminat</string>
     <string name="pack_import_failed_title" comment="Title of the character-pack import error dialog.">Pachetul nu a putut fi importat</string>

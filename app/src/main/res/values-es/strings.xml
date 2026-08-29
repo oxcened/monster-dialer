@@ -19,9 +19,9 @@
     <string name="import_and_enable_character_pack" comment="Empty-state message in the character selector.">Importa y activa un paquete de personajes para añadir más.</string>
     <string name="radiant" comment="Adjective for a rare, sparkling character variant.">Radiante</string>
     <string name="selected" comment="Status label for the currently chosen option.">Seleccionado</string>
-    <string name="show_grid_view">Mostrar cuadrícula</string>
-    <string name="show_list_view">Mostrar lista</string>
-    <string name="jump_to_selected_character">Ir al personaje seleccionado</string>
+    <string name="show_grid_view" comment="Accessibility label for the control that switches the character selector to a grid.">Mostrar cuadrícula</string>
+    <string name="show_list_view" comment="Accessibility label for the control that switches the character selector to a list.">Mostrar lista</string>
+    <string name="jump_to_selected_character" comment="Accessibility label for a button that scrolls to the selected character.">Ir al personaje seleccionado</string>
     <string name="select" comment="Button label to choose an option.">Elegir</string>
     <string name="change" comment="Button label to change the current selection.">Cambiar</string>
     <string name="contact_chooser_prompt" comment="Prompt above the contact picker.">Elige un contacto al que asignar un personaje.</string>
@@ -40,22 +40,22 @@
         <item quantity="one">%1$d personaje · v%2$s</item>
         <item quantity="other">%1$d personajes · v%2$s</item>
     </plurals>
-    <string name="pack_version">v%1$s</string>
-    <string name="pack_creator_label">Creador</string>
-    <string name="pack_license_label">Licencia</string>
-    <string name="pack_identifier_label">ID del paquete</string>
-    <string name="pack_metadata">Metadatos del paquete</string>
-    <string name="copy_pack_metadata">Copiar metadatos del paquete</string>
-    <string name="pack_metadata_copied">Metadatos del paquete copiados</string>
-    <string name="remove_character_pack_title">¿Eliminar %1$s?</string>
-    <string name="remove_character_pack_message">Esto elimina permanentemente %1$s y sus ilustraciones de MonsterDialer.</string>
-    <string name="cancel">Cancelar</string>
-    <string name="import_pack" comment="Short button label to import a selected pack.">Importar</string>
+    <string name="pack_version" comment="%1$s is a character pack version number.">v%1$s</string>
+    <string name="pack_creator_label" comment="Label above the creator name in character pack metadata.">Creador</string>
+    <string name="pack_license_label" comment="Label above the license in character pack metadata.">Licencia</string>
+    <string name="pack_identifier_label" comment="Label above the technical identifier in character pack metadata.">ID del paquete</string>
+    <string name="pack_metadata" comment="Label used for copied character-pack metadata.">Metadatos del paquete</string>
+    <string name="copy_pack_metadata" comment="Accessibility label for the action that copies character-pack metadata.">Copiar metadatos del paquete</string>
+    <string name="pack_metadata_copied" comment="Brief confirmation after character-pack metadata is copied.">Metadatos del paquete copiados</string>
+    <string name="import_pack" comment="Button label to import a character pack.">Importar</string>
     <string name="enabled" comment="Status label for an active character pack.">Activo</string>
     <string name="disabled" comment="Status label for an inactive character pack.">Inactivo</string>
     <string name="enable" comment="Button label to activate a character pack.">Activar</string>
     <string name="disable" comment="Button label to deactivate a character pack.">Desactivar</string>
     <string name="remove" comment="Button label to permanently remove a character pack.">Eliminar</string>
+    <string name="remove_character_pack_title" comment="Confirmation dialog title; %1$s is the character pack name.">¿Eliminar %1$s?</string>
+    <string name="remove_character_pack_message" comment="Confirmation dialog message; %1$s is the character pack name.">Esto elimina permanentemente %1$s y sus ilustraciones de MonsterDialer.</string>
+    <string name="cancel" comment="Button label that dismisses an action without making changes.">Cancelar</string>
     <string name="character_pack_removed" comment="Confirmation after a character pack is removed.">Paquete de personajes eliminado</string>
     <string name="character_pack_remove_failed" comment="Error when a character pack cannot be removed.">No se pudo eliminar el paquete de personajes</string>
     <string name="pack_import_failed_title" comment="Title of the character-pack import error dialog.">No se pudo importar el paquete</string>

@@ -19,9 +19,9 @@
     <string name="import_and_enable_character_pack" comment="Empty-state message in the character selector.">Importér og aktivér en figurpakke for at tilføje flere.</string>
     <string name="radiant" comment="Adjective for a rare, sparkling character variant.">Strålende</string>
     <string name="selected" comment="Status label for the currently chosen option.">Valgt</string>
-    <string name="show_grid_view">Vis gittervisning</string>
-    <string name="show_list_view">Vis listevisning</string>
-    <string name="jump_to_selected_character">Gå til valgt figur</string>
+    <string name="show_grid_view" comment="Accessibility label for the control that switches the character selector to a grid.">Vis gittervisning</string>
+    <string name="show_list_view" comment="Accessibility label for the control that switches the character selector to a list.">Vis listevisning</string>
+    <string name="jump_to_selected_character" comment="Accessibility label for a button that scrolls to the selected character.">Gå til valgt figur</string>
     <string name="select" comment="Button label to choose an option.">Vælg</string>
     <string name="change" comment="Button label to change the current selection.">Skift</string>
     <string name="contact_chooser_prompt" comment="Prompt above the contact picker.">Vælg en kontakt, der skal tildeles en figur.</string>
@@ -40,22 +40,22 @@
         <item quantity="one">%1$d figur · v%2$s</item>
         <item quantity="other">%1$d figurer · v%2$s</item>
     </plurals>
-    <string name="pack_version">v%1$s</string>
-    <string name="pack_creator_label">Opretter</string>
-    <string name="pack_license_label">Licens</string>
-    <string name="pack_identifier_label">Pakke-id</string>
-    <string name="pack_metadata">Pakkemetadata</string>
-    <string name="copy_pack_metadata">Kopiér pakkemetadata</string>
-    <string name="pack_metadata_copied">Pakkemetadata kopieret</string>
-    <string name="remove_character_pack_title">Fjern %1$s?</string>
-    <string name="remove_character_pack_message">Dette fjerner %1$s og tilhørende illustrationer permanent fra MonsterDialer.</string>
-    <string name="cancel">Annuller</string>
-    <string name="import_pack" comment="Short button label to import a selected pack.">Importér</string>
+    <string name="pack_version" comment="%1$s is a character pack version number.">v%1$s</string>
+    <string name="pack_creator_label" comment="Label above the creator name in character pack metadata.">Opretter</string>
+    <string name="pack_license_label" comment="Label above the license in character pack metadata.">Licens</string>
+    <string name="pack_identifier_label" comment="Label above the technical identifier in character pack metadata.">Pakke-id</string>
+    <string name="pack_metadata" comment="Label used for copied character-pack metadata.">Pakkemetadata</string>
+    <string name="copy_pack_metadata" comment="Accessibility label for the action that copies character-pack metadata.">Kopiér pakkemetadata</string>
+    <string name="pack_metadata_copied" comment="Brief confirmation after character-pack metadata is copied.">Pakkemetadata kopieret</string>
+    <string name="import_pack" comment="Button label to import a character pack.">Importér</string>
     <string name="enabled" comment="Status label for an active character pack.">Aktiveret</string>
     <string name="disabled" comment="Status label for an inactive character pack.">Deaktiveret</string>
     <string name="enable" comment="Button label to activate a character pack.">Aktivér</string>
     <string name="disable" comment="Button label to deactivate a character pack.">Deaktivér</string>
     <string name="remove" comment="Button label to permanently remove a character pack.">Fjern</string>
+    <string name="remove_character_pack_title" comment="Confirmation dialog title; %1$s is the character pack name.">Fjern %1$s?</string>
+    <string name="remove_character_pack_message" comment="Confirmation dialog message; %1$s is the character pack name.">Dette fjerner %1$s og tilhørende illustrationer permanent fra MonsterDialer.</string>
+    <string name="cancel" comment="Button label that dismisses an action without making changes.">Annuller</string>
     <string name="character_pack_removed" comment="Confirmation after a character pack is removed.">Figurpakke fjernet</string>
     <string name="character_pack_remove_failed" comment="Error when a character pack cannot be removed.">Kunne ikke fjerne figurpakken</string>
     <string name="pack_import_failed_title" comment="Title of the character-pack import error dialog.">Kunne ikke importere pakken</string>
