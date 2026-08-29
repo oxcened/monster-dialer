@@ -2,10 +2,7 @@ package dev.alenajam.monsterdialer.app.ui
 
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Block
-import androidx.compose.material.icons.outlined.Merge
 import androidx.compose.material.icons.outlined.MoreVert
-import androidx.compose.material.icons.outlined.PhonePaused
-import androidx.compose.material.icons.outlined.SwapCalls
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import dev.alenajam.monsterdialer.R
@@ -48,9 +45,9 @@ fun rememberMonsterIcons(): AppIcons {
                 tintable = false,
             ),
             history = IconSource.Resource(R.drawable.book, tintable = false),
-            merge = IconSource.Vector(Icons.Outlined.Merge),
-            swapCalls = IconSource.Vector(Icons.Outlined.SwapCalls),
-            phonePaused = IconSource.Vector(Icons.Outlined.PhonePaused),
+            merge = IconSource.Resource(R.drawable.merge, tintable = false),
+            swapCalls = IconSource.Resource(R.drawable.swap, tintable = false),
+            phonePaused = IconSource.Resource(R.drawable.hold, tintable = false),
             recents = IconSource.Resource(R.drawable.clock, tintable = false),
             recentsSelected = IconSource.Resource(R.drawable.clock, tintable = false),
             contacts = IconSource.Resource(R.drawable.player, tintable = false),
