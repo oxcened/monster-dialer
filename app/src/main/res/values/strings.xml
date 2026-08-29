@@ -42,12 +42,16 @@
     <string name="your_character_packs" comment="Heading above installed character packs.">Your character packs</string>
     <plurals name="installed_pack_count" comment="Number of installed character packs. %d is the count."><item quantity="one">%d installed</item><item quantity="other">%d installed</item></plurals>
     <plurals name="pack_character_count" comment="%1$d is the number of characters; %2$s is the pack version."><item quantity="one">%1$d character · v%2$s</item><item quantity="other">%1$d characters · v%2$s</item></plurals>
+    <string name="pack_version" comment="%1$s is a character pack version number.">v%1$s</string>
     <string name="import_pack" comment="Short button label to import a selected pack.">Import</string>
     <string name="enabled" comment="Status label for an active character pack.">Enabled</string>
     <string name="disabled" comment="Status label for an inactive character pack.">Disabled</string>
     <string name="enable" comment="Button label to activate a character pack.">Enable</string>
     <string name="disable" comment="Button label to deactivate a character pack.">Disable</string>
     <string name="remove" comment="Button label to permanently remove a character pack.">Remove</string>
+    <string name="remove_character_pack_title" comment="Confirmation dialog title; %1$s is the character pack name.">Remove %1$s?</string>
+    <string name="remove_character_pack_message" comment="Confirmation dialog message; %1$s is the character pack name.">This permanently removes %1$s and its artwork from Monster Dialer.</string>
+    <string name="cancel" comment="Button label that dismisses an action without making changes.">Cancel</string>
     <string name="character_pack_removed" comment="Confirmation after a character pack is removed.">Character pack removed</string>
     <string name="character_pack_remove_failed" comment="Error when a character pack cannot be removed.">Could not remove character pack</string>
     <string name="pack_import_failed_title" comment="Title of the character-pack import error dialog.">Couldn’t import pack</string>

@@ -5,13 +5,18 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.runtime.getValue
+import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import dagger.hilt.android.AndroidEntryPoint
 import dev.alenajam.monsterdialer.R
 import dev.alenajam.monsterdialer.app.ui.rememberMonsterIcons
 import dev.alenajam.monsterdialer.app.ui.rememberMonsterTypography
 import dev.alenajam.monsterdialer.packs.ui.CharacterPackSettingsContent
+import dev.alenajam.monsterdialer.packs.ui.CharacterPackSettingsViewModel
 import dev.alenajam.monsterdialer.characters.ui.PlayerCharacterSettingsContent
 import dev.alenajam.monsterdialer.characters.ui.ContactCharacterSettingsContent
 import dev.alenajam.monsterdialer.characters.ui.ContactPickerDestination
@@ -36,6 +41,9 @@ class MainActivity : AppCompatActivity() {
         }
 
         setContent {
+            val characterPackSettingsViewModel: CharacterPackSettingsViewModel = hiltViewModel()
+            val characterPacks by characterPackSettingsViewModel.packs.collectAsStateWithLifecycle()
+
             DialerApp(
                 defaultPhoneManager = defaultPhoneManager,
                 icons = rememberMonsterIcons(),
@@ -46,7 +54,13 @@ class MainActivity : AppCompatActivity() {
                     SettingsSubpage(
                         title = stringResource(R.string.settings_character_packs_title),
                         description = stringResource(R.string.settings_character_packs_description),
-                        content = { CharacterPackSettingsContent() }
+                        subtitle = pluralStringResource(
+                            R.plurals.installed_pack_count,
+                            characterPacks.size,
+                            characterPacks.size
+                        ),
+                        content = { CharacterPackSettingsContent(characterPackSettingsViewModel) },
+                        topContentPadding = 0.dp
                     ),
                     SettingsSubpage(
                         title = stringResource(R.string.settings_player_character_title),
