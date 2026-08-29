@@ -32,6 +32,7 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -236,26 +237,50 @@ private fun CharacterPackDetailsSheet(
         sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
     ) {
         Column(
-            modifier = Modifier.padding(start = 24.dp, top = 8.dp, end = 24.dp, bottom = 32.dp),
+            modifier = Modifier
+                .padding(start = 24.dp, top = 8.dp, end = 24.dp, bottom = 32.dp)
+                .verticalScroll(rememberScrollState()),
             verticalArrangement = Arrangement.spacedBy(12.dp)
         ) {
-            Text(stringResource(R.string.pack_details), style = MaterialTheme.typography.titleMedium)
             Text(pack.name, style = MaterialTheme.typography.headlineSmall)
             Text(
                 stringResource(R.string.pack_version, pack.version),
                 style = MaterialTheme.typography.bodyLarge,
                 color = MaterialTheme.colorScheme.onSurfaceVariant
             )
+            HorizontalDivider()
             pack.creator?.takeIf { it.isNotBlank() }?.let { creator ->
-                Text(stringResource(R.string.pack_creator, creator), style = MaterialTheme.typography.bodyLarge)
+                PackMetadataField(
+                    label = stringResource(R.string.pack_creator_label),
+                    value = creator
+                )
             }
-            Text(stringResource(R.string.pack_license, pack.license), style = MaterialTheme.typography.bodyLarge)
-            Text(
-                stringResource(R.string.pack_identifier, pack.id),
-                style = MaterialTheme.typography.bodySmall,
-                color = MaterialTheme.colorScheme.onSurfaceVariant
+            PackMetadataField(
+                label = stringResource(R.string.pack_license_label),
+                value = pack.license
+            )
+            PackMetadataField(
+                label = stringResource(R.string.pack_identifier_label),
+                value = pack.id,
+                valueStyle = MaterialTheme.typography.bodySmall
             )
         }
+    }
+}
+
+@Composable
+private fun PackMetadataField(
+    label: String,
+    value: String,
+    valueStyle: androidx.compose.ui.text.TextStyle = MaterialTheme.typography.bodyLarge
+) {
+    Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
+        Text(
+            label,
+            style = MaterialTheme.typography.labelLarge,
+            color = MaterialTheme.colorScheme.onSurfaceVariant
+        )
+        Text(value, style = valueStyle)
     }
 }
 
