@@ -61,6 +61,10 @@ Read the complete [character-pack format guide](docs/character-packs.md) before 
 
 Issues, pull requests, reviews, translations, and feature requests are welcome. Please read [CONTRIBUTING.md](CONTRIBUTING.md) before opening a pull request. You can propose and vote on ideas at [MonsterDialer Feedback](https://monsterdialer.fider.io/).
 
+## Assets & Copyright
+
+All visual assets bundled with MonsterDialer are original works created specifically for the project. These bundled assets are not sourced from third-party games or franchises. User-imported character packs are external content and are not bundled with or part of MonsterDialer.
+
 ## License
 
 MonsterDialer is licensed under the [Apache License 2.0](LICENSE).
