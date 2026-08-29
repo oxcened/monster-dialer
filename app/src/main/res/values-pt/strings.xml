@@ -40,6 +40,16 @@
         <item quantity="one">%1$d personagem · v%2$s</item>
         <item quantity="other">%1$d personagens · v%2$s</item>
     </plurals>
+    <string name="pack_version">v%1$s</string>
+    <string name="pack_creator_label">Criador</string>
+    <string name="pack_license_label">Licença</string>
+    <string name="pack_identifier_label">ID do pacote</string>
+    <string name="pack_metadata">Metadados do pacote</string>
+    <string name="copy_pack_metadata">Copiar metadados do pacote</string>
+    <string name="pack_metadata_copied">Metadados do pacote copiados</string>
+    <string name="remove_character_pack_title">Remover %1$s?</string>
+    <string name="remove_character_pack_message">Isto remove permanentemente %1$s e as respetivas ilustrações do MonsterDialer.</string>
+    <string name="cancel">Cancelar</string>
     <string name="import_pack" comment="Short button label to import a selected pack.">Importar</string>
     <string name="enabled" comment="Status label for an active character pack.">Ativado</string>
     <string name="disabled" comment="Status label for an inactive character pack.">Desativado</string>

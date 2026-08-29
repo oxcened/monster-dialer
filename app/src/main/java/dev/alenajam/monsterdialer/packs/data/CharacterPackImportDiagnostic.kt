@@ -21,7 +21,7 @@ data class CharacterPackImportDiagnostic(
                 error.printStackTrace(PrintWriter(writer))
             }.toString().trim()
             val report = buildString {
-                appendLine("Monster Dialer character pack import diagnostic")
+                appendLine("MonsterDialer character pack import diagnostic")
                 appendLine("Result: Failed")
                 appendLine("File: $fileName")
                 appendLine("Supported formatVersion: ${CharacterPackValidator.SupportedFormatVersion}")

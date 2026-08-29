@@ -5,5 +5,6 @@ data class MonsterPack(
     val name: String,
     val version: String,
     val creator: String?,
+    val license: String,
     val enabled: Boolean
 )

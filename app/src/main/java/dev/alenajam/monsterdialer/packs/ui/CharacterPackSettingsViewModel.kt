@@ -65,6 +65,10 @@ class CharacterPackSettingsViewModel @Inject constructor(
         _importDiagnostic.value = null
     }
 
+    fun dismissMessage() {
+        _message.value = null
+    }
+
     fun getPreviewCharacter(packId: String, packName: String): InstalledPackCharacter? {
         return charactersRepository.getCharactersInPack(packId, packName).firstOrNull()
     }
