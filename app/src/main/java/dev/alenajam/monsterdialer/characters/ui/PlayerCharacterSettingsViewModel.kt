@@ -23,15 +23,6 @@ class PlayerCharacterSettingsViewModel @Inject constructor(
     private val layoutPreferences: CharacterLayoutPreferences
 ) : ViewModel() {
 
-    private val _assignedTrainer = MutableStateFlow<CharacterReference?>(null)
-    val assignedTrainer: StateFlow<CharacterReference?> = _assignedTrainer.asStateFlow()
-
-    private val _assignedMonster = MutableStateFlow<CharacterReference?>(null)
-    val assignedMonster: StateFlow<CharacterReference?> = _assignedMonster.asStateFlow()
-
-    private val _layout = MutableStateFlow(if (layoutPreferences.isGridLayout()) CharacterLayout.Grid else CharacterLayout.List)
-    val layout: StateFlow<CharacterLayout> = _layout.asStateFlow()
-
     val trainers: List<InstalledPackCharacter> = charactersRepository.getCharactersAssignableTo(
         CharacterAssignmentTarget.Player, CharacterType.Trainer
     )
@@ -39,6 +30,21 @@ class PlayerCharacterSettingsViewModel @Inject constructor(
     val monsters: List<InstalledPackCharacter> = charactersRepository.getCharactersAssignableTo(
         CharacterAssignmentTarget.Player, CharacterType.Monster
     )
+
+    private val _assignedTrainer = MutableStateFlow<CharacterReference?>(null)
+    val assignedTrainer: StateFlow<CharacterReference?> = _assignedTrainer.asStateFlow()
+
+    private val _assignedMonster = MutableStateFlow<CharacterReference?>(null)
+    val assignedMonster: StateFlow<CharacterReference?> = _assignedMonster.asStateFlow()
+
+    private val _layout = MutableStateFlow(
+        if (layoutPreferences.isGridLayout() && (trainers.isNotEmpty() || monsters.isNotEmpty())) {
+            CharacterLayout.Grid
+        } else {
+            CharacterLayout.List
+        }
+    )
+    val layout: StateFlow<CharacterLayout> = _layout.asStateFlow()
 
     init {
         viewModelScope.launch {
