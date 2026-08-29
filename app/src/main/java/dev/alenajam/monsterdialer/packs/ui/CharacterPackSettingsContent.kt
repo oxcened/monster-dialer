@@ -232,6 +232,12 @@ private fun CharacterPackDetailsSheet(
     pack: MonsterPack,
     onDismiss: () -> Unit
 ) {
+    val context = LocalContext.current
+    val metadataLabel = stringResource(R.string.pack_metadata)
+    val version = stringResource(R.string.pack_version, pack.version)
+    val creatorLabel = stringResource(R.string.pack_creator_label)
+    val licenseLabel = stringResource(R.string.pack_license_label)
+    val identifierLabel = stringResource(R.string.pack_identifier_label)
     ModalBottomSheet(
         onDismissRequest = onDismiss,
         sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
@@ -242,27 +248,55 @@ private fun CharacterPackDetailsSheet(
                 .verticalScroll(rememberScrollState()),
             verticalArrangement = Arrangement.spacedBy(12.dp)
         ) {
-            Text(pack.name, style = MaterialTheme.typography.headlineSmall)
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Text(
+                    pack.name,
+                    modifier = Modifier.weight(1f),
+                    style = MaterialTheme.typography.headlineSmall
+                )
+                IconButton(onClick = {
+                    context.copyToClipboard(
+                        label = metadataLabel,
+                        text = pack.metadataText(
+                            version = version,
+                            creatorLabel = creatorLabel,
+                            licenseLabel = licenseLabel,
+                            identifierLabel = identifierLabel
+                        )
+                    )
+                    Toast.makeText(context, R.string.pack_metadata_copied, Toast.LENGTH_SHORT).show()
+                }) {
+                    AppIcon(
+                        LocalAppIcons.current.copy,
+                        contentDescription = stringResource(R.string.copy_pack_metadata),
+                        modifier = Modifier.size(24.dp)
+                    )
+                }
+            }
             Text(
-                stringResource(R.string.pack_version, pack.version),
+                version,
                 style = MaterialTheme.typography.bodyLarge,
                 color = MaterialTheme.colorScheme.onSurfaceVariant
             )
             HorizontalDivider()
             pack.creator?.takeIf { it.isNotBlank() }?.let { creator ->
                 PackMetadataField(
-                    label = stringResource(R.string.pack_creator_label),
+                    label = creatorLabel,
                     value = creator
                 )
             }
             PackMetadataField(
-                label = stringResource(R.string.pack_license_label),
-                value = pack.license
+                label = licenseLabel,
+                value = pack.license,
+                valueStyle = MaterialTheme.typography.bodySmall
             )
             PackMetadataField(
-                label = stringResource(R.string.pack_identifier_label),
+                label = identifierLabel,
                 value = pack.id,
-                valueStyle = MaterialTheme.typography.bodySmall
+                valueStyle = MaterialTheme.typography.bodyMedium
             )
         }
     }
@@ -274,14 +308,36 @@ private fun PackMetadataField(
     value: String,
     valueStyle: androidx.compose.ui.text.TextStyle = MaterialTheme.typography.bodyLarge
 ) {
-    Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
+    Row(
+        modifier = Modifier.fillMaxWidth(),
+        horizontalArrangement = Arrangement.spacedBy(16.dp),
+        verticalAlignment = Alignment.Top
+    ) {
         Text(
             label,
+            modifier = Modifier.width(72.dp),
             style = MaterialTheme.typography.labelLarge,
             color = MaterialTheme.colorScheme.onSurfaceVariant
         )
-        Text(value, style = valueStyle)
+        Text(
+            value,
+            modifier = Modifier.weight(1f),
+            style = valueStyle
+        )
     }
+}
+
+private fun MonsterPack.metadataText(
+    version: String,
+    creatorLabel: String,
+    licenseLabel: String,
+    identifierLabel: String
+): String = buildString {
+    appendLine(name)
+    appendLine(version)
+    creator?.takeIf { it.isNotBlank() }?.let { appendLine("$creatorLabel: $it") }
+    appendLine("$licenseLabel: $license")
+    append("$identifierLabel: $id")
 }
 
 @Composable

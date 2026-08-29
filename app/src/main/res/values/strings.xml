@@ -46,6 +46,9 @@
     <string name="pack_creator_label" comment="Label above the creator name in character pack metadata.">Creator</string>
     <string name="pack_license_label" comment="Label above the license in character pack metadata.">License</string>
     <string name="pack_identifier_label" comment="Label above the technical identifier in character pack metadata.">Pack ID</string>
+    <string name="pack_metadata" comment="Label used for copied character-pack metadata.">Pack metadata</string>
+    <string name="copy_pack_metadata" comment="Accessibility label for the action that copies character-pack metadata.">Copy pack metadata</string>
+    <string name="pack_metadata_copied" comment="Brief confirmation after character-pack metadata is copied.">Pack metadata copied</string>
     <string name="import_pack" comment="Button label to import a character pack.">Import pack</string>
     <string name="enabled" comment="Status label for an active character pack.">Enabled</string>
     <string name="disabled" comment="Status label for an inactive character pack.">Disabled</string>
