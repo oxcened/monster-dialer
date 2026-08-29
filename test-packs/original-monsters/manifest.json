@@ -1,0 +1,1670 @@
+{
+  "formatVersion": 1,
+  "id": "replace-with-original-monsters-pack-id",
+  "name": "Replace with original monsters pack name",
+  "version": "0.0.0",
+  "license": "Replace with license statement",
+  "characters": [
+    {
+      "id": "monster-001",
+      "name": "Original Monster 001",
+      "type": "monster",
+      "assignableTo": [
+        "contact",
+        "player"
+      ],
+      "frontImage": "art/monster-001.png",
+      "backImage": "art/monster-001-back.png"
+    },
+    {
+      "id": "monster-002",
+      "name": "Original Monster 002",
+      "type": "monster",
+      "assignableTo": [
+        "contact",
+        "player"
+      ],
+      "frontImage": "art/monster-002.png",
+      "backImage": "art/monster-002-back.png"
+    },
+    {
+      "id": "monster-003",
+      "name": "Original Monster 003",
+      "type": "monster",
+      "assignableTo": [
+        "contact",
+        "player"
+      ],
+      "frontImage": "art/monster-003.png",
+      "backImage": "art/monster-003-back.png"
+    },
+    {
+      "id": "monster-004",
+      "name": "Original Monster 004",
+      "type": "monster",
+      "assignableTo": [
+        "contact",
+        "player"
+      ],
+      "frontImage": "art/monster-004.png",
+      "backImage": "art/monster-004-back.png"
+    },
+    {
+      "id": "monster-005",
+      "name": "Original Monster 005",
+      "type": "monster",
+      "assignableTo": [
+        "contact",
+        "player"
+      ],
+      "frontImage": "art/monster-005.png",
+      "backImage": "art/monster-005-back.png"
+    },
+    {
+      "id": "monster-006",
+      "name": "Original Monster 006",
+      "type": "monster",
+      "assignableTo": [
+        "contact",
+        "player"
+      ],
+      "frontImage": "art/monster-006.png",
+      "backImage": "art/monster-006-back.png"
+    },
+    {
+      "id": "monster-007",
+      "name": "Original Monster 007",
+      "type": "monster",
+      "assignableTo": [
+        "contact",
+        "player"
+      ],
+      "frontImage": "art/monster-007.png",
+      "backImage": "art/monster-007-back.png"
+    },
+    {
+      "id": "monster-008",
+      "name": "Original Monster 008",
+      "type": "monster",
+      "assignableTo": [
+        "contact",
+        "player"
+      ],
+      "frontImage": "art/monster-008.png",
+      "backImage": "art/monster-008-back.png"
+    },
+    {
+      "id": "monster-009",
+      "name": "Original Monster 009",
+      "type": "monster",
+      "assignableTo": [
+        "contact",
+        "player"
+      ],
+      "frontImage": "art/monster-009.png",
+      "backImage": "art/monster-009-back.png"
+    },
+    {
+      "id": "monster-010",
+      "name": "Original Monster 010",
+      "type": "monster",
+      "assignableTo": [
+        "contact",
+        "player"
+      ],
+      "frontImage": "art/monster-010.png",
+      "backImage": "art/monster-010-back.png"
+    },
+    {
+      "id": "monster-011",
+      "name": "Original Monster 011",
+      "type": "monster",
+      "assignableTo": [
+        "contact",
+        "player"
+      ],
+      "frontImage": "art/monster-011.png",
+      "backImage": "art/monster-011-back.png"
+    },
+    {
+      "id": "monster-012",
+      "name": "Original Monster 012",
+      "type": "monster",
+      "assignableTo": [
+        "contact",
+        "player"
+      ],
+      "frontImage": "art/monster-012.png",
+      "backImage": "art/monster-012-back.png"
+    },
+    {
+      "id": "monster-013",
+      "name": "Original Monster 013",
+      "type": "monster",
+      "assignableTo": [
+        "contact",
+        "player"
+      ],
+      "frontImage": "art/monster-013.png",
+      "backImage": "art/monster-013-back.png"
+    },
+    {
+      "id": "monster-014",
+      "name": "Original Monster 014",
+      "type": "monster",
+      "assignableTo": [
+        "contact",
+        "player"
+      ],
+      "frontImage": "art/monster-014.png",
+      "backImage": "art/monster-014-back.png"
+    },
+    {
+      "id": "monster-015",
+      "name": "Original Monster 015",
+      "type": "monster",
+      "assignableTo": [
+        "contact",
+        "player"
+      ],
+      "frontImage": "art/monster-015.png",
+      "backImage": "art/monster-015-back.png"
+    },
+    {
+      "id": "monster-016",
+      "name": "Original Monster 016",
+      "type": "monster",
+      "assignableTo": [
+        "contact",
+        "player"
+      ],
+      "frontImage": "art/monster-016.png",
+      "backImage": "art/monster-016-back.png"
+    },
+    {
+      "id": "monster-017",
+      "name": "Original Monster 017",
+      "type": "monster",
+      "assignableTo": [
+        "contact",
+        "player"
+      ],
+      "frontImage": "art/monster-017.png",
+      "backImage": "art/monster-017-back.png"
+    },
+    {
+      "id": "monster-018",
+      "name": "Original Monster 018",
+      "type": "monster",
+      "assignableTo": [
+        "contact",
+        "player"
+      ],
+      "frontImage": "art/monster-018.png",
+      "backImage": "art/monster-018-back.png"
+    },
+    {
+      "id": "monster-019",
+      "name": "Original Monster 019",
+      "type": "monster",
+      "assignableTo": [
+        "contact",
+        "player"
+      ],
+      "frontImage": "art/monster-019.png",
+      "backImage": "art/monster-019-back.png"
+    },
+    {
+      "id": "monster-020",
+      "name": "Original Monster 020",
+      "type": "monster",
+      "assignableTo": [
+        "contact",
+        "player"
+      ],
+      "frontImage": "art/monster-020.png",
+      "backImage": "art/monster-020-back.png"
+    },
+    {
+      "id": "monster-021",
+      "name": "Original Monster 021",
+      "type": "monster",
+      "assignableTo": [
+        "contact",
+        "player"
+      ],
+      "frontImage": "art/monster-021.png",
+      "backImage": "art/monster-021-back.png"
+    },
+    {
+      "id": "monster-022",
+      "name": "Original Monster 022",
+      "type": "monster",
+      "assignableTo": [
+        "contact",
+        "player"
+      ],
+      "frontImage": "art/monster-022.png",
+      "backImage": "art/monster-022-back.png"
+    },
+    {
+      "id": "monster-023",
+      "name": "Original Monster 023",
+      "type": "monster",
+      "assignableTo": [
+        "contact",
+        "player"
+      ],
+      "frontImage": "art/monster-023.png",
+      "backImage": "art/monster-023-back.png"
+    },
+    {
+      "id": "monster-024",
+      "name": "Original Monster 024",
+      "type": "monster",
+      "assignableTo": [
+        "contact",
+        "player"
+      ],
+      "frontImage": "art/monster-024.png",
+      "backImage": "art/monster-024-back.png"
+    },
+    {
+      "id": "monster-025",
+      "name": "Original Monster 025",
+      "type": "monster",
+      "assignableTo": [
+        "contact",
+        "player"
+      ],
+      "frontImage": "art/monster-025.png",
+      "backImage": "art/monster-025-back.png"
+    },
+    {
+      "id": "monster-026",
+      "name": "Original Monster 026",
+      "type": "monster",
+      "assignableTo": [
+        "contact",
+        "player"
+      ],
+      "frontImage": "art/monster-026.png",
+      "backImage": "art/monster-026-back.png"
+    },
+    {
+      "id": "monster-027",
+      "name": "Original Monster 027",
+      "type": "monster",
+      "assignableTo": [
+        "contact",
+        "player"
+      ],
+      "frontImage": "art/monster-027.png",
+      "backImage": "art/monster-027-back.png"
+    },
+    {
+      "id": "monster-028",
+      "name": "Original Monster 028",
+      "type": "monster",
+      "assignableTo": [
+        "contact",
+        "player"
+      ],
+      "frontImage": "art/monster-028.png",
+      "backImage": "art/monster-028-back.png"
+    },
+    {
+      "id": "monster-029",
+      "name": "Original Monster 029",
+      "type": "monster",
+      "assignableTo": [
+        "contact",
+        "player"
+      ],
+      "frontImage": "art/monster-029.png",
+      "backImage": "art/monster-029-back.png"
+    },
+    {
+      "id": "monster-030",
+      "name": "Original Monster 030",
+      "type": "monster",
+      "assignableTo": [
+        "contact",
+        "player"
+      ],
+      "frontImage": "art/monster-030.png",
+      "backImage": "art/monster-030-back.png"
+    },
+    {
+      "id": "monster-031",
+      "name": "Original Monster 031",
+      "type": "monster",
+      "assignableTo": [
+        "contact",
+        "player"
+      ],
+      "frontImage": "art/monster-031.png",
+      "backImage": "art/monster-031-back.png"
+    },
+    {
+      "id": "monster-032",
+      "name": "Original Monster 032",
+      "type": "monster",
+      "assignableTo": [
+        "contact",
+        "player"
+      ],
+      "frontImage": "art/monster-032.png",
+      "backImage": "art/monster-032-back.png"
+    },
+    {
+      "id": "monster-033",
+      "name": "Original Monster 033",
+      "type": "monster",
+      "assignableTo": [
+        "contact",
+        "player"
+      ],
+      "frontImage": "art/monster-033.png",
+      "backImage": "art/monster-033-back.png"
+    },
+    {
+      "id": "monster-034",
+      "name": "Original Monster 034",
+      "type": "monster",
+      "assignableTo": [
+        "contact",
+        "player"
+      ],
+      "frontImage": "art/monster-034.png",
+      "backImage": "art/monster-034-back.png"
+    },
+    {
+      "id": "monster-035",
+      "name": "Original Monster 035",
+      "type": "monster",
+      "assignableTo": [
+        "contact",
+        "player"
+      ],
+      "frontImage": "art/monster-035.png",
+      "backImage": "art/monster-035-back.png"
+    },
+    {
+      "id": "monster-036",
+      "name": "Original Monster 036",
+      "type": "monster",
+      "assignableTo": [
+        "contact",
+        "player"
+      ],
+      "frontImage": "art/monster-036.png",
+      "backImage": "art/monster-036-back.png"
+    },
+    {
+      "id": "monster-037",
+      "name": "Original Monster 037",
+      "type": "monster",
+      "assignableTo": [
+        "contact",
+        "player"
+      ],
+      "frontImage": "art/monster-037.png",
+      "backImage": "art/monster-037-back.png"
+    },
+    {
+      "id": "monster-038",
+      "name": "Original Monster 038",
+      "type": "monster",
+      "assignableTo": [
+        "contact",
+        "player"
+      ],
+      "frontImage": "art/monster-038.png",
+      "backImage": "art/monster-038-back.png"
+    },
+    {
+      "id": "monster-039",
+      "name": "Original Monster 039",
+      "type": "monster",
+      "assignableTo": [
+        "contact",
+        "player"
+      ],
+      "frontImage": "art/monster-039.png",
+      "backImage": "art/monster-039-back.png"
+    },
+    {
+      "id": "monster-040",
+      "name": "Original Monster 040",
+      "type": "monster",
+      "assignableTo": [
+        "contact",
+        "player"
+      ],
+      "frontImage": "art/monster-040.png",
+      "backImage": "art/monster-040-back.png"
+    },
+    {
+      "id": "monster-041",
+      "name": "Original Monster 041",
+      "type": "monster",
+      "assignableTo": [
+        "contact",
+        "player"
+      ],
+      "frontImage": "art/monster-041.png",
+      "backImage": "art/monster-041-back.png"
+    },
+    {
+      "id": "monster-042",
+      "name": "Original Monster 042",
+      "type": "monster",
+      "assignableTo": [
+        "contact",
+        "player"
+      ],
+      "frontImage": "art/monster-042.png",
+      "backImage": "art/monster-042-back.png"
+    },
+    {
+      "id": "monster-043",
+      "name": "Original Monster 043",
+      "type": "monster",
+      "assignableTo": [
+        "contact",
+        "player"
+      ],
+      "frontImage": "art/monster-043.png",
+      "backImage": "art/monster-043-back.png"
+    },
+    {
+      "id": "monster-044",
+      "name": "Original Monster 044",
+      "type": "monster",
+      "assignableTo": [
+        "contact",
+        "player"
+      ],
+      "frontImage": "art/monster-044.png",
+      "backImage": "art/monster-044-back.png"
+    },
+    {
+      "id": "monster-045",
+      "name": "Original Monster 045",
+      "type": "monster",
+      "assignableTo": [
+        "contact",
+        "player"
+      ],
+      "frontImage": "art/monster-045.png",
+      "backImage": "art/monster-045-back.png"
+    },
+    {
+      "id": "monster-046",
+      "name": "Original Monster 046",
+      "type": "monster",
+      "assignableTo": [
+        "contact",
+        "player"
+      ],
+      "frontImage": "art/monster-046.png",
+      "backImage": "art/monster-046-back.png"
+    },
+    {
+      "id": "monster-047",
+      "name": "Original Monster 047",
+      "type": "monster",
+      "assignableTo": [
+        "contact",
+        "player"
+      ],
+      "frontImage": "art/monster-047.png",
+      "backImage": "art/monster-047-back.png"
+    },
+    {
+      "id": "monster-048",
+      "name": "Original Monster 048",
+      "type": "monster",
+      "assignableTo": [
+        "contact",
+        "player"
+      ],
+      "frontImage": "art/monster-048.png",
+      "backImage": "art/monster-048-back.png"
+    },
+    {
+      "id": "monster-049",
+      "name": "Original Monster 049",
+      "type": "monster",
+      "assignableTo": [
+        "contact",
+        "player"
+      ],
+      "frontImage": "art/monster-049.png",
+      "backImage": "art/monster-049-back.png"
+    },
+    {
+      "id": "monster-050",
+      "name": "Original Monster 050",
+      "type": "monster",
+      "assignableTo": [
+        "contact",
+        "player"
+      ],
+      "frontImage": "art/monster-050.png",
+      "backImage": "art/monster-050-back.png"
+    },
+    {
+      "id": "monster-051",
+      "name": "Original Monster 051",
+      "type": "monster",
+      "assignableTo": [
+        "contact",
+        "player"
+      ],
+      "frontImage": "art/monster-051.png",
+      "backImage": "art/monster-051-back.png"
+    },
+    {
+      "id": "monster-052",
+      "name": "Original Monster 052",
+      "type": "monster",
+      "assignableTo": [
+        "contact",
+        "player"
+      ],
+      "frontImage": "art/monster-052.png",
+      "backImage": "art/monster-052-back.png"
+    },
+    {
+      "id": "monster-053",
+      "name": "Original Monster 053",
+      "type": "monster",
+      "assignableTo": [
+        "contact",
+        "player"
+      ],
+      "frontImage": "art/monster-053.png",
+      "backImage": "art/monster-053-back.png"
+    },
+    {
+      "id": "monster-054",
+      "name": "Original Monster 054",
+      "type": "monster",
+      "assignableTo": [
+        "contact",
+        "player"
+      ],
+      "frontImage": "art/monster-054.png",
+      "backImage": "art/monster-054-back.png"
+    },
+    {
+      "id": "monster-055",
+      "name": "Original Monster 055",
+      "type": "monster",
+      "assignableTo": [
+        "contact",
+        "player"
+      ],
+      "frontImage": "art/monster-055.png",
+      "backImage": "art/monster-055-back.png"
+    },
+    {
+      "id": "monster-056",
+      "name": "Original Monster 056",
+      "type": "monster",
+      "assignableTo": [
+        "contact",
+        "player"
+      ],
+      "frontImage": "art/monster-056.png",
+      "backImage": "art/monster-056-back.png"
+    },
+    {
+      "id": "monster-057",
+      "name": "Original Monster 057",
+      "type": "monster",
+      "assignableTo": [
+        "contact",
+        "player"
+      ],
+      "frontImage": "art/monster-057.png",
+      "backImage": "art/monster-057-back.png"
+    },
+    {
+      "id": "monster-058",
+      "name": "Original Monster 058",
+      "type": "monster",
+      "assignableTo": [
+        "contact",
+        "player"
+      ],
+      "frontImage": "art/monster-058.png",
+      "backImage": "art/monster-058-back.png"
+    },
+    {
+      "id": "monster-059",
+      "name": "Original Monster 059",
+      "type": "monster",
+      "assignableTo": [
+        "contact",
+        "player"
+      ],
+      "frontImage": "art/monster-059.png",
+      "backImage": "art/monster-059-back.png"
+    },
+    {
+      "id": "monster-060",
+      "name": "Original Monster 060",
+      "type": "monster",
+      "assignableTo": [
+        "contact",
+        "player"
+      ],
+      "frontImage": "art/monster-060.png",
+      "backImage": "art/monster-060-back.png"
+    },
+    {
+      "id": "monster-061",
+      "name": "Original Monster 061",
+      "type": "monster",
+      "assignableTo": [
+        "contact",
+        "player"
+      ],
+      "frontImage": "art/monster-061.png",
+      "backImage": "art/monster-061-back.png"
+    },
+    {
+      "id": "monster-062",
+      "name": "Original Monster 062",
+      "type": "monster",
+      "assignableTo": [
+        "contact",
+        "player"
+      ],
+      "frontImage": "art/monster-062.png",
+      "backImage": "art/monster-062-back.png"
+    },
+    {
+      "id": "monster-063",
+      "name": "Original Monster 063",
+      "type": "monster",
+      "assignableTo": [
+        "contact",
+        "player"
+      ],
+      "frontImage": "art/monster-063.png",
+      "backImage": "art/monster-063-back.png"
+    },
+    {
+      "id": "monster-064",
+      "name": "Original Monster 064",
+      "type": "monster",
+      "assignableTo": [
+        "contact",
+        "player"
+      ],
+      "frontImage": "art/monster-064.png",
+      "backImage": "art/monster-064-back.png"
+    },
+    {
+      "id": "monster-065",
+      "name": "Original Monster 065",
+      "type": "monster",
+      "assignableTo": [
+        "contact",
+        "player"
+      ],
+      "frontImage": "art/monster-065.png",
+      "backImage": "art/monster-065-back.png"
+    },
+    {
+      "id": "monster-066",
+      "name": "Original Monster 066",
+      "type": "monster",
+      "assignableTo": [
+        "contact",
+        "player"
+      ],
+      "frontImage": "art/monster-066.png",
+      "backImage": "art/monster-066-back.png"
+    },
+    {
+      "id": "monster-067",
+      "name": "Original Monster 067",
+      "type": "monster",
+      "assignableTo": [
+        "contact",
+        "player"
+      ],
+      "frontImage": "art/monster-067.png",
+      "backImage": "art/monster-067-back.png"
+    },
+    {
+      "id": "monster-068",
+      "name": "Original Monster 068",
+      "type": "monster",
+      "assignableTo": [
+        "contact",
+        "player"
+      ],
+      "frontImage": "art/monster-068.png",
+      "backImage": "art/monster-068-back.png"
+    },
+    {
+      "id": "monster-069",
+      "name": "Original Monster 069",
+      "type": "monster",
+      "assignableTo": [
+        "contact",
+        "player"
+      ],
+      "frontImage": "art/monster-069.png",
+      "backImage": "art/monster-069-back.png"
+    },
+    {
+      "id": "monster-070",
+      "name": "Original Monster 070",
+      "type": "monster",
+      "assignableTo": [
+        "contact",
+        "player"
+      ],
+      "frontImage": "art/monster-070.png",
+      "backImage": "art/monster-070-back.png"
+    },
+    {
+      "id": "monster-071",
+      "name": "Original Monster 071",
+      "type": "monster",
+      "assignableTo": [
+        "contact",
+        "player"
+      ],
+      "frontImage": "art/monster-071.png",
+      "backImage": "art/monster-071-back.png"
+    },
+    {
+      "id": "monster-072",
+      "name": "Original Monster 072",
+      "type": "monster",
+      "assignableTo": [
+        "contact",
+        "player"
+      ],
+      "frontImage": "art/monster-072.png",
+      "backImage": "art/monster-072-back.png"
+    },
+    {
+      "id": "monster-073",
+      "name": "Original Monster 073",
+      "type": "monster",
+      "assignableTo": [
+        "contact",
+        "player"
+      ],
+      "frontImage": "art/monster-073.png",
+      "backImage": "art/monster-073-back.png"
+    },
+    {
+      "id": "monster-074",
+      "name": "Original Monster 074",
+      "type": "monster",
+      "assignableTo": [
+        "contact",
+        "player"
+      ],
+      "frontImage": "art/monster-074.png",
+      "backImage": "art/monster-074-back.png"
+    },
+    {
+      "id": "monster-075",
+      "name": "Original Monster 075",
+      "type": "monster",
+      "assignableTo": [
+        "contact",
+        "player"
+      ],
+      "frontImage": "art/monster-075.png",
+      "backImage": "art/monster-075-back.png"
+    },
+    {
+      "id": "monster-076",
+      "name": "Original Monster 076",
+      "type": "monster",
+      "assignableTo": [
+        "contact",
+        "player"
+      ],
+      "frontImage": "art/monster-076.png",
+      "backImage": "art/monster-076-back.png"
+    },
+    {
+      "id": "monster-077",
+      "name": "Original Monster 077",
+      "type": "monster",
+      "assignableTo": [
+        "contact",
+        "player"
+      ],
+      "frontImage": "art/monster-077.png",
+      "backImage": "art/monster-077-back.png"
+    },
+    {
+      "id": "monster-078",
+      "name": "Original Monster 078",
+      "type": "monster",
+      "assignableTo": [
+        "contact",
+        "player"
+      ],
+      "frontImage": "art/monster-078.png",
+      "backImage": "art/monster-078-back.png"
+    },
+    {
+      "id": "monster-079",
+      "name": "Original Monster 079",
+      "type": "monster",
+      "assignableTo": [
+        "contact",
+        "player"
+      ],
+      "frontImage": "art/monster-079.png",
+      "backImage": "art/monster-079-back.png"
+    },
+    {
+      "id": "monster-080",
+      "name": "Original Monster 080",
+      "type": "monster",
+      "assignableTo": [
+        "contact",
+        "player"
+      ],
+      "frontImage": "art/monster-080.png",
+      "backImage": "art/monster-080-back.png"
+    },
+    {
+      "id": "monster-081",
+      "name": "Original Monster 081",
+      "type": "monster",
+      "assignableTo": [
+        "contact",
+        "player"
+      ],
+      "frontImage": "art/monster-081.png",
+      "backImage": "art/monster-081-back.png"
+    },
+    {
+      "id": "monster-082",
+      "name": "Original Monster 082",
+      "type": "monster",
+      "assignableTo": [
+        "contact",
+        "player"
+      ],
+      "frontImage": "art/monster-082.png",
+      "backImage": "art/monster-082-back.png"
+    },
+    {
+      "id": "monster-083",
+      "name": "Original Monster 083",
+      "type": "monster",
+      "assignableTo": [
+        "contact",
+        "player"
+      ],
+      "frontImage": "art/monster-083.png",
+      "backImage": "art/monster-083-back.png"
+    },
+    {
+      "id": "monster-084",
+      "name": "Original Monster 084",
+      "type": "monster",
+      "assignableTo": [
+        "contact",
+        "player"
+      ],
+      "frontImage": "art/monster-084.png",
+      "backImage": "art/monster-084-back.png"
+    },
+    {
+      "id": "monster-085",
+      "name": "Original Monster 085",
+      "type": "monster",
+      "assignableTo": [
+        "contact",
+        "player"
+      ],
+      "frontImage": "art/monster-085.png",
+      "backImage": "art/monster-085-back.png"
+    },
+    {
+      "id": "monster-086",
+      "name": "Original Monster 086",
+      "type": "monster",
+      "assignableTo": [
+        "contact",
+        "player"
+      ],
+      "frontImage": "art/monster-086.png",
+      "backImage": "art/monster-086-back.png"
+    },
+    {
+      "id": "monster-087",
+      "name": "Original Monster 087",
+      "type": "monster",
+      "assignableTo": [
+        "contact",
+        "player"
+      ],
+      "frontImage": "art/monster-087.png",
+      "backImage": "art/monster-087-back.png"
+    },
+    {
+      "id": "monster-088",
+      "name": "Original Monster 088",
+      "type": "monster",
+      "assignableTo": [
+        "contact",
+        "player"
+      ],
+      "frontImage": "art/monster-088.png",
+      "backImage": "art/monster-088-back.png"
+    },
+    {
+      "id": "monster-089",
+      "name": "Original Monster 089",
+      "type": "monster",
+      "assignableTo": [
+        "contact",
+        "player"
+      ],
+      "frontImage": "art/monster-089.png",
+      "backImage": "art/monster-089-back.png"
+    },
+    {
+      "id": "monster-090",
+      "name": "Original Monster 090",
+      "type": "monster",
+      "assignableTo": [
+        "contact",
+        "player"
+      ],
+      "frontImage": "art/monster-090.png",
+      "backImage": "art/monster-090-back.png"
+    },
+    {
+      "id": "monster-091",
+      "name": "Original Monster 091",
+      "type": "monster",
+      "assignableTo": [
+        "contact",
+        "player"
+      ],
+      "frontImage": "art/monster-091.png",
+      "backImage": "art/monster-091-back.png"
+    },
+    {
+      "id": "monster-092",
+      "name": "Original Monster 092",
+      "type": "monster",
+      "assignableTo": [
+        "contact",
+        "player"
+      ],
+      "frontImage": "art/monster-092.png",
+      "backImage": "art/monster-092-back.png"
+    },
+    {
+      "id": "monster-093",
+      "name": "Original Monster 093",
+      "type": "monster",
+      "assignableTo": [
+        "contact",
+        "player"
+      ],
+      "frontImage": "art/monster-093.png",
+      "backImage": "art/monster-093-back.png"
+    },
+    {
+      "id": "monster-094",
+      "name": "Original Monster 094",
+      "type": "monster",
+      "assignableTo": [
+        "contact",
+        "player"
+      ],
+      "frontImage": "art/monster-094.png",
+      "backImage": "art/monster-094-back.png"
+    },
+    {
+      "id": "monster-095",
+      "name": "Original Monster 095",
+      "type": "monster",
+      "assignableTo": [
+        "contact",
+        "player"
+      ],
+      "frontImage": "art/monster-095.png",
+      "backImage": "art/monster-095-back.png"
+    },
+    {
+      "id": "monster-096",
+      "name": "Original Monster 096",
+      "type": "monster",
+      "assignableTo": [
+        "contact",
+        "player"
+      ],
+      "frontImage": "art/monster-096.png",
+      "backImage": "art/monster-096-back.png"
+    },
+    {
+      "id": "monster-097",
+      "name": "Original Monster 097",
+      "type": "monster",
+      "assignableTo": [
+        "contact",
+        "player"
+      ],
+      "frontImage": "art/monster-097.png",
+      "backImage": "art/monster-097-back.png"
+    },
+    {
+      "id": "monster-098",
+      "name": "Original Monster 098",
+      "type": "monster",
+      "assignableTo": [
+        "contact",
+        "player"
+      ],
+      "frontImage": "art/monster-098.png",
+      "backImage": "art/monster-098-back.png"
+    },
+    {
+      "id": "monster-099",
+      "name": "Original Monster 099",
+      "type": "monster",
+      "assignableTo": [
+        "contact",
+        "player"
+      ],
+      "frontImage": "art/monster-099.png",
+      "backImage": "art/monster-099-back.png"
+    },
+    {
+      "id": "monster-100",
+      "name": "Original Monster 100",
+      "type": "monster",
+      "assignableTo": [
+        "contact",
+        "player"
+      ],
+      "frontImage": "art/monster-100.png",
+      "backImage": "art/monster-100-back.png"
+    },
+    {
+      "id": "monster-101",
+      "name": "Original Monster 101",
+      "type": "monster",
+      "assignableTo": [
+        "contact",
+        "player"
+      ],
+      "frontImage": "art/monster-101.png",
+      "backImage": "art/monster-101-back.png"
+    },
+    {
+      "id": "monster-102",
+      "name": "Original Monster 102",
+      "type": "monster",
+      "assignableTo": [
+        "contact",
+        "player"
+      ],
+      "frontImage": "art/monster-102.png",
+      "backImage": "art/monster-102-back.png"
+    },
+    {
+      "id": "monster-103",
+      "name": "Original Monster 103",
+      "type": "monster",
+      "assignableTo": [
+        "contact",
+        "player"
+      ],
+      "frontImage": "art/monster-103.png",
+      "backImage": "art/monster-103-back.png"
+    },
+    {
+      "id": "monster-104",
+      "name": "Original Monster 104",
+      "type": "monster",
+      "assignableTo": [
+        "contact",
+        "player"
+      ],
+      "frontImage": "art/monster-104.png",
+      "backImage": "art/monster-104-back.png"
+    },
+    {
+      "id": "monster-105",
+      "name": "Original Monster 105",
+      "type": "monster",
+      "assignableTo": [
+        "contact",
+        "player"
+      ],
+      "frontImage": "art/monster-105.png",
+      "backImage": "art/monster-105-back.png"
+    },
+    {
+      "id": "monster-106",
+      "name": "Original Monster 106",
+      "type": "monster",
+      "assignableTo": [
+        "contact",
+        "player"
+      ],
+      "frontImage": "art/monster-106.png",
+      "backImage": "art/monster-106-back.png"
+    },
+    {
+      "id": "monster-107",
+      "name": "Original Monster 107",
+      "type": "monster",
+      "assignableTo": [
+        "contact",
+        "player"
+      ],
+      "frontImage": "art/monster-107.png",
+      "backImage": "art/monster-107-back.png"
+    },
+    {
+      "id": "monster-108",
+      "name": "Original Monster 108",
+      "type": "monster",
+      "assignableTo": [
+        "contact",
+        "player"
+      ],
+      "frontImage": "art/monster-108.png",
+      "backImage": "art/monster-108-back.png"
+    },
+    {
+      "id": "monster-109",
+      "name": "Original Monster 109",
+      "type": "monster",
+      "assignableTo": [
+        "contact",
+        "player"
+      ],
+      "frontImage": "art/monster-109.png",
+      "backImage": "art/monster-109-back.png"
+    },
+    {
+      "id": "monster-110",
+      "name": "Original Monster 110",
+      "type": "monster",
+      "assignableTo": [
+        "contact",
+        "player"
+      ],
+      "frontImage": "art/monster-110.png",
+      "backImage": "art/monster-110-back.png"
+    },
+    {
+      "id": "monster-111",
+      "name": "Original Monster 111",
+      "type": "monster",
+      "assignableTo": [
+        "contact",
+        "player"
+      ],
+      "frontImage": "art/monster-111.png",
+      "backImage": "art/monster-111-back.png"
+    },
+    {
+      "id": "monster-112",
+      "name": "Original Monster 112",
+      "type": "monster",
+      "assignableTo": [
+        "contact",
+        "player"
+      ],
+      "frontImage": "art/monster-112.png",
+      "backImage": "art/monster-112-back.png"
+    },
+    {
+      "id": "monster-113",
+      "name": "Original Monster 113",
+      "type": "monster",
+      "assignableTo": [
+        "contact",
+        "player"
+      ],
+      "frontImage": "art/monster-113.png",
+      "backImage": "art/monster-113-back.png"
+    },
+    {
+      "id": "monster-114",
+      "name": "Original Monster 114",
+      "type": "monster",
+      "assignableTo": [
+        "contact",
+        "player"
+      ],
+      "frontImage": "art/monster-114.png",
+      "backImage": "art/monster-114-back.png"
+    },
+    {
+      "id": "monster-115",
+      "name": "Original Monster 115",
+      "type": "monster",
+      "assignableTo": [
+        "contact",
+        "player"
+      ],
+      "frontImage": "art/monster-115.png",
+      "backImage": "art/monster-115-back.png"
+    },
+    {
+      "id": "monster-116",
+      "name": "Original Monster 116",
+      "type": "monster",
+      "assignableTo": [
+        "contact",
+        "player"
+      ],
+      "frontImage": "art/monster-116.png",
+      "backImage": "art/monster-116-back.png"
+    },
+    {
+      "id": "monster-117",
+      "name": "Original Monster 117",
+      "type": "monster",
+      "assignableTo": [
+        "contact",
+        "player"
+      ],
+      "frontImage": "art/monster-117.png",
+      "backImage": "art/monster-117-back.png"
+    },
+    {
+      "id": "monster-118",
+      "name": "Original Monster 118",
+      "type": "monster",
+      "assignableTo": [
+        "contact",
+        "player"
+      ],
+      "frontImage": "art/monster-118.png",
+      "backImage": "art/monster-118-back.png"
+    },
+    {
+      "id": "monster-119",
+      "name": "Original Monster 119",
+      "type": "monster",
+      "assignableTo": [
+        "contact",
+        "player"
+      ],
+      "frontImage": "art/monster-119.png",
+      "backImage": "art/monster-119-back.png"
+    },
+    {
+      "id": "monster-120",
+      "name": "Original Monster 120",
+      "type": "monster",
+      "assignableTo": [
+        "contact",
+        "player"
+      ],
+      "frontImage": "art/monster-120.png",
+      "backImage": "art/monster-120-back.png"
+    },
+    {
+      "id": "monster-121",
+      "name": "Original Monster 121",
+      "type": "monster",
+      "assignableTo": [
+        "contact",
+        "player"
+      ],
+      "frontImage": "art/monster-121.png",
+      "backImage": "art/monster-121-back.png"
+    },
+    {
+      "id": "monster-122",
+      "name": "Original Monster 122",
+      "type": "monster",
+      "assignableTo": [
+        "contact",
+        "player"
+      ],
+      "frontImage": "art/monster-122.png",
+      "backImage": "art/monster-122-back.png"
+    },
+    {
+      "id": "monster-123",
+      "name": "Original Monster 123",
+      "type": "monster",
+      "assignableTo": [
+        "contact",
+        "player"
+      ],
+      "frontImage": "art/monster-123.png",
+      "backImage": "art/monster-123-back.png"
+    },
+    {
+      "id": "monster-124",
+      "name": "Original Monster 124",
+      "type": "monster",
+      "assignableTo": [
+        "contact",
+        "player"
+      ],
+      "frontImage": "art/monster-124.png",
+      "backImage": "art/monster-124-back.png"
+    },
+    {
+      "id": "monster-125",
+      "name": "Original Monster 125",
+      "type": "monster",
+      "assignableTo": [
+        "contact",
+        "player"
+      ],
+      "frontImage": "art/monster-125.png",
+      "backImage": "art/monster-125-back.png"
+    },
+    {
+      "id": "monster-126",
+      "name": "Original Monster 126",
+      "type": "monster",
+      "assignableTo": [
+        "contact",
+        "player"
+      ],
+      "frontImage": "art/monster-126.png",
+      "backImage": "art/monster-126-back.png"
+    },
+    {
+      "id": "monster-127",
+      "name": "Original Monster 127",
+      "type": "monster",
+      "assignableTo": [
+        "contact",
+        "player"
+      ],
+      "frontImage": "art/monster-127.png",
+      "backImage": "art/monster-127-back.png"
+    },
+    {
+      "id": "monster-128",
+      "name": "Original Monster 128",
+      "type": "monster",
+      "assignableTo": [
+        "contact",
+        "player"
+      ],
+      "frontImage": "art/monster-128.png",
+      "backImage": "art/monster-128-back.png"
+    },
+    {
+      "id": "monster-129",
+      "name": "Original Monster 129",
+      "type": "monster",
+      "assignableTo": [
+        "contact",
+        "player"
+      ],
+      "frontImage": "art/monster-129.png",
+      "backImage": "art/monster-129-back.png"
+    },
+    {
+      "id": "monster-130",
+      "name": "Original Monster 130",
+      "type": "monster",
+      "assignableTo": [
+        "contact",
+        "player"
+      ],
+      "frontImage": "art/monster-130.png",
+      "backImage": "art/monster-130-back.png"
+    },
+    {
+      "id": "monster-131",
+      "name": "Original Monster 131",
+      "type": "monster",
+      "assignableTo": [
+        "contact",
+        "player"
+      ],
+      "frontImage": "art/monster-131.png",
+      "backImage": "art/monster-131-back.png"
+    },
+    {
+      "id": "monster-132",
+      "name": "Original Monster 132",
+      "type": "monster",
+      "assignableTo": [
+        "contact",
+        "player"
+      ],
+      "frontImage": "art/monster-132.png",
+      "backImage": "art/monster-132-back.png"
+    },
+    {
+      "id": "monster-133",
+      "name": "Original Monster 133",
+      "type": "monster",
+      "assignableTo": [
+        "contact",
+        "player"
+      ],
+      "frontImage": "art/monster-133.png",
+      "backImage": "art/monster-133-back.png"
+    },
+    {
+      "id": "monster-134",
+      "name": "Original Monster 134",
+      "type": "monster",
+      "assignableTo": [
+        "contact",
+        "player"
+      ],
+      "frontImage": "art/monster-134.png",
+      "backImage": "art/monster-134-back.png"
+    },
+    {
+      "id": "monster-135",
+      "name": "Original Monster 135",
+      "type": "monster",
+      "assignableTo": [
+        "contact",
+        "player"
+      ],
+      "frontImage": "art/monster-135.png",
+      "backImage": "art/monster-135-back.png"
+    },
+    {
+      "id": "monster-136",
+      "name": "Original Monster 136",
+      "type": "monster",
+      "assignableTo": [
+        "contact",
+        "player"
+      ],
+      "frontImage": "art/monster-136.png",
+      "backImage": "art/monster-136-back.png"
+    },
+    {
+      "id": "monster-137",
+      "name": "Original Monster 137",
+      "type": "monster",
+      "assignableTo": [
+        "contact",
+        "player"
+      ],
+      "frontImage": "art/monster-137.png",
+      "backImage": "art/monster-137-back.png"
+    },
+    {
+      "id": "monster-138",
+      "name": "Original Monster 138",
+      "type": "monster",
+      "assignableTo": [
+        "contact",
+        "player"
+      ],
+      "frontImage": "art/monster-138.png",
+      "backImage": "art/monster-138-back.png"
+    },
+    {
+      "id": "monster-139",
+      "name": "Original Monster 139",
+      "type": "monster",
+      "assignableTo": [
+        "contact",
+        "player"
+      ],
+      "frontImage": "art/monster-139.png",
+      "backImage": "art/monster-139-back.png"
+    },
+    {
+      "id": "monster-140",
+      "name": "Original Monster 140",
+      "type": "monster",
+      "assignableTo": [
+        "contact",
+        "player"
+      ],
+      "frontImage": "art/monster-140.png",
+      "backImage": "art/monster-140-back.png"
+    },
+    {
+      "id": "monster-141",
+      "name": "Original Monster 141",
+      "type": "monster",
+      "assignableTo": [
+        "contact",
+        "player"
+      ],
+      "frontImage": "art/monster-141.png",
+      "backImage": "art/monster-141-back.png"
+    },
+    {
+      "id": "monster-142",
+      "name": "Original Monster 142",
+      "type": "monster",
+      "assignableTo": [
+        "contact",
+        "player"
+      ],
+      "frontImage": "art/monster-142.png",
+      "backImage": "art/monster-142-back.png"
+    },
+    {
+      "id": "monster-143",
+      "name": "Original Monster 143",
+      "type": "monster",
+      "assignableTo": [
+        "contact",
+        "player"
+      ],
+      "frontImage": "art/monster-143.png",
+      "backImage": "art/monster-143-back.png"
+    },
+    {
+      "id": "monster-144",
+      "name": "Original Monster 144",
+      "type": "monster",
+      "assignableTo": [
+        "contact",
+        "player"
+      ],
+      "frontImage": "art/monster-144.png",
+      "backImage": "art/monster-144-back.png"
+    },
+    {
+      "id": "monster-145",
+      "name": "Original Monster 145",
+      "type": "monster",
+      "assignableTo": [
+        "contact",
+        "player"
+      ],
+      "frontImage": "art/monster-145.png",
+      "backImage": "art/monster-145-back.png"
+    },
+    {
+      "id": "monster-146",
+      "name": "Original Monster 146",
+      "type": "monster",
+      "assignableTo": [
+        "contact",
+        "player"
+      ],
+      "frontImage": "art/monster-146.png",
+      "backImage": "art/monster-146-back.png"
+    },
+    {
+      "id": "monster-147",
+      "name": "Original Monster 147",
+      "type": "monster",
+      "assignableTo": [
+        "contact",
+        "player"
+      ],
+      "frontImage": "art/monster-147.png",
+      "backImage": "art/monster-147-back.png"
+    },
+    {
+      "id": "monster-148",
+      "name": "Original Monster 148",
+      "type": "monster",
+      "assignableTo": [
+        "contact",
+        "player"
+      ],
+      "frontImage": "art/monster-148.png",
+      "backImage": "art/monster-148-back.png"
+    },
+    {
+      "id": "monster-149",
+      "name": "Original Monster 149",
+      "type": "monster",
+      "assignableTo": [
+        "contact",
+        "player"
+      ],
+      "frontImage": "art/monster-149.png",
+      "backImage": "art/monster-149-back.png"
+    },
+    {
+      "id": "monster-150",
+      "name": "Original Monster 150",
+      "type": "monster",
+      "assignableTo": [
+        "contact",
+        "player"
+      ],
+      "frontImage": "art/monster-150.png",
+      "backImage": "art/monster-150-back.png"
+    },
+    {
+      "id": "monster-151",
+      "name": "Original Monster 151",
+      "type": "monster",
+      "assignableTo": [
+        "contact",
+        "player"
+      ],
+      "frontImage": "art/monster-151.png",
+      "backImage": "art/monster-151-back.png"
+    }
+  ]
+}

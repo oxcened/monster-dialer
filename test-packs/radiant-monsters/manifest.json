@@ -1,0 +1,1821 @@
+{
+  "formatVersion": 1,
+  "id": "replace-with-radiant-monsters-pack-id",
+  "name": "Replace with radiant monsters pack name",
+  "version": "0.0.0",
+  "license": "Replace with license statement",
+  "characters": [
+    {
+      "id": "monster-001",
+      "name": "Radiant Monster 001",
+      "type": "monster",
+      "assignableTo": [
+        "contact",
+        "player"
+      ],
+      "frontImage": "art/monster-001.png",
+      "backImage": "art/monster-001-back.png",
+      "isRadiant": true
+    },
+    {
+      "id": "monster-002",
+      "name": "Radiant Monster 002",
+      "type": "monster",
+      "assignableTo": [
+        "contact",
+        "player"
+      ],
+      "frontImage": "art/monster-002.png",
+      "backImage": "art/monster-002-back.png",
+      "isRadiant": true
+    },
+    {
+      "id": "monster-003",
+      "name": "Radiant Monster 003",
+      "type": "monster",
+      "assignableTo": [
+        "contact",
+        "player"
+      ],
+      "frontImage": "art/monster-003.png",
+      "backImage": "art/monster-003-back.png",
+      "isRadiant": true
+    },
+    {
+      "id": "monster-004",
+      "name": "Radiant Monster 004",
+      "type": "monster",
+      "assignableTo": [
+        "contact",
+        "player"
+      ],
+      "frontImage": "art/monster-004.png",
+      "backImage": "art/monster-004-back.png",
+      "isRadiant": true
+    },
+    {
+      "id": "monster-005",
+      "name": "Radiant Monster 005",
+      "type": "monster",
+      "assignableTo": [
+        "contact",
+        "player"
+      ],
+      "frontImage": "art/monster-005.png",
+      "backImage": "art/monster-005-back.png",
+      "isRadiant": true
+    },
+    {
+      "id": "monster-006",
+      "name": "Radiant Monster 006",
+      "type": "monster",
+      "assignableTo": [
+        "contact",
+        "player"
+      ],
+      "frontImage": "art/monster-006.png",
+      "backImage": "art/monster-006-back.png",
+      "isRadiant": true
+    },
+    {
+      "id": "monster-007",
+      "name": "Radiant Monster 007",
+      "type": "monster",
+      "assignableTo": [
+        "contact",
+        "player"
+      ],
+      "frontImage": "art/monster-007.png",
+      "backImage": "art/monster-007-back.png",
+      "isRadiant": true
+    },
+    {
+      "id": "monster-008",
+      "name": "Radiant Monster 008",
+      "type": "monster",
+      "assignableTo": [
+        "contact",
+        "player"
+      ],
+      "frontImage": "art/monster-008.png",
+      "backImage": "art/monster-008-back.png",
+      "isRadiant": true
+    },
+    {
+      "id": "monster-009",
+      "name": "Radiant Monster 009",
+      "type": "monster",
+      "assignableTo": [
+        "contact",
+        "player"
+      ],
+      "frontImage": "art/monster-009.png",
+      "backImage": "art/monster-009-back.png",
+      "isRadiant": true
+    },
+    {
+      "id": "monster-010",
+      "name": "Radiant Monster 010",
+      "type": "monster",
+      "assignableTo": [
+        "contact",
+        "player"
+      ],
+      "frontImage": "art/monster-010.png",
+      "backImage": "art/monster-010-back.png",
+      "isRadiant": true
+    },
+    {
+      "id": "monster-011",
+      "name": "Radiant Monster 011",
+      "type": "monster",
+      "assignableTo": [
+        "contact",
+        "player"
+      ],
+      "frontImage": "art/monster-011.png",
+      "backImage": "art/monster-011-back.png",
+      "isRadiant": true
+    },
+    {
+      "id": "monster-012",
+      "name": "Radiant Monster 012",
+      "type": "monster",
+      "assignableTo": [
+        "contact",
+        "player"
+      ],
+      "frontImage": "art/monster-012.png",
+      "backImage": "art/monster-012-back.png",
+      "isRadiant": true
+    },
+    {
+      "id": "monster-013",
+      "name": "Radiant Monster 013",
+      "type": "monster",
+      "assignableTo": [
+        "contact",
+        "player"
+      ],
+      "frontImage": "art/monster-013.png",
+      "backImage": "art/monster-013-back.png",
+      "isRadiant": true
+    },
+    {
+      "id": "monster-014",
+      "name": "Radiant Monster 014",
+      "type": "monster",
+      "assignableTo": [
+        "contact",
+        "player"
+      ],
+      "frontImage": "art/monster-014.png",
+      "backImage": "art/monster-014-back.png",
+      "isRadiant": true
+    },
+    {
+      "id": "monster-015",
+      "name": "Radiant Monster 015",
+      "type": "monster",
+      "assignableTo": [
+        "contact",
+        "player"
+      ],
+      "frontImage": "art/monster-015.png",
+      "backImage": "art/monster-015-back.png",
+      "isRadiant": true
+    },
+    {
+      "id": "monster-016",
+      "name": "Radiant Monster 016",
+      "type": "monster",
+      "assignableTo": [
+        "contact",
+        "player"
+      ],
+      "frontImage": "art/monster-016.png",
+      "backImage": "art/monster-016-back.png",
+      "isRadiant": true
+    },
+    {
+      "id": "monster-017",
+      "name": "Radiant Monster 017",
+      "type": "monster",
+      "assignableTo": [
+        "contact",
+        "player"
+      ],
+      "frontImage": "art/monster-017.png",
+      "backImage": "art/monster-017-back.png",
+      "isRadiant": true
+    },
+    {
+      "id": "monster-018",
+      "name": "Radiant Monster 018",
+      "type": "monster",
+      "assignableTo": [
+        "contact",
+        "player"
+      ],
+      "frontImage": "art/monster-018.png",
+      "backImage": "art/monster-018-back.png",
+      "isRadiant": true
+    },
+    {
+      "id": "monster-019",
+      "name": "Radiant Monster 019",
+      "type": "monster",
+      "assignableTo": [
+        "contact",
+        "player"
+      ],
+      "frontImage": "art/monster-019.png",
+      "backImage": "art/monster-019-back.png",
+      "isRadiant": true
+    },
+    {
+      "id": "monster-020",
+      "name": "Radiant Monster 020",
+      "type": "monster",
+      "assignableTo": [
+        "contact",
+        "player"
+      ],
+      "frontImage": "art/monster-020.png",
+      "backImage": "art/monster-020-back.png",
+      "isRadiant": true
+    },
+    {
+      "id": "monster-021",
+      "name": "Radiant Monster 021",
+      "type": "monster",
+      "assignableTo": [
+        "contact",
+        "player"
+      ],
+      "frontImage": "art/monster-021.png",
+      "backImage": "art/monster-021-back.png",
+      "isRadiant": true
+    },
+    {
+      "id": "monster-022",
+      "name": "Radiant Monster 022",
+      "type": "monster",
+      "assignableTo": [
+        "contact",
+        "player"
+      ],
+      "frontImage": "art/monster-022.png",
+      "backImage": "art/monster-022-back.png",
+      "isRadiant": true
+    },
+    {
+      "id": "monster-023",
+      "name": "Radiant Monster 023",
+      "type": "monster",
+      "assignableTo": [
+        "contact",
+        "player"
+      ],
+      "frontImage": "art/monster-023.png",
+      "backImage": "art/monster-023-back.png",
+      "isRadiant": true
+    },
+    {
+      "id": "monster-024",
+      "name": "Radiant Monster 024",
+      "type": "monster",
+      "assignableTo": [
+        "contact",
+        "player"
+      ],
+      "frontImage": "art/monster-024.png",
+      "backImage": "art/monster-024-back.png",
+      "isRadiant": true
+    },
+    {
+      "id": "monster-025",
+      "name": "Radiant Monster 025",
+      "type": "monster",
+      "assignableTo": [
+        "contact",
+        "player"
+      ],
+      "frontImage": "art/monster-025.png",
+      "backImage": "art/monster-025-back.png",
+      "isRadiant": true
+    },
+    {
+      "id": "monster-026",
+      "name": "Radiant Monster 026",
+      "type": "monster",
+      "assignableTo": [
+        "contact",
+        "player"
+      ],
+      "frontImage": "art/monster-026.png",
+      "backImage": "art/monster-026-back.png",
+      "isRadiant": true
+    },
+    {
+      "id": "monster-027",
+      "name": "Radiant Monster 027",
+      "type": "monster",
+      "assignableTo": [
+        "contact",
+        "player"
+      ],
+      "frontImage": "art/monster-027.png",
+      "backImage": "art/monster-027-back.png",
+      "isRadiant": true
+    },
+    {
+      "id": "monster-028",
+      "name": "Radiant Monster 028",
+      "type": "monster",
+      "assignableTo": [
+        "contact",
+        "player"
+      ],
+      "frontImage": "art/monster-028.png",
+      "backImage": "art/monster-028-back.png",
+      "isRadiant": true
+    },
+    {
+      "id": "monster-029",
+      "name": "Radiant Monster 029",
+      "type": "monster",
+      "assignableTo": [
+        "contact",
+        "player"
+      ],
+      "frontImage": "art/monster-029.png",
+      "backImage": "art/monster-029-back.png",
+      "isRadiant": true
+    },
+    {
+      "id": "monster-030",
+      "name": "Radiant Monster 030",
+      "type": "monster",
+      "assignableTo": [
+        "contact",
+        "player"
+      ],
+      "frontImage": "art/monster-030.png",
+      "backImage": "art/monster-030-back.png",
+      "isRadiant": true
+    },
+    {
+      "id": "monster-031",
+      "name": "Radiant Monster 031",
+      "type": "monster",
+      "assignableTo": [
+        "contact",
+        "player"
+      ],
+      "frontImage": "art/monster-031.png",
+      "backImage": "art/monster-031-back.png",
+      "isRadiant": true
+    },
+    {
+      "id": "monster-032",
+      "name": "Radiant Monster 032",
+      "type": "monster",
+      "assignableTo": [
+        "contact",
+        "player"
+      ],
+      "frontImage": "art/monster-032.png",
+      "backImage": "art/monster-032-back.png",
+      "isRadiant": true
+    },
+    {
+      "id": "monster-033",
+      "name": "Radiant Monster 033",
+      "type": "monster",
+      "assignableTo": [
+        "contact",
+        "player"
+      ],
+      "frontImage": "art/monster-033.png",
+      "backImage": "art/monster-033-back.png",
+      "isRadiant": true
+    },
+    {
+      "id": "monster-034",
+      "name": "Radiant Monster 034",
+      "type": "monster",
+      "assignableTo": [
+        "contact",
+        "player"
+      ],
+      "frontImage": "art/monster-034.png",
+      "backImage": "art/monster-034-back.png",
+      "isRadiant": true
+    },
+    {
+      "id": "monster-035",
+      "name": "Radiant Monster 035",
+      "type": "monster",
+      "assignableTo": [
+        "contact",
+        "player"
+      ],
+      "frontImage": "art/monster-035.png",
+      "backImage": "art/monster-035-back.png",
+      "isRadiant": true
+    },
+    {
+      "id": "monster-036",
+      "name": "Radiant Monster 036",
+      "type": "monster",
+      "assignableTo": [
+        "contact",
+        "player"
+      ],
+      "frontImage": "art/monster-036.png",
+      "backImage": "art/monster-036-back.png",
+      "isRadiant": true
+    },
+    {
+      "id": "monster-037",
+      "name": "Radiant Monster 037",
+      "type": "monster",
+      "assignableTo": [
+        "contact",
+        "player"
+      ],
+      "frontImage": "art/monster-037.png",
+      "backImage": "art/monster-037-back.png",
+      "isRadiant": true
+    },
+    {
+      "id": "monster-038",
+      "name": "Radiant Monster 038",
+      "type": "monster",
+      "assignableTo": [
+        "contact",
+        "player"
+      ],
+      "frontImage": "art/monster-038.png",
+      "backImage": "art/monster-038-back.png",
+      "isRadiant": true
+    },
+    {
+      "id": "monster-039",
+      "name": "Radiant Monster 039",
+      "type": "monster",
+      "assignableTo": [
+        "contact",
+        "player"
+      ],
+      "frontImage": "art/monster-039.png",
+      "backImage": "art/monster-039-back.png",
+      "isRadiant": true
+    },
+    {
+      "id": "monster-040",
+      "name": "Radiant Monster 040",
+      "type": "monster",
+      "assignableTo": [
+        "contact",
+        "player"
+      ],
+      "frontImage": "art/monster-040.png",
+      "backImage": "art/monster-040-back.png",
+      "isRadiant": true
+    },
+    {
+      "id": "monster-041",
+      "name": "Radiant Monster 041",
+      "type": "monster",
+      "assignableTo": [
+        "contact",
+        "player"
+      ],
+      "frontImage": "art/monster-041.png",
+      "backImage": "art/monster-041-back.png",
+      "isRadiant": true
+    },
+    {
+      "id": "monster-042",
+      "name": "Radiant Monster 042",
+      "type": "monster",
+      "assignableTo": [
+        "contact",
+        "player"
+      ],
+      "frontImage": "art/monster-042.png",
+      "backImage": "art/monster-042-back.png",
+      "isRadiant": true
+    },
+    {
+      "id": "monster-043",
+      "name": "Radiant Monster 043",
+      "type": "monster",
+      "assignableTo": [
+        "contact",
+        "player"
+      ],
+      "frontImage": "art/monster-043.png",
+      "backImage": "art/monster-043-back.png",
+      "isRadiant": true
+    },
+    {
+      "id": "monster-044",
+      "name": "Radiant Monster 044",
+      "type": "monster",
+      "assignableTo": [
+        "contact",
+        "player"
+      ],
+      "frontImage": "art/monster-044.png",
+      "backImage": "art/monster-044-back.png",
+      "isRadiant": true
+    },
+    {
+      "id": "monster-045",
+      "name": "Radiant Monster 045",
+      "type": "monster",
+      "assignableTo": [
+        "contact",
+        "player"
+      ],
+      "frontImage": "art/monster-045.png",
+      "backImage": "art/monster-045-back.png",
+      "isRadiant": true
+    },
+    {
+      "id": "monster-046",
+      "name": "Radiant Monster 046",
+      "type": "monster",
+      "assignableTo": [
+        "contact",
+        "player"
+      ],
+      "frontImage": "art/monster-046.png",
+      "backImage": "art/monster-046-back.png",
+      "isRadiant": true
+    },
+    {
+      "id": "monster-047",
+      "name": "Radiant Monster 047",
+      "type": "monster",
+      "assignableTo": [
+        "contact",
+        "player"
+      ],
+      "frontImage": "art/monster-047.png",
+      "backImage": "art/monster-047-back.png",
+      "isRadiant": true
+    },
+    {
+      "id": "monster-048",
+      "name": "Radiant Monster 048",
+      "type": "monster",
+      "assignableTo": [
+        "contact",
+        "player"
+      ],
+      "frontImage": "art/monster-048.png",
+      "backImage": "art/monster-048-back.png",
+      "isRadiant": true
+    },
+    {
+      "id": "monster-049",
+      "name": "Radiant Monster 049",
+      "type": "monster",
+      "assignableTo": [
+        "contact",
+        "player"
+      ],
+      "frontImage": "art/monster-049.png",
+      "backImage": "art/monster-049-back.png",
+      "isRadiant": true
+    },
+    {
+      "id": "monster-050",
+      "name": "Radiant Monster 050",
+      "type": "monster",
+      "assignableTo": [
+        "contact",
+        "player"
+      ],
+      "frontImage": "art/monster-050.png",
+      "backImage": "art/monster-050-back.png",
+      "isRadiant": true
+    },
+    {
+      "id": "monster-051",
+      "name": "Radiant Monster 051",
+      "type": "monster",
+      "assignableTo": [
+        "contact",
+        "player"
+      ],
+      "frontImage": "art/monster-051.png",
+      "backImage": "art/monster-051-back.png",
+      "isRadiant": true
+    },
+    {
+      "id": "monster-052",
+      "name": "Radiant Monster 052",
+      "type": "monster",
+      "assignableTo": [
+        "contact",
+        "player"
+      ],
+      "frontImage": "art/monster-052.png",
+      "backImage": "art/monster-052-back.png",
+      "isRadiant": true
+    },
+    {
+      "id": "monster-053",
+      "name": "Radiant Monster 053",
+      "type": "monster",
+      "assignableTo": [
+        "contact",
+        "player"
+      ],
+      "frontImage": "art/monster-053.png",
+      "backImage": "art/monster-053-back.png",
+      "isRadiant": true
+    },
+    {
+      "id": "monster-054",
+      "name": "Radiant Monster 054",
+      "type": "monster",
+      "assignableTo": [
+        "contact",
+        "player"
+      ],
+      "frontImage": "art/monster-054.png",
+      "backImage": "art/monster-054-back.png",
+      "isRadiant": true
+    },
+    {
+      "id": "monster-055",
+      "name": "Radiant Monster 055",
+      "type": "monster",
+      "assignableTo": [
+        "contact",
+        "player"
+      ],
+      "frontImage": "art/monster-055.png",
+      "backImage": "art/monster-055-back.png",
+      "isRadiant": true
+    },
+    {
+      "id": "monster-056",
+      "name": "Radiant Monster 056",
+      "type": "monster",
+      "assignableTo": [
+        "contact",
+        "player"
+      ],
+      "frontImage": "art/monster-056.png",
+      "backImage": "art/monster-056-back.png",
+      "isRadiant": true
+    },
+    {
+      "id": "monster-057",
+      "name": "Radiant Monster 057",
+      "type": "monster",
+      "assignableTo": [
+        "contact",
+        "player"
+      ],
+      "frontImage": "art/monster-057.png",
+      "backImage": "art/monster-057-back.png",
+      "isRadiant": true
+    },
+    {
+      "id": "monster-058",
+      "name": "Radiant Monster 058",
+      "type": "monster",
+      "assignableTo": [
+        "contact",
+        "player"
+      ],
+      "frontImage": "art/monster-058.png",
+      "backImage": "art/monster-058-back.png",
+      "isRadiant": true
+    },
+    {
+      "id": "monster-059",
+      "name": "Radiant Monster 059",
+      "type": "monster",
+      "assignableTo": [
+        "contact",
+        "player"
+      ],
+      "frontImage": "art/monster-059.png",
+      "backImage": "art/monster-059-back.png",
+      "isRadiant": true
+    },
+    {
+      "id": "monster-060",
+      "name": "Radiant Monster 060",
+      "type": "monster",
+      "assignableTo": [
+        "contact",
+        "player"
+      ],
+      "frontImage": "art/monster-060.png",
+      "backImage": "art/monster-060-back.png",
+      "isRadiant": true
+    },
+    {
+      "id": "monster-061",
+      "name": "Radiant Monster 061",
+      "type": "monster",
+      "assignableTo": [
+        "contact",
+        "player"
+      ],
+      "frontImage": "art/monster-061.png",
+      "backImage": "art/monster-061-back.png",
+      "isRadiant": true
+    },
+    {
+      "id": "monster-062",
+      "name": "Radiant Monster 062",
+      "type": "monster",
+      "assignableTo": [
+        "contact",
+        "player"
+      ],
+      "frontImage": "art/monster-062.png",
+      "backImage": "art/monster-062-back.png",
+      "isRadiant": true
+    },
+    {
+      "id": "monster-063",
+      "name": "Radiant Monster 063",
+      "type": "monster",
+      "assignableTo": [
+        "contact",
+        "player"
+      ],
+      "frontImage": "art/monster-063.png",
+      "backImage": "art/monster-063-back.png",
+      "isRadiant": true
+    },
+    {
+      "id": "monster-064",
+      "name": "Radiant Monster 064",
+      "type": "monster",
+      "assignableTo": [
+        "contact",
+        "player"
+      ],
+      "frontImage": "art/monster-064.png",
+      "backImage": "art/monster-064-back.png",
+      "isRadiant": true
+    },
+    {
+      "id": "monster-065",
+      "name": "Radiant Monster 065",
+      "type": "monster",
+      "assignableTo": [
+        "contact",
+        "player"
+      ],
+      "frontImage": "art/monster-065.png",
+      "backImage": "art/monster-065-back.png",
+      "isRadiant": true
+    },
+    {
+      "id": "monster-066",
+      "name": "Radiant Monster 066",
+      "type": "monster",
+      "assignableTo": [
+        "contact",
+        "player"
+      ],
+      "frontImage": "art/monster-066.png",
+      "backImage": "art/monster-066-back.png",
+      "isRadiant": true
+    },
+    {
+      "id": "monster-067",
+      "name": "Radiant Monster 067",
+      "type": "monster",
+      "assignableTo": [
+        "contact",
+        "player"
+      ],
+      "frontImage": "art/monster-067.png",
+      "backImage": "art/monster-067-back.png",
+      "isRadiant": true
+    },
+    {
+      "id": "monster-068",
+      "name": "Radiant Monster 068",
+      "type": "monster",
+      "assignableTo": [
+        "contact",
+        "player"
+      ],
+      "frontImage": "art/monster-068.png",
+      "backImage": "art/monster-068-back.png",
+      "isRadiant": true
+    },
+    {
+      "id": "monster-069",
+      "name": "Radiant Monster 069",
+      "type": "monster",
+      "assignableTo": [
+        "contact",
+        "player"
+      ],
+      "frontImage": "art/monster-069.png",
+      "backImage": "art/monster-069-back.png",
+      "isRadiant": true
+    },
+    {
+      "id": "monster-070",
+      "name": "Radiant Monster 070",
+      "type": "monster",
+      "assignableTo": [
+        "contact",
+        "player"
+      ],
+      "frontImage": "art/monster-070.png",
+      "backImage": "art/monster-070-back.png",
+      "isRadiant": true
+    },
+    {
+      "id": "monster-071",
+      "name": "Radiant Monster 071",
+      "type": "monster",
+      "assignableTo": [
+        "contact",
+        "player"
+      ],
+      "frontImage": "art/monster-071.png",
+      "backImage": "art/monster-071-back.png",
+      "isRadiant": true
+    },
+    {
+      "id": "monster-072",
+      "name": "Radiant Monster 072",
+      "type": "monster",
+      "assignableTo": [
+        "contact",
+        "player"
+      ],
+      "frontImage": "art/monster-072.png",
+      "backImage": "art/monster-072-back.png",
+      "isRadiant": true
+    },
+    {
+      "id": "monster-073",
+      "name": "Radiant Monster 073",
+      "type": "monster",
+      "assignableTo": [
+        "contact",
+        "player"
+      ],
+      "frontImage": "art/monster-073.png",
+      "backImage": "art/monster-073-back.png",
+      "isRadiant": true
+    },
+    {
+      "id": "monster-074",
+      "name": "Radiant Monster 074",
+      "type": "monster",
+      "assignableTo": [
+        "contact",
+        "player"
+      ],
+      "frontImage": "art/monster-074.png",
+      "backImage": "art/monster-074-back.png",
+      "isRadiant": true
+    },
+    {
+      "id": "monster-075",
+      "name": "Radiant Monster 075",
+      "type": "monster",
+      "assignableTo": [
+        "contact",
+        "player"
+      ],
+      "frontImage": "art/monster-075.png",
+      "backImage": "art/monster-075-back.png",
+      "isRadiant": true
+    },
+    {
+      "id": "monster-076",
+      "name": "Radiant Monster 076",
+      "type": "monster",
+      "assignableTo": [
+        "contact",
+        "player"
+      ],
+      "frontImage": "art/monster-076.png",
+      "backImage": "art/monster-076-back.png",
+      "isRadiant": true
+    },
+    {
+      "id": "monster-077",
+      "name": "Radiant Monster 077",
+      "type": "monster",
+      "assignableTo": [
+        "contact",
+        "player"
+      ],
+      "frontImage": "art/monster-077.png",
+      "backImage": "art/monster-077-back.png",
+      "isRadiant": true
+    },
+    {
+      "id": "monster-078",
+      "name": "Radiant Monster 078",
+      "type": "monster",
+      "assignableTo": [
+        "contact",
+        "player"
+      ],
+      "frontImage": "art/monster-078.png",
+      "backImage": "art/monster-078-back.png",
+      "isRadiant": true
+    },
+    {
+      "id": "monster-079",
+      "name": "Radiant Monster 079",
+      "type": "monster",
+      "assignableTo": [
+        "contact",
+        "player"
+      ],
+      "frontImage": "art/monster-079.png",
+      "backImage": "art/monster-079-back.png",
+      "isRadiant": true
+    },
+    {
+      "id": "monster-080",
+      "name": "Radiant Monster 080",
+      "type": "monster",
+      "assignableTo": [
+        "contact",
+        "player"
+      ],
+      "frontImage": "art/monster-080.png",
+      "backImage": "art/monster-080-back.png",
+      "isRadiant": true
+    },
+    {
+      "id": "monster-081",
+      "name": "Radiant Monster 081",
+      "type": "monster",
+      "assignableTo": [
+        "contact",
+        "player"
+      ],
+      "frontImage": "art/monster-081.png",
+      "backImage": "art/monster-081-back.png",
+      "isRadiant": true
+    },
+    {
+      "id": "monster-082",
+      "name": "Radiant Monster 082",
+      "type": "monster",
+      "assignableTo": [
+        "contact",
+        "player"
+      ],
+      "frontImage": "art/monster-082.png",
+      "backImage": "art/monster-082-back.png",
+      "isRadiant": true
+    },
+    {
+      "id": "monster-083",
+      "name": "Radiant Monster 083",
+      "type": "monster",
+      "assignableTo": [
+        "contact",
+        "player"
+      ],
+      "frontImage": "art/monster-083.png",
+      "backImage": "art/monster-083-back.png",
+      "isRadiant": true
+    },
+    {
+      "id": "monster-084",
+      "name": "Radiant Monster 084",
+      "type": "monster",
+      "assignableTo": [
+        "contact",
+        "player"
+      ],
+      "frontImage": "art/monster-084.png",
+      "backImage": "art/monster-084-back.png",
+      "isRadiant": true
+    },
+    {
+      "id": "monster-085",
+      "name": "Radiant Monster 085",
+      "type": "monster",
+      "assignableTo": [
+        "contact",
+        "player"
+      ],
+      "frontImage": "art/monster-085.png",
+      "backImage": "art/monster-085-back.png",
+      "isRadiant": true
+    },
+    {
+      "id": "monster-086",
+      "name": "Radiant Monster 086",
+      "type": "monster",
+      "assignableTo": [
+        "contact",
+        "player"
+      ],
+      "frontImage": "art/monster-086.png",
+      "backImage": "art/monster-086-back.png",
+      "isRadiant": true
+    },
+    {
+      "id": "monster-087",
+      "name": "Radiant Monster 087",
+      "type": "monster",
+      "assignableTo": [
+        "contact",
+        "player"
+      ],
+      "frontImage": "art/monster-087.png",
+      "backImage": "art/monster-087-back.png",
+      "isRadiant": true
+    },
+    {
+      "id": "monster-088",
+      "name": "Radiant Monster 088",
+      "type": "monster",
+      "assignableTo": [
+        "contact",
+        "player"
+      ],
+      "frontImage": "art/monster-088.png",
+      "backImage": "art/monster-088-back.png",
+      "isRadiant": true
+    },
+    {
+      "id": "monster-089",
+      "name": "Radiant Monster 089",
+      "type": "monster",
+      "assignableTo": [
+        "contact",
+        "player"
+      ],
+      "frontImage": "art/monster-089.png",
+      "backImage": "art/monster-089-back.png",
+      "isRadiant": true
+    },
+    {
+      "id": "monster-090",
+      "name": "Radiant Monster 090",
+      "type": "monster",
+      "assignableTo": [
+        "contact",
+        "player"
+      ],
+      "frontImage": "art/monster-090.png",
+      "backImage": "art/monster-090-back.png",
+      "isRadiant": true
+    },
+    {
+      "id": "monster-091",
+      "name": "Radiant Monster 091",
+      "type": "monster",
+      "assignableTo": [
+        "contact",
+        "player"
+      ],
+      "frontImage": "art/monster-091.png",
+      "backImage": "art/monster-091-back.png",
+      "isRadiant": true
+    },
+    {
+      "id": "monster-092",
+      "name": "Radiant Monster 092",
+      "type": "monster",
+      "assignableTo": [
+        "contact",
+        "player"
+      ],
+      "frontImage": "art/monster-092.png",
+      "backImage": "art/monster-092-back.png",
+      "isRadiant": true
+    },
+    {
+      "id": "monster-093",
+      "name": "Radiant Monster 093",
+      "type": "monster",
+      "assignableTo": [
+        "contact",
+        "player"
+      ],
+      "frontImage": "art/monster-093.png",
+      "backImage": "art/monster-093-back.png",
+      "isRadiant": true
+    },
+    {
+      "id": "monster-094",
+      "name": "Radiant Monster 094",
+      "type": "monster",
+      "assignableTo": [
+        "contact",
+        "player"
+      ],
+      "frontImage": "art/monster-094.png",
+      "backImage": "art/monster-094-back.png",
+      "isRadiant": true
+    },
+    {
+      "id": "monster-095",
+      "name": "Radiant Monster 095",
+      "type": "monster",
+      "assignableTo": [
+        "contact",
+        "player"
+      ],
+      "frontImage": "art/monster-095.png",
+      "backImage": "art/monster-095-back.png",
+      "isRadiant": true
+    },
+    {
+      "id": "monster-096",
+      "name": "Radiant Monster 096",
+      "type": "monster",
+      "assignableTo": [
+        "contact",
+        "player"
+      ],
+      "frontImage": "art/monster-096.png",
+      "backImage": "art/monster-096-back.png",
+      "isRadiant": true
+    },
+    {
+      "id": "monster-097",
+      "name": "Radiant Monster 097",
+      "type": "monster",
+      "assignableTo": [
+        "contact",
+        "player"
+      ],
+      "frontImage": "art/monster-097.png",
+      "backImage": "art/monster-097-back.png",
+      "isRadiant": true
+    },
+    {
+      "id": "monster-098",
+      "name": "Radiant Monster 098",
+      "type": "monster",
+      "assignableTo": [
+        "contact",
+        "player"
+      ],
+      "frontImage": "art/monster-098.png",
+      "backImage": "art/monster-098-back.png",
+      "isRadiant": true
+    },
+    {
+      "id": "monster-099",
+      "name": "Radiant Monster 099",
+      "type": "monster",
+      "assignableTo": [
+        "contact",
+        "player"
+      ],
+      "frontImage": "art/monster-099.png",
+      "backImage": "art/monster-099-back.png",
+      "isRadiant": true
+    },
+    {
+      "id": "monster-100",
+      "name": "Radiant Monster 100",
+      "type": "monster",
+      "assignableTo": [
+        "contact",
+        "player"
+      ],
+      "frontImage": "art/monster-100.png",
+      "backImage": "art/monster-100-back.png",
+      "isRadiant": true
+    },
+    {
+      "id": "monster-101",
+      "name": "Radiant Monster 101",
+      "type": "monster",
+      "assignableTo": [
+        "contact",
+        "player"
+      ],
+      "frontImage": "art/monster-101.png",
+      "backImage": "art/monster-101-back.png",
+      "isRadiant": true
+    },
+    {
+      "id": "monster-102",
+      "name": "Radiant Monster 102",
+      "type": "monster",
+      "assignableTo": [
+        "contact",
+        "player"
+      ],
+      "frontImage": "art/monster-102.png",
+      "backImage": "art/monster-102-back.png",
+      "isRadiant": true
+    },
+    {
+      "id": "monster-103",
+      "name": "Radiant Monster 103",
+      "type": "monster",
+      "assignableTo": [
+        "contact",
+        "player"
+      ],
+      "frontImage": "art/monster-103.png",
+      "backImage": "art/monster-103-back.png",
+      "isRadiant": true
+    },
+    {
+      "id": "monster-104",
+      "name": "Radiant Monster 104",
+      "type": "monster",
+      "assignableTo": [
+        "contact",
+        "player"
+      ],
+      "frontImage": "art/monster-104.png",
+      "backImage": "art/monster-104-back.png",
+      "isRadiant": true
+    },
+    {
+      "id": "monster-105",
+      "name": "Radiant Monster 105",
+      "type": "monster",
+      "assignableTo": [
+        "contact",
+        "player"
+      ],
+      "frontImage": "art/monster-105.png",
+      "backImage": "art/monster-105-back.png",
+      "isRadiant": true
+    },
+    {
+      "id": "monster-106",
+      "name": "Radiant Monster 106",
+      "type": "monster",
+      "assignableTo": [
+        "contact",
+        "player"
+      ],
+      "frontImage": "art/monster-106.png",
+      "backImage": "art/monster-106-back.png",
+      "isRadiant": true
+    },
+    {
+      "id": "monster-107",
+      "name": "Radiant Monster 107",
+      "type": "monster",
+      "assignableTo": [
+        "contact",
+        "player"
+      ],
+      "frontImage": "art/monster-107.png",
+      "backImage": "art/monster-107-back.png",
+      "isRadiant": true
+    },
+    {
+      "id": "monster-108",
+      "name": "Radiant Monster 108",
+      "type": "monster",
+      "assignableTo": [
+        "contact",
+        "player"
+      ],
+      "frontImage": "art/monster-108.png",
+      "backImage": "art/monster-108-back.png",
+      "isRadiant": true
+    },
+    {
+      "id": "monster-109",
+      "name": "Radiant Monster 109",
+      "type": "monster",
+      "assignableTo": [
+        "contact",
+        "player"
+      ],
+      "frontImage": "art/monster-109.png",
+      "backImage": "art/monster-109-back.png",
+      "isRadiant": true
+    },
+    {
+      "id": "monster-110",
+      "name": "Radiant Monster 110",
+      "type": "monster",
+      "assignableTo": [
+        "contact",
+        "player"
+      ],
+      "frontImage": "art/monster-110.png",
+      "backImage": "art/monster-110-back.png",
+      "isRadiant": true
+    },
+    {
+      "id": "monster-111",
+      "name": "Radiant Monster 111",
+      "type": "monster",
+      "assignableTo": [
+        "contact",
+        "player"
+      ],
+      "frontImage": "art/monster-111.png",
+      "backImage": "art/monster-111-back.png",
+      "isRadiant": true
+    },
+    {
+      "id": "monster-112",
+      "name": "Radiant Monster 112",
+      "type": "monster",
+      "assignableTo": [
+        "contact",
+        "player"
+      ],
+      "frontImage": "art/monster-112.png",
+      "backImage": "art/monster-112-back.png",
+      "isRadiant": true
+    },
+    {
+      "id": "monster-113",
+      "name": "Radiant Monster 113",
+      "type": "monster",
+      "assignableTo": [
+        "contact",
+        "player"
+      ],
+      "frontImage": "art/monster-113.png",
+      "backImage": "art/monster-113-back.png",
+      "isRadiant": true
+    },
+    {
+      "id": "monster-114",
+      "name": "Radiant Monster 114",
+      "type": "monster",
+      "assignableTo": [
+        "contact",
+        "player"
+      ],
+      "frontImage": "art/monster-114.png",
+      "backImage": "art/monster-114-back.png",
+      "isRadiant": true
+    },
+    {
+      "id": "monster-115",
+      "name": "Radiant Monster 115",
+      "type": "monster",
+      "assignableTo": [
+        "contact",
+        "player"
+      ],
+      "frontImage": "art/monster-115.png",
+      "backImage": "art/monster-115-back.png",
+      "isRadiant": true
+    },
+    {
+      "id": "monster-116",
+      "name": "Radiant Monster 116",
+      "type": "monster",
+      "assignableTo": [
+        "contact",
+        "player"
+      ],
+      "frontImage": "art/monster-116.png",
+      "backImage": "art/monster-116-back.png",
+      "isRadiant": true
+    },
+    {
+      "id": "monster-117",
+      "name": "Radiant Monster 117",
+      "type": "monster",
+      "assignableTo": [
+        "contact",
+        "player"
+      ],
+      "frontImage": "art/monster-117.png",
+      "backImage": "art/monster-117-back.png",
+      "isRadiant": true
+    },
+    {
+      "id": "monster-118",
+      "name": "Radiant Monster 118",
+      "type": "monster",
+      "assignableTo": [
+        "contact",
+        "player"
+      ],
+      "frontImage": "art/monster-118.png",
+      "backImage": "art/monster-118-back.png",
+      "isRadiant": true
+    },
+    {
+      "id": "monster-119",
+      "name": "Radiant Monster 119",
+      "type": "monster",
+      "assignableTo": [
+        "contact",
+        "player"
+      ],
+      "frontImage": "art/monster-119.png",
+      "backImage": "art/monster-119-back.png",
+      "isRadiant": true
+    },
+    {
+      "id": "monster-120",
+      "name": "Radiant Monster 120",
+      "type": "monster",
+      "assignableTo": [
+        "contact",
+        "player"
+      ],
+      "frontImage": "art/monster-120.png",
+      "backImage": "art/monster-120-back.png",
+      "isRadiant": true
+    },
+    {
+      "id": "monster-121",
+      "name": "Radiant Monster 121",
+      "type": "monster",
+      "assignableTo": [
+        "contact",
+        "player"
+      ],
+      "frontImage": "art/monster-121.png",
+      "backImage": "art/monster-121-back.png",
+      "isRadiant": true
+    },
+    {
+      "id": "monster-122",
+      "name": "Radiant Monster 122",
+      "type": "monster",
+      "assignableTo": [
+        "contact",
+        "player"
+      ],
+      "frontImage": "art/monster-122.png",
+      "backImage": "art/monster-122-back.png",
+      "isRadiant": true
+    },
+    {
+      "id": "monster-123",
+      "name": "Radiant Monster 123",
+      "type": "monster",
+      "assignableTo": [
+        "contact",
+        "player"
+      ],
+      "frontImage": "art/monster-123.png",
+      "backImage": "art/monster-123-back.png",
+      "isRadiant": true
+    },
+    {
+      "id": "monster-124",
+      "name": "Radiant Monster 124",
+      "type": "monster",
+      "assignableTo": [
+        "contact",
+        "player"
+      ],
+      "frontImage": "art/monster-124.png",
+      "backImage": "art/monster-124-back.png",
+      "isRadiant": true
+    },
+    {
+      "id": "monster-125",
+      "name": "Radiant Monster 125",
+      "type": "monster",
+      "assignableTo": [
+        "contact",
+        "player"
+      ],
+      "frontImage": "art/monster-125.png",
+      "backImage": "art/monster-125-back.png",
+      "isRadiant": true
+    },
+    {
+      "id": "monster-126",
+      "name": "Radiant Monster 126",
+      "type": "monster",
+      "assignableTo": [
+        "contact",
+        "player"
+      ],
+      "frontImage": "art/monster-126.png",
+      "backImage": "art/monster-126-back.png",
+      "isRadiant": true
+    },
+    {
+      "id": "monster-127",
+      "name": "Radiant Monster 127",
+      "type": "monster",
+      "assignableTo": [
+        "contact",
+        "player"
+      ],
+      "frontImage": "art/monster-127.png",
+      "backImage": "art/monster-127-back.png",
+      "isRadiant": true
+    },
+    {
+      "id": "monster-128",
+      "name": "Radiant Monster 128",
+      "type": "monster",
+      "assignableTo": [
+        "contact",
+        "player"
+      ],
+      "frontImage": "art/monster-128.png",
+      "backImage": "art/monster-128-back.png",
+      "isRadiant": true
+    },
+    {
+      "id": "monster-129",
+      "name": "Radiant Monster 129",
+      "type": "monster",
+      "assignableTo": [
+        "contact",
+        "player"
+      ],
+      "frontImage": "art/monster-129.png",
+      "backImage": "art/monster-129-back.png",
+      "isRadiant": true
+    },
+    {
+      "id": "monster-130",
+      "name": "Radiant Monster 130",
+      "type": "monster",
+      "assignableTo": [
+        "contact",
+        "player"
+      ],
+      "frontImage": "art/monster-130.png",
+      "backImage": "art/monster-130-back.png",
+      "isRadiant": true
+    },
+    {
+      "id": "monster-131",
+      "name": "Radiant Monster 131",
+      "type": "monster",
+      "assignableTo": [
+        "contact",
+        "player"
+      ],
+      "frontImage": "art/monster-131.png",
+      "backImage": "art/monster-131-back.png",
+      "isRadiant": true
+    },
+    {
+      "id": "monster-132",
+      "name": "Radiant Monster 132",
+      "type": "monster",
+      "assignableTo": [
+        "contact",
+        "player"
+      ],
+      "frontImage": "art/monster-132.png",
+      "backImage": "art/monster-132-back.png",
+      "isRadiant": true
+    },
+    {
+      "id": "monster-133",
+      "name": "Radiant Monster 133",
+      "type": "monster",
+      "assignableTo": [
+        "contact",
+        "player"
+      ],
+      "frontImage": "art/monster-133.png",
+      "backImage": "art/monster-133-back.png",
+      "isRadiant": true
+    },
+    {
+      "id": "monster-134",
+      "name": "Radiant Monster 134",
+      "type": "monster",
+      "assignableTo": [
+        "contact",
+        "player"
+      ],
+      "frontImage": "art/monster-134.png",
+      "backImage": "art/monster-134-back.png",
+      "isRadiant": true
+    },
+    {
+      "id": "monster-135",
+      "name": "Radiant Monster 135",
+      "type": "monster",
+      "assignableTo": [
+        "contact",
+        "player"
+      ],
+      "frontImage": "art/monster-135.png",
+      "backImage": "art/monster-135-back.png",
+      "isRadiant": true
+    },
+    {
+      "id": "monster-136",
+      "name": "Radiant Monster 136",
+      "type": "monster",
+      "assignableTo": [
+        "contact",
+        "player"
+      ],
+      "frontImage": "art/monster-136.png",
+      "backImage": "art/monster-136-back.png",
+      "isRadiant": true
+    },
+    {
+      "id": "monster-137",
+      "name": "Radiant Monster 137",
+      "type": "monster",
+      "assignableTo": [
+        "contact",
+        "player"
+      ],
+      "frontImage": "art/monster-137.png",
+      "backImage": "art/monster-137-back.png",
+      "isRadiant": true
+    },
+    {
+      "id": "monster-138",
+      "name": "Radiant Monster 138",
+      "type": "monster",
+      "assignableTo": [
+        "contact",
+        "player"
+      ],
+      "frontImage": "art/monster-138.png",
+      "backImage": "art/monster-138-back.png",
+      "isRadiant": true
+    },
+    {
+      "id": "monster-139",
+      "name": "Radiant Monster 139",
+      "type": "monster",
+      "assignableTo": [
+        "contact",
+        "player"
+      ],
+      "frontImage": "art/monster-139.png",
+      "backImage": "art/monster-139-back.png",
+      "isRadiant": true
+    },
+    {
+      "id": "monster-140",
+      "name": "Radiant Monster 140",
+      "type": "monster",
+      "assignableTo": [
+        "contact",
+        "player"
+      ],
+      "frontImage": "art/monster-140.png",
+      "backImage": "art/monster-140-back.png",
+      "isRadiant": true
+    },
+    {
+      "id": "monster-141",
+      "name": "Radiant Monster 141",
+      "type": "monster",
+      "assignableTo": [
+        "contact",
+        "player"
+      ],
+      "frontImage": "art/monster-141.png",
+      "backImage": "art/monster-141-back.png",
+      "isRadiant": true
+    },
+    {
+      "id": "monster-142",
+      "name": "Radiant Monster 142",
+      "type": "monster",
+      "assignableTo": [
+        "contact",
+        "player"
+      ],
+      "frontImage": "art/monster-142.png",
+      "backImage": "art/monster-142-back.png",
+      "isRadiant": true
+    },
+    {
+      "id": "monster-143",
+      "name": "Radiant Monster 143",
+      "type": "monster",
+      "assignableTo": [
+        "contact",
+        "player"
+      ],
+      "frontImage": "art/monster-143.png",
+      "backImage": "art/monster-143-back.png",
+      "isRadiant": true
+    },
+    {
+      "id": "monster-144",
+      "name": "Radiant Monster 144",
+      "type": "monster",
+      "assignableTo": [
+        "contact",
+        "player"
+      ],
+      "frontImage": "art/monster-144.png",
+      "backImage": "art/monster-144-back.png",
+      "isRadiant": true
+    },
+    {
+      "id": "monster-145",
+      "name": "Radiant Monster 145",
+      "type": "monster",
+      "assignableTo": [
+        "contact",
+        "player"
+      ],
+      "frontImage": "art/monster-145.png",
+      "backImage": "art/monster-145-back.png",
+      "isRadiant": true
+    },
+    {
+      "id": "monster-146",
+      "name": "Radiant Monster 146",
+      "type": "monster",
+      "assignableTo": [
+        "contact",
+        "player"
+      ],
+      "frontImage": "art/monster-146.png",
+      "backImage": "art/monster-146-back.png",
+      "isRadiant": true
+    },
+    {
+      "id": "monster-147",
+      "name": "Radiant Monster 147",
+      "type": "monster",
+      "assignableTo": [
+        "contact",
+        "player"
+      ],
+      "frontImage": "art/monster-147.png",
+      "backImage": "art/monster-147-back.png",
+      "isRadiant": true
+    },
+    {
+      "id": "monster-148",
+      "name": "Radiant Monster 148",
+      "type": "monster",
+      "assignableTo": [
+        "contact",
+        "player"
+      ],
+      "frontImage": "art/monster-148.png",
+      "backImage": "art/monster-148-back.png",
+      "isRadiant": true
+    },
+    {
+      "id": "monster-149",
+      "name": "Radiant Monster 149",
+      "type": "monster",
+      "assignableTo": [
+        "contact",
+        "player"
+      ],
+      "frontImage": "art/monster-149.png",
+      "backImage": "art/monster-149-back.png",
+      "isRadiant": true
+    },
+    {
+      "id": "monster-150",
+      "name": "Radiant Monster 150",
+      "type": "monster",
+      "assignableTo": [
+        "contact",
+        "player"
+      ],
+      "frontImage": "art/monster-150.png",
+      "backImage": "art/monster-150-back.png",
+      "isRadiant": true
+    },
+    {
+      "id": "monster-151",
+      "name": "Radiant Monster 151",
+      "type": "monster",
+      "assignableTo": [
+        "contact",
+        "player"
+      ],
+      "frontImage": "art/monster-151.png",
+      "backImage": "art/monster-151-back.png",
+      "isRadiant": true
+    }
+  ]
+}
