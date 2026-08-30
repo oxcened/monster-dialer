@@ -163,7 +163,7 @@ fun AddCharacterScreen(
                     }
                 }
 
-                Spacer(modifier = Modifier.height(4.dp))
+                Spacer(modifier = Modifier.height(8.dp))
 
                 // Details Card
                 Card(
@@ -216,7 +216,7 @@ fun AddCharacterScreen(
                     }
                 }
 
-                Spacer(modifier = Modifier.height(4.dp))
+                Spacer(modifier = Modifier.height(8.dp))
 
                 Button(
                     onClick = viewModel::save,
