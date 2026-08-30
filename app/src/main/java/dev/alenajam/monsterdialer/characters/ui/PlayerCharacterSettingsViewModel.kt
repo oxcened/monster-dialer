@@ -61,10 +61,14 @@ class PlayerCharacterSettingsViewModel @Inject constructor(
     private val _selectedTab = MutableStateFlow(layoutPreferences.getSelectedTab())
     val selectedTab: StateFlow<Int> = _selectedTab.asStateFlow()
 
+    private val _dataVersion = MutableStateFlow(0)
+    val dataVersion: StateFlow<Int> = _dataVersion.asStateFlow()
+
     init {
         viewModelScope.launch {
             _assignedTrainer.value = assignmentRepository.getPlayerCharacter(CharacterType.Trainer)
             _assignedMonster.value = assignmentRepository.getPlayerCharacter(CharacterType.Monster)
+            _dataVersion.value += 1
         }
     }
 

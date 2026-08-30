@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -35,6 +36,7 @@ fun ColumnScope.PlayerCharacterSettingsContent(
     val assignedMonster by viewModel.assignedMonster.collectAsStateWithLifecycle()
     val trainers by viewModel.trainers.collectAsStateWithLifecycle()
     val monsters by viewModel.monsters.collectAsStateWithLifecycle()
+    val dataVersion by viewModel.dataVersion.collectAsStateWithLifecycle()
     val isLimitReached by viewModel.isLimitReached.collectAsStateWithLifecycle()
     val selectedTab by viewModel.selectedTab.collectAsStateWithLifecycle()
     val layout by viewModel.layout.collectAsStateWithLifecycle()
@@ -90,6 +92,14 @@ fun ColumnScope.PlayerCharacterSettingsContent(
             },
             onDismiss = { pendingDeletion = null }
         )
+    }
+
+    LaunchedEffect(dataVersion, trainers.isEmpty(), monsters.isEmpty()) {
+        if (trainers.isNotEmpty() || monsters.isNotEmpty()) {
+            val selectedItemIndex = if (selectedTab == 0) trainerSelectedItemIndex else monsterSelectedItemIndex
+            if (effectiveLayout == CharacterLayout.List) listState.requestScrollToItem(selectedItemIndex)
+            else gridState.requestScrollToItem(selectedItemIndex)
+        }
     }
 
     Box(modifier = Modifier.fillMaxWidth().weight(1f)) {
