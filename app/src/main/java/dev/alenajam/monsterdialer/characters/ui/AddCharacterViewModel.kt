@@ -28,8 +28,11 @@ class AddCharacterViewModel @Inject constructor(
     private val _type = MutableStateFlow(CharacterType.Monster)
     val type = _type.asStateFlow()
 
-    private val _imageUri = MutableStateFlow<Uri?>(null)
-    val imageUri = _imageUri.asStateFlow()
+    private val _frontImageUri = MutableStateFlow<Uri?>(null)
+    val frontImageUri = _frontImageUri.asStateFlow()
+
+    private val _backImageUri = MutableStateFlow<Uri?>(null)
+    val backImageUri = _backImageUri.asStateFlow()
 
     private val _isSaving = MutableStateFlow(false)
     val isSaving = _isSaving.asStateFlow()
@@ -43,8 +46,11 @@ class AddCharacterViewModel @Inject constructor(
     private val _error = MutableStateFlow<String?>(null)
     val error = _error.asStateFlow()
 
-    private val _existingImageFile = MutableStateFlow<java.io.File?>(null)
-    val existingImageFile = _existingImageFile.asStateFlow()
+    private val _existingFrontImageFile = MutableStateFlow<java.io.File?>(null)
+    val existingFrontImageFile = _existingFrontImageFile.asStateFlow()
+
+    private val _existingBackImageFile = MutableStateFlow<java.io.File?>(null)
+    val existingBackImageFile = _existingBackImageFile.asStateFlow()
 
     init {
         viewModelScope.launch {
@@ -60,7 +66,8 @@ class AddCharacterViewModel @Inject constructor(
             if (character != null) {
                 _name.value = character.name
                 _type.value = character.type
-                _existingImageFile.value = withContext(Dispatchers.IO) { repository.getCharacterImageFile(characterId) }
+                _existingFrontImageFile.value = withContext(Dispatchers.IO) { repository.getCharacterFrontImageFile(characterId) }
+                _existingBackImageFile.value = withContext(Dispatchers.IO) { repository.getCharacterBackImageFile(characterId) }
                 _isLimitReached.value = false // Can always edit even if limit reached
             }
         }
@@ -74,28 +81,37 @@ class AddCharacterViewModel @Inject constructor(
         _type.value = newType
     }
 
-    fun onImageSelected(uri: Uri?) {
-        _imageUri.value = uri
+    fun onFrontImageSelected(uri: Uri?) {
+        _frontImageUri.value = uri
+    }
+
+    fun onBackImageSelected(uri: Uri?) {
+        _backImageUri.value = uri
     }
 
     fun save() {
         val currentName = _name.value
         val currentType = _type.value
-        val currentImage = _imageUri.value
-        val existingImage = _existingImageFile.value
+        val frontImage = _frontImageUri.value
+        val backImage = _backImageUri.value
+        val existingFront = _existingFrontImageFile.value
+        val existingBack = _existingBackImageFile.value
         val characterId = editingCharacterId
 
-        if (currentName.isBlank() || (currentImage == null && existingImage == null)) return
+        val hasFront = frontImage != null || existingFront != null
+        val hasBack = backImage != null || existingBack != null
+
+        if (currentName.isBlank() || (!hasFront && !hasBack)) return
 
         viewModelScope.launch {
             _isSaving.value = true
             _error.value = null
             try {
                 if (characterId != null) {
-                    repository.updateCharacter(characterId, currentName, currentImage)
+                    repository.updateCharacter(characterId, currentName, frontImage, backImage)
                     _creationResult.value = CharacterReference(CustomCharacterRepository.CUSTOM_PACK_ID, characterId)
                 } else {
-                    val result = repository.addCharacter(currentName, currentType, currentImage!!)
+                    val result = repository.addCharacter(currentName, currentType, frontImage, backImage)
                     _creationResult.value = result
                 }
             } catch (e: Exception) {

@@ -88,6 +88,11 @@
     <string name="add_monster" comment="Button to start adding a new custom monster.">Monster hinzufügen</string>
     <string name="create_trainer_title" comment="Title of the trainer creation screen.">Trainer hinzufügen</string>
     <string name="create_monster_title" comment="Title of the monster creation screen.">Monster hinzufügen</string>
+    <string name="character_sprites_section" comment="Heading for the character sprites section.">Sprites</string>
+    <string name="front_sprite_label" comment="Label for the front sprite picker.">Vorderansicht (Kontakt)</string>
+    <string name="back_sprite_label" comment="Label for the back sprite picker.">Rückansicht (Spieler)</string>
+    <string name="front_sprite_description" comment="Explains that the front sprite is shown for contacts.">Wird angezeigt, wenn dieser Charakter dich anruft.</string>
+    <string name="back_sprite_description" comment="Explains that the back sprite is shown for the player.">Wird angezeigt, wenn du diesen Charakter benutzt.</string>
     <string name="edit_trainer_title" comment="Title of the trainer edit screen.">Trainer bearbeiten</string>
     <string name="edit_monster_title" comment="Title of the monster edit screen.">Monster bearbeiten</string>
     <string name="character_name_label" comment="Label for the character name input field.">Charaktername</string>

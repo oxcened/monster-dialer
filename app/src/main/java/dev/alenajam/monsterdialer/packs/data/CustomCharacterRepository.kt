@@ -31,8 +31,13 @@ class CustomCharacterRepository @Inject constructor(
     suspend fun addCharacter(
         name: String,
         type: CharacterType,
-        imageUri: Uri
+        frontImageUri: Uri?,
+        backImageUri: Uri?
     ): CharacterReference = withContext(Dispatchers.IO) {
+        if (frontImageUri == null && backImageUri == null) {
+            throw CharacterPackValidationException("At least one image is required")
+        }
+
         // Check limit
         val currentManifest = readManifest() ?: CharacterPackManifest(
             formatVersion = CharacterPackValidator.SupportedFormatVersion,
@@ -48,54 +53,35 @@ class CustomCharacterRepository @Inject constructor(
         }
 
         val characterId = UUID.randomUUID().toString()
-        val extension = context.contentResolver.getType(imageUri)?.substringAfterLast('/') ?: "png"
-        val fileName = "art/$characterId.$extension"
-
+        
         // Ensure directories exist
         artDirectory.mkdirs()
 
-        // Copy image atomically
-        val tempImage = File(artDirectory, ".${characterId}.${extension}.tmp")
-        val targetFile = File(packDirectory, fileName)
-        context.contentResolver.openInputStream(imageUri)?.use { input ->
-            tempImage.outputStream().use { output ->
-                input.copyTo(output)
-            }
-        } ?: throw CharacterPackValidationException("Could not read image")
-
-        if (!tempImage.renameTo(targetFile)) {
-            tempImage.delete()
-            throw CharacterPackValidationException("Could not save image")
+        val frontImageFileName = frontImageUri?.let { uri ->
+            saveImage(uri, "$characterId-front")
         }
+        val backImageFileName = backImageUri?.let { uri ->
+            saveImage(uri, "$characterId-back")
+        }
+
+        val assignableTo = mutableListOf<CharacterAssignmentTarget>()
+        if (frontImageFileName != null) assignableTo.add(CharacterAssignmentTarget.Contact)
+        if (backImageFileName != null) assignableTo.add(CharacterAssignmentTarget.Player)
 
         val newCharacter = PackCharacter(
             id = characterId,
             name = name.trim(),
             type = type,
-            assignableTo = listOf(CharacterAssignmentTarget.Contact, CharacterAssignmentTarget.Player),
-            frontImage = fileName,
-            backImage = fileName // Reuse front image for back for MVP
+            assignableTo = assignableTo,
+            frontImage = frontImageFileName,
+            backImage = backImageFileName
         )
 
         val updatedManifest = currentManifest.copy(
             characters = currentManifest.characters + newCharacter
         )
 
-        // Write manifest atomically
-        val tempManifest = File(packDirectory, "${CharacterPackValidator.ManifestPath}.tmp-${UUID.randomUUID()}")
-        try {
-            tempManifest.writeText(json.encodeToString(updatedManifest))
-            if (!tempManifest.renameTo(manifestFile)) {
-                // Fallback: if rename fails (e.g. across different filesystems, though unlikely here), 
-                // try direct write
-                manifestFile.writeText(json.encodeToString(updatedManifest))
-            }
-        } finally {
-            if (tempManifest.exists()) tempManifest.delete()
-        }
-
-        // Update catalog
-        catalog.recordInstallation(updatedManifest)
+        writeManifest(updatedManifest)
 
         CharacterReference(CUSTOM_PACK_ID, characterId)
     }
@@ -103,59 +89,73 @@ class CustomCharacterRepository @Inject constructor(
     suspend fun updateCharacter(
         characterId: String,
         name: String,
-        imageUri: Uri?
+        frontImageUri: Uri?,
+        backImageUri: Uri?
     ) = withContext(Dispatchers.IO) {
         val currentManifest = readManifest() ?: return@withContext
         val character = currentManifest.characters.find { it.id == characterId } ?: return@withContext
 
-        var updatedFrontImage = character.frontImage
-        var updatedBackImage = character.backImage
-
-        if (imageUri != null) {
-            val extension = context.contentResolver.getType(imageUri)?.substringAfterLast('/') ?: "png"
-            val fileName = "art/$characterId.$extension"
-            val targetFile = File(packDirectory, fileName)
-
-            // Copy image atomically
-            val tempImage = File(artDirectory, ".${characterId}.${extension}.tmp")
-            context.contentResolver.openInputStream(imageUri)?.use { input ->
-                tempImage.outputStream().use { output ->
-                    input.copyTo(output)
-                }
-            } ?: throw CharacterPackValidationException("Could not read image")
-
-            if (!tempImage.renameTo(targetFile)) {
-                tempImage.delete()
-                throw CharacterPackValidationException("Could not save image")
-            }
-            updatedFrontImage = fileName
-            updatedBackImage = fileName
+        val frontImageFileName = if (frontImageUri != null) {
+            saveImage(frontImageUri, "$characterId-front")
+        } else {
+            character.frontImage
         }
+
+        val backImageFileName = if (backImageUri != null) {
+            saveImage(backImageUri, "$characterId-back")
+        } else {
+            character.backImage
+        }
+
+        val assignableTo = mutableListOf<CharacterAssignmentTarget>()
+        if (frontImageFileName != null) assignableTo.add(CharacterAssignmentTarget.Contact)
+        if (backImageFileName != null) assignableTo.add(CharacterAssignmentTarget.Player)
 
         val updatedCharacters = currentManifest.characters.map {
             if (it.id == characterId) {
                 it.copy(
                     name = name.trim(),
-                    frontImage = updatedFrontImage,
-                    backImage = updatedBackImage
+                    frontImage = frontImageFileName,
+                    backImage = backImageFileName,
+                    assignableTo = assignableTo
                 )
             } else it
         }
 
         val updatedManifest = currentManifest.copy(characters = updatedCharacters)
-        
-        // Write manifest atomically
+        writeManifest(updatedManifest)
+    }
+
+    private fun saveImage(uri: Uri, nameWithoutExtension: String): String {
+        val extension = context.contentResolver.getType(uri)?.substringAfterLast('/') ?: "png"
+        val fileName = "art/$nameWithoutExtension.$extension"
+        val targetFile = File(packDirectory, fileName)
+
+        val tempFile = File(artDirectory, ".$nameWithoutExtension.$extension.tmp")
+        context.contentResolver.openInputStream(uri)?.use { input ->
+            tempFile.outputStream().use { output ->
+                input.copyTo(output)
+            }
+        } ?: throw CharacterPackValidationException("Could not read image")
+
+        if (!tempFile.renameTo(targetFile)) {
+            tempFile.delete()
+            throw CharacterPackValidationException("Could not save image")
+        }
+        return fileName
+    }
+
+    private fun writeManifest(manifest: CharacterPackManifest) {
         val tempManifest = File(packDirectory, "${CharacterPackValidator.ManifestPath}.tmp-${UUID.randomUUID()}")
         try {
-            tempManifest.writeText(json.encodeToString(updatedManifest))
+            tempManifest.writeText(json.encodeToString(manifest))
             if (!tempManifest.renameTo(manifestFile)) {
-                manifestFile.writeText(json.encodeToString(updatedManifest))
+                manifestFile.writeText(json.encodeToString(manifest))
             }
         } finally {
             if (tempManifest.exists()) tempManifest.delete()
         }
-
-        catalog.recordInstallation(updatedManifest)
+        catalog.recordInstallation(manifest)
     }
 
     suspend fun deleteCharacter(characterId: String) = withContext(Dispatchers.IO) {
@@ -192,9 +192,15 @@ class CustomCharacterRepository @Inject constructor(
     fun getCharacter(characterId: String): PackCharacter? =
         readManifest()?.characters?.find { it.id == characterId }
 
-    fun getCharacterImageFile(characterId: String): File? {
+    fun getCharacterFrontImageFile(characterId: String): File? {
         val character = getCharacter(characterId) ?: return null
-        val relativePath = character.frontImage ?: character.backImage ?: return null
+        val relativePath = character.frontImage ?: return null
+        return File(packDirectory, relativePath)
+    }
+
+    fun getCharacterBackImageFile(characterId: String): File? {
+        val character = getCharacter(characterId) ?: return null
+        val relativePath = character.backImage ?: return null
         return File(packDirectory, relativePath)
     }
 

@@ -88,6 +88,11 @@
     <string name="add_monster" comment="Button to start adding a new custom monster.">Tilføj monster</string>
     <string name="create_trainer_title" comment="Title of the trainer creation screen.">Tilføj træner</string>
     <string name="create_monster_title" comment="Title of the monster creation screen.">Tilføj monster</string>
+    <string name="character_sprites_section" comment="Heading for the character sprites section.">Sprites</string>
+    <string name="front_sprite_label" comment="Label for the front sprite picker.">Front-sprite (Kontakt)</string>
+    <string name="back_sprite_label" comment="Label for the back sprite picker.">Bagside-sprite (Spiller)</string>
+    <string name="front_sprite_description" comment="Explains that the front sprite is shown for contacts.">Vises, når denne figur ringer til dig.</string>
+    <string name="back_sprite_description" comment="Explains that the back sprite is shown for the player.">Vises, når du bruger denne figur.</string>
     <string name="edit_trainer_title" comment="Title of the trainer edit screen.">Rediger træner</string>
     <string name="edit_monster_title" comment="Title of the monster edit screen.">Rediger monster</string>
     <string name="character_name_label" comment="Label for the character name input field.">Figurnavn</string>

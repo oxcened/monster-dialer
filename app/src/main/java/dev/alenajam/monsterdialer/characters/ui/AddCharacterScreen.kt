@@ -36,6 +36,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -55,16 +56,19 @@ fun AddCharacterScreen(
     viewModel: AddCharacterViewModel = hiltViewModel()
 ) {
     val name by viewModel.name.collectAsStateWithLifecycle()
-    val imageUri by viewModel.imageUri.collectAsStateWithLifecycle()
-    val existingImageFile by viewModel.existingImageFile.collectAsStateWithLifecycle()
+    val frontImageUri by viewModel.frontImageUri.collectAsStateWithLifecycle()
+    val backImageUri by viewModel.backImageUri.collectAsStateWithLifecycle()
+    val existingFrontImageFile by viewModel.existingFrontImageFile.collectAsStateWithLifecycle()
+    val existingBackImageFile by viewModel.existingBackImageFile.collectAsStateWithLifecycle()
     val isSaving by viewModel.isSaving.collectAsStateWithLifecycle()
     val isLimitReached by viewModel.isLimitReached.collectAsStateWithLifecycle()
     val creationResult by viewModel.creationResult.collectAsStateWithLifecycle()
 
-    val picker = rememberLauncherForActivityResult(ActivityResultContracts.GetContent()) { uri ->
-        if (uri != null) {
-            viewModel.onImageSelected(uri)
-        }
+    val frontPicker = rememberLauncherForActivityResult(ActivityResultContracts.GetContent()) { uri ->
+        if (uri != null) viewModel.onFrontImageSelected(uri)
+    }
+    val backPicker = rememberLauncherForActivityResult(ActivityResultContracts.GetContent()) { uri ->
+        if (uri != null) viewModel.onBackImageSelected(uri)
     }
 
     LaunchedEffect(Unit) {
@@ -120,50 +124,39 @@ fun AddCharacterScreen(
                     .padding(24.dp),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                // Image Selection Area
-                Box(
-                    modifier = Modifier
-                        .size(160.dp)
-                        .clip(RoundedCornerShape(28.dp))
-                        .background(MaterialTheme.colorScheme.primaryContainer)
-                        .clickable(enabled = !isLimitReached) { picker.launch("image/*") },
-                    contentAlignment = Alignment.Center
+                // Sprites Section
+                Text(
+                    text = stringResource(R.string.character_sprites_section),
+                    style = MaterialTheme.typography.titleMedium,
+                    modifier = Modifier.align(Alignment.Start).padding(bottom = 16.dp)
+                )
+
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.spacedBy(16.dp)
                 ) {
-                    val displayImage = imageUri ?: existingImageFile
-                    if (displayImage != null) {
-                        AsyncImage(
-                            model = displayImage,
-                            contentDescription = null,
-                            modifier = Modifier.fillMaxSize(),
-                            contentScale = ContentScale.Crop
-                        )
-                        // Overlay to indicate change possibility
-                        Surface(
-                            color = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.7f),
-                            modifier = Modifier
-                                .align(Alignment.BottomCenter)
-                                .fillMaxWidth()
-                                .height(40.dp)
-                        ) {
-                            Box(contentAlignment = Alignment.Center) {
-                                Text(
-                                    text = stringResource(R.string.change),
-                                    style = MaterialTheme.typography.labelMedium,
-                                    color = MaterialTheme.colorScheme.onSurfaceVariant
-                                )
-                            }
-                        }
-                    } else {
-                        AppIcon(
-                            icon = LocalMonsterAppIcons.current.addCharacter,
-                            contentDescription = null,
-                            modifier = Modifier.size(64.dp),
-                            tint = MaterialTheme.colorScheme.onPrimaryContainer
-                        )
-                    }
+                    // Front Sprite
+                    SpritePicker(
+                        label = stringResource(R.string.front_sprite_label),
+                        description = stringResource(R.string.front_sprite_description),
+                        image = frontImageUri ?: existingFrontImageFile,
+                        onPick = { frontPicker.launch("image/*") },
+                        modifier = Modifier.weight(1f),
+                        enabled = !isLimitReached
+                    )
+
+                    // Back Sprite
+                    SpritePicker(
+                        label = stringResource(R.string.back_sprite_label),
+                        description = stringResource(R.string.back_sprite_description),
+                        image = backImageUri ?: existingBackImageFile,
+                        onPick = { backPicker.launch("image/*") },
+                        modifier = Modifier.weight(1f),
+                        enabled = !isLimitReached
+                    )
                 }
 
-                Spacer(modifier = Modifier.height(8.dp))
+                Spacer(modifier = Modifier.height(24.dp))
 
                 // Details Card
                 Card(
@@ -216,7 +209,7 @@ fun AddCharacterScreen(
                     }
                 }
 
-                Spacer(modifier = Modifier.height(8.dp))
+                Spacer(modifier = Modifier.height(32.dp))
 
                 Button(
                     onClick = viewModel::save,
@@ -224,7 +217,7 @@ fun AddCharacterScreen(
                         .fillMaxWidth()
                         .height(56.dp),
                     shape = RoundedCornerShape(16.dp),
-                    enabled = name.isNotBlank() && (imageUri != null || existingImageFile != null) && !isSaving && !isLimitReached
+                    enabled = name.isNotBlank() && (frontImageUri != null || existingFrontImageFile != null || backImageUri != null || existingBackImageFile != null) && !isSaving && !isLimitReached
                 ) {
                     Text(
                         stringResource(R.string.save),
@@ -233,5 +226,75 @@ fun AddCharacterScreen(
                 }
             }
         }
+    }
+}
+
+@Composable
+private fun SpritePicker(
+    label: String,
+    description: String,
+    image: Any?,
+    onPick: () -> Unit,
+    modifier: Modifier = Modifier,
+    enabled: Boolean = true
+) {
+    Column(
+        modifier = modifier,
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.spacedBy(8.dp)
+    ) {
+        Text(
+            text = label,
+            style = MaterialTheme.typography.labelLarge,
+            textAlign = TextAlign.Center
+        )
+        
+        Box(
+            modifier = Modifier
+                .size(120.dp)
+                .clip(RoundedCornerShape(24.dp))
+                .background(MaterialTheme.colorScheme.primaryContainer)
+                .clickable(enabled = enabled) { onPick() },
+            contentAlignment = Alignment.Center
+        ) {
+            if (image != null) {
+                AsyncImage(
+                    model = image,
+                    contentDescription = null,
+                    modifier = Modifier.fillMaxSize(),
+                    contentScale = ContentScale.Crop
+                )
+                Surface(
+                    color = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.7f),
+                    modifier = Modifier
+                        .align(Alignment.BottomCenter)
+                        .fillMaxWidth()
+                        .height(32.dp)
+                ) {
+                    Box(contentAlignment = Alignment.Center) {
+                        Text(
+                            text = stringResource(R.string.change),
+                            style = MaterialTheme.typography.labelSmall,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant
+                        )
+                    }
+                }
+            } else {
+                AppIcon(
+                    icon = LocalMonsterAppIcons.current.addCharacter,
+                    contentDescription = null,
+                    modifier = Modifier.size(48.dp),
+                    tint = MaterialTheme.colorScheme.onPrimaryContainer
+                )
+            }
+        }
+
+        Text(
+            text = description,
+            style = MaterialTheme.typography.bodySmall,
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
+            textAlign = TextAlign.Center,
+            modifier = Modifier.padding(horizontal = 4.dp)
+        )
     }
 }
