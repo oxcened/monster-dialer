@@ -6,6 +6,7 @@ object CharacterPackValidator {
     const val SupportedFormatVersion = 1
     const val ManifestPath = "manifest.json"
     const val MaxCharacters = 200
+    const val MaxNameLength = 120
     const val MaxLevel = 999
     const val MaxHp = 999
 
@@ -77,7 +78,7 @@ object CharacterPackValidator {
     }
 
     private fun requireText(value: String, field: String) {
-        requireThat(value.isNotBlank() && value.length <= 120, "$field must be between 1 and 120 characters")
+        requireThat(value.isNotBlank() && value.length <= MaxNameLength, "$field must be between 1 and $MaxNameLength characters")
     }
 
     private fun requireThat(condition: Boolean, message: String) {

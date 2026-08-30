@@ -80,7 +80,9 @@ class AddCharacterViewModel @Inject constructor(
     }
 
     fun onNameChanged(newName: String) {
-        _name.value = newName
+        if (newName.length <= CharacterPackValidator.MaxNameLength) {
+            _name.value = newName
+        }
     }
 
     fun onTypeChanged(newType: CharacterType) {
@@ -93,6 +95,16 @@ class AddCharacterViewModel @Inject constructor(
 
     fun onBackImageSelected(uri: Uri?) {
         _backImageUri.value = uri
+    }
+
+    fun clearFrontImage() {
+        _frontImageUri.value = null
+        _existingFrontImageFile.value = null
+    }
+
+    fun clearBackImage() {
+        _backImageUri.value = null
+        _existingBackImageFile.value = null
     }
 
     fun save() {

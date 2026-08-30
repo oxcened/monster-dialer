@@ -16,6 +16,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
@@ -164,6 +165,7 @@ fun AddCharacterScreen(
                                 description = stringResource(R.string.front_sprite_description),
                                 image = frontImageUri ?: existingFrontImageFile,
                                 onPick = { frontPicker.launch("image/*") },
+                                onClear = viewModel::clearFrontImage,
                                 modifier = Modifier.weight(1f),
                                 enabled = !isLimitReached
                             )
@@ -175,6 +177,7 @@ fun AddCharacterScreen(
                                 description = stringResource(R.string.back_sprite_description),
                                 image = backImageUri ?: existingBackImageFile,
                                 onPick = { backPicker.launch("image/*") },
+                                onClear = viewModel::clearBackImage,
                                 modifier = Modifier.weight(1f),
                                 enabled = !isLimitReached
                             )
@@ -283,6 +286,7 @@ private fun SpritePicker(
     description: String,
     image: Any?,
     onPick: () -> Unit,
+    onClear: () -> Unit,
     modifier: Modifier = Modifier,
     enabled: Boolean = true
 ) {
@@ -325,6 +329,27 @@ private fun SpritePicker(
                     modifier = Modifier.fillMaxSize(),
                     contentScale = ContentScale.Crop
                 )
+                
+                // Clear button
+                Surface(
+                    color = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.8f),
+                    shape = CircleShape,
+                    modifier = Modifier
+                        .align(Alignment.TopEnd)
+                        .padding(8.dp)
+                        .size(28.dp)
+                        .clickable(enabled = enabled) { onClear() }
+                ) {
+                    Box(contentAlignment = Alignment.Center) {
+                        AppIcon(
+                            icon = LocalAppIcons.current.close,
+                            contentDescription = stringResource(R.string.remove),
+                            modifier = Modifier.size(16.dp),
+                            tint = MaterialTheme.colorScheme.onSurfaceVariant
+                        )
+                    }
+                }
+
                 Surface(
                     color = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.8f),
                     modifier = Modifier
