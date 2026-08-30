@@ -16,7 +16,7 @@
     <string name="default_character_artwork" comment="%1$s is a character type, such as Trainer or Monster.">默认 %1$s 插图</string>
     <string name="character_artwork" comment="%1$s is a character name.">%1$s 插图</string>
     <string name="no_other_character_options" comment="%1$s is a character type, such as Trainer or Monster.">没有其他 %1$s 选项</string>
-    <string name="import_and_enable_character_pack" comment="Empty-state message in the character selector.">导入并启用角色包以添加更多角色。</string>
+    <string name="import_and_enable_character_pack" comment="Empty-state message in the character selector.">添加你自己的角色或导入角色包以查看更多。</string>
     <string name="radiant" comment="Adjective for a rare, sparkling character variant.">闪耀</string>
     <string name="selected" comment="Status label for the currently chosen option.">已选择</string>
     <string name="show_grid_view" comment="Accessibility label for the control that switches the character selector to a grid.">显示网格视图</string>
@@ -80,4 +80,25 @@
     <string name="battle_trainer_sent_out" comment="Battle announcement; %1$s is the trainer name and %2$s is the monster name.">训练师 %1$s 派出了 %2$s！</string>
     <string name="battle_wild_radiant_appeared" comment="Battle announcement; %1$s is the wild monster name and radiant is its rare variant.">闪耀的野生 %1$s 出现了！</string>
     <string name="battle_wild_appeared" comment="Battle announcement; %1$s is the wild monster name.">野生 %1$s 出现了！</string>
+
+    <!-- Character creation -->
+    <string name="add_trainer" comment="Button to start adding a new custom trainer.">添加训练师</string>
+    <string name="add_monster" comment="Button to start adding a new custom monster.">添加怪物</string>
+    <string name="create_trainer_title" comment="Title of the trainer creation screen.">添加训练师</string>
+    <string name="create_monster_title" comment="Title of the monster creation screen.">添加怪物</string>
+    <string name="edit_trainer_title" comment="Title of the trainer edit screen.">编辑训练师</string>
+    <string name="edit_monster_title" comment="Title of the monster edit screen.">编辑怪物</string>
+    <string name="character_name_label" comment="Label for the character name input field.">角色名称</string>
+    <string name="character_name_hint" comment="Hint for the character name input field.">输入名称</string>
+    <string name="select_image" comment="Button to pick an image from the gallery.">选择图片</string>
+    <string name="change_image" comment="Button to change the already selected image.">更换图片</string>
+    <string name="save_character" comment="Button to save the new character.">保存角色</string>
+    <string name="save" comment="Button label to save changes.">保存</string>
+    <string name="edit" comment="Button label to edit an item.">编辑</string>
+    <string name="your_characters" comment="Section header for characters added by the user.">你的角色</string>
+    <string name="built_in_characters_section" comment="Section header for characters included with the app.">内置角色</string>
+    <string name="character_created" comment="Confirmation after a character is successfully created.">角色已创建</string>
+    <string name="character_creation_failed" comment="Error when a character cannot be saved.">无法保存角色</string>
+    <string name="character_limit_reached_message" comment="Error message when the 200 character limit is hit.">已达到 200 个角色的限制。请删除一些后再添加。</string>
+    <string name="character_limit_reached_hint" comment="Short hint shown below the disabled add button.">已达到 200 个角色的限制</string>
 </resources>

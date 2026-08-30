@@ -16,7 +16,7 @@
     <string name="default_character_artwork" comment="%1$s is a character type, such as Trainer or Monster.">Ilustrarea implicită pentru %1$s</string>
     <string name="character_artwork" comment="%1$s is a character name.">Ilustrarea lui %1$s</string>
     <string name="no_other_character_options" comment="%1$s is a character type, such as Trainer or Monster.">Nicio altă opțiune pentru %1$s</string>
-    <string name="import_and_enable_character_pack" comment="Empty-state message in the character selector.">Importă și activează un pachet de personaje pentru a adăuga mai multe.</string>
+    <string name="import_and_enable_character_pack" comment="Empty-state message in the character selector.">Adaugă propriul personaj sau importă un pachet pentru a vedea mai multe.</string>
     <string name="radiant" comment="Adjective for a rare, sparkling character variant.">Radiant</string>
     <string name="selected" comment="Status label for the currently chosen option.">Selectat</string>
     <string name="show_grid_view" comment="Accessibility label for the control that switches the character selector to a grid.">Afișează grila</string>
@@ -84,4 +84,25 @@
     <string name="battle_trainer_sent_out" comment="Battle announcement; %1$s is the trainer name and %2$s is the monster name.">Antrenorul %1$s îl trimite pe %2$s!</string>
     <string name="battle_wild_radiant_appeared" comment="Battle announcement; %1$s is the wild monster name and radiant is its rare variant.">A apărut un %1$s sălbatic radiant!</string>
     <string name="battle_wild_appeared" comment="Battle announcement; %1$s is the wild monster name.">A apărut un %1$s sălbatic!</string>
+
+    <!-- Character creation -->
+    <string name="add_trainer" comment="Button to start adding a new custom trainer.">Adaugă antrenor</string>
+    <string name="add_monster" comment="Button to start adding a new custom monster.">Adaugă monstru</string>
+    <string name="create_trainer_title" comment="Title of the trainer creation screen.">Adaugă antrenor</string>
+    <string name="create_monster_title" comment="Title of the monster creation screen.">Adaugă monstru</string>
+    <string name="edit_trainer_title" comment="Title of the trainer edit screen.">Editează antrenorul</string>
+    <string name="edit_monster_title" comment="Title of the monster edit screen.">Editează monstrul</string>
+    <string name="character_name_label" comment="Label for the character name input field.">Numele personajului</string>
+    <string name="character_name_hint" comment="Hint for the character name input field.">Introdu numele</string>
+    <string name="select_image" comment="Button to pick an image from the gallery.">Selectează imaginea</string>
+    <string name="change_image" comment="Button to change the already selected image.">Schimbă imaginea</string>
+    <string name="save_character" comment="Button to save the new character.">Salvează personajul</string>
+    <string name="save" comment="Button label to save changes.">Salvează</string>
+    <string name="edit" comment="Button label to edit an item.">Editează</string>
+    <string name="your_characters" comment="Section header for characters added by the user.">Personajele tale</string>
+    <string name="built_in_characters_section" comment="Section header for characters included with the app.">Personaje incluse</string>
+    <string name="character_created" comment="Confirmation after a character is successfully created.">Personaj creat</string>
+    <string name="character_creation_failed" comment="Error when a character cannot be saved.">Nu s-a putut crea personajul</string>
+    <string name="character_limit_reached_message" comment="Error message when the 200 character limit is hit.">Limită de 200 de personaje atinsă. Șterge câteva pentru a adăuga mai multe.</string>
+    <string name="character_limit_reached_hint" comment="Short hint shown below the disabled add button.">Limită de 200 de personaje atinsă</string>
 </resources>

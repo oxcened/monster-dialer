@@ -16,7 +16,7 @@
     <string name="default_character_artwork" comment="%1$s is a character type, such as Trainer or Monster.">رسم %1$s الافتراضي</string>
     <string name="character_artwork" comment="%1$s is a character name.">رسم %1$s</string>
     <string name="no_other_character_options" comment="%1$s is a character type, such as Trainer or Monster.">لا توجد خيارات أخرى لـ %1$s</string>
-    <string name="import_and_enable_character_pack" comment="Empty-state message in the character selector.">استورد وفعّل حزمة شخصيات لإضافة المزيد.</string>
+    <string name="import_and_enable_character_pack" comment="Empty-state message in the character selector.">أضف شخصيتك الخاصة أو استورد حزمة لرؤية المزيد.</string>
     <string name="radiant" comment="Adjective for a rare, sparkling character variant.">متألق</string>
     <string name="selected" comment="Status label for the currently chosen option.">محدد</string>
     <string name="show_grid_view" comment="Accessibility label for the control that switches the character selector to a grid.">إظهار عرض الشبكة</string>
@@ -90,4 +90,25 @@
     <string name="battle_trainer_sent_out" comment="Battle announcement; %1$s is the trainer name and %2$s is the monster name.">أرسل المدرب %1$s ‏%2$s!</string>
     <string name="battle_wild_radiant_appeared" comment="Battle announcement; %1$s is the wild monster name and radiant is its rare variant.">ظهر %1$s بري متألق!</string>
     <string name="battle_wild_appeared" comment="Battle announcement; %1$s is the wild monster name.">ظهر %1$s بري!</string>
+
+    <!-- Character creation -->
+    <string name="add_trainer" comment="Button to start adding a new custom trainer.">إضافة مدرب</string>
+    <string name="add_monster" comment="Button to start adding a new custom monster.">إضافة وحش</string>
+    <string name="create_trainer_title" comment="Title of the trainer creation screen.">إضافة مدرب</string>
+    <string name="create_monster_title" comment="Title of the monster creation screen.">إضافة وحش</string>
+    <string name="edit_trainer_title" comment="Title of the trainer edit screen.">تعديل المدرب</string>
+    <string name="edit_monster_title" comment="Title of the monster edit screen.">تعديل الوحش</string>
+    <string name="character_name_label" comment="Label for the character name input field.">اسم الشخصية</string>
+    <string name="character_name_hint" comment="Hint for the character name input field.">أدخل الاسم</string>
+    <string name="select_image" comment="Button to pick an image from the gallery.">اختر صورة</string>
+    <string name="change_image" comment="Button to change the already selected image.">تغيير الصورة</string>
+    <string name="save_character" comment="Button to save the new character.">حفظ الشخصية</string>
+    <string name="save" comment="Button label to save changes.">حفظ</string>
+    <string name="edit" comment="Button label to edit an item.">تعديل</string>
+    <string name="your_characters" comment="Section header for characters added by the user.">شخصياتك</string>
+    <string name="built_in_characters_section" comment="Section header for characters included with the app.">الشخصيات المضمنة</string>
+    <string name="character_created" comment="Confirmation after a character is successfully created.">تم إنشاء الشخصية</string>
+    <string name="character_creation_failed" comment="Error when a character cannot be saved.">تعذر إنشاء الشخصية</string>
+    <string name="character_limit_reached_message" comment="Error message when the 200 character limit is hit.">تم الوصول إلى الحد الأقصى (200 شخصية). احذف بعضها لإضافة المزيد.</string>
+    <string name="character_limit_reached_hint" comment="Short hint shown below the disabled add button.">تم الوصول إلى الحد الأقصى (200 شخصية)</string>
 </resources>

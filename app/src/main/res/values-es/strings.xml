@@ -16,7 +16,7 @@
     <string name="default_character_artwork" comment="%1$s is a character type, such as Trainer or Monster.">Ilustración predeterminada de %1$s</string>
     <string name="character_artwork" comment="%1$s is a character name.">Ilustración de %1$s</string>
     <string name="no_other_character_options" comment="%1$s is a character type, such as Trainer or Monster.">No hay más opciones de %1$s</string>
-    <string name="import_and_enable_character_pack" comment="Empty-state message in the character selector.">Importa y activa un paquete de personajes para añadir más.</string>
+    <string name="import_and_enable_character_pack" comment="Empty-state message in the character selector.">Añade tu propio personaje o importa un paquete para ver más.</string>
     <string name="radiant" comment="Adjective for a rare, sparkling character variant.">Radiante</string>
     <string name="selected" comment="Status label for the currently chosen option.">Seleccionado</string>
     <string name="show_grid_view" comment="Accessibility label for the control that switches the character selector to a grid.">Mostrar cuadrícula</string>
@@ -82,4 +82,25 @@
     <string name="battle_trainer_sent_out" comment="Battle announcement; %1$s is the trainer name and %2$s is the monster name.">¡El entrenador %1$s envió a %2$s!</string>
     <string name="battle_wild_radiant_appeared" comment="Battle announcement; %1$s is the wild monster name and radiant is its rare variant.">¡Apareció un %1$s salvaje radiante!</string>
     <string name="battle_wild_appeared" comment="Battle announcement; %1$s is the wild monster name.">¡Apareció un %1$s salvaje!</string>
+
+    <!-- Character creation -->
+    <string name="add_trainer" comment="Button to start adding a new custom trainer.">Añadir entrenador</string>
+    <string name="add_monster" comment="Button to start adding a new custom monster.">Añadir monstruo</string>
+    <string name="create_trainer_title" comment="Title of the trainer creation screen.">Añadir entrenador</string>
+    <string name="create_monster_title" comment="Title of the monster creation screen.">Añadir monstruo</string>
+    <string name="edit_trainer_title" comment="Title of the trainer edit screen.">Editar entrenador</string>
+    <string name="edit_monster_title" comment="Title of the monster edit screen.">Editar monstruo</string>
+    <string name="character_name_label" comment="Label for the character name input field.">Nombre del personaje</string>
+    <string name="character_name_hint" comment="Hint for the character name input field.">Introduce el nombre</string>
+    <string name="select_image" comment="Button to pick an image from the gallery.">Seleccionar imagen</string>
+    <string name="change_image" comment="Button to change the already selected image.">Cambiar imagen</string>
+    <string name="save_character" comment="Button to save the new character.">Guardar personaje</string>
+    <string name="save" comment="Button label to save changes.">Guardar</string>
+    <string name="edit" comment="Button label to edit an item.">Editar</string>
+    <string name="your_characters" comment="Section header for characters added by the user.">Tus personajes</string>
+    <string name="built_in_characters_section" comment="Section header for characters included with the app.">Personajes incluidos</string>
+    <string name="character_created" comment="Confirmation after a character is successfully created.">Personaje creado</string>
+    <string name="character_creation_failed" comment="Error when a character cannot be saved.">No se pudo crear el personaje</string>
+    <string name="character_limit_reached_message" comment="Error message when the 200 character limit is hit.">Límite de 200 personajes alcanzado. Elimina algunos para añadir más.</string>
+    <string name="character_limit_reached_hint" comment="Short hint shown below the disabled add button.">Límite de 200 personajes alcanzado</string>
 </resources>
