@@ -14,11 +14,13 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.foundation.lazy.grid.GridItemSpan
 import androidx.compose.foundation.lazy.grid.LazyGridScope
 import androidx.compose.foundation.lazy.grid.LazyGridState
 import androidx.compose.foundation.lazy.grid.itemsIndexed as gridItemsIndexed
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
@@ -90,17 +92,25 @@ internal fun LazyListScope.characterTypeItems(
     selected: CharacterReference?,
     defaultArtwork: (BuiltInCharacter) -> BuiltInArtwork,
     packArtwork: (InstalledPackCharacter) -> File,
-    onSelect: (CharacterReference?) -> Unit
+    onSelect: (CharacterReference?) -> Unit,
+    onAddCharacter: () -> Unit,
+    addLabel: String
 ) {
     val availableSelection = selected?.takeIf { reference ->
         characters.any { CharacterReference(it.packId, it.character.id) == reference }
+    }
+    item(key = "add") {
+        AddCharacterButton(
+            onClick = onAddCharacter,
+            label = addLabel
+        )
     }
     item(key = "default") {
         CharacterOptionCard(
             name = defaultCharacter.name,
             subtitle = stringResource(R.string.built_in_character),
             isSelected = availableSelection == null,
-            roundTop = true,
+            roundTop = false,
             roundBottom = false,
             artwork = {
                 Image(
@@ -141,17 +151,25 @@ internal fun LazyGridScope.characterTypeGridItems(
     selected: CharacterReference?,
     defaultArtwork: (BuiltInCharacter) -> BuiltInArtwork,
     packArtwork: (InstalledPackCharacter) -> File,
-    onSelect: (CharacterReference?) -> Unit
+    onSelect: (CharacterReference?) -> Unit,
+    onAddCharacter: () -> Unit,
+    addLabel: String
 ) {
     val availableSelection = selected?.takeIf { reference ->
         characters.any { CharacterReference(it.packId, it.character.id) == reference }
+    }
+    item(key = "add", span = { GridItemSpan(2) }) {
+        AddCharacterButton(
+            onClick = onAddCharacter,
+            label = addLabel
+        )
     }
     item(key = "default") {
         CharacterGridItem(
             name = defaultCharacter.name,
             subtitle = stringResource(R.string.built_in_character),
             isSelected = availableSelection == null,
-            shape = gridItemShape(index = 0, itemCount = if (characters.isEmpty()) 2 else characters.size + 1),
+            shape = gridItemShape(index = 1, itemCount = if (characters.isEmpty()) 2 else characters.size + 1),
             artwork = {
                 Image(
                     painter = painterResource(defaultArtwork(defaultCharacter).resource),
@@ -164,13 +182,13 @@ internal fun LazyGridScope.characterTypeGridItems(
     }
     gridItemsIndexed(items = characters, key = { _, character -> "${character.packId}:${character.character.id}" }) { index, installed ->
         val reference = CharacterReference(installed.packId, installed.character.id)
-        val itemIndex = index + 1
+        val itemIndex = index + 2
         CharacterGridItem(
             name = installed.character.name,
             subtitle = installed.packName,
             isRadiant = installed.character.isRadiant,
             isSelected = availableSelection == reference,
-            shape = gridItemShape(index = itemIndex, itemCount = characters.size + 1),
+            shape = gridItemShape(index = itemIndex, itemCount = characters.size + 2),
             artwork = {
                 AsyncImage(
                     model = packArtwork(installed),
@@ -185,7 +203,7 @@ internal fun LazyGridScope.characterTypeGridItems(
         item(key = "empty") {
             NoAdditionalCharacterGridItem(
                 title = title,
-                shape = gridItemShape(index = 1, itemCount = 2)
+                shape = gridItemShape(index = 2, itemCount = 3)
             )
         }
     }
@@ -209,8 +227,8 @@ internal fun selectedCharacterIndex(
 ): Int = selected?.let { selectedReference ->
     characters.indexOfFirst { character ->
         CharacterReference(character.packId, character.character.id) == selectedReference
-    }.takeIf { it >= 0 }?.plus(1)
-} ?: 0
+    }.takeIf { it >= 0 }?.plus(2)
+} ?: 1
 
 @Composable
 internal fun JumpToSelectedCharacterButton(
@@ -281,6 +299,29 @@ internal fun JumpToSelectedCharacterButton(
                 contentDescription = stringResource(R.string.jump_to_selected_character)
             )
         }
+    }
+}
+
+@Composable
+private fun AddCharacterButton(
+    onClick: () -> Unit,
+    label: String
+) {
+    Button(
+        onClick = onClick,
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 16.dp, vertical = 8.dp),
+    ) {
+        AppIcon(
+            LocalMonsterAppIcons.current.addCharacter,
+            contentDescription = null,
+            tint = MaterialTheme.colorScheme.onPrimary
+        )
+        Text(
+            text = label,
+            modifier = Modifier.padding(start = 8.dp),
+        )
     }
 }
 

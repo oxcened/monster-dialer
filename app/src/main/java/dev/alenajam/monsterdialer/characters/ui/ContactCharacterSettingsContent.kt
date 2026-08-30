@@ -25,6 +25,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalConfiguration
@@ -47,8 +50,6 @@ import dev.alenajam.opendialer.feature.settings.LocalSettingsSubpageNavigator
 
 @Composable
 fun ColumnScope.ContactCharacterSettingsContent(
-    selectedTab: Int,
-    onTabSelected: (Int) -> Unit,
     viewModel: ContactCharacterSettingsViewModel = hiltViewModel()
 ) {
     val contact by viewModel.contact.collectAsStateWithLifecycle()
@@ -57,6 +58,7 @@ fun ColumnScope.ContactCharacterSettingsContent(
     val contactSelectionVersion by viewModel.contactSelectionVersion.collectAsStateWithLifecycle()
     val trainers = viewModel.trainers
     val monsters = viewModel.monsters
+    var selectedTab by rememberSaveable { mutableIntStateOf(0) }
     val layout by viewModel.layout.collectAsStateWithLifecycle()
     val trainerSelectedItemIndex = selectedCharacterIndex(trainers, assignedTrainer)
     val monsterSelectedItemIndex = selectedCharacterIndex(monsters, assignedMonster)
@@ -70,6 +72,8 @@ fun ColumnScope.ContactCharacterSettingsContent(
     val monsterGridState = rememberLazyGridState(initialFirstVisibleItemIndex = monsterSelectedItemIndex)
     val trainerTitle = stringResource(R.string.character_type_trainer)
     val monsterTitle = stringResource(R.string.character_type_monster)
+    val addTrainerLabel = stringResource(R.string.add_trainer)
+    val addMonsterLabel = stringResource(R.string.add_monster)
     val locale = LocalConfiguration.current.locales[0]
 
     val lifecycleOwner = LocalLifecycleOwner.current
@@ -92,7 +96,7 @@ fun ColumnScope.ContactCharacterSettingsContent(
                 val selectedItemIndex = if (tab == 0) trainerSelectedItemIndex else monsterSelectedItemIndex
                 if (layout == CharacterLayout.List) (if (tab == 0) trainerListState else monsterListState).requestScrollToItem(selectedItemIndex)
                 else (if (tab == 0) trainerGridState else monsterGridState).requestScrollToItem(selectedItemIndex)
-                onTabSelected(tab)
+                selectedTab = tab
             }
         )
         val listState = if (selectedTab == 0) trainerListState else monsterListState
@@ -109,7 +113,9 @@ fun ColumnScope.ContactCharacterSettingsContent(
                     selected = null,
                     defaultArtwork = { it.contactArtwork },
                     packArtwork = { it.imageFile(requireNotNull(it.character.frontImage)) },
-                    onSelect = {}
+                    onSelect = {},
+                    onAddCharacter = { navigator?.navigateTo(1) },
+                    addLabel = addTrainerLabel
                 )
                 1 -> characterTypeItems(
                     title = monsterTitle,
@@ -118,7 +124,9 @@ fun ColumnScope.ContactCharacterSettingsContent(
                     selected = null,
                     defaultArtwork = { it.contactArtwork },
                     packArtwork = { it.imageFile(requireNotNull(it.character.frontImage)) },
-                    onSelect = {}
+                    onSelect = {},
+                    onAddCharacter = { navigator?.navigateTo(2) },
+                    addLabel = addMonsterLabel
                 )
             }
         }
@@ -171,7 +179,7 @@ fun ColumnScope.ContactCharacterSettingsContent(
                 val selectedItemIndex = if (tab == 0) trainerSelectedItemIndex else monsterSelectedItemIndex
                 if (layout == CharacterLayout.List) (if (tab == 0) trainerListState else monsterListState).requestScrollToItem(selectedItemIndex)
                 else (if (tab == 0) trainerGridState else monsterGridState).requestScrollToItem(selectedItemIndex)
-                onTabSelected(tab)
+                selectedTab = tab
             }
         )
         val selectedItemIndex = when (selectedTab) {
@@ -189,15 +197,15 @@ fun ColumnScope.ContactCharacterSettingsContent(
             if (layout == CharacterLayout.List) {
                 LazyColumn(state = listState, modifier = Modifier.fillMaxSize(), contentPadding = PaddingValues(top = 8.dp, bottom = 72.dp)) {
                     when (selectedTab) {
-                        0 -> characterTypeItems(trainerTitle, BuiltInCharacters.trainer, trainers, assignedTrainer, { it.contactArtwork }, { it.imageFile(requireNotNull(it.character.frontImage)) }, viewModel::assignTrainer)
-                        1 -> characterTypeItems(monsterTitle, BuiltInCharacters.monster.character, monsters, assignedMonster, { it.contactArtwork }, { it.imageFile(requireNotNull(it.character.frontImage)) }, viewModel::assignMonster)
+                        0 -> characterTypeItems(trainerTitle, BuiltInCharacters.trainer, trainers, assignedTrainer, { it.contactArtwork }, { it.imageFile(requireNotNull(it.character.frontImage)) }, viewModel::assignTrainer, { navigator?.navigateTo(1) }, addTrainerLabel)
+                        1 -> characterTypeItems(monsterTitle, BuiltInCharacters.monster.character, monsters, assignedMonster, { it.contactArtwork }, { it.imageFile(requireNotNull(it.character.frontImage)) }, viewModel::assignMonster, { navigator?.navigateTo(2) }, addMonsterLabel)
                     }
                 }
             } else {
                 LazyVerticalGrid(columns = GridCells.Fixed(2), state = gridState, modifier = Modifier.fillMaxSize(), contentPadding = PaddingValues(top = 8.dp, bottom = 72.dp), horizontalArrangement = Arrangement.spacedBy(2.dp), verticalArrangement = Arrangement.spacedBy(2.dp)) {
                     when (selectedTab) {
-                        0 -> characterTypeGridItems(trainerTitle, BuiltInCharacters.trainer, trainers, assignedTrainer, { it.contactArtwork }, { it.imageFile(requireNotNull(it.character.frontImage)) }, viewModel::assignTrainer)
-                        1 -> characterTypeGridItems(monsterTitle, BuiltInCharacters.monster.character, monsters, assignedMonster, { it.contactArtwork }, { it.imageFile(requireNotNull(it.character.frontImage)) }, viewModel::assignMonster)
+                        0 -> characterTypeGridItems(trainerTitle, BuiltInCharacters.trainer, trainers, assignedTrainer, { it.contactArtwork }, { it.imageFile(requireNotNull(it.character.frontImage)) }, viewModel::assignTrainer, { navigator?.navigateTo(1) }, addTrainerLabel)
+                        1 -> characterTypeGridItems(monsterTitle, BuiltInCharacters.monster.character, monsters, assignedMonster, { it.contactArtwork }, { it.imageFile(requireNotNull(it.character.frontImage)) }, viewModel::assignMonster, { navigator?.navigateTo(2) }, addMonsterLabel)
                     }
                 }
             }
