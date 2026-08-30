@@ -128,10 +128,8 @@ internal fun LazyListScope.characterTypeItems(
         }
     }
 
-    val userCustomPackId = "user.custom"
-    val grouped = characters.groupBy { it.packId }
-    val userCharacters = grouped[userCustomPackId].orEmpty()
-    val otherPacks = grouped.filter { it.key != userCustomPackId }
+    val userCharacters = characters.filter { it.isEditable }
+    val otherPacks = characters.filter { !it.isEditable }.groupBy { it.packId }
 
     item { SectionHeader(stringResource(R.string.built_in_characters_section)) }
     item(key = "default") {
@@ -169,8 +167,8 @@ internal fun LazyListScope.characterTypeItems(
                     )
                 },
                 onSelect = { onSelect(reference) },
-                onDelete = { onDelete(installed) },
-                onEdit = { onEdit(installed) }
+                onDelete = if (installed.isDeletable) { { onDelete(installed) } } else null,
+                onEdit = if (installed.isEditable) { { onEdit(installed) } } else null
             )
         }
     }
@@ -236,10 +234,8 @@ internal fun LazyGridScope.characterTypeGridItems(
         }
     }
 
-    val userCustomPackId = "user.custom"
-    val grouped = characters.groupBy { it.packId }
-    val userCharacters = grouped[userCustomPackId].orEmpty()
-    val otherPacks = grouped.filter { it.key != userCustomPackId }
+    val userCharacters = characters.filter { it.isEditable }
+    val otherPacks = characters.filter { !it.isEditable }.groupBy { it.packId }
 
     item(span = { GridItemSpan(2) }) { SectionHeader(stringResource(R.string.built_in_characters_section)) }
     item(key = "default") {
@@ -275,8 +271,8 @@ internal fun LazyGridScope.characterTypeGridItems(
                     )
                 },
                 onSelect = { onSelect(reference) },
-                onDelete = { onDelete(installed) },
-                onEdit = { onEdit(installed) }
+                onDelete = if (installed.isDeletable) { { onDelete(installed) } } else null,
+                onEdit = if (installed.isEditable) { { onEdit(installed) } } else null
             )
         }
     }
@@ -330,10 +326,8 @@ internal fun selectedCharacterIndex(
 ): Int {
     if (selected == null) return 0 // Keep Add button visible for Default selection
 
-    val userCustomPackId = "user.custom"
-    val grouped = characters.groupBy { it.packId }
-    val userCharacters = grouped[userCustomPackId].orEmpty()
-    val otherPacks = grouped.filter { it.key != userCustomPackId }
+    val userCharacters = characters.filter { it.isEditable }
+    val otherPacks = characters.filter { !it.isEditable }.groupBy { it.packId }
 
     // Logic follows the order in characterTypeItems
     // 0: Add button
