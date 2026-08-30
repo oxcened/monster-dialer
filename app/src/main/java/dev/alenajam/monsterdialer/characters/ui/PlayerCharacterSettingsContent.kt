@@ -14,9 +14,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableIntStateOf
-import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -34,7 +31,7 @@ fun ColumnScope.PlayerCharacterSettingsContent(
     val assignedMonster by viewModel.assignedMonster.collectAsStateWithLifecycle()
     val trainers = viewModel.trainers
     val monsters = viewModel.monsters
-    var selectedTab by rememberSaveable { mutableIntStateOf(0) }
+    val selectedTab by viewModel.selectedTab.collectAsStateWithLifecycle()
     val layout by viewModel.layout.collectAsStateWithLifecycle()
 
     val currentTabHasCharacters = if (selectedTab == 0) trainers.isNotEmpty() else monsters.isNotEmpty()
@@ -65,7 +62,7 @@ fun ColumnScope.PlayerCharacterSettingsContent(
             } else {
                 (if (tab == 0) trainerGridState else monsterGridState).requestScrollToItem(selectedItemIndex)
             }
-            selectedTab = tab
+            viewModel.setSelectedTab(tab)
         }
     )
     val selectedItemIndex = when (selectedTab) {

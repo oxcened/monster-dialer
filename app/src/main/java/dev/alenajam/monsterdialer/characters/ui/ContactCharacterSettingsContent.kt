@@ -27,7 +27,6 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.setValue
-import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalConfiguration
@@ -58,7 +57,7 @@ fun ColumnScope.ContactCharacterSettingsContent(
     val contactSelectionVersion by viewModel.contactSelectionVersion.collectAsStateWithLifecycle()
     val trainers = viewModel.trainers
     val monsters = viewModel.monsters
-    var selectedTab by rememberSaveable { mutableIntStateOf(0) }
+    val selectedTab by viewModel.selectedTab.collectAsStateWithLifecycle()
     val layout by viewModel.layout.collectAsStateWithLifecycle()
     val trainerSelectedItemIndex = selectedCharacterIndex(trainers, assignedTrainer)
     val monsterSelectedItemIndex = selectedCharacterIndex(monsters, assignedMonster)
@@ -94,7 +93,7 @@ fun ColumnScope.ContactCharacterSettingsContent(
                 val selectedItemIndex = if (tab == 0) trainerSelectedItemIndex else monsterSelectedItemIndex
                 if (layout == CharacterLayout.List) (if (tab == 0) trainerListState else monsterListState).requestScrollToItem(selectedItemIndex)
                 else (if (tab == 0) trainerGridState else monsterGridState).requestScrollToItem(selectedItemIndex)
-                selectedTab = tab
+                viewModel.setSelectedTab(tab)
             }
         )
         val listState = if (selectedTab == 0) trainerListState else monsterListState
@@ -176,7 +175,7 @@ fun ColumnScope.ContactCharacterSettingsContent(
 
                 if (nextTabEffectiveLayout == CharacterLayout.List) (if (tab == 0) trainerListState else monsterListState).requestScrollToItem(selectedItemIndex)
                 else (if (tab == 0) trainerGridState else monsterGridState).requestScrollToItem(selectedItemIndex)
-                selectedTab = tab
+                viewModel.setSelectedTab(tab)
             }
         )
         val selectedItemIndex = when (selectedTab) {
