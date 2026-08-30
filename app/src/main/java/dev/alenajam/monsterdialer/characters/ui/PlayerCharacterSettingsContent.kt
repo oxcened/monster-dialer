@@ -57,6 +57,8 @@ fun ColumnScope.PlayerCharacterSettingsContent(
     val monsterGridState = rememberLazyGridState(initialFirstVisibleItemIndex = monsterSelectedItemIndex)
     val trainerTitle = stringResource(R.string.character_type_trainer)
     val monsterTitle = stringResource(R.string.character_type_monster)
+    val trainersTitle = stringResource(R.string.character_type_trainers)
+    val monstersTitle = stringResource(R.string.character_type_monsters)
     val addTrainerLabel = stringResource(R.string.add_trainer)
     val addMonsterLabel = stringResource(R.string.add_monster)
     val navigator = dev.alenajam.opendialer.feature.settings.LocalSettingsSubpageNavigator.current
@@ -118,15 +120,15 @@ fun ColumnScope.PlayerCharacterSettingsContent(
         if (effectiveLayout == CharacterLayout.List) {
             LazyColumn(state = listState, modifier = Modifier.fillMaxSize(), contentPadding = PaddingValues(top = 8.dp, bottom = 72.dp)) {
                 when (selectedTab) {
-                    0 -> characterTypeItems(trainerTitle, BuiltInCharacters.trainer, trainers, assignedTrainer, { it.playerArtwork }, { it.imageFile(requireNotNull(it.character.backImage)) }, viewModel::assignTrainer, { navigator?.navigateTo(0) }, addTrainerLabel, !isLimitReached, onDelete = { character -> scope.launch { isPendingDeletionInUse = viewModel.isCharacterInUse(character.character.id); pendingDeletion = character } }, onEdit = { navigator?.navigateTo(0, it.character.id) }, onShare = { pendingShare = it })
-                    1 -> characterTypeItems(monsterTitle, BuiltInCharacters.monster.character, monsters, assignedMonster, { it.playerArtwork }, { it.imageFile(requireNotNull(it.character.backImage)) }, viewModel::assignMonster, { navigator?.navigateTo(1) }, addMonsterLabel, !isLimitReached, onDelete = { character -> scope.launch { isPendingDeletionInUse = viewModel.isCharacterInUse(character.character.id); pendingDeletion = character } }, onEdit = { navigator?.navigateTo(1, it.character.id) }, onShare = { pendingShare = it })
+                    0 -> characterTypeItems(trainerTitle, trainersTitle, BuiltInCharacters.trainer, trainers, assignedTrainer, { it.playerArtwork }, { it.imageFile(requireNotNull(it.character.backImage)) }, viewModel::assignTrainer, { navigator?.navigateTo(0) }, addTrainerLabel, !isLimitReached, onDelete = { character -> scope.launch { isPendingDeletionInUse = viewModel.isCharacterInUse(character.character.id); pendingDeletion = character } }, onEdit = { navigator?.navigateTo(0, it.character.id) }, onShare = { pendingShare = it })
+                    1 -> characterTypeItems(monsterTitle, monstersTitle, BuiltInCharacters.monster.character, monsters, assignedMonster, { it.playerArtwork }, { it.imageFile(requireNotNull(it.character.backImage)) }, viewModel::assignMonster, { navigator?.navigateTo(1) }, addMonsterLabel, !isLimitReached, onDelete = { character -> scope.launch { isPendingDeletionInUse = viewModel.isCharacterInUse(character.character.id); pendingDeletion = character } }, onEdit = { navigator?.navigateTo(1, it.character.id) }, onShare = { pendingShare = it })
                 }
             }
         } else {
             LazyVerticalGrid(columns = GridCells.Fixed(2), state = gridState, modifier = Modifier.fillMaxSize(), contentPadding = PaddingValues(top = 8.dp, bottom = 72.dp), horizontalArrangement = Arrangement.spacedBy(2.dp), verticalArrangement = Arrangement.spacedBy(2.dp)) {
                 when (selectedTab) {
-                    0 -> characterTypeGridItems(trainerTitle, BuiltInCharacters.trainer, trainers, assignedTrainer, { it.playerArtwork }, { it.imageFile(requireNotNull(it.character.backImage)) }, viewModel::assignTrainer, { navigator?.navigateTo(0) }, addTrainerLabel, !isLimitReached, onDelete = { character -> scope.launch { isPendingDeletionInUse = viewModel.isCharacterInUse(character.character.id); pendingDeletion = character } }, onEdit = { navigator?.navigateTo(0, it.character.id) }, onShare = { pendingShare = it })
-                    1 -> characterTypeGridItems(monsterTitle, BuiltInCharacters.monster.character, monsters, assignedMonster, { it.playerArtwork }, { it.imageFile(requireNotNull(it.character.backImage)) }, viewModel::assignMonster, { navigator?.navigateTo(1) }, addMonsterLabel, !isLimitReached, onDelete = { character -> scope.launch { isPendingDeletionInUse = viewModel.isCharacterInUse(character.character.id); pendingDeletion = character } }, onEdit = { navigator?.navigateTo(1, it.character.id) }, onShare = { pendingShare = it })
+                    0 -> characterTypeGridItems(trainerTitle, trainersTitle, BuiltInCharacters.trainer, trainers, assignedTrainer, { it.playerArtwork }, { it.imageFile(requireNotNull(it.character.backImage)) }, viewModel::assignTrainer, { navigator?.navigateTo(0) }, addTrainerLabel, !isLimitReached, onDelete = { character -> scope.launch { isPendingDeletionInUse = viewModel.isCharacterInUse(character.character.id); pendingDeletion = character } }, onEdit = { navigator?.navigateTo(0, it.character.id) }, onShare = { pendingShare = it })
+                    1 -> characterTypeGridItems(monsterTitle, monstersTitle, BuiltInCharacters.monster.character, monsters, assignedMonster, { it.playerArtwork }, { it.imageFile(requireNotNull(it.character.backImage)) }, viewModel::assignMonster, { navigator?.navigateTo(1) }, addMonsterLabel, !isLimitReached, onDelete = { character -> scope.launch { isPendingDeletionInUse = viewModel.isCharacterInUse(character.character.id); pendingDeletion = character } }, onEdit = { navigator?.navigateTo(1, it.character.id) }, onShare = { pendingShare = it })
                 }
             }
         }

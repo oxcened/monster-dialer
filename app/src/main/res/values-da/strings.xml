@@ -11,7 +11,7 @@
     <string name="add_to_your_characters">Tilføj</string>
     <string name="shared_character_creator">Opretter: %1$s</string>
     <string name="shared_character_license">Licens: %1$s</string>
-    <string name="shared_character_import_description">Denne %1$s føjes til dine figurer.</string>
+    <string name="shared_character_import_description">Denne %1$s føjes til dine %2$s.</string>
     <string name="shared_character_import_title">Tilføj %1$s?</string>
     <string name="shared_character_import_failed_title">Kunne ikke importere figur</string>
     <string name="shared_character_import_failed_message">Vælg en .monstercharacter-fil, der er eksporteret fra MonsterDialer.</string>
@@ -31,6 +31,8 @@
     <string name="choose_contact" comment="Button that opens the contact picker.">Vælg kontakt</string>
     <string name="character_type_trainer" comment="Character category for a human battle character.">Træner</string>
     <string name="character_type_monster" comment="Character category for a creature battle character.">Monster</string>
+    <string name="character_type_trainers">trænere</string>
+    <string name="character_type_monsters">monstre</string>
     <string name="built_in_character" comment="Label for a character included with the app.">Indbygget figur</string>
     <string name="default_character_artwork" comment="%1$s is a character type, such as Trainer or Monster.">Standardillustration af %1$s</string>
     <string name="character_artwork" comment="%1$s is a character name.">Illustration af %1$s</string>
@@ -131,8 +133,8 @@
     <string name="save_character" comment="Button to save the new character.">Gem figur</string>
     <string name="save" comment="Button label to save changes.">Gem</string>
     <string name="edit" comment="Button label to edit an item.">Rediger</string>
-    <string name="your_characters" comment="Section header for characters added by the user.">Dine figurer</string>
-    <string name="built_in_characters_section" comment="Section header for characters included with the app.">Indbyggede figurer</string>
+    <string name="your_characters">Dine %1$s</string>
+    <string name="built_in_characters_section">Indbyggede %1$s</string>
     <string name="character_created" comment="Confirmation after a character is successfully created.">Figur oprettet</string>
     <string name="character_creation_failed" comment="Error when a character cannot be saved.">Kunne ikke oprette figur</string>
     <string name="character_limit_reached_message" comment="Error message when the 200 character limit is hit.">Grænse på 200 figurer nået. Slet nogle for at tilføje flere.</string>

@@ -98,6 +98,7 @@ internal fun CharacterTypeTabs(selectedTab: Int, onTabSelected: (Int) -> Unit) {
 
 internal fun LazyListScope.characterTypeItems(
     title: String,
+    pluralTitle: String,
     defaultCharacter: BuiltInCharacter,
     characters: List<InstalledPackCharacter>,
     selected: CharacterReference?,
@@ -134,7 +135,7 @@ internal fun LazyListScope.characterTypeItems(
     val userCharacters = characters.filter { it.isEditable }
     val otherPacks = characters.filter { !it.isEditable }.groupBy { it.packId }
 
-    item { SectionHeader(stringResource(R.string.built_in_characters_section)) }
+    item { SectionHeader(stringResource(R.string.built_in_characters_section, pluralTitle)) }
     item(key = "default") {
         CharacterOptionCard(
             name = defaultCharacter.name,
@@ -153,7 +154,7 @@ internal fun LazyListScope.characterTypeItems(
     }
 
     if (userCharacters.isNotEmpty()) {
-        item { SectionHeader(stringResource(R.string.your_characters)) }
+        item { SectionHeader(stringResource(R.string.your_characters, pluralTitle)) }
         itemsIndexed(items = userCharacters, key = { _, character -> "custom:${character.character.id}" }) { index, installed ->
             val reference = CharacterReference(installed.packId, installed.character.id)
             CharacterOptionCard(
@@ -204,6 +205,7 @@ internal fun LazyListScope.characterTypeItems(
 
 internal fun LazyGridScope.characterTypeGridItems(
     title: String,
+    pluralTitle: String,
     defaultCharacter: BuiltInCharacter,
     characters: List<InstalledPackCharacter>,
     selected: CharacterReference?,
@@ -242,7 +244,7 @@ internal fun LazyGridScope.characterTypeGridItems(
     val userCharacters = characters.filter { it.isEditable }
     val otherPacks = characters.filter { !it.isEditable }.groupBy { it.packId }
 
-    item(span = { GridItemSpan(2) }) { SectionHeader(stringResource(R.string.built_in_characters_section)) }
+    item(span = { GridItemSpan(2) }) { SectionHeader(stringResource(R.string.built_in_characters_section, pluralTitle)) }
     item(key = "default") {
         CharacterGridItem(
             name = defaultCharacter.name,
@@ -260,7 +262,7 @@ internal fun LazyGridScope.characterTypeGridItems(
     }
 
     if (userCharacters.isNotEmpty()) {
-        item(span = { GridItemSpan(2) }) { SectionHeader(stringResource(R.string.your_characters)) }
+        item(span = { GridItemSpan(2) }) { SectionHeader(stringResource(R.string.your_characters, pluralTitle)) }
         gridItemsIndexed(items = userCharacters, key = { _, character -> "custom:${character.character.id}" }) { index, installed ->
             val reference = CharacterReference(installed.packId, installed.character.id)
             CharacterGridItem(

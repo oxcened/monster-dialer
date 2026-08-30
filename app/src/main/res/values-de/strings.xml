@@ -11,7 +11,7 @@
     <string name="add_to_your_characters">Hinzufügen</string>
     <string name="shared_character_creator">Ersteller: %1$s</string>
     <string name="shared_character_license">Lizenz: %1$s</string>
-    <string name="shared_character_import_description">Dieser %1$s wird deinen Charakteren hinzugefügt.</string>
+    <string name="shared_character_import_description">Dieser %1$s wird deinen %2$s hinzugefügt.</string>
     <string name="shared_character_import_title">%1$s hinzufügen?</string>
     <string name="shared_character_import_failed_title">Charakter konnte nicht importiert werden</string>
     <string name="shared_character_import_failed_message">Wähle eine aus MonsterDialer exportierte .monstercharacter-Datei aus.</string>
@@ -31,6 +31,8 @@
     <string name="choose_contact" comment="Button that opens the contact picker.">Kontakt wählen</string>
     <string name="character_type_trainer" comment="Character category for a human battle character.">Trainer</string>
     <string name="character_type_monster" comment="Character category for a creature battle character.">Monster</string>
+    <string name="character_type_trainers">Trainern</string>
+    <string name="character_type_monsters">Monstern</string>
     <string name="built_in_character" comment="Label for a character included with the app.">Integrierter Charakter</string>
     <string name="default_character_artwork" comment="%1$s is a character type, such as Trainer or Monster.">Standardgrafik für %1$s</string>
     <string name="character_artwork" comment="%1$s is a character name.">Grafik von %1$s</string>
@@ -131,8 +133,8 @@
     <string name="save_character" comment="Button to save the new character.">Charakter speichern</string>
     <string name="save" comment="Button label to save changes.">Speichern</string>
     <string name="edit" comment="Button label to edit an item.">Bearbeiten</string>
-    <string name="your_characters" comment="Section header for characters added by the user.">Deine Charaktere</string>
-    <string name="built_in_characters_section" comment="Section header for characters included with the app.">Integrierte Charaktere</string>
+    <string name="your_characters">Deine %1$s</string>
+    <string name="built_in_characters_section">Integrierte %1$s</string>
     <string name="character_created" comment="Confirmation after a character is successfully created.">Charakter erstellt</string>
     <string name="character_creation_failed" comment="Error when a character cannot be saved.">Charakter konnte nicht gespeichert werden</string>
     <string name="character_limit_reached_message" comment="Error message when the 200 character limit is hit.">Limit von 200 Charakteren erreicht. Lösche einige, um weitere hinzuzufügen.</string>

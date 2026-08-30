@@ -11,7 +11,7 @@
     <string name="add_to_your_characters">Adaugă</string>
     <string name="shared_character_creator">Creator: %1$s</string>
     <string name="shared_character_license">Licență: %1$s</string>
-    <string name="shared_character_import_description">Acest %1$s va fi adăugat la personajele tale.</string>
+    <string name="shared_character_import_description">Acest %1$s va fi adăugat la %2$s tăi.</string>
     <string name="shared_character_import_title">Adaugi %1$s?</string>
     <string name="shared_character_import_failed_title">Nu s-a putut importa personajul</string>
     <string name="shared_character_import_failed_message">Alege un fișier .monstercharacter exportat din MonsterDialer.</string>
@@ -31,6 +31,8 @@
     <string name="choose_contact" comment="Button that opens the contact picker.">Alege contactul</string>
     <string name="character_type_trainer" comment="Character category for a human battle character.">Antrenor</string>
     <string name="character_type_monster" comment="Character category for a creature battle character.">Monstru</string>
+    <string name="character_type_trainers">antrenori</string>
+    <string name="character_type_monsters">monștri</string>
     <string name="built_in_character" comment="Label for a character included with the app.">Personaj inclus</string>
     <string name="default_character_artwork" comment="%1$s is a character type, such as Trainer or Monster.">Ilustrarea implicită pentru %1$s</string>
     <string name="character_artwork" comment="%1$s is a character name.">Ilustrarea lui %1$s</string>
@@ -134,8 +136,8 @@
     <string name="save_character" comment="Button to save the new character.">Salvează personajul</string>
     <string name="save" comment="Button label to save changes.">Salvează</string>
     <string name="edit" comment="Button label to edit an item.">Editează</string>
-    <string name="your_characters" comment="Section header for characters added by the user.">Personajele tale</string>
-    <string name="built_in_characters_section" comment="Section header for characters included with the app.">Personaje incluse</string>
+    <string name="your_characters">%1$s tăi</string>
+    <string name="built_in_characters_section">%1$s incluși</string>
     <string name="character_created" comment="Confirmation after a character is successfully created.">Personaj creat</string>
     <string name="character_creation_failed" comment="Error when a character cannot be saved.">Nu s-a putut crea personajul</string>
     <string name="character_limit_reached_message" comment="Error message when the 200 character limit is hit.">Limită de 200 de personaje atinsă. Șterge câteva pentru a adăuga mai multe.</string>
