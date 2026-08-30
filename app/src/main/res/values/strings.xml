@@ -121,4 +121,6 @@
     <string name="character_limit_reached_hint" comment="Short hint shown below the disabled add button.">Limit of 200 characters reached</string>
     <string name="front_sprite_required_for_contact" comment="Message shown when a front sprite is missing but required by an assignment.">Front sprite is required because this character is assigned to a contact.</string>
     <string name="back_sprite_required_for_player" comment="Message shown when a back sprite is missing but required by an assignment.">Back sprite is required because this character is assigned to you.</string>
+    <string name="remove_character_in_use_message" comment="Confirmation dialog message when deleting a character in use; %1$s is the character name.">%1$s is currently in use. Deleting it will unassign it from you and your contacts.</string>
+    <string name="remove_character_pack_in_use_message" comment="Confirmation dialog message when deleting a pack in use; %1$s is the character pack name.">This pack is currently in use. Removing it will unassign its characters from you and your contacts.</string>
 </resources>

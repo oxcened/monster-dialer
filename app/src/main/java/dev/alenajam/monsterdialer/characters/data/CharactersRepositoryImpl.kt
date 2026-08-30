@@ -55,4 +55,9 @@ class CharactersRepositoryImpl @Inject constructor(
     override suspend fun isPackInUse(packId: String): Boolean {
         return assignmentRepository.isPackInUse(packId)
     }
+
+    override suspend fun isCharacterInUse(reference: CharacterReference): Boolean {
+        return assignmentRepository.isCharacterAssignedToPlayer(reference) ||
+            assignmentRepository.isCharacterAssignedToAnyContact(reference)
+    }
 }

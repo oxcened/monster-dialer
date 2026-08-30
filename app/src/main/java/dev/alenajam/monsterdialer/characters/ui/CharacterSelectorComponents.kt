@@ -478,13 +478,22 @@ private fun SectionHeader(title: String) {
 @Composable
 fun CustomCharacterDeletionConfirmationDialog(
     characterName: String,
+    isInUse: Boolean = false,
     onConfirm: () -> Unit,
     onDismiss: () -> Unit
 ) {
     AlertDialog(
         onDismissRequest = onDismiss,
         title = { Text(stringResource(R.string.remove_character_pack_title, characterName)) },
-        text = { Text(stringResource(R.string.remove_character_pack_message, characterName)) },
+        text = { 
+            Text(
+                stringResource(
+                    if (isInUse) R.string.remove_character_in_use_message
+                    else R.string.remove_character_pack_message, 
+                    characterName
+                )
+            ) 
+        },
         confirmButton = {
             Button(
                 onClick = onConfirm,

@@ -101,4 +101,9 @@ class PlayerCharacterSettingsViewModel @Inject constructor(
         layoutPreferences.setSelectedTab(index)
         _selectedTab.value = index
     }
+
+    suspend fun isCharacterInUse(characterId: String): Boolean {
+        val reference = CharacterReference(CustomCharacterRepository.CUSTOM_PACK_ID, characterId)
+        return charactersRepository.isCharacterInUse(reference)
+    }
 }

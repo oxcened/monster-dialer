@@ -80,8 +80,10 @@ fun ColumnScope.CharacterPackSettingsContent(
     val characterPackRemoved = stringResource(R.string.character_pack_removed)
     val characterPackRemoveFailed = stringResource(R.string.character_pack_remove_failed)
     var pendingDeletion by remember { mutableStateOf<MonsterPack?>(null) }
+    var isPendingDeletionInUse by remember { mutableStateOf(false) }
     var pendingDisable by remember { mutableStateOf<MonsterPack?>(null) }
     var selectedPack by remember { mutableStateOf<MonsterPack?>(null) }
+    val scope = androidx.compose.runtime.rememberCoroutineScope()
     
     val picker = rememberLauncherForActivityResult(ActivityResultContracts.OpenDocument()) { uri ->
         if (uri == null) return@rememberLauncherForActivityResult
@@ -100,6 +102,7 @@ fun ColumnScope.CharacterPackSettingsContent(
     pendingDeletion?.let { pack ->
         CharacterPackDeletionConfirmationDialog(
             packName = pack.name,
+            isInUse = isPendingDeletionInUse,
             onConfirm = {
                 viewModel.deletePack(pack.id, characterPackRemoved, characterPackRemoveFailed)
                 pendingDeletion = null
@@ -229,7 +232,6 @@ fun ColumnScope.CharacterPackSettingsContent(
                                             color = MaterialTheme.colorScheme.onSurfaceVariant
                                         )
                                     }
-                                    val scope = androidx.compose.runtime.rememberCoroutineScope()
                                     Switch(
                                         checked = pack.enabled,
                                         onCheckedChange = { enabled ->
@@ -258,7 +260,10 @@ fun ColumnScope.CharacterPackSettingsContent(
                                 text = { Text(stringResource(R.string.remove)) },
                                 onClick = {
                                     showMenu = false
-                                    pendingDeletion = pack
+                                    scope.launch {
+                                        isPendingDeletionInUse = viewModel.isPackInUse(pack.id)
+                                        pendingDeletion = pack
+                                    }
                                 },
                                 leadingIcon = {
                                     AppIcon(
@@ -395,13 +400,22 @@ private fun MonsterPack.metadataText(
 @Composable
 private fun CharacterPackDeletionConfirmationDialog(
     packName: String,
+    isInUse: Boolean,
     onConfirm: () -> Unit,
     onDismiss: () -> Unit
 ) {
     AlertDialog(
         onDismissRequest = onDismiss,
         title = { Text(stringResource(R.string.remove_character_pack_title, packName)) },
-        text = { Text(stringResource(R.string.remove_character_pack_message, packName)) },
+        text = { 
+            Text(
+                stringResource(
+                    if (isInUse) R.string.remove_character_pack_in_use_message
+                    else R.string.remove_character_pack_message, 
+                    packName
+                )
+            ) 
+        },
         confirmButton = {
             Button(
                 onClick = onConfirm,

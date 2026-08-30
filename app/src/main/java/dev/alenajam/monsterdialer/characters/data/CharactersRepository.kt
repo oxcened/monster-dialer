@@ -29,4 +29,6 @@ interface CharactersRepository {
     suspend fun deleteCustomCharacter(characterId: String)
 
     suspend fun isPackInUse(packId: String): Boolean
+
+    suspend fun isCharacterInUse(reference: CharacterReference): Boolean
 }
