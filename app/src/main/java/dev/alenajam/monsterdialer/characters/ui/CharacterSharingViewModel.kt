@@ -7,6 +7,7 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dev.alenajam.monsterdialer.characters.data.CharacterSharingRepository
 import dev.alenajam.monsterdialer.characters.data.SharedCharacterImport
+import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -19,6 +20,8 @@ class CharacterSharingViewModel @Inject constructor(
 ) : ViewModel() {
     private val _preview = MutableStateFlow<SharedCharacterImport?>(null)
     val preview: StateFlow<SharedCharacterImport?> = _preview.asStateFlow()
+    private val _hasImportError = MutableStateFlow(false)
+    val hasImportError: StateFlow<Boolean> = _hasImportError.asStateFlow()
 
     fun export(context: Context, characterId: String, creator: String, license: String, destination: Uri) {
         viewModelScope.launch {
@@ -30,7 +33,14 @@ class CharacterSharingViewModel @Inject constructor(
 
     fun preview(context: Context, source: Uri) {
         viewModelScope.launch {
-            _preview.value = context.contentResolver.openInputStream(source)?.use(repository::preview)
+            try {
+                _preview.value = context.contentResolver.openInputStream(source)?.use(repository::preview)
+                _hasImportError.value = _preview.value == null
+            } catch (exception: Exception) {
+                if (exception is CancellationException) throw exception
+                _preview.value = null
+                _hasImportError.value = true
+            }
         }
     }
 
@@ -39,4 +49,6 @@ class CharacterSharingViewModel @Inject constructor(
     }
 
     fun dismissPreview() { _preview.value = null }
+
+    fun dismissImportError() { _hasImportError.value = false }
 }

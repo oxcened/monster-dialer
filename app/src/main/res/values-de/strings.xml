@@ -11,6 +11,8 @@
     <string name="shared_character_creator">Ersteller: %1$s</string>
     <string name="shared_character_license">Lizenz: %1$s</string>
     <string name="shared_character_import_description">Dieser Charakter wird deinen Charakteren hinzugefügt.</string>
+    <string name="shared_character_import_failed_title">Charakter konnte nicht importiert werden</string>
+    <string name="shared_character_import_failed_message">Wähle eine aus MonsterDialer exportierte .monstercharacter-Datei aus.</string>
     <string name="share_character_title">%1$s teilen</string>
     <string name="creator_label">Ersteller</string>
     <string name="license_label">Lizenz</string>

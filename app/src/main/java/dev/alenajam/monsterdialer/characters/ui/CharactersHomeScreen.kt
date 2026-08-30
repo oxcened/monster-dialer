@@ -37,6 +37,7 @@ fun CharactersHomeScreen(
 ) {
     val context = LocalContext.current
     val preview by sharingViewModel.preview.collectAsStateWithLifecycle()
+    val hasImportError by sharingViewModel.hasImportError.collectAsStateWithLifecycle()
     val picker = rememberLauncherForActivityResult(ActivityResultContracts.OpenDocument()) { uri ->
         if (uri != null) sharingViewModel.preview(context, uri)
     }
@@ -60,6 +61,18 @@ fun CharactersHomeScreen(
             dismissButton = {
                 TextButton(onClick = sharingViewModel::dismissPreview) {
                     Text(stringResource(R.string.cancel))
+                }
+            }
+        )
+    }
+    if (hasImportError) {
+        AlertDialog(
+            onDismissRequest = sharingViewModel::dismissImportError,
+            title = { Text(stringResource(R.string.shared_character_import_failed_title)) },
+            text = { Text(stringResource(R.string.shared_character_import_failed_message)) },
+            confirmButton = {
+                TextButton(onClick = sharingViewModel::dismissImportError) {
+                    Text(stringResource(R.string.close))
                 }
             }
         )
