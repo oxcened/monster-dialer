@@ -27,4 +27,6 @@ interface CharactersRepository {
     fun getCharactersInPack(packId: String, packName: String): List<InstalledPackCharacter>
 
     suspend fun deleteCustomCharacter(characterId: String)
+
+    suspend fun isPackInUse(packId: String): Boolean
 }

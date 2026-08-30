@@ -7,6 +7,7 @@ import android.content.Intent
 import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
+import kotlinx.coroutines.launch
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.Arrangement
@@ -79,6 +80,7 @@ fun ColumnScope.CharacterPackSettingsContent(
     val characterPackRemoved = stringResource(R.string.character_pack_removed)
     val characterPackRemoveFailed = stringResource(R.string.character_pack_remove_failed)
     var pendingDeletion by remember { mutableStateOf<MonsterPack?>(null) }
+    var pendingDisable by remember { mutableStateOf<MonsterPack?>(null) }
     var selectedPack by remember { mutableStateOf<MonsterPack?>(null) }
     
     val picker = rememberLauncherForActivityResult(ActivityResultContracts.OpenDocument()) { uri ->
@@ -103,6 +105,17 @@ fun ColumnScope.CharacterPackSettingsContent(
                 pendingDeletion = null
             },
             onDismiss = { pendingDeletion = null }
+        )
+    }
+
+    pendingDisable?.let { pack ->
+        CharacterPackDisableConfirmationDialog(
+            packName = pack.name,
+            onConfirm = {
+                viewModel.togglePack(pack.id, false)
+                pendingDisable = null
+            },
+            onDismiss = { pendingDisable = null }
         )
     }
 
@@ -216,10 +229,21 @@ fun ColumnScope.CharacterPackSettingsContent(
                                             color = MaterialTheme.colorScheme.onSurfaceVariant
                                         )
                                     }
+                                    val scope = androidx.compose.runtime.rememberCoroutineScope()
                                     Switch(
                                         checked = pack.enabled,
                                         onCheckedChange = { enabled ->
-                                            viewModel.togglePack(pack.id, enabled)
+                                            if (!enabled) {
+                                                scope.launch {
+                                                    if (viewModel.isPackInUse(pack.id)) {
+                                                        pendingDisable = pack
+                                                    } else {
+                                                        viewModel.togglePack(pack.id, false)
+                                                    }
+                                                }
+                                            } else {
+                                                viewModel.togglePack(pack.id, true)
+                                            }
                                         }
                                     )
                                 }
@@ -387,6 +411,33 @@ private fun CharacterPackDeletionConfirmationDialog(
                 )
             ) {
                 Text(stringResource(R.string.remove))
+            }
+        },
+        dismissButton = {
+            TextButton(onClick = onDismiss) { Text(stringResource(R.string.cancel)) }
+        }
+    )
+}
+
+@Composable
+private fun CharacterPackDisableConfirmationDialog(
+    packName: String,
+    onConfirm: () -> Unit,
+    onDismiss: () -> Unit
+) {
+    AlertDialog(
+        onDismissRequest = onDismiss,
+        title = { Text(stringResource(R.string.disable_character_pack_title, packName)) },
+        text = { Text(stringResource(R.string.disable_character_pack_message, packName)) },
+        confirmButton = {
+            Button(
+                onClick = onConfirm,
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = MaterialTheme.colorScheme.error,
+                    contentColor = MaterialTheme.colorScheme.onError
+                )
+            ) {
+                Text(stringResource(R.string.disable))
             }
         },
         dismissButton = {

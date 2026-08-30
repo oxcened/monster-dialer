@@ -51,4 +51,8 @@ class CharactersRepositoryImpl @Inject constructor(
         assignmentRepository.clearAssignmentsForCharacter(reference)
         customRepository.deleteCharacter(characterId)
     }
+
+    override suspend fun isPackInUse(packId: String): Boolean {
+        return assignmentRepository.isPackInUse(packId)
+    }
 }

@@ -69,6 +69,9 @@ class PacksRepositoryImpl @Inject constructor(
     }
 
     override suspend fun togglePack(packId: String, enabled: Boolean) = withContext(Dispatchers.IO) {
+        if (!enabled) {
+            assignmentRepository.clearAssignmentsForPack(packId)
+        }
         catalog.setEnabled(packId, enabled)
         refreshPacks()
     }

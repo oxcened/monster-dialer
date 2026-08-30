@@ -56,6 +56,10 @@ class CharacterPackSettingsViewModel @Inject constructor(
         }
     }
 
+    suspend fun isPackInUse(packId: String): Boolean {
+        return charactersRepository.isPackInUse(packId)
+    }
+
     fun deletePack(packId: String, successMessage: String, failureMessage: String) {
         viewModelScope.launch {
             val result = runCatching { packsRepository.deletePack(packId) }
