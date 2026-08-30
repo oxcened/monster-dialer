@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -115,7 +116,6 @@ fun AddCharacterScreen(
                     .fillMaxSize()
                     .verticalScroll(rememberScrollState())
                     .padding(24.dp),
-                verticalArrangement = Arrangement.spacedBy(32.dp),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 // Image Selection Area
@@ -160,6 +160,8 @@ fun AddCharacterScreen(
                         )
                     }
                 }
+
+                Spacer(modifier = Modifier.height(4.dp))
 
                 // Details Card
                 Card(
@@ -211,6 +213,8 @@ fun AddCharacterScreen(
                         )
                     }
                 }
+
+                Spacer(modifier = Modifier.height(4.dp))
 
                 Button(
                     onClick = viewModel::save,
