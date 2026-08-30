@@ -538,7 +538,8 @@ private fun CharacterOptionCard(
                     Text(
                         stringResource(R.string.selected),
                         style = MaterialTheme.typography.labelLarge,
-                        color = MaterialTheme.colorScheme.primary
+                        color = MaterialTheme.colorScheme.primary,
+                        modifier = Modifier.padding(horizontal = 16.dp)
                     )
                 } else {
                     OutlinedButton(onClick = onSelect) { Text(stringResource(R.string.select)) }
