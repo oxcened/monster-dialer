@@ -7,6 +7,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -54,6 +55,7 @@ fun AddCharacterScreen(
     val name by viewModel.name.collectAsStateWithLifecycle()
     val imageUri by viewModel.imageUri.collectAsStateWithLifecycle()
     val isSaving by viewModel.isSaving.collectAsStateWithLifecycle()
+    val isLimitReached by viewModel.isLimitReached.collectAsStateWithLifecycle()
     val creationResult by viewModel.creationResult.collectAsStateWithLifecycle()
 
     val picker = rememberLauncherForActivityResult(ActivityResultContracts.GetContent()) { uri ->
@@ -111,7 +113,7 @@ fun AddCharacterScreen(
                         .size(160.dp)
                         .clip(RoundedCornerShape(28.dp))
                         .background(MaterialTheme.colorScheme.primaryContainer)
-                        .clickable { picker.launch("image/*") },
+                        .clickable(enabled = !isLimitReached) { picker.launch("image/*") },
                     contentAlignment = Alignment.Center
                 ) {
                     if (imageUri != null) {
@@ -159,6 +161,32 @@ fun AddCharacterScreen(
                         modifier = Modifier.padding(20.dp),
                         verticalArrangement = Arrangement.spacedBy(20.dp)
                     ) {
+                        if (isLimitReached) {
+                            Surface(
+                                color = MaterialTheme.colorScheme.errorContainer,
+                                shape = RoundedCornerShape(12.dp),
+                                modifier = Modifier.fillMaxWidth()
+                            ) {
+                                Row(
+                                    modifier = Modifier.padding(12.dp),
+                                    verticalAlignment = Alignment.CenterVertically,
+                                    horizontalArrangement = Arrangement.spacedBy(8.dp)
+                                ) {
+                                    AppIcon(
+                                        icon = LocalAppIcons.current.block,
+                                        contentDescription = null,
+                                        tint = MaterialTheme.colorScheme.onErrorContainer,
+                                        modifier = Modifier.size(20.dp)
+                                    )
+                                    Text(
+                                        text = stringResource(R.string.character_limit_reached_message),
+                                        style = MaterialTheme.typography.bodyMedium,
+                                        color = MaterialTheme.colorScheme.onErrorContainer
+                                    )
+                                }
+                            }
+                        }
+
                         OutlinedTextField(
                             value = name,
                             onValueChange = viewModel::onNameChanged,
@@ -166,7 +194,8 @@ fun AddCharacterScreen(
                             placeholder = { Text(stringResource(R.string.character_name_hint)) },
                             modifier = Modifier.fillMaxWidth(),
                             singleLine = true,
-                            shape = RoundedCornerShape(12.dp)
+                            shape = RoundedCornerShape(12.dp),
+                            enabled = !isLimitReached
                         )
                     }
                 }
@@ -177,7 +206,7 @@ fun AddCharacterScreen(
                         .fillMaxWidth()
                         .height(56.dp),
                     shape = RoundedCornerShape(16.dp),
-                    enabled = name.isNotBlank() && imageUri != null && !isSaving
+                    enabled = name.isNotBlank() && imageUri != null && !isSaving && !isLimitReached
                 ) {
                     Text(
                         stringResource(R.string.save),

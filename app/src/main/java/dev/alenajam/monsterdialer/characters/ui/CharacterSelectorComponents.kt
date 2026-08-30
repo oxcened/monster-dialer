@@ -94,7 +94,8 @@ internal fun LazyListScope.characterTypeItems(
     packArtwork: (InstalledPackCharacter) -> File,
     onSelect: (CharacterReference?) -> Unit,
     onAddCharacter: () -> Unit,
-    addLabel: String
+    addLabel: String,
+    isAddEnabled: Boolean = true
 ) {
     val availableSelection = selected?.takeIf { reference ->
         characters.any { CharacterReference(it.packId, it.character.id) == reference }
@@ -102,7 +103,8 @@ internal fun LazyListScope.characterTypeItems(
     item(key = "add") {
         AddCharacterButton(
             onClick = onAddCharacter,
-            label = addLabel
+            label = addLabel,
+            enabled = isAddEnabled
         )
     }
     item(key = "default") {
@@ -153,7 +155,8 @@ internal fun LazyGridScope.characterTypeGridItems(
     packArtwork: (InstalledPackCharacter) -> File,
     onSelect: (CharacterReference?) -> Unit,
     onAddCharacter: () -> Unit,
-    addLabel: String
+    addLabel: String,
+    isAddEnabled: Boolean = true
 ) {
     val availableSelection = selected?.takeIf { reference ->
         characters.any { CharacterReference(it.packId, it.character.id) == reference }
@@ -161,7 +164,8 @@ internal fun LazyGridScope.characterTypeGridItems(
     item(key = "add", span = { GridItemSpan(2) }) {
         AddCharacterButton(
             onClick = onAddCharacter,
-            label = addLabel
+            label = addLabel,
+            enabled = isAddEnabled
         )
     }
     item(key = "default") {
@@ -312,10 +316,12 @@ internal fun JumpToSelectedCharacterButton(
 @Composable
 private fun AddCharacterButton(
     onClick: () -> Unit,
-    label: String
+    label: String,
+    enabled: Boolean = true
 ) {
     Button(
         onClick = onClick,
+        enabled = enabled,
         modifier = Modifier
             .fillMaxWidth()
             .padding(horizontal = 16.dp, vertical = 8.dp),

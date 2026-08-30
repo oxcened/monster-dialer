@@ -4,12 +4,15 @@ import android.net.Uri
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import dev.alenajam.monsterdialer.packs.data.CharacterPackValidator
 import dev.alenajam.monsterdialer.packs.data.CharacterReference
 import dev.alenajam.monsterdialer.packs.data.CharacterType
 import dev.alenajam.monsterdialer.packs.data.CustomCharacterRepository
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 @HiltViewModel
@@ -29,11 +32,21 @@ class AddCharacterViewModel @Inject constructor(
     private val _isSaving = MutableStateFlow(false)
     val isSaving = _isSaving.asStateFlow()
 
+    private val _isLimitReached = MutableStateFlow(false)
+    val isLimitReached = _isLimitReached.asStateFlow()
+
     private val _creationResult = MutableStateFlow<CharacterReference?>(null)
     val creationResult = _creationResult.asStateFlow()
 
     private val _error = MutableStateFlow<String?>(null)
     val error = _error.asStateFlow()
+
+    init {
+        viewModelScope.launch {
+            val count = withContext(Dispatchers.IO) { repository.getCharacterCount() }
+            _isLimitReached.value = count >= CharacterPackValidator.MaxCharacters
+        }
+    }
 
     fun onNameChanged(newName: String) {
         _name.value = newName

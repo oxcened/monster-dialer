@@ -33,6 +33,20 @@ class CustomCharacterRepository @Inject constructor(
         type: CharacterType,
         imageUri: Uri
     ): CharacterReference = withContext(Dispatchers.IO) {
+        // Check limit
+        val currentManifest = readManifest() ?: CharacterPackManifest(
+            formatVersion = CharacterPackValidator.SupportedFormatVersion,
+            id = CUSTOM_PACK_ID,
+            name = "My Characters",
+            version = "1.0.0",
+            license = "Created by user",
+            characters = emptyList()
+        )
+
+        if (currentManifest.characters.size >= CharacterPackValidator.MaxCharacters) {
+            throw CharacterPackValidationException("Character limit reached (${CharacterPackValidator.MaxCharacters})")
+        }
+
         val characterId = UUID.randomUUID().toString()
         val extension = context.contentResolver.getType(imageUri)?.substringAfterLast('/') ?: "png"
         val fileName = "art/$characterId.$extension"
@@ -53,16 +67,6 @@ class CustomCharacterRepository @Inject constructor(
             tempImage.delete()
             throw CharacterPackValidationException("Could not save image")
         }
-
-        // Update manifest
-        val currentManifest = readManifest() ?: CharacterPackManifest(
-            formatVersion = CharacterPackValidator.SupportedFormatVersion,
-            id = CUSTOM_PACK_ID,
-            name = "My Characters",
-            version = "1.0.0",
-            license = "Created by user",
-            characters = emptyList()
-        )
 
         val newCharacter = PackCharacter(
             id = characterId,
@@ -95,6 +99,8 @@ class CustomCharacterRepository @Inject constructor(
 
         CharacterReference(CUSTOM_PACK_ID, characterId)
     }
+
+    fun getCharacterCount(): Int = readManifest()?.characters?.size ?: 0
 
     private fun readManifest(): CharacterPackManifest? {
         if (!manifestFile.exists()) return null

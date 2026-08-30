@@ -58,6 +58,7 @@ fun ColumnScope.ContactCharacterSettingsContent(
     val contactSelectionVersion by viewModel.contactSelectionVersion.collectAsStateWithLifecycle()
     val trainers by viewModel.trainers.collectAsStateWithLifecycle()
     val monsters by viewModel.monsters.collectAsStateWithLifecycle()
+    val isLimitReached by viewModel.isLimitReached.collectAsStateWithLifecycle()
     var selectedTab by rememberSaveable { mutableIntStateOf(0) }
     val layout by viewModel.layout.collectAsStateWithLifecycle()
     val trainerSelectedItemIndex = selectedCharacterIndex(trainers, assignedTrainer)
@@ -197,15 +198,15 @@ fun ColumnScope.ContactCharacterSettingsContent(
             if (layout == CharacterLayout.List) {
                 LazyColumn(state = listState, modifier = Modifier.fillMaxSize(), contentPadding = PaddingValues(top = 8.dp, bottom = 72.dp)) {
                     when (selectedTab) {
-                        0 -> characterTypeItems(trainerTitle, BuiltInCharacters.trainer, trainers, assignedTrainer, { it.contactArtwork }, { it.imageFile(requireNotNull(it.character.frontImage)) }, viewModel::assignTrainer, { navigator?.navigateTo(1) }, addTrainerLabel)
-                        1 -> characterTypeItems(monsterTitle, BuiltInCharacters.monster.character, monsters, assignedMonster, { it.contactArtwork }, { it.imageFile(requireNotNull(it.character.frontImage)) }, viewModel::assignMonster, { navigator?.navigateTo(2) }, addMonsterLabel)
+                        0 -> characterTypeItems(trainerTitle, BuiltInCharacters.trainer, trainers, assignedTrainer, { it.contactArtwork }, { it.imageFile(requireNotNull(it.character.frontImage)) }, viewModel::assignTrainer, { navigator?.navigateTo(1) }, addTrainerLabel, !isLimitReached)
+                        1 -> characterTypeItems(monsterTitle, BuiltInCharacters.monster.character, monsters, assignedMonster, { it.contactArtwork }, { it.imageFile(requireNotNull(it.character.frontImage)) }, viewModel::assignMonster, { navigator?.navigateTo(2) }, addMonsterLabel, !isLimitReached)
                     }
                 }
             } else {
                 LazyVerticalGrid(columns = GridCells.Fixed(2), state = gridState, modifier = Modifier.fillMaxSize(), contentPadding = PaddingValues(top = 8.dp, bottom = 72.dp), horizontalArrangement = Arrangement.spacedBy(2.dp), verticalArrangement = Arrangement.spacedBy(2.dp)) {
                     when (selectedTab) {
-                        0 -> characterTypeGridItems(trainerTitle, BuiltInCharacters.trainer, trainers, assignedTrainer, { it.contactArtwork }, { it.imageFile(requireNotNull(it.character.frontImage)) }, viewModel::assignTrainer, { navigator?.navigateTo(1) }, addTrainerLabel)
-                        1 -> characterTypeGridItems(monsterTitle, BuiltInCharacters.monster.character, monsters, assignedMonster, { it.contactArtwork }, { it.imageFile(requireNotNull(it.character.frontImage)) }, viewModel::assignMonster, { navigator?.navigateTo(2) }, addMonsterLabel)
+                        0 -> characterTypeGridItems(trainerTitle, BuiltInCharacters.trainer, trainers, assignedTrainer, { it.contactArtwork }, { it.imageFile(requireNotNull(it.character.frontImage)) }, viewModel::assignTrainer, { navigator?.navigateTo(1) }, addTrainerLabel, !isLimitReached)
+                        1 -> characterTypeGridItems(monsterTitle, BuiltInCharacters.monster.character, monsters, assignedMonster, { it.contactArtwork }, { it.imageFile(requireNotNull(it.character.frontImage)) }, viewModel::assignMonster, { navigator?.navigateTo(2) }, addMonsterLabel, !isLimitReached)
                     }
                 }
             }

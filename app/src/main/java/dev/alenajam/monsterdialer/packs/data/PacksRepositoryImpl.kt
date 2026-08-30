@@ -44,7 +44,8 @@ class PacksRepositoryImpl @Inject constructor(
                 version = record.version,
                 creator = record.creator,
                 license = record.license,
-                enabled = record.enabled
+                enabled = record.enabled,
+                characterCount = record.characterCount
             )
         }
     }
