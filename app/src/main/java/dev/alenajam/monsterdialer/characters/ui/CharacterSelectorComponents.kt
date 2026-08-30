@@ -327,18 +327,45 @@ private fun gridItemShape(index: Int, itemCount: Int): RoundedCornerShape {
 internal fun selectedCharacterIndex(
     characters: List<InstalledPackCharacter>,
     selected: CharacterReference?
-): Int = selected?.let { selectedReference ->
-    val index = characters.indexOfFirst { character ->
-        CharacterReference(character.packId, character.character.id) == selectedReference
+): Int {
+    if (selected == null) return 0 // Keep Add button visible for Default selection
+
+    val userCustomPackId = "user.custom"
+    val grouped = characters.groupBy { it.packId }
+    val userCharacters = grouped[userCustomPackId].orEmpty()
+    val otherPacks = grouped.filter { it.key != userCustomPackId }
+
+    // Logic follows the order in characterTypeItems
+    // 0: Add button
+    // 1: Built-in header
+    // 2: Default character
+    var currentIndex = 3
+
+    if (userCharacters.isNotEmpty()) {
+        currentIndex++ // "Your characters" header
+        val userIdx = userCharacters.indexOfFirst {
+            CharacterReference(it.packId, it.character.id) == selected
+        }
+        if (userIdx != -1) {
+            val target = currentIndex + userIdx
+            // If it's the very first user character, index 0 might still be better 
+            // to keep the "Add" button and headers visible.
+            return if (target <= 4) 0 else target
+        }
+        currentIndex += userCharacters.size
     }
-    if (index == -1) 0
-    else {
-        val targetIndex = index + 2
-        // If the selection is at the very top (Default or first custom), 
-        // stay at index 0 to keep the "Add" button visible.
-        if (targetIndex <= 2) 0 else targetIndex
+
+    for (packCharacters in otherPacks.values) {
+        currentIndex++ // Pack header
+        val packIdx = packCharacters.indexOfFirst {
+            CharacterReference(it.packId, it.character.id) == selected
+        }
+        if (packIdx != -1) return currentIndex + packIdx
+        currentIndex += packCharacters.size
     }
-} ?: 0
+
+    return 0
+}
 
 @Composable
 internal fun JumpToSelectedCharacterButton(
