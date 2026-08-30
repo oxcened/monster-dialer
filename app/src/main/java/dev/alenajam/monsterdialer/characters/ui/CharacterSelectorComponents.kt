@@ -137,7 +137,7 @@ internal fun LazyListScope.characterTypeItems(
             name = defaultCharacter.name,
             isSelected = availableSelection == null,
             roundTop = true,
-            roundBottom = true,
+            roundBottom = characters.isNotEmpty(),
             artwork = {
                 Image(
                     painter = painterResource(defaultArtwork(defaultCharacter).resource),
