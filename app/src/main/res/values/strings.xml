@@ -99,4 +99,5 @@
     <string name="character_created" comment="Confirmation after a character is successfully created.">Character created</string>
     <string name="character_creation_failed" comment="Error when a character cannot be saved.">Could not create character</string>
     <string name="character_limit_reached_message" comment="Error message when the 200 character limit is hit.">Limit of 200 characters reached. Delete some to add more.</string>
+    <string name="character_limit_reached_hint" comment="Short hint shown below the disabled add button.">Limit of 200 characters reached</string>
 </resources>

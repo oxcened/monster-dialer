@@ -106,6 +106,15 @@ internal fun LazyListScope.characterTypeItems(
             label = addLabel,
             enabled = isAddEnabled
         )
+        if (!isAddEnabled) {
+            Text(
+                text = stringResource(R.string.character_limit_reached_hint),
+                style = MaterialTheme.typography.labelSmall,
+                color = MaterialTheme.colorScheme.error,
+                textAlign = TextAlign.Center,
+                modifier = Modifier.fillMaxWidth().padding(bottom = 8.dp)
+            )
+        }
     }
     item(key = "default") {
         CharacterOptionCard(
@@ -162,11 +171,22 @@ internal fun LazyGridScope.characterTypeGridItems(
         characters.any { CharacterReference(it.packId, it.character.id) == reference }
     }
     item(key = "add", span = { GridItemSpan(2) }) {
-        AddCharacterButton(
-            onClick = onAddCharacter,
-            label = addLabel,
-            enabled = isAddEnabled
-        )
+        Column {
+            AddCharacterButton(
+                onClick = onAddCharacter,
+                label = addLabel,
+                enabled = isAddEnabled
+            )
+            if (!isAddEnabled) {
+                Text(
+                    text = stringResource(R.string.character_limit_reached_hint),
+                    style = MaterialTheme.typography.labelSmall,
+                    color = MaterialTheme.colorScheme.error,
+                    textAlign = TextAlign.Center,
+                    modifier = Modifier.fillMaxWidth().padding(bottom = 8.dp)
+                )
+            }
+        }
     }
     item(key = "default") {
         CharacterGridItem(
