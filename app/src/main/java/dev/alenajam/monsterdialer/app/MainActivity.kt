@@ -23,6 +23,7 @@ import dev.alenajam.monsterdialer.characters.ui.PlayerCharacterSettingsContent
 import dev.alenajam.monsterdialer.characters.ui.ContactCharacterSettingsContent
 import dev.alenajam.monsterdialer.characters.ui.ContactPickerDestination
 import dev.alenajam.monsterdialer.characters.ui.AddCharacterScreen
+import dev.alenajam.monsterdialer.packs.data.CharacterType
 import dev.alenajam.opendialer.core.common.DefaultPhoneManager
 import dev.alenajam.opendialer.core.common.ui.AppThemeExtension
 import dev.alenajam.opendialer.feature.settings.SettingsSubpage
@@ -75,26 +76,32 @@ class MainActivity : AppCompatActivity() {
                             isScrollable = false,
                             topContentPadding = 0.dp,
                             destinations = listOf(
-                                SettingsSubpageDestination(title = stringResource(R.string.create_character_title)) { onNavigateBack ->
-                                    AddCharacterScreen(onNavigateBack)
-                                }
-                            )
-                        ),
-                        SettingsSubpage(
-                            title = stringResource(R.string.settings_contact_characters_title),
-                            description = stringResource(R.string.settings_contact_characters_description),
-                            content = { ContactCharacterSettingsContent() },
-                            isScrollable = false,
-                            topContentPadding = 0.dp,
-                            destinations = listOf(
-                                SettingsSubpageDestination(title = stringResource(R.string.choose_contact)) { onNavigateBack ->
-                                    ContactPickerDestination(onNavigateBack)
-                                },
-                                SettingsSubpageDestination(title = stringResource(R.string.create_character_title)) { onNavigateBack ->
-                                    AddCharacterScreen(onNavigateBack)
-                                }
-                            )
+                            SettingsSubpageDestination(title = stringResource(R.string.create_trainer_title)) { onNavigateBack ->
+                                AddCharacterScreen(onNavigateBack, characterType = CharacterType.Trainer)
+                            },
+                            SettingsSubpageDestination(title = stringResource(R.string.create_monster_title)) { onNavigateBack ->
+                                AddCharacterScreen(onNavigateBack, characterType = CharacterType.Monster)
+                            }
                         )
+                    ),
+                    SettingsSubpage(
+                        title = stringResource(R.string.settings_contact_characters_title),
+                        description = stringResource(R.string.settings_contact_characters_description),
+                        content = { ContactCharacterSettingsContent() },
+                        isScrollable = false,
+                        topContentPadding = 0.dp,
+                        destinations = listOf(
+                            SettingsSubpageDestination(title = stringResource(R.string.choose_contact)) { onNavigateBack ->
+                                ContactPickerDestination(onNavigateBack)
+                            },
+                            SettingsSubpageDestination(title = stringResource(R.string.create_trainer_title)) { onNavigateBack ->
+                                AddCharacterScreen(onNavigateBack, characterType = CharacterType.Trainer)
+                            },
+                            SettingsSubpageDestination(title = stringResource(R.string.create_monster_title)) { onNavigateBack ->
+                                AddCharacterScreen(onNavigateBack, characterType = CharacterType.Monster)
+                            }
+                        )
+                    )
                     )
                 )
             }

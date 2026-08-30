@@ -72,6 +72,8 @@ fun ColumnScope.ContactCharacterSettingsContent(
     val monsterGridState = rememberLazyGridState(initialFirstVisibleItemIndex = monsterSelectedItemIndex)
     val trainerTitle = stringResource(R.string.character_type_trainer)
     val monsterTitle = stringResource(R.string.character_type_monster)
+    val addTrainerLabel = stringResource(R.string.add_trainer)
+    val addMonsterLabel = stringResource(R.string.add_monster)
     val locale = LocalConfiguration.current.locales[0]
 
     val lifecycleOwner = LocalLifecycleOwner.current
@@ -112,7 +114,8 @@ fun ColumnScope.ContactCharacterSettingsContent(
                     defaultArtwork = { it.contactArtwork },
                     packArtwork = { it.imageFile(requireNotNull(it.character.frontImage)) },
                     onSelect = {},
-                    onAddCharacter = { navigator?.navigateTo(1) }
+                    onAddCharacter = { navigator?.navigateTo(1) },
+                    addLabel = addTrainerLabel
                 )
                 1 -> characterTypeItems(
                     title = monsterTitle,
@@ -122,7 +125,8 @@ fun ColumnScope.ContactCharacterSettingsContent(
                     defaultArtwork = { it.contactArtwork },
                     packArtwork = { it.imageFile(requireNotNull(it.character.frontImage)) },
                     onSelect = {},
-                    onAddCharacter = { navigator?.navigateTo(1) }
+                    onAddCharacter = { navigator?.navigateTo(2) },
+                    addLabel = addMonsterLabel
                 )
             }
         }
@@ -193,15 +197,15 @@ fun ColumnScope.ContactCharacterSettingsContent(
             if (layout == CharacterLayout.List) {
                 LazyColumn(state = listState, modifier = Modifier.fillMaxSize(), contentPadding = PaddingValues(top = 8.dp, bottom = 72.dp)) {
                     when (selectedTab) {
-                        0 -> characterTypeItems(trainerTitle, BuiltInCharacters.trainer, trainers, assignedTrainer, { it.contactArtwork }, { it.imageFile(requireNotNull(it.character.frontImage)) }, viewModel::assignTrainer, { navigator?.navigateTo(1) })
-                        1 -> characterTypeItems(monsterTitle, BuiltInCharacters.monster.character, monsters, assignedMonster, { it.contactArtwork }, { it.imageFile(requireNotNull(it.character.frontImage)) }, viewModel::assignMonster, { navigator?.navigateTo(1) })
+                        0 -> characterTypeItems(trainerTitle, BuiltInCharacters.trainer, trainers, assignedTrainer, { it.contactArtwork }, { it.imageFile(requireNotNull(it.character.frontImage)) }, viewModel::assignTrainer, { navigator?.navigateTo(1) }, addTrainerLabel)
+                        1 -> characterTypeItems(monsterTitle, BuiltInCharacters.monster.character, monsters, assignedMonster, { it.contactArtwork }, { it.imageFile(requireNotNull(it.character.frontImage)) }, viewModel::assignMonster, { navigator?.navigateTo(2) }, addMonsterLabel)
                     }
                 }
             } else {
                 LazyVerticalGrid(columns = GridCells.Fixed(2), state = gridState, modifier = Modifier.fillMaxSize(), contentPadding = PaddingValues(top = 8.dp, bottom = 72.dp), horizontalArrangement = Arrangement.spacedBy(2.dp), verticalArrangement = Arrangement.spacedBy(2.dp)) {
                     when (selectedTab) {
-                        0 -> characterTypeGridItems(trainerTitle, BuiltInCharacters.trainer, trainers, assignedTrainer, { it.contactArtwork }, { it.imageFile(requireNotNull(it.character.frontImage)) }, viewModel::assignTrainer, { navigator?.navigateTo(1) })
-                        1 -> characterTypeGridItems(monsterTitle, BuiltInCharacters.monster.character, monsters, assignedMonster, { it.contactArtwork }, { it.imageFile(requireNotNull(it.character.frontImage)) }, viewModel::assignMonster, { navigator?.navigateTo(1) })
+                        0 -> characterTypeGridItems(trainerTitle, BuiltInCharacters.trainer, trainers, assignedTrainer, { it.contactArtwork }, { it.imageFile(requireNotNull(it.character.frontImage)) }, viewModel::assignTrainer, { navigator?.navigateTo(1) }, addTrainerLabel)
+                        1 -> characterTypeGridItems(monsterTitle, BuiltInCharacters.monster.character, monsters, assignedMonster, { it.contactArtwork }, { it.imageFile(requireNotNull(it.character.frontImage)) }, viewModel::assignMonster, { navigator?.navigateTo(2) }, addMonsterLabel)
                     }
                 }
             }

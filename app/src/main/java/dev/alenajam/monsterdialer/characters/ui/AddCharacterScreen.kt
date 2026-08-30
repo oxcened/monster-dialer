@@ -24,9 +24,6 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.SegmentedButton
-import androidx.compose.material3.SegmentedButtonDefaults
-import androidx.compose.material3.SingleChoiceSegmentedButtonRow
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
@@ -52,16 +49,20 @@ import dev.alenajam.opendialer.core.common.ui.LocalAppIcons
 @Composable
 fun AddCharacterScreen(
     onNavigateBack: () -> Unit,
+    characterType: CharacterType,
     viewModel: AddCharacterViewModel = hiltViewModel()
 ) {
     val name by viewModel.name.collectAsStateWithLifecycle()
-    val type by viewModel.type.collectAsStateWithLifecycle()
     val imageUri by viewModel.imageUri.collectAsStateWithLifecycle()
     val isSaving by viewModel.isSaving.collectAsStateWithLifecycle()
     val creationResult by viewModel.creationResult.collectAsStateWithLifecycle()
 
     val picker = rememberLauncherForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri ->
         viewModel.onImageSelected(uri)
+    }
+
+    LaunchedEffect(Unit) {
+        viewModel.onTypeChanged(characterType)
     }
 
     LaunchedEffect(creationResult) {
@@ -73,7 +74,14 @@ fun AddCharacterScreen(
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text(stringResource(R.string.create_character_title)) },
+                title = { 
+                    Text(
+                        stringResource(
+                            if (characterType == CharacterType.Trainer) R.string.create_trainer_title
+                            else R.string.create_monster_title
+                        )
+                    ) 
+                },
                 navigationIcon = {
                     IconButton(onClick = onNavigateBack) {
                         AppIcon(
@@ -161,38 +169,6 @@ fun AddCharacterScreen(
                             singleLine = true,
                             shape = RoundedCornerShape(12.dp)
                         )
-
-                        Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
-                            Text(
-                                text = stringResource(R.string.character_type_label),
-                                style = MaterialTheme.typography.labelLarge,
-                                color = MaterialTheme.colorScheme.onSurfaceVariant
-                            )
-                            
-                            SingleChoiceSegmentedButtonRow(
-                                modifier = Modifier.fillMaxWidth()
-                            ) {
-                                val types = listOf(CharacterType.Trainer, CharacterType.Monster)
-                                types.forEachIndexed { index, characterType ->
-                                    SegmentedButton(
-                                        selected = type == characterType,
-                                        onClick = { viewModel.onTypeChanged(characterType) },
-                                        shape = SegmentedButtonDefaults.itemShape(
-                                            index = index,
-                                            count = types.size
-                                        ),
-                                        label = {
-                                            Text(
-                                                stringResource(
-                                                    if (characterType == CharacterType.Trainer) R.string.character_type_trainer
-                                                    else R.string.character_type_monster
-                                                )
-                                            )
-                                        }
-                                    )
-                                }
-                            }
-                        }
                     }
                 }
 

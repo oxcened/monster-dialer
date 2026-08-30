@@ -93,7 +93,8 @@ internal fun LazyListScope.characterTypeItems(
     defaultArtwork: (BuiltInCharacter) -> BuiltInArtwork,
     packArtwork: (InstalledPackCharacter) -> File,
     onSelect: (CharacterReference?) -> Unit,
-    onAddCharacter: () -> Unit
+    onAddCharacter: () -> Unit,
+    addLabel: String
 ) {
     val availableSelection = selected?.takeIf { reference ->
         characters.any { CharacterReference(it.packId, it.character.id) == reference }
@@ -102,7 +103,8 @@ internal fun LazyListScope.characterTypeItems(
         AddCharacterCard(
             onClick = onAddCharacter,
             roundTop = true,
-            roundBottom = false
+            roundBottom = false,
+            label = addLabel
         )
     }
     item(key = "default") {
@@ -152,7 +154,8 @@ internal fun LazyGridScope.characterTypeGridItems(
     defaultArtwork: (BuiltInCharacter) -> BuiltInArtwork,
     packArtwork: (InstalledPackCharacter) -> File,
     onSelect: (CharacterReference?) -> Unit,
-    onAddCharacter: () -> Unit
+    onAddCharacter: () -> Unit,
+    addLabel: String
 ) {
     val availableSelection = selected?.takeIf { reference ->
         characters.any { CharacterReference(it.packId, it.character.id) == reference }
@@ -160,7 +163,8 @@ internal fun LazyGridScope.characterTypeGridItems(
     item(key = "add") {
         AddCharacterGridItem(
             onClick = onAddCharacter,
-            shape = gridItemShape(index = 0, itemCount = if (characters.isEmpty()) 3 else characters.size + 2)
+            shape = gridItemShape(index = 0, itemCount = if (characters.isEmpty()) 3 else characters.size + 2),
+            label = addLabel
         )
     }
     item(key = "default") {
@@ -305,7 +309,8 @@ internal fun JumpToSelectedCharacterButton(
 private fun AddCharacterCard(
     onClick: () -> Unit,
     roundTop: Boolean,
-    roundBottom: Boolean
+    roundBottom: Boolean,
+    label: String
 ) {
     Card(
         modifier = Modifier.fillMaxWidth().padding(vertical = 1.dp).clickable(onClick = onClick),
@@ -336,7 +341,7 @@ private fun AddCharacterCard(
                 )
             }
             Text(
-                stringResource(R.string.add_character),
+                label,
                 style = MaterialTheme.typography.titleMedium,
                 color = MaterialTheme.colorScheme.primary
             )
@@ -347,7 +352,8 @@ private fun AddCharacterCard(
 @Composable
 private fun AddCharacterGridItem(
     onClick: () -> Unit,
-    shape: Shape
+    shape: Shape,
+    label: String
 ) {
     Card(
         modifier = Modifier.fillMaxWidth().clickable(onClick = onClick),
@@ -377,7 +383,7 @@ private fun AddCharacterGridItem(
                 )
             }
             Text(
-                stringResource(R.string.add_character),
+                label,
                 style = MaterialTheme.typography.titleSmall,
                 textAlign = TextAlign.Center,
                 color = MaterialTheme.colorScheme.primary
