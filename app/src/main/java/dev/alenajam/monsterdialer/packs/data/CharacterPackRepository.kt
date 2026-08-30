@@ -10,7 +10,7 @@ import java.io.File
  */
 class CharacterPackRepository(
     private val storageRoot: File,
-    private val catalog: CharacterPackCatalog = CharacterPackCatalog(storageRoot)
+    private val catalog: CharacterPackCatalog
 ) {
     fun observeAssignableCharacters(
         role: CharacterAssignmentTarget,

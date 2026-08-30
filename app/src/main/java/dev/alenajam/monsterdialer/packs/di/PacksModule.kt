@@ -30,8 +30,11 @@ object PacksModule {
 
     @Provides
     @Singleton
-    fun provideCharacterPackRepository(@CharacterPacksDir root: File): CharacterPackRepository {
-        return CharacterPackRepository(root)
+    fun provideCharacterPackRepository(
+        @CharacterPacksDir root: File,
+        catalog: CharacterPackCatalog
+    ): CharacterPackRepository {
+        return CharacterPackRepository(root, catalog)
     }
 
     @Provides

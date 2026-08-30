@@ -12,8 +12,8 @@ import android.graphics.BitmapFactory
  */
 class CharacterPackInstaller(
     private val storageRoot: File,
-    private val archiveReader: CharacterPackArchiveReader = CharacterPackArchiveReader(),
-    private val catalog: CharacterPackCatalog = CharacterPackCatalog(storageRoot)
+    private val catalog: CharacterPackCatalog,
+    private val archiveReader: CharacterPackArchiveReader = CharacterPackArchiveReader()
 ) {
     fun install(source: InputStream): InstalledCharacterPack {
         val stagingRoot = File(storageRoot, ".staging").apply { mkdirs() }

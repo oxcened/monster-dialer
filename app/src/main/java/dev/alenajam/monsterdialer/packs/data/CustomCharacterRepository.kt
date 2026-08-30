@@ -40,13 +40,19 @@ class CustomCharacterRepository @Inject constructor(
         // Ensure directories exist
         artDirectory.mkdirs()
 
-        // Copy image
+        // Copy image atomically
+        val tempImage = File(artDirectory, ".${characterId}.${extension}.tmp")
         val targetFile = File(packDirectory, fileName)
         context.contentResolver.openInputStream(imageUri)?.use { input ->
-            targetFile.outputStream().use { output ->
+            tempImage.outputStream().use { output ->
                 input.copyTo(output)
             }
         } ?: throw CharacterPackValidationException("Could not read image")
+
+        if (!tempImage.renameTo(targetFile)) {
+            tempImage.delete()
+            throw CharacterPackValidationException("Could not save image")
+        }
 
         // Update manifest
         val currentManifest = readManifest() ?: CharacterPackManifest(
@@ -71,7 +77,18 @@ class CustomCharacterRepository @Inject constructor(
             characters = currentManifest.characters + newCharacter
         )
 
-        manifestFile.writeText(json.encodeToString(updatedManifest))
+        // Write manifest atomically
+        val tempManifest = File(packDirectory, "${CharacterPackValidator.ManifestPath}.tmp-${UUID.randomUUID()}")
+        try {
+            tempManifest.writeText(json.encodeToString(updatedManifest))
+            if (!tempManifest.renameTo(manifestFile)) {
+                // Fallback: if rename fails (e.g. across different filesystems, though unlikely here), 
+                // try direct write
+                manifestFile.writeText(json.encodeToString(updatedManifest))
+            }
+        } finally {
+            if (tempManifest.exists()) tempManifest.delete()
+        }
 
         // Update catalog
         catalog.recordInstallation(updatedManifest)

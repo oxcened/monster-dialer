@@ -10,7 +10,7 @@ object CharacterPackValidator {
     const val MaxHp = 999
 
     private val idPattern = Regex("[a-z0-9][a-z0-9._-]{1,63}")
-    private val mediaExtensions = setOf("png", "webp")
+    private val mediaExtensions = setOf("png", "webp", "jpg", "jpeg")
     private val audioExtensions = setOf("ogg")
 
     fun validate(manifest: CharacterPackManifest): ValidatedCharacterPack {
