@@ -26,7 +26,6 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import dev.alenajam.monsterdialer.R
-import dev.alenajam.monsterdialer.characters.data.SharedCharacterArchive
 import dev.alenajam.opendialer.core.common.ui.AppIcon
 import dev.alenajam.opendialer.core.common.ui.IconSource
 import dev.alenajam.opendialer.core.common.ui.LocalAppIcons
@@ -74,7 +73,7 @@ fun CharactersHomeScreen(
         CharacterHomeItem(R.string.settings_contact_characters_title, R.string.settings_contact_characters_description, LocalAppIcons.current.history, RoundedCornerShape(2.dp)) { onOpenSubpage(1) }
         CharacterHomeItem(R.string.settings_character_packs_title, R.string.settings_character_packs_description, LocalAppIcons.current.edit, RoundedCornerShape(topStart = 2.dp, topEnd = 2.dp, bottomStart = 20.dp, bottomEnd = 20.dp)) { onOpenSubpage(2) }
         Button(
-            onClick = { picker.launch(arrayOf(SharedCharacterArchive.MimeType, "application/zip")) },
+            onClick = { picker.launch(arrayOf("*/*")) },
             modifier = Modifier.fillMaxWidth().padding(top = 24.dp)
         ) { Text(stringResource(R.string.import_character)) }
     }
