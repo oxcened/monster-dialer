@@ -13,7 +13,10 @@
     <string name="settings_contact_characters_title" comment="Settings title for assigning characters to contacts.">Personaggi dei contatti</string>
     <string name="settings_contact_characters_description" comment="Settings description for assigning characters to contacts.">Assegna personaggi a chi ti chiama.</string>
     <string name="contact_characters_not_set" comment="Settings subtitle when no contacts have a character assignment.">Nessun contatto personalizzato</string>
-    <plurals name="contact_character_assignment_count" comment="Settings subtitle showing how many contacts have a character assignment."><item quantity="one">%d contatto personalizzato</item><item quantity="other">%d contatti personalizzati</item></plurals>
+    <plurals name="contact_character_assignment_count" comment="Settings subtitle showing how many contacts have a character assignment.">
+        <item quantity="one">%d contatto personalizzato</item>
+        <item quantity="other">%d contatti personalizzati</item>
+    </plurals>
     <string name="choose_contact" comment="Button that opens the contact picker.">Scegli contatto</string>
     <string name="character_type_trainer" comment="Character category for a human battle character.">Allenatore</string>
     <string name="character_type_monster" comment="Character category for a creature battle character.">Mostro</string>
@@ -64,6 +67,8 @@
     <string name="remove" comment="Button label to permanently remove a character pack.">Rimuovi</string>
     <string name="remove_character_pack_title" comment="Confirmation dialog title; %1$s is the character pack name.">Rimuovere %1$s?</string>
     <string name="remove_character_pack_message" comment="Confirmation dialog message; %1$s is the character pack name.">Questa azione rimuove definitivamente %1$s e le relative illustrazioni da MonsterDialer.</string>
+    <string name="disable_character_pack_title" comment="Confirmation dialog title; %1$s is the character pack name.">Disattivare %1$s?</string>
+    <string name="disable_character_pack_message" comment="Confirmation dialog message; %1$s is the character pack name.">Questo pacchetto è attualmente in uso. Disattivandolo, i suoi personaggi verranno rimossi dalle assegnazioni per te e per i tuoi contatti.</string>
     <string name="cancel" comment="Button label that dismisses an action without making changes.">Annulla</string>
     <string name="character_pack_removed" comment="Confirmation after a character pack is removed.">Pacchetto di personaggi rimosso</string>
     <string name="character_pack_remove_failed" comment="Error when a character pack cannot be removed.">Impossibile rimuovere il pacchetto di personaggi</string>
@@ -91,7 +96,6 @@
     <string name="battle_trainer_sent_out" comment="Battle announcement; %1$s is the trainer name and %2$s is the monster name.">L’allenatore %1$s ha mandato in campo %2$s!</string>
     <string name="battle_wild_radiant_appeared" comment="Battle announcement; %1$s is the wild monster name and radiant is its rare variant.">È apparso un %1$s selvatico radioso!</string>
     <string name="battle_wild_appeared" comment="Battle announcement; %1$s is the wild monster name.">È apparso un %1$s selvatico!</string>
-
     <!-- Character creation -->
     <string name="add_trainer" comment="Button to start adding a new custom trainer.">Aggiungi allenatore</string>
     <string name="add_monster" comment="Button to start adding a new custom monster.">Aggiungi mostro</string>
@@ -123,8 +127,6 @@
     <string name="character_creation_failed" comment="Error when a character cannot be saved.">Impossibile creare il personaggio</string>
     <string name="character_limit_reached_message" comment="Error message when the 200 character limit is hit.">Limite di 200 personaggi raggiunto. Elimina alcuni per aggiungerne altri.</string>
     <string name="character_limit_reached_hint" comment="Short hint shown below the disabled add button.">Limite di 200 personaggi raggiunto</string>
-    <string name="disable_character_pack_title" comment="Confirmation dialog title; %1$s is the character pack name.">Disattivare %1$s?</string>
-    <string name="disable_character_pack_message" comment="Confirmation dialog message; %1$s is the character pack name.">Questo pacchetto è attualmente in uso. Disattivandolo, i suoi personaggi verranno rimossi dalle assegnazioni per te e per i tuoi contatti.</string>
     <string name="front_sprite_required_for_contact" comment="Message shown when a front sprite is missing but required by an assignment.">Lo sprite frontale è necessario perché questo personaggio è assegnato a un contatto.</string>
     <string name="back_sprite_required_for_player" comment="Message shown when a back sprite is missing but required by an assignment.">Lo sprite posteriore è necessario perché questo personaggio è assegnato a te.</string>
     <string name="remove_character_in_use_message" comment="Confirmation dialog message when deleting a character in use; %1$s is the character name.">%1$s è attualmente in uso. Eliminandolo, verrà rimosso dalle assegnazioni per te e per i tuoi contatti.</string>
