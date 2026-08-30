@@ -91,15 +91,15 @@ fun ColumnScope.PlayerCharacterSettingsContent(
         if (layout == CharacterLayout.List) {
             LazyColumn(state = listState, modifier = Modifier.fillMaxSize(), contentPadding = PaddingValues(top = 8.dp, bottom = 72.dp)) {
                 when (selectedTab) {
-                    0 -> characterTypeItems(trainerTitle, BuiltInCharacters.trainer, trainers, assignedTrainer, { it.playerArtwork }, { it.imageFile(requireNotNull(it.character.backImage)) }, viewModel::assignTrainer, { navigator?.navigateTo(0) }, addTrainerLabel, !isLimitReached, onDelete = { pendingDeletion = it })
-                    1 -> characterTypeItems(monsterTitle, BuiltInCharacters.monster.character, monsters, assignedMonster, { it.playerArtwork }, { it.imageFile(requireNotNull(it.character.backImage)) }, viewModel::assignMonster, { navigator?.navigateTo(1) }, addMonsterLabel, !isLimitReached, onDelete = { pendingDeletion = it })
+                    0 -> characterTypeItems(trainerTitle, BuiltInCharacters.trainer, trainers, assignedTrainer, { it.playerArtwork }, { it.imageFile(requireNotNull(it.character.frontImage)) }, viewModel::assignTrainer, { navigator?.navigateTo(0) }, addTrainerLabel, !isLimitReached, onDelete = { pendingDeletion = it }, onEdit = { navigator?.navigateTo(0, it.character.id) })
+                    1 -> characterTypeItems(monsterTitle, BuiltInCharacters.monster.character, monsters, assignedMonster, { it.playerArtwork }, { it.imageFile(requireNotNull(it.character.backImage)) }, viewModel::assignMonster, { navigator?.navigateTo(1) }, addMonsterLabel, !isLimitReached, onDelete = { pendingDeletion = it }, onEdit = { navigator?.navigateTo(1, it.character.id) })
                 }
             }
         } else {
             LazyVerticalGrid(columns = GridCells.Fixed(2), state = gridState, modifier = Modifier.fillMaxSize(), contentPadding = PaddingValues(top = 8.dp, bottom = 72.dp), horizontalArrangement = Arrangement.spacedBy(2.dp), verticalArrangement = Arrangement.spacedBy(2.dp)) {
                 when (selectedTab) {
-                    0 -> characterTypeGridItems(trainerTitle, BuiltInCharacters.trainer, trainers, assignedTrainer, { it.playerArtwork }, { it.imageFile(requireNotNull(it.character.backImage)) }, viewModel::assignTrainer, { navigator?.navigateTo(0) }, addTrainerLabel, !isLimitReached, onDelete = { pendingDeletion = it })
-                    1 -> characterTypeGridItems(monsterTitle, BuiltInCharacters.monster.character, monsters, assignedMonster, { it.playerArtwork }, { it.imageFile(requireNotNull(it.character.backImage)) }, viewModel::assignMonster, { navigator?.navigateTo(1) }, addMonsterLabel, !isLimitReached, onDelete = { pendingDeletion = it })
+                    0 -> characterTypeGridItems(trainerTitle, BuiltInCharacters.trainer, trainers, assignedTrainer, { it.playerArtwork }, { it.imageFile(requireNotNull(it.character.backImage)) }, viewModel::assignTrainer, { navigator?.navigateTo(0) }, addTrainerLabel, !isLimitReached, onDelete = { pendingDeletion = it }, onEdit = { navigator?.navigateTo(0, it.character.id) })
+                    1 -> characterTypeGridItems(monsterTitle, BuiltInCharacters.monster.character, monsters, assignedMonster, { it.playerArtwork }, { it.imageFile(requireNotNull(it.character.backImage)) }, viewModel::assignMonster, { navigator?.navigateTo(1) }, addMonsterLabel, !isLimitReached, onDelete = { pendingDeletion = it }, onEdit = { navigator?.navigateTo(1, it.character.id) })
                 }
             }
         }

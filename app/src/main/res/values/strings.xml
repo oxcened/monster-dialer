@@ -90,12 +90,15 @@
     <string name="add_monster" comment="Button to start adding a new custom monster.">Add monster</string>
     <string name="create_trainer_title" comment="Title of the trainer creation screen.">Add trainer</string>
     <string name="create_monster_title" comment="Title of the monster creation screen.">Add monster</string>
+    <string name="edit_trainer_title" comment="Title of the trainer edit screen.">Edit trainer</string>
+    <string name="edit_monster_title" comment="Title of the monster edit screen.">Edit monster</string>
     <string name="character_name_label" comment="Label for the character name input field.">Character name</string>
     <string name="character_name_hint" comment="Hint for the character name input field.">Enter name</string>
     <string name="select_image" comment="Button to pick an image from the gallery.">Select image</string>
     <string name="change_image" comment="Button to change the already selected image.">Change image</string>
     <string name="save_character" comment="Button to save the new character.">Save character</string>
     <string name="save" comment="Button label to save changes.">Save</string>
+    <string name="edit" comment="Button label to edit an item.">Edit</string>
     <string name="your_characters" comment="Section header for characters added by the user.">Your characters</string>
     <string name="built_in_characters_section" comment="Section header for characters included with the app.">Built-in characters</string>
     <string name="character_created" comment="Confirmation after a character is successfully created.">Character created</string>

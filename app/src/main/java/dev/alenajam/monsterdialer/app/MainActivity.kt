@@ -76,11 +76,11 @@ class MainActivity : AppCompatActivity() {
                             isScrollable = false,
                             topContentPadding = 0.dp,
                             destinations = listOf(
-                                SettingsSubpageDestination(title = stringResource(R.string.add_trainer)) { onNavigateBack ->
-                                    AddCharacterScreen(onNavigateBack, characterType = CharacterType.Trainer)
+                                SettingsSubpageDestination(title = stringResource(R.string.add_trainer)) { payload, onNavigateBack ->
+                                    AddCharacterScreen(onNavigateBack, characterType = CharacterType.Trainer, characterId = payload)
                                 },
-                                SettingsSubpageDestination(title = stringResource(R.string.add_monster)) { onNavigateBack ->
-                                    AddCharacterScreen(onNavigateBack, characterType = CharacterType.Monster)
+                                SettingsSubpageDestination(title = stringResource(R.string.add_monster)) { payload, onNavigateBack ->
+                                    AddCharacterScreen(onNavigateBack, characterType = CharacterType.Monster, characterId = payload)
                                 }
                             )
                         ),
@@ -91,14 +91,14 @@ class MainActivity : AppCompatActivity() {
                             isScrollable = false,
                             topContentPadding = 0.dp,
                             destinations = listOf(
-                                SettingsSubpageDestination(title = stringResource(R.string.choose_contact)) { onNavigateBack ->
+                                SettingsSubpageDestination(title = stringResource(R.string.choose_contact)) { _, onNavigateBack ->
                                     ContactPickerDestination(onNavigateBack)
                                 },
-                                SettingsSubpageDestination(title = stringResource(R.string.add_trainer)) { onNavigateBack ->
-                                    AddCharacterScreen(onNavigateBack, characterType = CharacterType.Trainer)
+                                SettingsSubpageDestination(title = stringResource(R.string.add_trainer)) { payload, onNavigateBack ->
+                                    AddCharacterScreen(onNavigateBack, characterType = CharacterType.Trainer, characterId = payload)
                                 },
-                                SettingsSubpageDestination(title = stringResource(R.string.add_monster)) { onNavigateBack ->
-                                    AddCharacterScreen(onNavigateBack, characterType = CharacterType.Monster)
+                                SettingsSubpageDestination(title = stringResource(R.string.add_monster)) { payload, onNavigateBack ->
+                                    AddCharacterScreen(onNavigateBack, characterType = CharacterType.Monster, characterId = payload)
                                 }
                             )
                         )

@@ -50,10 +50,12 @@ import dev.alenajam.opendialer.core.common.ui.LocalAppIcons
 fun AddCharacterScreen(
     onNavigateBack: () -> Unit,
     characterType: CharacterType,
+    characterId: String? = null,
     viewModel: AddCharacterViewModel = hiltViewModel()
 ) {
     val name by viewModel.name.collectAsStateWithLifecycle()
     val imageUri by viewModel.imageUri.collectAsStateWithLifecycle()
+    val existingImageFile by viewModel.existingImageFile.collectAsStateWithLifecycle()
     val isSaving by viewModel.isSaving.collectAsStateWithLifecycle()
     val isLimitReached by viewModel.isLimitReached.collectAsStateWithLifecycle()
     val creationResult by viewModel.creationResult.collectAsStateWithLifecycle()
@@ -63,7 +65,11 @@ fun AddCharacterScreen(
     }
 
     LaunchedEffect(Unit) {
-        viewModel.onTypeChanged(characterType)
+        if (characterId != null) {
+            viewModel.loadCharacter(characterId)
+        } else {
+            viewModel.onTypeChanged(characterType)
+        }
     }
 
     LaunchedEffect(creationResult) {
@@ -78,8 +84,13 @@ fun AddCharacterScreen(
                 title = { 
                     Text(
                         stringResource(
-                            if (characterType == CharacterType.Trainer) R.string.create_trainer_title
-                            else R.string.create_monster_title
+                            if (characterId != null) {
+                                if (characterType == CharacterType.Trainer) R.string.edit_trainer_title
+                                else R.string.edit_monster_title
+                            } else {
+                                if (characterType == CharacterType.Trainer) R.string.create_trainer_title
+                                else R.string.create_monster_title
+                            }
                         )
                     ) 
                 },
@@ -116,9 +127,10 @@ fun AddCharacterScreen(
                         .clickable(enabled = !isLimitReached) { picker.launch("image/*") },
                     contentAlignment = Alignment.Center
                 ) {
-                    if (imageUri != null) {
+                    val displayImage = imageUri ?: existingImageFile
+                    if (displayImage != null) {
                         AsyncImage(
-                            model = imageUri,
+                            model = displayImage,
                             contentDescription = null,
                             modifier = Modifier.fillMaxSize(),
                             contentScale = ContentScale.Crop
@@ -206,7 +218,7 @@ fun AddCharacterScreen(
                         .fillMaxWidth()
                         .height(56.dp),
                     shape = RoundedCornerShape(16.dp),
-                    enabled = name.isNotBlank() && imageUri != null && !isSaving && !isLimitReached
+                    enabled = name.isNotBlank() && (imageUri != null || existingImageFile != null) && !isSaving && !isLimitReached
                 ) {
                     Text(
                         stringResource(R.string.save),

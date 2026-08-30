@@ -100,6 +100,64 @@ class CustomCharacterRepository @Inject constructor(
         CharacterReference(CUSTOM_PACK_ID, characterId)
     }
 
+    suspend fun updateCharacter(
+        characterId: String,
+        name: String,
+        imageUri: Uri?
+    ) = withContext(Dispatchers.IO) {
+        val currentManifest = readManifest() ?: return@withContext
+        val character = currentManifest.characters.find { it.id == characterId } ?: return@withContext
+
+        var updatedFrontImage = character.frontImage
+        var updatedBackImage = character.backImage
+
+        if (imageUri != null) {
+            val extension = context.contentResolver.getType(imageUri)?.substringAfterLast('/') ?: "png"
+            val fileName = "art/$characterId.$extension"
+            val targetFile = File(packDirectory, fileName)
+
+            // Copy image atomically
+            val tempImage = File(artDirectory, ".${characterId}.${extension}.tmp")
+            context.contentResolver.openInputStream(imageUri)?.use { input ->
+                tempImage.outputStream().use { output ->
+                    input.copyTo(output)
+                }
+            } ?: throw CharacterPackValidationException("Could not read image")
+
+            if (!tempImage.renameTo(targetFile)) {
+                tempImage.delete()
+                throw CharacterPackValidationException("Could not save image")
+            }
+            updatedFrontImage = fileName
+            updatedBackImage = fileName
+        }
+
+        val updatedCharacters = currentManifest.characters.map {
+            if (it.id == characterId) {
+                it.copy(
+                    name = name.trim(),
+                    frontImage = updatedFrontImage,
+                    backImage = updatedBackImage
+                )
+            } else it
+        }
+
+        val updatedManifest = currentManifest.copy(characters = updatedCharacters)
+        
+        // Write manifest atomically
+        val tempManifest = File(packDirectory, "${CharacterPackValidator.ManifestPath}.tmp-${UUID.randomUUID()}")
+        try {
+            tempManifest.writeText(json.encodeToString(updatedManifest))
+            if (!tempManifest.renameTo(manifestFile)) {
+                manifestFile.writeText(json.encodeToString(updatedManifest))
+            }
+        } finally {
+            if (tempManifest.exists()) tempManifest.delete()
+        }
+
+        catalog.recordInstallation(updatedManifest)
+    }
+
     suspend fun deleteCharacter(characterId: String) = withContext(Dispatchers.IO) {
         val currentManifest = readManifest() ?: return@withContext
         val character = currentManifest.characters.find { it.id == characterId } ?: return@withContext
@@ -130,6 +188,15 @@ class CustomCharacterRepository @Inject constructor(
     }
 
     fun getCharacterCount(): Int = readManifest()?.characters?.size ?: 0
+
+    fun getCharacter(characterId: String): PackCharacter? =
+        readManifest()?.characters?.find { it.id == characterId }
+
+    fun getCharacterImageFile(characterId: String): File? {
+        val character = getCharacter(characterId) ?: return null
+        val relativePath = character.frontImage ?: character.backImage ?: return null
+        return File(packDirectory, relativePath)
+    }
 
     private fun readManifest(): CharacterPackManifest? {
         if (!manifestFile.exists()) return null

@@ -105,7 +105,8 @@ internal fun LazyListScope.characterTypeItems(
     onAddCharacter: () -> Unit,
     addLabel: String,
     isAddEnabled: Boolean = true,
-    onDelete: (InstalledPackCharacter) -> Unit = {}
+    onDelete: (InstalledPackCharacter) -> Unit = {},
+    onEdit: (InstalledPackCharacter) -> Unit = {}
 ) {
     val availableSelection = selected?.takeIf { reference ->
         characters.any { CharacterReference(it.packId, it.character.id) == reference }
@@ -168,7 +169,8 @@ internal fun LazyListScope.characterTypeItems(
                     )
                 },
                 onSelect = { onSelect(reference) },
-                onDelete = { onDelete(installed) }
+                onDelete = { onDelete(installed) },
+                onEdit = { onEdit(installed) }
             )
         }
     }
@@ -209,7 +211,8 @@ internal fun LazyGridScope.characterTypeGridItems(
     onAddCharacter: () -> Unit,
     addLabel: String,
     isAddEnabled: Boolean = true,
-    onDelete: (InstalledPackCharacter) -> Unit = {}
+    onDelete: (InstalledPackCharacter) -> Unit = {},
+    onEdit: (InstalledPackCharacter) -> Unit = {}
 ) {
     val availableSelection = selected?.takeIf { reference ->
         characters.any { CharacterReference(it.packId, it.character.id) == reference }
@@ -272,7 +275,8 @@ internal fun LazyGridScope.characterTypeGridItems(
                     )
                 },
                 onSelect = { onSelect(reference) },
-                onDelete = { onDelete(installed) }
+                onDelete = { onDelete(installed) },
+                onEdit = { onEdit(installed) }
             )
         }
     }
@@ -497,7 +501,8 @@ private fun NoAdditionalCharacterOptionsCard(title: String) {
 private fun CharacterOptionCard(
     name: String, isRadiant: Boolean = false, isSelected: Boolean,
     roundTop: Boolean, roundBottom: Boolean, artwork: @Composable () -> Unit, onSelect: () -> Unit,
-    onDelete: (() -> Unit)? = null
+    onDelete: (() -> Unit)? = null,
+    onEdit: (() -> Unit)? = null
 ) {
     var showMenu by remember { mutableStateOf(false) }
     val shape = RoundedCornerShape(
@@ -517,7 +522,7 @@ private fun CharacterOptionCard(
                 modifier = Modifier
                     .combinedClickable(
                         onClick = onSelect,
-                        onLongClick = if (onDelete != null) { { showMenu = true } } else null
+                        onLongClick = if (onDelete != null || onEdit != null) { { showMenu = true } } else null
                     )
                     .padding(16.dp),
                 verticalAlignment = Alignment.CenterVertically,
@@ -547,21 +552,35 @@ private fun CharacterOptionCard(
             }
         }
 
-        if (onDelete != null) {
+        if (onDelete != null || onEdit != null) {
             DropdownMenu(
                 expanded = showMenu,
                 onDismissRequest = { showMenu = false }
             ) {
-                DropdownMenuItem(
-                    text = { Text(stringResource(R.string.remove)) },
-                    onClick = {
-                        showMenu = false
-                        onDelete()
-                    },
-                    leadingIcon = {
-                        AppIcon(LocalAppIcons.current.delete, contentDescription = null, modifier = Modifier.size(18.dp))
-                    }
-                )
+                if (onEdit != null) {
+                    DropdownMenuItem(
+                        text = { Text(stringResource(R.string.edit)) },
+                        onClick = {
+                            showMenu = false
+                            onEdit()
+                        },
+                        leadingIcon = {
+                            AppIcon(LocalAppIcons.current.edit, contentDescription = null, modifier = Modifier.size(18.dp))
+                        }
+                    )
+                }
+                if (onDelete != null) {
+                    DropdownMenuItem(
+                        text = { Text(stringResource(R.string.remove)) },
+                        onClick = {
+                            showMenu = false
+                            onDelete()
+                        },
+                        leadingIcon = {
+                            AppIcon(LocalAppIcons.current.delete, contentDescription = null, modifier = Modifier.size(18.dp))
+                        }
+                    )
+                }
             }
         }
     }
@@ -595,7 +614,8 @@ private fun CharacterGridItem(
     shape: Shape,
     artwork: @Composable () -> Unit,
     onSelect: () -> Unit,
-    onDelete: (() -> Unit)? = null
+    onDelete: (() -> Unit)? = null,
+    onEdit: (() -> Unit)? = null
 ) {
     var showMenu by remember { mutableStateOf(false) }
     Box {
@@ -611,7 +631,7 @@ private fun CharacterGridItem(
                 modifier = Modifier
                     .combinedClickable(
                         onClick = onSelect,
-                        onLongClick = if (onDelete != null) { { showMenu = true } } else null
+                        onLongClick = if (onDelete != null || onEdit != null) { { showMenu = true } } else null
                     )
                     .fillMaxWidth()
                     .heightIn(min = 184.dp)
@@ -630,21 +650,35 @@ private fun CharacterGridItem(
             }
         }
 
-        if (onDelete != null) {
+        if (onDelete != null || onEdit != null) {
             DropdownMenu(
                 expanded = showMenu,
                 onDismissRequest = { showMenu = false }
             ) {
-                DropdownMenuItem(
-                    text = { Text(stringResource(R.string.remove)) },
-                    onClick = {
-                        showMenu = false
-                        onDelete()
-                    },
-                    leadingIcon = {
-                        AppIcon(LocalAppIcons.current.delete, contentDescription = null, modifier = Modifier.size(18.dp))
-                    }
-                )
+                if (onEdit != null) {
+                    DropdownMenuItem(
+                        text = { Text(stringResource(R.string.edit)) },
+                        onClick = {
+                            showMenu = false
+                            onEdit()
+                        },
+                        leadingIcon = {
+                            AppIcon(LocalAppIcons.current.edit, contentDescription = null, modifier = Modifier.size(18.dp))
+                        }
+                    )
+                }
+                if (onDelete != null) {
+                    DropdownMenuItem(
+                        text = { Text(stringResource(R.string.remove)) },
+                        onClick = {
+                            showMenu = false
+                            onDelete()
+                        },
+                        leadingIcon = {
+                            AppIcon(LocalAppIcons.current.delete, contentDescription = null, modifier = Modifier.size(18.dp))
+                        }
+                    )
+                }
             }
         }
     }

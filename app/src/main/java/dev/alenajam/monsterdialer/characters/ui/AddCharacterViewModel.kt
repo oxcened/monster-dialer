@@ -20,6 +20,8 @@ class AddCharacterViewModel @Inject constructor(
     private val repository: CustomCharacterRepository
 ) : ViewModel() {
 
+    private var editingCharacterId: String? = null
+
     private val _name = MutableStateFlow("")
     val name = _name.asStateFlow()
 
@@ -41,10 +43,26 @@ class AddCharacterViewModel @Inject constructor(
     private val _error = MutableStateFlow<String?>(null)
     val error = _error.asStateFlow()
 
+    private val _existingImageFile = MutableStateFlow<java.io.File?>(null)
+    val existingImageFile = _existingImageFile.asStateFlow()
+
     init {
         viewModelScope.launch {
             val count = withContext(Dispatchers.IO) { repository.getCharacterCount() }
             _isLimitReached.value = count >= CharacterPackValidator.MaxCharacters
+        }
+    }
+
+    fun loadCharacter(characterId: String) {
+        editingCharacterId = characterId
+        viewModelScope.launch {
+            val character = withContext(Dispatchers.IO) { repository.getCharacter(characterId) }
+            if (character != null) {
+                _name.value = character.name
+                _type.value = character.type
+                _existingImageFile.value = withContext(Dispatchers.IO) { repository.getCharacterImageFile(characterId) }
+                _isLimitReached.value = false // Can always edit even if limit reached
+            }
         }
     }
 
@@ -64,15 +82,22 @@ class AddCharacterViewModel @Inject constructor(
         val currentName = _name.value
         val currentType = _type.value
         val currentImage = _imageUri.value
+        val existingImage = _existingImageFile.value
+        val characterId = editingCharacterId
 
-        if (currentName.isBlank() || currentImage == null) return
+        if (currentName.isBlank() || (currentImage == null && existingImage == null)) return
 
         viewModelScope.launch {
             _isSaving.value = true
             _error.value = null
             try {
-                val result = repository.addCharacter(currentName, currentType, currentImage)
-                _creationResult.value = result
+                if (characterId != null) {
+                    repository.updateCharacter(characterId, currentName, currentImage)
+                    _creationResult.value = CharacterReference(CustomCharacterRepository.CUSTOM_PACK_ID, characterId)
+                } else {
+                    val result = repository.addCharacter(currentName, currentType, currentImage!!)
+                    _creationResult.value = result
+                }
             } catch (e: Exception) {
                 _error.value = e.message ?: "Unknown error"
             } finally {
