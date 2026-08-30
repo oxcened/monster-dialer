@@ -495,14 +495,13 @@ private fun measuredDialoguePages(
 private fun enemySprite(state: BattleUiState): BattleVisualAsset {
     val encounter = requireNotNull(state.encounter)
     if (encounter.type != EncounterType.Trainer) {
-        val enemy = requireNotNull(encounter.enemy)
-        return enemy.frontSprite
+        return encounter.enemy?.frontSprite ?: encounter.enemyTrainerSprite
     }
     return when {
         state.enemyRevealFrame == 1 -> BattleVisualAsset.VectorDrawable(R.drawable.battle_reveal_rift_1)
         state.enemyRevealFrame == 2 -> BattleVisualAsset.VectorDrawable(R.drawable.battle_reveal_rift_2)
         state.enemyRevealFrame == 3 -> BattleVisualAsset.VectorDrawable(R.drawable.battle_reveal_rift_3)
-        state.enemyRevealFrame >= 4 -> requireNotNull(encounter.enemy).frontSprite
+        state.enemyRevealFrame >= 4 -> encounter.enemy?.frontSprite ?: encounter.enemyTrainerSprite
         else -> encounter.enemyTrainerSprite
     }
 }
@@ -513,7 +512,7 @@ private fun playerSprite(state: BattleUiState): BattleVisualAsset {
         1 -> BattleVisualAsset.VectorDrawable(R.drawable.battle_reveal_rift_1)
         2 -> BattleVisualAsset.VectorDrawable(R.drawable.battle_reveal_rift_2)
         3 -> BattleVisualAsset.VectorDrawable(R.drawable.battle_reveal_rift_3)
-        4 -> requireNotNull(encounter.player.backSprite) { "Player monster requires a back sprite." }
+        4 -> encounter.player.backSprite ?: encounter.playerTrainerSprite
         else -> encounter.playerTrainerSprite
     }
 }

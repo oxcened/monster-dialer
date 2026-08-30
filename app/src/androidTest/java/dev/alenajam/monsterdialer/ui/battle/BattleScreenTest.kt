@@ -58,13 +58,35 @@ class BattleScreenTest {
         composeTestRule.onNodeWithText("FERNFOX").assertIsDisplayed()
     }
 
+    @Test
+    fun handlesMissingSpritesGracefully() {
+        val encounter = encounter(EncounterType.Trainer, enemyTrainerName = "Alex").copy(
+            player = BattleMonster(
+                "Mossling", 5, 20, 20, 
+                BattleVisualAsset.AppDrawable(dev.alenajam.monsterdialer.R.drawable.battle_player_monster), 
+                backSprite = null
+            ),
+            enemy = BattleMonster(
+                "Fernfox", 5, 20, 20,
+                BattleVisualAsset.AppDrawable(dev.alenajam.monsterdialer.R.drawable.battle_enemy_monster),
+                backSprite = null
+            )
+        )
+
+        composeTestRule.setContent {
+            BattleScreen(encounter = encounter, timing = BattleTiming.Instant)
+        }
+
+        composeTestRule.onNodeWithText("What will you do?").assertIsDisplayed()
+    }
+
     private fun encounter(type: EncounterType, enemyTrainerName: String? = null) = BattleEncounter(
         id = "test",
         type = type,
-        player = BattleMonster("Mossling", 5, 20, 20, BattleVisualAsset.AppDrawable(0)),
-        enemy = BattleMonster("Fernfox", 5, 20, 20, BattleVisualAsset.AppDrawable(0)),
+        player = BattleMonster("Mossling", 5, 20, 20, BattleVisualAsset.AppDrawable(dev.alenajam.monsterdialer.R.drawable.battle_player_monster)),
+        enemy = BattleMonster("Fernfox", 5, 20, 20, BattleVisualAsset.AppDrawable(dev.alenajam.monsterdialer.R.drawable.battle_enemy_monster)),
         enemyTrainerName = enemyTrainerName,
-        playerTrainerSprite = BattleVisualAsset.AppDrawable(0),
-        enemyTrainerSprite = BattleVisualAsset.AppDrawable(0)
+        playerTrainerSprite = BattleVisualAsset.AppDrawable(dev.alenajam.monsterdialer.R.drawable.battle_player_trainer),
+        enemyTrainerSprite = BattleVisualAsset.AppDrawable(dev.alenajam.monsterdialer.R.drawable.battle_enemy_trainer)
     )
 }

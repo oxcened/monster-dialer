@@ -4,6 +4,7 @@ import android.net.Uri
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import dev.alenajam.monsterdialer.characters.data.CharacterAssignmentRepository
 import dev.alenajam.monsterdialer.packs.data.CharacterAssignmentTarget
 import dev.alenajam.monsterdialer.packs.data.CharacterPackValidator
 import dev.alenajam.monsterdialer.packs.data.CharacterReference
@@ -11,6 +12,7 @@ import dev.alenajam.monsterdialer.packs.data.CharacterType
 import dev.alenajam.monsterdialer.packs.data.CustomCharacterRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -18,7 +20,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class AddCharacterViewModel @Inject constructor(
-    private val repository: CustomCharacterRepository
+    private val repository: CustomCharacterRepository,
+    private val assignmentRepository: CharacterAssignmentRepository
 ) : ViewModel() {
 
     private var editingCharacterId: String? = null
@@ -50,6 +53,12 @@ class AddCharacterViewModel @Inject constructor(
 
     private val _isLimitReached = MutableStateFlow(false)
     val isLimitReached = _isLimitReached.asStateFlow()
+
+    private val _isAssignedToPlayer = MutableStateFlow(false)
+    val isAssignedToPlayer = _isAssignedToPlayer.asStateFlow()
+
+    private val _isAssignedToContact = MutableStateFlow(false)
+    val isAssignedToContact = _isAssignedToContact.asStateFlow()
 
     private val _creationResult = MutableStateFlow<CharacterReference?>(null)
     val creationResult = _creationResult.asStateFlow()
@@ -83,6 +92,10 @@ class AddCharacterViewModel @Inject constructor(
                 _existingFrontImageFile.value = withContext(Dispatchers.IO) { repository.getCharacterFrontImageFile(characterId) }
                 _existingBackImageFile.value = withContext(Dispatchers.IO) { repository.getCharacterBackImageFile(characterId) }
                 _isLimitReached.value = false // Can always edit even if limit reached
+
+                val reference = CharacterReference(CustomCharacterRepository.CUSTOM_PACK_ID, characterId)
+                _isAssignedToPlayer.value = assignmentRepository.isCharacterAssignedToPlayer(reference)
+                _isAssignedToContact.value = assignmentRepository.isCharacterAssignedToAnyContact(reference)
             }
         }
     }
@@ -167,7 +180,17 @@ class AddCharacterViewModel @Inject constructor(
             _error.value = null
             try {
                 if (characterId != null) {
-                    repository.updateCharacter(characterId, currentName, frontImage, backImage, currentIsRadiant, currentLevel, currentMaxHp)
+                    repository.updateCharacter(
+                        characterId = characterId,
+                        name = currentName,
+                        frontImageUri = frontImage,
+                        keepExistingFront = existingFront != null,
+                        backImageUri = backImage,
+                        keepExistingBack = existingBack != null,
+                        isRadiant = currentIsRadiant,
+                        level = currentLevel,
+                        maxHp = currentMaxHp
+                    )
                     _creationResult.value = CharacterReference(CustomCharacterRepository.CUSTOM_PACK_ID, characterId)
                 } else {
                     val result = repository.addCharacter(currentName, currentType, frontImage, backImage, currentIsRadiant, currentLevel, currentMaxHp)

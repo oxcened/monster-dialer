@@ -17,6 +17,8 @@ interface CharacterAssignmentRepository {
     )
     suspend fun getPlayerCharacter(type: CharacterType): CharacterReference?
     suspend fun setPlayerCharacter(type: CharacterType, reference: CharacterReference?)
+    suspend fun isCharacterAssignedToPlayer(reference: CharacterReference): Boolean
+    suspend fun isCharacterAssignedToAnyContact(reference: CharacterReference): Boolean
 }
 
 @Singleton
@@ -49,5 +51,17 @@ class CharacterAssignmentRepositoryImpl @Inject constructor(
         reference: CharacterReference?
     ) = withContext(Dispatchers.IO) {
         assignments.setPlayer(type, reference)
+    }
+
+    override suspend fun isCharacterAssignedToPlayer(
+        reference: CharacterReference
+    ): Boolean = withContext(Dispatchers.IO) {
+        CharacterType.entries.any { assignments.player(it) == reference }
+    }
+
+    override suspend fun isCharacterAssignedToAnyContact(
+        reference: CharacterReference
+    ): Boolean = withContext(Dispatchers.IO) {
+        assignments.contactAssignments().any { it.character == reference }
     }
 }

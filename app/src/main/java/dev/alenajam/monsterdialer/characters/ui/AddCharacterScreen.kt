@@ -78,6 +78,8 @@ fun AddCharacterScreen(
     val maxHp by viewModel.maxHp.collectAsStateWithLifecycle()
     val isSaving by viewModel.isSaving.collectAsStateWithLifecycle()
     val isLimitReached by viewModel.isLimitReached.collectAsStateWithLifecycle()
+    val isAssignedToPlayer by viewModel.isAssignedToPlayer.collectAsStateWithLifecycle()
+    val isAssignedToContact by viewModel.isAssignedToContact.collectAsStateWithLifecycle()
     val creationResult by viewModel.creationResult.collectAsStateWithLifecycle()
 
     val frontPicker = rememberLauncherForActivityResult(ActivityResultContracts.GetContent()) { uri ->
@@ -165,8 +167,10 @@ fun AddCharacterScreen(
                             modifier = Modifier.fillMaxWidth(),
                             horizontalArrangement = Arrangement.spacedBy(16.dp)
                         ) {
-                            val frontRequired = preferredAssignmentTarget == CharacterAssignmentTarget.Contact
-                            val backRequired = preferredAssignmentTarget == CharacterAssignmentTarget.Player
+                            val frontRequired = isAssignedToContact || 
+                                preferredAssignmentTarget == CharacterAssignmentTarget.Contact
+                            val backRequired = isAssignedToPlayer || 
+                                preferredAssignmentTarget == CharacterAssignmentTarget.Player
 
                             // Front Sprite
                             SpritePicker(
@@ -250,6 +254,65 @@ fun AddCharacterScreen(
                     }
                 }
 
+                val hasFront = frontImageUri != null || existingFrontImageFile != null
+                val hasBack = backImageUri != null || existingBackImageFile != null
+                val frontRequiredByAssignment = isAssignedToContact
+                val backRequiredByAssignment = isAssignedToPlayer
+                val frontRequired = frontRequiredByAssignment || 
+                    preferredAssignmentTarget == CharacterAssignmentTarget.Contact
+                val backRequired = backRequiredByAssignment || 
+                    preferredAssignmentTarget == CharacterAssignmentTarget.Player
+
+                if ((frontRequiredByAssignment && !hasFront) || (backRequiredByAssignment && !hasBack)) {
+                    Surface(
+                        color = MaterialTheme.colorScheme.errorContainer,
+                        shape = RoundedCornerShape(16.dp),
+                        modifier = Modifier.fillMaxWidth()
+                    ) {
+                        Column(
+                            modifier = Modifier.padding(16.dp),
+                            verticalArrangement = Arrangement.spacedBy(8.dp)
+                        ) {
+                            if (frontRequiredByAssignment && !hasFront) {
+                                Row(
+                                    verticalAlignment = Alignment.CenterVertically,
+                                    horizontalArrangement = Arrangement.spacedBy(12.dp)
+                                ) {
+                                    AppIcon(
+                                        icon = LocalAppIcons.current.block,
+                                        contentDescription = null,
+                                        tint = MaterialTheme.colorScheme.onErrorContainer,
+                                        modifier = Modifier.size(20.dp)
+                                    )
+                                    Text(
+                                        text = stringResource(R.string.front_sprite_required_for_contact),
+                                        style = MaterialTheme.typography.bodySmall,
+                                        color = MaterialTheme.colorScheme.onErrorContainer
+                                    )
+                                }
+                            }
+                            if (backRequiredByAssignment && !hasBack) {
+                                Row(
+                                    verticalAlignment = Alignment.CenterVertically,
+                                    horizontalArrangement = Arrangement.spacedBy(12.dp)
+                                ) {
+                                    AppIcon(
+                                        icon = LocalAppIcons.current.block,
+                                        contentDescription = null,
+                                        tint = MaterialTheme.colorScheme.onErrorContainer,
+                                        modifier = Modifier.size(20.dp)
+                                    )
+                                    Text(
+                                        text = stringResource(R.string.back_sprite_required_for_player),
+                                        style = MaterialTheme.typography.bodySmall,
+                                        color = MaterialTheme.colorScheme.onErrorContainer
+                                    )
+                                }
+                            }
+                        }
+                    }
+                }
+
                 if (isLimitReached) {
                     Surface(
                         color = MaterialTheme.colorScheme.errorContainer,
@@ -283,13 +346,10 @@ fun AddCharacterScreen(
                         .height(64.dp),
                     shape = RoundedCornerShape(20.dp),
                     enabled = run {
-                        val hasFront = frontImageUri != null || existingFrontImageFile != null
-                        val hasBack = backImageUri != null || existingBackImageFile != null
-                        val isValid = when (preferredAssignmentTarget) {
-                            CharacterAssignmentTarget.Contact -> hasFront
-                            CharacterAssignmentTarget.Player -> hasBack
-                            else -> hasFront || hasBack
-                        }
+                        val isValid = (!frontRequired || hasFront) && 
+                            (!backRequired || hasBack) &&
+                            (hasFront || hasBack)
+
                         name.isNotBlank() && isValid && !isSaving && !isLimitReached
                     }
                 ) {

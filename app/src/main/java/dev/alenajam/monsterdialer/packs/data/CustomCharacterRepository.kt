@@ -96,7 +96,9 @@ class CustomCharacterRepository @Inject constructor(
         characterId: String,
         name: String,
         frontImageUri: Uri?,
+        keepExistingFront: Boolean,
         backImageUri: Uri?,
+        keepExistingBack: Boolean,
         isRadiant: Boolean = false,
         level: Int? = null,
         maxHp: Int? = null
@@ -104,16 +106,30 @@ class CustomCharacterRepository @Inject constructor(
         val currentManifest = readManifest() ?: return@withContext
         val character = currentManifest.characters.find { it.id == characterId } ?: return@withContext
 
-        val frontImageFileName = if (frontImageUri != null) {
-            saveImage(frontImageUri, "$characterId-front")
-        } else {
-            character.frontImage
+        val frontImageFileName = when {
+            frontImageUri != null -> {
+                // Delete old front image if exists
+                character.frontImage?.let { File(packDirectory, it).delete() }
+                saveImage(frontImageUri, "$characterId-front")
+            }
+            keepExistingFront -> character.frontImage
+            else -> {
+                character.frontImage?.let { File(packDirectory, it).delete() }
+                null
+            }
         }
 
-        val backImageFileName = if (backImageUri != null) {
-            saveImage(backImageUri, "$characterId-back")
-        } else {
-            character.backImage
+        val backImageFileName = when {
+            backImageUri != null -> {
+                // Delete old back image if exists
+                character.backImage?.let { File(packDirectory, it).delete() }
+                saveImage(backImageUri, "$characterId-back")
+            }
+            keepExistingBack -> character.backImage
+            else -> {
+                character.backImage?.let { File(packDirectory, it).delete() }
+                null
+            }
         }
 
         val assignableTo = mutableListOf<CharacterAssignmentTarget>()
