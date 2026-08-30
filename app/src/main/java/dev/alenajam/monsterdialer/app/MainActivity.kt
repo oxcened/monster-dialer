@@ -160,6 +160,7 @@ class MainActivity : AppCompatActivity() {
                                 parts.joinToString(" • ")
                             },
                             content = { CharacterPackSettingsContent(characterPackSettingsViewModel) },
+                            isScrollable = visiblePacks.isNotEmpty(),
                             visibleInSettings = false,
                             topContentPadding = 0.dp
                         )
