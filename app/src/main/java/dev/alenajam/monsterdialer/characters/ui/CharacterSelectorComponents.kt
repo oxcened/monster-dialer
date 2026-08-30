@@ -225,10 +225,17 @@ internal fun selectedCharacterIndex(
     characters: List<InstalledPackCharacter>,
     selected: CharacterReference?
 ): Int = selected?.let { selectedReference ->
-    characters.indexOfFirst { character ->
+    val index = characters.indexOfFirst { character ->
         CharacterReference(character.packId, character.character.id) == selectedReference
-    }.takeIf { it >= 0 }?.plus(2)
-} ?: 1
+    }
+    if (index == -1) 0
+    else {
+        val targetIndex = index + 2
+        // If the selection is at the very top (Default or first custom), 
+        // stay at index 0 to keep the "Add" button visible.
+        if (targetIndex <= 2) 0 else targetIndex
+    }
+} ?: 0
 
 @Composable
 internal fun JumpToSelectedCharacterButton(
