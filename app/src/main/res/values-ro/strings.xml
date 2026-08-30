@@ -4,11 +4,16 @@
     <string name="contribute_translations" comment="Title of the OpenDialer translation contribution link on the About screen.">Contribuie la traducerile OpenDialer</string>
     <string name="hang_up" comment="Button to end the current phone call.">Închide</string>
     <string name="settings_character_packs_title" comment="Settings title for managing character packs.">Pachete de personaje</string>
+    <string name="characters_navigation_label" comment="Bottom navigation label for character customization.">Personaje</string>
     <string name="settings_character_packs_description" comment="Settings description for character packs.">Importă și gestionează ilustrații personalizate ale personajelor.</string>
     <string name="settings_player_character_title" comment="Settings title for the player's battle character.">Personajul jucătorului</string>
     <string name="settings_player_character_description" comment="Settings description for the player's battle character.">Alege cine te reprezintă în timpul apelurilor.</string>
+    <string name="player_characters_not_set" comment="Settings subtitle when no player character is selected.">Nepersonalizat</string>
+    <string name="using_characters" comment="Settings subtitle; %1$s is a list of selected character names.">Folosește %1$s</string>
     <string name="settings_contact_characters_title" comment="Settings title for assigning characters to contacts.">Personajele contactelor</string>
     <string name="settings_contact_characters_description" comment="Settings description for assigning characters to contacts.">Atribuie personaje apelanților.</string>
+    <string name="contact_characters_not_set" comment="Settings subtitle when no contacts have a character assignment.">Niciun contact personalizat</string>
+    <plurals name="contact_character_assignment_count" comment="Settings subtitle showing how many contacts have a character assignment."><item quantity="one">%d contact personalizat</item><item quantity="few">%d contacte personalizate</item><item quantity="other">%d contacte personalizate</item></plurals>
     <string name="choose_contact" comment="Button that opens the contact picker.">Alege contactul</string>
     <string name="character_type_trainer" comment="Character category for a human battle character.">Antrenor</string>
     <string name="character_type_monster" comment="Character category for a creature battle character.">Monstru</string>
@@ -16,7 +21,7 @@
     <string name="default_character_artwork" comment="%1$s is a character type, such as Trainer or Monster.">Ilustrarea implicită pentru %1$s</string>
     <string name="character_artwork" comment="%1$s is a character name.">Ilustrarea lui %1$s</string>
     <string name="no_other_character_options" comment="%1$s is a character type, such as Trainer or Monster.">Nicio altă opțiune pentru %1$s</string>
-    <string name="import_and_enable_character_pack" comment="Empty-state message in the character selector.">Importă și activează un pachet de personaje pentru a adăuga mai multe.</string>
+    <string name="import_and_enable_character_pack" comment="Empty-state message in the character selector.">Adaugă propriul personaj sau importă un pachet pentru a vedea mai multe.</string>
     <string name="radiant" comment="Adjective for a rare, sparkling character variant.">Radiant</string>
     <string name="selected" comment="Status label for the currently chosen option.">Selectat</string>
     <string name="show_grid_view" comment="Accessibility label for the control that switches the character selector to a grid.">Afișează grila</string>
@@ -36,6 +41,11 @@
         <item quantity="one">%d instalat</item>
         <item quantity="few">%d instalate</item>
         <item quantity="other">%d instalate</item>
+    </plurals>
+    <plurals name="enabled_pack_count" comment="Number of enabled character packs. %d is the count.">
+        <item quantity="one">%d activat</item>
+        <item quantity="few">%d activate</item>
+        <item quantity="other">%d activate</item>
     </plurals>
     <plurals name="pack_character_count" comment="%1$d is the number of characters; %2$s is the pack version.">
         <item quantity="one">%1$d personaj · v%2$s</item>
@@ -84,4 +94,42 @@
     <string name="battle_trainer_sent_out" comment="Battle announcement; %1$s is the trainer name and %2$s is the monster name.">Antrenorul %1$s îl trimite pe %2$s!</string>
     <string name="battle_wild_radiant_appeared" comment="Battle announcement; %1$s is the wild monster name and radiant is its rare variant.">A apărut un %1$s sălbatic radiant!</string>
     <string name="battle_wild_appeared" comment="Battle announcement; %1$s is the wild monster name.">A apărut un %1$s sălbatic!</string>
+
+    <!-- Character creation -->
+    <string name="add_trainer" comment="Button to start adding a new custom trainer.">Adaugă antrenor</string>
+    <string name="add_monster" comment="Button to start adding a new custom monster.">Adaugă monstru</string>
+    <string name="create_trainer_title" comment="Title of the trainer creation screen.">Adaugă antrenor</string>
+    <string name="create_monster_title" comment="Title of the monster creation screen.">Adaugă monstru</string>
+    <string name="character_sprites_section" comment="Heading for the character sprites section.">Sprite-uri</string>
+    <string name="front_sprite_label" comment="Label for the front sprite picker.">Sprite frontal</string>
+    <string name="back_sprite_label" comment="Label for the back sprite picker.">Sprite posterior</string>
+    <string name="front_sprite_description" comment="Explains that the front sprite is required for contacts.">Adăugarea unui sprite frontal permite atribuirea acestui personaj contactelor.</string>
+    <string name="back_sprite_description" comment="Explains that the back sprite is required for the player.">Adăugarea unui sprite posterior permite atribuirea acestui personaj propriei persoane.</string>
+    <string name="advanced_section" comment="Heading for advanced character settings.">Avansat</string>
+    <string name="radiant_label" comment="Label for the radiant toggle.">Radiant</string>
+    <string name="radiant_description" comment="Explains what the radiant status means.">O variantă rară și strălucitoare a acestui monstru.</string>
+    <string name="level_label" comment="Label for the character level input.">Nivel</string>
+    <string name="max_hp_label" comment="Label for the character max HP input.">PV max</string>
+    <string name="required_label" comment="Suffix for required fields.">*</string>
+    <string name="edit_trainer_title" comment="Title of the trainer edit screen.">Editează antrenorul</string>
+    <string name="edit_monster_title" comment="Title of the monster edit screen.">Editează monstrul</string>
+    <string name="character_name_label" comment="Label for the character name input field.">Numele personajului</string>
+    <string name="character_name_hint" comment="Hint for the character name input field.">Introdu numele</string>
+    <string name="select_image" comment="Button to pick an image from the gallery.">Selectează imaginea</string>
+    <string name="change_image" comment="Button to change the already selected image.">Schimbă imaginea</string>
+    <string name="save_character" comment="Button to save the new character.">Salvează personajul</string>
+    <string name="save" comment="Button label to save changes.">Salvează</string>
+    <string name="edit" comment="Button label to edit an item.">Editează</string>
+    <string name="your_characters" comment="Section header for characters added by the user.">Personajele tale</string>
+    <string name="built_in_characters_section" comment="Section header for characters included with the app.">Personaje incluse</string>
+    <string name="character_created" comment="Confirmation after a character is successfully created.">Personaj creat</string>
+    <string name="character_creation_failed" comment="Error when a character cannot be saved.">Nu s-a putut crea personajul</string>
+    <string name="character_limit_reached_message" comment="Error message when the 200 character limit is hit.">Limită de 200 de personaje atinsă. Șterge câteva pentru a adăuga mai multe.</string>
+    <string name="character_limit_reached_hint" comment="Short hint shown below the disabled add button.">Limită de 200 de personaje atinsă</string>
+    <string name="disable_character_pack_title" comment="Confirmation dialog title; %1$s is the character pack name.">Dezactivezi %1$s?</string>
+    <string name="disable_character_pack_message" comment="Confirmation dialog message; %1$s is the character pack name.">Acest pachet este utilizat în prezent. Dezactivarea acestuia va anula atribuirea personajelor sale pentru tine și contactele tale.</string>
+    <string name="front_sprite_required_for_contact" comment="Message shown when a front sprite is missing but required by an assignment.">Sprite-ul frontal este necesar deoarece acest personaj este atribuit unui contact.</string>
+    <string name="back_sprite_required_for_player" comment="Message shown when a back sprite is missing but required by an assignment.">Sprite-ul posterior este necesar deoarece acest personaj îți este atribuit ție.</string>
+    <string name="remove_character_in_use_message" comment="Confirmation dialog message when deleting a character in use; %1$s is the character name.">%1$s este utilizat în prezent. Ștergerea acestuia va anula atribuirea sa pentru tine și contactele tale.</string>
+    <string name="remove_character_pack_in_use_message" comment="Confirmation dialog message when deleting a pack in use; %1$s is the character pack name.">Acest pachet este utilizat în prezent. Eliminarea acestuia va anula atribuirea personajelor sale pentru tine și contactele tale.</string>
 </resources>

@@ -4,11 +4,16 @@
     <string name="contribute_translations" comment="Title of the OpenDialer translation contribution link on the About screen.">Bidrag til OpenDialer-oversættelser</string>
     <string name="hang_up" comment="Button to end the current phone call.">Læg på</string>
     <string name="settings_character_packs_title" comment="Settings title for managing character packs.">Figurpakker</string>
+    <string name="characters_navigation_label" comment="Bottom navigation label for character customization.">Figurer</string>
     <string name="settings_character_packs_description" comment="Settings description for character packs.">Importér og administrér brugerdefinerede figurillustrationer.</string>
     <string name="settings_player_character_title" comment="Settings title for the player's battle character.">Spillerfigur</string>
     <string name="settings_player_character_description" comment="Settings description for the player's battle character.">Vælg, hvem der repræsenterer dig under opkald.</string>
+    <string name="player_characters_not_set" comment="Settings subtitle when no player character is selected.">Ikke tilpasset</string>
+    <string name="using_characters" comment="Settings subtitle; %1$s is a list of selected character names.">Bruger %1$s</string>
     <string name="settings_contact_characters_title" comment="Settings title for assigning characters to contacts.">Kontaktfigurer</string>
     <string name="settings_contact_characters_description" comment="Settings description for assigning characters to contacts.">Tildel figurer til indgående opkald.</string>
+    <string name="contact_characters_not_set" comment="Settings subtitle when no contacts have a character assignment.">Ingen kontakter tilpasset</string>
+    <plurals name="contact_character_assignment_count" comment="Settings subtitle showing how many contacts have a character assignment."><item quantity="one">%d kontakt tilpasset</item><item quantity="other">%d kontakter tilpasset</item></plurals>
     <string name="choose_contact" comment="Button that opens the contact picker.">Vælg kontakt</string>
     <string name="character_type_trainer" comment="Character category for a human battle character.">Træner</string>
     <string name="character_type_monster" comment="Character category for a creature battle character.">Monster</string>
@@ -16,7 +21,7 @@
     <string name="default_character_artwork" comment="%1$s is a character type, such as Trainer or Monster.">Standardillustration af %1$s</string>
     <string name="character_artwork" comment="%1$s is a character name.">Illustration af %1$s</string>
     <string name="no_other_character_options" comment="%1$s is a character type, such as Trainer or Monster.">Ingen andre %1$s-muligheder</string>
-    <string name="import_and_enable_character_pack" comment="Empty-state message in the character selector.">Importér og aktivér en figurpakke for at tilføje flere.</string>
+    <string name="import_and_enable_character_pack" comment="Empty-state message in the character selector.">Tilføj din egen figur eller importér en pakke for at se flere.</string>
     <string name="radiant" comment="Adjective for a rare, sparkling character variant.">Strålende</string>
     <string name="selected" comment="Status label for the currently chosen option.">Valgt</string>
     <string name="show_grid_view" comment="Accessibility label for the control that switches the character selector to a grid.">Vis gittervisning</string>
@@ -35,6 +40,10 @@
     <plurals name="installed_pack_count" comment="Number of installed character packs. %d is the count.">
         <item quantity="one">%d installeret</item>
         <item quantity="other">%d installeret</item>
+    </plurals>
+    <plurals name="enabled_pack_count" comment="Number of enabled character packs. %d is the count.">
+        <item quantity="one">%d aktiveret</item>
+        <item quantity="other">%d aktiveret</item>
     </plurals>
     <plurals name="pack_character_count" comment="%1$d is the number of characters; %2$s is the pack version.">
         <item quantity="one">%1$d figur · v%2$s</item>
@@ -82,4 +91,42 @@
     <string name="battle_trainer_sent_out" comment="Battle announcement; %1$s is the trainer name and %2$s is the monster name.">Træner %1$s sender %2$s ud!</string>
     <string name="battle_wild_radiant_appeared" comment="Battle announcement; %1$s is the wild monster name and radiant is its rare variant.">Et vildt strålende %1$s dukkede op!</string>
     <string name="battle_wild_appeared" comment="Battle announcement; %1$s is the wild monster name.">Et vildt %1$s dukkede op!</string>
+
+    <!-- Character creation -->
+    <string name="add_trainer" comment="Button to start adding a new custom trainer.">Tilføj træner</string>
+    <string name="add_monster" comment="Button to start adding a new custom monster.">Tilføj monster</string>
+    <string name="create_trainer_title" comment="Title of the trainer creation screen.">Tilføj træner</string>
+    <string name="create_monster_title" comment="Title of the monster creation screen.">Tilføj monster</string>
+    <string name="character_sprites_section" comment="Heading for the character sprites section.">Sprites</string>
+    <string name="front_sprite_label" comment="Label for the front sprite picker.">Front-sprite</string>
+    <string name="back_sprite_label" comment="Label for the back sprite picker.">Bagside-sprite</string>
+    <string name="front_sprite_description" comment="Explains that the front sprite is required for contacts.">Tilføjelse af en front-sprite gør det muligt at tildele denne figur til kontakter.</string>
+    <string name="back_sprite_description" comment="Explains that the back sprite is required for the player.">Tilføjelse af en bagside-sprite gør det muligt at tildele denne figur til dig selv.</string>
+    <string name="advanced_section" comment="Heading for advanced character settings.">Avanceret</string>
+    <string name="radiant_label" comment="Label for the radiant toggle.">Strålende</string>
+    <string name="radiant_description" comment="Explains what the radiant status means.">En sjælden, glitrende variant af dette monster.</string>
+    <string name="level_label" comment="Label for the character level input.">Level</string>
+    <string name="max_hp_label" comment="Label for the character max HP input.">Max HP</string>
+    <string name="required_label" comment="Suffix for required fields.">*</string>
+    <string name="edit_trainer_title" comment="Title of the trainer edit screen.">Rediger træner</string>
+    <string name="edit_monster_title" comment="Title of the monster edit screen.">Rediger monster</string>
+    <string name="character_name_label" comment="Label for the character name input field.">Figurnavn</string>
+    <string name="character_name_hint" comment="Hint for the character name input field.">Indtast navn</string>
+    <string name="select_image" comment="Button to pick an image from the gallery.">Vælg billede</string>
+    <string name="change_image" comment="Button to change the already selected image.">Skift billede</string>
+    <string name="save_character" comment="Button to save the new character.">Gem figur</string>
+    <string name="save" comment="Button label to save changes.">Gem</string>
+    <string name="edit" comment="Button label to edit an item.">Rediger</string>
+    <string name="your_characters" comment="Section header for characters added by the user.">Dine figurer</string>
+    <string name="built_in_characters_section" comment="Section header for characters included with the app.">Indbyggede figurer</string>
+    <string name="character_created" comment="Confirmation after a character is successfully created.">Figur oprettet</string>
+    <string name="character_creation_failed" comment="Error when a character cannot be saved.">Kunne ikke oprette figur</string>
+    <string name="character_limit_reached_message" comment="Error message when the 200 character limit is hit.">Grænse på 200 figurer nået. Slet nogle for at tilføje flere.</string>
+    <string name="character_limit_reached_hint" comment="Short hint shown below the disabled add button.">Grænse på 200 figurer nået</string>
+    <string name="disable_character_pack_title" comment="Confirmation dialog title; %1$s is the character pack name.">Deaktivér %1$s?</string>
+    <string name="disable_character_pack_message" comment="Confirmation dialog message; %1$s is the character pack name.">Denne pakke er i brug. Deaktivering af den vil ophæve tildelingen af dens figurer fra dig og dine kontakter.</string>
+    <string name="front_sprite_required_for_contact" comment="Message shown when a front sprite is missing but required by an assignment.">Front-sprite er påkrævet, fordi denne figur er tildelt en kontakt.</string>
+    <string name="back_sprite_required_for_player" comment="Message shown when a back sprite is missing but required by an assignment.">Bagside-sprite er påkrævet, fordi denne figur er tildelt dig.</string>
+    <string name="remove_character_in_use_message" comment="Confirmation dialog message when deleting a character in use; %1$s is the character name.">%1$s er i brug. Sletning af den vil ophæve tildelingen fra dig og dine kontakter.</string>
+    <string name="remove_character_pack_in_use_message" comment="Confirmation dialog message when deleting a pack in use; %1$s is the character pack name.">Denne pakke er i brug. Fjernelse af den vil ophæve tildelingen af dens figurer fra dig og dine kontakter.</string>
 </resources>

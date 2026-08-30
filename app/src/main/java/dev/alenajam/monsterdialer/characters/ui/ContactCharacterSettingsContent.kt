@@ -25,7 +25,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -40,6 +41,8 @@ import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import dev.alenajam.monsterdialer.R
 import dev.alenajam.monsterdialer.characters.data.BuiltInCharacters
+import dev.alenajam.monsterdialer.packs.data.InstalledPackCharacter
+import kotlinx.coroutines.launch
 import dev.alenajam.monsterdialer.contacts.ui.formatPhoneNumber
 import dev.alenajam.opendialer.core.common.ui.ContactAvatar
 import dev.alenajam.opendialer.core.common.ui.AppIcon
@@ -55,8 +58,9 @@ fun ColumnScope.ContactCharacterSettingsContent(
     val assignedTrainer by viewModel.assignedTrainer.collectAsStateWithLifecycle()
     val assignedMonster by viewModel.assignedMonster.collectAsStateWithLifecycle()
     val contactSelectionVersion by viewModel.contactSelectionVersion.collectAsStateWithLifecycle()
-    val trainers = viewModel.trainers
-    val monsters = viewModel.monsters
+    val trainers by viewModel.trainers.collectAsStateWithLifecycle()
+    val monsters by viewModel.monsters.collectAsStateWithLifecycle()
+    val isLimitReached by viewModel.isLimitReached.collectAsStateWithLifecycle()
     val selectedTab by viewModel.selectedTab.collectAsStateWithLifecycle()
     val layout by viewModel.layout.collectAsStateWithLifecycle()
     val trainerSelectedItemIndex = selectedCharacterIndex(trainers, assignedTrainer)
@@ -71,6 +75,8 @@ fun ColumnScope.ContactCharacterSettingsContent(
     val monsterGridState = rememberLazyGridState(initialFirstVisibleItemIndex = monsterSelectedItemIndex)
     val trainerTitle = stringResource(R.string.character_type_trainer)
     val monsterTitle = stringResource(R.string.character_type_monster)
+    val addTrainerLabel = stringResource(R.string.add_trainer)
+    val addMonsterLabel = stringResource(R.string.add_monster)
     val locale = LocalConfiguration.current.locales[0]
 
     val lifecycleOwner = LocalLifecycleOwner.current
@@ -110,7 +116,9 @@ fun ColumnScope.ContactCharacterSettingsContent(
                     selected = null,
                     defaultArtwork = { it.contactArtwork },
                     packArtwork = { it.imageFile(requireNotNull(it.character.frontImage)) },
-                    onSelect = {}
+                    onSelect = {},
+                    onAddCharacter = { navigator?.navigateTo(1) },
+                    addLabel = addTrainerLabel
                 )
                 1 -> characterTypeItems(
                     title = monsterTitle,
@@ -119,7 +127,9 @@ fun ColumnScope.ContactCharacterSettingsContent(
                     selected = null,
                     defaultArtwork = { it.contactArtwork },
                     packArtwork = { it.imageFile(requireNotNull(it.character.frontImage)) },
-                    onSelect = {}
+                    onSelect = {},
+                    onAddCharacter = { navigator?.navigateTo(2) },
+                    addLabel = addMonsterLabel
                 )
             }
         }
@@ -187,6 +197,22 @@ fun ColumnScope.ContactCharacterSettingsContent(
 
         val listState = if (selectedTab == 0) trainerListState else monsterListState
         val gridState = if (selectedTab == 0) trainerGridState else monsterGridState
+        val scope = androidx.compose.runtime.rememberCoroutineScope()
+        var pendingDeletion by remember { mutableStateOf<InstalledPackCharacter?>(null) }
+        var isPendingDeletionInUse by remember { mutableStateOf(false) }
+
+        pendingDeletion?.let { character ->
+            CustomCharacterDeletionConfirmationDialog(
+                characterName = character.character.name,
+                isInUse = isPendingDeletionInUse,
+                onConfirm = {
+                    viewModel.deleteCustomCharacter(character.character.id)
+                    pendingDeletion = null
+                },
+                onDismiss = { pendingDeletion = null }
+            )
+        }
+
         LaunchedEffect(contactSelectionVersion) {
             val selectedItemIndex = if (selectedTab == 0) trainerSelectedItemIndex else monsterSelectedItemIndex
             if (effectiveLayout == CharacterLayout.List) listState.requestScrollToItem(selectedItemIndex)
@@ -196,15 +222,15 @@ fun ColumnScope.ContactCharacterSettingsContent(
             if (effectiveLayout == CharacterLayout.List) {
                 LazyColumn(state = listState, modifier = Modifier.fillMaxSize(), contentPadding = PaddingValues(top = 8.dp, bottom = 72.dp)) {
                     when (selectedTab) {
-                        0 -> characterTypeItems(trainerTitle, BuiltInCharacters.trainer, trainers, assignedTrainer, { it.contactArtwork }, { it.imageFile(requireNotNull(it.character.frontImage)) }, viewModel::assignTrainer)
-                        1 -> characterTypeItems(monsterTitle, BuiltInCharacters.monster.character, monsters, assignedMonster, { it.contactArtwork }, { it.imageFile(requireNotNull(it.character.frontImage)) }, viewModel::assignMonster)
+                        0 -> characterTypeItems(trainerTitle, BuiltInCharacters.trainer, trainers, assignedTrainer, { it.contactArtwork }, { it.imageFile(requireNotNull(it.character.frontImage)) }, viewModel::assignTrainer, { navigator?.navigateTo(1) }, addTrainerLabel, !isLimitReached, onDelete = { character -> scope.launch { isPendingDeletionInUse = viewModel.isCharacterInUse(character.character.id); pendingDeletion = character } }, onEdit = { navigator?.navigateTo(1, it.character.id) })
+                        1 -> characterTypeItems(monsterTitle, BuiltInCharacters.monster.character, monsters, assignedMonster, { it.contactArtwork }, { it.imageFile(requireNotNull(it.character.frontImage)) }, viewModel::assignMonster, { navigator?.navigateTo(2) }, addMonsterLabel, !isLimitReached, onDelete = { character -> scope.launch { isPendingDeletionInUse = viewModel.isCharacterInUse(character.character.id); pendingDeletion = character } }, onEdit = { navigator?.navigateTo(2, it.character.id) })
                     }
                 }
             } else {
                 LazyVerticalGrid(columns = GridCells.Fixed(2), state = gridState, modifier = Modifier.fillMaxSize(), contentPadding = PaddingValues(top = 8.dp, bottom = 72.dp), horizontalArrangement = Arrangement.spacedBy(2.dp), verticalArrangement = Arrangement.spacedBy(2.dp)) {
                     when (selectedTab) {
-                        0 -> characterTypeGridItems(trainerTitle, BuiltInCharacters.trainer, trainers, assignedTrainer, { it.contactArtwork }, { it.imageFile(requireNotNull(it.character.frontImage)) }, viewModel::assignTrainer)
-                        1 -> characterTypeGridItems(monsterTitle, BuiltInCharacters.monster.character, monsters, assignedMonster, { it.contactArtwork }, { it.imageFile(requireNotNull(it.character.frontImage)) }, viewModel::assignMonster)
+                        0 -> characterTypeGridItems(trainerTitle, BuiltInCharacters.trainer, trainers, assignedTrainer, { it.contactArtwork }, { it.imageFile(requireNotNull(it.character.frontImage)) }, viewModel::assignTrainer, { navigator?.navigateTo(1) }, addTrainerLabel, !isLimitReached, onDelete = { character -> scope.launch { isPendingDeletionInUse = viewModel.isCharacterInUse(character.character.id); pendingDeletion = character } }, onEdit = { navigator?.navigateTo(1, it.character.id) })
+                        1 -> characterTypeGridItems(monsterTitle, BuiltInCharacters.monster.character, monsters, assignedMonster, { it.contactArtwork }, { it.imageFile(requireNotNull(it.character.frontImage)) }, viewModel::assignMonster, { navigator?.navigateTo(2) }, addMonsterLabel, !isLimitReached, onDelete = { character -> scope.launch { isPendingDeletionInUse = viewModel.isCharacterInUse(character.character.id); pendingDeletion = character } }, onEdit = { navigator?.navigateTo(2, it.character.id) })
                     }
                 }
             }

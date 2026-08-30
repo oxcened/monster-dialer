@@ -8,6 +8,7 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import dev.alenajam.monsterdialer.packs.data.CharacterPackCatalog
 import dev.alenajam.monsterdialer.packs.data.CharacterPackRepository
+import dev.alenajam.monsterdialer.packs.data.CustomCharacterRepository
 import dev.alenajam.monsterdialer.packs.data.PacksRepository
 import dev.alenajam.monsterdialer.packs.data.PacksRepositoryImpl
 import java.io.File
@@ -29,14 +30,27 @@ object PacksModule {
 
     @Provides
     @Singleton
-    fun provideCharacterPackRepository(@CharacterPacksDir root: File): CharacterPackRepository {
-        return CharacterPackRepository(root)
+    fun provideCharacterPackRepository(
+        @CharacterPacksDir root: File,
+        catalog: CharacterPackCatalog
+    ): CharacterPackRepository {
+        return CharacterPackRepository(root, catalog)
     }
 
     @Provides
     @Singleton
     fun provideCharacterPackCatalog(@CharacterPacksDir root: File): CharacterPackCatalog {
         return CharacterPackCatalog(root)
+    }
+
+    @Provides
+    @Singleton
+    fun provideCustomCharacterRepository(
+        @ApplicationContext context: Context,
+        @CharacterPacksDir root: File,
+        catalog: CharacterPackCatalog
+    ): CustomCharacterRepository {
+        return CustomCharacterRepository(context, root, catalog)
     }
 
     @Provides

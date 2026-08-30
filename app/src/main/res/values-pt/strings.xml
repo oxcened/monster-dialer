@@ -4,11 +4,16 @@
     <string name="contribute_translations" comment="Title of the OpenDialer translation contribution link on the About screen.">Contribuir com traduções do OpenDialer</string>
     <string name="hang_up" comment="Button to end the current phone call.">Desligar</string>
     <string name="settings_character_packs_title" comment="Settings title for managing character packs.">Pacotes de personagens</string>
+    <string name="characters_navigation_label" comment="Bottom navigation label for character customization.">Personagens</string>
     <string name="settings_character_packs_description" comment="Settings description for character packs.">Importa e gere ilustrações personalizadas de personagens.</string>
     <string name="settings_player_character_title" comment="Settings title for the player's battle character.">Personagem do jogador</string>
     <string name="settings_player_character_description" comment="Settings description for the player's battle character.">Escolhe quem te representa durante as chamadas.</string>
+    <string name="player_characters_not_set" comment="Settings subtitle when no player character is selected.">Não personalizada</string>
+    <string name="using_characters" comment="Settings subtitle; %1$s is a list of selected character names.">A usar %1$s</string>
     <string name="settings_contact_characters_title" comment="Settings title for assigning characters to contacts.">Personagens dos contactos</string>
     <string name="settings_contact_characters_description" comment="Settings description for assigning characters to contacts.">Atribui personagens a quem te liga.</string>
+    <string name="contact_characters_not_set" comment="Settings subtitle when no contacts have a character assignment.">Nenhum contacto personalizado</string>
+    <plurals name="contact_character_assignment_count" comment="Settings subtitle showing how many contacts have a character assignment."><item quantity="one">%d contacto personalizado</item><item quantity="other">%d contactos personalizados</item></plurals>
     <string name="choose_contact" comment="Button that opens the contact picker.">Escolher contacto</string>
     <string name="character_type_trainer" comment="Character category for a human battle character.">Treinador</string>
     <string name="character_type_monster" comment="Character category for a creature battle character.">Monstro</string>
@@ -16,7 +21,7 @@
     <string name="default_character_artwork" comment="%1$s is a character type, such as Trainer or Monster.">Ilustração predefinida de %1$s</string>
     <string name="character_artwork" comment="%1$s is a character name.">Ilustração de %1$s</string>
     <string name="no_other_character_options" comment="%1$s is a character type, such as Trainer or Monster.">Sem outras opções de %1$s</string>
-    <string name="import_and_enable_character_pack" comment="Empty-state message in the character selector.">Importa e ativa um pacote de personagens para adicionar mais.</string>
+    <string name="import_and_enable_character_pack" comment="Empty-state message in the character selector.">Adiciona a tua própria personagem ou importa um pacote para veres mais.</string>
     <string name="radiant" comment="Adjective for a rare, sparkling character variant.">Radiante</string>
     <string name="selected" comment="Status label for the currently chosen option.">Selecionado</string>
     <string name="show_grid_view" comment="Accessibility label for the control that switches the character selector to a grid.">Mostrar grelha</string>
@@ -35,6 +40,10 @@
     <plurals name="installed_pack_count" comment="Number of installed character packs. %d is the count.">
         <item quantity="one">%d instalado</item>
         <item quantity="other">%d instalados</item>
+    </plurals>
+    <plurals name="enabled_pack_count" comment="Number of enabled character packs. %d is the count.">
+        <item quantity="one">%d ativado</item>
+        <item quantity="other">%d ativados</item>
     </plurals>
     <plurals name="pack_character_count" comment="%1$d is the number of characters; %2$s is the pack version.">
         <item quantity="one">%1$d personagem · v%2$s</item>
@@ -82,4 +91,42 @@
     <string name="battle_trainer_sent_out" comment="Battle announcement; %1$s is the trainer name and %2$s is the monster name.">O treinador %1$s enviou %2$s!</string>
     <string name="battle_wild_radiant_appeared" comment="Battle announcement; %1$s is the wild monster name and radiant is its rare variant.">Apareceu um %1$s selvagem radiante!</string>
     <string name="battle_wild_appeared" comment="Battle announcement; %1$s is the wild monster name.">Apareceu um %1$s selvagem!</string>
+
+    <!-- Character creation -->
+    <string name="add_trainer" comment="Button to start adding a new custom trainer.">Adicionar treinador</string>
+    <string name="add_monster" comment="Button to start adding a new custom monster.">Adicionar monstro</string>
+    <string name="create_trainer_title" comment="Title of the trainer creation screen.">Adicionar treinador</string>
+    <string name="create_monster_title" comment="Title of the monster creation screen.">Adicionar monstro</string>
+    <string name="character_sprites_section" comment="Heading for the character sprites section.">Sprites</string>
+    <string name="front_sprite_label" comment="Label for the front sprite picker.">Sprite Frontal</string>
+    <string name="back_sprite_label" comment="Label for the back sprite picker.">Sprite Traseiro</string>
+    <string name="front_sprite_description" comment="Explains that the front sprite is required for contacts.">Adicionar um sprite frontal permite atribuir esta personagem aos contactos.</string>
+    <string name="back_sprite_description" comment="Explains that the back sprite is required for the player.">Adicionar um sprite traseiro permite atribuir esta personagem a ti mesmo.</string>
+    <string name="advanced_section" comment="Heading for advanced character settings.">Avançado</string>
+    <string name="radiant_label" comment="Label for the radiant toggle.">Radiante</string>
+    <string name="radiant_description" comment="Explains what the radiant status means.">Uma variante rara e brilhante deste monstro.</string>
+    <string name="level_label" comment="Label for the character level input.">Nível</string>
+    <string name="max_hp_label" comment="Label for the character max HP input.">PV máx</string>
+    <string name="required_label" comment="Suffix for required fields.">*</string>
+    <string name="edit_trainer_title" comment="Title of the trainer edit screen.">Editar treinador</string>
+    <string name="edit_monster_title" comment="Title of the monster edit screen.">Editar monstro</string>
+    <string name="character_name_label" comment="Label for the character name input field.">Nome da personagem</string>
+    <string name="character_name_hint" comment="Hint for the character name input field.">Introduzir nome</string>
+    <string name="select_image" comment="Button to pick an image from the gallery.">Selecionar imagem</string>
+    <string name="change_image" comment="Button to change the already selected image.">Alterar imagem</string>
+    <string name="save_character" comment="Button to save the new character.">Guardar personagem</string>
+    <string name="save" comment="Button label to save changes.">Guardar</string>
+    <string name="edit" comment="Button label to edit an item.">Editar</string>
+    <string name="your_characters" comment="Section header for characters added by the user.">As tuas personagens</string>
+    <string name="built_in_characters_section" comment="Section header for characters included with the app.">Personagens incluídas</string>
+    <string name="character_created" comment="Confirmation after a character is successfully created.">Personagem criada</string>
+    <string name="character_creation_failed" comment="Error when a character cannot be saved.">Não foi possível criar a personagem</string>
+    <string name="character_limit_reached_message" comment="Error message when the 200 character limit is hit.">Limite de 200 personagens atingido. Elimina algumas para adicionar mais.</string>
+    <string name="character_limit_reached_hint" comment="Short hint shown below the disabled add button.">Limite de 200 personagens atingido</string>
+    <string name="disable_character_pack_title" comment="Confirmation dialog title; %1$s is the character pack name.">Desativar %1$s?</string>
+    <string name="disable_character_pack_message" comment="Confirmation dialog message; %1$s is the character pack name.">Este pacote está em uso. Desativá-lo removerá a atribuição das suas personagens a si e aos seus contactos.</string>
+    <string name="front_sprite_required_for_contact" comment="Message shown when a front sprite is missing but required by an assignment.">O sprite frontal é obrigatório porque esta personagem está atribuída a um contacto.</string>
+    <string name="back_sprite_required_for_player" comment="Message shown when a back sprite is missing but required by an assignment.">O sprite traseiro é obrigatório porque esta personagem está atribuída a si.</string>
+    <string name="remove_character_in_use_message" comment="Confirmation dialog message when deleting a character in use; %1$s is the character name.">%1$s está em uso. Eliminá-lo removerá a sua atribuição a si e aos seus contactos.</string>
+    <string name="remove_character_pack_in_use_message" comment="Confirmation dialog message when deleting a pack in use; %1$s is the character pack name.">Este pacote está em uso. Removê-lo removerá a atribuição das suas personagens a si e aos seus contactos.</string>
 </resources>

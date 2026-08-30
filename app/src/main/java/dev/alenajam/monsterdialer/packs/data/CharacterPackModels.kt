@@ -64,7 +64,9 @@ data class InstalledPackCharacter(
     val packId: String,
     val packName: String,
     val character: PackCharacter,
-    val directory: java.io.File
+    val directory: java.io.File,
+    val isEditable: Boolean = false,
+    val isDeletable: Boolean = false
 ) {
     fun imageFile(relativePath: String): java.io.File = java.io.File(directory, relativePath)
 }

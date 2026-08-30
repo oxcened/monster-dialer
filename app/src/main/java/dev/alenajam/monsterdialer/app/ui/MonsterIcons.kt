@@ -1,7 +1,6 @@
 package dev.alenajam.monsterdialer.app.ui
 
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.Block
 import androidx.compose.material.icons.outlined.MoreVert
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
@@ -50,8 +49,8 @@ fun rememberMonsterIcons(): AppIcons {
             phonePaused = IconSource.Resource(R.drawable.hold, tintable = false),
             recents = IconSource.Resource(R.drawable.clock, tintable = false),
             recentsSelected = IconSource.Resource(R.drawable.clock, tintable = false),
-            contacts = IconSource.Resource(R.drawable.player, tintable = false),
-            contactsSelected = IconSource.Resource(R.drawable.player, tintable = false),
+            contacts = IconSource.Resource(R.drawable.book, tintable = false),
+            contactsSelected = IconSource.Resource(R.drawable.book, tintable = false),
             voicemailLarge = IconSource.Resource(R.drawable.voicemail, tintable = false),
             search = IconSource.Resource(R.drawable.search, tintable = false),
             close = IconSource.Resource(R.drawable.close, tintable = false),

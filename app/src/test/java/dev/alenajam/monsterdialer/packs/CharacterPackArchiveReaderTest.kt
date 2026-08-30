@@ -202,24 +202,25 @@ class CharacterPackArchiveReaderTest {
             "audio/mossling.ogg" to "sound"
         )
 
-        val installed = CharacterPackInstaller(storage).install(archive.inputStream())
+        val catalog = CharacterPackCatalog(storage)
+        val installed = CharacterPackInstaller(storage, catalog).install(archive.inputStream())
 
         assertTrue(File(installed.directory, "art/mossling.png").isFile)
         assertTrue(File(installed.directory, "audio/mossling.ogg").isFile)
-        assertEquals("com.example.forest", CharacterPackCatalog(storage).list().single().id)
+        assertEquals("com.example.forest", catalog.list().single().id)
     }
 
     @Test
     fun repositoryExposesOnlyEnabledCharactersForTheirAllowedRoles() {
         val storage = temporaryFolder.newFolder("character-packs")
+        val catalog = CharacterPackCatalog(storage)
         val archive = archive(
             "manifest.json" to validManifest(),
             "art/mossling.png" to "image",
             "art/mossling-back.png" to "image",
             "audio/mossling.ogg" to "sound"
         )
-        CharacterPackInstaller(storage).install(archive.inputStream())
-        val catalog = CharacterPackCatalog(storage)
+        CharacterPackInstaller(storage, catalog).install(archive.inputStream())
         val repository = CharacterPackRepository(storage, catalog)
 
         assertEquals(1, repository.charactersAssignableTo(CharacterAssignmentTarget.Contact).size)

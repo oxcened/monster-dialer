@@ -109,6 +109,12 @@ class CharacterAssignmentStore(
     }
 
     @Synchronized
+    fun assignedContactCount(): Int = contactAssignments()
+        .map { it.label }
+        .distinct()
+        .size
+
+    @Synchronized
     fun selectedContact(): SelectedContact? = read().selectedContact?.let { selected ->
         SelectedContact(selected.label, selected.contactKeys, selected.contactId, selected.photoUri)
     }
@@ -173,6 +179,54 @@ class CharacterAssignmentStore(
 
     fun assignContact(contactKey: String, character: CharacterReference?, label: String? = null) =
         assignContact(contactKey, CharacterType.Monster, character, label)
+
+    @Synchronized
+    fun clearAssignmentsForPack(packId: String) {
+        val document = read()
+        val updatedPlayerByType = document.playerByType.filterValues { it.packId != packId }
+        
+        val updatedContactsByType = document.contactsByType.mapValues { (_, assignments) ->
+            assignments.filterValues { it.packId != packId }
+        }.filterValues { it.isNotEmpty() }
+
+        val legacyContacts = document.contacts.filterValues { it.packId != packId }
+        
+        val updatedLabels = document.contactLabels.filterKeys { key ->
+            key in updatedContactsByType || key in legacyContacts
+        }
+
+        write(document.copy(
+            player = if (document.player?.packId == packId) null else document.player,
+            contacts = legacyContacts,
+            playerByType = updatedPlayerByType,
+            contactsByType = updatedContactsByType,
+            contactLabels = updatedLabels
+        ))
+    }
+
+    @Synchronized
+    fun clearAssignmentsForCharacter(reference: CharacterReference) {
+        val document = read()
+        val updatedPlayerByType = document.playerByType.filterValues { it != reference }
+        
+        val updatedContactsByType = document.contactsByType.mapValues { (_, assignments) ->
+            assignments.filterValues { it != reference }
+        }.filterValues { it.isNotEmpty() }
+
+        val legacyContacts = document.contacts.filterValues { it != reference }
+        
+        val updatedLabels = document.contactLabels.filterKeys { key ->
+            key in updatedContactsByType || key in legacyContacts
+        }
+
+        write(document.copy(
+            player = if (document.player == reference) null else document.player,
+            contacts = legacyContacts,
+            playerByType = updatedPlayerByType,
+            contactsByType = updatedContactsByType,
+            contactLabels = updatedLabels
+        ))
+    }
 
     private fun CharacterReference.validate() {
         require(packId.isNotBlank() && packId.length <= MaxIdentifierLength) { "Pack id is invalid" }

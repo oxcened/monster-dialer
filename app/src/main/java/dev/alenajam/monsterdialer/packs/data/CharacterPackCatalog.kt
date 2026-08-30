@@ -1,10 +1,13 @@
 package dev.alenajam.monsterdialer.packs.data
 
-import java.io.File
-import java.util.UUID
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
+import java.io.File
+import java.util.UUID
 
 @Serializable
 data class InstalledCharacterPackRecord(
@@ -29,12 +32,14 @@ class CharacterPackCatalog(
     private val clock: () -> Long = System::currentTimeMillis,
     private val json: Json = Json { ignoreUnknownKeys = false; explicitNulls = false }
 ) {
-    @Synchronized
-    fun list(): List<InstalledCharacterPackRecord> = read().packs.sortedBy { it.name.lowercase() }
+    private val _packs = MutableStateFlow(read().packs)
+    val packs: StateFlow<List<InstalledCharacterPackRecord>> = _packs.asStateFlow()
+
+    fun list(): List<InstalledCharacterPackRecord> = _packs.value.sortedBy { it.name.lowercase() }
 
     @Synchronized
     fun recordInstallation(manifest: CharacterPackManifest): InstalledCharacterPackRecord {
-        val existing = read().packs
+        val existing = _packs.value
         val previous = existing.firstOrNull { it.id == manifest.id }
         val record = InstalledCharacterPackRecord(
             id = manifest.id,
@@ -46,24 +51,28 @@ class CharacterPackCatalog(
             enabled = previous?.enabled ?: true,
             installedAtMillis = clock()
         )
-        write(CharacterPackCatalogDocument(existing.filterNot { it.id == manifest.id } + record))
+        val updatedList = existing.filterNot { it.id == manifest.id } + record
+        write(CharacterPackCatalogDocument(updatedList))
+        _packs.value = updatedList
         return record
     }
 
     @Synchronized
     fun setEnabled(id: String, enabled: Boolean) {
-        val document = read()
-        val updated = document.packs.map { pack -> if (pack.id == id) pack.copy(enabled = enabled) else pack }
-        if (updated == document.packs) throw CharacterPackValidationException("Pack is not installed")
+        val existing = _packs.value
+        val updated = existing.map { pack -> if (pack.id == id) pack.copy(enabled = enabled) else pack }
+        if (updated == existing) throw CharacterPackValidationException("Pack is not installed")
         write(CharacterPackCatalogDocument(updated))
+        _packs.value = updated
     }
 
     @Synchronized
     fun remove(id: String) {
-        val document = read()
-        val updated = document.packs.filterNot { it.id == id }
-        if (updated.size == document.packs.size) throw CharacterPackValidationException("Pack is not installed")
+        val existing = _packs.value
+        val updated = existing.filterNot { it.id == id }
+        if (updated.size == existing.size) throw CharacterPackValidationException("Pack is not installed")
         write(CharacterPackCatalogDocument(updated))
+        _packs.value = updated
     }
 
     private fun read(): CharacterPackCatalogDocument {

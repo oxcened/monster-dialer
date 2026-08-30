@@ -12,11 +12,16 @@
     <string name="url_feature_requests" translatable="false">https://monsterdialer.fider.io/</string>
     <string name="hang_up" comment="Button to end the current phone call.">Hang up</string>
     <string name="settings_character_packs_title" comment="Settings title for managing character packs.">Character Packs</string>
+    <string name="characters_navigation_label" comment="Bottom navigation label for character customization.">Characters</string>
     <string name="settings_character_packs_description" comment="Settings description for character packs.">Import and manage custom character artwork.</string>
     <string name="settings_player_character_title" comment="Settings title for the player's battle character.">Player Character</string>
     <string name="settings_player_character_description" comment="Settings description for the player's battle character.">Choose who represents you during calls.</string>
+    <string name="player_characters_not_set" comment="Settings subtitle when no player character is selected.">Not customized</string>
+    <string name="using_characters" comment="Settings subtitle; %1$s is a list of selected character names.">Using %1$s</string>
     <string name="settings_contact_characters_title" comment="Settings title for assigning characters to contacts.">Contact Characters</string>
     <string name="settings_contact_characters_description" comment="Settings description for assigning characters to contacts.">Assign characters to incoming callers.</string>
+    <string name="contact_characters_not_set" comment="Settings subtitle when no contacts have a character assignment.">No contacts customized</string>
+    <plurals name="contact_character_assignment_count" comment="Settings subtitle showing how many contacts have a character assignment."><item quantity="one">%d contact customized</item><item quantity="other">%d contacts customized</item></plurals>
     <string name="choose_contact" comment="Button that opens the contact picker.">Choose contact</string>
     <string name="character_type_trainer" comment="Character category for a human battle character.">Trainer</string>
     <string name="character_type_monster" comment="Character category for a creature battle character.">Monster</string>
@@ -24,7 +29,7 @@
     <string name="default_character_artwork" comment="%1$s is a character type, such as Trainer or Monster.">Default %1$s artwork</string>
     <string name="character_artwork" comment="%1$s is a character name.">%1$s artwork</string>
     <string name="no_other_character_options" comment="%1$s is a character type, such as Trainer or Monster.">No other %1$s options</string>
-    <string name="import_and_enable_character_pack" comment="Empty-state message in the character selector.">Import and enable a character pack to add more.</string>
+    <string name="import_and_enable_character_pack" comment="Empty-state message in the character selector.">Add your own character or import a pack to see more.</string>
     <string name="radiant" comment="Adjective for a rare, sparkling character variant.">Radiant</string>
     <string name="selected" comment="Status label for the currently chosen option.">Selected</string>
     <string name="show_grid_view" comment="Accessibility label for the control that switches the character selector to a grid.">Show grid view</string>
@@ -41,6 +46,7 @@
     <string name="pack_import_license_notice" comment="Legal notice shown before importing a character pack.">Only import artwork and sounds you created or are licensed to use.</string>
     <string name="your_character_packs" comment="Heading above installed character packs.">Your character packs</string>
     <plurals name="installed_pack_count" comment="Number of installed character packs. %d is the count."><item quantity="one">%d installed</item><item quantity="other">%d installed</item></plurals>
+    <plurals name="enabled_pack_count" comment="Number of enabled character packs. %d is the count."><item quantity="one">%d enabled</item><item quantity="other">%d enabled</item></plurals>
     <plurals name="pack_character_count" comment="%1$d is the number of characters; %2$s is the pack version."><item quantity="one">%1$d character · v%2$s</item><item quantity="other">%1$d characters · v%2$s</item></plurals>
     <string name="pack_version" comment="%1$s is a character pack version number.">v%1$s</string>
     <string name="pack_creator_label" comment="Label above the creator name in character pack metadata.">Creator</string>
@@ -57,6 +63,8 @@
     <string name="remove" comment="Button label to permanently remove a character pack.">Remove</string>
     <string name="remove_character_pack_title" comment="Confirmation dialog title; %1$s is the character pack name.">Remove %1$s?</string>
     <string name="remove_character_pack_message" comment="Confirmation dialog message; %1$s is the character pack name.">This permanently removes %1$s and its artwork from MonsterDialer.</string>
+    <string name="disable_character_pack_title" comment="Confirmation dialog title; %1$s is the character pack name.">Disable %1$s?</string>
+    <string name="disable_character_pack_message" comment="Confirmation dialog message; %1$s is the character pack name.">This pack is currently in use. Disabling it will unassign its characters from you and your contacts.</string>
     <string name="cancel" comment="Button label that dismisses an action without making changes.">Cancel</string>
     <string name="character_pack_removed" comment="Confirmation after a character pack is removed.">Character pack removed</string>
     <string name="character_pack_remove_failed" comment="Error when a character pack cannot be removed.">Could not remove character pack</string>
@@ -84,4 +92,40 @@
     <string name="battle_trainer_sent_out" comment="Battle announcement; %1$s is the trainer name and %2$s is the monster name.">Trainer %1$s sent out %2$s!</string>
     <string name="battle_wild_radiant_appeared" comment="Battle announcement; %1$s is the wild monster name and radiant is its rare variant.">Wild radiant %1$s appeared!</string>
     <string name="battle_wild_appeared" comment="Battle announcement; %1$s is the wild monster name.">Wild %1$s appeared!</string>
+
+    <!-- Character creation -->
+    <string name="add_trainer" comment="Button to start adding a new custom trainer.">Add trainer</string>
+    <string name="add_monster" comment="Button to start adding a new custom monster.">Add monster</string>
+    <string name="create_trainer_title" comment="Title of the trainer creation screen.">Add trainer</string>
+    <string name="create_monster_title" comment="Title of the monster creation screen.">Add monster</string>
+    <string name="character_sprites_section" comment="Heading for the character sprites section.">Sprites</string>
+    <string name="front_sprite_label" comment="Label for the front sprite picker.">Front Sprite</string>
+    <string name="back_sprite_label" comment="Label for the back sprite picker.">Back Sprite</string>
+    <string name="front_sprite_description" comment="Explains that the front sprite is required for contacts.">Adding a front sprite allows assigning this character to contacts.</string>
+    <string name="back_sprite_description" comment="Explains that the back sprite is required for the player.">Adding a back sprite allows assigning this character to yourself.</string>
+    <string name="advanced_section" comment="Heading for advanced character settings.">Advanced</string>
+    <string name="radiant_label" comment="Label for the radiant toggle.">Radiant</string>
+    <string name="radiant_description" comment="Explains what the radiant status means.">A rare, sparkling variant of this monster.</string>
+    <string name="level_label" comment="Label for the character level input.">Level</string>
+    <string name="max_hp_label" comment="Label for the character max HP input.">Max HP</string>
+    <string name="required_label" comment="Suffix for required fields.">*</string>
+    <string name="edit_trainer_title" comment="Title of the trainer edit screen.">Edit trainer</string>
+    <string name="edit_monster_title" comment="Title of the monster edit screen.">Edit monster</string>
+    <string name="character_name_label" comment="Label for the character name input field.">Character name</string>
+    <string name="character_name_hint" comment="Hint for the character name input field.">Enter name</string>
+    <string name="select_image" comment="Button to pick an image from the gallery.">Select image</string>
+    <string name="change_image" comment="Button to change the already selected image.">Change image</string>
+    <string name="save_character" comment="Button to save the new character.">Save character</string>
+    <string name="save" comment="Button label to save changes.">Save</string>
+    <string name="edit" comment="Button label to edit an item.">Edit</string>
+    <string name="your_characters" comment="Section header for characters added by the user.">Your characters</string>
+    <string name="built_in_characters_section" comment="Section header for characters included with the app.">Built-in characters</string>
+    <string name="character_created" comment="Confirmation after a character is successfully created.">Character created</string>
+    <string name="character_creation_failed" comment="Error when a character cannot be saved.">Could not create character</string>
+    <string name="character_limit_reached_message" comment="Error message when the 200 character limit is hit.">Limit of 200 characters reached. Delete some to add more.</string>
+    <string name="character_limit_reached_hint" comment="Short hint shown below the disabled add button.">Limit of 200 characters reached</string>
+    <string name="front_sprite_required_for_contact" comment="Message shown when a front sprite is missing but required by an assignment.">Front sprite is required because this character is assigned to a contact.</string>
+    <string name="back_sprite_required_for_player" comment="Message shown when a back sprite is missing but required by an assignment.">Back sprite is required because this character is assigned to you.</string>
+    <string name="remove_character_in_use_message" comment="Confirmation dialog message when deleting a character in use; %1$s is the character name.">%1$s is currently in use. Deleting it will unassign it from you and your contacts.</string>
+    <string name="remove_character_pack_in_use_message" comment="Confirmation dialog message when deleting a pack in use; %1$s is the character pack name.">This pack is currently in use. Removing it will unassign its characters from you and your contacts.</string>
 </resources>

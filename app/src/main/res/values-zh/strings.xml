@@ -4,11 +4,16 @@
     <string name="contribute_translations" comment="Title of the OpenDialer translation contribution link on the About screen.">参与 OpenDialer 翻译</string>
     <string name="hang_up" comment="Button to end the current phone call.">挂断</string>
     <string name="settings_character_packs_title" comment="Settings title for managing character packs.">角色包</string>
+    <string name="characters_navigation_label" comment="Bottom navigation label for character customization.">角色</string>
     <string name="settings_character_packs_description" comment="Settings description for character packs.">导入和管理自定义角色插图。</string>
     <string name="settings_player_character_title" comment="Settings title for the player's battle character.">玩家角色</string>
     <string name="settings_player_character_description" comment="Settings description for the player's battle character.">选择通话时代表你的角色。</string>
+    <string name="player_characters_not_set" comment="Settings subtitle when no player character is selected.">未自定义</string>
+    <string name="using_characters" comment="Settings subtitle; %1$s is a list of selected character names.">正在使用 %1$s</string>
     <string name="settings_contact_characters_title" comment="Settings title for assigning characters to contacts.">联系人角色</string>
     <string name="settings_contact_characters_description" comment="Settings description for assigning characters to contacts.">为来电者分配角色。</string>
+    <string name="contact_characters_not_set" comment="Settings subtitle when no contacts have a character assignment.">没有已自定义的联系人</string>
+    <plurals name="contact_character_assignment_count" comment="Settings subtitle showing how many contacts have a character assignment."><item quantity="one">已自定义 %d 位联系人</item><item quantity="other">已自定义 %d 位联系人</item></plurals>
     <string name="choose_contact" comment="Button that opens the contact picker.">选择联系人</string>
     <string name="character_type_trainer" comment="Character category for a human battle character.">训练师</string>
     <string name="character_type_monster" comment="Character category for a creature battle character.">怪物</string>
@@ -16,7 +21,7 @@
     <string name="default_character_artwork" comment="%1$s is a character type, such as Trainer or Monster.">默认 %1$s 插图</string>
     <string name="character_artwork" comment="%1$s is a character name.">%1$s 插图</string>
     <string name="no_other_character_options" comment="%1$s is a character type, such as Trainer or Monster.">没有其他 %1$s 选项</string>
-    <string name="import_and_enable_character_pack" comment="Empty-state message in the character selector.">导入并启用角色包以添加更多角色。</string>
+    <string name="import_and_enable_character_pack" comment="Empty-state message in the character selector.">添加你自己的角色或导入角色包以查看更多。</string>
     <string name="radiant" comment="Adjective for a rare, sparkling character variant.">闪耀</string>
     <string name="selected" comment="Status label for the currently chosen option.">已选择</string>
     <string name="show_grid_view" comment="Accessibility label for the control that switches the character selector to a grid.">显示网格视图</string>
@@ -34,6 +39,9 @@
     <string name="your_character_packs" comment="Heading above installed character packs.">你的角色包</string>
     <plurals name="installed_pack_count" comment="Number of installed character packs. %d is the count.">
         <item quantity="other">已安装 %d 个</item>
+    </plurals>
+    <plurals name="enabled_pack_count" comment="Number of enabled character packs. %d is the count.">
+        <item quantity="other">已启用 %d 个</item>
     </plurals>
     <plurals name="pack_character_count" comment="%1$d is the number of characters; %2$s is the pack version.">
         <item quantity="other">%1$d 个角色 · v%2$s</item>
@@ -80,4 +88,42 @@
     <string name="battle_trainer_sent_out" comment="Battle announcement; %1$s is the trainer name and %2$s is the monster name.">训练师 %1$s 派出了 %2$s！</string>
     <string name="battle_wild_radiant_appeared" comment="Battle announcement; %1$s is the wild monster name and radiant is its rare variant.">闪耀的野生 %1$s 出现了！</string>
     <string name="battle_wild_appeared" comment="Battle announcement; %1$s is the wild monster name.">野生 %1$s 出现了！</string>
+
+    <!-- Character creation -->
+    <string name="add_trainer" comment="Button to start adding a new custom trainer.">添加训练师</string>
+    <string name="add_monster" comment="Button to start adding a new custom monster.">添加怪物</string>
+    <string name="create_trainer_title" comment="Title of the trainer creation screen.">添加训练师</string>
+    <string name="create_monster_title" comment="Title of the monster creation screen.">添加怪物</string>
+    <string name="character_sprites_section" comment="Heading for the character sprites section.">图像</string>
+    <string name="front_sprite_label" comment="Label for the front sprite picker.">前向图像</string>
+    <string name="back_sprite_label" comment="Label for the back sprite picker.">后向图像</string>
+    <string name="front_sprite_description" comment="Explains that the front sprite is required for contacts.">添加前向图像即可将此角色分配给联系人。</string>
+    <string name="back_sprite_description" comment="Explains that the back sprite is required for the player.">添加后向图像即可将此角色分配给自己。</string>
+    <string name="advanced_section" comment="Heading for advanced character settings.">高级</string>
+    <string name="radiant_label" comment="Label for the radiant toggle.">闪耀</string>
+    <string name="radiant_description" comment="Explains what the radiant status means.">此怪物的一种罕见的闪光变体。</string>
+    <string name="level_label" comment="Label for the character level input.">等级</string>
+    <string name="max_hp_label" comment="Label for the character max HP input.">最大生命值</string>
+    <string name="required_label" comment="Suffix for required fields.">*</string>
+    <string name="edit_trainer_title" comment="Title of the trainer edit screen.">编辑训练师</string>
+    <string name="edit_monster_title" comment="Title of the monster edit screen.">编辑怪物</string>
+    <string name="character_name_label" comment="Label for the character name input field.">角色名称</string>
+    <string name="character_name_hint" comment="Hint for the character name input field.">输入名称</string>
+    <string name="select_image" comment="Button to pick an image from the gallery.">选择图片</string>
+    <string name="change_image" comment="Button to change the already selected image.">更换图片</string>
+    <string name="save_character" comment="Button to save the new character.">保存角色</string>
+    <string name="save" comment="Button label to save changes.">保存</string>
+    <string name="edit" comment="Button label to edit an item.">编辑</string>
+    <string name="your_characters" comment="Section header for characters added by the user.">你的角色</string>
+    <string name="built_in_characters_section" comment="Section header for characters included with the app.">内置角色</string>
+    <string name="character_created" comment="Confirmation after a character is successfully created.">角色已创建</string>
+    <string name="character_creation_failed" comment="Error when a character cannot be saved.">无法保存角色</string>
+    <string name="character_limit_reached_message" comment="Error message when the 200 character limit is hit.">已达到 200 个角色的限制。请删除一些后再添加。</string>
+    <string name="character_limit_reached_hint" comment="Short hint shown below the disabled add button.">已达到 200 个角色的限制</string>
+    <string name="disable_character_pack_title" comment="Confirmation dialog title; %1$s is the character pack name.">停用 %1$s 吗？</string>
+    <string name="disable_character_pack_message" comment="Confirmation dialog message; %1$s is the character pack name.">此角色包目前正在使用中。停用它将取消其角色与你及你的联系人的关联。</string>
+    <string name="front_sprite_required_for_contact" comment="Message shown when a front sprite is missing but required by an assignment.">需要前向图像，因为此角色已分配给联系人。</string>
+    <string name="back_sprite_required_for_player" comment="Message shown when a back sprite is missing but required by an assignment.">需要后向图像，因为此角色已分配给你。</string>
+    <string name="remove_character_in_use_message" comment="Confirmation dialog message when deleting a character in use; %1$s is the character name.">%1$s 目前正在使用中。删除它将取消其与你及你的联系人的关联。</string>
+    <string name="remove_character_pack_in_use_message" comment="Confirmation dialog message when deleting a pack in use; %1$s is the character pack name.">此角色包目前正在使用中。移除它将取消其角色与你及你的联系人的关联。</string>
 </resources>

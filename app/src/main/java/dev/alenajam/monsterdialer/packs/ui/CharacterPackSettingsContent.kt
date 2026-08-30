@@ -7,6 +7,9 @@ import android.content.Intent
 import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
+import kotlinx.coroutines.launch
+import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -18,7 +21,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.selection.SelectionContainer
@@ -31,6 +33,8 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.DropdownMenu
+import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
@@ -64,6 +68,7 @@ import dev.alenajam.monsterdialer.packs.data.MonsterPack
 import dev.alenajam.opendialer.core.common.ui.AppIcon
 import dev.alenajam.opendialer.core.common.ui.LocalAppIcons
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun ColumnScope.CharacterPackSettingsContent(
     viewModel: CharacterPackSettingsViewModel = hiltViewModel()
@@ -75,7 +80,10 @@ fun ColumnScope.CharacterPackSettingsContent(
     val characterPackRemoved = stringResource(R.string.character_pack_removed)
     val characterPackRemoveFailed = stringResource(R.string.character_pack_remove_failed)
     var pendingDeletion by remember { mutableStateOf<MonsterPack?>(null) }
+    var isPendingDeletionInUse by remember { mutableStateOf(false) }
+    var pendingDisable by remember { mutableStateOf<MonsterPack?>(null) }
     var selectedPack by remember { mutableStateOf<MonsterPack?>(null) }
+    val scope = androidx.compose.runtime.rememberCoroutineScope()
     
     val picker = rememberLauncherForActivityResult(ActivityResultContracts.OpenDocument()) { uri ->
         if (uri == null) return@rememberLauncherForActivityResult
@@ -94,11 +102,23 @@ fun ColumnScope.CharacterPackSettingsContent(
     pendingDeletion?.let { pack ->
         CharacterPackDeletionConfirmationDialog(
             packName = pack.name,
+            isInUse = isPendingDeletionInUse,
             onConfirm = {
                 viewModel.deletePack(pack.id, characterPackRemoved, characterPackRemoveFailed)
                 pendingDeletion = null
             },
             onDismiss = { pendingDeletion = null }
+        )
+    }
+
+    pendingDisable?.let { pack ->
+        CharacterPackDisableConfirmationDialog(
+            packName = pack.name,
+            onConfirm = {
+                viewModel.togglePack(pack.id, false)
+                pendingDisable = null
+            },
+            onDismiss = { pendingDisable = null }
         )
     }
 
@@ -157,67 +177,102 @@ fun ColumnScope.CharacterPackSettingsContent(
             Column {
                 packs.forEachIndexed { index, pack ->
                     val preview = viewModel.getPreviewCharacter(pack.id, pack.name)
-                    Card(
-                        modifier = Modifier.fillMaxWidth().padding(vertical = 1.dp),
-                        shape = RoundedCornerShape(
-                            topStart = if (index == 0) 20.dp else 2.dp,
-                            topEnd = if (index == 0) 20.dp else 2.dp,
-                            bottomStart = if (index == packs.lastIndex) 20.dp else 2.dp,
-                            bottomEnd = if (index == packs.lastIndex) 20.dp else 2.dp
-                        ),
-                        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainerLow),
-                        elevation = CardDefaults.cardElevation(defaultElevation = 0.5.dp)
-                    ) {
-                        Column(
-                            modifier = Modifier.padding(16.dp),
-                            verticalArrangement = Arrangement.spacedBy(8.dp)
+                    var showMenu by remember { mutableStateOf(false) }
+                    Box {
+                        Card(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(vertical = 1.dp),
+                            shape = RoundedCornerShape(
+                                topStart = if (index == 0) 20.dp else 2.dp,
+                                topEnd = if (index == 0) 20.dp else 2.dp,
+                                bottomStart = if (index == packs.lastIndex) 20.dp else 2.dp,
+                                bottomEnd = if (index == packs.lastIndex) 20.dp else 2.dp
+                            ),
+                            colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainerLow),
+                            elevation = CardDefaults.cardElevation(defaultElevation = 0.5.dp)
                         ) {
-                            Row(
-                                modifier = Modifier.fillMaxWidth(),
-                                verticalAlignment = Alignment.CenterVertically
+                            Column(
+                                modifier = Modifier
+                                    .combinedClickable(
+                                        onClick = { selectedPack = pack },
+                                        onLongClick = { showMenu = true }
+                                    )
+                                    .padding(16.dp),
+                                verticalArrangement = Arrangement.spacedBy(8.dp)
                             ) {
-                                if (preview != null) {
-                                    AsyncImage(
-                                        model = preview.imageFile(
-                                            preview.character.frontImage ?: requireNotNull(preview.character.backImage)
-                                        ),
-                                        contentDescription = stringResource(R.string.character_artwork, preview.character.name),
-                                        modifier = Modifier
-                                            .size(64.dp)
-                                            .clip(RoundedCornerShape(16.dp))
-                                    )
-                                    Spacer(Modifier.width(10.dp))
-                                }
-                                Column(
-                                    modifier = Modifier
-                                        .weight(1f)
-                                        .clickable { selectedPack = pack },
-                                    verticalArrangement = Arrangement.spacedBy(2.dp)
+                                Row(
+                                    modifier = Modifier.fillMaxWidth(),
+                                    verticalAlignment = Alignment.CenterVertically
                                 ) {
-                                    Text(pack.name, style = MaterialTheme.typography.titleMedium)
-                                    // In a real app we might want the character count in MonsterPack
-                                    Text(
-                                        stringResource(R.string.pack_version, pack.version),
-                                        style = MaterialTheme.typography.bodyMedium,
-                                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                                    if (preview != null) {
+                                        AsyncImage(
+                                            model = preview.imageFile(
+                                                preview.character.frontImage
+                                                    ?: requireNotNull(preview.character.backImage)
+                                            ),
+                                            contentDescription = stringResource(
+                                                R.string.character_artwork,
+                                                preview.character.name
+                                            ),
+                                            modifier = Modifier
+                                                .size(64.dp)
+                                                .clip(RoundedCornerShape(16.dp))
+                                        )
+                                        Spacer(Modifier.width(10.dp))
+                                    }
+                                    Column(
+                                        modifier = Modifier.weight(1f),
+                                        verticalArrangement = Arrangement.spacedBy(2.dp)
+                                    ) {
+                                        Text(pack.name, style = MaterialTheme.typography.titleMedium)
+                                        Text(
+                                            stringResource(R.string.pack_version, pack.version),
+                                            style = MaterialTheme.typography.bodyMedium,
+                                            color = MaterialTheme.colorScheme.onSurfaceVariant
+                                        )
+                                    }
+                                    Switch(
+                                        checked = pack.enabled,
+                                        onCheckedChange = { enabled ->
+                                            if (!enabled) {
+                                                scope.launch {
+                                                    if (viewModel.isPackInUse(pack.id)) {
+                                                        pendingDisable = pack
+                                                    } else {
+                                                        viewModel.togglePack(pack.id, false)
+                                                    }
+                                                }
+                                            } else {
+                                                viewModel.togglePack(pack.id, true)
+                                            }
+                                        }
                                     )
                                 }
-                                IconButton(onClick = { pendingDeletion = pack }) {
+                            }
+                        }
+
+                        DropdownMenu(
+                            expanded = showMenu,
+                            onDismissRequest = { showMenu = false }
+                        ) {
+                            DropdownMenuItem(
+                                text = { Text(stringResource(R.string.remove)) },
+                                onClick = {
+                                    showMenu = false
+                                    scope.launch {
+                                        isPendingDeletionInUse = viewModel.isPackInUse(pack.id)
+                                        pendingDeletion = pack
+                                    }
+                                },
+                                leadingIcon = {
                                     AppIcon(
                                         LocalAppIcons.current.delete,
-                                        contentDescription = stringResource(R.string.remove),
-                                        modifier = Modifier.size(24.dp),
-                                        tint = MaterialTheme.colorScheme.error
+                                        contentDescription = null,
+                                        modifier = Modifier.size(18.dp)
                                     )
                                 }
-                                Spacer(Modifier.width(2.dp))
-                                Switch(
-                                    checked = pack.enabled,
-                                    onCheckedChange = { enabled ->
-                                        viewModel.togglePack(pack.id, enabled)
-                                    }
-                                )
-                            }
+                            )
                         }
                     }
                 }
@@ -345,13 +400,22 @@ private fun MonsterPack.metadataText(
 @Composable
 private fun CharacterPackDeletionConfirmationDialog(
     packName: String,
+    isInUse: Boolean,
     onConfirm: () -> Unit,
     onDismiss: () -> Unit
 ) {
     AlertDialog(
         onDismissRequest = onDismiss,
         title = { Text(stringResource(R.string.remove_character_pack_title, packName)) },
-        text = { Text(stringResource(R.string.remove_character_pack_message, packName)) },
+        text = { 
+            Text(
+                stringResource(
+                    if (isInUse) R.string.remove_character_pack_in_use_message
+                    else R.string.remove_character_pack_message, 
+                    packName
+                )
+            ) 
+        },
         confirmButton = {
             Button(
                 onClick = onConfirm,
@@ -361,6 +425,33 @@ private fun CharacterPackDeletionConfirmationDialog(
                 )
             ) {
                 Text(stringResource(R.string.remove))
+            }
+        },
+        dismissButton = {
+            TextButton(onClick = onDismiss) { Text(stringResource(R.string.cancel)) }
+        }
+    )
+}
+
+@Composable
+private fun CharacterPackDisableConfirmationDialog(
+    packName: String,
+    onConfirm: () -> Unit,
+    onDismiss: () -> Unit
+) {
+    AlertDialog(
+        onDismissRequest = onDismiss,
+        title = { Text(stringResource(R.string.disable_character_pack_title, packName)) },
+        text = { Text(stringResource(R.string.disable_character_pack_message, packName)) },
+        confirmButton = {
+            Button(
+                onClick = onConfirm,
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = MaterialTheme.colorScheme.error,
+                    contentColor = MaterialTheme.colorScheme.onError
+                )
+            ) {
+                Text(stringResource(R.string.disable))
             }
         },
         dismissButton = {

@@ -21,7 +21,7 @@ class AssignedCharacterEncounterFactory(
         return runBlocking {
             val player = assignmentRepository.getPlayerCharacter(CharacterType.Monster)
                 ?.let { charactersRepository.findCharacter(it, CharacterAssignmentTarget.Player, CharacterType.Monster) }
-                ?.asPlayerBattleMonster()
+                ?.asPlayerBattleMonster(fallback.player)
                 ?: fallback.player
             
             val enemy = if (isAnonymous) {
@@ -29,13 +29,13 @@ class AssignedCharacterEncounterFactory(
             } else {
                 assignmentRepository.getAssignedCharacter(contactKey, CharacterType.Monster)
                     ?.let { charactersRepository.findCharacter(it, CharacterAssignmentTarget.Contact, CharacterType.Monster) }
-                    ?.asContactBattleMonster()
+                    ?.asContactBattleMonster(fallback.enemy ?: fallback.player)
                     ?: fallback.enemy
             }
             
             val playerTrainer = assignmentRepository.getPlayerCharacter(CharacterType.Trainer)
                 ?.let { charactersRepository.findCharacter(it, CharacterAssignmentTarget.Player, CharacterType.Trainer) }
-                ?.playerTrainerSprite()
+                ?.playerTrainerSprite(fallback.playerTrainerSprite)
                 ?: fallback.playerTrainerSprite
             
             val enemyTrainer = if (isAnonymous) {
@@ -43,7 +43,7 @@ class AssignedCharacterEncounterFactory(
             } else {
                 assignmentRepository.getAssignedCharacter(contactKey, CharacterType.Trainer)
                     ?.let { charactersRepository.findCharacter(it, CharacterAssignmentTarget.Contact, CharacterType.Trainer) }
-                    ?.contactTrainerSprite()
+                    ?.contactTrainerSprite(fallback.enemyTrainerSprite)
                     ?: fallback.enemyTrainerSprite
             }
             
@@ -56,40 +56,44 @@ class AssignedCharacterEncounterFactory(
         }
     }
 
-    private fun InstalledPackCharacter.asPlayerBattleMonster(): BattleMonster {
-        val backImage = requireNotNull(character.backImage)
+    private fun InstalledPackCharacter.asPlayerBattleMonster(fallback: BattleMonster): BattleMonster {
+        val packFront = character.frontImage?.let { BattleVisualAsset.LocalFile(imageFile(it).path) }
+        val packBack = character.backImage?.let { BattleVisualAsset.LocalFile(imageFile(it).path) }
+        
         return asBattleMonster(
-            frontImage = character.frontImage ?: backImage,
-            backImage = backImage
+            frontSprite = packFront ?: fallback.frontSprite,
+            backSprite = packBack ?: fallback.backSprite
         )
     }
 
-    private fun InstalledPackCharacter.asContactBattleMonster(): BattleMonster {
-        val frontImage = requireNotNull(character.frontImage)
+    private fun InstalledPackCharacter.asContactBattleMonster(fallback: BattleMonster): BattleMonster {
+        val packFront = character.frontImage?.let { BattleVisualAsset.LocalFile(imageFile(it).path) }
+        val packBack = character.backImage?.let { BattleVisualAsset.LocalFile(imageFile(it).path) }
+        
         return asBattleMonster(
-            frontImage = frontImage,
-            backImage = character.backImage ?: frontImage
+            frontSprite = packFront ?: fallback.frontSprite,
+            backSprite = packBack ?: fallback.backSprite
         )
     }
 
     private fun InstalledPackCharacter.asBattleMonster(
-        frontImage: String,
-        backImage: String
+        frontSprite: BattleVisualAsset,
+        backSprite: BattleVisualAsset?
     ) = BattleMonster(
         name = character.name,
         level = character.level ?: DefaultLevel,
         hp = character.maxHp ?: DefaultMaxHp,
         maxHp = character.maxHp ?: DefaultMaxHp,
-        frontSprite = BattleVisualAsset.LocalFile(imageFile(frontImage).path),
-        backSprite = BattleVisualAsset.LocalFile(imageFile(backImage).path),
+        frontSprite = frontSprite,
+        backSprite = backSprite,
         isRadiant = character.isRadiant
     )
 
-    private fun InstalledPackCharacter.playerTrainerSprite() =
-        BattleVisualAsset.LocalFile(imageFile(requireNotNull(character.backImage)).path)
+    private fun InstalledPackCharacter.playerTrainerSprite(fallback: BattleVisualAsset) =
+        character.backImage?.let { BattleVisualAsset.LocalFile(imageFile(it).path) } ?: fallback
 
-    private fun InstalledPackCharacter.contactTrainerSprite() =
-        BattleVisualAsset.LocalFile(imageFile(requireNotNull(character.frontImage)).path)
+    private fun InstalledPackCharacter.contactTrainerSprite(fallback: BattleVisualAsset) =
+        character.frontImage?.let { BattleVisualAsset.LocalFile(imageFile(it).path) } ?: fallback
 
     private companion object {
         const val DefaultLevel = 5

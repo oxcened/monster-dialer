@@ -9,13 +9,14 @@ import dev.alenajam.monsterdialer.characters.data.CharactersRepository
 import dev.alenajam.monsterdialer.packs.data.MonsterPack
 import dev.alenajam.monsterdialer.packs.data.PacksRepository
 import dev.alenajam.monsterdialer.packs.data.PacksRepositoryImpl
-import dev.alenajam.monsterdialer.packs.data.CharacterAssignmentTarget
 import dev.alenajam.monsterdialer.packs.data.CharacterPackImportDiagnostic
 import dev.alenajam.monsterdialer.packs.data.InstalledPackCharacter
+import dev.alenajam.monsterdialer.packs.data.CustomCharacterRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -28,6 +29,7 @@ class CharacterPackSettingsViewModel @Inject constructor(
 ) : ViewModel() {
 
     val packs: StateFlow<List<MonsterPack>> = packsRepository.getPacks()
+        .map { packs -> packs.filter { it.id != CustomCharacterRepository.CUSTOM_PACK_ID } }
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), emptyList())
 
     private val _message = MutableStateFlow<String?>(null)
@@ -52,6 +54,10 @@ class CharacterPackSettingsViewModel @Inject constructor(
         viewModelScope.launch {
             packsRepository.togglePack(packId, enabled)
         }
+    }
+
+    suspend fun isPackInUse(packId: String): Boolean {
+        return charactersRepository.isPackInUse(packId)
     }
 
     fun deletePack(packId: String, successMessage: String, failureMessage: String) {

@@ -1,17 +1,20 @@
 package dev.alenajam.monsterdialer.characters.ui
 
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.clickable
+import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.foundation.lazy.itemsIndexed
@@ -19,15 +22,14 @@ import androidx.compose.foundation.lazy.grid.GridItemSpan
 import androidx.compose.foundation.lazy.grid.LazyGridScope
 import androidx.compose.foundation.lazy.grid.LazyGridState
 import androidx.compose.foundation.lazy.grid.itemsIndexed as gridItemsIndexed
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.outlined.ViewList
-import androidx.compose.material.icons.outlined.AutoAwesome
-import androidx.compose.material.icons.outlined.GridView
+import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.Icon
+import androidx.compose.material3.DropdownMenu
+import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.PrimaryTabRow
@@ -35,20 +37,26 @@ import androidx.compose.material3.SmallFloatingActionButton
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Tab
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import dev.alenajam.monsterdialer.R
+import dev.alenajam.monsterdialer.app.ui.LocalMonsterAppIcons
 import dev.alenajam.opendialer.core.common.ui.AppIcon
 import dev.alenajam.opendialer.core.common.ui.LocalAppIcons
 import dev.alenajam.monsterdialer.characters.data.BuiltInArtwork
@@ -68,8 +76,8 @@ internal fun CharacterLayoutToggle(
 ) {
     val nextLayout = if (layout == CharacterLayout.List) CharacterLayout.Grid else CharacterLayout.List
     SmallFloatingActionButton(onClick = { onLayoutChanged(nextLayout) }, modifier = modifier) {
-        Icon(
-            imageVector = if (nextLayout == CharacterLayout.Grid) Icons.Outlined.GridView else Icons.AutoMirrored.Outlined.ViewList,
+        AppIcon(
+            icon = if (nextLayout == CharacterLayout.Grid) LocalMonsterAppIcons.current.viewGrid else LocalMonsterAppIcons.current.viewList,
             contentDescription = stringResource(
                 if (nextLayout == CharacterLayout.Grid) R.string.show_grid_view else R.string.show_list_view
             )
@@ -95,18 +103,43 @@ internal fun LazyListScope.characterTypeItems(
     selected: CharacterReference?,
     defaultArtwork: (BuiltInCharacter) -> BuiltInArtwork,
     packArtwork: (InstalledPackCharacter) -> File,
-    onSelect: (CharacterReference?) -> Unit
+    onSelect: (CharacterReference?) -> Unit,
+    onAddCharacter: () -> Unit,
+    addLabel: String,
+    isAddEnabled: Boolean = true,
+    onDelete: (InstalledPackCharacter) -> Unit = {},
+    onEdit: (InstalledPackCharacter) -> Unit = {}
 ) {
     val availableSelection = selected?.takeIf { reference ->
         characters.any { CharacterReference(it.packId, it.character.id) == reference }
     }
+    item(key = "add") {
+        AddCharacterButton(
+            onClick = onAddCharacter,
+            label = addLabel,
+            enabled = isAddEnabled
+        )
+        if (!isAddEnabled) {
+            Text(
+                text = stringResource(R.string.character_limit_reached_hint),
+                style = MaterialTheme.typography.labelSmall,
+                color = MaterialTheme.colorScheme.error,
+                textAlign = TextAlign.Center,
+                modifier = Modifier.fillMaxWidth().padding(bottom = 8.dp)
+            )
+        }
+    }
+
+    val userCharacters = characters.filter { it.isEditable }
+    val otherPacks = characters.filter { !it.isEditable }.groupBy { it.packId }
+
+    item { SectionHeader(stringResource(R.string.built_in_characters_section)) }
     item(key = "default") {
         CharacterOptionCard(
             name = defaultCharacter.name,
-            subtitle = stringResource(R.string.built_in_character),
             isSelected = availableSelection == null,
             roundTop = true,
-            roundBottom = false,
+            roundBottom = characters.isNotEmpty(),
             artwork = {
                 Image(
                     painter = painterResource(defaultArtwork(defaultCharacter).resource),
@@ -117,25 +150,53 @@ internal fun LazyListScope.characterTypeItems(
             onSelect = { onSelect(null) }
         )
     }
-    itemsIndexed(items = characters, key = { _, character -> "${character.packId}:${character.character.id}" }) { index, installed ->
-        val reference = CharacterReference(installed.packId, installed.character.id)
-        CharacterOptionCard(
-            name = installed.character.name,
-            subtitle = installed.packName,
-            isRadiant = installed.character.isRadiant,
-            isSelected = availableSelection == reference,
-            roundTop = false,
-            roundBottom = index == characters.lastIndex,
-            artwork = {
-                AsyncImage(
-                    model = packArtwork(installed),
-                    contentDescription = stringResource(R.string.character_artwork, installed.character.name),
-                    modifier = Modifier.size(72.dp)
-                )
-            },
-            onSelect = { onSelect(reference) }
-        )
+
+    if (userCharacters.isNotEmpty()) {
+        item { SectionHeader(stringResource(R.string.your_characters)) }
+        itemsIndexed(items = userCharacters, key = { _, character -> "custom:${character.character.id}" }) { index, installed ->
+            val reference = CharacterReference(installed.packId, installed.character.id)
+            CharacterOptionCard(
+                name = installed.character.name,
+                isRadiant = installed.character.isRadiant,
+                isSelected = availableSelection == reference,
+                roundTop = index == 0,
+                roundBottom = index == userCharacters.lastIndex,
+                artwork = {
+                    AsyncImage(
+                        model = packArtwork(installed),
+                        contentDescription = stringResource(R.string.character_artwork, installed.character.name),
+                        modifier = Modifier.size(72.dp)
+                    )
+                },
+                onSelect = { onSelect(reference) },
+                onDelete = if (installed.isDeletable) { { onDelete(installed) } } else null,
+                onEdit = if (installed.isEditable) { { onEdit(installed) } } else null
+            )
+        }
     }
+
+    otherPacks.forEach { (packId, packCharacters) ->
+        item { SectionHeader(packCharacters.first().packName) }
+        itemsIndexed(items = packCharacters, key = { _, character -> "${packId}:${character.character.id}" }) { index, installed ->
+            val reference = CharacterReference(installed.packId, installed.character.id)
+            CharacterOptionCard(
+                name = installed.character.name,
+                isRadiant = installed.character.isRadiant,
+                isSelected = availableSelection == reference,
+                roundTop = index == 0,
+                roundBottom = index == packCharacters.lastIndex,
+                artwork = {
+                    AsyncImage(
+                        model = packArtwork(installed),
+                        contentDescription = stringResource(R.string.character_artwork, installed.character.name),
+                        modifier = Modifier.size(72.dp)
+                    )
+                },
+                onSelect = { onSelect(reference) }
+            )
+        }
+    }
+
     if (characters.isEmpty()) item(key = "empty") { NoAdditionalCharacterOptionsCard(title) }
 }
 
@@ -146,17 +207,44 @@ internal fun LazyGridScope.characterTypeGridItems(
     selected: CharacterReference?,
     defaultArtwork: (BuiltInCharacter) -> BuiltInArtwork,
     packArtwork: (InstalledPackCharacter) -> File,
-    onSelect: (CharacterReference?) -> Unit
+    onSelect: (CharacterReference?) -> Unit,
+    onAddCharacter: () -> Unit,
+    addLabel: String,
+    isAddEnabled: Boolean = true,
+    onDelete: (InstalledPackCharacter) -> Unit = {},
+    onEdit: (InstalledPackCharacter) -> Unit = {}
 ) {
     val availableSelection = selected?.takeIf { reference ->
         characters.any { CharacterReference(it.packId, it.character.id) == reference }
     }
+    item(key = "add", span = { GridItemSpan(2) }) {
+        Column {
+            AddCharacterButton(
+                onClick = onAddCharacter,
+                label = addLabel,
+                enabled = isAddEnabled
+            )
+            if (!isAddEnabled) {
+                Text(
+                    text = stringResource(R.string.character_limit_reached_hint),
+                    style = MaterialTheme.typography.labelSmall,
+                    color = MaterialTheme.colorScheme.error,
+                    textAlign = TextAlign.Center,
+                    modifier = Modifier.fillMaxWidth().padding(bottom = 8.dp)
+                )
+            }
+        }
+    }
+
+    val userCharacters = characters.filter { it.isEditable }
+    val otherPacks = characters.filter { !it.isEditable }.groupBy { it.packId }
+
+    item(span = { GridItemSpan(2) }) { SectionHeader(stringResource(R.string.built_in_characters_section)) }
     item(key = "default") {
         CharacterGridItem(
             name = defaultCharacter.name,
-            subtitle = stringResource(R.string.built_in_character),
             isSelected = availableSelection == null,
-            shape = gridItemShape(index = 0, itemCount = if (characters.isEmpty()) 2 else characters.size + 1),
+            shape = gridItemShape(index = 0, itemCount = 1),
             artwork = {
                 Image(
                     painter = painterResource(defaultArtwork(defaultCharacter).resource),
@@ -167,25 +255,51 @@ internal fun LazyGridScope.characterTypeGridItems(
             onSelect = { onSelect(null) }
         )
     }
-    gridItemsIndexed(items = characters, key = { _, character -> "${character.packId}:${character.character.id}" }) { index, installed ->
-        val reference = CharacterReference(installed.packId, installed.character.id)
-        val itemIndex = index + 1
-        CharacterGridItem(
-            name = installed.character.name,
-            subtitle = installed.packName,
-            isRadiant = installed.character.isRadiant,
-            isSelected = availableSelection == reference,
-            shape = gridItemShape(index = itemIndex, itemCount = characters.size + 1),
-            artwork = {
-                AsyncImage(
-                    model = packArtwork(installed),
-                    contentDescription = stringResource(R.string.character_artwork, installed.character.name),
-                    modifier = Modifier.size(88.dp)
-                )
-            },
-            onSelect = { onSelect(reference) }
-        )
+
+    if (userCharacters.isNotEmpty()) {
+        item(span = { GridItemSpan(2) }) { SectionHeader(stringResource(R.string.your_characters)) }
+        gridItemsIndexed(items = userCharacters, key = { _, character -> "custom:${character.character.id}" }) { index, installed ->
+            val reference = CharacterReference(installed.packId, installed.character.id)
+            CharacterGridItem(
+                name = installed.character.name,
+                isRadiant = installed.character.isRadiant,
+                isSelected = availableSelection == reference,
+                shape = gridItemShape(index = index, itemCount = userCharacters.size),
+                artwork = {
+                    AsyncImage(
+                        model = packArtwork(installed),
+                        contentDescription = stringResource(R.string.character_artwork, installed.character.name),
+                        modifier = Modifier.size(88.dp)
+                    )
+                },
+                onSelect = { onSelect(reference) },
+                onDelete = if (installed.isDeletable) { { onDelete(installed) } } else null,
+                onEdit = if (installed.isEditable) { { onEdit(installed) } } else null
+            )
+        }
     }
+
+    otherPacks.forEach { (packId, packCharacters) ->
+        item(span = { GridItemSpan(2) }) { SectionHeader(packCharacters.first().packName) }
+        gridItemsIndexed(items = packCharacters, key = { _, character -> "${packId}:${character.character.id}" }) { index, installed ->
+            val reference = CharacterReference(installed.packId, installed.character.id)
+            CharacterGridItem(
+                name = installed.character.name,
+                isRadiant = installed.character.isRadiant,
+                isSelected = availableSelection == reference,
+                shape = gridItemShape(index = index, itemCount = packCharacters.size),
+                artwork = {
+                    AsyncImage(
+                        model = packArtwork(installed),
+                        contentDescription = stringResource(R.string.character_artwork, installed.character.name),
+                        modifier = Modifier.size(88.dp)
+                    )
+                },
+                onSelect = { onSelect(reference) }
+            )
+        }
+    }
+
     if (characters.isEmpty()) {
         item(key = "empty") {
             NoAdditionalCharacterGridItem(
@@ -198,24 +312,59 @@ internal fun LazyGridScope.characterTypeGridItems(
 
 private fun gridItemShape(index: Int, itemCount: Int): RoundedCornerShape {
     val isLeftColumn = index % 2 == 0
+    val isRightColumn = !isLeftColumn
     val isTopRow = index < 2
     val isBottomRow = index / 2 == (itemCount - 1) / 2
+    val isOnlyInRow = isLeftColumn && index == itemCount - 1
+
     return RoundedCornerShape(
         topStart = if (isTopRow && isLeftColumn) 20.dp else 2.dp,
-        topEnd = if (isTopRow && !isLeftColumn) 20.dp else 2.dp,
+        topEnd = if (isTopRow && (isRightColumn || isOnlyInRow)) 20.dp else 2.dp,
         bottomStart = if (isBottomRow && isLeftColumn) 20.dp else 2.dp,
-        bottomEnd = if (isBottomRow && !isLeftColumn) 20.dp else 2.dp
+        bottomEnd = if (isBottomRow && (isRightColumn || isOnlyInRow)) 20.dp else 2.dp
     )
 }
 
 internal fun selectedCharacterIndex(
     characters: List<InstalledPackCharacter>,
     selected: CharacterReference?
-): Int = selected?.let { selectedReference ->
-    characters.indexOfFirst { character ->
-        CharacterReference(character.packId, character.character.id) == selectedReference
-    }.takeIf { it >= 0 }?.plus(1)
-} ?: 0
+): Int {
+    if (selected == null) return 0 // Keep Add button visible for Default selection
+
+    val userCharacters = characters.filter { it.isEditable }
+    val otherPacks = characters.filter { !it.isEditable }.groupBy { it.packId }
+
+    // Logic follows the order in characterTypeItems
+    // 0: Add button
+    // 1: Built-in header
+    // 2: Default character
+    var currentIndex = 3
+
+    if (userCharacters.isNotEmpty()) {
+        currentIndex++ // "Your characters" header
+        val userIdx = userCharacters.indexOfFirst {
+            CharacterReference(it.packId, it.character.id) == selected
+        }
+        if (userIdx != -1) {
+            val target = currentIndex + userIdx
+            // If it's the very first user character, index 0 might still be better 
+            // to keep the "Add" button and headers visible.
+            return if (target <= 4) 0 else target
+        }
+        currentIndex += userCharacters.size
+    }
+
+    for (packCharacters in otherPacks.values) {
+        currentIndex++ // Pack header
+        val packIdx = packCharacters.indexOfFirst {
+            CharacterReference(it.packId, it.character.id) == selected
+        }
+        if (packIdx != -1) return currentIndex + packIdx
+        currentIndex += packCharacters.size
+    }
+
+    return 0
+}
 
 @Composable
 internal fun JumpToSelectedCharacterButton(
@@ -290,6 +439,79 @@ internal fun JumpToSelectedCharacterButton(
 }
 
 @Composable
+private fun AddCharacterButton(
+    onClick: () -> Unit,
+    label: String,
+    enabled: Boolean = true
+) {
+    Button(
+        onClick = onClick,
+        enabled = enabled,
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 16.dp, vertical = 8.dp),
+    ) {
+        AppIcon(
+            LocalMonsterAppIcons.current.addCharacter,
+            contentDescription = null,
+            tint = MaterialTheme.colorScheme.onPrimary
+        )
+        Text(
+            text = label,
+            modifier = Modifier.padding(start = 8.dp),
+        )
+    }
+}
+
+@Composable
+private fun SectionHeader(title: String) {
+    Text(
+        text = title,
+        style = MaterialTheme.typography.titleSmall,
+        color = MaterialTheme.colorScheme.onSurfaceVariant,
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(vertical = 8.dp)
+    )
+}
+
+@Composable
+fun CustomCharacterDeletionConfirmationDialog(
+    characterName: String,
+    isInUse: Boolean = false,
+    onConfirm: () -> Unit,
+    onDismiss: () -> Unit
+) {
+    AlertDialog(
+        onDismissRequest = onDismiss,
+        title = { Text(stringResource(R.string.remove_character_pack_title, characterName)) },
+        text = { 
+            Text(
+                stringResource(
+                    if (isInUse) R.string.remove_character_in_use_message
+                    else R.string.remove_character_pack_message, 
+                    characterName
+                )
+            ) 
+        },
+        confirmButton = {
+            Button(
+                onClick = onConfirm,
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = MaterialTheme.colorScheme.error,
+                    contentColor = MaterialTheme.colorScheme.onError
+                )
+            ) {
+                Text(stringResource(R.string.remove))
+            }
+        },
+        dismissButton = {
+            TextButton(onClick = onDismiss) { Text(stringResource(R.string.cancel)) }
+        }
+    )
+}
+
+@Composable
 private fun NoAdditionalCharacterOptionsCard(title: String) {
     Card(
         modifier = Modifier.fillMaxWidth().padding(vertical = 1.dp),
@@ -309,89 +531,222 @@ private fun NoAdditionalCharacterOptionsCard(title: String) {
     }
 }
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 private fun CharacterOptionCard(
-    name: String, subtitle: String, isRadiant: Boolean = false, isSelected: Boolean,
-    roundTop: Boolean, roundBottom: Boolean, artwork: @Composable () -> Unit, onSelect: () -> Unit
+    name: String, isRadiant: Boolean = false, isSelected: Boolean,
+    roundTop: Boolean, roundBottom: Boolean, artwork: @Composable () -> Unit, onSelect: () -> Unit,
+    onDelete: (() -> Unit)? = null,
+    onEdit: (() -> Unit)? = null
 ) {
-    Card(
-        modifier = Modifier.fillMaxWidth().padding(vertical = 1.dp),
-        shape = RoundedCornerShape(
-            topStart = if (roundTop) 20.dp else 2.dp, topEnd = if (roundTop) 20.dp else 2.dp,
-            bottomStart = if (roundBottom) 20.dp else 2.dp, bottomEnd = if (roundBottom) 20.dp else 2.dp
-        ),
-        colors = CardDefaults.cardColors(containerColor = if (isSelected) MaterialTheme.colorScheme.secondaryContainer else MaterialTheme.colorScheme.surfaceContainerLow),
-        elevation = CardDefaults.cardElevation(defaultElevation = 0.5.dp)
-    ) {
-        Row(modifier = Modifier.padding(16.dp), verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(16.dp)) {
-            Box(modifier = Modifier.size(72.dp)) {
-                artwork()
-                if (isRadiant) {
-                    RadiantBadge(Modifier.align(Alignment.TopEnd))
+    var showMenu by remember { mutableStateOf(false) }
+    val shape = RoundedCornerShape(
+        topStart = if (roundTop) 20.dp else 2.dp, topEnd = if (roundTop) 20.dp else 2.dp,
+        bottomStart = if (roundBottom) 20.dp else 2.dp, bottomEnd = if (roundBottom) 20.dp else 2.dp
+    )
+    Box {
+        Card(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(vertical = 1.dp),
+            shape = shape,
+            colors = CardDefaults.cardColors(containerColor = if (isSelected) MaterialTheme.colorScheme.secondaryContainer else MaterialTheme.colorScheme.surfaceContainerLow),
+            elevation = CardDefaults.cardElevation(defaultElevation = 0.5.dp)
+        ) {
+            Row(
+                modifier = Modifier
+                    .combinedClickable(
+                        onClick = onSelect,
+                        onLongClick = if (onDelete != null || onEdit != null) { { showMenu = true } } else null
+                    )
+                    .padding(16.dp),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.spacedBy(16.dp)
+            ) {
+                Box(modifier = Modifier.size(72.dp)) {
+                    artwork()
+                }
+                Column(modifier = Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(2.dp)) {
+                    Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(6.dp)) {
+                        Text(name, style = MaterialTheme.typography.titleMedium)
+                    }
+                    if (isRadiant) {
+                        Row(
+                            verticalAlignment = Alignment.CenterVertically,
+                            horizontalArrangement = Arrangement.spacedBy(4.dp)
+                        ) {
+                            Text(stringResource(R.string.radiant), style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.primary)
+                            AppIcon(
+                                icon = LocalMonsterAppIcons.current.radiant,
+                                contentDescription = null,
+                                modifier = Modifier.size(14.dp),
+                                tint = MaterialTheme.colorScheme.primary
+                            )
+                        }
+                    }
+                }
+                if (isSelected) {
+                    Text(
+                        stringResource(R.string.selected),
+                        style = MaterialTheme.typography.labelLarge,
+                        color = MaterialTheme.colorScheme.primary,
+                        modifier = Modifier.padding(horizontal = 16.dp)
+                    )
+                } else {
+                    OutlinedButton(onClick = onSelect) { Text(stringResource(R.string.select)) }
                 }
             }
-            Column(modifier = Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(2.dp)) {
-                Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(6.dp)) {
-                    Text(name, style = MaterialTheme.typography.titleMedium)
+        }
+
+        if (onDelete != null || onEdit != null) {
+            DropdownMenu(
+                expanded = showMenu,
+                onDismissRequest = { showMenu = false }
+            ) {
+                if (onEdit != null) {
+                    DropdownMenuItem(
+                        text = { Text(stringResource(R.string.edit)) },
+                        onClick = {
+                            showMenu = false
+                            onEdit()
+                        },
+                        leadingIcon = {
+                            AppIcon(LocalAppIcons.current.edit, contentDescription = null, modifier = Modifier.size(18.dp))
+                        }
+                    )
                 }
-                Text(subtitle, style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
-                if (isSelected) Text(stringResource(R.string.selected), style = MaterialTheme.typography.labelLarge, color = MaterialTheme.colorScheme.primary)
+                if (onDelete != null) {
+                    DropdownMenuItem(
+                        text = { Text(stringResource(R.string.remove)) },
+                        onClick = {
+                            showMenu = false
+                            onDelete()
+                        },
+                        leadingIcon = {
+                            AppIcon(LocalAppIcons.current.delete, contentDescription = null, modifier = Modifier.size(18.dp))
+                        }
+                    )
+                }
             }
-            if (!isSelected) OutlinedButton(onClick = onSelect) { Text(stringResource(R.string.select)) }
         }
     }
 }
 
-@Composable
-private fun RadiantBadge(modifier: Modifier = Modifier) {
-    Surface(
-        modifier = modifier.size(24.dp),
-        shape = CircleShape,
-        color = MaterialTheme.colorScheme.surfaceContainerHigh.copy(alpha = 0.65f),
-        shadowElevation = 2.dp
-    ) {
-        Box(contentAlignment = Alignment.Center) {
-            Icon(
-                imageVector = Icons.Outlined.AutoAwesome,
-                contentDescription = stringResource(R.string.radiant),
-                modifier = Modifier.size(15.dp),
-                tint = MaterialTheme.colorScheme.primary
-            )
-        }
-    }
-}
-
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 private fun CharacterGridItem(
     name: String,
-    subtitle: String,
     isRadiant: Boolean = false,
     isSelected: Boolean,
     shape: Shape,
     artwork: @Composable () -> Unit,
-    onSelect: () -> Unit
+    onSelect: () -> Unit,
+    onDelete: (() -> Unit)? = null,
+    onEdit: (() -> Unit)? = null
 ) {
-    Card(
-        modifier = Modifier.fillMaxWidth().clickable(onClick = onSelect),
-        shape = shape,
-        colors = CardDefaults.cardColors(
-            containerColor = if (isSelected) MaterialTheme.colorScheme.secondaryContainer else MaterialTheme.colorScheme.surfaceContainerLow
-        ),
-        elevation = CardDefaults.cardElevation(defaultElevation = 0.5.dp)
-    ) {
-        Column(
-            modifier = Modifier.fillMaxWidth().padding(12.dp),
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.spacedBy(4.dp)
+    var showMenu by remember { mutableStateOf(false) }
+    Box {
+        Card(
+            modifier = Modifier.fillMaxWidth(),
+            shape = shape,
+            colors = CardDefaults.cardColors(
+                containerColor = if (isSelected) MaterialTheme.colorScheme.secondaryContainer else MaterialTheme.colorScheme.surfaceContainerLow
+            ),
+            elevation = CardDefaults.cardElevation(defaultElevation = 0.5.dp)
         ) {
-            Box(modifier = Modifier.size(88.dp)) {
-                artwork()
-                if (isRadiant) RadiantBadge(Modifier.align(Alignment.TopEnd))
+            Column(
+                modifier = Modifier
+                    .combinedClickable(
+                        onClick = onSelect,
+                        onLongClick = if (onDelete != null || onEdit != null) { { showMenu = true } } else null
+                    )
+                    .fillMaxWidth()
+                    .heightIn(min = 184.dp)
+                    .padding(16.dp),
+                horizontalAlignment = Alignment.Start,
+                verticalArrangement = Arrangement.spacedBy(4.dp)
+            ) {
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(88.dp),
+                    contentAlignment = Alignment.Center
+                ) {
+                    artwork()
+                }
+                
+                Spacer(modifier = Modifier.height(4.dp))
+                
+                Text(
+                    text = name,
+                    style = MaterialTheme.typography.titleSmall,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis
+                )
+                
+                if (isRadiant) {
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.spacedBy(4.dp)
+                    ) {
+                        Text(
+                            text = stringResource(R.string.radiant),
+                            style = MaterialTheme.typography.bodySmall,
+                            color = MaterialTheme.colorScheme.primary,
+                            maxLines = 1
+                        )
+                        AppIcon(
+                            icon = LocalMonsterAppIcons.current.radiant,
+                            contentDescription = null,
+                            modifier = Modifier.size(12.dp),
+                            tint = MaterialTheme.colorScheme.primary
+                        )
+                    }
+                }
+                
+                Spacer(modifier = Modifier.weight(1f))
+                
+                Box(modifier = Modifier.height(24.dp)) {
+                    if (isSelected) {
+                        Text(
+                            text = stringResource(R.string.selected),
+                            style = MaterialTheme.typography.labelLarge,
+                            color = MaterialTheme.colorScheme.primary
+                        )
+                    }
+                }
             }
-            Text(name, style = MaterialTheme.typography.titleSmall, textAlign = TextAlign.Center, maxLines = 2)
-            Text(subtitle, style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant, textAlign = TextAlign.Center, maxLines = 1)
-            Box(modifier = Modifier.height(20.dp), contentAlignment = Alignment.Center) {
-                if (isSelected) Text(stringResource(R.string.selected), style = MaterialTheme.typography.labelLarge, color = MaterialTheme.colorScheme.primary)
+        }
+
+        if (onDelete != null || onEdit != null) {
+            DropdownMenu(
+                expanded = showMenu,
+                onDismissRequest = { showMenu = false }
+            ) {
+                if (onEdit != null) {
+                    DropdownMenuItem(
+                        text = { Text(stringResource(R.string.edit)) },
+                        onClick = {
+                            showMenu = false
+                            onEdit()
+                        },
+                        leadingIcon = {
+                            AppIcon(LocalAppIcons.current.edit, contentDescription = null, modifier = Modifier.size(18.dp))
+                        }
+                    )
+                }
+                if (onDelete != null) {
+                    DropdownMenuItem(
+                        text = { Text(stringResource(R.string.remove)) },
+                        onClick = {
+                            showMenu = false
+                            onDelete()
+                        },
+                        leadingIcon = {
+                            AppIcon(LocalAppIcons.current.delete, contentDescription = null, modifier = Modifier.size(18.dp))
+                        }
+                    )
+                }
             }
         }
     }
