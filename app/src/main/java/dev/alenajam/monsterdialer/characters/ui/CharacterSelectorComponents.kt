@@ -2,7 +2,6 @@ package dev.alenajam.monsterdialer.characters.ui
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -312,22 +311,23 @@ private fun AddCharacterCard(
     roundBottom: Boolean,
     label: String
 ) {
+    val shape = RoundedCornerShape(
+        topStart = if (roundTop) 20.dp else 2.dp, topEnd = if (roundTop) 20.dp else 2.dp,
+        bottomStart = if (roundBottom) 20.dp else 2.dp, bottomEnd = if (roundBottom) 20.dp else 2.dp
+    )
     Card(
+        onClick = onClick,
         modifier = Modifier
             .fillMaxWidth()
-            .padding(vertical = 1.dp)
-            .clickable(onClick = onClick),
-        shape = RoundedCornerShape(
-            topStart = if (roundTop) 20.dp else 2.dp, topEnd = if (roundTop) 20.dp else 2.dp,
-            bottomStart = if (roundBottom) 20.dp else 2.dp, bottomEnd = if (roundBottom) 20.dp else 2.dp
-        ),
+            .height(104.dp)
+            .padding(vertical = 1.dp),
+        shape = shape,
         colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainerLow),
         elevation = CardDefaults.cardElevation(defaultElevation = 0.5.dp)
     ) {
         Row(
             modifier = Modifier
-                .fillMaxWidth()
-                .heightIn(min = 104.dp)
+                .fillMaxSize()
                 .padding(16.dp),
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.spacedBy(16.dp)
@@ -362,9 +362,10 @@ private fun AddCharacterGridItem(
     label: String
 ) {
     Card(
+        onClick = onClick,
         modifier = Modifier
-            .fillMaxSize()
-            .clickable(onClick = onClick),
+            .fillMaxWidth()
+            .height(184.dp),
         shape = shape,
         colors = CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.surfaceContainerLow
@@ -398,7 +399,6 @@ private fun AddCharacterGridItem(
                 textAlign = TextAlign.Center,
                 color = MaterialTheme.colorScheme.primary
             )
-            Box(modifier = Modifier.height(20.dp))
         }
     }
 }
@@ -486,7 +486,8 @@ private fun CharacterGridItem(
     onSelect: () -> Unit
 ) {
     Card(
-        modifier = Modifier.fillMaxWidth().clickable(onClick = onSelect),
+        onClick = onSelect,
+        modifier = Modifier.fillMaxWidth(),
         shape = shape,
         colors = CardDefaults.cardColors(
             containerColor = if (isSelected) MaterialTheme.colorScheme.secondaryContainer else MaterialTheme.colorScheme.surfaceContainerLow
