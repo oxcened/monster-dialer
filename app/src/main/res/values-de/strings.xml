@@ -19,6 +19,7 @@
     <string name="creator_label">Ersteller</string>
     <string name="license_label">Lizenz</string>
     <string name="export_character">Charakter exportieren</string>
+    <string name="save_to_device">Auf Gerät speichern</string>
     <string name="shared_character_file_name">%1$s.monstercharacter</string>
     <string name="settings_player_character_title" comment="Settings title for the player's battle character.">Spielercharakter</string>
     <string name="settings_player_character_description" comment="Settings description for the player's battle character.">Wähle, wer dich während Anrufen repräsentiert.</string>

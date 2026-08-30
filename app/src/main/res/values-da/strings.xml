@@ -19,6 +19,7 @@
     <string name="creator_label">Opretter</string>
     <string name="license_label">Licens</string>
     <string name="export_character">Eksportér figur</string>
+    <string name="save_to_device">Gem på enheden</string>
     <string name="shared_character_file_name">%1$s.monstercharacter</string>
     <string name="settings_player_character_title" comment="Settings title for the player's battle character.">Spillerfigur</string>
     <string name="settings_player_character_description" comment="Settings description for the player's battle character.">Vælg, hvem der repræsenterer dig under opkald.</string>

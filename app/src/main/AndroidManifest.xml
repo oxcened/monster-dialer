@@ -59,6 +59,16 @@
             </intent-filter>
         </activity>
 
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="${applicationId}.fileprovider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/shared_character_paths" />
+        </provider>
+
         <service
             android:name="dev.alenajam.opendialer.feature.inCall.service.InCallServiceImpl"
             android:enabled="true"
