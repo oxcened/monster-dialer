@@ -20,7 +20,6 @@ import androidx.compose.foundation.lazy.grid.GridItemSpan
 import androidx.compose.foundation.lazy.grid.LazyGridScope
 import androidx.compose.foundation.lazy.grid.LazyGridState
 import androidx.compose.foundation.lazy.grid.itemsIndexed as gridItemsIndexed
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
@@ -557,9 +556,6 @@ private fun CharacterOptionCard(
             ) {
                 Box(modifier = Modifier.size(72.dp)) {
                     artwork()
-                    if (isRadiant) {
-                        RadiantBadge(Modifier.align(Alignment.TopEnd))
-                    }
                 }
                 Column(modifier = Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(2.dp)) {
                     Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(6.dp)) {
@@ -567,6 +563,9 @@ private fun CharacterOptionCard(
                     }
                     if (subtitle != null) {
                         Text(subtitle, style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                    }
+                    if (isRadiant) {
+                        Text(stringResource(R.string.radiant), style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.primary)
                     }
                 }
                 if (isSelected) {
@@ -616,25 +615,6 @@ private fun CharacterOptionCard(
     }
 }
 
-@Composable
-private fun RadiantBadge(modifier: Modifier = Modifier) {
-    Surface(
-        modifier = modifier.size(24.dp),
-        shape = CircleShape,
-        color = MaterialTheme.colorScheme.surfaceContainerHigh.copy(alpha = 0.65f),
-        shadowElevation = 2.dp
-    ) {
-        Box(contentAlignment = Alignment.Center) {
-            AppIcon(
-                icon = LocalMonsterAppIcons.current.radiant,
-                contentDescription = stringResource(R.string.radiant),
-                modifier = Modifier.size(15.dp),
-                tint = MaterialTheme.colorScheme.primary
-            )
-        }
-    }
-}
-
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 private fun CharacterGridItem(
@@ -672,11 +652,13 @@ private fun CharacterGridItem(
             ) {
                 Box(modifier = Modifier.size(88.dp)) {
                     artwork()
-                    if (isRadiant) RadiantBadge(Modifier.align(Alignment.TopEnd))
                 }
                 Text(name, style = MaterialTheme.typography.titleSmall, textAlign = TextAlign.Center, maxLines = 2)
                 if (subtitle != null) {
                     Text(subtitle, style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant, textAlign = TextAlign.Center, maxLines = 1)
+                }
+                if (isRadiant) {
+                    Text(stringResource(R.string.radiant), style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.primary, textAlign = TextAlign.Center, maxLines = 1)
                 }
                 Box(modifier = Modifier.height(20.dp), contentAlignment = Alignment.Center) {
                     if (isSelected) Text(stringResource(R.string.selected), style = MaterialTheme.typography.labelLarge, color = MaterialTheme.colorScheme.primary)
