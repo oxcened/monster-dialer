@@ -13,7 +13,14 @@
     <string name="settings_contact_characters_title" comment="Settings title for assigning characters to contacts.">شخصيات جهات الاتصال</string>
     <string name="settings_contact_characters_description" comment="Settings description for assigning characters to contacts.">عيّن شخصيات للمتصلين الواردين.</string>
     <string name="contact_characters_not_set" comment="Settings subtitle when no contacts have a character assignment.">لا توجد جهات اتصال مخصصة</string>
-    <plurals name="contact_character_assignment_count" comment="Settings subtitle showing how many contacts have a character assignment."><item quantity="zero">لم يتم تخصيص أي جهات اتصال</item><item quantity="one">تم تخصيص جهة اتصال واحدة</item><item quantity="two">تم تخصيص جهتي اتصال</item><item quantity="few">تم تخصيص %d جهات اتصال</item><item quantity="many">تم تخصيص %d جهة اتصال</item><item quantity="other">تم تخصيص %d جهة اتصال</item></plurals>
+    <plurals name="contact_character_assignment_count" comment="Settings subtitle showing how many contacts have a character assignment.">
+        <item quantity="zero">لم يتم تخصيص أي جهات اتصال</item>
+        <item quantity="one">تم تخصيص جهة اتصال واحدة</item>
+        <item quantity="two">تم تخصيص جهتي اتصال</item>
+        <item quantity="few">تم تخصيص %d جهات اتصال</item>
+        <item quantity="many">تم تخصيص %d جهة اتصال</item>
+        <item quantity="other">تم تخصيص %d جهة اتصال</item>
+    </plurals>
     <string name="choose_contact" comment="Button that opens the contact picker.">اختر جهة اتصال</string>
     <string name="character_type_trainer" comment="Character category for a human battle character.">مدرب</string>
     <string name="character_type_monster" comment="Character category for a creature battle character.">وحش</string>
@@ -76,6 +83,8 @@
     <string name="remove" comment="Button label to permanently remove a character pack.">إزالة</string>
     <string name="remove_character_pack_title" comment="Confirmation dialog title; %1$s is the character pack name.">إزالة %1$s؟</string>
     <string name="remove_character_pack_message" comment="Confirmation dialog message; %1$s is the character pack name.">يؤدي هذا إلى إزالة %1$s ورسوماته نهائيًا من MonsterDialer.</string>
+    <string name="disable_character_pack_title" comment="Confirmation dialog title; %1$s is the character pack name.">تعطيل %1$s؟</string>
+    <string name="disable_character_pack_message" comment="Confirmation dialog message; %1$s is the character pack name.">هذه الحزمة قيد الاستخدام حاليًا. سيؤدي تعطيلها إلى إلغاء تعيين شخصياتها منك ومن جهات اتصالك.</string>
     <string name="cancel" comment="Button label that dismisses an action without making changes.">إلغاء</string>
     <string name="character_pack_removed" comment="Confirmation after a character pack is removed.">تمت إزالة حزمة الشخصيات</string>
     <string name="character_pack_remove_failed" comment="Error when a character pack cannot be removed.">تعذرت إزالة حزمة الشخصيات</string>
@@ -103,7 +112,6 @@
     <string name="battle_trainer_sent_out" comment="Battle announcement; %1$s is the trainer name and %2$s is the monster name.">أرسل المدرب %1$s ‏%2$s!</string>
     <string name="battle_wild_radiant_appeared" comment="Battle announcement; %1$s is the wild monster name and radiant is its rare variant.">ظهر %1$s بري متألق!</string>
     <string name="battle_wild_appeared" comment="Battle announcement; %1$s is the wild monster name.">ظهر %1$s بري!</string>
-
     <!-- Character creation -->
     <string name="add_trainer" comment="Button to start adding a new custom trainer.">إضافة مدرب</string>
     <string name="add_monster" comment="Button to start adding a new custom monster.">إضافة وحش</string>
@@ -135,8 +143,6 @@
     <string name="character_creation_failed" comment="Error when a character cannot be saved.">تعذر إنشاء الشخصية</string>
     <string name="character_limit_reached_message" comment="Error message when the 200 character limit is hit.">تم الوصول إلى الحد الأقصى (200 شخصية). احذف بعضها لإضافة المزيد.</string>
     <string name="character_limit_reached_hint" comment="Short hint shown below the disabled add button.">تم الوصول إلى الحد الأقصى (200 شخصية)</string>
-    <string name="disable_character_pack_title" comment="Confirmation dialog title; %1$s is the character pack name.">تعطيل %1$s؟</string>
-    <string name="disable_character_pack_message" comment="Confirmation dialog message; %1$s is the character pack name.">هذه الحزمة قيد الاستخدام حاليًا. سيؤدي تعطيلها إلى إلغاء تعيين شخصياتها منك ومن جهات اتصالك.</string>
     <string name="front_sprite_required_for_contact" comment="Message shown when a front sprite is missing but required by an assignment.">الرسم الأمامي مطلوب لأن هذه الشخصية معينة لجهة اتصال.</string>
     <string name="back_sprite_required_for_player" comment="Message shown when a back sprite is missing but required by an assignment.">الرسم الخلفي مطلوب لأن هذه الشخصية معينة لك.</string>
     <string name="remove_character_in_use_message" comment="Confirmation dialog message when deleting a character in use; %1$s is the character name.">‏%1$s قيد الاستخدام حاليًا. سيؤدي حذفها إلى إلغاء تعيينها منك ومن جهات اتصالك.</string>
