@@ -83,4 +83,10 @@ class PlayerCharacterSettingsViewModel @Inject constructor(
         layoutPreferences.setGridLayout(layout == CharacterLayout.Grid)
         _layout.value = layout
     }
+
+    fun deleteCustomCharacter(characterId: String) {
+        viewModelScope.launch {
+            charactersRepository.deleteCustomCharacter(characterId)
+        }
+    }
 }

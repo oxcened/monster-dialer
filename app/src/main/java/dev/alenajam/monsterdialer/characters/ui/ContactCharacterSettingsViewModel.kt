@@ -120,6 +120,12 @@ class ContactCharacterSettingsViewModel @Inject constructor(
         _layout.value = layout
     }
 
+    fun deleteCustomCharacter(characterId: String) {
+        viewModelScope.launch {
+            charactersRepository.deleteCustomCharacter(characterId)
+        }
+    }
+
     private fun MonsterContact.contactKeys(): List<String> = numbers
 
     private suspend fun restoreSelectedContactState() {

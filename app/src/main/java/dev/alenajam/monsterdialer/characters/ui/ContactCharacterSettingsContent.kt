@@ -26,6 +26,8 @@ import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -41,6 +43,7 @@ import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import dev.alenajam.monsterdialer.R
 import dev.alenajam.monsterdialer.characters.data.BuiltInCharacters
+import dev.alenajam.monsterdialer.packs.data.InstalledPackCharacter
 import dev.alenajam.monsterdialer.contacts.ui.formatPhoneNumber
 import dev.alenajam.opendialer.core.common.ui.ContactAvatar
 import dev.alenajam.opendialer.core.common.ui.AppIcon
@@ -189,6 +192,19 @@ fun ColumnScope.ContactCharacterSettingsContent(
         }
         val listState = if (selectedTab == 0) trainerListState else monsterListState
         val gridState = if (selectedTab == 0) trainerGridState else monsterGridState
+        var pendingDeletion by remember { mutableStateOf<InstalledPackCharacter?>(null) }
+
+        pendingDeletion?.let { character ->
+            CustomCharacterDeletionConfirmationDialog(
+                characterName = character.character.name,
+                onConfirm = {
+                    viewModel.deleteCustomCharacter(character.character.id)
+                    pendingDeletion = null
+                },
+                onDismiss = { pendingDeletion = null }
+            )
+        }
+
         LaunchedEffect(contactSelectionVersion) {
             val selectedItemIndex = if (selectedTab == 0) trainerSelectedItemIndex else monsterSelectedItemIndex
             if (layout == CharacterLayout.List) listState.requestScrollToItem(selectedItemIndex)
@@ -198,15 +214,15 @@ fun ColumnScope.ContactCharacterSettingsContent(
             if (layout == CharacterLayout.List) {
                 LazyColumn(state = listState, modifier = Modifier.fillMaxSize(), contentPadding = PaddingValues(top = 8.dp, bottom = 72.dp)) {
                     when (selectedTab) {
-                        0 -> characterTypeItems(trainerTitle, BuiltInCharacters.trainer, trainers, assignedTrainer, { it.contactArtwork }, { it.imageFile(requireNotNull(it.character.frontImage)) }, viewModel::assignTrainer, { navigator?.navigateTo(1) }, addTrainerLabel, !isLimitReached)
-                        1 -> characterTypeItems(monsterTitle, BuiltInCharacters.monster.character, monsters, assignedMonster, { it.contactArtwork }, { it.imageFile(requireNotNull(it.character.frontImage)) }, viewModel::assignMonster, { navigator?.navigateTo(2) }, addMonsterLabel, !isLimitReached)
+                        0 -> characterTypeItems(trainerTitle, BuiltInCharacters.trainer, trainers, assignedTrainer, { it.contactArtwork }, { it.imageFile(requireNotNull(it.character.frontImage)) }, viewModel::assignTrainer, { navigator?.navigateTo(1) }, addTrainerLabel, !isLimitReached, onDelete = { pendingDeletion = it })
+                        1 -> characterTypeItems(monsterTitle, BuiltInCharacters.monster.character, monsters, assignedMonster, { it.contactArtwork }, { it.imageFile(requireNotNull(it.character.frontImage)) }, viewModel::assignMonster, { navigator?.navigateTo(2) }, addMonsterLabel, !isLimitReached, onDelete = { pendingDeletion = it })
                     }
                 }
             } else {
                 LazyVerticalGrid(columns = GridCells.Fixed(2), state = gridState, modifier = Modifier.fillMaxSize(), contentPadding = PaddingValues(top = 8.dp, bottom = 72.dp), horizontalArrangement = Arrangement.spacedBy(2.dp), verticalArrangement = Arrangement.spacedBy(2.dp)) {
                     when (selectedTab) {
-                        0 -> characterTypeGridItems(trainerTitle, BuiltInCharacters.trainer, trainers, assignedTrainer, { it.contactArtwork }, { it.imageFile(requireNotNull(it.character.frontImage)) }, viewModel::assignTrainer, { navigator?.navigateTo(1) }, addTrainerLabel, !isLimitReached)
-                        1 -> characterTypeGridItems(monsterTitle, BuiltInCharacters.monster.character, monsters, assignedMonster, { it.contactArtwork }, { it.imageFile(requireNotNull(it.character.frontImage)) }, viewModel::assignMonster, { navigator?.navigateTo(2) }, addMonsterLabel, !isLimitReached)
+                        0 -> characterTypeGridItems(trainerTitle, BuiltInCharacters.trainer, trainers, assignedTrainer, { it.contactArtwork }, { it.imageFile(requireNotNull(it.character.frontImage)) }, viewModel::assignTrainer, { navigator?.navigateTo(1) }, addTrainerLabel, !isLimitReached, onDelete = { pendingDeletion = it })
+                        1 -> characterTypeGridItems(monsterTitle, BuiltInCharacters.monster.character, monsters, assignedMonster, { it.contactArtwork }, { it.imageFile(requireNotNull(it.character.frontImage)) }, viewModel::assignMonster, { navigator?.navigateTo(2) }, addMonsterLabel, !isLimitReached, onDelete = { pendingDeletion = it })
                     }
                 }
             }

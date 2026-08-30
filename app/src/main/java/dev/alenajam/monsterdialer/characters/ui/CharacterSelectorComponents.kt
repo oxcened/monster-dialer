@@ -1,6 +1,8 @@
 package dev.alenajam.monsterdialer.characters.ui
 
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -20,9 +22,13 @@ import androidx.compose.foundation.lazy.grid.LazyGridState
 import androidx.compose.foundation.lazy.grid.itemsIndexed as gridItemsIndexed
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.DropdownMenu
+import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.PrimaryTabRow
@@ -30,11 +36,14 @@ import androidx.compose.material3.SmallFloatingActionButton
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Tab
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -95,7 +104,8 @@ internal fun LazyListScope.characterTypeItems(
     onSelect: (CharacterReference?) -> Unit,
     onAddCharacter: () -> Unit,
     addLabel: String,
-    isAddEnabled: Boolean = true
+    isAddEnabled: Boolean = true,
+    onDelete: (InstalledPackCharacter) -> Unit = {}
 ) {
     val availableSelection = selected?.takeIf { reference ->
         characters.any { CharacterReference(it.packId, it.character.id) == reference }
@@ -149,7 +159,8 @@ internal fun LazyListScope.characterTypeItems(
                     modifier = Modifier.size(72.dp)
                 )
             },
-            onSelect = { onSelect(reference) }
+            onSelect = { onSelect(reference) },
+            onDelete = if (installed.packId == "user.custom") { { onDelete(installed) } } else null
         )
     }
     if (characters.isEmpty()) item(key = "empty") { NoAdditionalCharacterOptionsCard(title) }
@@ -165,7 +176,8 @@ internal fun LazyGridScope.characterTypeGridItems(
     onSelect: (CharacterReference?) -> Unit,
     onAddCharacter: () -> Unit,
     addLabel: String,
-    isAddEnabled: Boolean = true
+    isAddEnabled: Boolean = true,
+    onDelete: (InstalledPackCharacter) -> Unit = {}
 ) {
     val availableSelection = selected?.takeIf { reference ->
         characters.any { CharacterReference(it.packId, it.character.id) == reference }
@@ -220,7 +232,8 @@ internal fun LazyGridScope.characterTypeGridItems(
                     modifier = Modifier.size(88.dp)
                 )
             },
-            onSelect = { onSelect(reference) }
+            onSelect = { onSelect(reference) },
+            onDelete = if (installed.packId == "user.custom") { { onDelete(installed) } } else null
         )
     }
     if (characters.isEmpty()) {
@@ -359,6 +372,33 @@ private fun AddCharacterButton(
 }
 
 @Composable
+fun CustomCharacterDeletionConfirmationDialog(
+    characterName: String,
+    onConfirm: () -> Unit,
+    onDismiss: () -> Unit
+) {
+    AlertDialog(
+        onDismissRequest = onDismiss,
+        title = { Text(stringResource(R.string.remove_character_pack_title, characterName)) },
+        text = { Text(stringResource(R.string.remove_character_pack_message, characterName)) },
+        confirmButton = {
+            Button(
+                onClick = onConfirm,
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = MaterialTheme.colorScheme.error,
+                    contentColor = MaterialTheme.colorScheme.onError
+                )
+            ) {
+                Text(stringResource(R.string.remove))
+            }
+        },
+        dismissButton = {
+            TextButton(onClick = onDismiss) { Text(stringResource(R.string.cancel)) }
+        }
+    )
+}
+
+@Composable
 private fun NoAdditionalCharacterOptionsCard(title: String) {
     Card(
         modifier = Modifier.fillMaxWidth().padding(vertical = 1.dp),
@@ -378,35 +418,70 @@ private fun NoAdditionalCharacterOptionsCard(title: String) {
     }
 }
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 private fun CharacterOptionCard(
     name: String, subtitle: String, isRadiant: Boolean = false, isSelected: Boolean,
-    roundTop: Boolean, roundBottom: Boolean, artwork: @Composable () -> Unit, onSelect: () -> Unit
+    roundTop: Boolean, roundBottom: Boolean, artwork: @Composable () -> Unit, onSelect: () -> Unit,
+    onDelete: (() -> Unit)? = null
 ) {
-    Card(
-        modifier = Modifier.fillMaxWidth().padding(vertical = 1.dp),
-        shape = RoundedCornerShape(
-            topStart = if (roundTop) 20.dp else 2.dp, topEnd = if (roundTop) 20.dp else 2.dp,
-            bottomStart = if (roundBottom) 20.dp else 2.dp, bottomEnd = if (roundBottom) 20.dp else 2.dp
-        ),
-        colors = CardDefaults.cardColors(containerColor = if (isSelected) MaterialTheme.colorScheme.secondaryContainer else MaterialTheme.colorScheme.surfaceContainerLow),
-        elevation = CardDefaults.cardElevation(defaultElevation = 0.5.dp)
-    ) {
-        Row(modifier = Modifier.padding(16.dp), verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(16.dp)) {
-            Box(modifier = Modifier.size(72.dp)) {
-                artwork()
-                if (isRadiant) {
-                    RadiantBadge(Modifier.align(Alignment.TopEnd))
+    var showMenu by remember { mutableStateOf(false) }
+    val shape = RoundedCornerShape(
+        topStart = if (roundTop) 20.dp else 2.dp, topEnd = if (roundTop) 20.dp else 2.dp,
+        bottomStart = if (roundBottom) 20.dp else 2.dp, bottomEnd = if (roundBottom) 20.dp else 2.dp
+    )
+    Box {
+        Card(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(vertical = 1.dp),
+            shape = shape,
+            colors = CardDefaults.cardColors(containerColor = if (isSelected) MaterialTheme.colorScheme.secondaryContainer else MaterialTheme.colorScheme.surfaceContainerLow),
+            elevation = CardDefaults.cardElevation(defaultElevation = 0.5.dp)
+        ) {
+            Row(
+                modifier = Modifier
+                    .combinedClickable(
+                        onClick = onSelect,
+                        onLongClick = if (onDelete != null) { { showMenu = true } } else null
+                    )
+                    .padding(16.dp),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.spacedBy(16.dp)
+            ) {
+                Box(modifier = Modifier.size(72.dp)) {
+                    artwork()
+                    if (isRadiant) {
+                        RadiantBadge(Modifier.align(Alignment.TopEnd))
+                    }
                 }
-            }
-            Column(modifier = Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(2.dp)) {
-                Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(6.dp)) {
-                    Text(name, style = MaterialTheme.typography.titleMedium)
+                Column(modifier = Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(2.dp)) {
+                    Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(6.dp)) {
+                        Text(name, style = MaterialTheme.typography.titleMedium)
+                    }
+                    Text(subtitle, style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                    if (isSelected) Text(stringResource(R.string.selected), style = MaterialTheme.typography.labelLarge, color = MaterialTheme.colorScheme.primary)
                 }
-                Text(subtitle, style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
-                if (isSelected) Text(stringResource(R.string.selected), style = MaterialTheme.typography.labelLarge, color = MaterialTheme.colorScheme.primary)
+                if (!isSelected) OutlinedButton(onClick = onSelect) { Text(stringResource(R.string.select)) }
             }
-            if (!isSelected) OutlinedButton(onClick = onSelect) { Text(stringResource(R.string.select)) }
+        }
+
+        if (onDelete != null) {
+            DropdownMenu(
+                expanded = showMenu,
+                onDismissRequest = { showMenu = false }
+            ) {
+                DropdownMenuItem(
+                    text = { Text(stringResource(R.string.remove)) },
+                    onClick = {
+                        showMenu = false
+                        onDelete()
+                    },
+                    leadingIcon = {
+                        AppIcon(LocalAppIcons.current.delete, contentDescription = null, modifier = Modifier.size(18.dp))
+                    }
+                )
+            }
         }
     }
 }
@@ -430,6 +505,7 @@ private fun RadiantBadge(modifier: Modifier = Modifier) {
     }
 }
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 private fun CharacterGridItem(
     name: String,
@@ -438,30 +514,58 @@ private fun CharacterGridItem(
     isSelected: Boolean,
     shape: Shape,
     artwork: @Composable () -> Unit,
-    onSelect: () -> Unit
+    onSelect: () -> Unit,
+    onDelete: (() -> Unit)? = null
 ) {
-    Card(
-        onClick = onSelect,
-        modifier = Modifier.fillMaxWidth(),
-        shape = shape,
-        colors = CardDefaults.cardColors(
-            containerColor = if (isSelected) MaterialTheme.colorScheme.secondaryContainer else MaterialTheme.colorScheme.surfaceContainerLow
-        ),
-        elevation = CardDefaults.cardElevation(defaultElevation = 0.5.dp)
-    ) {
-        Column(
-            modifier = Modifier.fillMaxWidth().padding(12.dp),
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.spacedBy(4.dp)
+    var showMenu by remember { mutableStateOf(false) }
+    Box {
+        Card(
+            modifier = Modifier.fillMaxWidth(),
+            shape = shape,
+            colors = CardDefaults.cardColors(
+                containerColor = if (isSelected) MaterialTheme.colorScheme.secondaryContainer else MaterialTheme.colorScheme.surfaceContainerLow
+            ),
+            elevation = CardDefaults.cardElevation(defaultElevation = 0.5.dp)
         ) {
-            Box(modifier = Modifier.size(88.dp)) {
-                artwork()
-                if (isRadiant) RadiantBadge(Modifier.align(Alignment.TopEnd))
+            Column(
+                modifier = Modifier
+                    .combinedClickable(
+                        onClick = onSelect,
+                        onLongClick = if (onDelete != null) { { showMenu = true } } else null
+                    )
+                    .fillMaxWidth()
+                    .heightIn(min = 184.dp)
+                    .padding(12.dp),
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.Center
+            ) {
+                Box(modifier = Modifier.size(88.dp)) {
+                    artwork()
+                    if (isRadiant) RadiantBadge(Modifier.align(Alignment.TopEnd))
+                }
+                Text(name, style = MaterialTheme.typography.titleSmall, textAlign = TextAlign.Center, maxLines = 2)
+                Text(subtitle, style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant, textAlign = TextAlign.Center, maxLines = 1)
+                Box(modifier = Modifier.height(20.dp), contentAlignment = Alignment.Center) {
+                    if (isSelected) Text(stringResource(R.string.selected), style = MaterialTheme.typography.labelLarge, color = MaterialTheme.colorScheme.primary)
+                }
             }
-            Text(name, style = MaterialTheme.typography.titleSmall, textAlign = TextAlign.Center, maxLines = 2)
-            Text(subtitle, style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant, textAlign = TextAlign.Center, maxLines = 1)
-            Box(modifier = Modifier.height(20.dp), contentAlignment = Alignment.Center) {
-                if (isSelected) Text(stringResource(R.string.selected), style = MaterialTheme.typography.labelLarge, color = MaterialTheme.colorScheme.primary)
+        }
+
+        if (onDelete != null) {
+            DropdownMenu(
+                expanded = showMenu,
+                onDismissRequest = { showMenu = false }
+            ) {
+                DropdownMenuItem(
+                    text = { Text(stringResource(R.string.remove)) },
+                    onClick = {
+                        showMenu = false
+                        onDelete()
+                    },
+                    leadingIcon = {
+                        AppIcon(LocalAppIcons.current.delete, contentDescription = null, modifier = Modifier.size(18.dp))
+                    }
+                )
             }
         }
     }

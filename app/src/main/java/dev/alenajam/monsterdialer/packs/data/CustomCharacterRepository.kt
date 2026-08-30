@@ -100,6 +100,35 @@ class CustomCharacterRepository @Inject constructor(
         CharacterReference(CUSTOM_PACK_ID, characterId)
     }
 
+    suspend fun deleteCharacter(characterId: String) = withContext(Dispatchers.IO) {
+        val currentManifest = readManifest() ?: return@withContext
+        val character = currentManifest.characters.find { it.id == characterId } ?: return@withContext
+
+        // Remove images
+        listOfNotNull(character.frontImage, character.backImage).distinct().forEach { relativePath ->
+            File(packDirectory, relativePath).delete()
+        }
+
+        val updatedCharacters = currentManifest.characters.filter { it.id != characterId }
+        if (updatedCharacters.isEmpty()) {
+            catalog.remove(CUSTOM_PACK_ID)
+            File(storageRoot, CUSTOM_PACK_ID).deleteRecursively()
+        } else {
+            val updatedManifest = currentManifest.copy(characters = updatedCharacters)
+            // Write manifest atomically
+            val tempManifest = File(packDirectory, "${CharacterPackValidator.ManifestPath}.tmp-${UUID.randomUUID()}")
+            try {
+                tempManifest.writeText(json.encodeToString(updatedManifest))
+                if (!tempManifest.renameTo(manifestFile)) {
+                    manifestFile.writeText(json.encodeToString(updatedManifest))
+                }
+            } finally {
+                if (tempManifest.exists()) tempManifest.delete()
+            }
+            catalog.recordInstallation(updatedManifest)
+        }
+    }
+
     fun getCharacterCount(): Int = readManifest()?.characters?.size ?: 0
 
     private fun readManifest(): CharacterPackManifest? {

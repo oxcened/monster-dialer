@@ -25,4 +25,6 @@ interface CharactersRepository {
 
     /** Returns a pack's valid installed characters, including when the pack is disabled. */
     fun getCharactersInPack(packId: String, packName: String): List<InstalledPackCharacter>
+
+    suspend fun deleteCustomCharacter(characterId: String)
 }

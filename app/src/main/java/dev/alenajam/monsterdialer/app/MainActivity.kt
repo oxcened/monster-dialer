@@ -46,7 +46,7 @@ class MainActivity : AppCompatActivity() {
 
         setContent {
             val characterPackSettingsViewModel: CharacterPackSettingsViewModel = hiltViewModel()
-            val characterPacks by characterPackSettingsViewModel.packs.collectAsStateWithLifecycle()
+            val visiblePacks by characterPackSettingsViewModel.packs.collectAsStateWithLifecycle()
 
             CompositionLocalProvider(
                 LocalMonsterAppIcons provides LocalMonsterAppIcons.current
@@ -63,8 +63,8 @@ class MainActivity : AppCompatActivity() {
                             description = stringResource(R.string.settings_character_packs_description),
                             subtitle = pluralStringResource(
                                 R.plurals.installed_pack_count,
-                                characterPacks.size,
-                                characterPacks.size
+                                visiblePacks.size,
+                                visiblePacks.size
                             ),
                             content = { CharacterPackSettingsContent(characterPackSettingsViewModel) },
                             topContentPadding = 0.dp
