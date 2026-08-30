@@ -51,6 +51,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import dev.alenajam.monsterdialer.R
+import dev.alenajam.monsterdialer.app.ui.LocalMonsterAppIcons
 import dev.alenajam.opendialer.core.common.ui.AppIcon
 import dev.alenajam.opendialer.core.common.ui.LocalAppIcons
 import dev.alenajam.monsterdialer.characters.data.BuiltInArtwork
@@ -334,7 +335,7 @@ private fun AddCharacterCard(
                 contentAlignment = Alignment.Center
             ) {
                 AppIcon(
-                    LocalAppIcons.current.addCharacter,
+                    LocalMonsterAppIcons.current.addCharacter,
                     contentDescription = null,
                     modifier = Modifier.size(32.dp),
                     tint = MaterialTheme.colorScheme.onPrimaryContainer
@@ -375,7 +376,7 @@ private fun AddCharacterGridItem(
                 contentAlignment = Alignment.Center
             ) {
                 AppIcon(
-                    LocalAppIcons.current.addCharacter,
+                    LocalMonsterAppIcons.current.addCharacter,
                     contentDescription = null,
                     modifier = Modifier.size(40.dp),
                     tint = MaterialTheme.colorScheme.onPrimaryContainer
@@ -454,8 +455,8 @@ private fun RadiantBadge(modifier: Modifier = Modifier) {
         shadowElevation = 2.dp
     ) {
         Box(contentAlignment = Alignment.Center) {
-            Icon(
-                imageVector = Icons.Outlined.AutoAwesome,
+            AppIcon(
+                icon = LocalMonsterAppIcons.current.radiant,
                 contentDescription = stringResource(R.string.radiant),
                 modifier = Modifier.size(15.dp),
                 tint = MaterialTheme.colorScheme.primary

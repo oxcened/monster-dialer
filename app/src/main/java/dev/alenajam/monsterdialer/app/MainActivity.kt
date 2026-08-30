@@ -5,6 +5,7 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
@@ -15,6 +16,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import dev.alenajam.monsterdialer.R
 import dev.alenajam.monsterdialer.app.ui.rememberMonsterIcons
 import dev.alenajam.monsterdialer.app.ui.rememberMonsterTypography
+import dev.alenajam.monsterdialer.app.ui.LocalMonsterAppIcons
 import dev.alenajam.monsterdialer.packs.ui.CharacterPackSettingsContent
 import dev.alenajam.monsterdialer.packs.ui.CharacterPackSettingsViewModel
 import dev.alenajam.monsterdialer.characters.ui.PlayerCharacterSettingsContent
@@ -45,53 +47,57 @@ class MainActivity : AppCompatActivity() {
             val characterPackSettingsViewModel: CharacterPackSettingsViewModel = hiltViewModel()
             val characterPacks by characterPackSettingsViewModel.packs.collectAsStateWithLifecycle()
 
-            DialerApp(
-                defaultPhoneManager = defaultPhoneManager,
-                icons = rememberMonsterIcons(),
-                themeExtension = AppThemeExtension(
-                    typography = rememberMonsterTypography(MaterialTheme.typography)
-                ),
-                settingsSubpages = listOf(
-                    SettingsSubpage(
-                        title = stringResource(R.string.settings_character_packs_title),
-                        description = stringResource(R.string.settings_character_packs_description),
-                        subtitle = pluralStringResource(
-                            R.plurals.installed_pack_count,
-                            characterPacks.size,
-                            characterPacks.size
+            CompositionLocalProvider(
+                LocalMonsterAppIcons provides LocalMonsterAppIcons.current
+            ) {
+                DialerApp(
+                    defaultPhoneManager = defaultPhoneManager,
+                    icons = rememberMonsterIcons(),
+                    themeExtension = AppThemeExtension(
+                        typography = rememberMonsterTypography(MaterialTheme.typography)
+                    ),
+                    settingsSubpages = listOf(
+                        SettingsSubpage(
+                            title = stringResource(R.string.settings_character_packs_title),
+                            description = stringResource(R.string.settings_character_packs_description),
+                            subtitle = pluralStringResource(
+                                R.plurals.installed_pack_count,
+                                characterPacks.size,
+                                characterPacks.size
+                            ),
+                            content = { CharacterPackSettingsContent(characterPackSettingsViewModel) },
+                            topContentPadding = 0.dp
                         ),
-                        content = { CharacterPackSettingsContent(characterPackSettingsViewModel) },
-                        topContentPadding = 0.dp
-                    ),
-                    SettingsSubpage(
-                        title = stringResource(R.string.settings_player_character_title),
-                        description = stringResource(R.string.settings_player_character_description),
-                        content = { PlayerCharacterSettingsContent() },
-                        isScrollable = false,
-                        topContentPadding = 0.dp,
-                        destinations = listOf(
-                            SettingsSubpageDestination(title = stringResource(R.string.create_character_title)) { onNavigateBack ->
-                                AddCharacterScreen(onNavigateBack)
-                            }
-                        )
-                    ),
-                    SettingsSubpage(
-                        title = stringResource(R.string.settings_contact_characters_title),
-                        description = stringResource(R.string.settings_contact_characters_description),
-                        content = { ContactCharacterSettingsContent() },
-                        isScrollable = false,
-                        topContentPadding = 0.dp,
-                        destinations = listOf(
-                            SettingsSubpageDestination(title = stringResource(R.string.choose_contact)) { onNavigateBack ->
-                                ContactPickerDestination(onNavigateBack)
-                            },
-                            SettingsSubpageDestination(title = stringResource(R.string.create_character_title)) { onNavigateBack ->
-                                AddCharacterScreen(onNavigateBack)
-                            }
+                        SettingsSubpage(
+                            title = stringResource(R.string.settings_player_character_title),
+                            description = stringResource(R.string.settings_player_character_description),
+                            content = { PlayerCharacterSettingsContent() },
+                            isScrollable = false,
+                            topContentPadding = 0.dp,
+                            destinations = listOf(
+                                SettingsSubpageDestination(title = stringResource(R.string.create_character_title)) { onNavigateBack ->
+                                    AddCharacterScreen(onNavigateBack)
+                                }
+                            )
+                        ),
+                        SettingsSubpage(
+                            title = stringResource(R.string.settings_contact_characters_title),
+                            description = stringResource(R.string.settings_contact_characters_description),
+                            content = { ContactCharacterSettingsContent() },
+                            isScrollable = false,
+                            topContentPadding = 0.dp,
+                            destinations = listOf(
+                                SettingsSubpageDestination(title = stringResource(R.string.choose_contact)) { onNavigateBack ->
+                                    ContactPickerDestination(onNavigateBack)
+                                },
+                                SettingsSubpageDestination(title = stringResource(R.string.create_character_title)) { onNavigateBack ->
+                                    AddCharacterScreen(onNavigateBack)
+                                }
+                            )
                         )
                     )
                 )
-            )
+            }
         }
     }
 }

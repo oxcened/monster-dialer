@@ -5,7 +5,10 @@
 - In Compose, load `<string>` resources with `stringResource` and `<plurals>` resources with `pluralStringResource`; do not use `stringResource` with a plural resource ID.
 - Do not call `LocalContext.current.getString()` or read `LocalContext.current.resources` from a composable. Use `stringResource`/`pluralStringResource`, or `LocalResources.current` when a resource must be resolved dynamically, so configuration changes invalidate the composition.
 - When translating UI labels, account for the available space: keep compact controls such as buttons and navigation labels as short as the target language allows, without sacrificing clarity.
-- If you need to add an icon, do not hard-code it; add it to `AppIcons` and reference it from there. Icons should always be centralized in `AppIcons` so they can be extended or overridden by project-specific `AppIcons` configurations. Always use `AppIcon` (not `Icon`) to display them.
+- If you need to add an icon, do not hard-code it. Determine if it belongs to OpenDialer (general telephony icons) or MonsterDialer (game-specific icons).
+    - OpenDialer icons should be added to `AppIcons` in `opendialer`.
+    - MonsterDialer icons should be added to `MonsterAppIcons` in `monster-dialer`.
+- Icons should always be centralized in their respective icon classes so they can be extended or overridden by project-specific configurations. Always use `AppIcon` (not `Icon`) to display them.
 
 ## Project-specific naming conventions
 
