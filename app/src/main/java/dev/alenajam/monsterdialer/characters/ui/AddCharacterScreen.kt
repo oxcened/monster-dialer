@@ -1,7 +1,6 @@
 package dev.alenajam.monsterdialer.characters.ui
 
 import androidx.activity.compose.rememberLauncherForActivityResult
-import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -57,7 +56,7 @@ fun AddCharacterScreen(
     val isSaving by viewModel.isSaving.collectAsStateWithLifecycle()
     val creationResult by viewModel.creationResult.collectAsStateWithLifecycle()
 
-    val picker = rememberLauncherForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri ->
+    val picker = rememberLauncherForActivityResult(ActivityResultContracts.GetContent()) { uri ->
         viewModel.onImageSelected(uri)
     }
 
@@ -112,7 +111,7 @@ fun AddCharacterScreen(
                         .size(160.dp)
                         .clip(RoundedCornerShape(28.dp))
                         .background(MaterialTheme.colorScheme.primaryContainer)
-                        .clickable { picker.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly)) },
+                        .clickable { picker.launch("image/*") },
                     contentAlignment = Alignment.Center
                 ) {
                     if (imageUri != null) {
