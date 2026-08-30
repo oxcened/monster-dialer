@@ -121,4 +121,10 @@
     <string name="character_creation_failed" comment="Error when a character cannot be saved.">Nu s-a putut crea personajul</string>
     <string name="character_limit_reached_message" comment="Error message when the 200 character limit is hit.">Limită de 200 de personaje atinsă. Șterge câteva pentru a adăuga mai multe.</string>
     <string name="character_limit_reached_hint" comment="Short hint shown below the disabled add button.">Limită de 200 de personaje atinsă</string>
+    <string name="disable_character_pack_title" comment="Confirmation dialog title; %1$s is the character pack name.">Dezactivezi %1$s?</string>
+    <string name="disable_character_pack_message" comment="Confirmation dialog message; %1$s is the character pack name.">Acest pachet este utilizat în prezent. Dezactivarea acestuia va anula atribuirea personajelor sale pentru tine și contactele tale.</string>
+    <string name="front_sprite_required_for_contact" comment="Message shown when a front sprite is missing but required by an assignment.">Sprite-ul frontal este necesar deoarece acest personaj este atribuit unui contact.</string>
+    <string name="back_sprite_required_for_player" comment="Message shown when a back sprite is missing but required by an assignment.">Sprite-ul posterior este necesar deoarece acest personaj îți este atribuit ție.</string>
+    <string name="remove_character_in_use_message" comment="Confirmation dialog message when deleting a character in use; %1$s is the character name.">%1$s este utilizat în prezent. Ștergerea acestuia va anula atribuirea sa pentru tine și contactele tale.</string>
+    <string name="remove_character_pack_in_use_message" comment="Confirmation dialog message when deleting a pack in use; %1$s is the character pack name.">Acest pachet este utilizat în prezent. Eliminarea acestuia va anula atribuirea personajelor sale pentru tine și contactele tale.</string>
 </resources>

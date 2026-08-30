@@ -118,4 +118,10 @@
     <string name="character_creation_failed" comment="Error when a character cannot be saved.">Não foi possível criar a personagem</string>
     <string name="character_limit_reached_message" comment="Error message when the 200 character limit is hit.">Limite de 200 personagens atingido. Elimina algumas para adicionar mais.</string>
     <string name="character_limit_reached_hint" comment="Short hint shown below the disabled add button.">Limite de 200 personagens atingido</string>
+    <string name="disable_character_pack_title" comment="Confirmation dialog title; %1$s is the character pack name.">Desativar %1$s?</string>
+    <string name="disable_character_pack_message" comment="Confirmation dialog message; %1$s is the character pack name.">Este pacote está em uso. Desativá-lo removerá a atribuição das suas personagens a si e aos seus contactos.</string>
+    <string name="front_sprite_required_for_contact" comment="Message shown when a front sprite is missing but required by an assignment.">O sprite frontal é obrigatório porque esta personagem está atribuída a um contacto.</string>
+    <string name="back_sprite_required_for_player" comment="Message shown when a back sprite is missing but required by an assignment.">O sprite traseiro é obrigatório porque esta personagem está atribuída a si.</string>
+    <string name="remove_character_in_use_message" comment="Confirmation dialog message when deleting a character in use; %1$s is the character name.">%1$s está em uso. Eliminá-lo removerá a sua atribuição a si e aos seus contactos.</string>
+    <string name="remove_character_pack_in_use_message" comment="Confirmation dialog message when deleting a pack in use; %1$s is the character pack name.">Este pacote está em uso. Removê-lo removerá a atribuição das suas personagens a si e aos seus contactos.</string>
 </resources>

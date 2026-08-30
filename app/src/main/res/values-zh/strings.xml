@@ -115,4 +115,10 @@
     <string name="character_creation_failed" comment="Error when a character cannot be saved.">无法保存角色</string>
     <string name="character_limit_reached_message" comment="Error message when the 200 character limit is hit.">已达到 200 个角色的限制。请删除一些后再添加。</string>
     <string name="character_limit_reached_hint" comment="Short hint shown below the disabled add button.">已达到 200 个角色的限制</string>
+    <string name="disable_character_pack_title" comment="Confirmation dialog title; %1$s is the character pack name.">停用 %1$s 吗？</string>
+    <string name="disable_character_pack_message" comment="Confirmation dialog message; %1$s is the character pack name.">此角色包目前正在使用中。停用它将取消其角色与你及你的联系人的关联。</string>
+    <string name="front_sprite_required_for_contact" comment="Message shown when a front sprite is missing but required by an assignment.">需要前向图像，因为此角色已分配给联系人。</string>
+    <string name="back_sprite_required_for_player" comment="Message shown when a back sprite is missing but required by an assignment.">需要后向图像，因为此角色已分配给你。</string>
+    <string name="remove_character_in_use_message" comment="Confirmation dialog message when deleting a character in use; %1$s is the character name.">%1$s 目前正在使用中。删除它将取消其与你及你的联系人的关联。</string>
+    <string name="remove_character_pack_in_use_message" comment="Confirmation dialog message when deleting a pack in use; %1$s is the character pack name.">此角色包目前正在使用中。移除它将取消其角色与你及你的联系人的关联。</string>
 </resources>

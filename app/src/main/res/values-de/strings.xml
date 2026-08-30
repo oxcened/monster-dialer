@@ -118,4 +118,10 @@
     <string name="character_creation_failed" comment="Error when a character cannot be saved.">Charakter konnte nicht gespeichert werden</string>
     <string name="character_limit_reached_message" comment="Error message when the 200 character limit is hit.">Limit von 200 Charakteren erreicht. Lösche einige, um weitere hinzuzufügen.</string>
     <string name="character_limit_reached_hint" comment="Short hint shown below the disabled add button.">Limit von 200 Charakteren erreicht</string>
+    <string name="disable_character_pack_title" comment="Confirmation dialog title; %1$s is the character pack name.">%1$s deaktivieren?</string>
+    <string name="disable_character_pack_message" comment="Confirmation dialog message; %1$s is the character pack name.">Dieses Paket wird derzeit verwendet. Durch das Deaktivieren wird die Zuweisung seiner Charaktere zu dir und deinen Kontakten aufgehoben.</string>
+    <string name="front_sprite_required_for_contact" comment="Message shown when a front sprite is missing but required by an assignment.">Die Vorderansicht ist erforderlich, da dieser Charakter einem Kontakt zugewiesen ist.</string>
+    <string name="back_sprite_required_for_player" comment="Message shown when a back sprite is missing but required by an assignment.">Die Rückansicht ist erforderlich, da dieser Charakter dir zugewiesen ist.</string>
+    <string name="remove_character_in_use_message" comment="Confirmation dialog message when deleting a character in use; %1$s is the character name.">%1$s wird derzeit verwendet. Durch das Löschen wird die Zuweisung zu dir und deinen Kontakten aufgehoben.</string>
+    <string name="remove_character_pack_in_use_message" comment="Confirmation dialog message when deleting a pack in use; %1$s is the character pack name.">Dieses Paket wird derzeit verwendet. Durch das Entfernen wird die Zuweisung seiner Charaktere zu dir und deinen Kontakten aufgehoben.</string>
 </resources>
