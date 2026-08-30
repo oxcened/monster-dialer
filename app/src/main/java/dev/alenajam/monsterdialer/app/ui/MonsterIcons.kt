@@ -1,6 +1,7 @@
 package dev.alenajam.monsterdialer.app.ui
 
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.AddCircleOutline
 import androidx.compose.material.icons.outlined.Block
 import androidx.compose.material.icons.outlined.MoreVert
 import androidx.compose.runtime.Composable
@@ -67,6 +68,7 @@ fun rememberMonsterIcons(): AppIcons {
             arrowUp = IconSource.Resource(R.drawable.arrow_up, tintable = false),
             arrowDown = IconSource.Resource(R.drawable.arrow_down, tintable = false),
             favorite = IconSource.Resource(R.drawable.star, tintable = false),
+            addCharacter = IconSource.Vector(Icons.Outlined.AddCircleOutline),
         )
     }
 }

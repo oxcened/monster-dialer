@@ -111,7 +111,8 @@ fun ColumnScope.ContactCharacterSettingsContent(
                     selected = null,
                     defaultArtwork = { it.contactArtwork },
                     packArtwork = { it.imageFile(requireNotNull(it.character.frontImage)) },
-                    onSelect = {}
+                    onSelect = {},
+                    onAddCharacter = { navigator?.navigateTo(1) }
                 )
                 1 -> characterTypeItems(
                     title = monsterTitle,
@@ -120,7 +121,8 @@ fun ColumnScope.ContactCharacterSettingsContent(
                     selected = null,
                     defaultArtwork = { it.contactArtwork },
                     packArtwork = { it.imageFile(requireNotNull(it.character.frontImage)) },
-                    onSelect = {}
+                    onSelect = {},
+                    onAddCharacter = { navigator?.navigateTo(1) }
                 )
             }
         }
@@ -191,15 +193,15 @@ fun ColumnScope.ContactCharacterSettingsContent(
             if (layout == CharacterLayout.List) {
                 LazyColumn(state = listState, modifier = Modifier.fillMaxSize(), contentPadding = PaddingValues(top = 8.dp, bottom = 72.dp)) {
                     when (selectedTab) {
-                        0 -> characterTypeItems(trainerTitle, BuiltInCharacters.trainer, trainers, assignedTrainer, { it.contactArtwork }, { it.imageFile(requireNotNull(it.character.frontImage)) }, viewModel::assignTrainer)
-                        1 -> characterTypeItems(monsterTitle, BuiltInCharacters.monster.character, monsters, assignedMonster, { it.contactArtwork }, { it.imageFile(requireNotNull(it.character.frontImage)) }, viewModel::assignMonster)
+                        0 -> characterTypeItems(trainerTitle, BuiltInCharacters.trainer, trainers, assignedTrainer, { it.contactArtwork }, { it.imageFile(requireNotNull(it.character.frontImage)) }, viewModel::assignTrainer, { navigator?.navigateTo(1) })
+                        1 -> characterTypeItems(monsterTitle, BuiltInCharacters.monster.character, monsters, assignedMonster, { it.contactArtwork }, { it.imageFile(requireNotNull(it.character.frontImage)) }, viewModel::assignMonster, { navigator?.navigateTo(1) })
                     }
                 }
             } else {
                 LazyVerticalGrid(columns = GridCells.Fixed(2), state = gridState, modifier = Modifier.fillMaxSize(), contentPadding = PaddingValues(top = 8.dp, bottom = 72.dp), horizontalArrangement = Arrangement.spacedBy(2.dp), verticalArrangement = Arrangement.spacedBy(2.dp)) {
                     when (selectedTab) {
-                        0 -> characterTypeGridItems(trainerTitle, BuiltInCharacters.trainer, trainers, assignedTrainer, { it.contactArtwork }, { it.imageFile(requireNotNull(it.character.frontImage)) }, viewModel::assignTrainer)
-                        1 -> characterTypeGridItems(monsterTitle, BuiltInCharacters.monster.character, monsters, assignedMonster, { it.contactArtwork }, { it.imageFile(requireNotNull(it.character.frontImage)) }, viewModel::assignMonster)
+                        0 -> characterTypeGridItems(trainerTitle, BuiltInCharacters.trainer, trainers, assignedTrainer, { it.contactArtwork }, { it.imageFile(requireNotNull(it.character.frontImage)) }, viewModel::assignTrainer, { navigator?.navigateTo(1) })
+                        1 -> characterTypeGridItems(monsterTitle, BuiltInCharacters.monster.character, monsters, assignedMonster, { it.contactArtwork }, { it.imageFile(requireNotNull(it.character.frontImage)) }, viewModel::assignMonster, { navigator?.navigateTo(1) })
                     }
                 }
             }

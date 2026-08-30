@@ -84,4 +84,15 @@
     <string name="battle_trainer_sent_out" comment="Battle announcement; %1$s is the trainer name and %2$s is the monster name.">Trainer %1$s sent out %2$s!</string>
     <string name="battle_wild_radiant_appeared" comment="Battle announcement; %1$s is the wild monster name and radiant is its rare variant.">Wild radiant %1$s appeared!</string>
     <string name="battle_wild_appeared" comment="Battle announcement; %1$s is the wild monster name.">Wild %1$s appeared!</string>
+
+    <!-- Character creation -->
+    <string name="add_character" comment="Button to start creating a new custom character.">Add character</string>
+    <string name="create_character_title" comment="Title of the character creation screen.">Create character</string>
+    <string name="character_name_label" comment="Label for the character name input field.">Character name</string>
+    <string name="character_name_hint" comment="Hint for the character name input field.">Enter name</string>
+    <string name="select_image" comment="Button to pick an image from the gallery.">Select image</string>
+    <string name="change_image" comment="Button to change the already selected image.">Change image</string>
+    <string name="save_character" comment="Button to save the new character.">Save character</string>
+    <string name="character_created" comment="Confirmation after a character is successfully created.">Character created</string>
+    <string name="character_creation_failed" comment="Error when a character cannot be saved.">Could not create character</string>
 </resources>

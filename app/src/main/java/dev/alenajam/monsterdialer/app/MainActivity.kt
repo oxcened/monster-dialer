@@ -20,6 +20,7 @@ import dev.alenajam.monsterdialer.packs.ui.CharacterPackSettingsViewModel
 import dev.alenajam.monsterdialer.characters.ui.PlayerCharacterSettingsContent
 import dev.alenajam.monsterdialer.characters.ui.ContactCharacterSettingsContent
 import dev.alenajam.monsterdialer.characters.ui.ContactPickerDestination
+import dev.alenajam.monsterdialer.characters.ui.AddCharacterScreen
 import dev.alenajam.opendialer.core.common.DefaultPhoneManager
 import dev.alenajam.opendialer.core.common.ui.AppThemeExtension
 import dev.alenajam.opendialer.feature.settings.SettingsSubpage
@@ -67,7 +68,12 @@ class MainActivity : AppCompatActivity() {
                         description = stringResource(R.string.settings_player_character_description),
                         content = { PlayerCharacterSettingsContent() },
                         isScrollable = false,
-                        topContentPadding = 0.dp
+                        topContentPadding = 0.dp,
+                        destinations = listOf(
+                            SettingsSubpageDestination(title = stringResource(R.string.create_character_title)) { onNavigateBack ->
+                                AddCharacterScreen(onNavigateBack)
+                            }
+                        )
                     ),
                     SettingsSubpage(
                         title = stringResource(R.string.settings_contact_characters_title),
@@ -78,6 +84,9 @@ class MainActivity : AppCompatActivity() {
                         destinations = listOf(
                             SettingsSubpageDestination(title = stringResource(R.string.choose_contact)) { onNavigateBack ->
                                 ContactPickerDestination(onNavigateBack)
+                            },
+                            SettingsSubpageDestination(title = stringResource(R.string.create_character_title)) { onNavigateBack ->
+                                AddCharacterScreen(onNavigateBack)
                             }
                         )
                     )
