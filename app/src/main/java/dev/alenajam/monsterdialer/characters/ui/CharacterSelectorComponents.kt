@@ -132,6 +132,24 @@ internal fun LazyListScope.characterTypeItems(
     val userCharacters = grouped[userCustomPackId].orEmpty()
     val otherPacks = grouped.filter { it.key != userCustomPackId }
 
+    item { SectionHeader(stringResource(R.string.built_in_characters_section)) }
+    item(key = "default") {
+        CharacterOptionCard(
+            name = defaultCharacter.name,
+            isSelected = availableSelection == null,
+            roundTop = true,
+            roundBottom = true,
+            artwork = {
+                Image(
+                    painter = painterResource(defaultArtwork(defaultCharacter).resource),
+                    contentDescription = stringResource(R.string.default_character_artwork, title.lowercase()),
+                    modifier = Modifier.size(72.dp)
+                )
+            },
+            onSelect = { onSelect(null) }
+        )
+    }
+
     if (userCharacters.isNotEmpty()) {
         item { SectionHeader(stringResource(R.string.your_characters)) }
         itemsIndexed(items = userCharacters, key = { _, character -> "custom:${character.character.id}" }) { index, installed ->
@@ -153,24 +171,6 @@ internal fun LazyListScope.characterTypeItems(
                 onDelete = { onDelete(installed) }
             )
         }
-    }
-
-    item { SectionHeader(stringResource(R.string.built_in_characters_section)) }
-    item(key = "default") {
-        CharacterOptionCard(
-            name = defaultCharacter.name,
-            isSelected = availableSelection == null,
-            roundTop = true,
-            roundBottom = true,
-            artwork = {
-                Image(
-                    painter = painterResource(defaultArtwork(defaultCharacter).resource),
-                    contentDescription = stringResource(R.string.default_character_artwork, title.lowercase()),
-                    modifier = Modifier.size(72.dp)
-                )
-            },
-            onSelect = { onSelect(null) }
-        )
     }
 
     otherPacks.forEach { (packId, packCharacters) ->
@@ -238,6 +238,23 @@ internal fun LazyGridScope.characterTypeGridItems(
     val userCharacters = grouped[userCustomPackId].orEmpty()
     val otherPacks = grouped.filter { it.key != userCustomPackId }
 
+    item(span = { GridItemSpan(2) }) { SectionHeader(stringResource(R.string.built_in_characters_section)) }
+    item(key = "default") {
+        CharacterGridItem(
+            name = defaultCharacter.name,
+            isSelected = availableSelection == null,
+            shape = gridItemShape(index = 0, itemCount = 1),
+            artwork = {
+                Image(
+                    painter = painterResource(defaultArtwork(defaultCharacter).resource),
+                    contentDescription = stringResource(R.string.default_character_artwork, title.lowercase()),
+                    modifier = Modifier.size(88.dp)
+                )
+            },
+            onSelect = { onSelect(null) }
+        )
+    }
+
     if (userCharacters.isNotEmpty()) {
         item(span = { GridItemSpan(2) }) { SectionHeader(stringResource(R.string.your_characters)) }
         gridItemsIndexed(items = userCharacters, key = { _, character -> "custom:${character.character.id}" }) { index, installed ->
@@ -258,23 +275,6 @@ internal fun LazyGridScope.characterTypeGridItems(
                 onDelete = { onDelete(installed) }
             )
         }
-    }
-
-    item(span = { GridItemSpan(2) }) { SectionHeader(stringResource(R.string.built_in_characters_section)) }
-    item(key = "default") {
-        CharacterGridItem(
-            name = defaultCharacter.name,
-            isSelected = availableSelection == null,
-            shape = gridItemShape(index = 0, itemCount = 1),
-            artwork = {
-                Image(
-                    painter = painterResource(defaultArtwork(defaultCharacter).resource),
-                    contentDescription = stringResource(R.string.default_character_artwork, title.lowercase()),
-                    modifier = Modifier.size(88.dp)
-                )
-            },
-            onSelect = { onSelect(null) }
-        )
     }
 
     otherPacks.forEach { (packId, packCharacters) ->
