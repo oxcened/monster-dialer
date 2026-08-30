@@ -4,8 +4,14 @@ import dev.alenajam.monsterdialer.packs.data.CharacterAssignmentTarget
 import dev.alenajam.monsterdialer.packs.data.CharacterReference
 import dev.alenajam.monsterdialer.packs.data.CharacterType
 import dev.alenajam.monsterdialer.packs.data.InstalledPackCharacter
+import kotlinx.coroutines.flow.Flow
 
 interface CharactersRepository {
+    fun observeCharactersAssignableTo(
+        role: CharacterAssignmentTarget,
+        type: CharacterType? = null
+    ): Flow<List<InstalledPackCharacter>>
+
     fun getCharactersAssignableTo(
         role: CharacterAssignmentTarget,
         type: CharacterType? = null

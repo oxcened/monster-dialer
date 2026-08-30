@@ -32,8 +32,8 @@ fun ColumnScope.PlayerCharacterSettingsContent(
 ) {
     val assignedTrainer by viewModel.assignedTrainer.collectAsStateWithLifecycle()
     val assignedMonster by viewModel.assignedMonster.collectAsStateWithLifecycle()
-    val trainers = viewModel.trainers
-    val monsters = viewModel.monsters
+    val trainers by viewModel.trainers.collectAsStateWithLifecycle()
+    val monsters by viewModel.monsters.collectAsStateWithLifecycle()
     var selectedTab by rememberSaveable { mutableIntStateOf(0) }
     val layout by viewModel.layout.collectAsStateWithLifecycle()
     val trainerSelectedItemIndex = selectedCharacterIndex(trainers, assignedTrainer)

@@ -13,8 +13,10 @@ import dev.alenajam.monsterdialer.packs.data.CharacterType
 import dev.alenajam.monsterdialer.packs.data.InstalledPackCharacter
 import dev.alenajam.opendialer.data.contacts.DialerContactSummary
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -27,13 +29,13 @@ class ContactCharacterSettingsViewModel @Inject constructor(
     private val layoutPreferences: CharacterLayoutPreferences
 ) : ViewModel() {
 
-    val trainers: List<InstalledPackCharacter> = charactersRepository.getCharactersAssignableTo(
+    val trainers: StateFlow<List<InstalledPackCharacter>> = charactersRepository.observeCharactersAssignableTo(
         CharacterAssignmentTarget.Contact, CharacterType.Trainer
-    )
+    ).stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), emptyList())
 
-    val monsters: List<InstalledPackCharacter> = charactersRepository.getCharactersAssignableTo(
+    val monsters: StateFlow<List<InstalledPackCharacter>> = charactersRepository.observeCharactersAssignableTo(
         CharacterAssignmentTarget.Contact, CharacterType.Monster
-    )
+    ).stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), emptyList())
 
     private val _contact = MutableStateFlow<MonsterContact?>(null)
     val contact: StateFlow<MonsterContact?> = _contact.asStateFlow()
@@ -45,7 +47,7 @@ class ContactCharacterSettingsViewModel @Inject constructor(
     val assignedMonster: StateFlow<CharacterReference?> = _assignedMonster.asStateFlow()
 
     private val _layout = MutableStateFlow(
-        if (layoutPreferences.isGridLayout() && (trainers.isNotEmpty() || monsters.isNotEmpty())) {
+        if (layoutPreferences.isGridLayout()) {
             CharacterLayout.Grid
         } else {
             CharacterLayout.List

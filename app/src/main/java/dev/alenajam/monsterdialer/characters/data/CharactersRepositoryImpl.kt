@@ -5,6 +5,7 @@ import dev.alenajam.monsterdialer.packs.data.CharacterPackRepository
 import dev.alenajam.monsterdialer.packs.data.CharacterReference
 import dev.alenajam.monsterdialer.packs.data.CharacterType
 import dev.alenajam.monsterdialer.packs.data.InstalledPackCharacter
+import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -12,6 +13,13 @@ import javax.inject.Singleton
 class CharactersRepositoryImpl @Inject constructor(
     private val repository: CharacterPackRepository
 ) : CharactersRepository {
+
+    override fun observeCharactersAssignableTo(
+        role: CharacterAssignmentTarget,
+        type: CharacterType?
+    ): Flow<List<InstalledPackCharacter>> {
+        return repository.observeAssignableCharacters(role, type)
+    }
 
     override fun getCharactersAssignableTo(
         role: CharacterAssignmentTarget,

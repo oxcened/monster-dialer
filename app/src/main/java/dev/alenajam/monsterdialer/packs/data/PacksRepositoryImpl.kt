@@ -9,10 +9,14 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.io.File
 import javax.inject.Inject
 import javax.inject.Singleton
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.SupervisorJob
 
 @Singleton
 class PacksRepositoryImpl @Inject constructor(
@@ -20,11 +24,16 @@ class PacksRepositoryImpl @Inject constructor(
     private val catalog: CharacterPackCatalog,
     @CharacterPacksDir private val storageRoot: File
 ) : PacksRepository {
+    private val scope = CoroutineScope(SupervisorJob() + Dispatchers.Main)
     private val installer = CharacterPackInstaller(storageRoot, catalog = catalog)
     private val _packs = MutableStateFlow<List<MonsterPack>>(emptyList())
     
     init {
-        refreshPacks()
+        scope.launch {
+            catalog.packs.collectLatest {
+                refreshPacks()
+            }
+        }
     }
 
     private fun refreshPacks() {

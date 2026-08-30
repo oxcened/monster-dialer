@@ -1,5 +1,7 @@
 package dev.alenajam.monsterdialer.packs.data
 
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 import java.io.File
 
 /**
@@ -10,6 +12,13 @@ class CharacterPackRepository(
     private val storageRoot: File,
     private val catalog: CharacterPackCatalog = CharacterPackCatalog(storageRoot)
 ) {
+    fun observeAssignableCharacters(
+        role: CharacterAssignmentTarget,
+        type: CharacterType? = null
+    ): Flow<List<InstalledPackCharacter>> =
+        catalog.packs
+            .map { charactersAssignableTo(role, type) }
+
     fun find(
         reference: CharacterReference,
         role: CharacterAssignmentTarget,
