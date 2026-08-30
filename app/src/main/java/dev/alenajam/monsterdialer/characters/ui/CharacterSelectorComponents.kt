@@ -312,13 +312,16 @@ internal fun LazyGridScope.characterTypeGridItems(
 
 private fun gridItemShape(index: Int, itemCount: Int): RoundedCornerShape {
     val isLeftColumn = index % 2 == 0
+    val isRightColumn = !isLeftColumn
     val isTopRow = index < 2
     val isBottomRow = index / 2 == (itemCount - 1) / 2
+    val isOnlyInRow = isLeftColumn && index == itemCount - 1
+
     return RoundedCornerShape(
         topStart = if (isTopRow && isLeftColumn) 20.dp else 2.dp,
-        topEnd = if (isTopRow && !isLeftColumn) 20.dp else 2.dp,
+        topEnd = if (isTopRow && (isRightColumn || isOnlyInRow)) 20.dp else 2.dp,
         bottomStart = if (isBottomRow && isLeftColumn) 20.dp else 2.dp,
-        bottomEnd = if (isBottomRow && !isLeftColumn) 20.dp else 2.dp
+        bottomEnd = if (isBottomRow && (isRightColumn || isOnlyInRow)) 20.dp else 2.dp
     )
 }
 
@@ -694,12 +697,14 @@ private fun CharacterGridItem(
                 
                 Spacer(modifier = Modifier.weight(1f))
                 
-                if (isSelected) {
-                    Text(
-                        text = stringResource(R.string.selected),
-                        style = MaterialTheme.typography.labelLarge,
-                        color = MaterialTheme.colorScheme.primary
-                    )
+                Box(modifier = Modifier.height(24.dp)) {
+                    if (isSelected) {
+                        Text(
+                            text = stringResource(R.string.selected),
+                            style = MaterialTheme.typography.labelLarge,
+                            color = MaterialTheme.colorScheme.primary
+                        )
+                    }
                 }
             }
         }
