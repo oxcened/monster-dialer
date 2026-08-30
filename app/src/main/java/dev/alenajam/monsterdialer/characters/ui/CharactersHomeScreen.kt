@@ -85,7 +85,7 @@ private fun SharedCharacterImportDialog(
     val characterType = stringResource(
         if (shared.character.type == CharacterType.Trainer) R.string.character_type_trainer
         else R.string.character_type_monster
-    )
+    ).lowercase()
     val artwork = remember(shared.frontImage, shared.backImage) {
         (shared.frontImage ?: shared.backImage)?.let { BitmapFactory.decodeByteArray(it, 0, it.size)?.asImageBitmap() }
     }
