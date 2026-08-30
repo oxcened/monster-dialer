@@ -30,6 +30,15 @@ class AddCharacterViewModel @Inject constructor(
     private val _type = MutableStateFlow(CharacterType.Monster)
     val type = _type.asStateFlow()
 
+    private val _isRadiant = MutableStateFlow(false)
+    val isRadiant = _isRadiant.asStateFlow()
+
+    private val _level = MutableStateFlow("")
+    val level = _level.asStateFlow()
+
+    private val _maxHp = MutableStateFlow("")
+    val maxHp = _maxHp.asStateFlow()
+
     private val _frontImageUri = MutableStateFlow<Uri?>(null)
     val frontImageUri = _frontImageUri.asStateFlow()
 
@@ -68,6 +77,9 @@ class AddCharacterViewModel @Inject constructor(
             if (character != null) {
                 _name.value = character.name
                 _type.value = character.type
+                _isRadiant.value = character.isRadiant
+                _level.value = character.level?.toString() ?: ""
+                _maxHp.value = character.maxHp?.toString() ?: ""
                 _existingFrontImageFile.value = withContext(Dispatchers.IO) { repository.getCharacterFrontImageFile(characterId) }
                 _existingBackImageFile.value = withContext(Dispatchers.IO) { repository.getCharacterBackImageFile(characterId) }
                 _isLimitReached.value = false // Can always edit even if limit reached
@@ -87,6 +99,25 @@ class AddCharacterViewModel @Inject constructor(
 
     fun onTypeChanged(newType: CharacterType) {
         _type.value = newType
+        if (newType != CharacterType.Monster) {
+            _isRadiant.value = false
+        }
+    }
+
+    fun onRadiantChanged(isRadiant: Boolean) {
+        _isRadiant.value = isRadiant
+    }
+
+    fun onLevelChanged(newLevel: String) {
+        if (newLevel.isEmpty() || newLevel.toIntOrNull() != null) {
+            _level.value = newLevel
+        }
+    }
+
+    fun onMaxHpChanged(newMaxHp: String) {
+        if (newMaxHp.isEmpty() || newMaxHp.toIntOrNull() != null) {
+            _maxHp.value = newMaxHp
+        }
     }
 
     fun onFrontImageSelected(uri: Uri?) {
@@ -110,6 +141,9 @@ class AddCharacterViewModel @Inject constructor(
     fun save() {
         val currentName = _name.value
         val currentType = _type.value
+        val currentIsRadiant = _isRadiant.value
+        val currentLevel = _level.value.toIntOrNull()
+        val currentMaxHp = _maxHp.value.toIntOrNull()
         val frontImage = _frontImageUri.value
         val backImage = _backImageUri.value
         val existingFront = _existingFrontImageFile.value
@@ -133,10 +167,10 @@ class AddCharacterViewModel @Inject constructor(
             _error.value = null
             try {
                 if (characterId != null) {
-                    repository.updateCharacter(characterId, currentName, frontImage, backImage)
+                    repository.updateCharacter(characterId, currentName, frontImage, backImage, currentIsRadiant, currentLevel, currentMaxHp)
                     _creationResult.value = CharacterReference(CustomCharacterRepository.CUSTOM_PACK_ID, characterId)
                 } else {
-                    val result = repository.addCharacter(currentName, currentType, frontImage, backImage)
+                    val result = repository.addCharacter(currentName, currentType, frontImage, backImage, currentIsRadiant, currentLevel, currentMaxHp)
                     _creationResult.value = result
                 }
             } catch (e: Exception) {

@@ -32,7 +32,10 @@ class CustomCharacterRepository @Inject constructor(
         name: String,
         type: CharacterType,
         frontImageUri: Uri?,
-        backImageUri: Uri?
+        backImageUri: Uri?,
+        isRadiant: Boolean = false,
+        level: Int? = null,
+        maxHp: Int? = null
     ): CharacterReference = withContext(Dispatchers.IO) {
         if (frontImageUri == null && backImageUri == null) {
             throw CharacterPackValidationException("At least one image is required")
@@ -74,7 +77,10 @@ class CustomCharacterRepository @Inject constructor(
             type = type,
             assignableTo = assignableTo,
             frontImage = frontImageFileName,
-            backImage = backImageFileName
+            backImage = backImageFileName,
+            isRadiant = isRadiant && type == CharacterType.Monster,
+            level = level,
+            maxHp = maxHp
         )
 
         val updatedManifest = currentManifest.copy(
@@ -90,7 +96,10 @@ class CustomCharacterRepository @Inject constructor(
         characterId: String,
         name: String,
         frontImageUri: Uri?,
-        backImageUri: Uri?
+        backImageUri: Uri?,
+        isRadiant: Boolean = false,
+        level: Int? = null,
+        maxHp: Int? = null
     ) = withContext(Dispatchers.IO) {
         val currentManifest = readManifest() ?: return@withContext
         val character = currentManifest.characters.find { it.id == characterId } ?: return@withContext
@@ -117,7 +126,10 @@ class CustomCharacterRepository @Inject constructor(
                     name = name.trim(),
                     frontImage = frontImageFileName,
                     backImage = backImageFileName,
-                    assignableTo = assignableTo
+                    assignableTo = assignableTo,
+                    isRadiant = isRadiant && it.type == CharacterType.Monster,
+                    level = level,
+                    maxHp = maxHp
                 )
             } else it
         }

@@ -91,6 +91,11 @@
     <string name="back_sprite_label" comment="Label for the back sprite picker.">后向图像</string>
     <string name="front_sprite_description" comment="Explains that the front sprite is required for contacts.">添加前向图像即可将此角色分配给联系人。</string>
     <string name="back_sprite_description" comment="Explains that the back sprite is required for the player.">添加后向图像即可将此角色分配给自己。</string>
+    <string name="advanced_section" comment="Heading for advanced character settings.">高级</string>
+    <string name="radiant_label" comment="Label for the radiant toggle.">闪耀</string>
+    <string name="radiant_description" comment="Explains what the radiant status means.">此怪物的一种罕见的闪光变体。</string>
+    <string name="level_label" comment="Label for the character level input.">等级</string>
+    <string name="max_hp_label" comment="Label for the character max HP input.">最大生命值</string>
     <string name="required_label" comment="Suffix for required fields.">*</string>
     <string name="edit_trainer_title" comment="Title of the trainer edit screen.">编辑训练师</string>
     <string name="edit_monster_title" comment="Title of the monster edit screen.">编辑怪物</string>

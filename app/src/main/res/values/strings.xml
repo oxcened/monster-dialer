@@ -95,6 +95,11 @@
     <string name="back_sprite_label" comment="Label for the back sprite picker.">Back Sprite</string>
     <string name="front_sprite_description" comment="Explains that the front sprite is required for contacts.">Adding a front sprite allows assigning this character to contacts.</string>
     <string name="back_sprite_description" comment="Explains that the back sprite is required for the player.">Adding a back sprite allows assigning this character to yourself.</string>
+    <string name="advanced_section" comment="Heading for advanced character settings.">Advanced</string>
+    <string name="radiant_label" comment="Label for the radiant toggle.">Radiant</string>
+    <string name="radiant_description" comment="Explains what the radiant status means.">A rare, sparkling variant of this monster.</string>
+    <string name="level_label" comment="Label for the character level input.">Level</string>
+    <string name="max_hp_label" comment="Label for the character max HP input.">Max HP</string>
     <string name="required_label" comment="Suffix for required fields.">*</string>
     <string name="edit_trainer_title" comment="Title of the trainer edit screen.">Edit trainer</string>
     <string name="edit_monster_title" comment="Title of the monster edit screen.">Edit monster</string>

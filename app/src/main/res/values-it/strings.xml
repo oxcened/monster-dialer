@@ -93,6 +93,11 @@
     <string name="back_sprite_label" comment="Label for the back sprite picker.">Sprite posteriore</string>
     <string name="front_sprite_description" comment="Explains that the front sprite is required for contacts.">L’aggiunta di uno sprite frontale consente di assegnare questo personaggio ai contatti.</string>
     <string name="back_sprite_description" comment="Explains that the back sprite is required for the player.">L’aggiunta di uno sprite posteriore consente di assegnare questo personaggio a te stesso.</string>
+    <string name="advanced_section" comment="Heading for advanced character settings.">Avanzate</string>
+    <string name="radiant_label" comment="Label for the radiant toggle.">Radioso</string>
+    <string name="radiant_description" comment="Explains what the radiant status means.">Una variante rara e scintillante di questo mostro.</string>
+    <string name="level_label" comment="Label for the character level input.">Livello</string>
+    <string name="max_hp_label" comment="Label for the character max HP input.">PS max</string>
     <string name="required_label" comment="Suffix for required fields.">*</string>
     <string name="edit_trainer_title" comment="Title of the trainer edit screen.">Modifica allenatore</string>
     <string name="edit_monster_title" comment="Title of the monster edit screen.">Modifica mostro</string>

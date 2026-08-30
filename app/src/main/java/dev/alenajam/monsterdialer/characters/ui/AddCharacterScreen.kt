@@ -18,6 +18,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
@@ -29,16 +30,21 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
+import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -62,10 +68,14 @@ fun AddCharacterScreen(
     viewModel: AddCharacterViewModel = hiltViewModel()
 ) {
     val name by viewModel.name.collectAsStateWithLifecycle()
+    val type by viewModel.type.collectAsStateWithLifecycle()
+    val isRadiant by viewModel.isRadiant.collectAsStateWithLifecycle()
     val frontImageUri by viewModel.frontImageUri.collectAsStateWithLifecycle()
     val backImageUri by viewModel.backImageUri.collectAsStateWithLifecycle()
     val existingFrontImageFile by viewModel.existingFrontImageFile.collectAsStateWithLifecycle()
     val existingBackImageFile by viewModel.existingBackImageFile.collectAsStateWithLifecycle()
+    val level by viewModel.level.collectAsStateWithLifecycle()
+    val maxHp by viewModel.maxHp.collectAsStateWithLifecycle()
     val isSaving by viewModel.isSaving.collectAsStateWithLifecycle()
     val isLimitReached by viewModel.isLimitReached.collectAsStateWithLifecycle()
     val creationResult by viewModel.creationResult.collectAsStateWithLifecycle()
@@ -223,6 +233,18 @@ fun AddCharacterScreen(
                                 )
                             )
                         }
+
+                        // Advanced Section
+                        AdvancedSection(
+                            type = type,
+                            isRadiant = isRadiant,
+                            onRadiantChange = viewModel::onRadiantChanged,
+                            level = level,
+                            onLevelChange = viewModel::onLevelChanged,
+                            maxHp = maxHp,
+                            onMaxHpChange = viewModel::onMaxHpChanged,
+                            enabled = !isLimitReached
+                        )
                     }
                 }
 
@@ -273,6 +295,150 @@ fun AddCharacterScreen(
                         stringResource(R.string.save),
                         style = MaterialTheme.typography.titleMedium
                     )
+                }
+            }
+        }
+    }
+}
+
+@Composable
+private fun AdvancedSection(
+    type: CharacterType,
+    isRadiant: Boolean,
+    onRadiantChange: (Boolean) -> Unit,
+    level: String,
+    onLevelChange: (String) -> Unit,
+    maxHp: String,
+    onMaxHpChange: (String) -> Unit,
+    enabled: Boolean
+) {
+    var expanded by remember { mutableStateOf(false) }
+
+    Column(verticalArrangement = Arrangement.spacedBy(16.dp)) {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .clip(RoundedCornerShape(12.dp))
+                .clickable { expanded = !expanded }
+                .padding(vertical = 8.dp),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.SpaceBetween
+        ) {
+            Text(
+                text = stringResource(R.string.advanced_section),
+                style = MaterialTheme.typography.titleSmall,
+                color = MaterialTheme.colorScheme.primary
+            )
+            AppIcon(
+                icon = if (expanded) LocalAppIcons.current.arrowUp else LocalAppIcons.current.arrowDown,
+                contentDescription = null,
+                modifier = Modifier.size(20.dp),
+                tint = MaterialTheme.colorScheme.primary
+            )
+        }
+
+        if (expanded) {
+            Column(verticalArrangement = Arrangement.spacedBy(20.dp)) {
+                // Radiant Toggle (Only for monsters)
+                if (type == CharacterType.Monster) {
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .clip(RoundedCornerShape(16.dp))
+                            .background(MaterialTheme.colorScheme.surface)
+                            .clickable(enabled = enabled) { onRadiantChange(!isRadiant) }
+                            .padding(horizontal = 16.dp, vertical = 12.dp),
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.SpaceBetween
+                    ) {
+                        Row(
+                            verticalAlignment = Alignment.CenterVertically,
+                            horizontalArrangement = Arrangement.spacedBy(12.dp)
+                        ) {
+                            AppIcon(
+                                icon = LocalMonsterAppIcons.current.radiant,
+                                contentDescription = null,
+                                modifier = Modifier.size(24.dp),
+                                tint = if (isRadiant) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurfaceVariant
+                            )
+                            Column {
+                                Text(
+                                    text = stringResource(R.string.radiant_label),
+                                    style = MaterialTheme.typography.labelLarge,
+                                    color = MaterialTheme.colorScheme.onSurface
+                                )
+                                Text(
+                                    text = stringResource(R.string.radiant_description),
+                                    style = MaterialTheme.typography.bodySmall,
+                                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                                )
+                            }
+                        }
+                        Switch(
+                            checked = isRadiant,
+                            onCheckedChange = onRadiantChange,
+                            enabled = enabled
+                        )
+                    }
+                }
+
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.spacedBy(16.dp)
+                ) {
+                    // Level Input
+                    Column(
+                        modifier = Modifier.weight(1f),
+                        verticalArrangement = Arrangement.spacedBy(8.dp)
+                    ) {
+                        Text(
+                            text = stringResource(R.string.level_label),
+                            style = MaterialTheme.typography.labelLarge,
+                            color = MaterialTheme.colorScheme.onSurface
+                        )
+                        OutlinedTextField(
+                            value = level,
+                            onValueChange = onLevelChange,
+                            placeholder = { Text("1") },
+                            modifier = Modifier.fillMaxWidth(),
+                            singleLine = true,
+                            shape = RoundedCornerShape(12.dp),
+                            enabled = enabled,
+                            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+                            colors = OutlinedTextFieldDefaults.colors(
+                                focusedContainerColor = MaterialTheme.colorScheme.surface,
+                                unfocusedContainerColor = MaterialTheme.colorScheme.surface,
+                                disabledContainerColor = MaterialTheme.colorScheme.surface.copy(alpha = 0.5f)
+                            )
+                        )
+                    }
+
+                    // Max HP Input
+                    Column(
+                        modifier = Modifier.weight(1f),
+                        verticalArrangement = Arrangement.spacedBy(8.dp)
+                    ) {
+                        Text(
+                            text = stringResource(R.string.max_hp_label),
+                            style = MaterialTheme.typography.labelLarge,
+                            color = MaterialTheme.colorScheme.onSurface
+                        )
+                        OutlinedTextField(
+                            value = maxHp,
+                            onValueChange = onMaxHpChange,
+                            placeholder = { Text("100") },
+                            modifier = Modifier.fillMaxWidth(),
+                            singleLine = true,
+                            shape = RoundedCornerShape(12.dp),
+                            enabled = enabled,
+                            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+                            colors = OutlinedTextFieldDefaults.colors(
+                                focusedContainerColor = MaterialTheme.colorScheme.surface,
+                                unfocusedContainerColor = MaterialTheme.colorScheme.surface,
+                                disabledContainerColor = MaterialTheme.colorScheme.surface.copy(alpha = 0.5f)
+                            )
+                        )
+                    }
                 }
             }
         }
