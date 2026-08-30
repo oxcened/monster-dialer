@@ -53,6 +53,9 @@ class ContactCharacterSettingsViewModel @Inject constructor(
     )
     val layout: StateFlow<CharacterLayout> = _layout.asStateFlow()
 
+    private val _selectedTab = MutableStateFlow(layoutPreferences.getSelectedTab())
+    val selectedTab: StateFlow<Int> = _selectedTab.asStateFlow()
+
     private val _contactSelectionVersion = MutableStateFlow(0)
     val contactSelectionVersion: StateFlow<Int> = _contactSelectionVersion.asStateFlow()
 
@@ -106,6 +109,11 @@ class ContactCharacterSettingsViewModel @Inject constructor(
     fun setLayout(layout: CharacterLayout) {
         layoutPreferences.setGridLayout(layout == CharacterLayout.Grid)
         _layout.value = layout
+    }
+
+    fun setSelectedTab(index: Int) {
+        layoutPreferences.setSelectedTab(index)
+        _selectedTab.value = index
     }
 
     private fun MonsterContact.contactKeys(): List<String> = numbers
