@@ -13,7 +13,11 @@
     <string name="settings_contact_characters_title" comment="Settings title for assigning characters to contacts.">Personajele contactelor</string>
     <string name="settings_contact_characters_description" comment="Settings description for assigning characters to contacts.">Atribuie personaje apelanților.</string>
     <string name="contact_characters_not_set" comment="Settings subtitle when no contacts have a character assignment.">Niciun contact personalizat</string>
-    <plurals name="contact_character_assignment_count" comment="Settings subtitle showing how many contacts have a character assignment."><item quantity="one">%d contact personalizat</item><item quantity="few">%d contacte personalizate</item><item quantity="other">%d contacte personalizate</item></plurals>
+    <plurals name="contact_character_assignment_count" comment="Settings subtitle showing how many contacts have a character assignment.">
+        <item quantity="one">%d contact personalizat</item>
+        <item quantity="few">%d contacte personalizate</item>
+        <item quantity="other">%d contacte personalizate</item>
+    </plurals>
     <string name="choose_contact" comment="Button that opens the contact picker.">Alege contactul</string>
     <string name="character_type_trainer" comment="Character category for a human battle character.">Antrenor</string>
     <string name="character_type_monster" comment="Character category for a creature battle character.">Monstru</string>
@@ -67,6 +71,8 @@
     <string name="remove" comment="Button label to permanently remove a character pack.">Elimină</string>
     <string name="remove_character_pack_title" comment="Confirmation dialog title; %1$s is the character pack name.">Elimini %1$s?</string>
     <string name="remove_character_pack_message" comment="Confirmation dialog message; %1$s is the character pack name.">Această acțiune elimină definitiv %1$s și ilustrațiile sale din MonsterDialer.</string>
+    <string name="disable_character_pack_title" comment="Confirmation dialog title; %1$s is the character pack name.">Dezactivezi %1$s?</string>
+    <string name="disable_character_pack_message" comment="Confirmation dialog message; %1$s is the character pack name.">Acest pachet este utilizat în prezent. Dezactivarea acestuia va anula atribuirea personajelor sale pentru tine și contactele tale.</string>
     <string name="cancel" comment="Button label that dismisses an action without making changes.">Anulează</string>
     <string name="character_pack_removed" comment="Confirmation after a character pack is removed.">Pachet de personaje eliminat</string>
     <string name="character_pack_remove_failed" comment="Error when a character pack cannot be removed.">Pachetul de personaje nu a putut fi eliminat</string>
@@ -94,7 +100,6 @@
     <string name="battle_trainer_sent_out" comment="Battle announcement; %1$s is the trainer name and %2$s is the monster name.">Antrenorul %1$s îl trimite pe %2$s!</string>
     <string name="battle_wild_radiant_appeared" comment="Battle announcement; %1$s is the wild monster name and radiant is its rare variant.">A apărut un %1$s sălbatic radiant!</string>
     <string name="battle_wild_appeared" comment="Battle announcement; %1$s is the wild monster name.">A apărut un %1$s sălbatic!</string>
-
     <!-- Character creation -->
     <string name="add_trainer" comment="Button to start adding a new custom trainer.">Adaugă antrenor</string>
     <string name="add_monster" comment="Button to start adding a new custom monster.">Adaugă monstru</string>
@@ -126,8 +131,6 @@
     <string name="character_creation_failed" comment="Error when a character cannot be saved.">Nu s-a putut crea personajul</string>
     <string name="character_limit_reached_message" comment="Error message when the 200 character limit is hit.">Limită de 200 de personaje atinsă. Șterge câteva pentru a adăuga mai multe.</string>
     <string name="character_limit_reached_hint" comment="Short hint shown below the disabled add button.">Limită de 200 de personaje atinsă</string>
-    <string name="disable_character_pack_title" comment="Confirmation dialog title; %1$s is the character pack name.">Dezactivezi %1$s?</string>
-    <string name="disable_character_pack_message" comment="Confirmation dialog message; %1$s is the character pack name.">Acest pachet este utilizat în prezent. Dezactivarea acestuia va anula atribuirea personajelor sale pentru tine și contactele tale.</string>
     <string name="front_sprite_required_for_contact" comment="Message shown when a front sprite is missing but required by an assignment.">Sprite-ul frontal este necesar deoarece acest personaj este atribuit unui contact.</string>
     <string name="back_sprite_required_for_player" comment="Message shown when a back sprite is missing but required by an assignment.">Sprite-ul posterior este necesar deoarece acest personaj îți este atribuit ție.</string>
     <string name="remove_character_in_use_message" comment="Confirmation dialog message when deleting a character in use; %1$s is the character name.">%1$s este utilizat în prezent. Ștergerea acestuia va anula atribuirea sa pentru tine și contactele tale.</string>
