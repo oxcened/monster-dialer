@@ -62,7 +62,9 @@ fun AddCharacterScreen(
     val creationResult by viewModel.creationResult.collectAsStateWithLifecycle()
 
     val picker = rememberLauncherForActivityResult(ActivityResultContracts.GetContent()) { uri ->
-        viewModel.onImageSelected(uri)
+        if (uri != null) {
+            viewModel.onImageSelected(uri)
+        }
     }
 
     LaunchedEffect(Unit) {
