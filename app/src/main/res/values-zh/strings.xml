@@ -6,6 +6,16 @@
     <string name="settings_character_packs_title" comment="Settings title for managing character packs.">角色包</string>
     <string name="characters_navigation_label" comment="Bottom navigation label for character customization.">角色</string>
     <string name="settings_character_packs_description" comment="Settings description for character packs.">导入和管理自定义角色插图。</string>
+    <string name="import_character">导入角色</string>
+    <string name="add_to_your_characters">添加到你的角色</string>
+    <string name="shared_character_creator">创作者：%1$s</string>
+    <string name="shared_character_license">许可证：%1$s</string>
+    <string name="shared_character_import_description">此角色将添加到你的角色中。</string>
+    <string name="share_character_title">分享 %1$s</string>
+    <string name="creator_label">创作者</string>
+    <string name="license_label">许可证</string>
+    <string name="export_character">导出角色</string>
+    <string name="shared_character_file_name">%1$s.monstercharacter</string>
     <string name="settings_player_character_title" comment="Settings title for the player's battle character.">玩家角色</string>
     <string name="settings_player_character_description" comment="Settings description for the player's battle character.">选择通话时代表你的角色。</string>
     <string name="player_characters_not_set" comment="Settings subtitle when no player character is selected.">未自定义</string>

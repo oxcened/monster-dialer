@@ -6,6 +6,16 @@
     <string name="settings_character_packs_title" comment="Settings title for managing character packs.">Pachete de personaje</string>
     <string name="characters_navigation_label" comment="Bottom navigation label for character customization.">Personaje</string>
     <string name="settings_character_packs_description" comment="Settings description for character packs.">Importă și gestionează ilustrații personalizate ale personajelor.</string>
+    <string name="import_character">Importă personaj</string>
+    <string name="add_to_your_characters">Adaugă la personajele tale</string>
+    <string name="shared_character_creator">Creator: %1$s</string>
+    <string name="shared_character_license">Licență: %1$s</string>
+    <string name="shared_character_import_description">Acest personaj va fi adăugat la personajele tale.</string>
+    <string name="share_character_title">Distribuie %1$s</string>
+    <string name="creator_label">Creator</string>
+    <string name="license_label">Licență</string>
+    <string name="export_character">Exportă personajul</string>
+    <string name="shared_character_file_name">%1$s.monstercharacter</string>
     <string name="settings_player_character_title" comment="Settings title for the player's battle character.">Personajul jucătorului</string>
     <string name="settings_player_character_description" comment="Settings description for the player's battle character.">Alege cine te reprezintă în timpul apelurilor.</string>
     <string name="player_characters_not_set" comment="Settings subtitle when no player character is selected.">Nepersonalizat</string>

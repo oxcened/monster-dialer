@@ -6,6 +6,16 @@
     <string name="settings_character_packs_title" comment="Settings title for managing character packs.">Pacchetti di personaggi</string>
     <string name="characters_navigation_label" comment="Bottom navigation label for character customization.">Personaggi</string>
     <string name="settings_character_packs_description" comment="Settings description for character packs.">Importa e gestisci illustrazioni personalizzate dei personaggi.</string>
+    <string name="import_character">Importa personaggio</string>
+    <string name="add_to_your_characters">Aggiungi ai tuoi personaggi</string>
+    <string name="shared_character_creator">Creatore: %1$s</string>
+    <string name="shared_character_license">Licenza: %1$s</string>
+    <string name="shared_character_import_description">Questo personaggio verrà aggiunto ai tuoi personaggi.</string>
+    <string name="share_character_title">Condividi %1$s</string>
+    <string name="creator_label">Creatore</string>
+    <string name="license_label">Licenza</string>
+    <string name="export_character">Esporta personaggio</string>
+    <string name="shared_character_file_name">%1$s.monstercharacter</string>
     <string name="settings_player_character_title" comment="Settings title for the player's battle character.">Personaggio del giocatore</string>
     <string name="settings_player_character_description" comment="Settings description for the player's battle character.">Scegli chi ti rappresenta durante le chiamate.</string>
     <string name="player_characters_not_set" comment="Settings subtitle when no player character is selected.">Non personalizzato</string>

@@ -6,6 +6,16 @@
     <string name="settings_character_packs_title" comment="Settings title for managing character packs.">Figurpakker</string>
     <string name="characters_navigation_label" comment="Bottom navigation label for character customization.">Figurer</string>
     <string name="settings_character_packs_description" comment="Settings description for character packs.">Importér og administrér brugerdefinerede figurillustrationer.</string>
+    <string name="import_character">Importér figur</string>
+    <string name="add_to_your_characters">Føj til dine figurer</string>
+    <string name="shared_character_creator">Opretter: %1$s</string>
+    <string name="shared_character_license">Licens: %1$s</string>
+    <string name="shared_character_import_description">Denne figur føjes til dine figurer.</string>
+    <string name="share_character_title">Del %1$s</string>
+    <string name="creator_label">Opretter</string>
+    <string name="license_label">Licens</string>
+    <string name="export_character">Eksportér figur</string>
+    <string name="shared_character_file_name">%1$s.monstercharacter</string>
     <string name="settings_player_character_title" comment="Settings title for the player's battle character.">Spillerfigur</string>
     <string name="settings_player_character_description" comment="Settings description for the player's battle character.">Vælg, hvem der repræsenterer dig under opkald.</string>
     <string name="player_characters_not_set" comment="Settings subtitle when no player character is selected.">Ikke tilpasset</string>
