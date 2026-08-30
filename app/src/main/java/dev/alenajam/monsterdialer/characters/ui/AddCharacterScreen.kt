@@ -43,6 +43,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil.compose.AsyncImage
 import dev.alenajam.monsterdialer.R
 import dev.alenajam.monsterdialer.app.ui.LocalMonsterAppIcons
+import dev.alenajam.monsterdialer.packs.data.CharacterAssignmentTarget
 import dev.alenajam.monsterdialer.packs.data.CharacterType
 import dev.alenajam.opendialer.core.common.ui.AppIcon
 import dev.alenajam.opendialer.core.common.ui.LocalAppIcons
@@ -53,6 +54,7 @@ fun AddCharacterScreen(
     onNavigateBack: () -> Unit,
     characterType: CharacterType,
     characterId: String? = null,
+    preferredAssignmentTarget: CharacterAssignmentTarget? = null,
     viewModel: AddCharacterViewModel = hiltViewModel()
 ) {
     val name by viewModel.name.collectAsStateWithLifecycle()
@@ -72,6 +74,7 @@ fun AddCharacterScreen(
     }
 
     LaunchedEffect(Unit) {
+        viewModel.setPreferredAssignmentTarget(preferredAssignmentTarget)
         if (characterId != null) {
             viewModel.loadCharacter(characterId)
         } else {
@@ -135,9 +138,12 @@ fun AddCharacterScreen(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.spacedBy(16.dp)
                 ) {
+                    val frontRequired = preferredAssignmentTarget == CharacterAssignmentTarget.Contact
+                    val backRequired = preferredAssignmentTarget == CharacterAssignmentTarget.Player
+
                     // Front Sprite
                     SpritePicker(
-                        label = stringResource(R.string.front_sprite_label),
+                        label = stringResource(R.string.front_sprite_label) + if (frontRequired) " " + stringResource(R.string.required_label) else "",
                         description = stringResource(R.string.front_sprite_description),
                         image = frontImageUri ?: existingFrontImageFile,
                         onPick = { frontPicker.launch("image/*") },
@@ -147,7 +153,7 @@ fun AddCharacterScreen(
 
                     // Back Sprite
                     SpritePicker(
-                        label = stringResource(R.string.back_sprite_label),
+                        label = stringResource(R.string.back_sprite_label) + if (backRequired) " " + stringResource(R.string.required_label) else "",
                         description = stringResource(R.string.back_sprite_description),
                         image = backImageUri ?: existingBackImageFile,
                         onPick = { backPicker.launch("image/*") },
@@ -217,7 +223,16 @@ fun AddCharacterScreen(
                         .fillMaxWidth()
                         .height(56.dp),
                     shape = RoundedCornerShape(16.dp),
-                    enabled = name.isNotBlank() && (frontImageUri != null || existingFrontImageFile != null || backImageUri != null || existingBackImageFile != null) && !isSaving && !isLimitReached
+                    enabled = run {
+                        val hasFront = frontImageUri != null || existingFrontImageFile != null
+                        val hasBack = backImageUri != null || existingBackImageFile != null
+                        val isValid = when (preferredAssignmentTarget) {
+                            CharacterAssignmentTarget.Contact -> hasFront
+                            CharacterAssignmentTarget.Player -> hasBack
+                            else -> hasFront || hasBack
+                        }
+                        name.isNotBlank() && isValid && !isSaving && !isLimitReached
+                    }
                 ) {
                     Text(
                         stringResource(R.string.save),

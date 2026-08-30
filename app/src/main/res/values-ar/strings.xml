@@ -97,10 +97,11 @@
     <string name="create_trainer_title" comment="Title of the trainer creation screen.">إضافة مدرب</string>
     <string name="create_monster_title" comment="Title of the monster creation screen.">إضافة وحش</string>
     <string name="character_sprites_section" comment="Heading for the character sprites section.">الرسومات</string>
-    <string name="front_sprite_label" comment="Label for the front sprite picker.">الرسم الأمامي (جهة الاتصال)</string>
-    <string name="back_sprite_label" comment="Label for the back sprite picker.">الرسم الخلفي (اللاعب)</string>
-    <string name="front_sprite_description" comment="Explains that the front sprite is shown for contacts.">يظهر عندما تتصل بك هذه الشخصية.</string>
-    <string name="back_sprite_description" comment="Explains that the back sprite is shown for the player.">يظهر عندما تستخدم هذه الشخصية.</string>
+    <string name="front_sprite_label" comment="Label for the front sprite picker.">الرسم الأمامي</string>
+    <string name="back_sprite_label" comment="Label for the back sprite picker.">الرسم الخلفي</string>
+    <string name="front_sprite_description" comment="Explains that the front sprite is required for contacts.">تتيح إضافة رسم أمامي تعيين هذه الشخصية لجهات الاتصال.</string>
+    <string name="back_sprite_description" comment="Explains that the back sprite is required for the player.">تتيح إضافة رسم خلفي تعيين هذه الشخصية لنفسك.</string>
+    <string name="required_label" comment="Suffix for required fields.">(مطلوب)</string>
     <string name="edit_trainer_title" comment="Title of the trainer edit screen.">تعديل المدرب</string>
     <string name="edit_monster_title" comment="Title of the monster edit screen.">تعديل الوحش</string>
     <string name="character_name_label" comment="Label for the character name input field.">اسم الشخصية</string>

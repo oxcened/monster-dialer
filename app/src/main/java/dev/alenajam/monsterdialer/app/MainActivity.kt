@@ -21,6 +21,7 @@ import dev.alenajam.monsterdialer.characters.ui.AddCharacterScreen
 import dev.alenajam.monsterdialer.characters.ui.ContactCharacterSettingsContent
 import dev.alenajam.monsterdialer.characters.ui.ContactPickerDestination
 import dev.alenajam.monsterdialer.characters.ui.PlayerCharacterSettingsContent
+import dev.alenajam.monsterdialer.packs.data.CharacterAssignmentTarget
 import dev.alenajam.monsterdialer.packs.data.CharacterType
 import dev.alenajam.monsterdialer.packs.ui.CharacterPackSettingsContent
 import dev.alenajam.monsterdialer.packs.ui.CharacterPackSettingsViewModel
@@ -77,10 +78,20 @@ class MainActivity : AppCompatActivity() {
                             topContentPadding = 0.dp,
                             destinations = listOf(
                                 SettingsSubpageDestination(title = stringResource(R.string.add_trainer)) { payload, onNavigateBack ->
-                                    AddCharacterScreen(onNavigateBack, characterType = CharacterType.Trainer, characterId = payload)
+                                    AddCharacterScreen(
+                                        onNavigateBack,
+                                        characterType = CharacterType.Trainer,
+                                        characterId = payload,
+                                        preferredAssignmentTarget = CharacterAssignmentTarget.Player
+                                    )
                                 },
                                 SettingsSubpageDestination(title = stringResource(R.string.add_monster)) { payload, onNavigateBack ->
-                                    AddCharacterScreen(onNavigateBack, characterType = CharacterType.Monster, characterId = payload)
+                                    AddCharacterScreen(
+                                        onNavigateBack,
+                                        characterType = CharacterType.Monster,
+                                        characterId = payload,
+                                        preferredAssignmentTarget = CharacterAssignmentTarget.Player
+                                    )
                                 }
                             )
                         ),
@@ -95,10 +106,20 @@ class MainActivity : AppCompatActivity() {
                                     ContactPickerDestination(onNavigateBack)
                                 },
                                 SettingsSubpageDestination(title = stringResource(R.string.add_trainer)) { payload, onNavigateBack ->
-                                    AddCharacterScreen(onNavigateBack, characterType = CharacterType.Trainer, characterId = payload)
+                                    AddCharacterScreen(
+                                        onNavigateBack,
+                                        characterType = CharacterType.Trainer,
+                                        characterId = payload,
+                                        preferredAssignmentTarget = CharacterAssignmentTarget.Contact
+                                    )
                                 },
                                 SettingsSubpageDestination(title = stringResource(R.string.add_monster)) { payload, onNavigateBack ->
-                                    AddCharacterScreen(onNavigateBack, characterType = CharacterType.Monster, characterId = payload)
+                                    AddCharacterScreen(
+                                        onNavigateBack,
+                                        characterType = CharacterType.Monster,
+                                        characterId = payload,
+                                        preferredAssignmentTarget = CharacterAssignmentTarget.Contact
+                                    )
                                 }
                             )
                         )

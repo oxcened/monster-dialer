@@ -87,10 +87,11 @@
     <string name="create_trainer_title" comment="Title of the trainer creation screen.">添加训练师</string>
     <string name="create_monster_title" comment="Title of the monster creation screen.">添加怪物</string>
     <string name="character_sprites_section" comment="Heading for the character sprites section.">图像</string>
-    <string name="front_sprite_label" comment="Label for the front sprite picker.">前向图像 (联系人)</string>
-    <string name="back_sprite_label" comment="Label for the back sprite picker.">后向图像 (玩家)</string>
-    <string name="front_sprite_description" comment="Explains that the front sprite is shown for contacts.">此角色给你打电话时显示。</string>
-    <string name="back_sprite_description" comment="Explains that the back sprite is shown for the player.">你使用此角色时显示。</string>
+    <string name="front_sprite_label" comment="Label for the front sprite picker.">前向图像</string>
+    <string name="back_sprite_label" comment="Label for the back sprite picker.">后向图像</string>
+    <string name="front_sprite_description" comment="Explains that the front sprite is required for contacts.">添加前向图像即可将此角色分配给联系人。</string>
+    <string name="back_sprite_description" comment="Explains that the back sprite is required for the player.">添加后向图像即可将此角色分配给自己。</string>
+    <string name="required_label" comment="Suffix for required fields.">(必填)</string>
     <string name="edit_trainer_title" comment="Title of the trainer edit screen.">编辑训练师</string>
     <string name="edit_monster_title" comment="Title of the monster edit screen.">编辑怪物</string>
     <string name="character_name_label" comment="Label for the character name input field.">角色名称</string>

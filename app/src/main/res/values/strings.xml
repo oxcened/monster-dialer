@@ -91,10 +91,11 @@
     <string name="create_trainer_title" comment="Title of the trainer creation screen.">Add trainer</string>
     <string name="create_monster_title" comment="Title of the monster creation screen.">Add monster</string>
     <string name="character_sprites_section" comment="Heading for the character sprites section.">Sprites</string>
-    <string name="front_sprite_label" comment="Label for the front sprite picker.">Front Sprite (Contact)</string>
-    <string name="back_sprite_label" comment="Label for the back sprite picker.">Back Sprite (Player)</string>
-    <string name="front_sprite_description" comment="Explains that the front sprite is shown for contacts.">Shown when this character calls you.</string>
-    <string name="back_sprite_description" comment="Explains that the back sprite is shown for the player.">Shown when you use this character.</string>
+    <string name="front_sprite_label" comment="Label for the front sprite picker.">Front Sprite</string>
+    <string name="back_sprite_label" comment="Label for the back sprite picker.">Back Sprite</string>
+    <string name="front_sprite_description" comment="Explains that the front sprite is required for contacts.">Adding a front sprite allows assigning this character to contacts.</string>
+    <string name="back_sprite_description" comment="Explains that the back sprite is required for the player.">Adding a back sprite allows assigning this character to yourself.</string>
+    <string name="required_label" comment="Suffix for required fields.">(Required)</string>
     <string name="edit_trainer_title" comment="Title of the trainer edit screen.">Edit trainer</string>
     <string name="edit_monster_title" comment="Title of the monster edit screen.">Edit monster</string>
     <string name="character_name_label" comment="Label for the character name input field.">Character name</string>

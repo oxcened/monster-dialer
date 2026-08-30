@@ -4,6 +4,7 @@ import android.net.Uri
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import dev.alenajam.monsterdialer.packs.data.CharacterAssignmentTarget
 import dev.alenajam.monsterdialer.packs.data.CharacterPackValidator
 import dev.alenajam.monsterdialer.packs.data.CharacterReference
 import dev.alenajam.monsterdialer.packs.data.CharacterType
@@ -21,6 +22,7 @@ class AddCharacterViewModel @Inject constructor(
 ) : ViewModel() {
 
     private var editingCharacterId: String? = null
+    private var preferredAssignmentTarget: CharacterAssignmentTarget? = null
 
     private val _name = MutableStateFlow("")
     val name = _name.asStateFlow()
@@ -73,6 +75,10 @@ class AddCharacterViewModel @Inject constructor(
         }
     }
 
+    fun setPreferredAssignmentTarget(target: CharacterAssignmentTarget?) {
+        preferredAssignmentTarget = target
+    }
+
     fun onNameChanged(newName: String) {
         _name.value = newName
     }
@@ -101,7 +107,14 @@ class AddCharacterViewModel @Inject constructor(
         val hasFront = frontImage != null || existingFront != null
         val hasBack = backImage != null || existingBack != null
 
-        if (currentName.isBlank() || (!hasFront && !hasBack)) return
+        // Validation based on preferred target
+        val isValid = when (preferredAssignmentTarget) {
+            CharacterAssignmentTarget.Contact -> hasFront
+            CharacterAssignmentTarget.Player -> hasBack
+            else -> hasFront || hasBack
+        }
+
+        if (currentName.isBlank() || !isValid) return
 
         viewModelScope.launch {
             _isSaving.value = true

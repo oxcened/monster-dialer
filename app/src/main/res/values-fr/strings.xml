@@ -89,10 +89,11 @@
     <string name="create_trainer_title" comment="Title of the trainer creation screen.">Ajouter un dresseur</string>
     <string name="create_monster_title" comment="Title of the monster creation screen.">Ajouter un monstre</string>
     <string name="character_sprites_section" comment="Heading for the character sprites section.">Sprites</string>
-    <string name="front_sprite_label" comment="Label for the front sprite picker.">Sprite avant (Contact)</string>
-    <string name="back_sprite_label" comment="Label for the back sprite picker.">Sprite arrière (Joueur)</string>
-    <string name="front_sprite_description" comment="Explains that the front sprite is shown for contacts.">Affiché lorsque ce personnage vous appelle.</string>
-    <string name="back_sprite_description" comment="Explains that the back sprite is shown for the player.">Affiché lorsque vous utilisez ce personnage.</string>
+    <string name="front_sprite_label" comment="Label for the front sprite picker.">Sprite avant</string>
+    <string name="back_sprite_label" comment="Label for the back sprite picker.">Sprite arrière</string>
+    <string name="front_sprite_description" comment="Explains that the front sprite is required for contacts.">L’ajout d’un sprite avant permet d’attribuer ce personnage à des contacts.</string>
+    <string name="back_sprite_description" comment="Explains that the back sprite is required for the player.">L’ajout d’un sprite arrière permet de vous attribuer ce personnage.</string>
+    <string name="required_label" comment="Suffix for required fields.">(Requis)</string>
     <string name="edit_trainer_title" comment="Title of the trainer edit screen.">Modifier le dresseur</string>
     <string name="edit_monster_title" comment="Title of the monster edit screen.">Modifier le monstre</string>
     <string name="character_name_label" comment="Label for the character name input field.">Nom du personnage</string>

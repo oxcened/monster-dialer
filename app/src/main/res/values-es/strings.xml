@@ -89,10 +89,11 @@
     <string name="create_trainer_title" comment="Title of the trainer creation screen.">Añadir entrenador</string>
     <string name="create_monster_title" comment="Title of the monster creation screen.">Añadir monstruo</string>
     <string name="character_sprites_section" comment="Heading for the character sprites section.">Sprites</string>
-    <string name="front_sprite_label" comment="Label for the front sprite picker.">Sprite frontal (Contacto)</string>
-    <string name="back_sprite_label" comment="Label for the back sprite picker.">Sprite trasero (Jugador)</string>
-    <string name="front_sprite_description" comment="Explains that the front sprite is shown for contacts.">Se muestra cuando este personaje te llama.</string>
-    <string name="back_sprite_description" comment="Explains that the back sprite is shown for the player.">Se muestra cuando usas este personaje.</string>
+    <string name="front_sprite_label" comment="Label for the front sprite picker.">Sprite frontal</string>
+    <string name="back_sprite_label" comment="Label for the back sprite picker.">Sprite trasero</string>
+    <string name="front_sprite_description" comment="Explains that the front sprite is required for contacts.">Añadir un sprite frontal permite asignar este personaje a los contactos.</string>
+    <string name="back_sprite_description" comment="Explains that the back sprite is required for the player.">Añadir un sprite trasero permite asignarte este personaje a ti mismo.</string>
+    <string name="required_label" comment="Suffix for required fields.">(Obligatorio)</string>
     <string name="edit_trainer_title" comment="Title of the trainer edit screen.">Editar entrenador</string>
     <string name="edit_monster_title" comment="Title of the monster edit screen.">Editar monstruo</string>
     <string name="character_name_label" comment="Label for the character name input field.">Nombre del personaje</string>
