@@ -135,6 +135,7 @@ internal fun LazyListScope.characterTypeItems(
     item(key = "default") {
         CharacterOptionCard(
             name = defaultCharacter.name,
+            subtitle = stringResource(R.string.built_in_character),
             isSelected = availableSelection == null,
             roundTop = true,
             roundBottom = characters.isNotEmpty(),
@@ -155,6 +156,7 @@ internal fun LazyListScope.characterTypeItems(
             val reference = CharacterReference(installed.packId, installed.character.id)
             CharacterOptionCard(
                 name = installed.character.name,
+                subtitle = installed.packName,
                 isRadiant = installed.character.isRadiant,
                 isSelected = availableSelection == reference,
                 roundTop = index == 0,
@@ -179,6 +181,7 @@ internal fun LazyListScope.characterTypeItems(
             val reference = CharacterReference(installed.packId, installed.character.id)
             CharacterOptionCard(
                 name = installed.character.name,
+                subtitle = installed.packName,
                 isRadiant = installed.character.isRadiant,
                 isSelected = availableSelection == reference,
                 roundTop = index == 0,
@@ -241,6 +244,7 @@ internal fun LazyGridScope.characterTypeGridItems(
     item(key = "default") {
         CharacterGridItem(
             name = defaultCharacter.name,
+            subtitle = stringResource(R.string.built_in_character),
             isSelected = availableSelection == null,
             shape = gridItemShape(index = 0, itemCount = 1),
             artwork = {
@@ -260,6 +264,7 @@ internal fun LazyGridScope.characterTypeGridItems(
             val reference = CharacterReference(installed.packId, installed.character.id)
             CharacterGridItem(
                 name = installed.character.name,
+                subtitle = installed.packName,
                 isRadiant = installed.character.isRadiant,
                 isSelected = availableSelection == reference,
                 shape = gridItemShape(index = index, itemCount = userCharacters.size),
@@ -283,6 +288,7 @@ internal fun LazyGridScope.characterTypeGridItems(
             val reference = CharacterReference(installed.packId, installed.character.id)
             CharacterGridItem(
                 name = installed.character.name,
+                subtitle = installed.packName,
                 isRadiant = installed.character.isRadiant,
                 isSelected = availableSelection == reference,
                 shape = gridItemShape(index = index, itemCount = packCharacters.size),
@@ -520,7 +526,7 @@ private fun NoAdditionalCharacterOptionsCard(title: String) {
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 private fun CharacterOptionCard(
-    name: String, isRadiant: Boolean = false, isSelected: Boolean,
+    name: String, subtitle: String? = null, isRadiant: Boolean = false, isSelected: Boolean,
     roundTop: Boolean, roundBottom: Boolean, artwork: @Composable () -> Unit, onSelect: () -> Unit,
     onDelete: (() -> Unit)? = null,
     onEdit: (() -> Unit)? = null
@@ -558,6 +564,9 @@ private fun CharacterOptionCard(
                 Column(modifier = Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(2.dp)) {
                     Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(6.dp)) {
                         Text(name, style = MaterialTheme.typography.titleMedium)
+                    }
+                    if (subtitle != null) {
+                        Text(subtitle, style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
                     }
                 }
                 if (isSelected) {
@@ -630,6 +639,7 @@ private fun RadiantBadge(modifier: Modifier = Modifier) {
 @Composable
 private fun CharacterGridItem(
     name: String,
+    subtitle: String? = null,
     isRadiant: Boolean = false,
     isSelected: Boolean,
     shape: Shape,
@@ -665,6 +675,9 @@ private fun CharacterGridItem(
                     if (isRadiant) RadiantBadge(Modifier.align(Alignment.TopEnd))
                 }
                 Text(name, style = MaterialTheme.typography.titleSmall, textAlign = TextAlign.Center, maxLines = 2)
+                if (subtitle != null) {
+                    Text(subtitle, style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant, textAlign = TextAlign.Center, maxLines = 1)
+                }
                 Box(modifier = Modifier.height(20.dp), contentAlignment = Alignment.Center) {
                     if (isSelected) Text(stringResource(R.string.selected), style = MaterialTheme.typography.labelLarge, color = MaterialTheme.colorScheme.primary)
                 }
