@@ -134,7 +134,11 @@ private fun CharacterHomeItem(title: Int, description: Int, icon: IconSource, sh
         colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainerLow),
         elevation = CardDefaults.cardElevation(defaultElevation = 0.5.dp)
     ) {
-        Row(modifier = Modifier.padding(16.dp), horizontalArrangement = Arrangement.spacedBy(16.dp)) {
+        Row(
+            modifier = Modifier.padding(16.dp),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.spacedBy(16.dp)
+        ) {
             AppIcon(icon, contentDescription = null, modifier = Modifier.size(24.dp))
             Column {
                 Text(stringResource(title), style = MaterialTheme.typography.titleMedium)
