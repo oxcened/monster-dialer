@@ -11,7 +11,7 @@
     <string name="add_to_your_characters">Aggiungi</string>
     <string name="shared_character_creator">Creatore: %1$s</string>
     <string name="shared_character_license">Licenza: %1$s</string>
-    <string name="shared_character_import_description">Questo %1$s verrà aggiunto ai tuoi %2$s.</string>
+    <string name="shared_character_import_description">Questo %1$s verrà aggiunto alla tua collezione.</string>
     <string name="shared_character_import_title">Aggiungere %1$s?</string>
     <string name="shared_character_import_failed_title">Impossibile importare il personaggio</string>
     <string name="shared_character_import_failed_message">Seleziona un file .monstercharacter esportato da MonsterDialer.</string>

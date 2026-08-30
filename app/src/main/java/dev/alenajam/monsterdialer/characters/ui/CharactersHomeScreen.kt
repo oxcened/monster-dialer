@@ -86,10 +86,6 @@ private fun SharedCharacterImportDialog(
         if (shared.character.type == CharacterType.Trainer) R.string.character_type_trainer
         else R.string.character_type_monster
     )
-    val characterCollection = stringResource(
-        if (shared.character.type == CharacterType.Trainer) R.string.character_type_trainers
-        else R.string.character_type_monsters
-    )
     val artwork = remember(shared.frontImage, shared.backImage) {
         (shared.frontImage ?: shared.backImage)?.let { BitmapFactory.decodeByteArray(it, 0, it.size)?.asImageBitmap() }
     }
@@ -125,7 +121,7 @@ private fun SharedCharacterImportDialog(
                     }
                 }
                 Text(
-                    stringResource(R.string.shared_character_import_description, characterType, characterCollection),
+                    stringResource(R.string.shared_character_import_description, characterType),
                     style = MaterialTheme.typography.bodyMedium,
                     color = MaterialTheme.colorScheme.onSurfaceVariant
                 )

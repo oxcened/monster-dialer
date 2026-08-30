@@ -19,7 +19,7 @@
     <string name="add_to_your_characters" comment="Button confirming that a shared character should be imported.">Add</string>
     <string name="shared_character_creator" comment="Creator shown in a shared-character import preview. %1$s is the creator name.">Creator: %1$s</string>
     <string name="shared_character_license" comment="License shown in a shared-character import preview. %1$s is the license name.">License: %1$s</string>
-    <string name="shared_character_import_description" comment="Explains the result of importing one shared character. %1$s is the singular type and %2$s is its collection, such as Trainer and trainers.">This %1$s will be added to your %2$s.</string>
+    <string name="shared_character_import_description" comment="Explains the result of importing one shared character. %1$s is a character type, such as Trainer or Monster.">This %1$s will be added to your collection.</string>
     <string name="shared_character_import_title" comment="Title confirming the import of a shared character. %1$s is the character name.">Add %1$s?</string>
     <string name="shared_character_import_failed_title" comment="Title shown when a selected file is not a valid shared character.">Couldn’t import character</string>
     <string name="shared_character_import_failed_message" comment="Explains that the selected file is not a valid shared character.">Choose a .monstercharacter file exported by MonsterDialer.</string>

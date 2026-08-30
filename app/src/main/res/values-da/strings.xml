@@ -11,7 +11,7 @@
     <string name="add_to_your_characters">Tilføj</string>
     <string name="shared_character_creator">Opretter: %1$s</string>
     <string name="shared_character_license">Licens: %1$s</string>
-    <string name="shared_character_import_description">Denne %1$s føjes til dine %2$s.</string>
+    <string name="shared_character_import_description">Denne %1$s føjes til din samling.</string>
     <string name="shared_character_import_title">Tilføj %1$s?</string>
     <string name="shared_character_import_failed_title">Kunne ikke importere figur</string>
     <string name="shared_character_import_failed_message">Vælg en .monstercharacter-fil, der er eksporteret fra MonsterDialer.</string>

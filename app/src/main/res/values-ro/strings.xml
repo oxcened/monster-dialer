@@ -11,7 +11,7 @@
     <string name="add_to_your_characters">Adaugă</string>
     <string name="shared_character_creator">Creator: %1$s</string>
     <string name="shared_character_license">Licență: %1$s</string>
-    <string name="shared_character_import_description">Acest %1$s va fi adăugat la %2$s tăi.</string>
+    <string name="shared_character_import_description">Acest %1$s va fi adăugat la colecția ta.</string>
     <string name="shared_character_import_title">Adaugi %1$s?</string>
     <string name="shared_character_import_failed_title">Nu s-a putut importa personajul</string>
     <string name="shared_character_import_failed_message">Alege un fișier .monstercharacter exportat din MonsterDialer.</string>
