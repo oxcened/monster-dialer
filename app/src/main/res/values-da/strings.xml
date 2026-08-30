@@ -13,7 +13,10 @@
     <string name="settings_contact_characters_title" comment="Settings title for assigning characters to contacts.">Kontaktfigurer</string>
     <string name="settings_contact_characters_description" comment="Settings description for assigning characters to contacts.">Tildel figurer til indgående opkald.</string>
     <string name="contact_characters_not_set" comment="Settings subtitle when no contacts have a character assignment.">Ingen kontakter tilpasset</string>
-    <plurals name="contact_character_assignment_count" comment="Settings subtitle showing how many contacts have a character assignment."><item quantity="one">%d kontakt tilpasset</item><item quantity="other">%d kontakter tilpasset</item></plurals>
+    <plurals name="contact_character_assignment_count" comment="Settings subtitle showing how many contacts have a character assignment.">
+        <item quantity="one">%d kontakt tilpasset</item>
+        <item quantity="other">%d kontakter tilpasset</item>
+    </plurals>
     <string name="choose_contact" comment="Button that opens the contact picker.">Vælg kontakt</string>
     <string name="character_type_trainer" comment="Character category for a human battle character.">Træner</string>
     <string name="character_type_monster" comment="Character category for a creature battle character.">Monster</string>
@@ -64,6 +67,8 @@
     <string name="remove" comment="Button label to permanently remove a character pack.">Fjern</string>
     <string name="remove_character_pack_title" comment="Confirmation dialog title; %1$s is the character pack name.">Fjern %1$s?</string>
     <string name="remove_character_pack_message" comment="Confirmation dialog message; %1$s is the character pack name.">Dette fjerner %1$s og tilhørende illustrationer permanent fra MonsterDialer.</string>
+    <string name="disable_character_pack_title" comment="Confirmation dialog title; %1$s is the character pack name.">Deaktivér %1$s?</string>
+    <string name="disable_character_pack_message" comment="Confirmation dialog message; %1$s is the character pack name.">Denne pakke er i brug. Deaktivering af den vil ophæve tildelingen af dens figurer fra dig og dine kontakter.</string>
     <string name="cancel" comment="Button label that dismisses an action without making changes.">Annuller</string>
     <string name="character_pack_removed" comment="Confirmation after a character pack is removed.">Figurpakke fjernet</string>
     <string name="character_pack_remove_failed" comment="Error when a character pack cannot be removed.">Kunne ikke fjerne figurpakken</string>
@@ -91,7 +96,6 @@
     <string name="battle_trainer_sent_out" comment="Battle announcement; %1$s is the trainer name and %2$s is the monster name.">Træner %1$s sender %2$s ud!</string>
     <string name="battle_wild_radiant_appeared" comment="Battle announcement; %1$s is the wild monster name and radiant is its rare variant.">Et vildt strålende %1$s dukkede op!</string>
     <string name="battle_wild_appeared" comment="Battle announcement; %1$s is the wild monster name.">Et vildt %1$s dukkede op!</string>
-
     <!-- Character creation -->
     <string name="add_trainer" comment="Button to start adding a new custom trainer.">Tilføj træner</string>
     <string name="add_monster" comment="Button to start adding a new custom monster.">Tilføj monster</string>
@@ -123,8 +127,6 @@
     <string name="character_creation_failed" comment="Error when a character cannot be saved.">Kunne ikke oprette figur</string>
     <string name="character_limit_reached_message" comment="Error message when the 200 character limit is hit.">Grænse på 200 figurer nået. Slet nogle for at tilføje flere.</string>
     <string name="character_limit_reached_hint" comment="Short hint shown below the disabled add button.">Grænse på 200 figurer nået</string>
-    <string name="disable_character_pack_title" comment="Confirmation dialog title; %1$s is the character pack name.">Deaktivér %1$s?</string>
-    <string name="disable_character_pack_message" comment="Confirmation dialog message; %1$s is the character pack name.">Denne pakke er i brug. Deaktivering af den vil ophæve tildelingen af dens figurer fra dig og dine kontakter.</string>
     <string name="front_sprite_required_for_contact" comment="Message shown when a front sprite is missing but required by an assignment.">Front-sprite er påkrævet, fordi denne figur er tildelt en kontakt.</string>
     <string name="back_sprite_required_for_player" comment="Message shown when a back sprite is missing but required by an assignment.">Bagside-sprite er påkrævet, fordi denne figur er tildelt dig.</string>
     <string name="remove_character_in_use_message" comment="Confirmation dialog message when deleting a character in use; %1$s is the character name.">%1$s er i brug. Sletning af den vil ophæve tildelingen fra dig og dine kontakter.</string>
