@@ -12,6 +12,7 @@
     <string name="url_feature_requests" translatable="false">https://monsterdialer.fider.io/</string>
     <string name="hang_up" comment="Button to end the current phone call.">Hang up</string>
     <string name="settings_character_packs_title" comment="Settings title for managing character packs.">Character Packs</string>
+    <string name="characters_navigation_label" comment="Bottom navigation label for character customization.">Characters</string>
     <string name="settings_character_packs_description" comment="Settings description for character packs.">Import and manage custom character artwork.</string>
     <string name="settings_player_character_title" comment="Settings title for the player's battle character.">Player Character</string>
     <string name="settings_player_character_description" comment="Settings description for the player's battle character.">Choose who represents you during calls.</string>

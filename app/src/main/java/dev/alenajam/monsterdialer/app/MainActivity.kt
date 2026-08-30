@@ -21,6 +21,7 @@ import dev.alenajam.monsterdialer.characters.ui.AddCharacterScreen
 import dev.alenajam.monsterdialer.characters.ui.ContactCharacterSettingsContent
 import dev.alenajam.monsterdialer.characters.ui.ContactPickerDestination
 import dev.alenajam.monsterdialer.characters.ui.CharacterSettingsSummaryViewModel
+import dev.alenajam.monsterdialer.characters.ui.CharactersHomeScreen
 import dev.alenajam.monsterdialer.characters.ui.PlayerCharacterSettingsContent
 import dev.alenajam.monsterdialer.packs.data.CharacterAssignmentTarget
 import dev.alenajam.monsterdialer.packs.data.CharacterType
@@ -29,6 +30,8 @@ import dev.alenajam.monsterdialer.packs.ui.CharacterPackSettingsViewModel
 import dev.alenajam.opendialer.core.common.DefaultPhoneManager
 import dev.alenajam.opendialer.core.common.ui.AppThemeExtension
 import dev.alenajam.opendialer.feature.appShell.DialerApp
+import dev.alenajam.opendialer.feature.appShell.HomeNavigationItem
+import dev.alenajam.opendialer.feature.appShell.HomeScreenConfiguration
 import dev.alenajam.opendialer.feature.settings.SettingsSubpage
 import dev.alenajam.opendialer.feature.settings.SettingsSubpageDestination
 import javax.inject.Inject
@@ -62,6 +65,15 @@ class MainActivity : AppCompatActivity() {
                     themeExtension = AppThemeExtension(
                         typography = rememberMonsterTypography(MaterialTheme.typography)
                     ),
+                    homeScreenConfiguration = HomeScreenConfiguration(
+                        showVoicemailInNavigation = false,
+                        showVoicemailInOverflow = true,
+                        customNavigationItem = HomeNavigationItem(
+                            label = { androidx.compose.material3.Text(stringResource(R.string.characters_navigation_label)) },
+                            icon = { _ -> dev.alenajam.opendialer.core.common.ui.AppIcon(dev.alenajam.opendialer.core.common.ui.LocalAppIcons.current.person, null) },
+                            content = { onOpenSubpage -> CharactersHomeScreen(onOpenSubpage) }
+                        )
+                    ),
                     settingsSubpages = listOf(
                         SettingsSubpage(
                             title = stringResource(R.string.settings_player_character_title),
@@ -74,6 +86,7 @@ class MainActivity : AppCompatActivity() {
                             content = { PlayerCharacterSettingsContent() },
                             isScrollable = false,
                             topContentPadding = 0.dp,
+                            visibleInSettings = false,
                             destinations = listOf(
                                 SettingsSubpageDestination(title = stringResource(R.string.add_trainer)) { payload, onNavigateBack ->
                                     AddCharacterScreen(
@@ -108,6 +121,7 @@ class MainActivity : AppCompatActivity() {
                             content = { ContactCharacterSettingsContent() },
                             isScrollable = false,
                             topContentPadding = 0.dp,
+                            visibleInSettings = false,
                             destinations = listOf(
                                 SettingsSubpageDestination(title = stringResource(R.string.choose_contact)) { _, onNavigateBack ->
                                     ContactPickerDestination(onNavigateBack)
@@ -146,6 +160,7 @@ class MainActivity : AppCompatActivity() {
                                 parts.joinToString(" • ")
                             },
                             content = { CharacterPackSettingsContent(characterPackSettingsViewModel) },
+                            visibleInSettings = false,
                             topContentPadding = 0.dp
                         )
                     )

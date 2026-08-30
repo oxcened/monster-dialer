@@ -4,6 +4,7 @@
     <string name="contribute_translations" comment="Title of the OpenDialer translation contribution link on the About screen.">Contribuye a las traducciones de OpenDialer</string>
     <string name="hang_up" comment="Button to end the current phone call.">Colgar</string>
     <string name="settings_character_packs_title" comment="Settings title for managing character packs.">Paquetes de personajes</string>
+    <string name="characters_navigation_label" comment="Bottom navigation label for character customization.">Personajes</string>
     <string name="settings_character_packs_description" comment="Settings description for character packs.">Importa y gestiona ilustraciones de personajes personalizadas.</string>
     <string name="settings_player_character_title" comment="Settings title for the player's battle character.">Personaje del jugador</string>
     <string name="settings_player_character_description" comment="Settings description for the player's battle character.">Elige quién te representa durante las llamadas.</string>
