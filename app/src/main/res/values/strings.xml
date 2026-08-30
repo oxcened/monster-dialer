@@ -24,7 +24,7 @@
     <string name="default_character_artwork" comment="%1$s is a character type, such as Trainer or Monster.">Default %1$s artwork</string>
     <string name="character_artwork" comment="%1$s is a character name.">%1$s artwork</string>
     <string name="no_other_character_options" comment="%1$s is a character type, such as Trainer or Monster.">No other %1$s options</string>
-    <string name="import_and_enable_character_pack" comment="Empty-state message in the character selector.">Import and enable a character pack to add more.</string>
+    <string name="import_and_enable_character_pack" comment="Empty-state message in the character selector.">Add your own character or import a pack to see more.</string>
     <string name="radiant" comment="Adjective for a rare, sparkling character variant.">Radiant</string>
     <string name="selected" comment="Status label for the currently chosen option.">Selected</string>
     <string name="show_grid_view" comment="Accessibility label for the control that switches the character selector to a grid.">Show grid view</string>
