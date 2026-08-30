@@ -7,10 +7,12 @@
     <string name="characters_navigation_label" comment="Bottom navigation label for character customization.">角色</string>
     <string name="settings_character_packs_description" comment="Settings description for character packs.">导入和管理自定义角色插图。</string>
     <string name="import_character">导入角色</string>
-    <string name="add_to_your_characters">添加到你的角色</string>
+    <string name="import_character_description">添加他人分享给你的角色。</string>
+    <string name="add_to_your_characters">添加</string>
     <string name="shared_character_creator">创作者：%1$s</string>
     <string name="shared_character_license">许可证：%1$s</string>
     <string name="shared_character_import_description">此角色将添加到你的角色中。</string>
+    <string name="shared_character_import_title">添加 %1$s？</string>
     <string name="shared_character_import_failed_title">无法导入角色</string>
     <string name="shared_character_import_failed_message">请选择从 MonsterDialer 导出的 .monstercharacter 文件。</string>
     <string name="share_character_title">分享 %1$s</string>

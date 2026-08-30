@@ -7,10 +7,12 @@
     <string name="characters_navigation_label" comment="Bottom navigation label for character customization.">Personagens</string>
     <string name="settings_character_packs_description" comment="Settings description for character packs.">Importa e gere ilustrações personalizadas de personagens.</string>
     <string name="import_character">Importar personagem</string>
-    <string name="add_to_your_characters">Adicionar aos teus personagens</string>
+    <string name="import_character_description">Adiciona um personagem que alguém partilhou contigo.</string>
+    <string name="add_to_your_characters">Adicionar</string>
     <string name="shared_character_creator">Criador: %1$s</string>
     <string name="shared_character_license">Licença: %1$s</string>
     <string name="shared_character_import_description">Este personagem será adicionado aos teus personagens.</string>
+    <string name="shared_character_import_title">Adicionar %1$s?</string>
     <string name="shared_character_import_failed_title">Não foi possível importar o personagem</string>
     <string name="shared_character_import_failed_message">Escolhe um ficheiro .monstercharacter exportado pelo MonsterDialer.</string>
     <string name="share_character_title">Partilhar %1$s</string>
