@@ -36,6 +36,10 @@ fun ColumnScope.PlayerCharacterSettingsContent(
     val monsters = viewModel.monsters
     var selectedTab by rememberSaveable { mutableIntStateOf(0) }
     val layout by viewModel.layout.collectAsStateWithLifecycle()
+
+    val currentTabHasCharacters = if (selectedTab == 0) trainers.isNotEmpty() else monsters.isNotEmpty()
+    val effectiveLayout = if (currentTabHasCharacters) layout else CharacterLayout.List
+
     val trainerSelectedItemIndex = selectedCharacterIndex(trainers, assignedTrainer)
     val monsterSelectedItemIndex = selectedCharacterIndex(monsters, assignedMonster)
     val trainerListState = rememberLazyListState(
@@ -53,7 +57,10 @@ fun ColumnScope.PlayerCharacterSettingsContent(
         selectedTab = selectedTab,
         onTabSelected = { tab ->
             val selectedItemIndex = if (tab == 0) trainerSelectedItemIndex else monsterSelectedItemIndex
-            if (layout == CharacterLayout.List) {
+            val nextTabHasCharacters = if (tab == 0) trainers.isNotEmpty() else monsters.isNotEmpty()
+            val nextTabEffectiveLayout = if (nextTabHasCharacters) layout else CharacterLayout.List
+
+            if (nextTabEffectiveLayout == CharacterLayout.List) {
                 (if (tab == 0) trainerListState else monsterListState).requestScrollToItem(selectedItemIndex)
             } else {
                 (if (tab == 0) trainerGridState else monsterGridState).requestScrollToItem(selectedItemIndex)
@@ -68,7 +75,7 @@ fun ColumnScope.PlayerCharacterSettingsContent(
     val listState = if (selectedTab == 0) trainerListState else monsterListState
     val gridState = if (selectedTab == 0) trainerGridState else monsterGridState
     Box(modifier = Modifier.fillMaxWidth().weight(1f)) {
-        if (layout == CharacterLayout.List) {
+        if (effectiveLayout == CharacterLayout.List) {
             LazyColumn(state = listState, modifier = Modifier.fillMaxSize(), contentPadding = PaddingValues(top = 8.dp, bottom = 72.dp)) {
                 when (selectedTab) {
                     0 -> characterTypeItems(trainerTitle, BuiltInCharacters.trainer, trainers, assignedTrainer, { it.playerArtwork }, { it.imageFile(requireNotNull(it.character.backImage)) }, viewModel::assignTrainer)
@@ -83,7 +90,7 @@ fun ColumnScope.PlayerCharacterSettingsContent(
                 }
             }
         }
-        if (trainers.isNotEmpty() || monsters.isNotEmpty()) {
+        if (currentTabHasCharacters) {
             CharacterLayoutToggle(
                 layout,
                 onLayoutChanged = { nextLayout ->
@@ -94,7 +101,7 @@ fun ColumnScope.PlayerCharacterSettingsContent(
                 },
                 modifier = Modifier.align(Alignment.BottomStart).padding(16.dp)
             )
-            if (layout == CharacterLayout.List) JumpToSelectedCharacterButton(listState, selectedItemIndex, Modifier.align(Alignment.BottomEnd).padding(16.dp))
+            if (effectiveLayout == CharacterLayout.List) JumpToSelectedCharacterButton(listState, selectedItemIndex, Modifier.align(Alignment.BottomEnd).padding(16.dp))
             else JumpToSelectedCharacterButton(gridState, selectedItemIndex, Modifier.align(Alignment.BottomEnd).padding(16.dp))
         }
     }
