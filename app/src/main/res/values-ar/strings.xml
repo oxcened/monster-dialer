@@ -40,6 +40,14 @@
         <item quantity="many">%d حزمة مثبتة</item>
         <item quantity="other">%d حزمة مثبتة</item>
     </plurals>
+    <plurals name="enabled_pack_count" comment="Number of enabled character packs. %d is the count.">
+        <item quantity="zero">%d حزمة مفعلة</item>
+        <item quantity="one">%d حزمة مفعلة</item>
+        <item quantity="two">%d حزمتان مفعلتان</item>
+        <item quantity="few">%d حزم مفعلة</item>
+        <item quantity="many">%d حزمة مفعلة</item>
+        <item quantity="other">%d حزمة مفعلة</item>
+    </plurals>
     <plurals name="pack_character_count" comment="%1$d is the number of characters; %2$s is the pack version.">
         <item quantity="zero">%1$d شخصية · v%2$s</item>
         <item quantity="one">%1$d شخصية · v%2$s</item>

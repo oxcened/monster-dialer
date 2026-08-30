@@ -37,6 +37,11 @@
         <item quantity="few">%d instalate</item>
         <item quantity="other">%d instalate</item>
     </plurals>
+    <plurals name="enabled_pack_count" comment="Number of enabled character packs. %d is the count.">
+        <item quantity="one">%d activat</item>
+        <item quantity="few">%d activate</item>
+        <item quantity="other">%d activate</item>
+    </plurals>
     <plurals name="pack_character_count" comment="%1$d is the number of characters; %2$s is the pack version.">
         <item quantity="one">%1$d personaj · v%2$s</item>
         <item quantity="few">%1$d personaje · v%2$s</item>

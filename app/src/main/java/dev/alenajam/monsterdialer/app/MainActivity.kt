@@ -62,11 +62,18 @@ class MainActivity : AppCompatActivity() {
                         SettingsSubpage(
                             title = stringResource(R.string.settings_character_packs_title),
                             description = stringResource(R.string.settings_character_packs_description),
-                            subtitle = pluralStringResource(
-                                R.plurals.installed_pack_count,
-                                visiblePacks.size,
-                                visiblePacks.size
-                            ),
+                            subtitle = run {
+                                val installed = visiblePacks.size
+                                val enabled = visiblePacks.count { it.enabled }
+                                val parts = mutableListOf<String>()
+                                if (installed > 0) {
+                                    parts.add(pluralStringResource(R.plurals.installed_pack_count, installed, installed))
+                                }
+                                if (enabled > 0) {
+                                    parts.add(pluralStringResource(R.plurals.enabled_pack_count, enabled, enabled))
+                                }
+                                parts.joinToString(" • ")
+                            },
                             content = { CharacterPackSettingsContent(characterPackSettingsViewModel) },
                             topContentPadding = 0.dp
                         ),
