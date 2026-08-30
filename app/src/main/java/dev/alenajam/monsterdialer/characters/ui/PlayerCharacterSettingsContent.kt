@@ -14,10 +14,8 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -38,8 +36,12 @@ fun ColumnScope.PlayerCharacterSettingsContent(
     val trainers by viewModel.trainers.collectAsStateWithLifecycle()
     val monsters by viewModel.monsters.collectAsStateWithLifecycle()
     val isLimitReached by viewModel.isLimitReached.collectAsStateWithLifecycle()
-    var selectedTab by rememberSaveable { mutableIntStateOf(0) }
+    val selectedTab by viewModel.selectedTab.collectAsStateWithLifecycle()
     val layout by viewModel.layout.collectAsStateWithLifecycle()
+
+    val currentTabHasCharacters = if (selectedTab == 0) trainers.isNotEmpty() else monsters.isNotEmpty()
+    val effectiveLayout = if (currentTabHasCharacters) layout else CharacterLayout.List
+
     val trainerSelectedItemIndex = selectedCharacterIndex(trainers, assignedTrainer)
     val monsterSelectedItemIndex = selectedCharacterIndex(monsters, assignedMonster)
     val trainerListState = rememberLazyListState(
@@ -60,12 +62,15 @@ fun ColumnScope.PlayerCharacterSettingsContent(
         selectedTab = selectedTab,
         onTabSelected = { tab ->
             val selectedItemIndex = if (tab == 0) trainerSelectedItemIndex else monsterSelectedItemIndex
-            if (layout == CharacterLayout.List) {
+            val nextTabHasCharacters = if (tab == 0) trainers.isNotEmpty() else monsters.isNotEmpty()
+            val nextTabEffectiveLayout = if (nextTabHasCharacters) layout else CharacterLayout.List
+
+            if (nextTabEffectiveLayout == CharacterLayout.List) {
                 (if (tab == 0) trainerListState else monsterListState).requestScrollToItem(selectedItemIndex)
             } else {
                 (if (tab == 0) trainerGridState else monsterGridState).requestScrollToItem(selectedItemIndex)
             }
-            selectedTab = tab
+            viewModel.setSelectedTab(tab)
         }
     )
     val selectedItemIndex = when (selectedTab) {
@@ -88,7 +93,7 @@ fun ColumnScope.PlayerCharacterSettingsContent(
     }
 
     Box(modifier = Modifier.fillMaxWidth().weight(1f)) {
-        if (layout == CharacterLayout.List) {
+        if (effectiveLayout == CharacterLayout.List) {
             LazyColumn(state = listState, modifier = Modifier.fillMaxSize(), contentPadding = PaddingValues(top = 8.dp, bottom = 72.dp)) {
                 when (selectedTab) {
                     0 -> characterTypeItems(trainerTitle, BuiltInCharacters.trainer, trainers, assignedTrainer, { it.playerArtwork }, { it.imageFile(requireNotNull(it.character.frontImage)) }, viewModel::assignTrainer, { navigator?.navigateTo(0) }, addTrainerLabel, !isLimitReached, onDelete = { pendingDeletion = it }, onEdit = { navigator?.navigateTo(0, it.character.id) })
@@ -103,7 +108,7 @@ fun ColumnScope.PlayerCharacterSettingsContent(
                 }
             }
         }
-        if (trainers.isNotEmpty() || monsters.isNotEmpty()) {
+        if (currentTabHasCharacters) {
             CharacterLayoutToggle(
                 layout,
                 onLayoutChanged = { nextLayout ->
@@ -114,7 +119,7 @@ fun ColumnScope.PlayerCharacterSettingsContent(
                 },
                 modifier = Modifier.align(Alignment.BottomStart).padding(16.dp)
             )
-            if (layout == CharacterLayout.List) JumpToSelectedCharacterButton(listState, selectedItemIndex, Modifier.align(Alignment.BottomEnd).padding(16.dp))
+            if (effectiveLayout == CharacterLayout.List) JumpToSelectedCharacterButton(listState, selectedItemIndex, Modifier.align(Alignment.BottomEnd).padding(16.dp))
             else JumpToSelectedCharacterButton(gridState, selectedItemIndex, Modifier.align(Alignment.BottomEnd).padding(16.dp))
         }
     }

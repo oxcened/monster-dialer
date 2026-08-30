@@ -58,6 +58,9 @@ class PlayerCharacterSettingsViewModel @Inject constructor(
     )
     val layout: StateFlow<CharacterLayout> = _layout.asStateFlow()
 
+    private val _selectedTab = MutableStateFlow(layoutPreferences.getSelectedTab())
+    val selectedTab: StateFlow<Int> = _selectedTab.asStateFlow()
+
     init {
         viewModelScope.launch {
             _assignedTrainer.value = assignmentRepository.getPlayerCharacter(CharacterType.Trainer)
@@ -88,5 +91,10 @@ class PlayerCharacterSettingsViewModel @Inject constructor(
         viewModelScope.launch {
             charactersRepository.deleteCustomCharacter(characterId)
         }
+    }
+
+    fun setSelectedTab(index: Int) {
+        layoutPreferences.setSelectedTab(index)
+        _selectedTab.value = index
     }
 }

@@ -25,10 +25,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -62,7 +60,7 @@ fun ColumnScope.ContactCharacterSettingsContent(
     val trainers by viewModel.trainers.collectAsStateWithLifecycle()
     val monsters by viewModel.monsters.collectAsStateWithLifecycle()
     val isLimitReached by viewModel.isLimitReached.collectAsStateWithLifecycle()
-    var selectedTab by rememberSaveable { mutableIntStateOf(0) }
+    val selectedTab by viewModel.selectedTab.collectAsStateWithLifecycle()
     val layout by viewModel.layout.collectAsStateWithLifecycle()
     val trainerSelectedItemIndex = selectedCharacterIndex(trainers, assignedTrainer)
     val monsterSelectedItemIndex = selectedCharacterIndex(monsters, assignedMonster)
@@ -100,7 +98,7 @@ fun ColumnScope.ContactCharacterSettingsContent(
                 val selectedItemIndex = if (tab == 0) trainerSelectedItemIndex else monsterSelectedItemIndex
                 if (layout == CharacterLayout.List) (if (tab == 0) trainerListState else monsterListState).requestScrollToItem(selectedItemIndex)
                 else (if (tab == 0) trainerGridState else monsterGridState).requestScrollToItem(selectedItemIndex)
-                selectedTab = tab
+                viewModel.setSelectedTab(tab)
             }
         )
         val listState = if (selectedTab == 0) trainerListState else monsterListState
@@ -181,15 +179,21 @@ fun ColumnScope.ContactCharacterSettingsContent(
             selectedTab = selectedTab,
             onTabSelected = { tab ->
                 val selectedItemIndex = if (tab == 0) trainerSelectedItemIndex else monsterSelectedItemIndex
-                if (layout == CharacterLayout.List) (if (tab == 0) trainerListState else monsterListState).requestScrollToItem(selectedItemIndex)
+                val nextTabHasCharacters = if (tab == 0) trainers.isNotEmpty() else monsters.isNotEmpty()
+                val nextTabEffectiveLayout = if (nextTabHasCharacters) layout else CharacterLayout.List
+
+                if (nextTabEffectiveLayout == CharacterLayout.List) (if (tab == 0) trainerListState else monsterListState).requestScrollToItem(selectedItemIndex)
                 else (if (tab == 0) trainerGridState else monsterGridState).requestScrollToItem(selectedItemIndex)
-                selectedTab = tab
+                viewModel.setSelectedTab(tab)
             }
         )
         val selectedItemIndex = when (selectedTab) {
             0 -> trainerSelectedItemIndex
             else -> monsterSelectedItemIndex
         }
+        val currentTabHasCharacters = if (selectedTab == 0) trainers.isNotEmpty() else monsters.isNotEmpty()
+        val effectiveLayout = if (currentTabHasCharacters) layout else CharacterLayout.List
+
         val listState = if (selectedTab == 0) trainerListState else monsterListState
         val gridState = if (selectedTab == 0) trainerGridState else monsterGridState
         var pendingDeletion by remember { mutableStateOf<InstalledPackCharacter?>(null) }
@@ -207,11 +211,11 @@ fun ColumnScope.ContactCharacterSettingsContent(
 
         LaunchedEffect(contactSelectionVersion) {
             val selectedItemIndex = if (selectedTab == 0) trainerSelectedItemIndex else monsterSelectedItemIndex
-            if (layout == CharacterLayout.List) listState.requestScrollToItem(selectedItemIndex)
+            if (effectiveLayout == CharacterLayout.List) listState.requestScrollToItem(selectedItemIndex)
             else gridState.requestScrollToItem(selectedItemIndex)
         }
         Box(modifier = Modifier.fillMaxWidth().weight(1f)) {
-            if (layout == CharacterLayout.List) {
+            if (effectiveLayout == CharacterLayout.List) {
                 LazyColumn(state = listState, modifier = Modifier.fillMaxSize(), contentPadding = PaddingValues(top = 8.dp, bottom = 72.dp)) {
                     when (selectedTab) {
                         0 -> characterTypeItems(trainerTitle, BuiltInCharacters.trainer, trainers, assignedTrainer, { it.contactArtwork }, { it.imageFile(requireNotNull(it.character.frontImage)) }, viewModel::assignTrainer, { navigator?.navigateTo(1) }, addTrainerLabel, !isLimitReached, onDelete = { pendingDeletion = it }, onEdit = { navigator?.navigateTo(1, it.character.id) })
@@ -226,18 +230,20 @@ fun ColumnScope.ContactCharacterSettingsContent(
                     }
                 }
             }
-            CharacterLayoutToggle(
-                layout,
-                onLayoutChanged = { nextLayout ->
-                    val firstVisibleItemIndex = if (layout == CharacterLayout.List) listState.firstVisibleItemIndex else gridState.firstVisibleItemIndex
-                    if (nextLayout == CharacterLayout.List) listState.requestScrollToItem(firstVisibleItemIndex)
-                    else gridState.requestScrollToItem(firstVisibleItemIndex)
-                viewModel.setLayout(nextLayout)
-                },
-                modifier = Modifier.align(Alignment.BottomStart).padding(16.dp)
-            )
-            if (layout == CharacterLayout.List) JumpToSelectedCharacterButton(listState, selectedItemIndex, Modifier.align(Alignment.BottomEnd).padding(16.dp))
-            else JumpToSelectedCharacterButton(gridState, selectedItemIndex, Modifier.align(Alignment.BottomEnd).padding(16.dp))
+            if (currentTabHasCharacters) {
+                CharacterLayoutToggle(
+                    layout,
+                    onLayoutChanged = { nextLayout ->
+                        val firstVisibleItemIndex = if (layout == CharacterLayout.List) listState.firstVisibleItemIndex else gridState.firstVisibleItemIndex
+                        if (nextLayout == CharacterLayout.List) listState.requestScrollToItem(firstVisibleItemIndex)
+                        else gridState.requestScrollToItem(firstVisibleItemIndex)
+                    viewModel.setLayout(nextLayout)
+                    },
+                    modifier = Modifier.align(Alignment.BottomStart).padding(16.dp)
+                )
+                if (effectiveLayout == CharacterLayout.List) JumpToSelectedCharacterButton(listState, selectedItemIndex, Modifier.align(Alignment.BottomEnd).padding(16.dp))
+                else JumpToSelectedCharacterButton(gridState, selectedItemIndex, Modifier.align(Alignment.BottomEnd).padding(16.dp))
+            }
         }
     }
 }
