@@ -93,6 +93,7 @@
     <string name="select_image" comment="Button to pick an image from the gallery.">Select image</string>
     <string name="change_image" comment="Button to change the already selected image.">Change image</string>
     <string name="save_character" comment="Button to save the new character.">Save character</string>
+    <string name="character_type_label" comment="Label for the character type selection (Trainer vs Monster).">Type</string>
     <string name="character_created" comment="Confirmation after a character is successfully created.">Character created</string>
     <string name="character_creation_failed" comment="Error when a character cannot be saved.">Could not create character</string>
 </resources>
