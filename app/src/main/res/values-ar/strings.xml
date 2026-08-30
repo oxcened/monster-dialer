@@ -101,7 +101,7 @@
     <string name="back_sprite_label" comment="Label for the back sprite picker.">الرسم الخلفي</string>
     <string name="front_sprite_description" comment="Explains that the front sprite is required for contacts.">تتيح إضافة رسم أمامي تعيين هذه الشخصية لجهات الاتصال.</string>
     <string name="back_sprite_description" comment="Explains that the back sprite is required for the player.">تتيح إضافة رسم خلفي تعيين هذه الشخصية لنفسك.</string>
-    <string name="required_label" comment="Suffix for required fields.">(مطلوب)</string>
+    <string name="required_label" comment="Suffix for required fields.">*</string>
     <string name="edit_trainer_title" comment="Title of the trainer edit screen.">تعديل المدرب</string>
     <string name="edit_monster_title" comment="Title of the monster edit screen.">تعديل الوحش</string>
     <string name="character_name_label" comment="Label for the character name input field.">اسم الشخصية</string>

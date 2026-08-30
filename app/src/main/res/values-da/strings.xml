@@ -93,7 +93,7 @@
     <string name="back_sprite_label" comment="Label for the back sprite picker.">Bagside-sprite</string>
     <string name="front_sprite_description" comment="Explains that the front sprite is required for contacts.">Tilføjelse af en front-sprite gør det muligt at tildele denne figur til kontakter.</string>
     <string name="back_sprite_description" comment="Explains that the back sprite is required for the player.">Tilføjelse af en bagside-sprite gør det muligt at tildele denne figur til dig selv.</string>
-    <string name="required_label" comment="Suffix for required fields.">(Påkrævet)</string>
+    <string name="required_label" comment="Suffix for required fields.">*</string>
     <string name="edit_trainer_title" comment="Title of the trainer edit screen.">Rediger træner</string>
     <string name="edit_monster_title" comment="Title of the monster edit screen.">Rediger monster</string>
     <string name="character_name_label" comment="Label for the character name input field.">Figurnavn</string>

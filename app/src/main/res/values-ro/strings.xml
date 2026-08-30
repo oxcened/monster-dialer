@@ -95,7 +95,7 @@
     <string name="back_sprite_label" comment="Label for the back sprite picker.">Sprite posterior</string>
     <string name="front_sprite_description" comment="Explains that the front sprite is required for contacts.">Adăugarea unui sprite frontal permite atribuirea acestui personaj contactelor.</string>
     <string name="back_sprite_description" comment="Explains that the back sprite is required for the player.">Adăugarea unui sprite posterior permite atribuirea acestui personaj propriei persoane.</string>
-    <string name="required_label" comment="Suffix for required fields.">(Obligatoriu)</string>
+    <string name="required_label" comment="Suffix for required fields.">*</string>
     <string name="edit_trainer_title" comment="Title of the trainer edit screen.">Editează antrenorul</string>
     <string name="edit_monster_title" comment="Title of the monster edit screen.">Editează monstrul</string>
     <string name="character_name_label" comment="Label for the character name input field.">Numele personajului</string>

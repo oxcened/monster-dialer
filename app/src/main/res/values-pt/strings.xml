@@ -93,7 +93,7 @@
     <string name="back_sprite_label" comment="Label for the back sprite picker.">Sprite Traseiro</string>
     <string name="front_sprite_description" comment="Explains that the front sprite is required for contacts.">Adicionar um sprite frontal permite atribuir esta personagem aos contactos.</string>
     <string name="back_sprite_description" comment="Explains that the back sprite is required for the player.">Adicionar um sprite traseiro permite atribuir esta personagem a ti mesmo.</string>
-    <string name="required_label" comment="Suffix for required fields.">(Obrigatório)</string>
+    <string name="required_label" comment="Suffix for required fields.">*</string>
     <string name="edit_trainer_title" comment="Title of the trainer edit screen.">Editar treinador</string>
     <string name="edit_monster_title" comment="Title of the monster edit screen.">Editar monstro</string>
     <string name="character_name_label" comment="Label for the character name input field.">Nome da personagem</string>

@@ -143,7 +143,7 @@ fun AddCharacterScreen(
 
                     // Front Sprite
                     SpritePicker(
-                        label = stringResource(R.string.front_sprite_label) + if (frontRequired) " " + stringResource(R.string.required_label) else "",
+                        label = stringResource(R.string.front_sprite_label) + if (frontRequired) stringResource(R.string.required_label) else "",
                         description = stringResource(R.string.front_sprite_description),
                         image = frontImageUri ?: existingFrontImageFile,
                         onPick = { frontPicker.launch("image/*") },
@@ -153,7 +153,7 @@ fun AddCharacterScreen(
 
                     // Back Sprite
                     SpritePicker(
-                        label = stringResource(R.string.back_sprite_label) + if (backRequired) " " + stringResource(R.string.required_label) else "",
+                        label = stringResource(R.string.back_sprite_label) + if (backRequired) stringResource(R.string.required_label) else "",
                         description = stringResource(R.string.back_sprite_description),
                         image = backImageUri ?: existingBackImageFile,
                         onPick = { backPicker.launch("image/*") },
@@ -205,7 +205,7 @@ fun AddCharacterScreen(
                         OutlinedTextField(
                             value = name,
                             onValueChange = viewModel::onNameChanged,
-                            label = { Text(stringResource(R.string.character_name_label)) },
+                            label = { Text(stringResource(R.string.character_name_label) + stringResource(R.string.required_label)) },
                             placeholder = { Text(stringResource(R.string.character_name_hint)) },
                             modifier = Modifier.fillMaxWidth(),
                             singleLine = true,
