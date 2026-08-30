@@ -21,12 +21,8 @@ import androidx.compose.foundation.lazy.grid.LazyGridState
 import androidx.compose.foundation.lazy.grid.itemsIndexed as gridItemsIndexed
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.outlined.ViewList
-import androidx.compose.material.icons.outlined.GridView
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.PrimaryTabRow
@@ -69,8 +65,8 @@ internal fun CharacterLayoutToggle(
 ) {
     val nextLayout = if (layout == CharacterLayout.List) CharacterLayout.Grid else CharacterLayout.List
     SmallFloatingActionButton(onClick = { onLayoutChanged(nextLayout) }, modifier = modifier) {
-        Icon(
-            imageVector = if (nextLayout == CharacterLayout.Grid) Icons.Outlined.GridView else Icons.AutoMirrored.Outlined.ViewList,
+        AppIcon(
+            icon = if (nextLayout == CharacterLayout.Grid) LocalMonsterAppIcons.current.viewGrid else LocalMonsterAppIcons.current.viewList,
             contentDescription = stringResource(
                 if (nextLayout == CharacterLayout.Grid) R.string.show_grid_view else R.string.show_list_view
             )
