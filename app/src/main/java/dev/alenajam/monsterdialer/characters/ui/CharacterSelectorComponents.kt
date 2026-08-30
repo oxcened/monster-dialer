@@ -110,7 +110,7 @@ internal fun LazyListScope.characterTypeItems(
             name = defaultCharacter.name,
             subtitle = stringResource(R.string.built_in_character),
             isSelected = availableSelection == null,
-            roundTop = false,
+            roundTop = true,
             roundBottom = false,
             artwork = {
                 Image(
@@ -169,7 +169,7 @@ internal fun LazyGridScope.characterTypeGridItems(
             name = defaultCharacter.name,
             subtitle = stringResource(R.string.built_in_character),
             isSelected = availableSelection == null,
-            shape = gridItemShape(index = 1, itemCount = if (characters.isEmpty()) 2 else characters.size + 1),
+            shape = gridItemShape(index = 0, itemCount = if (characters.isEmpty()) 2 else characters.size + 1),
             artwork = {
                 Image(
                     painter = painterResource(defaultArtwork(defaultCharacter).resource),
@@ -182,13 +182,13 @@ internal fun LazyGridScope.characterTypeGridItems(
     }
     gridItemsIndexed(items = characters, key = { _, character -> "${character.packId}:${character.character.id}" }) { index, installed ->
         val reference = CharacterReference(installed.packId, installed.character.id)
-        val itemIndex = index + 2
+        val itemIndex = index + 1
         CharacterGridItem(
             name = installed.character.name,
             subtitle = installed.packName,
             isRadiant = installed.character.isRadiant,
             isSelected = availableSelection == reference,
-            shape = gridItemShape(index = itemIndex, itemCount = characters.size + 2),
+            shape = gridItemShape(index = itemIndex, itemCount = characters.size + 1),
             artwork = {
                 AsyncImage(
                     model = packArtwork(installed),
@@ -203,7 +203,7 @@ internal fun LazyGridScope.characterTypeGridItems(
         item(key = "empty") {
             NoAdditionalCharacterGridItem(
                 title = title,
-                shape = gridItemShape(index = 2, itemCount = 3)
+                shape = gridItemShape(index = 1, itemCount = 2)
             )
         }
     }
