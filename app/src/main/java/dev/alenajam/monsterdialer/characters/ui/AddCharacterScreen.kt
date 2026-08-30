@@ -234,17 +234,19 @@ fun AddCharacterScreen(
                             )
                         }
 
-                        // Advanced Section
-                        AdvancedSection(
-                            type = type,
-                            isRadiant = isRadiant,
-                            onRadiantChange = viewModel::onRadiantChanged,
-                            level = level,
-                            onLevelChange = viewModel::onLevelChanged,
-                            maxHp = maxHp,
-                            onMaxHpChange = viewModel::onMaxHpChanged,
-                            enabled = !isLimitReached
-                        )
+                        // Advanced Section (Only for monsters for now)
+                        if (type == CharacterType.Monster) {
+                            AdvancedSection(
+                                type = type,
+                                isRadiant = isRadiant,
+                                onRadiantChange = viewModel::onRadiantChanged,
+                                level = level,
+                                onLevelChange = viewModel::onLevelChanged,
+                                maxHp = maxHp,
+                                onMaxHpChange = viewModel::onMaxHpChanged,
+                                enabled = !isLimitReached
+                            )
+                        }
                     }
                 }
 
