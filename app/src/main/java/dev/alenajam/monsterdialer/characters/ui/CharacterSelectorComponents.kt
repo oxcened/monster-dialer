@@ -1,7 +1,6 @@
 package dev.alenajam.monsterdialer.characters.ui
 
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -91,27 +90,17 @@ internal fun LazyListScope.characterTypeItems(
     selected: CharacterReference?,
     defaultArtwork: (BuiltInCharacter) -> BuiltInArtwork,
     packArtwork: (InstalledPackCharacter) -> File,
-    onSelect: (CharacterReference?) -> Unit,
-    onAddCharacter: () -> Unit,
-    addLabel: String
+    onSelect: (CharacterReference?) -> Unit
 ) {
     val availableSelection = selected?.takeIf { reference ->
         characters.any { CharacterReference(it.packId, it.character.id) == reference }
-    }
-    item(key = "add") {
-        AddCharacterCard(
-            onClick = onAddCharacter,
-            roundTop = true,
-            roundBottom = false,
-            label = addLabel
-        )
     }
     item(key = "default") {
         CharacterOptionCard(
             name = defaultCharacter.name,
             subtitle = stringResource(R.string.built_in_character),
             isSelected = availableSelection == null,
-            roundTop = false,
+            roundTop = true,
             roundBottom = false,
             artwork = {
                 Image(
@@ -152,26 +141,17 @@ internal fun LazyGridScope.characterTypeGridItems(
     selected: CharacterReference?,
     defaultArtwork: (BuiltInCharacter) -> BuiltInArtwork,
     packArtwork: (InstalledPackCharacter) -> File,
-    onSelect: (CharacterReference?) -> Unit,
-    onAddCharacter: () -> Unit,
-    addLabel: String
+    onSelect: (CharacterReference?) -> Unit
 ) {
     val availableSelection = selected?.takeIf { reference ->
         characters.any { CharacterReference(it.packId, it.character.id) == reference }
-    }
-    item(key = "add") {
-        AddCharacterGridItem(
-            onClick = onAddCharacter,
-            shape = gridItemShape(index = 0, itemCount = if (characters.isEmpty()) 3 else characters.size + 2),
-            label = addLabel
-        )
     }
     item(key = "default") {
         CharacterGridItem(
             name = defaultCharacter.name,
             subtitle = stringResource(R.string.built_in_character),
             isSelected = availableSelection == null,
-            shape = gridItemShape(index = 1, itemCount = if (characters.isEmpty()) 3 else characters.size + 2),
+            shape = gridItemShape(index = 0, itemCount = if (characters.isEmpty()) 2 else characters.size + 1),
             artwork = {
                 Image(
                     painter = painterResource(defaultArtwork(defaultCharacter).resource),
@@ -184,13 +164,13 @@ internal fun LazyGridScope.characterTypeGridItems(
     }
     gridItemsIndexed(items = characters, key = { _, character -> "${character.packId}:${character.character.id}" }) { index, installed ->
         val reference = CharacterReference(installed.packId, installed.character.id)
-        val itemIndex = index + 2
+        val itemIndex = index + 1
         CharacterGridItem(
             name = installed.character.name,
             subtitle = installed.packName,
             isRadiant = installed.character.isRadiant,
             isSelected = availableSelection == reference,
-            shape = gridItemShape(index = itemIndex, itemCount = characters.size + 2),
+            shape = gridItemShape(index = itemIndex, itemCount = characters.size + 1),
             artwork = {
                 AsyncImage(
                     model = packArtwork(installed),
@@ -205,7 +185,7 @@ internal fun LazyGridScope.characterTypeGridItems(
         item(key = "empty") {
             NoAdditionalCharacterGridItem(
                 title = title,
-                shape = gridItemShape(index = 2, itemCount = 3)
+                shape = gridItemShape(index = 1, itemCount = 2)
             )
         }
     }
@@ -229,8 +209,8 @@ internal fun selectedCharacterIndex(
 ): Int = selected?.let { selectedReference ->
     characters.indexOfFirst { character ->
         CharacterReference(character.packId, character.character.id) == selectedReference
-    }.takeIf { it >= 0 }?.plus(2)
-} ?: 1
+    }.takeIf { it >= 0 }?.plus(1)
+} ?: 0
 
 @Composable
 internal fun JumpToSelectedCharacterButton(
@@ -299,105 +279,6 @@ internal fun JumpToSelectedCharacterButton(
             AppIcon(
                 icon = if (isSelectedItemAbove) LocalAppIcons.current.arrowUp else LocalAppIcons.current.arrowDown,
                 contentDescription = stringResource(R.string.jump_to_selected_character)
-            )
-        }
-    }
-}
-
-@Composable
-private fun AddCharacterCard(
-    onClick: () -> Unit,
-    roundTop: Boolean,
-    roundBottom: Boolean,
-    label: String
-) {
-    val shape = RoundedCornerShape(
-        topStart = if (roundTop) 20.dp else 2.dp, topEnd = if (roundTop) 20.dp else 2.dp,
-        bottomStart = if (roundBottom) 20.dp else 2.dp, bottomEnd = if (roundBottom) 20.dp else 2.dp
-    )
-    Card(
-        onClick = onClick,
-        modifier = Modifier
-            .fillMaxWidth()
-            .height(104.dp)
-            .padding(vertical = 1.dp),
-        shape = shape,
-        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainerLow),
-        elevation = CardDefaults.cardElevation(defaultElevation = 0.5.dp)
-    ) {
-        Row(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(16.dp),
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.spacedBy(16.dp)
-        ) {
-            Box(
-                modifier = Modifier
-                    .size(72.dp)
-                    .clip(CircleShape)
-                    .background(MaterialTheme.colorScheme.primaryContainer),
-                contentAlignment = Alignment.Center
-            ) {
-                AppIcon(
-                    LocalMonsterAppIcons.current.addCharacter,
-                    contentDescription = null,
-                    modifier = Modifier.size(32.dp),
-                    tint = MaterialTheme.colorScheme.onPrimaryContainer
-                )
-            }
-            Text(
-                label,
-                style = MaterialTheme.typography.titleMedium,
-                color = MaterialTheme.colorScheme.primary
-            )
-        }
-    }
-}
-
-@Composable
-private fun AddCharacterGridItem(
-    onClick: () -> Unit,
-    shape: Shape,
-    label: String
-) {
-    Card(
-        onClick = onClick,
-        modifier = Modifier
-            .fillMaxWidth()
-            .height(184.dp),
-        shape = shape,
-        colors = CardDefaults.cardColors(
-            containerColor = MaterialTheme.colorScheme.surfaceContainerLow
-        ),
-        elevation = CardDefaults.cardElevation(defaultElevation = 0.5.dp)
-    ) {
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(12.dp),
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Center
-        ) {
-            Box(
-                modifier = Modifier
-                    .size(88.dp)
-                    .clip(CircleShape)
-                    .background(MaterialTheme.colorScheme.primaryContainer),
-                contentAlignment = Alignment.Center
-            ) {
-                AppIcon(
-                    LocalMonsterAppIcons.current.addCharacter,
-                    contentDescription = null,
-                    modifier = Modifier.size(40.dp),
-                    tint = MaterialTheme.colorScheme.onPrimaryContainer
-                )
-            }
-            Text(
-                label,
-                style = MaterialTheme.typography.titleSmall,
-                textAlign = TextAlign.Center,
-                color = MaterialTheme.colorScheme.primary
             )
         }
     }
