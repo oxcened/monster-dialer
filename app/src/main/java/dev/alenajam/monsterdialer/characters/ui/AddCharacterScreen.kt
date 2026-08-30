@@ -296,6 +296,9 @@ fun AddCharacterScreen(
                         style = MaterialTheme.typography.titleMedium
                     )
                 }
+
+                // Extra spacing at the bottom to prevent cutoff by navigation bars
+                Spacer(modifier = Modifier.height(48.dp))
             }
         }
     }
