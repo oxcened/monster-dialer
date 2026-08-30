@@ -13,7 +13,9 @@
     <string name="settings_contact_characters_title" comment="Settings title for assigning characters to contacts.">联系人角色</string>
     <string name="settings_contact_characters_description" comment="Settings description for assigning characters to contacts.">为来电者分配角色。</string>
     <string name="contact_characters_not_set" comment="Settings subtitle when no contacts have a character assignment.">没有已自定义的联系人</string>
-    <plurals name="contact_character_assignment_count" comment="Settings subtitle showing how many contacts have a character assignment."><item quantity="one">已自定义 %d 位联系人</item><item quantity="other">已自定义 %d 位联系人</item></plurals>
+    <plurals name="contact_character_assignment_count" comment="Settings subtitle showing how many contacts have a character assignment.">
+        <item quantity="other">已自定义 %d 位联系人</item>
+    </plurals>
     <string name="choose_contact" comment="Button that opens the contact picker.">选择联系人</string>
     <string name="character_type_trainer" comment="Character category for a human battle character.">训练师</string>
     <string name="character_type_monster" comment="Character category for a creature battle character.">怪物</string>
@@ -61,6 +63,8 @@
     <string name="remove" comment="Button label to permanently remove a character pack.">移除</string>
     <string name="remove_character_pack_title" comment="Confirmation dialog title; %1$s is the character pack name.">要移除 %1$s 吗？</string>
     <string name="remove_character_pack_message" comment="Confirmation dialog message; %1$s is the character pack name.">这将从 MonsterDialer 中永久移除 %1$s 及其插图。</string>
+    <string name="disable_character_pack_title" comment="Confirmation dialog title; %1$s is the character pack name.">停用 %1$s 吗？</string>
+    <string name="disable_character_pack_message" comment="Confirmation dialog message; %1$s is the character pack name.">此角色包目前正在使用中。停用它将取消其角色与你及你的联系人的关联。</string>
     <string name="cancel" comment="Button label that dismisses an action without making changes.">取消</string>
     <string name="character_pack_removed" comment="Confirmation after a character pack is removed.">角色包已移除</string>
     <string name="character_pack_remove_failed" comment="Error when a character pack cannot be removed.">无法移除角色包</string>
@@ -88,7 +92,6 @@
     <string name="battle_trainer_sent_out" comment="Battle announcement; %1$s is the trainer name and %2$s is the monster name.">训练师 %1$s 派出了 %2$s！</string>
     <string name="battle_wild_radiant_appeared" comment="Battle announcement; %1$s is the wild monster name and radiant is its rare variant.">闪耀的野生 %1$s 出现了！</string>
     <string name="battle_wild_appeared" comment="Battle announcement; %1$s is the wild monster name.">野生 %1$s 出现了！</string>
-
     <!-- Character creation -->
     <string name="add_trainer" comment="Button to start adding a new custom trainer.">添加训练师</string>
     <string name="add_monster" comment="Button to start adding a new custom monster.">添加怪物</string>
@@ -120,8 +123,6 @@
     <string name="character_creation_failed" comment="Error when a character cannot be saved.">无法保存角色</string>
     <string name="character_limit_reached_message" comment="Error message when the 200 character limit is hit.">已达到 200 个角色的限制。请删除一些后再添加。</string>
     <string name="character_limit_reached_hint" comment="Short hint shown below the disabled add button.">已达到 200 个角色的限制</string>
-    <string name="disable_character_pack_title" comment="Confirmation dialog title; %1$s is the character pack name.">停用 %1$s 吗？</string>
-    <string name="disable_character_pack_message" comment="Confirmation dialog message; %1$s is the character pack name.">此角色包目前正在使用中。停用它将取消其角色与你及你的联系人的关联。</string>
     <string name="front_sprite_required_for_contact" comment="Message shown when a front sprite is missing but required by an assignment.">需要前向图像，因为此角色已分配给联系人。</string>
     <string name="back_sprite_required_for_player" comment="Message shown when a back sprite is missing but required by an assignment.">需要后向图像，因为此角色已分配给你。</string>
     <string name="remove_character_in_use_message" comment="Confirmation dialog message when deleting a character in use; %1$s is the character name.">%1$s 目前正在使用中。删除它将取消其与你及你的联系人的关联。</string>
