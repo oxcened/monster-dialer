@@ -29,8 +29,8 @@ class AssignedCharacterEncounterFactoryTest {
     private val assignmentsRoot by lazy { temporaryFolder.newFolder("assignments") }
     private val store by lazy { CharacterAssignmentStore(assignmentsRoot) }
     private val repository by lazy { CharacterPackRepository(storageRoot, catalog) }
-    private val charactersRepository by lazy { CharactersRepositoryImpl(repository) }
     private val assignmentRepository by lazy { CharacterAssignmentRepositoryImpl(store) }
+    private val charactersRepository by lazy { CharactersRepositoryImpl(repository, assignmentRepository) }
     private val factory by lazy { AssignedCharacterEncounterFactory(charactersRepository, assignmentRepository) }
 
     @Test

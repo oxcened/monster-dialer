@@ -13,9 +13,18 @@ import javax.inject.Singleton
 @Singleton
 class CharactersRepositoryImpl @Inject constructor(
     private val repository: CharacterPackRepository,
-    private val customRepository: CustomCharacterRepository,
+    private val customRepository: CustomCharacterRepository?,
     private val assignmentRepository: CharacterAssignmentRepository
 ) : CharactersRepository {
+
+    constructor(
+        repository: CharacterPackRepository,
+        assignmentRepository: CharacterAssignmentRepository
+    ) : this(
+        repository = repository,
+        customRepository = null,
+        assignmentRepository = assignmentRepository
+    )
 
     override fun observeCharactersAssignableTo(
         role: CharacterAssignmentTarget,
@@ -49,7 +58,7 @@ class CharactersRepositoryImpl @Inject constructor(
     override suspend fun deleteCustomCharacter(characterId: String) {
         val reference = CharacterReference(CustomCharacterRepository.CUSTOM_PACK_ID, characterId)
         assignmentRepository.clearAssignmentsForCharacter(reference)
-        customRepository.deleteCharacter(characterId)
+        requireNotNull(customRepository).deleteCharacter(characterId)
     }
 
     override suspend fun isPackInUse(packId: String): Boolean {
