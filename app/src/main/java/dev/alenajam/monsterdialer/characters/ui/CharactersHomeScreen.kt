@@ -34,6 +34,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import dev.alenajam.monsterdialer.R
 import dev.alenajam.monsterdialer.app.ui.LocalMonsterAppIcons
 import dev.alenajam.monsterdialer.characters.data.SharedCharacterImport
+import dev.alenajam.monsterdialer.packs.data.CharacterType
 import dev.alenajam.opendialer.core.common.ui.AppIcon
 import dev.alenajam.opendialer.core.common.ui.IconSource
 import dev.alenajam.opendialer.core.common.ui.LocalAppIcons
@@ -81,6 +82,10 @@ private fun SharedCharacterImportDialog(
     onConfirm: () -> Unit,
     onDismiss: () -> Unit
 ) {
+    val characterType = stringResource(
+        if (shared.character.type == CharacterType.Trainer) R.string.character_type_trainer
+        else R.string.character_type_monster
+    )
     val artwork = remember(shared.frontImage, shared.backImage) {
         (shared.frontImage ?: shared.backImage)?.let { BitmapFactory.decodeByteArray(it, 0, it.size)?.asImageBitmap() }
     }
@@ -115,7 +120,11 @@ private fun SharedCharacterImportDialog(
                         Text(shared.character.license, style = MaterialTheme.typography.bodyLarge)
                     }
                 }
-                Text(stringResource(R.string.shared_character_import_description), style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                Text(
+                    stringResource(R.string.shared_character_import_description, characterType),
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                )
                 Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp, Alignment.End)) {
                     TextButton(onClick = onDismiss) { Text(stringResource(R.string.cancel)) }
                     TextButton(onClick = onConfirm) { Text(stringResource(R.string.add_to_your_characters)) }
