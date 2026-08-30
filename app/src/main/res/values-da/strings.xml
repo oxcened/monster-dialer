@@ -7,8 +7,12 @@
     <string name="settings_character_packs_description" comment="Settings description for character packs.">Importér og administrér brugerdefinerede figurillustrationer.</string>
     <string name="settings_player_character_title" comment="Settings title for the player's battle character.">Spillerfigur</string>
     <string name="settings_player_character_description" comment="Settings description for the player's battle character.">Vælg, hvem der repræsenterer dig under opkald.</string>
+    <string name="player_characters_not_set" comment="Settings subtitle when no player character is selected.">Ikke tilpasset</string>
+    <string name="using_characters" comment="Settings subtitle; %1$s is a list of selected character names.">Bruger %1$s</string>
     <string name="settings_contact_characters_title" comment="Settings title for assigning characters to contacts.">Kontaktfigurer</string>
     <string name="settings_contact_characters_description" comment="Settings description for assigning characters to contacts.">Tildel figurer til indgående opkald.</string>
+    <string name="contact_characters_not_set" comment="Settings subtitle when no contacts have a character assignment.">Ingen kontakter tilpasset</string>
+    <plurals name="contact_character_assignment_count" comment="Settings subtitle showing how many contacts have a character assignment."><item quantity="one">%d kontakt tilpasset</item><item quantity="other">%d kontakter tilpasset</item></plurals>
     <string name="choose_contact" comment="Button that opens the contact picker.">Vælg kontakt</string>
     <string name="character_type_trainer" comment="Character category for a human battle character.">Træner</string>
     <string name="character_type_monster" comment="Character category for a creature battle character.">Monster</string>

@@ -7,8 +7,12 @@
     <string name="settings_character_packs_description" comment="Settings description for character packs.">Importa e gere ilustrações personalizadas de personagens.</string>
     <string name="settings_player_character_title" comment="Settings title for the player's battle character.">Personagem do jogador</string>
     <string name="settings_player_character_description" comment="Settings description for the player's battle character.">Escolhe quem te representa durante as chamadas.</string>
+    <string name="player_characters_not_set" comment="Settings subtitle when no player character is selected.">Não personalizada</string>
+    <string name="using_characters" comment="Settings subtitle; %1$s is a list of selected character names.">A usar %1$s</string>
     <string name="settings_contact_characters_title" comment="Settings title for assigning characters to contacts.">Personagens dos contactos</string>
     <string name="settings_contact_characters_description" comment="Settings description for assigning characters to contacts.">Atribui personagens a quem te liga.</string>
+    <string name="contact_characters_not_set" comment="Settings subtitle when no contacts have a character assignment.">Nenhum contacto personalizado</string>
+    <plurals name="contact_character_assignment_count" comment="Settings subtitle showing how many contacts have a character assignment."><item quantity="one">%d contacto personalizado</item><item quantity="other">%d contactos personalizados</item></plurals>
     <string name="choose_contact" comment="Button that opens the contact picker.">Escolher contacto</string>
     <string name="character_type_trainer" comment="Character category for a human battle character.">Treinador</string>
     <string name="character_type_monster" comment="Character category for a creature battle character.">Monstro</string>

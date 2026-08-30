@@ -109,6 +109,12 @@ class CharacterAssignmentStore(
     }
 
     @Synchronized
+    fun assignedContactCount(): Int = contactAssignments()
+        .map { it.label }
+        .distinct()
+        .size
+
+    @Synchronized
     fun selectedContact(): SelectedContact? = read().selectedContact?.let { selected ->
         SelectedContact(selected.label, selected.contactKeys, selected.contactId, selected.photoUri)
     }

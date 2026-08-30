@@ -15,8 +15,12 @@
     <string name="settings_character_packs_description" comment="Settings description for character packs.">Import and manage custom character artwork.</string>
     <string name="settings_player_character_title" comment="Settings title for the player's battle character.">Player Character</string>
     <string name="settings_player_character_description" comment="Settings description for the player's battle character.">Choose who represents you during calls.</string>
+    <string name="player_characters_not_set" comment="Settings subtitle when no player character is selected.">Not customized</string>
+    <string name="using_characters" comment="Settings subtitle; %1$s is a list of selected character names.">Using %1$s</string>
     <string name="settings_contact_characters_title" comment="Settings title for assigning characters to contacts.">Contact Characters</string>
     <string name="settings_contact_characters_description" comment="Settings description for assigning characters to contacts.">Assign characters to incoming callers.</string>
+    <string name="contact_characters_not_set" comment="Settings subtitle when no contacts have a character assignment.">No contacts customized</string>
+    <plurals name="contact_character_assignment_count" comment="Settings subtitle showing how many contacts have a character assignment."><item quantity="one">%d contact customized</item><item quantity="other">%d contacts customized</item></plurals>
     <string name="choose_contact" comment="Button that opens the contact picker.">Choose contact</string>
     <string name="character_type_trainer" comment="Character category for a human battle character.">Trainer</string>
     <string name="character_type_monster" comment="Character category for a creature battle character.">Monster</string>

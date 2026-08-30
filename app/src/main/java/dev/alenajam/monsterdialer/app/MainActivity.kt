@@ -20,6 +20,7 @@ import dev.alenajam.monsterdialer.app.ui.rememberMonsterTypography
 import dev.alenajam.monsterdialer.characters.ui.AddCharacterScreen
 import dev.alenajam.monsterdialer.characters.ui.ContactCharacterSettingsContent
 import dev.alenajam.monsterdialer.characters.ui.ContactPickerDestination
+import dev.alenajam.monsterdialer.characters.ui.CharacterSettingsSummaryViewModel
 import dev.alenajam.monsterdialer.characters.ui.PlayerCharacterSettingsContent
 import dev.alenajam.monsterdialer.packs.data.CharacterAssignmentTarget
 import dev.alenajam.monsterdialer.packs.data.CharacterType
@@ -48,6 +49,9 @@ class MainActivity : AppCompatActivity() {
         setContent {
             val characterPackSettingsViewModel: CharacterPackSettingsViewModel = hiltViewModel()
             val visiblePacks by characterPackSettingsViewModel.packs.collectAsStateWithLifecycle()
+            val characterSettingsSummaryViewModel: CharacterSettingsSummaryViewModel = hiltViewModel()
+            val playerCharacterNames by characterSettingsSummaryViewModel.playerCharacterNames.collectAsStateWithLifecycle()
+            val assignedContactCount by characterSettingsSummaryViewModel.assignedContactCount.collectAsStateWithLifecycle()
 
             CompositionLocalProvider(
                 LocalMonsterAppIcons provides LocalMonsterAppIcons.current
@@ -60,26 +64,13 @@ class MainActivity : AppCompatActivity() {
                     ),
                     settingsSubpages = listOf(
                         SettingsSubpage(
-                            title = stringResource(R.string.settings_character_packs_title),
-                            description = stringResource(R.string.settings_character_packs_description),
-                            subtitle = run {
-                                val installed = visiblePacks.size
-                                val enabled = visiblePacks.count { it.enabled }
-                                val parts = mutableListOf<String>()
-                                if (installed > 0) {
-                                    parts.add(pluralStringResource(R.plurals.installed_pack_count, installed, installed))
-                                }
-                                if (enabled > 0) {
-                                    parts.add(pluralStringResource(R.plurals.enabled_pack_count, enabled, enabled))
-                                }
-                                parts.joinToString(" • ")
-                            },
-                            content = { CharacterPackSettingsContent(characterPackSettingsViewModel) },
-                            topContentPadding = 0.dp
-                        ),
-                        SettingsSubpage(
                             title = stringResource(R.string.settings_player_character_title),
                             description = stringResource(R.string.settings_player_character_description),
+                            subtitle = playerCharacterNames
+                                .takeIf { it.isNotEmpty() }
+                                ?.joinToString(separator = " • ")
+                                ?.let { names -> stringResource(R.string.using_characters, names) }
+                                ?: stringResource(R.string.player_characters_not_set),
                             content = { PlayerCharacterSettingsContent() },
                             isScrollable = false,
                             topContentPadding = 0.dp,
@@ -105,6 +96,15 @@ class MainActivity : AppCompatActivity() {
                         SettingsSubpage(
                             title = stringResource(R.string.settings_contact_characters_title),
                             description = stringResource(R.string.settings_contact_characters_description),
+                            subtitle = if (assignedContactCount == 0) {
+                                stringResource(R.string.contact_characters_not_set)
+                            } else {
+                                pluralStringResource(
+                                    R.plurals.contact_character_assignment_count,
+                                    assignedContactCount,
+                                    assignedContactCount
+                                )
+                            },
                             content = { ContactCharacterSettingsContent() },
                             isScrollable = false,
                             topContentPadding = 0.dp,
@@ -129,6 +129,24 @@ class MainActivity : AppCompatActivity() {
                                     )
                                 }
                             )
+                        ),
+                        SettingsSubpage(
+                            title = stringResource(R.string.settings_character_packs_title),
+                            description = stringResource(R.string.settings_character_packs_description),
+                            subtitle = run {
+                                val installed = visiblePacks.size
+                                val enabled = visiblePacks.count { it.enabled }
+                                val parts = mutableListOf<String>()
+                                if (installed > 0) {
+                                    parts.add(pluralStringResource(R.plurals.installed_pack_count, installed, installed))
+                                }
+                                if (enabled > 0) {
+                                    parts.add(pluralStringResource(R.plurals.enabled_pack_count, enabled, enabled))
+                                }
+                                parts.joinToString(" • ")
+                            },
+                            content = { CharacterPackSettingsContent(characterPackSettingsViewModel) },
+                            topContentPadding = 0.dp
                         )
                     )
                 )

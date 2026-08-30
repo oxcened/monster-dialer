@@ -3,11 +3,14 @@ package dev.alenajam.monsterdialer.characters.data
 import dev.alenajam.monsterdialer.packs.data.CharacterReference
 import dev.alenajam.monsterdialer.packs.data.CharacterType
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 import javax.inject.Singleton
 
 interface CharacterAssignmentRepository {
+    val assignmentVersion: StateFlow<Long>
     suspend fun getAssignedCharacter(contactKey: String, type: CharacterType): CharacterReference?
     suspend fun assignCharacter(
         contactKey: String,
@@ -17,6 +20,7 @@ interface CharacterAssignmentRepository {
     )
     suspend fun getPlayerCharacter(type: CharacterType): CharacterReference?
     suspend fun setPlayerCharacter(type: CharacterType, reference: CharacterReference?)
+    suspend fun assignedContactCount(): Int
     suspend fun isCharacterAssignedToPlayer(reference: CharacterReference): Boolean
     suspend fun isCharacterAssignedToAnyContact(reference: CharacterReference): Boolean
     suspend fun clearAssignmentsForPack(packId: String)
@@ -28,6 +32,9 @@ interface CharacterAssignmentRepository {
 class CharacterAssignmentRepositoryImpl @Inject constructor(
     private val assignments: CharacterAssignmentStore
 ) : CharacterAssignmentRepository {
+
+    private val _assignmentVersion = MutableStateFlow(0L)
+    override val assignmentVersion: StateFlow<Long> = _assignmentVersion
 
     override suspend fun getAssignedCharacter(
         contactKey: String,
@@ -43,6 +50,7 @@ class CharacterAssignmentRepositoryImpl @Inject constructor(
         label: String?
     ) = withContext(Dispatchers.IO) {
         assignments.assignContact(contactKey, type, reference, label)
+        _assignmentVersion.value += 1
     }
 
     override suspend fun getPlayerCharacter(type: CharacterType): CharacterReference? = withContext(Dispatchers.IO) {
@@ -54,6 +62,11 @@ class CharacterAssignmentRepositoryImpl @Inject constructor(
         reference: CharacterReference?
     ) = withContext(Dispatchers.IO) {
         assignments.setPlayer(type, reference)
+        _assignmentVersion.value += 1
+    }
+
+    override suspend fun assignedContactCount(): Int = withContext(Dispatchers.IO) {
+        assignments.assignedContactCount()
     }
 
     override suspend fun isCharacterAssignedToPlayer(
@@ -72,12 +85,14 @@ class CharacterAssignmentRepositoryImpl @Inject constructor(
         packId: String
     ) = withContext(Dispatchers.IO) {
         assignments.clearAssignmentsForPack(packId)
+        _assignmentVersion.value += 1
     }
 
     override suspend fun clearAssignmentsForCharacter(
         reference: CharacterReference
     ) = withContext(Dispatchers.IO) {
         assignments.clearAssignmentsForCharacter(reference)
+        _assignmentVersion.value += 1
     }
 
     override suspend fun isPackInUse(
