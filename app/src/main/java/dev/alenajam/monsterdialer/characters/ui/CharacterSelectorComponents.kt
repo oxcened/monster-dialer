@@ -137,7 +137,6 @@ internal fun LazyListScope.characterTypeItems(
     item(key = "default") {
         CharacterOptionCard(
             name = defaultCharacter.name,
-            subtitle = stringResource(R.string.built_in_character),
             isSelected = availableSelection == null,
             roundTop = true,
             roundBottom = characters.isNotEmpty(),
@@ -158,7 +157,6 @@ internal fun LazyListScope.characterTypeItems(
             val reference = CharacterReference(installed.packId, installed.character.id)
             CharacterOptionCard(
                 name = installed.character.name,
-                subtitle = installed.packName,
                 isRadiant = installed.character.isRadiant,
                 isSelected = availableSelection == reference,
                 roundTop = index == 0,
@@ -183,7 +181,6 @@ internal fun LazyListScope.characterTypeItems(
             val reference = CharacterReference(installed.packId, installed.character.id)
             CharacterOptionCard(
                 name = installed.character.name,
-                subtitle = installed.packName,
                 isRadiant = installed.character.isRadiant,
                 isSelected = availableSelection == reference,
                 roundTop = index == 0,
@@ -246,7 +243,6 @@ internal fun LazyGridScope.characterTypeGridItems(
     item(key = "default") {
         CharacterGridItem(
             name = defaultCharacter.name,
-            subtitle = stringResource(R.string.built_in_character),
             isSelected = availableSelection == null,
             shape = gridItemShape(index = 0, itemCount = 1),
             artwork = {
@@ -266,7 +262,6 @@ internal fun LazyGridScope.characterTypeGridItems(
             val reference = CharacterReference(installed.packId, installed.character.id)
             CharacterGridItem(
                 name = installed.character.name,
-                subtitle = installed.packName,
                 isRadiant = installed.character.isRadiant,
                 isSelected = availableSelection == reference,
                 shape = gridItemShape(index = index, itemCount = userCharacters.size),
@@ -290,7 +285,6 @@ internal fun LazyGridScope.characterTypeGridItems(
             val reference = CharacterReference(installed.packId, installed.character.id)
             CharacterGridItem(
                 name = installed.character.name,
-                subtitle = installed.packName,
                 isRadiant = installed.character.isRadiant,
                 isSelected = availableSelection == reference,
                 shape = gridItemShape(index = index, itemCount = packCharacters.size),
@@ -528,7 +522,7 @@ private fun NoAdditionalCharacterOptionsCard(title: String) {
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 private fun CharacterOptionCard(
-    name: String, subtitle: String? = null, isRadiant: Boolean = false, isSelected: Boolean,
+    name: String, isRadiant: Boolean = false, isSelected: Boolean,
     roundTop: Boolean, roundBottom: Boolean, artwork: @Composable () -> Unit, onSelect: () -> Unit,
     onDelete: (() -> Unit)? = null,
     onEdit: (() -> Unit)? = null
@@ -563,9 +557,6 @@ private fun CharacterOptionCard(
                 Column(modifier = Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(2.dp)) {
                     Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(6.dp)) {
                         Text(name, style = MaterialTheme.typography.titleMedium)
-                    }
-                    if (subtitle != null) {
-                        Text(subtitle, style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
                     }
                     if (isRadiant) {
                         Row(
@@ -633,7 +624,6 @@ private fun CharacterOptionCard(
 @Composable
 private fun CharacterGridItem(
     name: String,
-    subtitle: String? = null,
     isRadiant: Boolean = false,
     isSelected: Boolean,
     shape: Shape,
@@ -681,16 +671,6 @@ private fun CharacterGridItem(
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis
                 )
-                
-                if (subtitle != null) {
-                    Text(
-                        text = subtitle,
-                        style = MaterialTheme.typography.bodySmall,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant,
-                        maxLines = 1,
-                        overflow = TextOverflow.Ellipsis
-                    )
-                }
                 
                 if (isRadiant) {
                     Row(
