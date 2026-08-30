@@ -96,6 +96,8 @@
     <string name="change_image" comment="Button to change the already selected image.">Change image</string>
     <string name="save_character" comment="Button to save the new character.">Save character</string>
     <string name="save" comment="Button label to save changes.">Save</string>
+    <string name="your_characters" comment="Section header for characters added by the user.">Your characters</string>
+    <string name="built_in_characters_section" comment="Section header for characters included with the app.">Built-in characters</string>
     <string name="character_created" comment="Confirmation after a character is successfully created.">Character created</string>
     <string name="character_creation_failed" comment="Error when a character cannot be saved.">Could not create character</string>
     <string name="character_limit_reached_message" comment="Error message when the 200 character limit is hit.">Limit of 200 characters reached. Delete some to add more.</string>

@@ -126,13 +126,42 @@ internal fun LazyListScope.characterTypeItems(
             )
         }
     }
+
+    val userCustomPackId = "user.custom"
+    val grouped = characters.groupBy { it.packId }
+    val userCharacters = grouped[userCustomPackId].orEmpty()
+    val otherPacks = grouped.filter { it.key != userCustomPackId }
+
+    if (userCharacters.isNotEmpty()) {
+        item { SectionHeader(stringResource(R.string.your_characters)) }
+        itemsIndexed(items = userCharacters, key = { _, character -> "custom:${character.character.id}" }) { index, installed ->
+            val reference = CharacterReference(installed.packId, installed.character.id)
+            CharacterOptionCard(
+                name = installed.character.name,
+                isRadiant = installed.character.isRadiant,
+                isSelected = availableSelection == reference,
+                roundTop = index == 0,
+                roundBottom = index == userCharacters.lastIndex,
+                artwork = {
+                    AsyncImage(
+                        model = packArtwork(installed),
+                        contentDescription = stringResource(R.string.character_artwork, installed.character.name),
+                        modifier = Modifier.size(72.dp)
+                    )
+                },
+                onSelect = { onSelect(reference) },
+                onDelete = { onDelete(installed) }
+            )
+        }
+    }
+
+    item { SectionHeader(stringResource(R.string.built_in_characters_section)) }
     item(key = "default") {
         CharacterOptionCard(
             name = defaultCharacter.name,
-            subtitle = stringResource(R.string.built_in_character),
             isSelected = availableSelection == null,
             roundTop = true,
-            roundBottom = false,
+            roundBottom = true,
             artwork = {
                 Image(
                     painter = painterResource(defaultArtwork(defaultCharacter).resource),
@@ -143,26 +172,29 @@ internal fun LazyListScope.characterTypeItems(
             onSelect = { onSelect(null) }
         )
     }
-    itemsIndexed(items = characters, key = { _, character -> "${character.packId}:${character.character.id}" }) { index, installed ->
-        val reference = CharacterReference(installed.packId, installed.character.id)
-        CharacterOptionCard(
-            name = installed.character.name,
-            subtitle = installed.packName,
-            isRadiant = installed.character.isRadiant,
-            isSelected = availableSelection == reference,
-            roundTop = false,
-            roundBottom = index == characters.lastIndex,
-            artwork = {
-                AsyncImage(
-                    model = packArtwork(installed),
-                    contentDescription = stringResource(R.string.character_artwork, installed.character.name),
-                    modifier = Modifier.size(72.dp)
-                )
-            },
-            onSelect = { onSelect(reference) },
-            onDelete = if (installed.packId == "user.custom") { { onDelete(installed) } } else null
-        )
+
+    otherPacks.forEach { (packId, packCharacters) ->
+        item { SectionHeader(packCharacters.first().packName) }
+        itemsIndexed(items = packCharacters, key = { _, character -> "${packId}:${character.character.id}" }) { index, installed ->
+            val reference = CharacterReference(installed.packId, installed.character.id)
+            CharacterOptionCard(
+                name = installed.character.name,
+                isRadiant = installed.character.isRadiant,
+                isSelected = availableSelection == reference,
+                roundTop = index == 0,
+                roundBottom = index == packCharacters.lastIndex,
+                artwork = {
+                    AsyncImage(
+                        model = packArtwork(installed),
+                        contentDescription = stringResource(R.string.character_artwork, installed.character.name),
+                        modifier = Modifier.size(72.dp)
+                    )
+                },
+                onSelect = { onSelect(reference) }
+            )
+        }
     }
+
     if (characters.isEmpty()) item(key = "empty") { NoAdditionalCharacterOptionsCard(title) }
 }
 
@@ -200,12 +232,40 @@ internal fun LazyGridScope.characterTypeGridItems(
             }
         }
     }
+
+    val userCustomPackId = "user.custom"
+    val grouped = characters.groupBy { it.packId }
+    val userCharacters = grouped[userCustomPackId].orEmpty()
+    val otherPacks = grouped.filter { it.key != userCustomPackId }
+
+    if (userCharacters.isNotEmpty()) {
+        item(span = { GridItemSpan(2) }) { SectionHeader(stringResource(R.string.your_characters)) }
+        gridItemsIndexed(items = userCharacters, key = { _, character -> "custom:${character.character.id}" }) { index, installed ->
+            val reference = CharacterReference(installed.packId, installed.character.id)
+            CharacterGridItem(
+                name = installed.character.name,
+                isRadiant = installed.character.isRadiant,
+                isSelected = availableSelection == reference,
+                shape = gridItemShape(index = index, itemCount = userCharacters.size),
+                artwork = {
+                    AsyncImage(
+                        model = packArtwork(installed),
+                        contentDescription = stringResource(R.string.character_artwork, installed.character.name),
+                        modifier = Modifier.size(88.dp)
+                    )
+                },
+                onSelect = { onSelect(reference) },
+                onDelete = { onDelete(installed) }
+            )
+        }
+    }
+
+    item(span = { GridItemSpan(2) }) { SectionHeader(stringResource(R.string.built_in_characters_section)) }
     item(key = "default") {
         CharacterGridItem(
             name = defaultCharacter.name,
-            subtitle = stringResource(R.string.built_in_character),
             isSelected = availableSelection == null,
-            shape = gridItemShape(index = 0, itemCount = if (characters.isEmpty()) 2 else characters.size + 1),
+            shape = gridItemShape(index = 0, itemCount = 1),
             artwork = {
                 Image(
                     painter = painterResource(defaultArtwork(defaultCharacter).resource),
@@ -216,26 +276,28 @@ internal fun LazyGridScope.characterTypeGridItems(
             onSelect = { onSelect(null) }
         )
     }
-    gridItemsIndexed(items = characters, key = { _, character -> "${character.packId}:${character.character.id}" }) { index, installed ->
-        val reference = CharacterReference(installed.packId, installed.character.id)
-        val itemIndex = index + 1
-        CharacterGridItem(
-            name = installed.character.name,
-            subtitle = installed.packName,
-            isRadiant = installed.character.isRadiant,
-            isSelected = availableSelection == reference,
-            shape = gridItemShape(index = itemIndex, itemCount = characters.size + 1),
-            artwork = {
-                AsyncImage(
-                    model = packArtwork(installed),
-                    contentDescription = stringResource(R.string.character_artwork, installed.character.name),
-                    modifier = Modifier.size(88.dp)
-                )
-            },
-            onSelect = { onSelect(reference) },
-            onDelete = if (installed.packId == "user.custom") { { onDelete(installed) } } else null
-        )
+
+    otherPacks.forEach { (packId, packCharacters) ->
+        item(span = { GridItemSpan(2) }) { SectionHeader(packCharacters.first().packName) }
+        gridItemsIndexed(items = packCharacters, key = { _, character -> "${packId}:${character.character.id}" }) { index, installed ->
+            val reference = CharacterReference(installed.packId, installed.character.id)
+            CharacterGridItem(
+                name = installed.character.name,
+                isRadiant = installed.character.isRadiant,
+                isSelected = availableSelection == reference,
+                shape = gridItemShape(index = index, itemCount = packCharacters.size),
+                artwork = {
+                    AsyncImage(
+                        model = packArtwork(installed),
+                        contentDescription = stringResource(R.string.character_artwork, installed.character.name),
+                        modifier = Modifier.size(88.dp)
+                    )
+                },
+                onSelect = { onSelect(reference) }
+            )
+        }
     }
+
     if (characters.isEmpty()) {
         item(key = "empty") {
             NoAdditionalCharacterGridItem(
@@ -372,6 +434,17 @@ private fun AddCharacterButton(
 }
 
 @Composable
+private fun SectionHeader(title: String) {
+    Text(
+        text = title,
+        style = MaterialTheme.typography.titleMedium,
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 4.dp, vertical = 12.dp)
+    )
+}
+
+@Composable
 fun CustomCharacterDeletionConfirmationDialog(
     characterName: String,
     onConfirm: () -> Unit,
@@ -421,7 +494,7 @@ private fun NoAdditionalCharacterOptionsCard(title: String) {
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 private fun CharacterOptionCard(
-    name: String, subtitle: String, isRadiant: Boolean = false, isSelected: Boolean,
+    name: String, isRadiant: Boolean = false, isSelected: Boolean,
     roundTop: Boolean, roundBottom: Boolean, artwork: @Composable () -> Unit, onSelect: () -> Unit,
     onDelete: (() -> Unit)? = null
 ) {
@@ -459,10 +532,16 @@ private fun CharacterOptionCard(
                     Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(6.dp)) {
                         Text(name, style = MaterialTheme.typography.titleMedium)
                     }
-                    Text(subtitle, style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
-                    if (isSelected) Text(stringResource(R.string.selected), style = MaterialTheme.typography.labelLarge, color = MaterialTheme.colorScheme.primary)
                 }
-                if (!isSelected) OutlinedButton(onClick = onSelect) { Text(stringResource(R.string.select)) }
+                if (isSelected) {
+                    Text(
+                        stringResource(R.string.selected),
+                        style = MaterialTheme.typography.labelLarge,
+                        color = MaterialTheme.colorScheme.primary
+                    )
+                } else {
+                    OutlinedButton(onClick = onSelect) { Text(stringResource(R.string.select)) }
+                }
             }
         }
 
@@ -509,7 +588,6 @@ private fun RadiantBadge(modifier: Modifier = Modifier) {
 @Composable
 private fun CharacterGridItem(
     name: String,
-    subtitle: String,
     isRadiant: Boolean = false,
     isSelected: Boolean,
     shape: Shape,
@@ -544,7 +622,6 @@ private fun CharacterGridItem(
                     if (isRadiant) RadiantBadge(Modifier.align(Alignment.TopEnd))
                 }
                 Text(name, style = MaterialTheme.typography.titleSmall, textAlign = TextAlign.Center, maxLines = 2)
-                Text(subtitle, style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant, textAlign = TextAlign.Center, maxLines = 1)
                 Box(modifier = Modifier.height(20.dp), contentAlignment = Alignment.Center) {
                     if (isSelected) Text(stringResource(R.string.selected), style = MaterialTheme.typography.labelLarge, color = MaterialTheme.colorScheme.primary)
                 }
