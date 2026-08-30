@@ -181,7 +181,7 @@ fun AddCharacterScreen(
                     enabled = name.isNotBlank() && imageUri != null && !isSaving
                 ) {
                     Text(
-                        stringResource(R.string.save_character),
+                        stringResource(R.string.save),
                         style = MaterialTheme.typography.titleMedium
                     )
                 }
