@@ -7,6 +7,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -24,6 +25,7 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -38,6 +40,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil.compose.AsyncImage
@@ -124,105 +127,134 @@ fun AddCharacterScreen(
                 modifier = Modifier
                     .fillMaxSize()
                     .verticalScroll(rememberScrollState())
-                    .padding(24.dp),
+                    .padding(20.dp),
+                verticalArrangement = Arrangement.spacedBy(24.dp),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                // Sprites Section
-                Text(
-                    text = stringResource(R.string.character_sprites_section),
-                    style = MaterialTheme.typography.titleMedium,
-                    modifier = Modifier.align(Alignment.Start).padding(bottom = 16.dp)
-                )
-
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.spacedBy(16.dp)
-                ) {
-                    val frontRequired = preferredAssignmentTarget == CharacterAssignmentTarget.Contact
-                    val backRequired = preferredAssignmentTarget == CharacterAssignmentTarget.Player
-
-                    // Front Sprite
-                    SpritePicker(
-                        label = stringResource(R.string.front_sprite_label) + if (frontRequired) stringResource(R.string.required_label) else "",
-                        description = stringResource(R.string.front_sprite_description),
-                        image = frontImageUri ?: existingFrontImageFile,
-                        onPick = { frontPicker.launch("image/*") },
-                        modifier = Modifier.weight(1f),
-                        enabled = !isLimitReached
-                    )
-
-                    // Back Sprite
-                    SpritePicker(
-                        label = stringResource(R.string.back_sprite_label) + if (backRequired) stringResource(R.string.required_label) else "",
-                        description = stringResource(R.string.back_sprite_description),
-                        image = backImageUri ?: existingBackImageFile,
-                        onPick = { backPicker.launch("image/*") },
-                        modifier = Modifier.weight(1f),
-                        enabled = !isLimitReached
-                    )
-                }
-
-                Spacer(modifier = Modifier.height(24.dp))
-
-                // Details Card
+                // Character Profile Card
                 Card(
                     modifier = Modifier.fillMaxWidth(),
-                    shape = RoundedCornerShape(20.dp),
+                    shape = RoundedCornerShape(28.dp),
                     colors = CardDefaults.cardColors(
                         containerColor = MaterialTheme.colorScheme.surfaceContainerLow
                     )
                 ) {
                     Column(
                         modifier = Modifier.padding(20.dp),
-                        verticalArrangement = Arrangement.spacedBy(20.dp)
+                        verticalArrangement = Arrangement.spacedBy(24.dp)
                     ) {
-                        if (isLimitReached) {
-                            Surface(
-                                color = MaterialTheme.colorScheme.errorContainer,
-                                shape = RoundedCornerShape(12.dp),
-                                modifier = Modifier.fillMaxWidth()
-                            ) {
-                                Row(
-                                    modifier = Modifier.padding(12.dp),
-                                    verticalAlignment = Alignment.CenterVertically,
-                                    horizontalArrangement = Arrangement.spacedBy(8.dp)
-                                ) {
-                                    AppIcon(
-                                        icon = LocalAppIcons.current.block,
-                                        contentDescription = null,
-                                        tint = MaterialTheme.colorScheme.onErrorContainer,
-                                        modifier = Modifier.size(20.dp)
-                                    )
-                                    Text(
-                                        text = stringResource(R.string.character_limit_reached_message),
-                                        style = MaterialTheme.typography.bodyMedium,
-                                        color = MaterialTheme.colorScheme.onErrorContainer
-                                    )
-                                }
-                            }
+                        // Sprites Section Header
+                        Text(
+                            text = stringResource(R.string.character_sprites_section),
+                            style = MaterialTheme.typography.titleMedium,
+                            color = MaterialTheme.colorScheme.primary
+                        )
+
+                        Row(
+                            modifier = Modifier.fillMaxWidth(),
+                            horizontalArrangement = Arrangement.spacedBy(16.dp)
+                        ) {
+                            val frontRequired = preferredAssignmentTarget == CharacterAssignmentTarget.Contact
+                            val backRequired = preferredAssignmentTarget == CharacterAssignmentTarget.Player
+
+                            // Front Sprite
+                            SpritePicker(
+                                label = stringResource(R.string.front_sprite_label),
+                                isRequired = frontRequired,
+                                description = stringResource(R.string.front_sprite_description),
+                                image = frontImageUri ?: existingFrontImageFile,
+                                onPick = { frontPicker.launch("image/*") },
+                                modifier = Modifier.weight(1f),
+                                enabled = !isLimitReached
+                            )
+
+                            // Back Sprite
+                            SpritePicker(
+                                label = stringResource(R.string.back_sprite_label),
+                                isRequired = backRequired,
+                                description = stringResource(R.string.back_sprite_description),
+                                image = backImageUri ?: existingBackImageFile,
+                                onPick = { backPicker.launch("image/*") },
+                                modifier = Modifier.weight(1f),
+                                enabled = !isLimitReached
+                            )
                         }
 
-                        OutlinedTextField(
-                            value = name,
-                            onValueChange = viewModel::onNameChanged,
-                            label = { Text(stringResource(R.string.character_name_label) + stringResource(R.string.required_label)) },
-                            placeholder = { Text(stringResource(R.string.character_name_hint)) },
-                            modifier = Modifier.fillMaxWidth(),
-                            singleLine = true,
-                            shape = RoundedCornerShape(12.dp),
-                            enabled = !isLimitReached
+                        // Divider between sprites and name
+                        Spacer(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .height(1.dp)
+                                .background(MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.5f))
                         )
+
+                        // Name Input
+                        Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                            Row(
+                                verticalAlignment = Alignment.CenterVertically,
+                                horizontalArrangement = Arrangement.spacedBy(4.dp)
+                            ) {
+                                Text(
+                                    text = stringResource(R.string.character_name_label),
+                                    style = MaterialTheme.typography.labelLarge,
+                                    color = MaterialTheme.colorScheme.onSurface
+                                )
+                                Text(
+                                    text = stringResource(R.string.required_label),
+                                    style = MaterialTheme.typography.labelLarge,
+                                    color = MaterialTheme.colorScheme.error
+                                )
+                            }
+                            OutlinedTextField(
+                                value = name,
+                                onValueChange = viewModel::onNameChanged,
+                                placeholder = { Text(stringResource(R.string.character_name_hint)) },
+                                modifier = Modifier.fillMaxWidth(),
+                                singleLine = true,
+                                shape = RoundedCornerShape(16.dp),
+                                enabled = !isLimitReached,
+                                colors = OutlinedTextFieldDefaults.colors(
+                                    focusedContainerColor = MaterialTheme.colorScheme.surface,
+                                    unfocusedContainerColor = MaterialTheme.colorScheme.surface,
+                                    disabledContainerColor = MaterialTheme.colorScheme.surface.copy(alpha = 0.5f)
+                                )
+                            )
+                        }
                     }
                 }
 
-                Spacer(modifier = Modifier.height(32.dp))
+                if (isLimitReached) {
+                    Surface(
+                        color = MaterialTheme.colorScheme.errorContainer,
+                        shape = RoundedCornerShape(16.dp),
+                        modifier = Modifier.fillMaxWidth()
+                    ) {
+                        Row(
+                            modifier = Modifier.padding(16.dp),
+                            verticalAlignment = Alignment.CenterVertically,
+                            horizontalArrangement = Arrangement.spacedBy(12.dp)
+                        ) {
+                            AppIcon(
+                                icon = LocalAppIcons.current.block,
+                                contentDescription = null,
+                                tint = MaterialTheme.colorScheme.onErrorContainer,
+                                modifier = Modifier.size(24.dp)
+                            )
+                            Text(
+                                text = stringResource(R.string.character_limit_reached_message),
+                                style = MaterialTheme.typography.bodyMedium,
+                                color = MaterialTheme.colorScheme.onErrorContainer
+                            )
+                        }
+                    }
+                }
 
                 Button(
                     onClick = viewModel::save,
                     modifier = Modifier
                         .fillMaxWidth()
-                        .height(56.dp),
-                    shape = RoundedCornerShape(16.dp),
+                        .height(64.dp),
+                    shape = RoundedCornerShape(20.dp),
                     enabled = run {
                         val hasFront = frontImageUri != null || existingFrontImageFile != null
                         val hasBack = backImageUri != null || existingBackImageFile != null
@@ -247,6 +279,7 @@ fun AddCharacterScreen(
 @Composable
 private fun SpritePicker(
     label: String,
+    isRequired: Boolean,
     description: String,
     image: Any?,
     onPick: () -> Unit,
@@ -256,19 +289,32 @@ private fun SpritePicker(
     Column(
         modifier = modifier,
         horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.spacedBy(8.dp)
+        verticalArrangement = Arrangement.spacedBy(10.dp)
     ) {
-        Text(
-            text = label,
-            style = MaterialTheme.typography.labelLarge,
-            textAlign = TextAlign.Center
-        )
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.spacedBy(4.dp)
+        ) {
+            Text(
+                text = label,
+                style = MaterialTheme.typography.labelLarge,
+                color = MaterialTheme.colorScheme.onSurface
+            )
+            if (isRequired) {
+                Text(
+                    text = stringResource(R.string.required_label),
+                    style = MaterialTheme.typography.labelLarge,
+                    color = MaterialTheme.colorScheme.error
+                )
+            }
+        }
         
         Box(
             modifier = Modifier
-                .size(120.dp)
+                .aspectRatio(1f)
+                .fillMaxWidth()
                 .clip(RoundedCornerShape(24.dp))
-                .background(MaterialTheme.colorScheme.primaryContainer)
+                .background(MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.5f))
                 .clickable(enabled = enabled) { onPick() },
             contentAlignment = Alignment.Center
         ) {
@@ -280,11 +326,11 @@ private fun SpritePicker(
                     contentScale = ContentScale.Crop
                 )
                 Surface(
-                    color = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.7f),
+                    color = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.8f),
                     modifier = Modifier
                         .align(Alignment.BottomCenter)
                         .fillMaxWidth()
-                        .height(32.dp)
+                        .height(36.dp)
                 ) {
                     Box(contentAlignment = Alignment.Center) {
                         Text(
@@ -295,21 +341,32 @@ private fun SpritePicker(
                     }
                 }
             } else {
-                AppIcon(
-                    icon = LocalMonsterAppIcons.current.addCharacter,
-                    contentDescription = null,
-                    modifier = Modifier.size(48.dp),
-                    tint = MaterialTheme.colorScheme.onPrimaryContainer
-                )
+                Column(
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.spacedBy(8.dp)
+                ) {
+                    AppIcon(
+                        icon = LocalMonsterAppIcons.current.addCharacter,
+                        contentDescription = null,
+                        modifier = Modifier.size(40.dp),
+                        tint = MaterialTheme.colorScheme.primary.copy(alpha = 0.6f)
+                    )
+                    Text(
+                        text = stringResource(R.string.select),
+                        style = MaterialTheme.typography.labelSmall,
+                        color = MaterialTheme.colorScheme.primary.copy(alpha = 0.8f)
+                    )
+                }
             }
         }
 
         Text(
             text = description,
             style = MaterialTheme.typography.bodySmall,
-            color = MaterialTheme.colorScheme.onSurfaceVariant,
+            color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.7f),
             textAlign = TextAlign.Center,
-            modifier = Modifier.padding(horizontal = 4.dp)
+            modifier = Modifier.padding(horizontal = 4.dp),
+            lineHeight = 14.sp
         )
     }
 }
