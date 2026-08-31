@@ -6,6 +6,22 @@
     <string name="settings_character_packs_title" comment="Settings title for managing character packs.">حزم الشخصيات</string>
     <string name="characters_navigation_label" comment="Bottom navigation label for character customization.">الشخصيات</string>
     <string name="settings_character_packs_description" comment="Settings description for character packs.">استورد وأدر رسومات الشخصيات المخصصة.</string>
+    <string name="import_character" comment="Action that starts selecting a shared single-character file.">استيراد شخصية</string>
+    <string name="import_character_description" comment="Description of the action that imports a shared character.">أضف شخصية شاركها معك شخص آخر.</string>
+    <string name="add_to_your_characters" comment="Button confirming that a shared character should be imported.">أضف</string>
+    <string name="shared_character_creator" comment="Creator shown in a shared-character import preview. %1$s is the creator name.">المنشئ: %1$s</string>
+    <string name="shared_character_license" comment="License shown in a shared-character import preview. %1$s is the license name.">الترخيص: %1$s</string>
+    <string name="shared_character_import_description" comment="Explains the result of importing one shared character. %1$s is a character type, such as Trainer or Monster.">ستُضاف شخصية %1$s هذه إلى مجموعتك.</string>
+    <string name="shared_character_import_title" comment="Title confirming the import of a shared character. %1$s is the character name.">إضافة %1$s؟</string>
+    <string name="shared_character_import_failed_title" comment="Title shown when a selected file is not a valid shared character.">تعذر استيراد الشخصية</string>
+    <string name="shared_character_import_failed_message" comment="Explains that the selected file is not a valid shared character.">اختر ملف ‎.monstercharacter تم تصديره من MonsterDialer.</string>
+    <string name="share_character_title" comment="Title of the export dialog. %1$s is the character name.">مشاركة %1$s</string>
+    <string name="creator_label" comment="Field label requesting the creator of a shared character.">المنشئ</string>
+    <string name="license_label" comment="Field label requesting the license of a shared character.">الترخيص</string>
+    <string name="default_license" comment="Default license used when sharing a character or creating a pack.">جميع الحقوق محفوظة</string>
+    <string name="export_character" comment="Button that exports one character as a shareable file.">تصدير الشخصية</string>
+    <string name="save_to_device" comment="Button that saves a shared character file through the device's document picker.">حفظ على الجهاز</string>
+    <string name="shared_character_file_name" comment="Default filename for an exported character. Keep the .monstercharacter extension. %1$s is the character name.">%1$s.monstercharacter</string>
     <string name="settings_player_character_title" comment="Settings title for the player's battle character.">شخصية اللاعب</string>
     <string name="settings_player_character_description" comment="Settings description for the player's battle character.">اختر من يمثلك أثناء المكالمات.</string>
     <string name="player_characters_not_set" comment="Settings subtitle when no player character is selected.">غير مخصص</string>
@@ -24,6 +40,8 @@
     <string name="choose_contact" comment="Button that opens the contact picker.">اختر جهة اتصال</string>
     <string name="character_type_trainer" comment="Character category for a human battle character.">مدرب</string>
     <string name="character_type_monster" comment="Character category for a creature battle character.">وحش</string>
+    <string name="character_type_trainers" comment="Plural character category for a collection of human battle characters.">مدربون</string>
+    <string name="character_type_monsters" comment="Plural character category for a collection of creature battle characters.">وحوش</string>
     <string name="built_in_character" comment="Label for a character included with the app.">شخصية مضمّنة</string>
     <string name="default_character_artwork" comment="%1$s is a character type, such as Trainer or Monster.">رسم %1$s الافتراضي</string>
     <string name="character_artwork" comment="%1$s is a character name.">رسم %1$s</string>
@@ -42,6 +60,15 @@
     <string name="pack_collection_empty_title" comment="Title of the empty character-pack collection screen.">مجموعتك تبدأ من هنا</string>
     <string name="pack_collection_empty_description" comment="Description of the empty character-pack collection screen.">استورد حزمة شخصيات لتخصيص تجربة مكالماتك.</string>
     <string name="import_character_pack" comment="Button that starts selecting a character-pack file.">استيراد حزمة شخصيات</string>
+    <string name="create_character_pack">إنشاء حزمة</string>
+    <string name="select_characters_for_pack">اختر الشخصيات</string>
+    <string name="pack_details">تفاصيل الحزمة</string>
+    <string name="pack_name_label">اسم الحزمة</string>
+    <string name="pack_version_label">الإصدار</string>
+    <string name="share_character_pack">مشاركة حزمة الشخصيات</string>
+    <string name="character_pack_default_name">character-pack</string>
+    <string name="character_pack_file_name">%1$s.monsterpack</string>
+    <string name="character_pack_extension_required" comment="Shown when a selected file is not a MonsterDialer character pack or a legacy ZIP pack.">اختر حزمة شخصيات بامتداد ‎.monsterpack أو ‎.zip.</string>
     <string name="pack_import_license_notice" comment="Legal notice shown before importing a character pack.">استورد فقط الرسومات والأصوات التي أنشأتها أو لديك ترخيص لاستخدامها.</string>
     <string name="your_character_packs" comment="Heading above installed character packs.">حزم شخصياتك</string>
     <plurals name="installed_pack_count" comment="Number of installed character packs. %d is the count.">
@@ -137,8 +164,8 @@
     <string name="save_character" comment="Button to save the new character.">حفظ الشخصية</string>
     <string name="save" comment="Button label to save changes.">حفظ</string>
     <string name="edit" comment="Button label to edit an item.">تعديل</string>
-    <string name="your_characters" comment="Section header for characters added by the user.">شخصياتك</string>
-    <string name="built_in_characters_section" comment="Section header for characters included with the app.">الشخصيات المضمنة</string>
+    <string name="your_characters" comment="Section header for characters added by the user. %1$s is a plural character type, such as trainers or monsters.">%1$s الخاصة بك</string>
+    <string name="built_in_characters_section" comment="Section header for characters included with the app. %1$s is a plural character type, such as trainers or monsters.">%1$s مضمّنون</string>
     <string name="character_created" comment="Confirmation after a character is successfully created.">تم إنشاء الشخصية</string>
     <string name="character_creation_failed" comment="Error when a character cannot be saved.">تعذر إنشاء الشخصية</string>
     <string name="character_limit_reached_message" comment="Error message when the 200 character limit is hit.">تم الوصول إلى الحد الأقصى (200 شخصية). احذف بعضها لإضافة المزيد.</string>
