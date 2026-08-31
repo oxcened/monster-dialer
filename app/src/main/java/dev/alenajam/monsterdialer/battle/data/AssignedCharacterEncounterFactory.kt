@@ -21,6 +21,12 @@ class AssignedCharacterEncounterFactory(
     private var cachedCall: CallKey? = null
     private var cachedEncounter: BattleEncounter? = null
 
+    /** Ends the current call session so the next call receives a fresh encounter roll. */
+    fun clearCachedEncounter() {
+        cachedCall = null
+        cachedEncounter = null
+    }
+
     fun forCall(callId: String, contactKey: String, callerName: String, isAnonymous: Boolean): BattleEncounter {
         val call = CallKey(callId, contactKey, callerName, isAnonymous)
         if (cachedCall == call) return requireNotNull(cachedEncounter)

@@ -85,6 +85,12 @@ class MonsterInCallUI @Inject constructor(
         val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
         val radiantUnlockSnackbar = remember { SnackbarHostState() }
 
+        LaunchedEffect(uiState.status) {
+            if (uiState.status == CallStatus.IDLE) {
+                encounterFactory.clearCachedEncounter()
+            }
+        }
+
         LaunchedEffect(canManageConference) {
             if (!canManageConference) showManageSheet = false
         }

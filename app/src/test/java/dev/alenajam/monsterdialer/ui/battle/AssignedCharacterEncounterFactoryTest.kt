@@ -19,6 +19,7 @@ import dev.alenajam.monsterdialer.packs.data.PackCharacter
 import java.io.File
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNotEquals
+import org.junit.Assert.assertNotSame
 import org.junit.Rule
 import org.junit.Test
 import org.junit.rules.TemporaryFolder
@@ -103,6 +104,16 @@ class AssignedCharacterEncounterFactoryTest {
         assertEquals(EncounterType.RadiantWild, encounter.type)
         assertEquals("Radiant Monster", encounter.enemy?.name)
         assertEquals(true, encounter.enemy?.isRadiant)
+    }
+
+    @Test
+    fun clearingTheCacheBuildsAFreshEncounterForTheNextCall() {
+        val firstEncounter = factory.forCall("same-call-key", "123", "Alex", isAnonymous = false)
+
+        factory.clearCachedEncounter()
+
+        val nextEncounter = factory.forCall("same-call-key", "123", "Alex", isAnonymous = false)
+        assertNotSame(firstEncounter, nextEncounter)
     }
 
     private fun setupRadiantPack() {
