@@ -176,7 +176,7 @@
     <string name="characters_help_description">Master the MonsterDialer roster system.</string>
 
     <string name="characters_help_intro_title">Your Character Collection</string>
-    <string name="characters_help_intro_message">The Character tab is your central hub for personalizing every call. You can choose a character to represent you (Player Character) and assign different characters to each of your contacts.</string>
+    <string name="characters_help_intro_message">The Character tab is your central hub for personalizing every call. You can choose a character to represent you (Player Character) and assign different characters to each of your contacts (Contact Characters).</string>
 
     <string name="characters_help_creating_title">Creating Custom Characters</string>
     <string name="characters_help_creating_message">Tap “Add trainer” or “Add monster” in the respective settings to create your own. You can pick images from your gallery for:</string>
