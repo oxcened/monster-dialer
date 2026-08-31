@@ -43,6 +43,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
+import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
@@ -72,6 +73,7 @@ import dev.alenajam.monsterdialer.packs.data.CharacterPackArchive
 import dev.alenajam.monsterdialer.packs.data.MonsterPack
 import dev.alenajam.opendialer.core.common.ui.AppIcon
 import dev.alenajam.opendialer.core.common.ui.LocalAppIcons
+import dev.alenajam.opendialer.feature.settings.LocalSettingsSubpageNavigator
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
@@ -96,6 +98,8 @@ fun ColumnScope.CharacterPackSettingsContent(
     }
 
     val importPack = { picker.launch(CharacterPackArchive.importMimeTypes) }
+    val navigator = LocalSettingsSubpageNavigator.current
+    val createPack = { navigator?.navigateTo(0); Unit }
     
     if (showImportUi) {
         CharacterPackImportHandler(viewModel)
@@ -159,6 +163,7 @@ fun ColumnScope.CharacterPackSettingsContent(
                     )
                 }
                 Button(onClick = importPack) { Text(stringResource(R.string.import_character_pack)) }
+                OutlinedButton(onClick = createPack) { Text(stringResource(R.string.create_character_pack)) }
                 Text(
                     stringResource(R.string.pack_import_license_notice),
                     style = MaterialTheme.typography.bodySmall,
@@ -176,6 +181,10 @@ fun ColumnScope.CharacterPackSettingsContent(
                 Icon(Icons.Outlined.FolderOpen, contentDescription = null, modifier = Modifier.size(18.dp))
                 Text(stringResource(R.string.import_pack), modifier = Modifier.padding(start = 8.dp))
             }
+            OutlinedButton(
+                onClick = createPack,
+                modifier = Modifier.fillMaxWidth()
+            ) { Text(stringResource(R.string.create_character_pack)) }
             Column {
                 packs.forEachIndexed { index, pack ->
                     val preview = viewModel.getPreviewCharacter(pack.id, pack.name)

@@ -234,6 +234,11 @@ class CustomCharacterRepository @Inject constructor(
 
     data class ExportableCharacter(val character: PackCharacter, val frontImageFile: File?, val backImageFile: File?)
 
+    fun getExportableCharacters(): List<ExportableCharacter> = readManifest()
+        ?.characters
+        ?.mapNotNull { character -> getExportableCharacter(character.id) }
+        .orEmpty()
+
     fun getExportableCharacter(characterId: String): ExportableCharacter? = getCharacter(characterId)?.let { character ->
         ExportableCharacter(character, character.frontImage?.let { File(packDirectory, it) }?.takeIf(File::isFile), character.backImage?.let { File(packDirectory, it) }?.takeIf(File::isFile))
     }

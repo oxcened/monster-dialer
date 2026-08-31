@@ -18,6 +18,7 @@
     <string name="share_character_title">مشاركة %1$s</string>
     <string name="creator_label">المنشئ</string>
     <string name="license_label">الترخيص</string>
+    <string name="default_license">جميع الحقوق محفوظة</string>
     <string name="export_character">تصدير الشخصية</string>
     <string name="save_to_device">حفظ على الجهاز</string>
     <string name="shared_character_file_name">%1$s.monstercharacter</string>
@@ -52,6 +53,14 @@
     <string name="pack_collection_empty_title" comment="Title of the empty character-pack collection screen.">مجموعتك تبدأ من هنا</string>
     <string name="pack_collection_empty_description" comment="Description of the empty character-pack collection screen.">استورد حزمة شخصيات لتخصيص تجربة مكالماتك.</string>
     <string name="import_character_pack" comment="Button that starts selecting a character-pack file.">استيراد حزمة شخصيات</string>
+    <string name="create_character_pack">إنشاء حزمة</string>
+    <string name="select_characters_for_pack">اختر الشخصيات</string>
+    <string name="pack_details">تفاصيل الحزمة</string>
+    <string name="pack_name_label">اسم الحزمة</string>
+    <string name="pack_version_label">الإصدار</string>
+    <string name="share_character_pack">مشاركة حزمة الشخصيات</string>
+    <string name="character_pack_default_name">character-pack</string>
+    <string name="character_pack_file_name">%1$s.monsterpack</string>
     <string name="character_pack_extension_required">اختر حزمة شخصيات بامتداد ‎.monsterpack أو ‎.zip.</string>
     <string name="pack_import_license_notice" comment="Legal notice shown before importing a character pack.">استورد فقط الرسومات والأصوات التي أنشأتها أو لديك ترخيص لاستخدامها.</string>
     <string name="your_character_packs" comment="Heading above installed character packs.">حزم شخصياتك</string>

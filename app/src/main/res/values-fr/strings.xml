@@ -18,6 +18,7 @@
     <string name="share_character_title">Partager %1$s</string>
     <string name="creator_label">Créateur</string>
     <string name="license_label">Licence</string>
+    <string name="default_license">Tous droits réservés</string>
     <string name="export_character">Exporter le personnage</string>
     <string name="save_to_device">Enregistrer sur l’appareil</string>
     <string name="shared_character_file_name">%1$s.monstercharacter</string>
@@ -52,6 +53,14 @@
     <string name="pack_collection_empty_title" comment="Title of the empty character-pack collection screen.">Votre collection commence ici</string>
     <string name="pack_collection_empty_description" comment="Description of the empty character-pack collection screen.">Importez un pack de personnages pour personnaliser vos appels.</string>
     <string name="import_character_pack" comment="Button that starts selecting a character-pack file.">Importer un pack</string>
+    <string name="create_character_pack">Créer un pack</string>
+    <string name="select_characters_for_pack">Sélectionnez des personnages</string>
+    <string name="pack_details">Détails du pack</string>
+    <string name="pack_name_label">Nom du pack</string>
+    <string name="pack_version_label">Version</string>
+    <string name="share_character_pack">Partager le pack de personnages</string>
+    <string name="character_pack_default_name">character-pack</string>
+    <string name="character_pack_file_name">%1$s.monsterpack</string>
     <string name="character_pack_extension_required">Choisissez un pack de personnages .monsterpack ou .zip.</string>
     <string name="pack_import_license_notice" comment="Legal notice shown before importing a character pack.">Importez uniquement des illustrations et des sons que vous avez créés ou que vous êtes autorisé à utiliser.</string>
     <string name="your_character_packs" comment="Heading above installed character packs.">Vos packs de personnages</string>

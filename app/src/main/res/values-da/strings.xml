@@ -18,6 +18,7 @@
     <string name="share_character_title">Del %1$s</string>
     <string name="creator_label">Opretter</string>
     <string name="license_label">Licens</string>
+    <string name="default_license">Alle rettigheder forbeholdes</string>
     <string name="export_character">Eksportér figur</string>
     <string name="save_to_device">Gem på enheden</string>
     <string name="shared_character_file_name">%1$s.monstercharacter</string>
@@ -52,6 +53,14 @@
     <string name="pack_collection_empty_title" comment="Title of the empty character-pack collection screen.">Din samling begynder her</string>
     <string name="pack_collection_empty_description" comment="Description of the empty character-pack collection screen.">Importér en figurpakke for at tilpasse dine opkald.</string>
     <string name="import_character_pack" comment="Button that starts selecting a character-pack file.">Importér figurpakke</string>
+    <string name="create_character_pack">Opret pakke</string>
+    <string name="select_characters_for_pack">Vælg figurer</string>
+    <string name="pack_details">Pakkedetaljer</string>
+    <string name="pack_name_label">Pakkenavn</string>
+    <string name="pack_version_label">Version</string>
+    <string name="share_character_pack">Del figurpakke</string>
+    <string name="character_pack_default_name">character-pack</string>
+    <string name="character_pack_file_name">%1$s.monsterpack</string>
     <string name="character_pack_extension_required">Vælg en figurpakke med filtypen .monsterpack eller .zip.</string>
     <string name="pack_import_license_notice" comment="Legal notice shown before importing a character pack.">Importér kun illustrationer og lyde, du selv har lavet eller har licens til at bruge.</string>
     <string name="your_character_packs" comment="Heading above installed character packs.">Dine figurpakker</string>

@@ -26,6 +26,7 @@
     <string name="share_character_title" comment="Title of the export dialog. %1$s is the character name.">Share %1$s</string>
     <string name="creator_label" comment="Field label requesting the creator of a shared character.">Creator</string>
     <string name="license_label" comment="Field label requesting the license of a shared character.">License</string>
+    <string name="default_license" comment="Default license used when sharing a character or creating a pack.">All rights reserved</string>
     <string name="export_character" comment="Button that exports one character as a shareable file.">Export character</string>
     <string name="save_to_device" comment="Button that saves a shared character file through the device's document picker.">Save to device</string>
     <string name="shared_character_file_name" comment="Default filename for an exported character. Keep the .monstercharacter extension. %1$s is the character name.">%1$s.monstercharacter</string>
@@ -60,6 +61,15 @@
     <string name="pack_collection_empty_title" comment="Title of the empty character-pack collection screen.">Your collection starts here</string>
     <string name="pack_collection_empty_description" comment="Description of the empty character-pack collection screen.">Import a character pack to personalize your call experience.</string>
     <string name="import_character_pack" comment="Button that starts selecting a character-pack file.">Import character pack</string>
+    <string name="create_character_pack">Create pack</string>
+    <string name="select_characters_for_pack">Select characters</string>
+    <string name="pack_details">Pack details</string>
+    <string name="pack_name_label">Pack name</string>
+    <string name="pack_version_label">Version</string>
+    <string name="default_pack_version" translatable="false">1.0.0</string>
+    <string name="share_character_pack">Share character pack</string>
+    <string name="character_pack_default_name">character-pack</string>
+    <string name="character_pack_file_name">%1$s.monsterpack</string>
     <string name="character_pack_extension_required" comment="Shown when a selected file is not a MonsterDialer character pack or a legacy ZIP pack.">Choose a .monsterpack or .zip character pack.</string>
     <string name="pack_import_license_notice" comment="Legal notice shown before importing a character pack.">Only import artwork and sounds you created or are licensed to use.</string>
     <string name="your_character_packs" comment="Heading above installed character packs.">Your character packs</string>

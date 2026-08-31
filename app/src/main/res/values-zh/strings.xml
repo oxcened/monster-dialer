@@ -18,6 +18,7 @@
     <string name="share_character_title">分享 %1$s</string>
     <string name="creator_label">创作者</string>
     <string name="license_label">许可证</string>
+    <string name="default_license">保留所有权利</string>
     <string name="export_character">导出角色</string>
     <string name="save_to_device">保存到设备</string>
     <string name="shared_character_file_name">%1$s.monstercharacter</string>
@@ -52,6 +53,14 @@
     <string name="pack_collection_empty_title" comment="Title of the empty character-pack collection screen.">你的收藏从这里开始</string>
     <string name="pack_collection_empty_description" comment="Description of the empty character-pack collection screen.">导入角色包以个性化通话体验。</string>
     <string name="import_character_pack" comment="Button that starts selecting a character-pack file.">导入角色包</string>
+    <string name="create_character_pack">创建角色包</string>
+    <string name="select_characters_for_pack">选择角色</string>
+    <string name="pack_details">角色包详情</string>
+    <string name="pack_name_label">角色包名称</string>
+    <string name="pack_version_label">版本</string>
+    <string name="share_character_pack">分享角色包</string>
+    <string name="character_pack_default_name">character-pack</string>
+    <string name="character_pack_file_name">%1$s.monsterpack</string>
     <string name="character_pack_extension_required">请选择 .monsterpack 或 .zip 角色包。</string>
     <string name="pack_import_license_notice" comment="Legal notice shown before importing a character pack.">只能导入你创建的或获授权使用的插图和声音。</string>
     <string name="your_character_packs" comment="Heading above installed character packs.">你的角色包</string>

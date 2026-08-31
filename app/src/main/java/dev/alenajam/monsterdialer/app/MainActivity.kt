@@ -39,6 +39,7 @@ import dev.alenajam.monsterdialer.packs.data.CharacterType
 import dev.alenajam.monsterdialer.packs.ui.CharacterPackSettingsContent
 import dev.alenajam.monsterdialer.packs.ui.CharacterPackSettingsViewModel
 import dev.alenajam.monsterdialer.packs.ui.CharacterPackImportHandler
+import dev.alenajam.monsterdialer.packs.ui.CreateCharacterPackScreen
 import dev.alenajam.opendialer.core.common.DefaultPhoneManager
 import dev.alenajam.opendialer.core.common.ui.AppThemeExtension
 import dev.alenajam.opendialer.core.common.ui.AppProviders
@@ -193,7 +194,12 @@ class MainActivity : AppCompatActivity() {
                             },
                             isScrollable = visiblePacks.isNotEmpty(),
                             visibleInSettings = false,
-                            topContentPadding = 0.dp
+                            topContentPadding = 0.dp,
+                            destinations = listOf(
+                                SettingsSubpageDestination(title = stringResource(R.string.create_character_pack)) { _, onNavigateBack ->
+                                    CreateCharacterPackScreen(onNavigateBack)
+                                }
+                            )
                         )
                         )
                     )

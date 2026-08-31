@@ -39,7 +39,8 @@ internal fun ShareCharacterDialog(
     val context = LocalContext.current
     val sharedFile by viewModel.sharedFile.collectAsStateWithLifecycle()
     var creator by remember(characterId) { mutableStateOf("") }
-    var license by remember(characterId) { mutableStateOf("") }
+    val defaultLicense = stringResource(R.string.default_license)
+    var license by remember(characterId, defaultLicense) { mutableStateOf(defaultLicense) }
     val fileName = stringResource(R.string.shared_character_file_name, characterName)
     val createDocument = rememberLauncherForActivityResult(
         ActivityResultContracts.CreateDocument(SharedCharacterArchive.MimeType)

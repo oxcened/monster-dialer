@@ -18,6 +18,7 @@
     <string name="share_character_title">Condividi %1$s</string>
     <string name="creator_label">Creatore</string>
     <string name="license_label">Licenza</string>
+    <string name="default_license">Tutti i diritti riservati</string>
     <string name="export_character">Esporta personaggio</string>
     <string name="save_to_device">Salva sul dispositivo</string>
     <string name="shared_character_file_name">%1$s.monstercharacter</string>
@@ -52,6 +53,14 @@
     <string name="pack_collection_empty_title" comment="Title of the empty character-pack collection screen.">La tua collezione inizia qui</string>
     <string name="pack_collection_empty_description" comment="Description of the empty character-pack collection screen.">Importa un pacchetto di personaggi per personalizzare le chiamate.</string>
     <string name="import_character_pack" comment="Button that starts selecting a character-pack file.">Importa pacchetto</string>
+    <string name="create_character_pack">Crea pacchetto</string>
+    <string name="select_characters_for_pack">Seleziona personaggi</string>
+    <string name="pack_details">Dettagli del pacchetto</string>
+    <string name="pack_name_label">Nome del pacchetto</string>
+    <string name="pack_version_label">Versione</string>
+    <string name="share_character_pack">Condividi pacchetto di personaggi</string>
+    <string name="character_pack_default_name">character-pack</string>
+    <string name="character_pack_file_name">%1$s.monsterpack</string>
     <string name="character_pack_extension_required">Seleziona un pacchetto di personaggi .monsterpack o .zip.</string>
     <string name="pack_import_license_notice" comment="Legal notice shown before importing a character pack.">Importa solo illustrazioni e suoni creati da te o che sei autorizzato a usare.</string>
     <string name="your_character_packs" comment="Heading above installed character packs.">I tuoi pacchetti di personaggi</string>
