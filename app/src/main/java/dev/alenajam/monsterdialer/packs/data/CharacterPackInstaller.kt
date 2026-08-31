@@ -73,7 +73,9 @@ class CharacterPackInstaller(
         // Android's BitmapFactory is a throwing stub in local JVM unit tests; decoding remains
         // enforced on device where imported packs are actually installed.
         if (System.getProperty("java.vm.name") != "Dalvik") return
-        pack.manifest.characters.flatMap { listOfNotNull(it.frontImage, it.backImage, it.radiantFrontImage, it.radiantBackImage) }.distinct().forEach { path ->
+        pack.manifest.characters.flatMap { character ->
+            character.visualVariants.flatMap { listOfNotNull(it.frontImage, it.backImage) }
+        }.distinct().forEach { path ->
             val options = BitmapFactory.Options().apply { inJustDecodeBounds = true }
             BitmapFactory.decodeFile(File(directory, path).path, options)
             if (options.outWidth <= 0 || options.outHeight <= 0) fail("Pack contains an invalid image")

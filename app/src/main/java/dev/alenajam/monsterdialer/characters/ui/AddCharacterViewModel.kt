@@ -99,8 +99,8 @@ class AddCharacterViewModel @Inject constructor(
             if (character != null) {
                 _name.value = character.name
                 _type.value = character.type
-                isLegacyRadiant = character.isRadiant && !character.hasRadiantVariant
-                _isRadiant.value = character.hasRadiantVariant
+                isLegacyRadiant = character.visualVariants.singleOrNull()?.isRadiant == true
+                _isRadiant.value = character.visualVariants.size > 1
                 _level.value = character.level?.toString() ?: ""
                 _maxHp.value = character.maxHp?.toString() ?: ""
                 _existingFrontImageFile.value = withContext(Dispatchers.IO) { repository.getCharacterFrontImageFile(characterId) }

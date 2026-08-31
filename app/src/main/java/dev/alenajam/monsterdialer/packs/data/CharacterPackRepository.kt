@@ -55,10 +55,10 @@ class CharacterPackRepository(
             if (manifest.id != packId) return emptyList()
             manifest.characters
                 .filter { character ->
-                    (character.frontImage == null || File(directory, character.frontImage).isFile) &&
-                        (character.backImage == null || File(directory, character.backImage).isFile) &&
-                        (character.radiantFrontImage == null || File(directory, character.radiantFrontImage).isFile) &&
-                        (character.radiantBackImage == null || File(directory, character.radiantBackImage).isFile)
+                    character.visualVariants.all { variant ->
+                        (variant.frontImage == null || File(directory, variant.frontImage).isFile) &&
+                            (variant.backImage == null || File(directory, variant.backImage).isFile)
+                    }
                 }
                 .map { character -> 
                     val isCustom = packId == CustomCharacterRepository.CUSTOM_PACK_ID

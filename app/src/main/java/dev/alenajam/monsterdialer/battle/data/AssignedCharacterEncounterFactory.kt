@@ -4,7 +4,7 @@ import dev.alenajam.monsterdialer.characters.data.CharacterAssignmentRepository
 import dev.alenajam.monsterdialer.characters.data.CharactersRepository
 import dev.alenajam.monsterdialer.packs.data.CharacterAssignmentTarget
 import dev.alenajam.monsterdialer.packs.data.CharacterType
-import dev.alenajam.monsterdialer.packs.data.CharacterVariant
+import dev.alenajam.monsterdialer.packs.data.CharacterVisualVariant
 import dev.alenajam.monsterdialer.packs.data.InstalledPackCharacter
 import kotlinx.coroutines.runBlocking
 
@@ -21,14 +21,14 @@ class AssignedCharacterEncounterFactory(
         // the encounter might be part of the ViewModel state.
         return runBlocking {
             val player = assignmentRepository.getPlayerCharacter(CharacterType.Monster)
-                ?.let { reference -> charactersRepository.findCharacter(reference, CharacterAssignmentTarget.Player, CharacterType.Monster)?.asPlayerBattleMonster(fallback.player, reference.variant) }
+                ?.let { reference -> charactersRepository.findCharacter(reference, CharacterAssignmentTarget.Player, CharacterType.Monster)?.asPlayerBattleMonster(fallback.player, reference.variantId) }
                 ?: fallback.player
             
             val enemy = if (isAnonymous) {
                 fallback.enemy
             } else {
                 assignmentRepository.getAssignedCharacter(contactKey, CharacterType.Monster)
-                    ?.let { reference -> charactersRepository.findCharacter(reference, CharacterAssignmentTarget.Contact, CharacterType.Monster)?.asContactBattleMonster(fallback.enemy ?: fallback.player, reference.variant) }
+                    ?.let { reference -> charactersRepository.findCharacter(reference, CharacterAssignmentTarget.Contact, CharacterType.Monster)?.asContactBattleMonster(fallback.enemy ?: fallback.player, reference.variantId) }
                     ?: fallback.enemy
             }
             
@@ -55,9 +55,10 @@ class AssignedCharacterEncounterFactory(
         }
     }
 
-    private fun InstalledPackCharacter.asPlayerBattleMonster(fallback: BattleMonster, variant: CharacterVariant): BattleMonster {
-        val packFront = imageFor(variant, character.frontImage, character.radiantFrontImage)
-        val packBack = imageFor(variant, character.backImage, character.radiantBackImage)
+    private fun InstalledPackCharacter.asPlayerBattleMonster(fallback: BattleMonster, variantId: String): BattleMonster {
+        val variant = character.variant(variantId) ?: return fallback
+        val packFront = imageFor(variant.frontImage)
+        val packBack = imageFor(variant.backImage)
         
         return asBattleMonster(
             frontSprite = packFront ?: fallback.frontSprite,
@@ -66,9 +67,10 @@ class AssignedCharacterEncounterFactory(
         )
     }
 
-    private fun InstalledPackCharacter.asContactBattleMonster(fallback: BattleMonster, variant: CharacterVariant): BattleMonster {
-        val packFront = imageFor(variant, character.frontImage, character.radiantFrontImage)
-        val packBack = imageFor(variant, character.backImage, character.radiantBackImage)
+    private fun InstalledPackCharacter.asContactBattleMonster(fallback: BattleMonster, variantId: String): BattleMonster {
+        val variant = character.variant(variantId) ?: return fallback
+        val packFront = imageFor(variant.frontImage)
+        val packBack = imageFor(variant.backImage)
         
         return asBattleMonster(
             frontSprite = packFront ?: fallback.frontSprite,
@@ -80,7 +82,7 @@ class AssignedCharacterEncounterFactory(
     private fun InstalledPackCharacter.asBattleMonster(
         frontSprite: BattleVisualAsset,
         backSprite: BattleVisualAsset?,
-        variant: CharacterVariant,
+        variant: CharacterVisualVariant,
     ) = BattleMonster(
         name = character.name,
         level = character.level ?: DefaultLevel,
@@ -88,18 +90,17 @@ class AssignedCharacterEncounterFactory(
         maxHp = character.maxHp ?: DefaultMaxHp,
         frontSprite = frontSprite,
         backSprite = backSprite,
-        isRadiant = character.isRadiant || variant == CharacterVariant.Radiant
+        isRadiant = variant.isRadiant
     )
 
-    private fun InstalledPackCharacter.imageFor(variant: CharacterVariant, regular: String?, radiant: String?): BattleVisualAsset? =
-        (if (variant == CharacterVariant.Radiant) radiant else regular)
-            ?.let { BattleVisualAsset.LocalFile(imageFile(it).path) }
+    private fun InstalledPackCharacter.imageFor(path: String?): BattleVisualAsset? =
+        path?.let { BattleVisualAsset.LocalFile(imageFile(it).path) }
 
     private fun InstalledPackCharacter.playerTrainerSprite(fallback: BattleVisualAsset) =
-        character.backImage?.let { BattleVisualAsset.LocalFile(imageFile(it).path) } ?: fallback
+        character.visualVariants.first().backImage?.let { BattleVisualAsset.LocalFile(imageFile(it).path) } ?: fallback
 
     private fun InstalledPackCharacter.contactTrainerSprite(fallback: BattleVisualAsset) =
-        character.frontImage?.let { BattleVisualAsset.LocalFile(imageFile(it).path) } ?: fallback
+        character.visualVariants.first().frontImage?.let { BattleVisualAsset.LocalFile(imageFile(it).path) } ?: fallback
 
     private companion object {
         const val DefaultLevel = 5

@@ -46,11 +46,13 @@ class CharacterPackExportRepository @Inject constructor(
             zip.write(json.encodeToString(manifest).encodeToByteArray())
             zip.closeEntry()
             selected.flatMap { exported ->
+                val default = exported.character.variant(PackCharacter.DefaultVariantId)
+                val radiant = exported.character.variant(PackCharacter.RadiantVariantId)
                 listOfNotNull(
-                    exported.character.frontImage to exported.frontImageFile,
-                    exported.character.backImage to exported.backImageFile,
-                    exported.character.radiantFrontImage to exported.radiantFrontImageFile,
-                    exported.character.radiantBackImage to exported.radiantBackImageFile,
+                    default?.frontImage to exported.frontImageFile,
+                    default?.backImage to exported.backImageFile,
+                    radiant?.frontImage to exported.radiantFrontImageFile,
+                    radiant?.backImage to exported.radiantBackImageFile,
                 ).filter { (path, file) -> path != null && file?.isFile == true }
             }.forEach { (path, file) ->
                 zip.putNextEntry(ZipEntry(requireNotNull(path)))

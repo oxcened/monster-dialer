@@ -29,6 +29,11 @@ data class PackCharacter(
     val assignableTo: List<CharacterAssignmentTarget>,
     val frontImage: String? = null,
     val backImage: String? = null,
+    /**
+     * Named visual forms for this character. New packs use this field; the image fields below
+     * remain readable solely for previously released always-radiant character data.
+     */
+    val variants: List<CharacterVisualVariant> = emptyList(),
     val radiantFrontImage: String? = null,
     val radiantBackImage: String? = null,
     val callSound: String? = null,
@@ -37,9 +42,38 @@ data class PackCharacter(
     /** Whether this monster plays the radiant animation when it enters battle. */
     val isRadiant: Boolean = false
 ) {
+    val visualVariants: List<CharacterVisualVariant>
+        get() = variants.ifEmpty {
+            buildList {
+                add(CharacterVisualVariant(DefaultVariantId, DefaultVariantName, frontImage, backImage, isRadiant))
+                if (radiantFrontImage != null || radiantBackImage != null) {
+                    add(CharacterVisualVariant(RadiantVariantId, RadiantVariantName, radiantFrontImage, radiantBackImage, true))
+                }
+            }
+        }
+
     val hasRadiantVariant: Boolean
-        get() = radiantFrontImage != null || radiantBackImage != null
+        get() = visualVariants.any { it.isRadiant }
+
+    fun variant(id: String): CharacterVisualVariant? = visualVariants.find { it.id == id }
+
+    companion object {
+        const val DefaultVariantId = "default"
+        const val DefaultVariantName = "Default"
+        const val RadiantVariantId = "radiant"
+        const val RadiantVariantName = "Radiant"
+    }
 }
+
+@Serializable
+data class CharacterVisualVariant(
+    val id: String,
+    val name: String,
+    val frontImage: String? = null,
+    val backImage: String? = null,
+    /** Whether this form receives radiant battle effects. */
+    val isRadiant: Boolean = false,
+)
 
 @Serializable
 enum class CharacterType {
@@ -80,14 +114,8 @@ data class InstalledPackCharacter(
 data class CharacterReference(
     val packId: String,
     val characterId: String,
-    val variant: CharacterVariant = CharacterVariant.Regular,
+    @SerialName("variant") val variantId: String = PackCharacter.DefaultVariantId,
 )
-
-@Serializable
-enum class CharacterVariant {
-    @SerialName("regular") Regular,
-    @SerialName("radiant") Radiant,
-}
 
 internal object CharacterPackManifestCodec {
     private val json = Json {

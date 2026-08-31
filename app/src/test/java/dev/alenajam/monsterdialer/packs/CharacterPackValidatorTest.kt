@@ -9,6 +9,25 @@ class CharacterPackValidatorTest {
         CharacterPackValidator.validate(manifest)
     }
 
+    @Test
+    fun validatesNamedVariantsInCurrentFormat() {
+        val manifest = validManifest(
+            formatVersion = CharacterPackValidator.CurrentFormatVersion,
+            characters = listOf(
+                validCharacter(
+                    frontImage = null,
+                    backImage = null,
+                    variants = listOf(
+                        CharacterVisualVariant("default", "Default", "art/mossling.png", "art/mossling-back.png"),
+                        CharacterVisualVariant("winter", "Winter", "art/mossling-winter.png", "art/mossling-winter-back.png"),
+                    )
+                )
+            )
+        )
+
+        CharacterPackValidator.validate(manifest)
+    }
+
     @Test(expected = CharacterPackValidationException::class)
     fun rejectsUnsupportedFormatVersion() {
         val manifest = validManifest(formatVersion = 3)
@@ -104,6 +123,7 @@ class CharacterPackValidatorTest {
         assignableTo: List<CharacterAssignmentTarget> = listOf(CharacterAssignmentTarget.Contact, CharacterAssignmentTarget.Player),
         frontImage: String? = "front.png",
         backImage: String? = "back.png",
+        variants: List<CharacterVisualVariant> = emptyList(),
         isRadiant: Boolean = false,
         level: Int? = null,
         maxHp: Int? = null
@@ -114,6 +134,7 @@ class CharacterPackValidatorTest {
         assignableTo = assignableTo,
         frontImage = frontImage,
         backImage = backImage,
+        variants = variants,
         isRadiant = isRadiant,
         level = level,
         maxHp = maxHp
