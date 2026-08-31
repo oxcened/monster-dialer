@@ -1,8 +1,10 @@
 package dev.alenajam.monsterdialer.app
 
 import android.content.Intent
+import android.content.ContentResolver
 import android.net.Uri
 import android.os.Bundle
+import android.provider.OpenableColumns
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
@@ -56,7 +58,7 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        incomingImport = intent.incomingImport()
+        incomingImport = intent.incomingImport(contentResolver)
         enableEdgeToEdge()
 
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.Q) {
@@ -218,7 +220,7 @@ class MainActivity : AppCompatActivity() {
     override fun onNewIntent(intent: Intent) {
         super.onNewIntent(intent)
         setIntent(intent)
-        incomingImport = intent.incomingImport()
+        incomingImport = intent.incomingImport(contentResolver)
     }
 }
 
@@ -229,16 +231,26 @@ private sealed interface IncomingImport {
     data class CharacterPack(override val uri: Uri) : IncomingImport
 }
 
-private fun Intent.incomingImport(): IncomingImport? {
+private fun Intent.incomingImport(contentResolver: ContentResolver): IncomingImport? {
     val uri = when (action) {
     Intent.ACTION_VIEW -> data
     Intent.ACTION_SEND -> IntentCompat.getParcelableExtra(this, Intent.EXTRA_STREAM, Uri::class.java)
     else -> null
     } ?: return null
 
-    return if (type == CharacterPackArchive.MimeType || uri.lastPathSegment?.endsWith(".${CharacterPackArchive.Extension}", ignoreCase = true) == true) {
+    return if (type == CharacterPackArchive.MimeType || uri.displayName(contentResolver).endsWith(".${CharacterPackArchive.Extension}", ignoreCase = true)) {
         IncomingImport.CharacterPack(uri)
     } else {
         IncomingImport.SharedCharacter(uri)
     }
+}
+
+private fun Uri.displayName(contentResolver: ContentResolver): String {
+    contentResolver.query(this, arrayOf(OpenableColumns.DISPLAY_NAME), null, null, null)?.use { cursor ->
+        val column = cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME)
+        if (column >= 0 && cursor.moveToFirst()) {
+            cursor.getString(column)?.takeIf(String::isNotBlank)?.let { return it }
+        }
+    }
+    return lastPathSegment.orEmpty()
 }
