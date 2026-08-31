@@ -1,6 +1,7 @@
 package dev.alenajam.monsterdialer.app.ui
 
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.outlined.HelpOutline
 import androidx.compose.material.icons.automirrored.outlined.ViewList
 import androidx.compose.material.icons.outlined.AddCircleOutline
 import androidx.compose.material.icons.outlined.AutoAwesome
@@ -14,14 +15,16 @@ data class MonsterAppIcons(
     val addCharacter: IconSource,
     val radiant: IconSource,
     val viewList: IconSource,
-    val viewGrid: IconSource
+    val viewGrid: IconSource,
+    val help: IconSource
 )
 
 val DefaultMonsterAppIcons = MonsterAppIcons(
     addCharacter = IconSource.Vector(Icons.Outlined.AddCircleOutline),
     radiant = IconSource.Vector(Icons.Outlined.AutoAwesome),
     viewList = IconSource.Vector(Icons.AutoMirrored.Outlined.ViewList),
-    viewGrid = IconSource.Vector(Icons.Outlined.GridView)
+    viewGrid = IconSource.Vector(Icons.Outlined.GridView),
+    help = IconSource.Vector(Icons.AutoMirrored.Outlined.HelpOutline)
 )
 
 val LocalMonsterAppIcons = staticCompositionLocalOf { DefaultMonsterAppIcons }

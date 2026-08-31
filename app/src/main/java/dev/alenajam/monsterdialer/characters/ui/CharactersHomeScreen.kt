@@ -64,7 +64,7 @@ fun CharactersHomeScreen(
         CharacterHomeItem(R.string.settings_contact_characters_title, R.string.settings_contact_characters_description, LocalAppIcons.current.history, RoundedCornerShape(2.dp)) { onOpenSubpage(1) }
         CharacterHomeItem(R.string.settings_character_packs_title, R.string.settings_character_packs_description, LocalAppIcons.current.edit, RoundedCornerShape(2.dp)) { onOpenSubpage(2) }
         CharacterHomeItem(R.string.import_character, R.string.import_character_description, LocalAppIcons.current.arrowDown, RoundedCornerShape(2.dp)) { picker.launch(arrayOf("*/*")) }
-        CharacterHomeItem(R.string.characters_help_title, R.string.characters_help_description, LocalAppIcons.current.help, RoundedCornerShape(topStart = 2.dp, topEnd = 2.dp, bottomStart = 20.dp, bottomEnd = 20.dp)) { onOpenSubpage(3) }
+        CharacterHomeItem(R.string.characters_help_title, R.string.characters_help_description, LocalMonsterAppIcons.current.help, RoundedCornerShape(topStart = 2.dp, topEnd = 2.dp, bottomStart = 20.dp, bottomEnd = 20.dp)) { onOpenSubpage(3) }
     }
 }
 
