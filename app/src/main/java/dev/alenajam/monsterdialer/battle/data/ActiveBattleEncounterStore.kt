@@ -18,12 +18,18 @@ class ActiveBattleEncounterStore @Inject constructor(
     private val json = Json { ignoreUnknownKeys = false; explicitNulls = false }
 
     @Synchronized
-    fun restore(call: ActiveCallKey): ActiveBattleEncounter? = read()?.takeIf { it.call == call }
+    internal fun restore(call: ActiveCallKey): ActiveBattleEncounter? =
+        read().encounters.firstOrNull { it.call == call }
 
     @Synchronized
     fun save(call: ActiveCallKey, radiantReference: CharacterReference?) {
+        val existing = read().encounters.filterNot { it.call.callId == call.callId }
         file.parentFile?.mkdirs()
-        file.writeText(json.encodeToString(ActiveBattleEncounter(call, radiantReference)))
+        file.writeText(
+            json.encodeToString(
+                ActiveBattleEncounterDocument(existing + ActiveBattleEncounter(call, radiantReference)),
+            ),
+        )
     }
 
     @Synchronized
@@ -31,9 +37,9 @@ class ActiveBattleEncounterStore @Inject constructor(
         file.delete()
     }
 
-    private fun read(): ActiveBattleEncounter? = runCatching {
-        json.decodeFromString<ActiveBattleEncounter>(file.readText())
-    }.getOrNull()
+    private fun read(): ActiveBattleEncounterDocument = runCatching {
+        json.decodeFromString<ActiveBattleEncounterDocument>(file.readText())
+    }.getOrDefault(ActiveBattleEncounterDocument())
 }
 
 @Serializable
@@ -45,7 +51,12 @@ data class ActiveCallKey(
 )
 
 @Serializable
-data class ActiveBattleEncounter(
+private data class ActiveBattleEncounterDocument(
+    val encounters: List<ActiveBattleEncounter> = emptyList(),
+)
+
+@Serializable
+internal data class ActiveBattleEncounter(
     val call: ActiveCallKey,
     val radiantReference: CharacterReference? = null,
 )

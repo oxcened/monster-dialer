@@ -6,6 +6,7 @@ import dev.alenajam.monsterdialer.characters.data.RadiantVariantUnlockStore
 import dev.alenajam.monsterdialer.characters.data.CharacterAssignmentRepositoryImpl
 import dev.alenajam.monsterdialer.battle.data.AssignedCharacterEncounterFactory
 import dev.alenajam.monsterdialer.battle.data.ActiveBattleEncounterStore
+import dev.alenajam.monsterdialer.battle.data.ActiveCallKey
 import dev.alenajam.monsterdialer.battle.data.BattleEncounterFactory
 import dev.alenajam.monsterdialer.battle.data.EncounterType
 import dev.alenajam.monsterdialer.packs.data.CharacterAssignmentTarget
@@ -137,6 +138,39 @@ class AssignedCharacterEncounterFactoryTest {
     }
 
     @Test
+    fun encountersRemainIndependentWhenCallsAreSwitched() {
+        setupRadiantPack()
+        AssignedCharacterEncounterFactory(
+            charactersRepository,
+            assignmentRepository,
+            radiantUnlocks,
+            activeEncounterStore,
+            random = AlwaysRadiantRandom,
+        ).forCall("telecom-call-1", "123", "Alex", isAnonymous = false)
+        activeEncounterStore.save(
+            ActiveCallKey("telecom-call-2", "456", "Bea", isAnonymous = false),
+            radiantReference = null,
+        )
+
+        val recreatedFactory = AssignedCharacterEncounterFactory(
+            charactersRepository,
+            assignmentRepository,
+            radiantUnlocks,
+            activeEncounterStore,
+            random = NeverRadiantRandom,
+        )
+
+        assertEquals(
+            EncounterType.RadiantWild,
+            recreatedFactory.forCall("telecom-call-1", "123", "Alex", isAnonymous = false).type,
+        )
+        assertEquals(
+            EncounterType.Trainer,
+            recreatedFactory.forCall("telecom-call-2", "456", "Bea", isAnonymous = false).type,
+        )
+    }
+
+    @Test
     fun clearingTheCacheBuildsAFreshEncounterForTheNextCall() {
         val firstEncounter = factory.forCall("same-call-key", "123", "Alex", isAnonymous = false)
 
@@ -236,6 +270,10 @@ class AssignedCharacterEncounterFactoryTest {
     }
 
     private object NeverRadiantRandom : Random() {
-        override fun nextBits(bitCount: Int): Int = Int.MAX_VALUE
+        override fun nextBits(bitCount: Int): Int = when (bitCount) {
+            0 -> 0
+            Int.SIZE_BITS -> -1
+            else -> (1 shl bitCount) - 1
+        }
     }
 }
