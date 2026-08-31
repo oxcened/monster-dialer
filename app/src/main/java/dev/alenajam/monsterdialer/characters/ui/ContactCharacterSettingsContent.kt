@@ -75,6 +75,8 @@ fun ColumnScope.ContactCharacterSettingsContent(
     val monsterGridState = rememberLazyGridState(initialFirstVisibleItemIndex = monsterSelectedItemIndex)
     val trainerTitle = stringResource(R.string.character_type_trainer)
     val monsterTitle = stringResource(R.string.character_type_monster)
+    val trainersTitle = stringResource(R.string.character_type_trainers)
+    val monstersTitle = stringResource(R.string.character_type_monsters)
     val addTrainerLabel = stringResource(R.string.add_trainer)
     val addMonsterLabel = stringResource(R.string.add_monster)
     val locale = LocalConfiguration.current.locales[0]
@@ -111,6 +113,7 @@ fun ColumnScope.ContactCharacterSettingsContent(
             when (selectedTab) {
                 0 -> characterTypeItems(
                     title = trainerTitle,
+                    pluralTitle = trainersTitle,
                     defaultCharacter = BuiltInCharacters.trainer,
                     characters = emptyList(),
                     selected = null,
@@ -122,6 +125,7 @@ fun ColumnScope.ContactCharacterSettingsContent(
                 )
                 1 -> characterTypeItems(
                     title = monsterTitle,
+                    pluralTitle = monstersTitle,
                     defaultCharacter = BuiltInCharacters.monster.character,
                     characters = emptyList(),
                     selected = null,
@@ -200,6 +204,7 @@ fun ColumnScope.ContactCharacterSettingsContent(
         val scope = androidx.compose.runtime.rememberCoroutineScope()
         var pendingDeletion by remember { mutableStateOf<InstalledPackCharacter?>(null) }
         var isPendingDeletionInUse by remember { mutableStateOf(false) }
+        var pendingShare by remember { mutableStateOf<InstalledPackCharacter?>(null) }
 
         pendingDeletion?.let { character ->
             CustomCharacterDeletionConfirmationDialog(
@@ -212,6 +217,13 @@ fun ColumnScope.ContactCharacterSettingsContent(
                 onDismiss = { pendingDeletion = null }
             )
         }
+        pendingShare?.let { character ->
+            ShareCharacterDialog(
+                characterId = character.character.id,
+                characterName = character.character.name,
+                onDismiss = { pendingShare = null }
+            )
+        }
 
         LaunchedEffect(contactSelectionVersion) {
             val selectedItemIndex = if (selectedTab == 0) trainerSelectedItemIndex else monsterSelectedItemIndex
@@ -222,15 +234,15 @@ fun ColumnScope.ContactCharacterSettingsContent(
             if (effectiveLayout == CharacterLayout.List) {
                 LazyColumn(state = listState, modifier = Modifier.fillMaxSize(), contentPadding = PaddingValues(top = 8.dp, bottom = 72.dp)) {
                     when (selectedTab) {
-                        0 -> characterTypeItems(trainerTitle, BuiltInCharacters.trainer, trainers, assignedTrainer, { it.contactArtwork }, { it.imageFile(requireNotNull(it.character.frontImage)) }, viewModel::assignTrainer, { navigator?.navigateTo(1) }, addTrainerLabel, !isLimitReached, onDelete = { character -> scope.launch { isPendingDeletionInUse = viewModel.isCharacterInUse(character.character.id); pendingDeletion = character } }, onEdit = { navigator?.navigateTo(1, it.character.id) })
-                        1 -> characterTypeItems(monsterTitle, BuiltInCharacters.monster.character, monsters, assignedMonster, { it.contactArtwork }, { it.imageFile(requireNotNull(it.character.frontImage)) }, viewModel::assignMonster, { navigator?.navigateTo(2) }, addMonsterLabel, !isLimitReached, onDelete = { character -> scope.launch { isPendingDeletionInUse = viewModel.isCharacterInUse(character.character.id); pendingDeletion = character } }, onEdit = { navigator?.navigateTo(2, it.character.id) })
+                        0 -> characterTypeItems(trainerTitle, trainersTitle, BuiltInCharacters.trainer, trainers, assignedTrainer, { it.contactArtwork }, { it.imageFile(requireNotNull(it.character.frontImage)) }, viewModel::assignTrainer, { navigator?.navigateTo(1) }, addTrainerLabel, !isLimitReached, onDelete = { character -> scope.launch { isPendingDeletionInUse = viewModel.isCharacterInUse(character.character.id); pendingDeletion = character } }, onEdit = { navigator?.navigateTo(1, it.character.id) }, onShare = { pendingShare = it })
+                        1 -> characterTypeItems(monsterTitle, monstersTitle, BuiltInCharacters.monster.character, monsters, assignedMonster, { it.contactArtwork }, { it.imageFile(requireNotNull(it.character.frontImage)) }, viewModel::assignMonster, { navigator?.navigateTo(2) }, addMonsterLabel, !isLimitReached, onDelete = { character -> scope.launch { isPendingDeletionInUse = viewModel.isCharacterInUse(character.character.id); pendingDeletion = character } }, onEdit = { navigator?.navigateTo(2, it.character.id) }, onShare = { pendingShare = it })
                     }
                 }
             } else {
                 LazyVerticalGrid(columns = GridCells.Fixed(2), state = gridState, modifier = Modifier.fillMaxSize(), contentPadding = PaddingValues(top = 8.dp, bottom = 72.dp), horizontalArrangement = Arrangement.spacedBy(2.dp), verticalArrangement = Arrangement.spacedBy(2.dp)) {
                     when (selectedTab) {
-                        0 -> characterTypeGridItems(trainerTitle, BuiltInCharacters.trainer, trainers, assignedTrainer, { it.contactArtwork }, { it.imageFile(requireNotNull(it.character.frontImage)) }, viewModel::assignTrainer, { navigator?.navigateTo(1) }, addTrainerLabel, !isLimitReached, onDelete = { character -> scope.launch { isPendingDeletionInUse = viewModel.isCharacterInUse(character.character.id); pendingDeletion = character } }, onEdit = { navigator?.navigateTo(1, it.character.id) })
-                        1 -> characterTypeGridItems(monsterTitle, BuiltInCharacters.monster.character, monsters, assignedMonster, { it.contactArtwork }, { it.imageFile(requireNotNull(it.character.frontImage)) }, viewModel::assignMonster, { navigator?.navigateTo(2) }, addMonsterLabel, !isLimitReached, onDelete = { character -> scope.launch { isPendingDeletionInUse = viewModel.isCharacterInUse(character.character.id); pendingDeletion = character } }, onEdit = { navigator?.navigateTo(2, it.character.id) })
+                        0 -> characterTypeGridItems(trainerTitle, trainersTitle, BuiltInCharacters.trainer, trainers, assignedTrainer, { it.contactArtwork }, { it.imageFile(requireNotNull(it.character.frontImage)) }, viewModel::assignTrainer, { navigator?.navigateTo(1) }, addTrainerLabel, !isLimitReached, onDelete = { character -> scope.launch { isPendingDeletionInUse = viewModel.isCharacterInUse(character.character.id); pendingDeletion = character } }, onEdit = { navigator?.navigateTo(1, it.character.id) }, onShare = { pendingShare = it })
+                        1 -> characterTypeGridItems(monsterTitle, monstersTitle, BuiltInCharacters.monster.character, monsters, assignedMonster, { it.contactArtwork }, { it.imageFile(requireNotNull(it.character.frontImage)) }, viewModel::assignMonster, { navigator?.navigateTo(2) }, addMonsterLabel, !isLimitReached, onDelete = { character -> scope.launch { isPendingDeletionInUse = viewModel.isCharacterInUse(character.character.id); pendingDeletion = character } }, onEdit = { navigator?.navigateTo(2, it.character.id) }, onShare = { pendingShare = it })
                     }
                 }
             }

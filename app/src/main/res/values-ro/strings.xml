@@ -6,6 +6,22 @@
     <string name="settings_character_packs_title" comment="Settings title for managing character packs.">Pachete de personaje</string>
     <string name="characters_navigation_label" comment="Bottom navigation label for character customization.">Personaje</string>
     <string name="settings_character_packs_description" comment="Settings description for character packs.">Importă și gestionează ilustrații personalizate ale personajelor.</string>
+    <string name="import_character">Importă personaj</string>
+    <string name="import_character_description">Adaugă un personaj pe care cineva l-a distribuit cu tine.</string>
+    <string name="add_to_your_characters">Adaugă</string>
+    <string name="shared_character_creator">Creator: %1$s</string>
+    <string name="shared_character_license">Licență: %1$s</string>
+    <string name="shared_character_import_description">Acest %1$s va fi adăugat la colecția ta.</string>
+    <string name="shared_character_import_title">Adaugi %1$s?</string>
+    <string name="shared_character_import_failed_title">Nu s-a putut importa personajul</string>
+    <string name="shared_character_import_failed_message">Alege un fișier .monstercharacter exportat din MonsterDialer.</string>
+    <string name="share_character_title">Distribuie %1$s</string>
+    <string name="creator_label">Creator</string>
+    <string name="license_label">Licență</string>
+    <string name="default_license">Toate drepturile rezervate</string>
+    <string name="export_character">Exportă personajul</string>
+    <string name="save_to_device">Salvează pe dispozitiv</string>
+    <string name="shared_character_file_name">%1$s.monstercharacter</string>
     <string name="settings_player_character_title" comment="Settings title for the player's battle character.">Personajul jucătorului</string>
     <string name="settings_player_character_description" comment="Settings description for the player's battle character.">Alege cine te reprezintă în timpul apelurilor.</string>
     <string name="player_characters_not_set" comment="Settings subtitle when no player character is selected.">Nepersonalizat</string>
@@ -17,6 +33,8 @@
     <string name="choose_contact" comment="Button that opens the contact picker.">Alege contactul</string>
     <string name="character_type_trainer" comment="Character category for a human battle character.">Antrenor</string>
     <string name="character_type_monster" comment="Character category for a creature battle character.">Monstru</string>
+    <string name="character_type_trainers">antrenori</string>
+    <string name="character_type_monsters">monștri</string>
     <string name="built_in_character" comment="Label for a character included with the app.">Personaj inclus</string>
     <string name="default_character_artwork" comment="%1$s is a character type, such as Trainer or Monster.">Ilustrarea implicită pentru %1$s</string>
     <string name="character_artwork" comment="%1$s is a character name.">Ilustrarea lui %1$s</string>
@@ -35,6 +53,15 @@
     <string name="pack_collection_empty_title" comment="Title of the empty character-pack collection screen.">Colecția ta începe aici</string>
     <string name="pack_collection_empty_description" comment="Description of the empty character-pack collection screen.">Importă un pachet de personaje pentru a-ți personaliza apelurile.</string>
     <string name="import_character_pack" comment="Button that starts selecting a character-pack file.">Importă pachetul</string>
+    <string name="create_character_pack">Creează pachet</string>
+    <string name="select_characters_for_pack">Selectează personaje</string>
+    <string name="pack_details">Detalii pachet</string>
+    <string name="pack_name_label">Nume pachet</string>
+    <string name="pack_version_label">Versiune</string>
+    <string name="share_character_pack">Partajează pachetul de personaje</string>
+    <string name="character_pack_default_name">character-pack</string>
+    <string name="character_pack_file_name">%1$s.monsterpack</string>
+    <string name="character_pack_extension_required">Alege un pachet de personaje .monsterpack sau .zip.</string>
     <string name="pack_import_license_notice" comment="Legal notice shown before importing a character pack.">Importă doar ilustrații și sunete create de tine sau pentru care ai licență de utilizare.</string>
     <string name="your_character_packs" comment="Heading above installed character packs.">Pachetele tale de personaje</string>
     <plurals name="installed_pack_count" comment="Number of installed character packs. %d is the count.">
@@ -120,8 +147,8 @@
     <string name="save_character" comment="Button to save the new character.">Salvează personajul</string>
     <string name="save" comment="Button label to save changes.">Salvează</string>
     <string name="edit" comment="Button label to edit an item.">Editează</string>
-    <string name="your_characters" comment="Section header for characters added by the user.">Personajele tale</string>
-    <string name="built_in_characters_section" comment="Section header for characters included with the app.">Personaje incluse</string>
+    <string name="your_characters">%1$s tăi</string>
+    <string name="built_in_characters_section">%1$s incluși</string>
     <string name="character_created" comment="Confirmation after a character is successfully created.">Personaj creat</string>
     <string name="character_creation_failed" comment="Error when a character cannot be saved.">Nu s-a putut crea personajul</string>
     <string name="character_limit_reached_message" comment="Error message when the 200 character limit is hit.">Limită de 200 de personaje atinsă. Șterge câteva pentru a adăuga mai multe.</string>

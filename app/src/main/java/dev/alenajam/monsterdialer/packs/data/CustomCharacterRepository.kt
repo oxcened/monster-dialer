@@ -232,6 +232,30 @@ class CustomCharacterRepository @Inject constructor(
         return File(packDirectory, relativePath)
     }
 
+    data class ExportableCharacter(val character: PackCharacter, val frontImageFile: File?, val backImageFile: File?)
+
+    fun getExportableCharacters(): List<ExportableCharacter> = readManifest()
+        ?.characters
+        ?.mapNotNull { character -> getExportableCharacter(character.id) }
+        .orEmpty()
+
+    fun getExportableCharacter(characterId: String): ExportableCharacter? = getCharacter(characterId)?.let { character ->
+        ExportableCharacter(character, character.frontImage?.let { File(packDirectory, it) }?.takeIf(File::isFile), character.backImage?.let { File(packDirectory, it) }?.takeIf(File::isFile))
+    }
+
+    suspend fun importSharedCharacter(shared: dev.alenajam.monsterdialer.characters.data.SharedCharacterImport): CharacterReference = withContext(Dispatchers.IO) {
+        val manifest = readManifest() ?: CharacterPackManifest(CharacterPackValidator.SupportedFormatVersion, CUSTOM_PACK_ID, "My Characters", "1.0.0", "Created by user", characters = emptyList())
+        if (manifest.characters.size >= CharacterPackValidator.MaxCharacters) throw CharacterPackValidationException("Character limit reached (${CharacterPackValidator.MaxCharacters})")
+        val id = UUID.randomUUID().toString()
+        artDirectory.mkdirs()
+        fun writeImage(bytes: ByteArray?, suffix: String) = bytes?.let { File(packDirectory, "art/$id-$suffix.png").apply { writeBytes(it) }.path.substringAfter("$packDirectory/") }
+        val front = writeImage(shared.frontImage, "front")
+        val back = writeImage(shared.backImage, "back")
+        val character = PackCharacter(id, shared.character.name.trim(), shared.character.type, shared.character.assignableTo, front, back, level = shared.character.level, maxHp = shared.character.maxHp, isRadiant = shared.character.isRadiant)
+        writeManifest(manifest.copy(characters = manifest.characters + character))
+        CharacterReference(CUSTOM_PACK_ID, id)
+    }
+
     private fun readManifest(): CharacterPackManifest? {
         if (!manifestFile.exists()) return null
         return try {

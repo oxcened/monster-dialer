@@ -98,6 +98,7 @@ internal fun CharacterTypeTabs(selectedTab: Int, onTabSelected: (Int) -> Unit) {
 
 internal fun LazyListScope.characterTypeItems(
     title: String,
+    pluralTitle: String,
     defaultCharacter: BuiltInCharacter,
     characters: List<InstalledPackCharacter>,
     selected: CharacterReference?,
@@ -108,7 +109,8 @@ internal fun LazyListScope.characterTypeItems(
     addLabel: String,
     isAddEnabled: Boolean = true,
     onDelete: (InstalledPackCharacter) -> Unit = {},
-    onEdit: (InstalledPackCharacter) -> Unit = {}
+    onEdit: (InstalledPackCharacter) -> Unit = {},
+    onShare: (InstalledPackCharacter) -> Unit = {}
 ) {
     val availableSelection = selected?.takeIf { reference ->
         characters.any { CharacterReference(it.packId, it.character.id) == reference }
@@ -133,7 +135,7 @@ internal fun LazyListScope.characterTypeItems(
     val userCharacters = characters.filter { it.isEditable }
     val otherPacks = characters.filter { !it.isEditable }.groupBy { it.packId }
 
-    item { SectionHeader(stringResource(R.string.built_in_characters_section)) }
+    item { SectionHeader(stringResource(R.string.built_in_characters_section, pluralTitle)) }
     item(key = "default") {
         CharacterOptionCard(
             name = defaultCharacter.name,
@@ -152,7 +154,7 @@ internal fun LazyListScope.characterTypeItems(
     }
 
     if (userCharacters.isNotEmpty()) {
-        item { SectionHeader(stringResource(R.string.your_characters)) }
+        item { SectionHeader(stringResource(R.string.your_characters, pluralTitle)) }
         itemsIndexed(items = userCharacters, key = { _, character -> "custom:${character.character.id}" }) { index, installed ->
             val reference = CharacterReference(installed.packId, installed.character.id)
             CharacterOptionCard(
@@ -170,7 +172,8 @@ internal fun LazyListScope.characterTypeItems(
                 },
                 onSelect = { onSelect(reference) },
                 onDelete = if (installed.isDeletable) { { onDelete(installed) } } else null,
-                onEdit = if (installed.isEditable) { { onEdit(installed) } } else null
+                onEdit = if (installed.isEditable) { { onEdit(installed) } } else null,
+                onShare = if (installed.isEditable) { { onShare(installed) } } else null
             )
         }
     }
@@ -202,6 +205,7 @@ internal fun LazyListScope.characterTypeItems(
 
 internal fun LazyGridScope.characterTypeGridItems(
     title: String,
+    pluralTitle: String,
     defaultCharacter: BuiltInCharacter,
     characters: List<InstalledPackCharacter>,
     selected: CharacterReference?,
@@ -212,7 +216,8 @@ internal fun LazyGridScope.characterTypeGridItems(
     addLabel: String,
     isAddEnabled: Boolean = true,
     onDelete: (InstalledPackCharacter) -> Unit = {},
-    onEdit: (InstalledPackCharacter) -> Unit = {}
+    onEdit: (InstalledPackCharacter) -> Unit = {},
+    onShare: (InstalledPackCharacter) -> Unit = {}
 ) {
     val availableSelection = selected?.takeIf { reference ->
         characters.any { CharacterReference(it.packId, it.character.id) == reference }
@@ -239,7 +244,7 @@ internal fun LazyGridScope.characterTypeGridItems(
     val userCharacters = characters.filter { it.isEditable }
     val otherPacks = characters.filter { !it.isEditable }.groupBy { it.packId }
 
-    item(span = { GridItemSpan(2) }) { SectionHeader(stringResource(R.string.built_in_characters_section)) }
+    item(span = { GridItemSpan(2) }) { SectionHeader(stringResource(R.string.built_in_characters_section, pluralTitle)) }
     item(key = "default") {
         CharacterGridItem(
             name = defaultCharacter.name,
@@ -257,7 +262,7 @@ internal fun LazyGridScope.characterTypeGridItems(
     }
 
     if (userCharacters.isNotEmpty()) {
-        item(span = { GridItemSpan(2) }) { SectionHeader(stringResource(R.string.your_characters)) }
+        item(span = { GridItemSpan(2) }) { SectionHeader(stringResource(R.string.your_characters, pluralTitle)) }
         gridItemsIndexed(items = userCharacters, key = { _, character -> "custom:${character.character.id}" }) { index, installed ->
             val reference = CharacterReference(installed.packId, installed.character.id)
             CharacterGridItem(
@@ -274,7 +279,8 @@ internal fun LazyGridScope.characterTypeGridItems(
                 },
                 onSelect = { onSelect(reference) },
                 onDelete = if (installed.isDeletable) { { onDelete(installed) } } else null,
-                onEdit = if (installed.isEditable) { { onEdit(installed) } } else null
+                onEdit = if (installed.isEditable) { { onEdit(installed) } } else null,
+                onShare = if (installed.isEditable) { { onShare(installed) } } else null
             )
         }
     }
@@ -537,7 +543,8 @@ private fun CharacterOptionCard(
     name: String, isRadiant: Boolean = false, isSelected: Boolean,
     roundTop: Boolean, roundBottom: Boolean, artwork: @Composable () -> Unit, onSelect: () -> Unit,
     onDelete: (() -> Unit)? = null,
-    onEdit: (() -> Unit)? = null
+    onEdit: (() -> Unit)? = null,
+    onShare: (() -> Unit)? = null
 ) {
     var showMenu by remember { mutableStateOf(false) }
     val shape = RoundedCornerShape(
@@ -557,7 +564,7 @@ private fun CharacterOptionCard(
                 modifier = Modifier
                     .combinedClickable(
                         onClick = onSelect,
-                        onLongClick = if (onDelete != null || onEdit != null) { { showMenu = true } } else null
+                        onLongClick = if (onDelete != null || onEdit != null || onShare != null) { { showMenu = true } } else null
                     )
                     .padding(16.dp),
                 verticalAlignment = Alignment.CenterVertically,
@@ -598,7 +605,7 @@ private fun CharacterOptionCard(
             }
         }
 
-        if (onDelete != null || onEdit != null) {
+        if (onDelete != null || onEdit != null || onShare != null) {
             DropdownMenu(
                 expanded = showMenu,
                 onDismissRequest = { showMenu = false }
@@ -612,6 +619,18 @@ private fun CharacterOptionCard(
                         },
                         leadingIcon = {
                             AppIcon(LocalAppIcons.current.edit, contentDescription = null, modifier = Modifier.size(18.dp))
+                        }
+                    )
+                }
+                if (onShare != null) {
+                    DropdownMenuItem(
+                        text = { Text(stringResource(R.string.share)) },
+                        onClick = {
+                            showMenu = false
+                            onShare()
+                        },
+                        leadingIcon = {
+                            AppIcon(LocalAppIcons.current.share, contentDescription = null, modifier = Modifier.size(18.dp))
                         }
                     )
                 }
@@ -642,7 +661,8 @@ private fun CharacterGridItem(
     artwork: @Composable () -> Unit,
     onSelect: () -> Unit,
     onDelete: (() -> Unit)? = null,
-    onEdit: (() -> Unit)? = null
+    onEdit: (() -> Unit)? = null,
+    onShare: (() -> Unit)? = null
 ) {
     var showMenu by remember { mutableStateOf(false) }
     Box {
@@ -658,7 +678,7 @@ private fun CharacterGridItem(
                 modifier = Modifier
                     .combinedClickable(
                         onClick = onSelect,
-                        onLongClick = if (onDelete != null || onEdit != null) { { showMenu = true } } else null
+                        onLongClick = if (onDelete != null || onEdit != null || onShare != null) { { showMenu = true } } else null
                     )
                     .fillMaxWidth()
                     .heightIn(min = 184.dp)
@@ -718,7 +738,7 @@ private fun CharacterGridItem(
             }
         }
 
-        if (onDelete != null || onEdit != null) {
+        if (onDelete != null || onEdit != null || onShare != null) {
             DropdownMenu(
                 expanded = showMenu,
                 onDismissRequest = { showMenu = false }
@@ -732,6 +752,18 @@ private fun CharacterGridItem(
                         },
                         leadingIcon = {
                             AppIcon(LocalAppIcons.current.edit, contentDescription = null, modifier = Modifier.size(18.dp))
+                        }
+                    )
+                }
+                if (onShare != null) {
+                    DropdownMenuItem(
+                        text = { Text(stringResource(R.string.share)) },
+                        onClick = {
+                            showMenu = false
+                            onShare()
+                        },
+                        leadingIcon = {
+                            AppIcon(LocalAppIcons.current.share, contentDescription = null, modifier = Modifier.size(18.dp))
                         }
                     )
                 }

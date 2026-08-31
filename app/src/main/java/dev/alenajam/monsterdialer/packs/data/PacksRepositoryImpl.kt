@@ -14,6 +14,7 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.io.File
+import java.util.zip.ZipFile
 import javax.inject.Inject
 import javax.inject.Singleton
 import kotlinx.coroutines.CoroutineScope
@@ -68,6 +69,28 @@ class PacksRepositoryImpl @Inject constructor(
         }
     }
 
+    suspend fun previewPackFromUri(uri: Uri): CharacterPackPreview = withContext(Dispatchers.IO) {
+        val archive = File.createTempFile("pack-preview-", ".zip", app.cacheDir)
+        try {
+            app.contentResolver.openInputStream(uri)?.use { input ->
+                archive.outputStream().use { output -> input.copyWithLimit(output) }
+            } ?: throw Exception("Unable to open stream")
+            val pack = CharacterPackArchiveReader().read(archive)
+            val previewImagePath = pack.manifest.characters
+                .asSequence()
+                .mapNotNull { character -> character.frontImage ?: character.backImage }
+                .firstOrNull()
+            val previewImage = previewImagePath?.let { path ->
+                ZipFile(archive).use { zip ->
+                    zip.getInputStream(requireNotNull(zip.getEntry(path))).use { it.readBytes() }
+                }
+            }
+            CharacterPackPreview(pack.manifest, previewImage)
+        } finally {
+            archive.delete()
+        }
+    }
+
     override suspend fun togglePack(packId: String, enabled: Boolean) = withContext(Dispatchers.IO) {
         if (!enabled) {
             assignmentRepository.clearAssignmentsForPack(packId)
@@ -81,5 +104,22 @@ class PacksRepositoryImpl @Inject constructor(
         catalog.remove(packId)
         File(storageRoot, packId).deleteRecursively()
         refreshPacks()
+    }
+
+    private fun java.io.InputStream.copyWithLimit(output: java.io.OutputStream) {
+        val buffer = ByteArray(BufferSize)
+        var total = 0L
+        while (true) {
+            val read = read(buffer)
+            if (read < 0) break
+            total += read
+            if (total > MaxArchiveBytes) throw CharacterPackValidationException("Pack archive is too large")
+            output.write(buffer, 0, read)
+        }
+    }
+
+    private companion object {
+        const val BufferSize = 8 * 1024
+        const val MaxArchiveBytes = 24L * 1024 * 1024
     }
 }
