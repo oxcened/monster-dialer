@@ -44,7 +44,7 @@
     <string name="selected" comment="Status label for the currently chosen option.">Seleccionado</string>
     <string name="locked">Bloqueado</string>
     <string name="radiant_variant_locked_title">Variante radiante bloqueada</string>
-    <string name="radiant_variant_locked_message">Encuentra un %1$s radiante en un combate salvaje para desbloquearlo y asignarlo.</string>
+    <string name="radiant_variant_locked_message">Al encontrar un %1$s radiante en un combate salvaje, se desbloquea automáticamente al empezar el combate. Después podrás asignarlo.</string>
     <string name="show_grid_view" comment="Accessibility label for the control that switches the character selector to a grid.">Mostrar cuadrícula</string>
     <string name="show_list_view" comment="Accessibility label for the control that switches the character selector to a list.">Mostrar lista</string>
     <string name="jump_to_selected_character" comment="Accessibility label for a button that scrolls to the selected character.">Ir al personaje seleccionado</string>

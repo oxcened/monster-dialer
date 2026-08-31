@@ -52,7 +52,7 @@
     <string name="selected" comment="Status label for the currently chosen option.">Selected</string>
     <string name="locked" comment="Status label for a character variant that must be unlocked before selection.">Locked</string>
     <string name="radiant_variant_locked_title" comment="Title of the dialog shown for a locked radiant character variant.">Radiant variant locked</string>
-    <string name="radiant_variant_locked_message" comment="Explains how to unlock a radiant character variant; %1$s is the character name.">Encounter a radiant %1$s in a wild battle to unlock and assign it.</string>
+    <string name="radiant_variant_locked_message" comment="Explains how to unlock a radiant character variant; %1$s is the character name.">When you encounter a radiant %1$s in a wild battle, it unlocks automatically as the battle begins. You can then assign it.</string>
     <string name="show_grid_view" comment="Accessibility label for the control that switches the character selector to a grid.">Show grid view</string>
     <string name="show_list_view" comment="Accessibility label for the control that switches the character selector to a list.">Show list view</string>
     <string name="jump_to_selected_character" comment="Accessibility label for a button that scrolls to the selected character.">Jump to selected character</string>

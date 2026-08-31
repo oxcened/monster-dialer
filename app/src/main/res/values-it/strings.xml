@@ -44,7 +44,7 @@
     <string name="selected" comment="Status label for the currently chosen option.">Selezionato</string>
     <string name="locked">Bloccato</string>
     <string name="radiant_variant_locked_title">Variante radiosa bloccata</string>
-    <string name="radiant_variant_locked_message">Incontra un %1$s radioso in una battaglia selvaggia per sbloccarlo e assegnarlo.</string>
+    <string name="radiant_variant_locked_message">Quando incontri un %1$s radioso in una battaglia selvaggia, si sblocca automaticamente all’inizio della battaglia. Potrai poi assegnarlo.</string>
     <string name="show_grid_view" comment="Accessibility label for the control that switches the character selector to a grid.">Mostra griglia</string>
     <string name="show_list_view" comment="Accessibility label for the control that switches the character selector to a list.">Mostra elenco</string>
     <string name="jump_to_selected_character" comment="Accessibility label for a button that scrolls to the selected character.">Vai al personaggio selezionato</string>
