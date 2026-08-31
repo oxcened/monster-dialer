@@ -8,16 +8,29 @@ import dev.alenajam.monsterdialer.packs.data.CharacterAssignmentTarget
 import dev.alenajam.monsterdialer.packs.data.CharacterType
 import dev.alenajam.monsterdialer.packs.data.CharacterVisualVariant
 import dev.alenajam.monsterdialer.packs.data.InstalledPackCharacter
+import javax.inject.Inject
+import javax.inject.Singleton
 import kotlinx.coroutines.runBlocking
 import kotlin.random.Random
 
 /** Builds a call encounter from local assignments, retaining the bundled fallback at all times. */
-class AssignedCharacterEncounterFactory(
+@Singleton
+class AssignedCharacterEncounterFactory @Inject constructor(
     private val charactersRepository: CharactersRepository,
     private val assignmentRepository: CharacterAssignmentRepository,
     private val radiantUnlocks: RadiantVariantUnlockStore,
-    private val random: Random = Random.Default,
 ) {
+    private var random: Random = Random.Default
+
+    constructor(
+        charactersRepository: CharactersRepository,
+        assignmentRepository: CharacterAssignmentRepository,
+        radiantUnlocks: RadiantVariantUnlockStore,
+        random: Random,
+    ) : this(charactersRepository, assignmentRepository, radiantUnlocks) {
+        this.random = random
+    }
+
     private var cachedCall: CallKey? = null
     private var cachedEncounter: BattleEncounter? = null
 
