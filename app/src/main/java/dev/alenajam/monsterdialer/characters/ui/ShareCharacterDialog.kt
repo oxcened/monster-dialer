@@ -42,6 +42,7 @@ internal fun ShareCharacterDialog(
     val defaultLicense = stringResource(R.string.default_license)
     var license by remember(characterId, defaultLicense) { mutableStateOf(defaultLicense) }
     val fileName = stringResource(R.string.shared_character_file_name, characterName)
+    val shareTitle = stringResource(R.string.share_character_title, characterName)
     val createDocument = rememberLauncherForActivityResult(
         ActivityResultContracts.CreateDocument(SharedCharacterArchive.MimeType)
     ) { destination ->
@@ -61,7 +62,7 @@ internal fun ShareCharacterDialog(
                         clipData = ClipData.newRawUri(fileName, file)
                         addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
                     },
-                    context.getString(R.string.share_character_title, characterName),
+                    shareTitle,
                 ),
             )
             viewModel.consumeSharedFile()

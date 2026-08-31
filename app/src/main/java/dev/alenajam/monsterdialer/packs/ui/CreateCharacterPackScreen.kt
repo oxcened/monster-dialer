@@ -4,6 +4,7 @@ import android.content.ClipData
 import android.content.Intent
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -13,13 +14,14 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.OutlinedButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -32,6 +34,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
@@ -65,6 +68,7 @@ fun CreateCharacterPackScreen(
     }
     val canExport = selectedIds.isNotEmpty() && name.isNotBlank() && version.isNotBlank() && license.isNotBlank()
     val fileName = stringResource(R.string.character_pack_file_name, name.ifBlank { stringResource(R.string.character_pack_default_name) })
+    val shareTitle = stringResource(R.string.share_character_pack)
     val save = rememberLauncherForActivityResult(ActivityResultContracts.CreateDocument(CharacterPackArchive.MimeType)) { uri ->
         if (uri != null) viewModel.export(request, uri, context)
     }
@@ -76,7 +80,7 @@ fun CreateCharacterPackScreen(
                 putExtra(Intent.EXTRA_STREAM, file)
                 clipData = ClipData.newRawUri(fileName, file)
                 addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
-            }, context.getString(R.string.share_character_pack)))
+            }, shareTitle))
             viewModel.consumeSharedFile()
         }
     }
@@ -103,12 +107,25 @@ fun CreateCharacterPackScreen(
                     Text(stringResource(R.string.pack_details))
                     OutlinedTextField(name, { name = it }, label = { Text(stringResource(R.string.pack_name_label)) }, modifier = Modifier.fillMaxWidth(), singleLine = true)
                     OutlinedTextField(creator, { creator = it }, label = { Text(stringResource(R.string.creator_label)) }, modifier = Modifier.fillMaxWidth(), singleLine = true)
-                    OutlinedButton(onClick = { advancedExpanded = !advancedExpanded }) {
-                        Text(stringResource(R.string.advanced_section))
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .clip(RoundedCornerShape(12.dp))
+                            .clickable { advancedExpanded = !advancedExpanded }
+                            .padding(vertical = 8.dp),
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.SpaceBetween,
+                    ) {
+                        Text(
+                            text = stringResource(R.string.advanced_section),
+                            style = MaterialTheme.typography.titleSmall,
+                            color = MaterialTheme.colorScheme.primary,
+                        )
                         AppIcon(
                             icon = if (advancedExpanded) LocalAppIcons.current.arrowUp else LocalAppIcons.current.arrowDown,
                             contentDescription = null,
-                            modifier = Modifier.padding(start = 8.dp),
+                            modifier = Modifier.size(20.dp),
+                            tint = MaterialTheme.colorScheme.primary,
                         )
                     }
                     if (advancedExpanded) {
