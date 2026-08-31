@@ -45,6 +45,9 @@
     <string name="locked">Bloqueado</string>
     <string name="radiant_variant_locked_title">Variante radiante bloqueada</string>
     <string name="radiant_variant_locked_message">Quando encontras um %1$s radiante numa batalha selvagem, é desbloqueado automaticamente quando a batalha começa. Podes depois atribuí-lo.</string>
+    <string name="radiant_unlock_notifications">Desbloqueios radiantes</string>
+    <string name="radiant_variant_unlocked_title">Variante radiante desbloqueada!</string>
+    <string name="radiant_variant_unlocked_message">%1$s está agora pronto para atribuir.</string>
     <string name="show_grid_view" comment="Accessibility label for the control that switches the character selector to a grid.">Mostrar grelha</string>
     <string name="show_list_view" comment="Accessibility label for the control that switches the character selector to a list.">Mostrar lista</string>
     <string name="jump_to_selected_character" comment="Accessibility label for a button that scrolls to the selected character.">Ir para a personagem selecionada</string>

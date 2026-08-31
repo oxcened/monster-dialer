@@ -14,6 +14,8 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -33,6 +35,7 @@ import dev.alenajam.monsterdialer.characters.data.CharacterAssignmentRepository
 import dev.alenajam.monsterdialer.characters.data.CharactersRepository
 import dev.alenajam.monsterdialer.battle.data.AssignedCharacterEncounterFactory
 import dev.alenajam.monsterdialer.characters.data.RadiantVariantUnlockStore
+import dev.alenajam.monsterdialer.characters.data.RadiantVariantUnlockNotifier
 import dev.alenajam.monsterdialer.R
 import dev.alenajam.monsterdialer.battle.ui.BattleScreen
 import dev.alenajam.monsterdialer.app.ui.rememberMonsterIcons
@@ -54,6 +57,7 @@ class MonsterInCallUI @Inject constructor(
     private val charactersRepository: CharactersRepository,
     private val assignmentRepository: CharacterAssignmentRepository,
     private val radiantUnlocks: RadiantVariantUnlockStore,
+    private val radiantUnlockNotifier: RadiantVariantUnlockNotifier,
 ) : InCallUI {
     @OptIn(ExperimentalMaterial3Api::class)
     @Composable
@@ -79,6 +83,7 @@ class MonsterInCallUI @Inject constructor(
         val showSplitInManage = canManageConference && !hasSecondaryCall
         var showManageSheet by remember { mutableStateOf(false) }
         val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
+        val radiantUnlockSnackbar = remember { SnackbarHostState() }
 
         LaunchedEffect(canManageConference) {
             if (!canManageConference) showManageSheet = false
@@ -170,6 +175,23 @@ class MonsterInCallUI @Inject constructor(
                         modifier = Modifier.fillMaxSize()
                     ) {
                         if (uiState.status != CallStatus.IDLE) {
+                            val encounter = encounterFactory.forCall(
+                                callId = "${uiState.callerName}:${uiState.callerNumber}",
+                                contactKey = uiState.callerNumber,
+                                callerName = uiState.callerName.ifBlank {
+                                    uiState.callerNumber.ifBlank { stringResource(R.string.unknown) }
+                                },
+                                isAnonymous = uiState.callerName.isBlank() && uiState.callerNumber.isBlank()
+                            )
+                            val radiantUnlockMessage = encounter.unlockedRadiantName?.let { name ->
+                                stringResource(R.string.radiant_variant_unlocked_message, name)
+                            }
+                            LaunchedEffect(encounter.id, radiantUnlockMessage) {
+                                radiantUnlockMessage?.let { message ->
+                                    radiantUnlockNotifier.show(requireNotNull(encounter.unlockedRadiantName))
+                                    radiantUnlockSnackbar.showSnackbar(message)
+                                }
+                            }
                             InCallDetails(
                                 callerName = uiState.callerName,
                                 callerNumber = uiState.callerNumber,
@@ -198,14 +220,7 @@ class MonsterInCallUI @Inject constructor(
                                 contentAlignment = Alignment.Center
                             ) {
                                 BattleScreen(
-                                    encounter = encounterFactory.forCall(
-                                        callId = "${uiState.callerName}:${uiState.callerNumber}",
-                                        contactKey = uiState.callerNumber,
-                                        callerName = uiState.callerName.ifBlank {
-                                            uiState.callerNumber.ifBlank { stringResource(R.string.unknown) }
-                                        },
-                                        isAnonymous = uiState.callerName.isBlank() && uiState.callerNumber.isBlank()
-                                    ),
+                                    encounter = encounter,
                                     modifier = Modifier
                                         .heightIn(max = 380.dp)
                                         .aspectRatio(160f / 144f)
@@ -223,6 +238,14 @@ class MonsterInCallUI @Inject constructor(
                                 .align(Alignment.TopCenter)
                         )
                     }
+
+                    SnackbarHost(
+                        hostState = radiantUnlockSnackbar,
+                        modifier = Modifier
+                            .statusBarsPadding()
+                            .align(Alignment.TopCenter)
+                            .padding(horizontal = 16.dp, vertical = 8.dp)
+                    )
                 }
             }
         }

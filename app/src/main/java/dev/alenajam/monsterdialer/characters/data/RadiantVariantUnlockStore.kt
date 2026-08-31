@@ -23,12 +23,13 @@ class RadiantVariantUnlockStore @Inject constructor(
     val unlocked: StateFlow<Set<CharacterReference>> = mutableUnlocked.asStateFlow()
 
     @Synchronized
-    fun unlock(reference: CharacterReference) {
-        if (reference in mutableUnlocked.value) return
+    fun unlock(reference: CharacterReference): Boolean {
+        if (reference in mutableUnlocked.value) return false
         val updated = mutableUnlocked.value + reference
         file.parentFile?.mkdirs()
         file.writeText(json.encodeToString(RadiantVariantUnlockDocument(updated.toList())))
         mutableUnlocked.value = updated
+        return true
     }
 
     private fun read(): Set<CharacterReference> = runCatching {

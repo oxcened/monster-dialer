@@ -45,6 +45,9 @@
     <string name="locked">Blocat</string>
     <string name="radiant_variant_locked_title">Variantă radiantă blocată</string>
     <string name="radiant_variant_locked_message">Când întâlnești un %1$s radiant într-o luptă sălbatică, se deblochează automat la începutul luptei. Îl poți apoi atribui.</string>
+    <string name="radiant_unlock_notifications">Deblocări radiante</string>
+    <string name="radiant_variant_unlocked_title">Variantă radiantă deblocată!</string>
+    <string name="radiant_variant_unlocked_message">%1$s poate fi acum atribuit.</string>
     <string name="show_grid_view" comment="Accessibility label for the control that switches the character selector to a grid.">Afișează grila</string>
     <string name="show_list_view" comment="Accessibility label for the control that switches the character selector to a list.">Afișează lista</string>
     <string name="jump_to_selected_character" comment="Accessibility label for a button that scrolls to the selected character.">Salt la personajul selectat</string>

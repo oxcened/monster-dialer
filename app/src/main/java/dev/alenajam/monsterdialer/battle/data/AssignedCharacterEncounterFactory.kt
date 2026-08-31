@@ -65,7 +65,7 @@ class AssignedCharacterEncounterFactory(
                     backSprite = null,
                     variant = variant,
                 )
-                radiantUnlocks.unlock(
+                val wasUnlocked = radiantUnlocks.unlock(
                     dev.alenajam.monsterdialer.packs.data.CharacterReference(
                         wildCharacter.packId,
                         wildCharacter.character.id,
@@ -79,6 +79,7 @@ class AssignedCharacterEncounterFactory(
                     enemyTrainerName = null,
                     playerTrainerSprite = playerTrainer,
                     enemyTrainerSprite = wildMonster.frontSprite,
+                    unlockedRadiantName = wildCharacter.character.name.takeIf { wasUnlocked },
                 )
             }
             

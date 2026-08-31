@@ -45,6 +45,9 @@
     <string name="locked">مقفل</string>
     <string name="radiant_variant_locked_title">النسخة المتألقة مقفلة</string>
     <string name="radiant_variant_locked_message">عندما تقابل %1$s متألقًا في معركة برية، يُفتح تلقائيًا عند بدء المعركة. يمكنك بعدها تعيينه.</string>
+    <string name="radiant_unlock_notifications">فتح النسخ المتألقة</string>
+    <string name="radiant_variant_unlocked_title">تم فتح النسخة المتألقة!</string>
+    <string name="radiant_variant_unlocked_message">أصبح %1$s جاهزًا للتعيين الآن.</string>
     <string name="show_grid_view" comment="Accessibility label for the control that switches the character selector to a grid.">إظهار عرض الشبكة</string>
     <string name="show_list_view" comment="Accessibility label for the control that switches the character selector to a list.">إظهار عرض القائمة</string>
     <string name="jump_to_selected_character" comment="Accessibility label for a button that scrolls to the selected character.">الانتقال إلى الشخصية المحددة</string>
