@@ -25,6 +25,7 @@ import dev.alenajam.monsterdialer.R
 import dev.alenajam.monsterdialer.app.ui.LocalMonsterAppIcons
 import dev.alenajam.monsterdialer.app.ui.rememberMonsterIcons
 import dev.alenajam.monsterdialer.app.ui.rememberMonsterTypography
+import dev.alenajam.monsterdialer.characters.ui.CharactersHelpScreen
 import dev.alenajam.monsterdialer.characters.ui.AddCharacterScreen
 import dev.alenajam.monsterdialer.characters.ui.ContactCharacterSettingsContent
 import dev.alenajam.monsterdialer.characters.ui.ContactPickerDestination
@@ -200,6 +201,14 @@ class MainActivity : AppCompatActivity() {
                                     CreateCharacterPackScreen(onNavigateBack)
                                 }
                             )
+                        ),
+                        SettingsSubpage(
+                            title = stringResource(R.string.characters_help_title),
+                            description = stringResource(R.string.characters_help_description),
+                            content = { CharactersHelpScreen() },
+                            visibleInSettings = false,
+                            isScrollable = true,
+                            topContentPadding = 0.dp
                         )
                         )
                     )

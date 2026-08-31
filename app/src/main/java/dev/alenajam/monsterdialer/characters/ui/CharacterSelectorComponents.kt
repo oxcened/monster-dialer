@@ -738,7 +738,7 @@ private fun CharacterGridItem(
                         onLongClick = if (onDelete != null || onEdit != null || onShare != null) { { showMenu = true } } else null
                     )
                     .fillMaxWidth()
-                    .heightIn(min = 184.dp)
+                    .height(200.dp)
                     .padding(16.dp),
                 horizontalAlignment = Alignment.Start,
                 verticalArrangement = Arrangement.spacedBy(4.dp)
@@ -761,23 +761,25 @@ private fun CharacterGridItem(
                     overflow = TextOverflow.Ellipsis
                 )
                 
-                if (isRadiant) {
-                    Row(
-                        verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.spacedBy(4.dp)
-                    ) {
-                        Text(
-                            text = stringResource(R.string.radiant),
-                            style = MaterialTheme.typography.bodySmall,
-                            color = MaterialTheme.colorScheme.primary,
-                            maxLines = 1
-                        )
-                        AppIcon(
-                            icon = LocalMonsterAppIcons.current.radiant,
-                            contentDescription = null,
-                            modifier = Modifier.size(12.dp),
-                            tint = MaterialTheme.colorScheme.primary
-                        )
+                Box(modifier = Modifier.height(20.dp)) {
+                    if (isRadiant) {
+                        Row(
+                            verticalAlignment = Alignment.CenterVertically,
+                            horizontalArrangement = Arrangement.spacedBy(4.dp)
+                        ) {
+                            Text(
+                                text = stringResource(R.string.radiant),
+                                style = MaterialTheme.typography.bodySmall,
+                                color = MaterialTheme.colorScheme.primary,
+                                maxLines = 1
+                            )
+                            AppIcon(
+                                icon = LocalMonsterAppIcons.current.radiant,
+                                contentDescription = null,
+                                modifier = Modifier.size(12.dp),
+                                tint = MaterialTheme.colorScheme.primary
+                            )
+                        }
                     }
                 }
                 
@@ -789,6 +791,12 @@ private fun CharacterGridItem(
                             text = stringResource(R.string.selected),
                             style = MaterialTheme.typography.labelLarge,
                             color = MaterialTheme.colorScheme.primary
+                        )
+                    } else if (!isUnlocked) {
+                        Text(
+                            text = stringResource(R.string.locked),
+                            style = MaterialTheme.typography.labelLarge,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant
                         )
                     }
                 }
@@ -863,7 +871,7 @@ private fun RadiantVariantUnlockDialog(characterName: String, onDismiss: () -> U
 @Composable
 private fun NoAdditionalCharacterGridItem(title: String, shape: Shape) {
     Card(
-        modifier = Modifier.fillMaxWidth().height(184.dp),
+        modifier = Modifier.fillMaxWidth().height(200.dp),
         shape = shape,
         colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainerLow),
         elevation = CardDefaults.cardElevation(defaultElevation = 0.5.dp)
