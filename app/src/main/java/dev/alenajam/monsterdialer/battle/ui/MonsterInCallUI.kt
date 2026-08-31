@@ -69,12 +69,17 @@ class MonsterInCallUI @Inject constructor(
         val canHold = uiState.canHold && !canSwap
         val showSplitInManage = canManageConference && !hasSecondaryCall
         var showManageSheet by remember { mutableStateOf(false) }
+        var hasObservedCall by remember { mutableStateOf(false) }
         val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
         val radiantUnlockSnackbar = remember { SnackbarHostState() }
 
         LaunchedEffect(uiState.status) {
             if (uiState.status == CallStatus.IDLE) {
-                encounterFactory.clearCachedEncounter()
+                if (hasObservedCall) {
+                    encounterFactory.clearCachedEncounter()
+                }
+            } else {
+                hasObservedCall = true
             }
         }
 
@@ -169,7 +174,7 @@ class MonsterInCallUI @Inject constructor(
                     ) {
                         if (uiState.status != CallStatus.IDLE) {
                             val encounter = encounterFactory.forCall(
-                                callId = "${uiState.callerName}:${uiState.callerNumber}",
+                                callId = uiState.callId,
                                 contactKey = uiState.callerNumber,
                                 callerName = uiState.callerName.ifBlank {
                                     uiState.callerNumber.ifBlank { stringResource(R.string.unknown) }

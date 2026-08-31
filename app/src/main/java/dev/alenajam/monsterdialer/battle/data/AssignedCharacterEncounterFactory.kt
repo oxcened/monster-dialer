@@ -19,6 +19,7 @@ class AssignedCharacterEncounterFactory @Inject constructor(
     private val charactersRepository: CharactersRepository,
     private val assignmentRepository: CharacterAssignmentRepository,
     private val radiantUnlocks: RadiantVariantUnlockStore,
+    private val activeEncounterStore: ActiveBattleEncounterStore,
 ) {
     private var random: Random = Random.Default
 
@@ -26,22 +27,24 @@ class AssignedCharacterEncounterFactory @Inject constructor(
         charactersRepository: CharactersRepository,
         assignmentRepository: CharacterAssignmentRepository,
         radiantUnlocks: RadiantVariantUnlockStore,
+        activeEncounterStore: ActiveBattleEncounterStore,
         random: Random,
-    ) : this(charactersRepository, assignmentRepository, radiantUnlocks) {
+    ) : this(charactersRepository, assignmentRepository, radiantUnlocks, activeEncounterStore) {
         this.random = random
     }
 
-    private var cachedCall: CallKey? = null
+    private var cachedCall: ActiveCallKey? = null
     private var cachedEncounter: BattleEncounter? = null
 
     /** Ends the current call session so the next call receives a fresh encounter roll. */
     fun clearCachedEncounter() {
         cachedCall = null
         cachedEncounter = null
+        activeEncounterStore.clear()
     }
 
     fun forCall(callId: String, contactKey: String, callerName: String, isAnonymous: Boolean): BattleEncounter {
-        val call = CallKey(callId, contactKey, callerName, isAnonymous)
+        val call = ActiveCallKey(callId, contactKey, callerName, isAnonymous)
         if (cachedCall == call) return requireNotNull(cachedEncounter)
 
         val fallback = BattleEncounterFactory.forCall(callId, callerName, isAnonymous)
@@ -73,43 +76,58 @@ class AssignedCharacterEncounterFactory @Inject constructor(
                 assignmentRepository.getAssignedCharacter(contactKey, CharacterType.Trainer)
                     ?.let { charactersRepository.findCharacter(it, CharacterAssignmentTarget.Contact, CharacterType.Trainer) }
                     ?.contactTrainerSprite(fallback.enemyTrainerSprite)
-                    ?: fallback.enemyTrainerSprite
+                ?: fallback.enemyTrainerSprite
+            }
+
+            val regularEncounter = fallback.copy(
+                player = player,
+                enemy = enemy,
+                playerTrainerSprite = playerTrainer,
+                enemyTrainerSprite = enemyTrainer,
+            )
+            activeEncounterStore.restore(call)?.let { savedEncounter ->
+                val reference = savedEncounter.radiantReference ?: return@runBlocking regularEncounter
+                val character = charactersRepository.findCharacter(
+                    reference,
+                    CharacterAssignmentTarget.Contact,
+                    CharacterType.Monster,
+                ) ?: return@runBlocking regularEncounter
+                val variant = character.character.variant(reference.variantId)?.takeIf(CharacterVisualVariant::isRadiant)
+                    ?: return@runBlocking regularEncounter
+                return@runBlocking radiantWildEncounter(
+                    fallback = fallback,
+                    player = player,
+                    playerTrainer = playerTrainer,
+                    character = character,
+                    variant = variant,
+                    wasUnlocked = false,
+                )
             }
 
             val radiantWild = randomRadiantWild()
             if (radiantWild != null && (shouldForceRadiantEncounter() || random.nextInt(RadiantEncounterDenominator) == 0)) {
                 val (wildCharacter, variant) = radiantWild
-                val wildFrontSprite = requireNotNull(wildCharacter.imageFor(variant.frontImage))
-                val wildMonster = wildCharacter.asBattleMonster(
-                    frontSprite = wildFrontSprite,
-                    backSprite = null,
-                    variant = variant,
+                val reference = dev.alenajam.monsterdialer.packs.data.CharacterReference(
+                    wildCharacter.packId,
+                    wildCharacter.character.id,
+                    variant.id,
                 )
                 val wasUnlocked = radiantUnlocks.unlock(
-                    dev.alenajam.monsterdialer.packs.data.CharacterReference(
-                        wildCharacter.packId,
-                        wildCharacter.character.id,
-                        variant.id,
-                    )
+                    reference,
                 )
-                return@runBlocking fallback.copy(
-                    type = EncounterType.RadiantWild,
+                activeEncounterStore.save(call, reference)
+                return@runBlocking radiantWildEncounter(
+                    fallback = fallback,
                     player = player,
-                    enemy = wildMonster,
-                    enemyTrainerName = null,
-                    playerTrainerSprite = playerTrainer,
-                    enemyTrainerSprite = wildMonster.frontSprite,
-                    unlockedRadiantName = wildCharacter.character.name.takeIf { wasUnlocked },
-                    unlockedRadiantFrontSpritePath = (wildFrontSprite as? BattleVisualAsset.LocalFile)?.path,
+                    playerTrainer = playerTrainer,
+                    character = wildCharacter,
+                    variant = variant,
+                    wasUnlocked = wasUnlocked,
                 )
             }
-            
-            fallback.copy(
-                player = player,
-                enemy = enemy,
-                playerTrainerSprite = playerTrainer,
-                enemyTrainerSprite = enemyTrainer
-            )
+
+            activeEncounterStore.save(call, radiantReference = null)
+            regularEncounter
         }.also { encounter ->
             cachedCall = call
             cachedEncounter = encounter
@@ -129,6 +147,32 @@ class AssignedCharacterEncounterFactory @Inject constructor(
 
     private fun shouldForceRadiantEncounter(): Boolean =
         BuildConfig.DEBUG && BuildConfig.FORCE_RADIANT_ENCOUNTERS
+
+    private fun radiantWildEncounter(
+        fallback: BattleEncounter,
+        player: BattleMonster,
+        playerTrainer: BattleVisualAsset,
+        character: InstalledPackCharacter,
+        variant: CharacterVisualVariant,
+        wasUnlocked: Boolean,
+    ): BattleEncounter {
+        val wildFrontSprite = requireNotNull(character.imageFor(variant.frontImage))
+        val wildMonster = character.asBattleMonster(
+            frontSprite = wildFrontSprite,
+            backSprite = null,
+            variant = variant,
+        )
+        return fallback.copy(
+            type = EncounterType.RadiantWild,
+            player = player,
+            enemy = wildMonster,
+            enemyTrainerName = null,
+            playerTrainerSprite = playerTrainer,
+            enemyTrainerSprite = wildMonster.frontSprite,
+            unlockedRadiantName = character.character.name.takeIf { wasUnlocked },
+            unlockedRadiantFrontSpritePath = (wildFrontSprite as? BattleVisualAsset.LocalFile)?.path,
+        )
+    }
 
     private fun InstalledPackCharacter.asPlayerBattleMonster(fallback: BattleMonster, variantId: String): BattleMonster {
         val variant = character.variant(variantId) ?: return fallback
@@ -183,10 +227,4 @@ class AssignedCharacterEncounterFactory @Inject constructor(
         const val DefaultMaxHp = 20
     }
 
-    private data class CallKey(
-        val callId: String,
-        val contactKey: String,
-        val callerName: String,
-        val isAnonymous: Boolean,
-    )
 }

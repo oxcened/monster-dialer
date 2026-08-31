@@ -5,6 +5,7 @@ import dev.alenajam.monsterdialer.characters.data.CharactersRepositoryImpl
 import dev.alenajam.monsterdialer.characters.data.RadiantVariantUnlockStore
 import dev.alenajam.monsterdialer.characters.data.CharacterAssignmentRepositoryImpl
 import dev.alenajam.monsterdialer.battle.data.AssignedCharacterEncounterFactory
+import dev.alenajam.monsterdialer.battle.data.ActiveBattleEncounterStore
 import dev.alenajam.monsterdialer.battle.data.BattleEncounterFactory
 import dev.alenajam.monsterdialer.battle.data.EncounterType
 import dev.alenajam.monsterdialer.packs.data.CharacterAssignmentTarget
@@ -36,7 +37,10 @@ class AssignedCharacterEncounterFactoryTest {
     private val assignmentRepository by lazy { CharacterAssignmentRepositoryImpl(store) }
     private val charactersRepository by lazy { CharactersRepositoryImpl(repository, assignmentRepository) }
     private val radiantUnlocks by lazy { RadiantVariantUnlockStore(storageRoot) }
-    private val factory by lazy { AssignedCharacterEncounterFactory(charactersRepository, assignmentRepository, radiantUnlocks) }
+    private val activeEncounterStore by lazy { ActiveBattleEncounterStore(storageRoot) }
+    private val factory by lazy {
+        AssignedCharacterEncounterFactory(charactersRepository, assignmentRepository, radiantUnlocks, activeEncounterStore)
+    }
 
     @Test
     fun forCallPicksAssignedMonsters() {
@@ -96,6 +100,7 @@ class AssignedCharacterEncounterFactoryTest {
             charactersRepository,
             assignmentRepository,
             radiantUnlocks,
+            activeEncounterStore,
             random = AlwaysRadiantRandom,
         )
 
@@ -104,6 +109,31 @@ class AssignedCharacterEncounterFactoryTest {
         assertEquals(EncounterType.RadiantWild, encounter.type)
         assertEquals("Radiant Monster", encounter.enemy?.name)
         assertEquals(true, encounter.enemy?.isRadiant)
+    }
+
+    @Test
+    fun radiantEncounterSurvivesFactoryRecreationForTheSameCall() {
+        setupRadiantPack()
+        val firstFactory = AssignedCharacterEncounterFactory(
+            charactersRepository,
+            assignmentRepository,
+            radiantUnlocks,
+            activeEncounterStore,
+            random = AlwaysRadiantRandom,
+        )
+        firstFactory.forCall("telecom-call-1", "123", "Alex", isAnonymous = false)
+
+        val recreatedFactory = AssignedCharacterEncounterFactory(
+            charactersRepository,
+            assignmentRepository,
+            radiantUnlocks,
+            activeEncounterStore,
+            random = NeverRadiantRandom,
+        )
+        val restoredEncounter = recreatedFactory.forCall("telecom-call-1", "123", "Alex", isAnonymous = false)
+
+        assertEquals(EncounterType.RadiantWild, restoredEncounter.type)
+        assertEquals("Radiant Monster", restoredEncounter.enemy?.name)
     }
 
     @Test
@@ -203,5 +233,9 @@ class AssignedCharacterEncounterFactoryTest {
 
     private object AlwaysRadiantRandom : Random() {
         override fun nextBits(bitCount: Int): Int = 0
+    }
+
+    private object NeverRadiantRandom : Random() {
+        override fun nextBits(bitCount: Int): Int = Int.MAX_VALUE
     }
 }
