@@ -31,7 +31,7 @@ class CharacterPackExportRepository @Inject constructor(
         require(selected.size == request.characterIds.size) { "One or more selected characters are unavailable" }
 
         val manifest = CharacterPackManifest(
-            formatVersion = CharacterPackValidator.SupportedFormatVersion,
+            formatVersion = CharacterPackValidator.CurrentFormatVersion,
             id = request.id.trim(),
             name = request.name.trim(),
             version = request.version.trim(),
@@ -49,6 +49,8 @@ class CharacterPackExportRepository @Inject constructor(
                 listOfNotNull(
                     exported.character.frontImage to exported.frontImageFile,
                     exported.character.backImage to exported.backImageFile,
+                    exported.character.radiantFrontImage to exported.radiantFrontImageFile,
+                    exported.character.radiantBackImage to exported.radiantBackImageFile,
                 ).filter { (path, file) -> path != null && file?.isFile == true }
             }.forEach { (path, file) ->
                 zip.putNextEntry(ZipEntry(requireNotNull(path)))

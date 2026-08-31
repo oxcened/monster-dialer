@@ -56,7 +56,9 @@ class CharacterPackRepository(
             manifest.characters
                 .filter { character ->
                     (character.frontImage == null || File(directory, character.frontImage).isFile) &&
-                        (character.backImage == null || File(directory, character.backImage).isFile)
+                        (character.backImage == null || File(directory, character.backImage).isFile) &&
+                        (character.radiantFrontImage == null || File(directory, character.radiantFrontImage).isFile) &&
+                        (character.radiantBackImage == null || File(directory, character.radiantBackImage).isFile)
                 }
                 .map { character -> 
                     val isCustom = packId == CustomCharacterRepository.CUSTOM_PACK_ID

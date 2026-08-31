@@ -127,6 +127,9 @@
     <string name="character_sprites_section" comment="Heading for the character sprites section.">Sprite</string>
     <string name="front_sprite_label" comment="Label for the front sprite picker.">Sprite frontale</string>
     <string name="back_sprite_label" comment="Label for the back sprite picker.">Sprite posteriore</string>
+    <string name="radiant_sprites_section">Sprite radiosi</string>
+    <string name="radiant_front_sprite_label">Sprite frontale radioso</string>
+    <string name="radiant_back_sprite_label">Sprite posteriore radioso</string>
     <string name="front_sprite_description" comment="Explains that the front sprite is required for contacts.">L’aggiunta di uno sprite frontale consente di assegnare questo personaggio ai contatti.</string>
     <string name="back_sprite_description" comment="Explains that the back sprite is required for the player.">L’aggiunta di uno sprite posteriore consente di assegnare questo personaggio a te stesso.</string>
     <string name="advanced_section" comment="Heading for advanced character settings.">Avanzate</string>
@@ -155,5 +158,7 @@
     <string name="front_sprite_required_for_contact" comment="Message shown when a front sprite is missing but required by an assignment.">Lo sprite frontale è necessario perché questo personaggio è assegnato a un contatto.</string>
     <string name="back_sprite_required_for_player" comment="Message shown when a back sprite is missing but required by an assignment.">Lo sprite posteriore è necessario perché questo personaggio è assegnato a te.</string>
     <string name="remove_character_in_use_message" comment="Confirmation dialog message when deleting a character in use; %1$s is the character name.">%1$s è attualmente in uso. Eliminandolo, verrà rimosso dalle assegnazioni per te e per i tuoi contatti.</string>
+    <string name="remove_character_with_radiant_variant_message">Eliminando %1$s verranno rimosse sia la variante normale sia quella radiosa.</string>
+    <string name="remove_character_with_radiant_variant_in_use_message">Eliminando %1$s verranno rimosse sia la variante normale sia quella radiosa e le relative assegnazioni per te e per i tuoi contatti.</string>
     <string name="remove_character_pack_in_use_message" comment="Confirmation dialog message when deleting a pack in use; %1$s is the character pack name.">Questo pacchetto è attualmente in uso. Rimuovendolo, i suoi personaggi verranno rimossi dalle assegnazioni per te e per i tuoi contatti.</string>
 </resources>

@@ -15,6 +15,8 @@ class CharacterSharingRepository @Inject constructor(
         val character = exported.character
         val frontName = exported.frontImageFile?.name
         val backName = exported.backImageFile?.name
+        val radiantFrontName = exported.radiantFrontImageFile?.name
+        val radiantBackName = exported.radiantBackImageFile?.name
         SharedCharacterArchive.write(
             SharedCharacter(
                 name = character.name,
@@ -24,6 +26,8 @@ class CharacterSharingRepository @Inject constructor(
                 assignableTo = character.assignableTo,
                 frontImage = frontName,
                 backImage = backName,
+                radiantFrontImage = radiantFrontName,
+                radiantBackImage = radiantBackName,
                 isRadiant = character.isRadiant,
                 level = character.level,
                 maxHp = character.maxHp
@@ -31,6 +35,8 @@ class CharacterSharingRepository @Inject constructor(
             buildMap {
                 exported.frontImageFile?.let { put(requireNotNull(frontName), it) }
                 exported.backImageFile?.let { put(requireNotNull(backName), it) }
+                exported.radiantFrontImageFile?.let { put(requireNotNull(radiantFrontName), it) }
+                exported.radiantBackImageFile?.let { put(requireNotNull(radiantBackName), it) }
             },
             output
         )

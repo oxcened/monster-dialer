@@ -29,12 +29,17 @@ data class PackCharacter(
     val assignableTo: List<CharacterAssignmentTarget>,
     val frontImage: String? = null,
     val backImage: String? = null,
+    val radiantFrontImage: String? = null,
+    val radiantBackImage: String? = null,
     val callSound: String? = null,
     val level: Int? = null,
     val maxHp: Int? = null,
     /** Whether this monster plays the radiant animation when it enters battle. */
     val isRadiant: Boolean = false
-)
+) {
+    val hasRadiantVariant: Boolean
+        get() = radiantFrontImage != null || radiantBackImage != null
+}
 
 @Serializable
 enum class CharacterType {
@@ -74,8 +79,15 @@ data class InstalledPackCharacter(
 @Serializable
 data class CharacterReference(
     val packId: String,
-    val characterId: String
+    val characterId: String,
+    val variant: CharacterVariant = CharacterVariant.Regular,
 )
+
+@Serializable
+enum class CharacterVariant {
+    @SerialName("regular") Regular,
+    @SerialName("radiant") Radiant,
+}
 
 internal object CharacterPackManifestCodec {
     private val json = Json {

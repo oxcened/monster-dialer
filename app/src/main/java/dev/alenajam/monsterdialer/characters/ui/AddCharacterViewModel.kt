@@ -26,6 +26,7 @@ class AddCharacterViewModel @Inject constructor(
 
     private var editingCharacterId: String? = null
     private var preferredAssignmentTarget: CharacterAssignmentTarget? = null
+    private var isLegacyRadiant = false
 
     private val _name = MutableStateFlow("")
     val name = _name.asStateFlow()
@@ -47,6 +48,12 @@ class AddCharacterViewModel @Inject constructor(
 
     private val _backImageUri = MutableStateFlow<Uri?>(null)
     val backImageUri = _backImageUri.asStateFlow()
+
+    private val _radiantFrontImageUri = MutableStateFlow<Uri?>(null)
+    val radiantFrontImageUri = _radiantFrontImageUri.asStateFlow()
+
+    private val _radiantBackImageUri = MutableStateFlow<Uri?>(null)
+    val radiantBackImageUri = _radiantBackImageUri.asStateFlow()
 
     private val _isSaving = MutableStateFlow(false)
     val isSaving = _isSaving.asStateFlow()
@@ -72,6 +79,12 @@ class AddCharacterViewModel @Inject constructor(
     private val _existingBackImageFile = MutableStateFlow<java.io.File?>(null)
     val existingBackImageFile = _existingBackImageFile.asStateFlow()
 
+    private val _existingRadiantFrontImageFile = MutableStateFlow<java.io.File?>(null)
+    val existingRadiantFrontImageFile = _existingRadiantFrontImageFile.asStateFlow()
+
+    private val _existingRadiantBackImageFile = MutableStateFlow<java.io.File?>(null)
+    val existingRadiantBackImageFile = _existingRadiantBackImageFile.asStateFlow()
+
     init {
         viewModelScope.launch {
             val count = withContext(Dispatchers.IO) { repository.getCharacterCount() }
@@ -86,11 +99,14 @@ class AddCharacterViewModel @Inject constructor(
             if (character != null) {
                 _name.value = character.name
                 _type.value = character.type
-                _isRadiant.value = character.isRadiant
+                isLegacyRadiant = character.isRadiant && !character.hasRadiantVariant
+                _isRadiant.value = character.hasRadiantVariant
                 _level.value = character.level?.toString() ?: ""
                 _maxHp.value = character.maxHp?.toString() ?: ""
                 _existingFrontImageFile.value = withContext(Dispatchers.IO) { repository.getCharacterFrontImageFile(characterId) }
                 _existingBackImageFile.value = withContext(Dispatchers.IO) { repository.getCharacterBackImageFile(characterId) }
+                _existingRadiantFrontImageFile.value = withContext(Dispatchers.IO) { repository.getCharacterRadiantFrontImageFile(characterId) }
+                _existingRadiantBackImageFile.value = withContext(Dispatchers.IO) { repository.getCharacterRadiantBackImageFile(characterId) }
                 _isLimitReached.value = false // Can always edit even if limit reached
 
                 val reference = CharacterReference(CustomCharacterRepository.CUSTOM_PACK_ID, characterId)
@@ -118,6 +134,7 @@ class AddCharacterViewModel @Inject constructor(
     }
 
     fun onRadiantChanged(isRadiant: Boolean) {
+        if (isRadiant) isLegacyRadiant = false
         _isRadiant.value = isRadiant
     }
 
@@ -141,6 +158,14 @@ class AddCharacterViewModel @Inject constructor(
         _backImageUri.value = uri
     }
 
+    fun onRadiantFrontImageSelected(uri: Uri?) {
+        _radiantFrontImageUri.value = uri
+    }
+
+    fun onRadiantBackImageSelected(uri: Uri?) {
+        _radiantBackImageUri.value = uri
+    }
+
     fun clearFrontImage() {
         _frontImageUri.value = null
         _existingFrontImageFile.value = null
@@ -151,6 +176,16 @@ class AddCharacterViewModel @Inject constructor(
         _existingBackImageFile.value = null
     }
 
+    fun clearRadiantFrontImage() {
+        _radiantFrontImageUri.value = null
+        _existingRadiantFrontImageFile.value = null
+    }
+
+    fun clearRadiantBackImage() {
+        _radiantBackImageUri.value = null
+        _existingRadiantBackImageFile.value = null
+    }
+
     fun save() {
         val currentName = _name.value
         val currentType = _type.value
@@ -159,12 +194,20 @@ class AddCharacterViewModel @Inject constructor(
         val currentMaxHp = _maxHp.value.toIntOrNull()
         val frontImage = _frontImageUri.value
         val backImage = _backImageUri.value
+        val radiantFrontImage = _radiantFrontImageUri.value
+        val radiantBackImage = _radiantBackImageUri.value
         val existingFront = _existingFrontImageFile.value
         val existingBack = _existingBackImageFile.value
+        val existingRadiantFront = _existingRadiantFrontImageFile.value
+        val existingRadiantBack = _existingRadiantBackImageFile.value
         val characterId = editingCharacterId
 
         val hasFront = frontImage != null || existingFront != null
         val hasBack = backImage != null || existingBack != null
+        val hasRadiantFront = radiantFrontImage != null || existingRadiantFront != null
+        val hasRadiantBack = radiantBackImage != null || existingRadiantBack != null
+        val hasCompleteRadiantVariant = !currentIsRadiant ||
+            (!hasFront || hasRadiantFront) && (!hasBack || hasRadiantBack)
 
         // Validation based on preferred target
         val isValid = when (preferredAssignmentTarget) {
@@ -173,7 +216,7 @@ class AddCharacterViewModel @Inject constructor(
             else -> hasFront || hasBack
         }
 
-        if (currentName.isBlank() || !isValid) return
+        if (currentName.isBlank() || !isValid || !hasCompleteRadiantVariant) return
 
         viewModelScope.launch {
             _isSaving.value = true
@@ -187,13 +230,26 @@ class AddCharacterViewModel @Inject constructor(
                         keepExistingFront = existingFront != null,
                         backImageUri = backImage,
                         keepExistingBack = existingBack != null,
-                        isRadiant = currentIsRadiant,
+                        radiantFrontImageUri = radiantFrontImage,
+                        keepExistingRadiantFront = currentIsRadiant && existingRadiantFront != null,
+                        radiantBackImageUri = radiantBackImage,
+                        keepExistingRadiantBack = currentIsRadiant && existingRadiantBack != null,
+                        isRadiant = isLegacyRadiant,
                         level = currentLevel,
                         maxHp = currentMaxHp
                     )
                     _creationResult.value = CharacterReference(CustomCharacterRepository.CUSTOM_PACK_ID, characterId)
                 } else {
-                    val result = repository.addCharacter(currentName, currentType, frontImage, backImage, currentIsRadiant, currentLevel, currentMaxHp)
+                    val result = repository.addCharacter(
+                        name = currentName,
+                        type = currentType,
+                        frontImageUri = frontImage,
+                        backImageUri = backImage,
+                        radiantFrontImageUri = radiantFrontImage.takeIf { currentIsRadiant },
+                        radiantBackImageUri = radiantBackImage.takeIf { currentIsRadiant },
+                        level = currentLevel,
+                        maxHp = currentMaxHp,
+                    )
                     _creationResult.value = result
                 }
             } catch (e: Exception) {

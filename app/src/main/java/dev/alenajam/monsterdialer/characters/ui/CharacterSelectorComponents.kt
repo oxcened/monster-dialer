@@ -62,6 +62,7 @@ import dev.alenajam.opendialer.core.common.ui.LocalAppIcons
 import dev.alenajam.monsterdialer.characters.data.BuiltInArtwork
 import dev.alenajam.monsterdialer.characters.data.BuiltInCharacter
 import dev.alenajam.monsterdialer.packs.data.CharacterReference
+import dev.alenajam.monsterdialer.packs.data.CharacterVariant
 import dev.alenajam.monsterdialer.packs.data.InstalledPackCharacter
 import java.io.File
 import kotlinx.coroutines.launch
@@ -113,7 +114,7 @@ internal fun LazyListScope.characterTypeItems(
     onShare: (InstalledPackCharacter) -> Unit = {}
 ) {
     val availableSelection = selected?.takeIf { reference ->
-        characters.any { CharacterReference(it.packId, it.character.id) == reference }
+        characters.any { it.matches(reference) }
     }
     item(key = "add") {
         AddCharacterButton(
@@ -155,17 +156,19 @@ internal fun LazyListScope.characterTypeItems(
 
     if (userCharacters.isNotEmpty()) {
         item { SectionHeader(stringResource(R.string.your_characters, pluralTitle)) }
-        itemsIndexed(items = userCharacters, key = { _, character -> "custom:${character.character.id}" }) { index, installed ->
-            val reference = CharacterReference(installed.packId, installed.character.id)
+        val selections = userCharacters.flatMap(InstalledPackCharacter::selectionVariants)
+        itemsIndexed(items = selections, key = { _, selection -> "custom:${selection.installed.character.id}:${selection.variant}" }) { index, selection ->
+            val installed = selection.installed
+            val reference = CharacterReference(installed.packId, installed.character.id, selection.variant)
             CharacterOptionCard(
                 name = installed.character.name,
-                isRadiant = installed.character.isRadiant,
+                isRadiant = selection.variant == CharacterVariant.Radiant || installed.character.isRadiant,
                 isSelected = availableSelection == reference,
                 roundTop = index == 0,
-                roundBottom = index == userCharacters.lastIndex,
+                roundBottom = index == selections.lastIndex,
                 artwork = {
                     AsyncImage(
-                        model = packArtwork(installed),
+                        model = selection.previewArtwork(packArtwork),
                         contentDescription = stringResource(R.string.character_artwork, installed.character.name),
                         modifier = Modifier.size(72.dp)
                     )
@@ -180,17 +183,19 @@ internal fun LazyListScope.characterTypeItems(
 
     otherPacks.forEach { (packId, packCharacters) ->
         item { SectionHeader(packCharacters.first().packName) }
-        itemsIndexed(items = packCharacters, key = { _, character -> "${packId}:${character.character.id}" }) { index, installed ->
-            val reference = CharacterReference(installed.packId, installed.character.id)
+        val selections = packCharacters.flatMap(InstalledPackCharacter::selectionVariants)
+        itemsIndexed(items = selections, key = { _, selection -> "${packId}:${selection.installed.character.id}:${selection.variant}" }) { index, selection ->
+            val installed = selection.installed
+            val reference = CharacterReference(installed.packId, installed.character.id, selection.variant)
             CharacterOptionCard(
                 name = installed.character.name,
-                isRadiant = installed.character.isRadiant,
+                isRadiant = selection.variant == CharacterVariant.Radiant || installed.character.isRadiant,
                 isSelected = availableSelection == reference,
                 roundTop = index == 0,
-                roundBottom = index == packCharacters.lastIndex,
+                roundBottom = index == selections.lastIndex,
                 artwork = {
                     AsyncImage(
-                        model = packArtwork(installed),
+                        model = selection.previewArtwork(packArtwork),
                         contentDescription = stringResource(R.string.character_artwork, installed.character.name),
                         modifier = Modifier.size(72.dp)
                     )
@@ -220,7 +225,7 @@ internal fun LazyGridScope.characterTypeGridItems(
     onShare: (InstalledPackCharacter) -> Unit = {}
 ) {
     val availableSelection = selected?.takeIf { reference ->
-        characters.any { CharacterReference(it.packId, it.character.id) == reference }
+        characters.any { it.matches(reference) }
     }
     item(key = "add", span = { GridItemSpan(2) }) {
         Column {
@@ -263,16 +268,18 @@ internal fun LazyGridScope.characterTypeGridItems(
 
     if (userCharacters.isNotEmpty()) {
         item(span = { GridItemSpan(2) }) { SectionHeader(stringResource(R.string.your_characters, pluralTitle)) }
-        gridItemsIndexed(items = userCharacters, key = { _, character -> "custom:${character.character.id}" }) { index, installed ->
-            val reference = CharacterReference(installed.packId, installed.character.id)
+        val selections = userCharacters.flatMap(InstalledPackCharacter::selectionVariants)
+        gridItemsIndexed(items = selections, key = { _, selection -> "custom:${selection.installed.character.id}:${selection.variant}" }) { index, selection ->
+            val installed = selection.installed
+            val reference = CharacterReference(installed.packId, installed.character.id, selection.variant)
             CharacterGridItem(
                 name = installed.character.name,
-                isRadiant = installed.character.isRadiant,
+                isRadiant = selection.variant == CharacterVariant.Radiant || installed.character.isRadiant,
                 isSelected = availableSelection == reference,
-                shape = gridItemShape(index = index, itemCount = userCharacters.size),
+                shape = gridItemShape(index = index, itemCount = selections.size),
                 artwork = {
                     AsyncImage(
-                        model = packArtwork(installed),
+                        model = selection.previewArtwork(packArtwork),
                         contentDescription = stringResource(R.string.character_artwork, installed.character.name),
                         modifier = Modifier.size(88.dp)
                     )
@@ -287,16 +294,18 @@ internal fun LazyGridScope.characterTypeGridItems(
 
     otherPacks.forEach { (packId, packCharacters) ->
         item(span = { GridItemSpan(2) }) { SectionHeader(packCharacters.first().packName) }
-        gridItemsIndexed(items = packCharacters, key = { _, character -> "${packId}:${character.character.id}" }) { index, installed ->
-            val reference = CharacterReference(installed.packId, installed.character.id)
+        val selections = packCharacters.flatMap(InstalledPackCharacter::selectionVariants)
+        gridItemsIndexed(items = selections, key = { _, selection -> "${packId}:${selection.installed.character.id}:${selection.variant}" }) { index, selection ->
+            val installed = selection.installed
+            val reference = CharacterReference(installed.packId, installed.character.id, selection.variant)
             CharacterGridItem(
                 name = installed.character.name,
-                isRadiant = installed.character.isRadiant,
+                isRadiant = selection.variant == CharacterVariant.Radiant || installed.character.isRadiant,
                 isSelected = availableSelection == reference,
-                shape = gridItemShape(index = index, itemCount = packCharacters.size),
+                shape = gridItemShape(index = index, itemCount = selections.size),
                 artwork = {
                     AsyncImage(
-                        model = packArtwork(installed),
+                        model = selection.previewArtwork(packArtwork),
                         contentDescription = stringResource(R.string.character_artwork, installed.character.name),
                         modifier = Modifier.size(88.dp)
                     )
@@ -315,6 +324,28 @@ internal fun LazyGridScope.characterTypeGridItems(
         }
     }
 }
+
+private data class CharacterSelection(
+    val installed: InstalledPackCharacter,
+    val variant: CharacterVariant,
+)
+
+private fun InstalledPackCharacter.selectionVariants(): List<CharacterSelection> = buildList {
+    add(CharacterSelection(this@selectionVariants, CharacterVariant.Regular))
+    if (character.hasRadiantVariant) add(CharacterSelection(this@selectionVariants, CharacterVariant.Radiant))
+}
+
+private fun InstalledPackCharacter.matches(reference: CharacterReference): Boolean =
+    packId == reference.packId &&
+        character.id == reference.characterId &&
+        (reference.variant == CharacterVariant.Regular || character.hasRadiantVariant)
+
+private fun CharacterSelection.previewArtwork(regularArtwork: (InstalledPackCharacter) -> File): File =
+    if (variant == CharacterVariant.Radiant) {
+        installed.imageFile(requireNotNull(installed.character.radiantFrontImage ?: installed.character.radiantBackImage))
+    } else {
+        regularArtwork(installed)
+    }
 
 private fun gridItemShape(index: Int, itemCount: Int): RoundedCornerShape {
     val isLeftColumn = index % 2 == 0
@@ -348,8 +379,8 @@ internal fun selectedCharacterIndex(
 
     if (userCharacters.isNotEmpty()) {
         currentIndex++ // "Your characters" header
-        val userIdx = userCharacters.indexOfFirst {
-            CharacterReference(it.packId, it.character.id) == selected
+        val userIdx = userCharacters.flatMap(InstalledPackCharacter::selectionVariants).indexOfFirst {
+            it.installed.matches(selected) && it.variant == selected.variant
         }
         if (userIdx != -1) {
             val target = currentIndex + userIdx
@@ -357,16 +388,16 @@ internal fun selectedCharacterIndex(
             // to keep the "Add" button and headers visible.
             return if (target <= 4) 0 else target
         }
-        currentIndex += userCharacters.size
+        currentIndex += userCharacters.sumOf { it.selectionVariants().size }
     }
 
     for (packCharacters in otherPacks.values) {
         currentIndex++ // Pack header
-        val packIdx = packCharacters.indexOfFirst {
-            CharacterReference(it.packId, it.character.id) == selected
+        val packIdx = packCharacters.flatMap(InstalledPackCharacter::selectionVariants).indexOfFirst {
+            it.installed.matches(selected) && it.variant == selected.variant
         }
         if (packIdx != -1) return currentIndex + packIdx
-        currentIndex += packCharacters.size
+        currentIndex += packCharacters.sumOf { it.selectionVariants().size }
     }
 
     return 0
@@ -484,6 +515,7 @@ private fun SectionHeader(title: String) {
 @Composable
 fun CustomCharacterDeletionConfirmationDialog(
     characterName: String,
+    hasRadiantVariant: Boolean,
     isInUse: Boolean = false,
     onConfirm: () -> Unit,
     onDismiss: () -> Unit
@@ -494,8 +526,12 @@ fun CustomCharacterDeletionConfirmationDialog(
         text = { 
             Text(
                 stringResource(
-                    if (isInUse) R.string.remove_character_in_use_message
-                    else R.string.remove_character_pack_message, 
+                    when {
+                        hasRadiantVariant && isInUse -> R.string.remove_character_with_radiant_variant_in_use_message
+                        hasRadiantVariant -> R.string.remove_character_with_radiant_variant_message
+                        isInUse -> R.string.remove_character_in_use_message
+                        else -> R.string.remove_character_pack_message
+                    },
                     characterName
                 )
             ) 

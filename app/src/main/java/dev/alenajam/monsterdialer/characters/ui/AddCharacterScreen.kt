@@ -72,8 +72,12 @@ fun AddCharacterScreen(
     val isRadiant by viewModel.isRadiant.collectAsStateWithLifecycle()
     val frontImageUri by viewModel.frontImageUri.collectAsStateWithLifecycle()
     val backImageUri by viewModel.backImageUri.collectAsStateWithLifecycle()
+    val radiantFrontImageUri by viewModel.radiantFrontImageUri.collectAsStateWithLifecycle()
+    val radiantBackImageUri by viewModel.radiantBackImageUri.collectAsStateWithLifecycle()
     val existingFrontImageFile by viewModel.existingFrontImageFile.collectAsStateWithLifecycle()
     val existingBackImageFile by viewModel.existingBackImageFile.collectAsStateWithLifecycle()
+    val existingRadiantFrontImageFile by viewModel.existingRadiantFrontImageFile.collectAsStateWithLifecycle()
+    val existingRadiantBackImageFile by viewModel.existingRadiantBackImageFile.collectAsStateWithLifecycle()
     val level by viewModel.level.collectAsStateWithLifecycle()
     val maxHp by viewModel.maxHp.collectAsStateWithLifecycle()
     val isSaving by viewModel.isSaving.collectAsStateWithLifecycle()
@@ -87,6 +91,12 @@ fun AddCharacterScreen(
     }
     val backPicker = rememberLauncherForActivityResult(ActivityResultContracts.GetContent()) { uri ->
         if (uri != null) viewModel.onBackImageSelected(uri)
+    }
+    val radiantFrontPicker = rememberLauncherForActivityResult(ActivityResultContracts.GetContent()) { uri ->
+        if (uri != null) viewModel.onRadiantFrontImageSelected(uri)
+    }
+    val radiantBackPicker = rememberLauncherForActivityResult(ActivityResultContracts.GetContent()) { uri ->
+        if (uri != null) viewModel.onRadiantBackImageSelected(uri)
     }
 
     LaunchedEffect(Unit) {
@@ -195,6 +205,39 @@ fun AddCharacterScreen(
                                 modifier = Modifier.weight(1f),
                                 enabled = !isLimitReached
                             )
+                        }
+
+                        if (isRadiant) {
+                            Text(
+                                text = stringResource(R.string.radiant_sprites_section),
+                                style = MaterialTheme.typography.titleSmall,
+                                color = MaterialTheme.colorScheme.primary,
+                            )
+                            Row(
+                                modifier = Modifier.fillMaxWidth(),
+                                horizontalArrangement = Arrangement.spacedBy(16.dp),
+                            ) {
+                                SpritePicker(
+                                    label = stringResource(R.string.radiant_front_sprite_label),
+                                    isRequired = frontImageUri != null || existingFrontImageFile != null,
+                                    description = stringResource(R.string.front_sprite_description),
+                                    image = radiantFrontImageUri ?: existingRadiantFrontImageFile,
+                                    onPick = { radiantFrontPicker.launch("image/*") },
+                                    onClear = viewModel::clearRadiantFrontImage,
+                                    modifier = Modifier.weight(1f),
+                                    enabled = !isLimitReached,
+                                )
+                                SpritePicker(
+                                    label = stringResource(R.string.radiant_back_sprite_label),
+                                    isRequired = backImageUri != null || existingBackImageFile != null,
+                                    description = stringResource(R.string.back_sprite_description),
+                                    image = radiantBackImageUri ?: existingRadiantBackImageFile,
+                                    onPick = { radiantBackPicker.launch("image/*") },
+                                    onClear = viewModel::clearRadiantBackImage,
+                                    modifier = Modifier.weight(1f),
+                                    enabled = !isLimitReached,
+                                )
+                            }
                         }
 
                         // Divider between sprites and name
@@ -346,9 +389,14 @@ fun AddCharacterScreen(
                         .height(64.dp),
                     shape = RoundedCornerShape(20.dp),
                     enabled = run {
+                        val hasRadiantFront = radiantFrontImageUri != null || existingRadiantFrontImageFile != null
+                        val hasRadiantBack = radiantBackImageUri != null || existingRadiantBackImageFile != null
+                        val hasCompleteRadiantVariant = !isRadiant ||
+                            (!hasFront || hasRadiantFront) && (!hasBack || hasRadiantBack)
                         val isValid = (!frontRequired || hasFront) && 
                             (!backRequired || hasBack) &&
-                            (hasFront || hasBack)
+                            (hasFront || hasBack) &&
+                            hasCompleteRadiantVariant
 
                         name.isNotBlank() && isValid && !isSaving && !isLimitReached
                     }

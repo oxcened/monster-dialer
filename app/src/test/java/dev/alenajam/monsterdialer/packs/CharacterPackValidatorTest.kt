@@ -11,7 +11,7 @@ class CharacterPackValidatorTest {
 
     @Test(expected = CharacterPackValidationException::class)
     fun rejectsUnsupportedFormatVersion() {
-        val manifest = validManifest(formatVersion = 2)
+        val manifest = validManifest(formatVersion = 3)
         CharacterPackValidator.validate(manifest)
     }
 

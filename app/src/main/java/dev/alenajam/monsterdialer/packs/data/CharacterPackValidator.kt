@@ -3,7 +3,9 @@ package dev.alenajam.monsterdialer.packs.data
 class CharacterPackValidationException(message: String) : IllegalArgumentException(message)
 
 object CharacterPackValidator {
-    const val SupportedFormatVersion = 1
+    const val CurrentFormatVersion = 2
+    const val SupportedFormatVersion = CurrentFormatVersion
+    private val supportedFormatVersions = setOf(1, CurrentFormatVersion)
     const val ManifestPath = "manifest.json"
     const val MaxCharacters = 200
     const val MaxNameLength = 120
@@ -16,8 +18,8 @@ object CharacterPackValidator {
 
     fun validate(manifest: CharacterPackManifest): ValidatedCharacterPack {
         requireThat(
-            manifest.formatVersion == SupportedFormatVersion,
-            "Unsupported pack format version: pack uses ${manifest.formatVersion}, but this app supports $SupportedFormatVersion"
+            manifest.formatVersion in supportedFormatVersions,
+            "Unsupported pack format version: ${manifest.formatVersion}"
         )
         requireThat(idPattern.matches(manifest.id), "Pack id must be 2–64 lowercase letters, digits, dots, dashes, or underscores")
         requireText(manifest.name, "Pack name")
@@ -47,6 +49,18 @@ object CharacterPackValidator {
                 CharacterAssignmentTarget.Player !in character.assignableTo || character.backImage != null,
                 "Player-assignable character '${character.id}' must provide backImage"
             )
+            requireThat(
+                character.radiantFrontImage == null || character.frontImage != null,
+                "Radiant frontImage requires frontImage for character '${character.id}'"
+            )
+            requireThat(
+                character.radiantBackImage == null || character.backImage != null,
+                "Radiant backImage requires backImage for character '${character.id}'"
+            )
+            requireThat(
+                !character.hasRadiantVariant || character.type == CharacterType.Monster,
+                "Only monster character '${character.id}' may have a radiant variant"
+            )
             character.level?.let {
                 requireThat(it in 1..MaxLevel, "Character '${character.id}' level must be between 1 and $MaxLevel")
             }
@@ -55,6 +69,8 @@ object CharacterPackValidator {
             }
             character.frontImage?.let { files += validatePath(it, mediaExtensions, "frontImage") }
             character.backImage?.let { files += validatePath(it, mediaExtensions, "backImage") }
+            character.radiantFrontImage?.let { files += validatePath(it, mediaExtensions, "radiantFrontImage") }
+            character.radiantBackImage?.let { files += validatePath(it, mediaExtensions, "radiantBackImage") }
             character.callSound?.let { files += validatePath(it, audioExtensions, "callSound") }
         }
         return ValidatedCharacterPack(manifest, files)

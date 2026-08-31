@@ -72,13 +72,13 @@ class CharacterAssignmentRepositoryImpl @Inject constructor(
     override suspend fun isCharacterAssignedToPlayer(
         reference: CharacterReference
     ): Boolean = withContext(Dispatchers.IO) {
-        CharacterType.entries.any { assignments.player(it) == reference }
+        CharacterType.entries.any { assignments.player(it)?.sameCharacterAs(reference) == true }
     }
 
     override suspend fun isCharacterAssignedToAnyContact(
         reference: CharacterReference
     ): Boolean = withContext(Dispatchers.IO) {
-        assignments.contactAssignments().any { it.character == reference }
+        assignments.contactAssignments().any { it.character.sameCharacterAs(reference) }
     }
 
     override suspend fun clearAssignmentsForPack(
@@ -102,4 +102,7 @@ class CharacterAssignmentRepositoryImpl @Inject constructor(
         val contactsInUse = assignments.contactAssignments().any { it.character.packId == packId }
         playerInUse || contactsInUse
     }
+
+    private fun CharacterReference.sameCharacterAs(other: CharacterReference): Boolean =
+        packId == other.packId && characterId == other.characterId
 }
