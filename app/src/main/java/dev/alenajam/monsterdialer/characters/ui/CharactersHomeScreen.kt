@@ -42,14 +42,35 @@ import dev.alenajam.opendialer.core.common.ui.LocalAppIcons
 @Composable
 fun CharactersHomeScreen(
     onOpenSubpage: (Int) -> Unit,
-    sharingViewModel: CharacterSharingViewModel = hiltViewModel()
+    sharingViewModel: CharacterSharingViewModel = hiltViewModel(),
+    showImportUi: Boolean = true,
 ) {
     val context = LocalContext.current
-    val preview by sharingViewModel.preview.collectAsStateWithLifecycle()
-    val hasImportError by sharingViewModel.hasImportError.collectAsStateWithLifecycle()
     val picker = rememberLauncherForActivityResult(ActivityResultContracts.OpenDocument()) { uri ->
         if (uri != null) sharingViewModel.preview(context, uri)
     }
+
+    if (showImportUi) {
+        SharedCharacterImportHandler(sharingViewModel)
+    }
+
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(horizontal = 16.dp, vertical = 8.dp),
+        verticalArrangement = Arrangement.spacedBy(0.dp)
+    ) {
+        CharacterHomeItem(R.string.settings_player_character_title, R.string.settings_player_character_description, LocalAppIcons.current.person, RoundedCornerShape(topStart = 20.dp, topEnd = 20.dp, bottomStart = 2.dp, bottomEnd = 2.dp)) { onOpenSubpage(0) }
+        CharacterHomeItem(R.string.settings_contact_characters_title, R.string.settings_contact_characters_description, LocalAppIcons.current.history, RoundedCornerShape(2.dp)) { onOpenSubpage(1) }
+        CharacterHomeItem(R.string.settings_character_packs_title, R.string.settings_character_packs_description, LocalAppIcons.current.edit, RoundedCornerShape(2.dp)) { onOpenSubpage(2) }
+        CharacterHomeItem(R.string.import_character, R.string.import_character_description, LocalAppIcons.current.arrowDown, RoundedCornerShape(topStart = 2.dp, topEnd = 2.dp, bottomStart = 20.dp, bottomEnd = 20.dp)) { picker.launch(arrayOf("*/*")) }
+    }
+}
+
+@Composable
+fun SharedCharacterImportHandler(sharingViewModel: CharacterSharingViewModel) {
+    val preview by sharingViewModel.preview.collectAsStateWithLifecycle()
+    val hasImportError by sharingViewModel.hasImportError.collectAsStateWithLifecycle()
 
     preview?.let { shared -> SharedCharacterImportDialog(shared, sharingViewModel::importPreview, sharingViewModel::dismissPreview) }
     if (hasImportError) {
@@ -63,18 +84,6 @@ fun CharactersHomeScreen(
                 }
             }
         )
-    }
-
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(horizontal = 16.dp, vertical = 8.dp),
-        verticalArrangement = Arrangement.spacedBy(0.dp)
-    ) {
-        CharacterHomeItem(R.string.settings_player_character_title, R.string.settings_player_character_description, LocalAppIcons.current.person, RoundedCornerShape(topStart = 20.dp, topEnd = 20.dp, bottomStart = 2.dp, bottomEnd = 2.dp)) { onOpenSubpage(0) }
-        CharacterHomeItem(R.string.settings_contact_characters_title, R.string.settings_contact_characters_description, LocalAppIcons.current.history, RoundedCornerShape(2.dp)) { onOpenSubpage(1) }
-        CharacterHomeItem(R.string.settings_character_packs_title, R.string.settings_character_packs_description, LocalAppIcons.current.edit, RoundedCornerShape(2.dp)) { onOpenSubpage(2) }
-        CharacterHomeItem(R.string.import_character, R.string.import_character_description, LocalAppIcons.current.arrowDown, RoundedCornerShape(topStart = 2.dp, topEnd = 2.dp, bottomStart = 20.dp, bottomEnd = 20.dp)) { picker.launch(arrayOf("*/*")) }
     }
 }
 

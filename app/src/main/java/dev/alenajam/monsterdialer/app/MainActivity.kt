@@ -1,15 +1,21 @@
 package dev.alenajam.monsterdialer.app
 
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.core.content.IntentCompat
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import dagger.hilt.android.AndroidEntryPoint
@@ -23,12 +29,15 @@ import dev.alenajam.monsterdialer.characters.ui.ContactPickerDestination
 import dev.alenajam.monsterdialer.characters.ui.CharacterSettingsSummaryViewModel
 import dev.alenajam.monsterdialer.characters.ui.CharactersHomeScreen
 import dev.alenajam.monsterdialer.characters.ui.PlayerCharacterSettingsContent
+import dev.alenajam.monsterdialer.characters.ui.CharacterSharingViewModel
+import dev.alenajam.monsterdialer.characters.ui.SharedCharacterImportHandler
 import dev.alenajam.monsterdialer.packs.data.CharacterAssignmentTarget
 import dev.alenajam.monsterdialer.packs.data.CharacterType
 import dev.alenajam.monsterdialer.packs.ui.CharacterPackSettingsContent
 import dev.alenajam.monsterdialer.packs.ui.CharacterPackSettingsViewModel
 import dev.alenajam.opendialer.core.common.DefaultPhoneManager
 import dev.alenajam.opendialer.core.common.ui.AppThemeExtension
+import dev.alenajam.opendialer.core.common.ui.AppProviders
 import dev.alenajam.opendialer.feature.appShell.DialerApp
 import dev.alenajam.opendialer.feature.appShell.HomeNavigationItem
 import dev.alenajam.opendialer.feature.appShell.HomeScreenConfiguration
@@ -41,8 +50,11 @@ class MainActivity : AppCompatActivity() {
     @Inject
     lateinit var defaultPhoneManager: DefaultPhoneManager
 
+    private var sharedCharacterUri by mutableStateOf<Uri?>(null)
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        sharedCharacterUri = intent.sharedCharacterUri()
         enableEdgeToEdge()
 
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.Q) {
@@ -51,6 +63,7 @@ class MainActivity : AppCompatActivity() {
 
         setContent {
             val characterPackSettingsViewModel: CharacterPackSettingsViewModel = hiltViewModel()
+            val characterSharingViewModel: CharacterSharingViewModel = hiltViewModel()
             val visiblePacks by characterPackSettingsViewModel.packs.collectAsStateWithLifecycle()
             val characterSettingsSummaryViewModel: CharacterSettingsSummaryViewModel = hiltViewModel()
             val playerCharacterNames by characterSettingsSummaryViewModel.playerCharacterNames.collectAsStateWithLifecycle()
@@ -59,22 +72,31 @@ class MainActivity : AppCompatActivity() {
             CompositionLocalProvider(
                 LocalMonsterAppIcons provides LocalMonsterAppIcons.current
             ) {
-                DialerApp(
-                    defaultPhoneManager = defaultPhoneManager,
-                    icons = rememberMonsterIcons(),
-                    themeExtension = AppThemeExtension(
-                        typography = rememberMonsterTypography(MaterialTheme.typography)
-                    ),
-                    homeScreenConfiguration = HomeScreenConfiguration(
+                val appIcons = rememberMonsterIcons()
+                val appThemeExtension = AppThemeExtension(
+                    typography = rememberMonsterTypography(MaterialTheme.typography)
+                )
+                AppProviders(icons = appIcons, themeExtension = appThemeExtension) {
+                    DialerApp(
+                        defaultPhoneManager = defaultPhoneManager,
+                        icons = appIcons,
+                        themeExtension = appThemeExtension,
+                        homeScreenConfiguration = HomeScreenConfiguration(
                         showVoicemailInNavigation = false,
                         showVoicemailInOverflow = true,
                         customNavigationItem = HomeNavigationItem(
                             label = { androidx.compose.material3.Text(stringResource(R.string.characters_navigation_label)) },
                             icon = { _ -> dev.alenajam.opendialer.core.common.ui.AppIcon(dev.alenajam.opendialer.core.common.ui.LocalAppIcons.current.person, null) },
-                            content = { onOpenSubpage -> CharactersHomeScreen(onOpenSubpage) }
+                            content = { onOpenSubpage ->
+                                CharactersHomeScreen(
+                                    onOpenSubpage = onOpenSubpage,
+                                    sharingViewModel = characterSharingViewModel,
+                                    showImportUi = false,
+                                )
+                            }
                         )
-                    ),
-                    settingsSubpages = listOf(
+                        ),
+                        settingsSubpages = listOf(
                         SettingsSubpage(
                             title = stringResource(R.string.settings_player_character_title),
                             description = stringResource(R.string.settings_player_character_description),
@@ -164,9 +186,29 @@ class MainActivity : AppCompatActivity() {
                             visibleInSettings = false,
                             topContentPadding = 0.dp
                         )
+                        )
                     )
-                )
+                    LaunchedEffect(sharedCharacterUri) {
+                        sharedCharacterUri?.let { uri ->
+                            sharedCharacterUri = null
+                            characterSharingViewModel.preview(this@MainActivity, uri)
+                        }
+                    }
+                    SharedCharacterImportHandler(characterSharingViewModel)
+                }
             }
         }
     }
+
+    override fun onNewIntent(intent: Intent) {
+        super.onNewIntent(intent)
+        setIntent(intent)
+        sharedCharacterUri = intent.sharedCharacterUri()
+    }
+}
+
+private fun Intent.sharedCharacterUri(): Uri? = when (action) {
+    Intent.ACTION_VIEW -> data
+    Intent.ACTION_SEND -> IntentCompat.getParcelableExtra(this, Intent.EXTRA_STREAM, Uri::class.java)
+    else -> null
 }
