@@ -52,6 +52,7 @@
     <string name="pack_collection_empty_title" comment="Title of the empty character-pack collection screen.">Deine Sammlung beginnt hier</string>
     <string name="pack_collection_empty_description" comment="Description of the empty character-pack collection screen.">Importiere ein Charakterpaket, um deine Anrufe zu personalisieren.</string>
     <string name="import_character_pack" comment="Button that starts selecting a character-pack file.">Charakterpaket importieren</string>
+    <string name="character_pack_extension_required">Wähle ein Charakterpaket mit der Dateiendung .monsterpack oder .zip.</string>
     <string name="pack_import_license_notice" comment="Legal notice shown before importing a character pack.">Importiere nur Grafiken und Sounds, die du erstellt hast oder für deren Nutzung du lizenziert bist.</string>
     <string name="your_character_packs" comment="Heading above installed character packs.">Deine Charakterpakete</string>
     <plurals name="installed_pack_count" comment="Number of installed character packs. %d is the count.">

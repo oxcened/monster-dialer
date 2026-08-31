@@ -60,6 +60,7 @@
     <string name="pack_collection_empty_title" comment="Title of the empty character-pack collection screen.">Your collection starts here</string>
     <string name="pack_collection_empty_description" comment="Description of the empty character-pack collection screen.">Import a character pack to personalize your call experience.</string>
     <string name="import_character_pack" comment="Button that starts selecting a character-pack file.">Import character pack</string>
+    <string name="character_pack_extension_required" comment="Shown when a selected file is not a MonsterDialer character pack or a legacy ZIP pack.">Choose a .monsterpack or .zip character pack.</string>
     <string name="pack_import_license_notice" comment="Legal notice shown before importing a character pack.">Only import artwork and sounds you created or are licensed to use.</string>
     <string name="your_character_packs" comment="Heading above installed character packs.">Your character packs</string>
     <plurals name="installed_pack_count" comment="Number of installed character packs. %d is the count."><item quantity="one">%d installed</item><item quantity="other">%d installed</item></plurals>

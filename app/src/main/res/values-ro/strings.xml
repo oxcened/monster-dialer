@@ -52,6 +52,7 @@
     <string name="pack_collection_empty_title" comment="Title of the empty character-pack collection screen.">Colecția ta începe aici</string>
     <string name="pack_collection_empty_description" comment="Description of the empty character-pack collection screen.">Importă un pachet de personaje pentru a-ți personaliza apelurile.</string>
     <string name="import_character_pack" comment="Button that starts selecting a character-pack file.">Importă pachetul</string>
+    <string name="character_pack_extension_required">Alege un pachet de personaje .monsterpack sau .zip.</string>
     <string name="pack_import_license_notice" comment="Legal notice shown before importing a character pack.">Importă doar ilustrații și sunete create de tine sau pentru care ai licență de utilizare.</string>
     <string name="your_character_packs" comment="Heading above installed character packs.">Pachetele tale de personaje</string>
     <plurals name="installed_pack_count" comment="Number of installed character packs. %d is the count.">

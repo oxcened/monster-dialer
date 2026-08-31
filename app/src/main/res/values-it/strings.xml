@@ -52,6 +52,7 @@
     <string name="pack_collection_empty_title" comment="Title of the empty character-pack collection screen.">La tua collezione inizia qui</string>
     <string name="pack_collection_empty_description" comment="Description of the empty character-pack collection screen.">Importa un pacchetto di personaggi per personalizzare le chiamate.</string>
     <string name="import_character_pack" comment="Button that starts selecting a character-pack file.">Importa pacchetto</string>
+    <string name="character_pack_extension_required">Seleziona un pacchetto di personaggi .monsterpack o .zip.</string>
     <string name="pack_import_license_notice" comment="Legal notice shown before importing a character pack.">Importa solo illustrazioni e suoni creati da te o che sei autorizzato a usare.</string>
     <string name="your_character_packs" comment="Heading above installed character packs.">I tuoi pacchetti di personaggi</string>
     <plurals name="installed_pack_count" comment="Number of installed character packs. %d is the count.">

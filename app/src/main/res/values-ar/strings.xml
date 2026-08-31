@@ -52,6 +52,7 @@
     <string name="pack_collection_empty_title" comment="Title of the empty character-pack collection screen.">مجموعتك تبدأ من هنا</string>
     <string name="pack_collection_empty_description" comment="Description of the empty character-pack collection screen.">استورد حزمة شخصيات لتخصيص تجربة مكالماتك.</string>
     <string name="import_character_pack" comment="Button that starts selecting a character-pack file.">استيراد حزمة شخصيات</string>
+    <string name="character_pack_extension_required">اختر حزمة شخصيات بامتداد ‎.monsterpack أو ‎.zip.</string>
     <string name="pack_import_license_notice" comment="Legal notice shown before importing a character pack.">استورد فقط الرسومات والأصوات التي أنشأتها أو لديك ترخيص لاستخدامها.</string>
     <string name="your_character_packs" comment="Heading above installed character packs.">حزم شخصياتك</string>
     <plurals name="installed_pack_count" comment="Number of installed character packs. %d is the count.">

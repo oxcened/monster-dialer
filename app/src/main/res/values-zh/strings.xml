@@ -52,6 +52,7 @@
     <string name="pack_collection_empty_title" comment="Title of the empty character-pack collection screen.">你的收藏从这里开始</string>
     <string name="pack_collection_empty_description" comment="Description of the empty character-pack collection screen.">导入角色包以个性化通话体验。</string>
     <string name="import_character_pack" comment="Button that starts selecting a character-pack file.">导入角色包</string>
+    <string name="character_pack_extension_required">请选择 .monsterpack 或 .zip 角色包。</string>
     <string name="pack_import_license_notice" comment="Legal notice shown before importing a character pack.">只能导入你创建的或获授权使用的插图和声音。</string>
     <string name="your_character_packs" comment="Heading above installed character packs.">你的角色包</string>
     <plurals name="installed_pack_count" comment="Number of installed character packs. %d is the count.">

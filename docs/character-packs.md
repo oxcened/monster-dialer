@@ -1,7 +1,8 @@
 # Building a MonsterDialer character pack
 
-A character pack is a ZIP file containing one UTF-8 `manifest.json` and the local artwork and
-sounds referenced by that manifest. It contains data only: no code, remote URLs, or contact data.
+A character pack is a `.monsterpack` file: a ZIP archive containing one UTF-8 `manifest.json` and
+the local artwork and sounds referenced by that manifest. It contains data only: no code, remote
+URLs, or contact data. Existing `.zip` packs remain importable for compatibility.
 
 This guide describes pack format exactly as the app imports it.
 
@@ -11,13 +12,13 @@ This guide describes pack format exactly as the app imports it.
 2. Add a front image for every character assignable to a contact. Add a genuinely different
    rear image for every character assignable to the player.
 3. Copy the manifest below and replace every example value.
-4. ZIP the **contents** of the folder, not the folder itself.
+4. ZIP the **contents** of the folder, not the folder itself, using the `.monsterpack` extension.
 5. Verify the archive, then import it from **Settings → Character Packs → Import**.
 
 The finished ZIP must open directly to `manifest.json`, not to another enclosing folder.
 
 ```text
-my-pack.zip
+my-pack.monsterpack
 ├── manifest.json
 ├── art/
 │   ├── forest-guide-front.png
@@ -184,19 +185,19 @@ rights holders.
 On macOS or Linux, open a terminal **inside the staging folder** and run:
 
 ```sh
-zip -r ../my-pack.zip manifest.json art audio
+zip -r ../my-pack.monsterpack manifest.json art audio
 ```
 
 If the pack has no `audio` folder, omit `audio` from the command:
 
 ```sh
-zip -r ../my-pack.zip manifest.json art
+zip -r ../my-pack.monsterpack manifest.json art
 ```
 
 On Windows PowerShell, open PowerShell **inside the staging folder** and run:
 
 ```powershell
-Compress-Archive -Path manifest.json,art,audio -DestinationPath ..\my-pack.zip
+Compress-Archive -Path manifest.json,art,audio -DestinationPath ..\my-pack.monsterpack
 ```
 
 Omit `audio` when that folder does not exist. If the destination ZIP already exists, delete or
@@ -205,7 +206,7 @@ rename it first so stale entries cannot survive from an earlier build.
 Do not ZIP the parent directory. This is wrong:
 
 ```text
-my-pack.zip
+my-pack.monsterpack
 └── my-pack/
     └── manifest.json
 ```
@@ -223,24 +224,24 @@ Run all of these checks:
 2. Test ZIP integrity:
 
    ```sh
-   unzip -t ../my-pack.zip
+   unzip -t ../my-pack.monsterpack
    ```
 
 3. List the archive and confirm `manifest.json` is at its root:
 
    ```sh
-   unzip -Z1 ../my-pack.zip
+   unzip -Z1 ../my-pack.monsterpack
    ```
 
 4. Confirm every path in `frontImage`, `backImage`, and `callSound` appears exactly in that list.
-5. Import the ZIP in the app. This final step performs the authoritative schema, size, path, and
+5. Import the pack in the app. This final step performs the authoritative schema, size, path, and
    on-device image-decoding checks.
 
 ## Import and test
 
-1. Put the ZIP on the device. For an Android emulator, either drag it onto the emulator window
-   or run `adb push my-pack.zip /sdcard/Download/`.
-2. Open **Settings → Character Packs → Import** and select the ZIP.
+1. Put the `.monsterpack` file on the device. For an Android emulator, either drag it onto the
+   emulator window or run `adb push my-pack.monsterpack /sdcard/Download/`.
+2. Open it with MonsterDialer, or use **Settings → Character Packs → Import** to select it.
 3. Confirm the pack is enabled.
 4. Open **Settings → Player Character** and verify every player-assignable trainer and monster,
    especially that rear artwork is shown for player choices.

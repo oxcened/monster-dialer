@@ -4,11 +4,13 @@ import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context
 import android.content.Intent
+import android.graphics.BitmapFactory
 import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import kotlinx.coroutines.launch
 import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -54,7 +56,9 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.style.TextAlign
@@ -64,6 +68,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil.compose.AsyncImage
 import dev.alenajam.monsterdialer.R
 import dev.alenajam.monsterdialer.packs.data.CharacterPackImportDiagnostic
+import dev.alenajam.monsterdialer.packs.data.CharacterPackArchive
 import dev.alenajam.monsterdialer.packs.data.MonsterPack
 import dev.alenajam.opendialer.core.common.ui.AppIcon
 import dev.alenajam.opendialer.core.common.ui.LocalAppIcons
@@ -71,12 +76,12 @@ import dev.alenajam.opendialer.core.common.ui.LocalAppIcons
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun ColumnScope.CharacterPackSettingsContent(
-    viewModel: CharacterPackSettingsViewModel = hiltViewModel()
+    viewModel: CharacterPackSettingsViewModel = hiltViewModel(),
+    showImportUi: Boolean = true,
 ) {
     val context = LocalContext.current
     val packs by viewModel.packs.collectAsStateWithLifecycle()
     val message by viewModel.message.collectAsStateWithLifecycle()
-    val importDiagnostic by viewModel.importDiagnostic.collectAsStateWithLifecycle()
     val characterPackRemoved = stringResource(R.string.character_pack_removed)
     val characterPackRemoveFailed = stringResource(R.string.character_pack_remove_failed)
     var pendingDeletion by remember { mutableStateOf<MonsterPack?>(null) }
@@ -87,16 +92,13 @@ fun ColumnScope.CharacterPackSettingsContent(
     
     val picker = rememberLauncherForActivityResult(ActivityResultContracts.OpenDocument()) { uri ->
         if (uri == null) return@rememberLauncherForActivityResult
-        viewModel.importPack(context, uri)
+        viewModel.previewPack(context, uri)
     }
 
-    val importPack = { picker.launch(arrayOf("application/zip", "application/x-zip-compressed")) }
+    val importPack = { picker.launch(CharacterPackArchive.importMimeTypes) }
     
-    importDiagnostic?.let { diagnostic ->
-        CharacterPackImportFailureDialog(
-            diagnostic = diagnostic,
-            onDismiss = viewModel::dismissDiagnostic
-        )
+    if (showImportUi) {
+        CharacterPackImportHandler(viewModel)
     }
 
     pendingDeletion?.let { pack ->
@@ -282,6 +284,59 @@ fun ColumnScope.CharacterPackSettingsContent(
 }
 
 @Composable
+fun CharacterPackImportHandler(viewModel: CharacterPackSettingsViewModel) {
+    val preview by viewModel.importPreview.collectAsStateWithLifecycle()
+    val importDiagnostic by viewModel.importDiagnostic.collectAsStateWithLifecycle()
+    preview?.let { CharacterPackImportPreviewDialog(it, viewModel::importPreview, viewModel::dismissPreview) }
+    importDiagnostic?.let { diagnostic ->
+        CharacterPackImportFailureDialog(
+            diagnostic = diagnostic,
+            onDismiss = viewModel::dismissDiagnostic
+        )
+    }
+}
+
+@Composable
+private fun CharacterPackImportPreviewDialog(
+    preview: CharacterPackSettingsViewModel.ImportPreview,
+    onConfirm: () -> Unit,
+    onDismiss: () -> Unit,
+) {
+    val artwork = remember(preview.pack.previewImage) {
+        preview.pack.previewImage?.let { BitmapFactory.decodeByteArray(it, 0, it.size)?.asImageBitmap() }
+    }
+    AlertDialog(
+        onDismissRequest = onDismiss,
+        title = { Text(stringResource(R.string.shared_character_import_title, preview.pack.manifest.name)) },
+        text = {
+            Row(horizontalArrangement = Arrangement.spacedBy(16.dp)) {
+                artwork?.let { Image(it, contentDescription = stringResource(R.string.character_artwork, preview.pack.manifest.name), modifier = Modifier.size(72.dp)) }
+                Column(verticalArrangement = Arrangement.spacedBy(6.dp)) {
+                preview.pack.manifest.creator?.let { creator ->
+                    Text(stringResource(R.string.pack_creator_label), style = MaterialTheme.typography.labelMedium, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                    Text(creator, style = MaterialTheme.typography.bodyLarge)
+                }
+                Text(stringResource(R.string.pack_license_label), style = MaterialTheme.typography.labelMedium, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                Text(preview.pack.manifest.license, style = MaterialTheme.typography.bodyLarge)
+                Text(
+                    pluralStringResource(
+                        R.plurals.pack_character_count,
+                        preview.pack.manifest.characters.size,
+                        preview.pack.manifest.characters.size,
+                        preview.pack.manifest.version,
+                    ),
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                )
+                }
+            }
+        },
+        confirmButton = { TextButton(onClick = onConfirm) { Text(stringResource(R.string.import_pack)) } },
+        dismissButton = { TextButton(onClick = onDismiss) { Text(stringResource(R.string.cancel)) } },
+    )
+}
+
+@Composable
 @OptIn(ExperimentalMaterial3Api::class)
 private fun CharacterPackDetailsSheet(
     pack: MonsterPack,
@@ -461,7 +516,7 @@ private fun CharacterPackDisableConfirmationDialog(
 }
 
 @Composable
-private fun CharacterPackImportFailureDialog(
+fun CharacterPackImportFailureDialog(
     diagnostic: CharacterPackImportDiagnostic,
     onDismiss: () -> Unit
 ) {

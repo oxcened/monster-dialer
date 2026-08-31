@@ -5,11 +5,14 @@ import android.net.Uri
 import android.provider.OpenableColumns
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import dev.alenajam.monsterdialer.R
 import dev.alenajam.monsterdialer.characters.data.CharactersRepository
 import dev.alenajam.monsterdialer.packs.data.MonsterPack
 import dev.alenajam.monsterdialer.packs.data.PacksRepository
 import dev.alenajam.monsterdialer.packs.data.PacksRepositoryImpl
 import dev.alenajam.monsterdialer.packs.data.CharacterPackImportDiagnostic
+import dev.alenajam.monsterdialer.packs.data.CharacterPackArchive
+import dev.alenajam.monsterdialer.packs.data.CharacterPackPreview
 import dev.alenajam.monsterdialer.packs.data.InstalledPackCharacter
 import dev.alenajam.monsterdialer.packs.data.CustomCharacterRepository
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -28,6 +31,12 @@ class CharacterPackSettingsViewModel @Inject constructor(
     private val charactersRepository: CharactersRepository
 ) : ViewModel() {
 
+    data class ImportPreview(
+        val uri: Uri,
+        val fileName: String,
+        val pack: CharacterPackPreview,
+    )
+
     val packs: StateFlow<List<MonsterPack>> = packsRepository.getPacks()
         .map { packs -> packs.filter { it.id != CustomCharacterRepository.CUSTOM_PACK_ID } }
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), emptyList())
@@ -37,18 +46,41 @@ class CharacterPackSettingsViewModel @Inject constructor(
 
     private val _importDiagnostic = MutableStateFlow<CharacterPackImportDiagnostic?>(null)
     val importDiagnostic: StateFlow<CharacterPackImportDiagnostic?> = _importDiagnostic.asStateFlow()
+    private val _importPreview = MutableStateFlow<ImportPreview?>(null)
+    val importPreview: StateFlow<ImportPreview?> = _importPreview.asStateFlow()
 
-    fun importPack(context: Context, uri: Uri) {
+    fun previewPack(context: Context, uri: Uri) {
         val fileName = context.displayNameFor(uri)
+        if (!CharacterPackArchive.hasSupportedExtension(fileName)) {
+            _importDiagnostic.value = CharacterPackImportDiagnostic.from(
+                fileName,
+                IllegalArgumentException(context.getString(R.string.character_pack_extension_required))
+            )
+            return
+        }
         viewModelScope.launch {
-            val result = (packsRepository as PacksRepositoryImpl).importPackFromUri(uri)
-            result.onSuccess {
-                _message.value = null
-            }.onFailure { error ->
+            runCatching { (packsRepository as PacksRepositoryImpl).previewPackFromUri(uri) }
+                .onSuccess { pack -> _importPreview.value = ImportPreview(uri, fileName, pack) }
+                .onFailure { error ->
                 _importDiagnostic.value = CharacterPackImportDiagnostic.from(fileName, error)
             }
         }
     }
+
+    fun importPreview() {
+        val preview = _importPreview.value ?: return
+        viewModelScope.launch {
+            val result = (packsRepository as PacksRepositoryImpl).importPackFromUri(preview.uri)
+            result.onSuccess {
+                _message.value = null
+                _importPreview.value = null
+            }.onFailure { error ->
+                _importDiagnostic.value = CharacterPackImportDiagnostic.from(preview.fileName, error)
+            }
+        }
+    }
+
+    fun dismissPreview() { _importPreview.value = null }
 
     fun togglePack(packId: String, enabled: Boolean) {
         viewModelScope.launch {

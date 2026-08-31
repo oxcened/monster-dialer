@@ -32,9 +32,11 @@ import dev.alenajam.monsterdialer.characters.ui.PlayerCharacterSettingsContent
 import dev.alenajam.monsterdialer.characters.ui.CharacterSharingViewModel
 import dev.alenajam.monsterdialer.characters.ui.SharedCharacterImportHandler
 import dev.alenajam.monsterdialer.packs.data.CharacterAssignmentTarget
+import dev.alenajam.monsterdialer.packs.data.CharacterPackArchive
 import dev.alenajam.monsterdialer.packs.data.CharacterType
 import dev.alenajam.monsterdialer.packs.ui.CharacterPackSettingsContent
 import dev.alenajam.monsterdialer.packs.ui.CharacterPackSettingsViewModel
+import dev.alenajam.monsterdialer.packs.ui.CharacterPackImportHandler
 import dev.alenajam.opendialer.core.common.DefaultPhoneManager
 import dev.alenajam.opendialer.core.common.ui.AppThemeExtension
 import dev.alenajam.opendialer.core.common.ui.AppProviders
@@ -50,11 +52,11 @@ class MainActivity : AppCompatActivity() {
     @Inject
     lateinit var defaultPhoneManager: DefaultPhoneManager
 
-    private var sharedCharacterUri by mutableStateOf<Uri?>(null)
+    private var incomingImport by mutableStateOf<IncomingImport?>(null)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        sharedCharacterUri = intent.sharedCharacterUri()
+        incomingImport = intent.incomingImport()
         enableEdgeToEdge()
 
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.Q) {
@@ -181,20 +183,33 @@ class MainActivity : AppCompatActivity() {
                                 }
                                 parts.joinToString(" • ")
                             },
-                            content = { CharacterPackSettingsContent(characterPackSettingsViewModel) },
+                            content = {
+                                CharacterPackSettingsContent(
+                                    viewModel = characterPackSettingsViewModel,
+                                    showImportUi = false,
+                                )
+                            },
                             isScrollable = visiblePacks.isNotEmpty(),
                             visibleInSettings = false,
                             topContentPadding = 0.dp
                         )
                         )
                     )
-                    LaunchedEffect(sharedCharacterUri) {
-                        sharedCharacterUri?.let { uri ->
-                            sharedCharacterUri = null
-                            characterSharingViewModel.preview(this@MainActivity, uri)
+                    LaunchedEffect(incomingImport) {
+                        incomingImport?.let { incoming ->
+                            incomingImport = null
+                            when (incoming) {
+                                is IncomingImport.SharedCharacter -> {
+                                    characterSharingViewModel.preview(this@MainActivity, incoming.uri)
+                                }
+                                is IncomingImport.CharacterPack -> {
+                                    characterPackSettingsViewModel.previewPack(this@MainActivity, incoming.uri)
+                                }
+                            }
                         }
                     }
                     SharedCharacterImportHandler(characterSharingViewModel)
+                    CharacterPackImportHandler(characterPackSettingsViewModel)
                 }
             }
         }
@@ -203,12 +218,27 @@ class MainActivity : AppCompatActivity() {
     override fun onNewIntent(intent: Intent) {
         super.onNewIntent(intent)
         setIntent(intent)
-        sharedCharacterUri = intent.sharedCharacterUri()
+        incomingImport = intent.incomingImport()
     }
 }
 
-private fun Intent.sharedCharacterUri(): Uri? = when (action) {
+private sealed interface IncomingImport {
+    val uri: Uri
+
+    data class SharedCharacter(override val uri: Uri) : IncomingImport
+    data class CharacterPack(override val uri: Uri) : IncomingImport
+}
+
+private fun Intent.incomingImport(): IncomingImport? {
+    val uri = when (action) {
     Intent.ACTION_VIEW -> data
     Intent.ACTION_SEND -> IntentCompat.getParcelableExtra(this, Intent.EXTRA_STREAM, Uri::class.java)
     else -> null
+    } ?: return null
+
+    return if (type == CharacterPackArchive.MimeType || uri.lastPathSegment?.endsWith(".${CharacterPackArchive.Extension}", ignoreCase = true) == true) {
+        IncomingImport.CharacterPack(uri)
+    } else {
+        IncomingImport.SharedCharacter(uri)
+    }
 }
