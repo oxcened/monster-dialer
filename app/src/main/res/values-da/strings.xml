@@ -127,6 +127,9 @@
     <string name="character_sprites_section" comment="Heading for the character sprites section.">Sprites</string>
     <string name="front_sprite_label" comment="Label for the front sprite picker.">Front-sprite</string>
     <string name="back_sprite_label" comment="Label for the back sprite picker.">Bagside-sprite</string>
+    <string name="radiant_sprites_section">Strålende sprites</string>
+    <string name="radiant_front_sprite_label">Strålende front-sprite</string>
+    <string name="radiant_back_sprite_label">Strålende bagside-sprite</string>
     <string name="front_sprite_description" comment="Explains that the front sprite is required for contacts.">Tilføjelse af en front-sprite gør det muligt at tildele denne figur til kontakter.</string>
     <string name="back_sprite_description" comment="Explains that the back sprite is required for the player.">Tilføjelse af en bagside-sprite gør det muligt at tildele denne figur til dig selv.</string>
     <string name="advanced_section" comment="Heading for advanced character settings.">Avanceret</string>
@@ -155,5 +158,7 @@
     <string name="front_sprite_required_for_contact" comment="Message shown when a front sprite is missing but required by an assignment.">Front-sprite er påkrævet, fordi denne figur er tildelt en kontakt.</string>
     <string name="back_sprite_required_for_player" comment="Message shown when a back sprite is missing but required by an assignment.">Bagside-sprite er påkrævet, fordi denne figur er tildelt dig.</string>
     <string name="remove_character_in_use_message" comment="Confirmation dialog message when deleting a character in use; %1$s is the character name.">%1$s er i brug. Sletning af den vil ophæve tildelingen fra dig og dine kontakter.</string>
+    <string name="remove_character_with_radiant_variant_message">Sletning af %1$s fjerner både den almindelige og den strålende variant.</string>
+    <string name="remove_character_with_radiant_variant_in_use_message">Sletning af %1$s fjerner både den almindelige og den strålende variant og ophæver deres tildeling fra dig og dine kontakter.</string>
     <string name="remove_character_pack_in_use_message" comment="Confirmation dialog message when deleting a pack in use; %1$s is the character pack name.">Denne pakke er i brug. Fjernelse af den vil ophæve tildelingen af dens figurer fra dig og dine kontakter.</string>
 </resources>

@@ -18,8 +18,8 @@ licensed to use. Do not use protected franchise characters, names, logos, or cop
 Build the following staging contents in `test-packs/<pack-file-name>/`:
 
 1. `manifest.json`, encoded as UTF-8.
-2. A transparent front-view PNG for every character assignable to `contact`.
-3. A distinct transparent rear-view PNG for every character assignable to `player`.
+2. A transparent front-view PNG for every variant assignable to `contact`.
+3. A distinct transparent rear-view PNG for every variant assignable to `player`.
    The rear image must be a true back view—not a front image, mirror, or three-quarter pose.
 4. Optional `.ogg` call sounds only when explicitly requested.
 5. `test-packs/<pack-file-name>.zip`, containing the manifest and all referenced media.
@@ -35,7 +35,7 @@ Unknown properties are invalid.
 
 ```json
 {
-  "formatVersion": 1,
+  "formatVersion": 2,
   "id": "com.example.forest-friends",
   "name": "Forest Friends",
   "version": "1.0.0",
@@ -49,21 +49,27 @@ Unknown properties are invalid.
       "level": 12,
       "maxHp": 45,
       "assignableTo": ["contact", "player"],
-      "frontImage": "art/mossling.png",
-      "backImage": "art/mossling-back.png",
+      "variants": [
+        {
+          "id": "default",
+          "name": "Default",
+          "frontImage": "art/mossling.png",
+          "backImage": "art/mossling-back.png"
+        }
+      ],
       "callSound": "audio/mossling.ogg"
     }
   ]
 }
 ```
 
-`creator`, `frontImage`, `backImage`, `callSound`, `level`, and `maxHp` are optional fields.
-`frontImage` becomes required when `assignableTo` contains `"contact"`; `backImage` becomes
-required when it contains `"player"`.
+`creator`, `callSound`, `level`, and `maxHp` are optional fields. `variants` is required. Each
+variant needs `frontImage` when `assignableTo` contains `"contact"`, and `backImage` when it
+contains `"player"`.
 
 | Field | Constraint |
 | --- | --- |
-| `formatVersion` | The JSON number `1`. |
+| `formatVersion` | The JSON number `2`. Version `1` is reserved for previously published legacy packs. |
 | Pack and character `id` | 2–64 characters; lowercase letters, digits, `.`, `_`, or `-`; begins with a letter or digit. Character IDs are unique within a pack. |
 | `name`, `license` | Non-empty text, maximum 120 characters. |
 | `version` | Non-empty text, maximum 64 characters. |
@@ -71,21 +77,30 @@ required when it contains `"player"`.
 | `level` | Optional integer from 1 through 999. Defaults to 5 during battle. |
 | `maxHp` | Optional integer from 1 through 999. Defaults to 20 during battle. |
 | `assignableTo` | Non-empty array containing `"contact"`, `"player"`, or both exactly once. |
-| `frontImage`, `backImage` | Relative ZIP path to a `.png` or `.webp` file. |
+| `variants` | Non-empty list of named visual variants. |
 | `callSound` | Relative ZIP path to an `.ogg` file. |
 | `characters` | One to 200 entries. |
 
+Each variant has the following fields:
+
+| Field | Constraint |
+| --- | --- |
+| `id` | 2–64 characters; lowercase letters, digits, `.`, `_`, or `-`; begins with a letter or digit. Unique within its character. |
+| `name` | Non-empty text, maximum 120 characters. |
+| `frontImage`, `backImage` | Relative ZIP path to a `.png`, `.webp`, `.jpg`, or `.jpeg` file. Required for contact/player assignment respectively. |
+| `isRadiant` | Optional boolean. It may be `true` only for a monster variant and enables radiant battle effects for that form. |
+
 `type` and `assignableTo` are independent. A trainer or monster may be available to contacts,
-the player, or both. Every character assignable to `contact` must provide `frontImage`. Every
-character assignable to `player` must provide `backImage`.
+the player, or both. Every one of its variants must provide `frontImage` for contact assignment
+and `backImage` for player assignment.
 
 Do not use `assignableTo` to infer `type`, and do not use `type` to restrict `assignableTo`.
 MonsterDialer resolves the two types into separate battle slots:
 
 | `type` | Contact-side artwork | Player-side artwork |
 | --- | --- | --- |
-| `trainer` | `frontImage`, used as the contact's trainer | `backImage`, used as the player's trainer |
-| `monster` | `frontImage`, used as the contact's monster | `backImage`, used as the player's monster |
+| `trainer` | Selected variant `frontImage`, used as the contact's trainer | Selected variant `backImage`, used as the player's trainer |
+| `monster` | Selected variant `frontImage`, used as the contact's monster | Selected variant `backImage`, used as the player's monster |
 
 A pack may contain any mixture of trainers and monsters. A call can display one assigned trainer
 and one assigned monster for the player, plus one assigned trainer and one assigned monster for

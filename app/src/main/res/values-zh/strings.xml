@@ -124,6 +124,9 @@
     <string name="character_sprites_section" comment="Heading for the character sprites section.">图像</string>
     <string name="front_sprite_label" comment="Label for the front sprite picker.">前向图像</string>
     <string name="back_sprite_label" comment="Label for the back sprite picker.">后向图像</string>
+    <string name="radiant_sprites_section">闪耀图像</string>
+    <string name="radiant_front_sprite_label">闪耀前向图像</string>
+    <string name="radiant_back_sprite_label">闪耀后向图像</string>
     <string name="front_sprite_description" comment="Explains that the front sprite is required for contacts.">添加前向图像即可将此角色分配给联系人。</string>
     <string name="back_sprite_description" comment="Explains that the back sprite is required for the player.">添加后向图像即可将此角色分配给自己。</string>
     <string name="advanced_section" comment="Heading for advanced character settings.">高级</string>
@@ -152,5 +155,7 @@
     <string name="front_sprite_required_for_contact" comment="Message shown when a front sprite is missing but required by an assignment.">需要前向图像，因为此角色已分配给联系人。</string>
     <string name="back_sprite_required_for_player" comment="Message shown when a back sprite is missing but required by an assignment.">需要后向图像，因为此角色已分配给你。</string>
     <string name="remove_character_in_use_message" comment="Confirmation dialog message when deleting a character in use; %1$s is the character name.">%1$s 目前正在使用中。删除它将取消其与你及你的联系人的关联。</string>
+    <string name="remove_character_with_radiant_variant_message">删除 %1$s 会同时删除普通和闪耀变体。</string>
+    <string name="remove_character_with_radiant_variant_in_use_message">删除 %1$s 会同时删除两个变体，并取消分配给你和联系人的角色。</string>
     <string name="remove_character_pack_in_use_message" comment="Confirmation dialog message when deleting a pack in use; %1$s is the character pack name.">此角色包目前正在使用中。移除它将取消其角色与你及你的联系人的关联。</string>
 </resources>

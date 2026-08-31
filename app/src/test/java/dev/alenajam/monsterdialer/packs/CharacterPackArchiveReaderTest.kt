@@ -100,11 +100,11 @@ class CharacterPackArchiveReaderTest {
     }
 
     @Test
-    fun reportsBothPackAndSupportedFormatVersions() {
+    fun reportsUnsupportedPackFormatVersion() {
         val error = try {
             reader.read(
                 archive(
-                    "manifest.json" to validManifest(formatVersion = 2),
+                    "manifest.json" to validManifest(formatVersion = 3),
                     "art/mossling.png" to "image",
                     "art/mossling-back.png" to "image",
                     "audio/mossling.ogg" to "sound"
@@ -116,13 +116,13 @@ class CharacterPackArchiveReaderTest {
         }
 
         assertEquals(
-            "Unsupported pack format version: pack uses 2, but this app supports 1",
+            "Unsupported pack format version: 3",
             error.message
         )
         val diagnostic = CharacterPackImportDiagnostic.from("forest.zip", error)
         assertTrue(diagnostic.report.contains("File: forest.zip"))
-        assertTrue(diagnostic.report.contains("Supported formatVersion: 1"))
-        assertTrue(diagnostic.report.contains("pack uses 2"))
+        assertTrue(diagnostic.report.contains("Supported formatVersion: 2"))
+        assertTrue(diagnostic.report.contains("Unsupported pack format version: 3"))
         assertTrue(diagnostic.report.contains("Stack trace:"))
     }
 

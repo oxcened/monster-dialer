@@ -33,6 +33,8 @@ class CustomCharacterRepository @Inject constructor(
         type: CharacterType,
         frontImageUri: Uri?,
         backImageUri: Uri?,
+        radiantFrontImageUri: Uri? = null,
+        radiantBackImageUri: Uri? = null,
         isRadiant: Boolean = false,
         level: Int? = null,
         maxHp: Int? = null
@@ -66,6 +68,12 @@ class CustomCharacterRepository @Inject constructor(
         val backImageFileName = backImageUri?.let { uri ->
             saveImage(uri, "$characterId-back")
         }
+        val radiantFrontImageFileName = radiantFrontImageUri?.let { uri ->
+            saveImage(uri, "$characterId-radiant-front")
+        }
+        val radiantBackImageFileName = radiantBackImageUri?.let { uri ->
+            saveImage(uri, "$characterId-radiant-back")
+        }
 
         val assignableTo = mutableListOf<CharacterAssignmentTarget>()
         if (frontImageFileName != null) assignableTo.add(CharacterAssignmentTarget.Contact)
@@ -76,9 +84,13 @@ class CustomCharacterRepository @Inject constructor(
             name = name.trim(),
             type = type,
             assignableTo = assignableTo,
-            frontImage = frontImageFileName,
-            backImage = backImageFileName,
-            isRadiant = isRadiant && type == CharacterType.Monster,
+            variants = visualVariants(
+                frontImageFileName,
+                backImageFileName,
+                radiantFrontImageFileName,
+                radiantBackImageFileName,
+                isRadiant && type == CharacterType.Monster,
+            ),
             level = level,
             maxHp = maxHp
         )
@@ -99,6 +111,10 @@ class CustomCharacterRepository @Inject constructor(
         keepExistingFront: Boolean,
         backImageUri: Uri?,
         keepExistingBack: Boolean,
+        radiantFrontImageUri: Uri? = null,
+        keepExistingRadiantFront: Boolean = false,
+        radiantBackImageUri: Uri? = null,
+        keepExistingRadiantBack: Boolean = false,
         isRadiant: Boolean = false,
         level: Int? = null,
         maxHp: Int? = null
@@ -109,12 +125,12 @@ class CustomCharacterRepository @Inject constructor(
         val frontImageFileName = when {
             frontImageUri != null -> {
                 // Delete old front image if exists
-                character.frontImage?.let { File(packDirectory, it).delete() }
+                character.variant(PackCharacter.DefaultVariantId)?.frontImage?.let { File(packDirectory, it).delete() }
                 saveImage(frontImageUri, "$characterId-front")
             }
-            keepExistingFront -> character.frontImage
+            keepExistingFront -> character.variant(PackCharacter.DefaultVariantId)?.frontImage
             else -> {
-                character.frontImage?.let { File(packDirectory, it).delete() }
+                character.variant(PackCharacter.DefaultVariantId)?.frontImage?.let { File(packDirectory, it).delete() }
                 null
             }
         }
@@ -122,12 +138,36 @@ class CustomCharacterRepository @Inject constructor(
         val backImageFileName = when {
             backImageUri != null -> {
                 // Delete old back image if exists
-                character.backImage?.let { File(packDirectory, it).delete() }
+                character.variant(PackCharacter.DefaultVariantId)?.backImage?.let { File(packDirectory, it).delete() }
                 saveImage(backImageUri, "$characterId-back")
             }
-            keepExistingBack -> character.backImage
+            keepExistingBack -> character.variant(PackCharacter.DefaultVariantId)?.backImage
             else -> {
-                character.backImage?.let { File(packDirectory, it).delete() }
+                character.variant(PackCharacter.DefaultVariantId)?.backImage?.let { File(packDirectory, it).delete() }
+                null
+            }
+        }
+
+        val radiantFrontImageFileName = when {
+            radiantFrontImageUri != null -> {
+                character.variant(PackCharacter.RadiantVariantId)?.frontImage?.let { File(packDirectory, it).delete() }
+                saveImage(radiantFrontImageUri, "$characterId-radiant-front")
+            }
+            keepExistingRadiantFront -> character.variant(PackCharacter.RadiantVariantId)?.frontImage
+            else -> {
+                character.variant(PackCharacter.RadiantVariantId)?.frontImage?.let { File(packDirectory, it).delete() }
+                null
+            }
+        }
+
+        val radiantBackImageFileName = when {
+            radiantBackImageUri != null -> {
+                character.variant(PackCharacter.RadiantVariantId)?.backImage?.let { File(packDirectory, it).delete() }
+                saveImage(radiantBackImageUri, "$characterId-radiant-back")
+            }
+            keepExistingRadiantBack -> character.variant(PackCharacter.RadiantVariantId)?.backImage
+            else -> {
+                character.variant(PackCharacter.RadiantVariantId)?.backImage?.let { File(packDirectory, it).delete() }
                 null
             }
         }
@@ -140,10 +180,19 @@ class CustomCharacterRepository @Inject constructor(
             if (it.id == characterId) {
                 it.copy(
                     name = name.trim(),
-                    frontImage = frontImageFileName,
-                    backImage = backImageFileName,
+                    frontImage = null,
+                    backImage = null,
+                    radiantFrontImage = null,
+                    radiantBackImage = null,
+                    variants = visualVariants(
+                        frontImageFileName,
+                        backImageFileName,
+                        radiantFrontImageFileName,
+                        radiantBackImageFileName,
+                        isRadiant && it.type == CharacterType.Monster,
+                    ),
                     assignableTo = assignableTo,
-                    isRadiant = isRadiant && it.type == CharacterType.Monster,
+                    isRadiant = false,
                     level = level,
                     maxHp = maxHp
                 )
@@ -174,16 +223,22 @@ class CustomCharacterRepository @Inject constructor(
     }
 
     private fun writeManifest(manifest: CharacterPackManifest) {
+        val currentManifest = manifest.copy(
+            formatVersion = CharacterPackValidator.CurrentFormatVersion,
+            characters = manifest.characters.map { character ->
+                if (character.variants.isEmpty()) character.copy(variants = character.visualVariants) else character
+            }
+        )
         val tempManifest = File(packDirectory, "${CharacterPackValidator.ManifestPath}.tmp-${UUID.randomUUID()}")
         try {
-            tempManifest.writeText(json.encodeToString(manifest))
+            tempManifest.writeText(json.encodeToString(currentManifest))
             if (!tempManifest.renameTo(manifestFile)) {
-                manifestFile.writeText(json.encodeToString(manifest))
+                manifestFile.writeText(json.encodeToString(currentManifest))
             }
         } finally {
             if (tempManifest.exists()) tempManifest.delete()
         }
-        catalog.recordInstallation(manifest)
+        catalog.recordInstallation(currentManifest)
     }
 
     suspend fun deleteCharacter(characterId: String) = withContext(Dispatchers.IO) {
@@ -191,7 +246,7 @@ class CustomCharacterRepository @Inject constructor(
         val character = currentManifest.characters.find { it.id == characterId } ?: return@withContext
 
         // Remove images
-        listOfNotNull(character.frontImage, character.backImage).distinct().forEach { relativePath ->
+        character.visualVariants.flatMap { listOfNotNull(it.frontImage, it.backImage) }.distinct().forEach { relativePath ->
             File(packDirectory, relativePath).delete()
         }
 
@@ -200,18 +255,7 @@ class CustomCharacterRepository @Inject constructor(
             catalog.remove(CUSTOM_PACK_ID)
             File(storageRoot, CUSTOM_PACK_ID).deleteRecursively()
         } else {
-            val updatedManifest = currentManifest.copy(characters = updatedCharacters)
-            // Write manifest atomically
-            val tempManifest = File(packDirectory, "${CharacterPackValidator.ManifestPath}.tmp-${UUID.randomUUID()}")
-            try {
-                tempManifest.writeText(json.encodeToString(updatedManifest))
-                if (!tempManifest.renameTo(manifestFile)) {
-                    manifestFile.writeText(json.encodeToString(updatedManifest))
-                }
-            } finally {
-                if (tempManifest.exists()) tempManifest.delete()
-            }
-            catalog.recordInstallation(updatedManifest)
+            writeManifest(currentManifest.copy(characters = updatedCharacters))
         }
     }
 
@@ -222,17 +266,35 @@ class CustomCharacterRepository @Inject constructor(
 
     fun getCharacterFrontImageFile(characterId: String): File? {
         val character = getCharacter(characterId) ?: return null
-        val relativePath = character.frontImage ?: return null
+        val relativePath = character.variant(PackCharacter.DefaultVariantId)?.frontImage ?: return null
         return File(packDirectory, relativePath)
     }
 
     fun getCharacterBackImageFile(characterId: String): File? {
         val character = getCharacter(characterId) ?: return null
-        val relativePath = character.backImage ?: return null
+        val relativePath = character.variant(PackCharacter.DefaultVariantId)?.backImage ?: return null
         return File(packDirectory, relativePath)
     }
 
-    data class ExportableCharacter(val character: PackCharacter, val frontImageFile: File?, val backImageFile: File?)
+    fun getCharacterRadiantFrontImageFile(characterId: String): File? {
+        val character = getCharacter(characterId) ?: return null
+        val relativePath = character.variant(PackCharacter.RadiantVariantId)?.frontImage ?: return null
+        return File(packDirectory, relativePath)
+    }
+
+    fun getCharacterRadiantBackImageFile(characterId: String): File? {
+        val character = getCharacter(characterId) ?: return null
+        val relativePath = character.variant(PackCharacter.RadiantVariantId)?.backImage ?: return null
+        return File(packDirectory, relativePath)
+    }
+
+    data class ExportableCharacter(
+        val character: PackCharacter,
+        val frontImageFile: File?,
+        val backImageFile: File?,
+        val radiantFrontImageFile: File?,
+        val radiantBackImageFile: File?,
+    )
 
     fun getExportableCharacters(): List<ExportableCharacter> = readManifest()
         ?.characters
@@ -240,7 +302,13 @@ class CustomCharacterRepository @Inject constructor(
         .orEmpty()
 
     fun getExportableCharacter(characterId: String): ExportableCharacter? = getCharacter(characterId)?.let { character ->
-        ExportableCharacter(character, character.frontImage?.let { File(packDirectory, it) }?.takeIf(File::isFile), character.backImage?.let { File(packDirectory, it) }?.takeIf(File::isFile))
+        ExportableCharacter(
+            character = character,
+            frontImageFile = character.variant(PackCharacter.DefaultVariantId)?.frontImage?.let { File(packDirectory, it) }?.takeIf(File::isFile),
+            backImageFile = character.variant(PackCharacter.DefaultVariantId)?.backImage?.let { File(packDirectory, it) }?.takeIf(File::isFile),
+            radiantFrontImageFile = character.variant(PackCharacter.RadiantVariantId)?.frontImage?.let { File(packDirectory, it) }?.takeIf(File::isFile),
+            radiantBackImageFile = character.variant(PackCharacter.RadiantVariantId)?.backImage?.let { File(packDirectory, it) }?.takeIf(File::isFile),
+        )
     }
 
     suspend fun importSharedCharacter(shared: dev.alenajam.monsterdialer.characters.data.SharedCharacterImport): CharacterReference = withContext(Dispatchers.IO) {
@@ -251,9 +319,48 @@ class CustomCharacterRepository @Inject constructor(
         fun writeImage(bytes: ByteArray?, suffix: String) = bytes?.let { File(packDirectory, "art/$id-$suffix.png").apply { writeBytes(it) }.path.substringAfter("$packDirectory/") }
         val front = writeImage(shared.frontImage, "front")
         val back = writeImage(shared.backImage, "back")
-        val character = PackCharacter(id, shared.character.name.trim(), shared.character.type, shared.character.assignableTo, front, back, level = shared.character.level, maxHp = shared.character.maxHp, isRadiant = shared.character.isRadiant)
+        val radiantFront = writeImage(shared.radiantFrontImage, "radiant-front")
+        val radiantBack = writeImage(shared.radiantBackImage, "radiant-back")
+        val character = PackCharacter(
+            id = id,
+            name = shared.character.name.trim(),
+            type = shared.character.type,
+            assignableTo = shared.character.assignableTo,
+            variants = visualVariants(front, back, radiantFront, radiantBack, shared.character.isRadiant),
+            level = shared.character.level,
+            maxHp = shared.character.maxHp,
+        )
         writeManifest(manifest.copy(characters = manifest.characters + character))
         CharacterReference(CUSTOM_PACK_ID, id)
+    }
+
+    private fun visualVariants(
+        frontImage: String?,
+        backImage: String?,
+        radiantFrontImage: String?,
+        radiantBackImage: String?,
+        isLegacyRadiant: Boolean,
+    ): List<CharacterVisualVariant> = buildList {
+        add(
+            CharacterVisualVariant(
+                id = PackCharacter.DefaultVariantId,
+                name = PackCharacter.DefaultVariantName,
+                frontImage = frontImage,
+                backImage = backImage,
+                isRadiant = isLegacyRadiant && radiantFrontImage == null && radiantBackImage == null,
+            )
+        )
+        if (radiantFrontImage != null || radiantBackImage != null) {
+            add(
+                CharacterVisualVariant(
+                    id = PackCharacter.RadiantVariantId,
+                    name = PackCharacter.RadiantVariantName,
+                    frontImage = radiantFrontImage,
+                    backImage = radiantBackImage,
+                    isRadiant = true,
+                )
+            )
+        }
     }
 
     private fun readManifest(): CharacterPackManifest? {

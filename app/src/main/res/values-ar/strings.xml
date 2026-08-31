@@ -139,6 +139,9 @@
     <string name="character_sprites_section" comment="Heading for the character sprites section.">الرسومات</string>
     <string name="front_sprite_label" comment="Label for the front sprite picker.">الرسم الأمامي</string>
     <string name="back_sprite_label" comment="Label for the back sprite picker.">الرسم الخلفي</string>
+    <string name="radiant_sprites_section">رسومات متألقة</string>
+    <string name="radiant_front_sprite_label">الرسم الأمامي المتألق</string>
+    <string name="radiant_back_sprite_label">الرسم الخلفي المتألق</string>
     <string name="front_sprite_description" comment="Explains that the front sprite is required for contacts.">تتيح إضافة رسم أمامي تعيين هذه الشخصية لجهات الاتصال.</string>
     <string name="back_sprite_description" comment="Explains that the back sprite is required for the player.">تتيح إضافة رسم خلفي تعيين هذه الشخصية لنفسك.</string>
     <string name="advanced_section" comment="Heading for advanced character settings.">خيارات متقدمة</string>
@@ -167,5 +170,7 @@
     <string name="front_sprite_required_for_contact" comment="Message shown when a front sprite is missing but required by an assignment.">الرسم الأمامي مطلوب لأن هذه الشخصية معينة لجهة اتصال.</string>
     <string name="back_sprite_required_for_player" comment="Message shown when a back sprite is missing but required by an assignment.">الرسم الخلفي مطلوب لأن هذه الشخصية معينة لك.</string>
     <string name="remove_character_in_use_message" comment="Confirmation dialog message when deleting a character in use; %1$s is the character name.">‏%1$s قيد الاستخدام حاليًا. سيؤدي حذفها إلى إلغاء تعيينها منك ومن جهات اتصالك.</string>
+    <string name="remove_character_with_radiant_variant_message">سيؤدي حذف %1$s إلى إزالة النسختين العادية والمتألقة.</string>
+    <string name="remove_character_with_radiant_variant_in_use_message">سيؤدي حذف %1$s إلى إزالة النسختين العادية والمتألقة وإلغاء تعيينهما منك ومن جهات اتصالك.</string>
     <string name="remove_character_pack_in_use_message" comment="Confirmation dialog message when deleting a pack in use; %1$s is the character pack name.">هذه الحزمة قيد الاستخدام حاليًا. ستؤدي إزالتها إلى إلغاء تعيين شخصياتها منك ومن جهات اتصالك.</string>
 </resources>

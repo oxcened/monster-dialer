@@ -3,7 +3,9 @@ package dev.alenajam.monsterdialer.packs.data
 class CharacterPackValidationException(message: String) : IllegalArgumentException(message)
 
 object CharacterPackValidator {
-    const val SupportedFormatVersion = 1
+    const val CurrentFormatVersion = 2
+    const val SupportedFormatVersion = CurrentFormatVersion
+    private val supportedFormatVersions = setOf(1, CurrentFormatVersion)
     const val ManifestPath = "manifest.json"
     const val MaxCharacters = 200
     const val MaxNameLength = 120
@@ -16,8 +18,8 @@ object CharacterPackValidator {
 
     fun validate(manifest: CharacterPackManifest): ValidatedCharacterPack {
         requireThat(
-            manifest.formatVersion == SupportedFormatVersion,
-            "Unsupported pack format version: pack uses ${manifest.formatVersion}, but this app supports $SupportedFormatVersion"
+            manifest.formatVersion in supportedFormatVersions,
+            "Unsupported pack format version: ${manifest.formatVersion}"
         )
         requireThat(idPattern.matches(manifest.id), "Pack id must be 2–64 lowercase letters, digits, dots, dashes, or underscores")
         requireText(manifest.name, "Pack name")
@@ -36,16 +38,43 @@ object CharacterPackValidator {
             requireThat(character.assignableTo.isNotEmpty(), "Character assignableTo must not be empty")
             requireThat(character.assignableTo.distinct().size == character.assignableTo.size, "Character assignableTo contains duplicates")
             requireThat(
+                manifest.formatVersion < CurrentFormatVersion || character.variants.isNotEmpty(),
+                "Character '${character.id}' must contain at least one variant"
+            )
+            val variants = character.visualVariants
+            val variantIds = mutableSetOf<String>()
+            variants.forEach { variant ->
+                requireThat(idPattern.matches(variant.id), "Variant id '${variant.id}' is invalid")
+                requireThat(variantIds.add(variant.id), "Variant ids must be unique for character '${character.id}'")
+                requireText(variant.name, "Variant name")
+                requireThat(
+                    !variant.isRadiant || character.type == CharacterType.Monster,
+                    "Only monster variant '${variant.id}' may be radiant"
+                )
+            }
+            requireThat(
                 !character.isRadiant || character.type == CharacterType.Monster,
                 "Only monster character '${character.id}' may be radiant"
             )
             requireThat(
-                CharacterAssignmentTarget.Contact !in character.assignableTo || character.frontImage != null,
+                CharacterAssignmentTarget.Contact !in character.assignableTo || variants.all { it.frontImage != null },
                 "Contact-assignable character '${character.id}' must provide frontImage"
             )
             requireThat(
-                CharacterAssignmentTarget.Player !in character.assignableTo || character.backImage != null,
+                CharacterAssignmentTarget.Player !in character.assignableTo || variants.all { it.backImage != null },
                 "Player-assignable character '${character.id}' must provide backImage"
+            )
+            requireThat(
+                character.radiantFrontImage == null || character.frontImage != null,
+                "Radiant frontImage requires frontImage for character '${character.id}'"
+            )
+            requireThat(
+                character.radiantBackImage == null || character.backImage != null,
+                "Radiant backImage requires backImage for character '${character.id}'"
+            )
+            requireThat(
+                !character.hasRadiantVariant || character.type == CharacterType.Monster,
+                "Only monster character '${character.id}' may have a radiant variant"
             )
             character.level?.let {
                 requireThat(it in 1..MaxLevel, "Character '${character.id}' level must be between 1 and $MaxLevel")
@@ -53,8 +82,12 @@ object CharacterPackValidator {
             character.maxHp?.let {
                 requireThat(it in 1..MaxHp, "Character '${character.id}' maxHp must be between 1 and $MaxHp")
             }
-            character.frontImage?.let { files += validatePath(it, mediaExtensions, "frontImage") }
-            character.backImage?.let { files += validatePath(it, mediaExtensions, "backImage") }
+            variants.forEach { variant ->
+                variant.frontImage?.let { files += validatePath(it, mediaExtensions, "frontImage") }
+                variant.backImage?.let { files += validatePath(it, mediaExtensions, "backImage") }
+            }
+            character.radiantFrontImage?.let { files += validatePath(it, mediaExtensions, "radiantFrontImage") }
+            character.radiantBackImage?.let { files += validatePath(it, mediaExtensions, "radiantBackImage") }
             character.callSound?.let { files += validatePath(it, audioExtensions, "callSound") }
         }
         return ValidatedCharacterPack(manifest, files)

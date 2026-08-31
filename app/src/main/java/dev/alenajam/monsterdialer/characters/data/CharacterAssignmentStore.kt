@@ -207,20 +207,20 @@ class CharacterAssignmentStore(
     @Synchronized
     fun clearAssignmentsForCharacter(reference: CharacterReference) {
         val document = read()
-        val updatedPlayerByType = document.playerByType.filterValues { it != reference }
+        val updatedPlayerByType = document.playerByType.filterValues { !it.sameCharacterAs(reference) }
         
         val updatedContactsByType = document.contactsByType.mapValues { (_, assignments) ->
-            assignments.filterValues { it != reference }
+            assignments.filterValues { !it.sameCharacterAs(reference) }
         }.filterValues { it.isNotEmpty() }
 
-        val legacyContacts = document.contacts.filterValues { it != reference }
+        val legacyContacts = document.contacts.filterValues { !it.sameCharacterAs(reference) }
         
         val updatedLabels = document.contactLabels.filterKeys { key ->
             key in updatedContactsByType || key in legacyContacts
         }
 
         write(document.copy(
-            player = if (document.player == reference) null else document.player,
+            player = if (document.player?.sameCharacterAs(reference) == true) null else document.player,
             contacts = legacyContacts,
             playerByType = updatedPlayerByType,
             contactsByType = updatedContactsByType,
@@ -232,6 +232,9 @@ class CharacterAssignmentStore(
         require(packId.isNotBlank() && packId.length <= MaxIdentifierLength) { "Pack id is invalid" }
         require(characterId.isNotBlank() && characterId.length <= MaxIdentifierLength) { "Character id is invalid" }
     }
+
+    private fun CharacterReference.sameCharacterAs(other: CharacterReference): Boolean =
+        packId == other.packId && characterId == other.characterId
 
     private fun normalizeContactKey(value: String): String {
         return requireNotNull(normalizeContactKeyOrNull(value)) { "Contact key is invalid" }

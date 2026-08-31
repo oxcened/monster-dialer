@@ -209,6 +209,7 @@ fun ColumnScope.ContactCharacterSettingsContent(
         pendingDeletion?.let { character ->
             CustomCharacterDeletionConfirmationDialog(
                 characterName = character.character.name,
+                hasRadiantVariant = character.character.hasRadiantVariant,
                 isInUse = isPendingDeletionInUse,
                 onConfirm = {
                     viewModel.deleteCustomCharacter(character.character.id)

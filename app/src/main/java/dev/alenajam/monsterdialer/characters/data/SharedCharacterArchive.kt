@@ -15,7 +15,7 @@ import kotlinx.serialization.json.Json
 
 @Serializable
 data class SharedCharacter(
-    val formatVersion: Int = 1,
+    val formatVersion: Int = 2,
     val name: String,
     val creator: String,
     val license: String,
@@ -23,6 +23,8 @@ data class SharedCharacter(
     val assignableTo: List<CharacterAssignmentTarget>,
     val frontImage: String? = null,
     val backImage: String? = null,
+    val radiantFrontImage: String? = null,
+    val radiantBackImage: String? = null,
     val isRadiant: Boolean = false,
     val level: Int? = null,
     val maxHp: Int? = null,
@@ -32,6 +34,8 @@ data class SharedCharacterImport(
     val character: SharedCharacter,
     val frontImage: ByteArray?,
     val backImage: ByteArray?,
+    val radiantFrontImage: ByteArray?,
+    val radiantBackImage: ByteArray?,
 )
 
 object SharedCharacterArchive {
@@ -68,11 +72,17 @@ object SharedCharacterArchive {
         }
         val shared = requireNotNull(character) { "Character archive has no manifest" }
         require(
-            shared.formatVersion == 1 &&
+            shared.formatVersion in 1..2 &&
                 shared.name.isNotBlank() &&
                 shared.creator.isNotBlank() &&
                 shared.license.isNotBlank()
         ) { "Character archive is not supported" }
-        return SharedCharacterImport(shared, shared.frontImage?.let { requireNotNull(files[it]) }, shared.backImage?.let { requireNotNull(files[it]) })
+        return SharedCharacterImport(
+            character = shared,
+            frontImage = shared.frontImage?.let { requireNotNull(files[it]) },
+            backImage = shared.backImage?.let { requireNotNull(files[it]) },
+            radiantFrontImage = shared.radiantFrontImage?.let { requireNotNull(files[it]) },
+            radiantBackImage = shared.radiantBackImage?.let { requireNotNull(files[it]) },
+        )
     }
 }
