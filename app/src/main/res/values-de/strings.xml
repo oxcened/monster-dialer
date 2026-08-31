@@ -48,6 +48,8 @@
     <string name="radiant_unlock_notifications">Strahlende Freischaltungen</string>
     <string name="radiant_variant_unlocked_title">Strahlende Variante freigeschaltet!</string>
     <string name="radiant_variant_unlocked_message">%1$s kann jetzt zugewiesen werden.</string>
+    <string name="radiant_unlock_share_title">Strahlende Freischaltung teilen</string>
+    <string name="radiant_unlock_share_card_title">STRAHLENDES MONSTER FREIGESCHALTET!</string>
     <string name="show_grid_view" comment="Accessibility label for the control that switches the character selector to a grid.">Rasteransicht anzeigen</string>
     <string name="show_list_view" comment="Accessibility label for the control that switches the character selector to a list.">Listenansicht anzeigen</string>
     <string name="jump_to_selected_character" comment="Accessibility label for a button that scrolls to the selected character.">Zur ausgewählten Figur</string>

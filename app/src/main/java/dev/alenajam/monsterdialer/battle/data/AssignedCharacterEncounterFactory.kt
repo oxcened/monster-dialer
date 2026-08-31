@@ -60,8 +60,9 @@ class AssignedCharacterEncounterFactory(
             val radiantWild = randomRadiantWild()
             if (radiantWild != null && (shouldForceRadiantEncounter() || random.nextInt(RadiantEncounterDenominator) == 0)) {
                 val (wildCharacter, variant) = radiantWild
+                val wildFrontSprite = requireNotNull(wildCharacter.imageFor(variant.frontImage))
                 val wildMonster = wildCharacter.asBattleMonster(
-                    frontSprite = requireNotNull(wildCharacter.imageFor(variant.frontImage)),
+                    frontSprite = wildFrontSprite,
                     backSprite = null,
                     variant = variant,
                 )
@@ -80,6 +81,7 @@ class AssignedCharacterEncounterFactory(
                     playerTrainerSprite = playerTrainer,
                     enemyTrainerSprite = wildMonster.frontSprite,
                     unlockedRadiantName = wildCharacter.character.name.takeIf { wasUnlocked },
+                    unlockedRadiantFrontSpritePath = (wildFrontSprite as? BattleVisualAsset.LocalFile)?.path,
                 )
             }
             

@@ -48,6 +48,8 @@
     <string name="radiant_unlock_notifications">Sblocchi radiosi</string>
     <string name="radiant_variant_unlocked_title">Variante radiosa sbloccata!</string>
     <string name="radiant_variant_unlocked_message">%1$s è ora pronto da assegnare.</string>
+    <string name="radiant_unlock_share_title">Condividi sblocco radioso</string>
+    <string name="radiant_unlock_share_card_title">MOSTRO RADIOSO SBLOCCATO!</string>
     <string name="show_grid_view" comment="Accessibility label for the control that switches the character selector to a grid.">Mostra griglia</string>
     <string name="show_list_view" comment="Accessibility label for the control that switches the character selector to a list.">Mostra elenco</string>
     <string name="jump_to_selected_character" comment="Accessibility label for a button that scrolls to the selected character.">Vai al personaggio selezionato</string>

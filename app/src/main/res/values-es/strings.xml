@@ -48,6 +48,8 @@
     <string name="radiant_unlock_notifications">Desbloqueos radiantes</string>
     <string name="radiant_variant_unlocked_title">¡Variante radiante desbloqueada!</string>
     <string name="radiant_variant_unlocked_message">%1$s ya está listo para asignar.</string>
+    <string name="radiant_unlock_share_title">Compartir desbloqueo radiante</string>
+    <string name="radiant_unlock_share_card_title">¡MONSTRUO RADIANTE DESBLOQUEADO!</string>
     <string name="show_grid_view" comment="Accessibility label for the control that switches the character selector to a grid.">Mostrar cuadrícula</string>
     <string name="show_list_view" comment="Accessibility label for the control that switches the character selector to a list.">Mostrar lista</string>
     <string name="jump_to_selected_character" comment="Accessibility label for a button that scrolls to the selected character.">Ir al personaje seleccionado</string>

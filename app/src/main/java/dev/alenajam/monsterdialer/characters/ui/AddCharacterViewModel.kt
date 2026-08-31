@@ -207,7 +207,7 @@ class AddCharacterViewModel @Inject constructor(
         val hasRadiantFront = radiantFrontImage != null || existingRadiantFront != null
         val hasRadiantBack = radiantBackImage != null || existingRadiantBack != null
         val hasCompleteRadiantVariant = !currentIsRadiant ||
-            (!hasFront || hasRadiantFront) && (!hasBack || hasRadiantBack)
+            hasRadiantFront && (!hasBack || hasRadiantBack)
 
         // Validation based on preferred target
         val isValid = when (preferredAssignmentTarget) {

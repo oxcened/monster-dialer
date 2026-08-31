@@ -53,6 +53,7 @@ data class BattleEncounter(
     val enemyTrainerSprite: BattleVisualAsset,
     /** Present only when this encounter discovers a radiant variant for the first time. */
     val unlockedRadiantName: String? = null,
+    val unlockedRadiantFrontSpritePath: String? = null,
 )
 
 data class BattleUiState(

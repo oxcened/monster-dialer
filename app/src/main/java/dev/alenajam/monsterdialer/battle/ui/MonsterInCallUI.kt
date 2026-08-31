@@ -188,7 +188,10 @@ class MonsterInCallUI @Inject constructor(
                             }
                             LaunchedEffect(encounter.id, radiantUnlockMessage) {
                                 radiantUnlockMessage?.let { message ->
-                                    radiantUnlockNotifier.show(requireNotNull(encounter.unlockedRadiantName))
+                                    radiantUnlockNotifier.show(
+                                        characterName = requireNotNull(encounter.unlockedRadiantName),
+                                        frontSpritePath = encounter.unlockedRadiantFrontSpritePath,
+                                    )
                                     radiantUnlockSnackbar.showSnackbar(message)
                                 }
                             }

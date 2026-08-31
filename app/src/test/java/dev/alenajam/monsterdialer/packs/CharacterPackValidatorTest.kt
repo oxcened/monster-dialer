@@ -74,6 +74,25 @@ class CharacterPackValidatorTest {
     }
 
     @Test(expected = CharacterPackValidationException::class)
+    fun rejectsRadiantVariantWithoutFrontImage() {
+        val manifest = validManifest(
+            formatVersion = CharacterPackValidator.CurrentFormatVersion,
+            characters = listOf(
+                validCharacter(
+                    assignableTo = listOf(CharacterAssignmentTarget.Player),
+                    frontImage = null,
+                    backImage = null,
+                    variants = listOf(
+                        CharacterVisualVariant("radiant", "Radiant", null, "back.png", isRadiant = true),
+                    )
+                )
+            )
+        )
+
+        CharacterPackValidator.validate(manifest)
+    }
+
+    @Test(expected = CharacterPackValidationException::class)
     fun rejectsUnsafePaths() {
         val manifest = validManifest(characters = listOf(
             validCharacter(frontImage = "../outside.png")

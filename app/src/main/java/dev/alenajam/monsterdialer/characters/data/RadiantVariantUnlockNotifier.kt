@@ -16,17 +16,20 @@ import dev.alenajam.monsterdialer.R
 import dev.alenajam.monsterdialer.app.MainActivity
 import javax.inject.Inject
 import javax.inject.Singleton
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 
 /** Posts a persistent reminder after a player discovers a radiant variant. */
 @Singleton
 class RadiantVariantUnlockNotifier @Inject constructor(
     @ApplicationContext private val context: Context,
+    private val shareCardFactory: RadiantUnlockShareCardFactory,
 ) {
-    fun show(characterName: String) {
+    suspend fun show(characterName: String, frontSpritePath: String?) = withContext(Dispatchers.IO) {
         if (
             Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU &&
             ContextCompat.checkSelfPermission(context, Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED
-        ) return
+        ) return@withContext
         createChannel()
         val openApp = PendingIntent.getActivity(
             context,
@@ -40,8 +43,32 @@ class RadiantVariantUnlockNotifier @Inject constructor(
             .setContentText(context.getString(R.string.radiant_variant_unlocked_message, characterName))
             .setContentIntent(openApp)
             .setAutoCancel(true)
-            .build()
-        NotificationManagerCompat.from(context).notify(characterName.hashCode(), notification)
+        frontSpritePath?.let { path ->
+            shareCardFactory.create(characterName, path)?.let { imageUri ->
+                notification.addAction(
+                    0,
+                    context.getString(R.string.share),
+                    sharePendingIntent(imageUri),
+                )
+            }
+        }
+        NotificationManagerCompat.from(context).notify(characterName.hashCode(), notification.build())
+    }
+
+    private fun sharePendingIntent(imageUri: android.net.Uri): PendingIntent {
+        val shareIntent = Intent(Intent.ACTION_SEND).apply {
+            type = "image/png"
+            putExtra(Intent.EXTRA_STREAM, imageUri)
+            clipData = android.content.ClipData.newRawUri("radiant-unlock.png", imageUri)
+            addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+        }
+        val chooser = Intent.createChooser(shareIntent, context.getString(R.string.radiant_unlock_share_title))
+        return PendingIntent.getActivity(
+            context,
+            imageUri.hashCode(),
+            chooser,
+            PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE,
+        )
     }
 
     private fun createChannel() {

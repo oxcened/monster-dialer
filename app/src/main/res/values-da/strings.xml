@@ -48,6 +48,8 @@
     <string name="radiant_unlock_notifications">Strålende oplåsninger</string>
     <string name="radiant_variant_unlocked_title">Strålende variant låst op!</string>
     <string name="radiant_variant_unlocked_message">%1$s kan nu tildeles.</string>
+    <string name="radiant_unlock_share_title">Del strålende oplåsning</string>
+    <string name="radiant_unlock_share_card_title">STRÅLENDE MONSTER LÅST OP!</string>
     <string name="show_grid_view" comment="Accessibility label for the control that switches the character selector to a grid.">Vis gittervisning</string>
     <string name="show_list_view" comment="Accessibility label for the control that switches the character selector to a list.">Vis listevisning</string>
     <string name="jump_to_selected_character" comment="Accessibility label for a button that scrolls to the selected character.">Gå til valgt figur</string>
