@@ -41,6 +41,10 @@ class CharacterPackSettingsViewModel @Inject constructor(
         .map { packs -> packs.filter { it.id != CustomCharacterRepository.CUSTOM_PACK_ID } }
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), emptyList())
 
+    val canCreatePack: StateFlow<Boolean> = packsRepository.getPacks()
+        .map { packs -> packs.any { it.id == CustomCharacterRepository.CUSTOM_PACK_ID && it.characterCount > 0 } }
+        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), false)
+
     private val _message = MutableStateFlow<String?>(null)
     val message: StateFlow<String?> = _message.asStateFlow()
 

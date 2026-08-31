@@ -83,6 +83,7 @@ fun ColumnScope.CharacterPackSettingsContent(
 ) {
     val context = LocalContext.current
     val packs by viewModel.packs.collectAsStateWithLifecycle()
+    val canCreatePack by viewModel.canCreatePack.collectAsStateWithLifecycle()
     val message by viewModel.message.collectAsStateWithLifecycle()
     val characterPackRemoved = stringResource(R.string.character_pack_removed)
     val characterPackRemoveFailed = stringResource(R.string.character_pack_remove_failed)
@@ -162,8 +163,17 @@ fun ColumnScope.CharacterPackSettingsContent(
                         color = MaterialTheme.colorScheme.onSurfaceVariant
                     )
                 }
-                Button(onClick = importPack) { Text(stringResource(R.string.import_character_pack)) }
-                OutlinedButton(onClick = createPack) { Text(stringResource(R.string.create_character_pack)) }
+                if (canCreatePack) {
+                    Column(
+                        horizontalAlignment = Alignment.CenterHorizontally,
+                        verticalArrangement = Arrangement.spacedBy(4.dp)
+                    ) {
+                        Button(onClick = importPack) { Text(stringResource(R.string.import_character_pack)) }
+                        OutlinedButton(onClick = createPack) { Text(stringResource(R.string.create_character_pack)) }
+                    }
+                } else {
+                    Button(onClick = importPack) { Text(stringResource(R.string.import_character_pack)) }
+                }
                 Text(
                     stringResource(R.string.pack_import_license_notice),
                     style = MaterialTheme.typography.bodySmall,
@@ -181,10 +191,12 @@ fun ColumnScope.CharacterPackSettingsContent(
                 Icon(Icons.Outlined.FolderOpen, contentDescription = null, modifier = Modifier.size(18.dp))
                 Text(stringResource(R.string.import_pack), modifier = Modifier.padding(start = 8.dp))
             }
-            OutlinedButton(
-                onClick = createPack,
-                modifier = Modifier.fillMaxWidth()
-            ) { Text(stringResource(R.string.create_character_pack)) }
+            if (canCreatePack) {
+                OutlinedButton(
+                    onClick = createPack,
+                    modifier = Modifier.fillMaxWidth()
+                ) { Text(stringResource(R.string.create_character_pack)) }
+            }
             Column {
                 packs.forEachIndexed { index, pack ->
                     val preview = viewModel.getPreviewCharacter(pack.id, pack.name)
