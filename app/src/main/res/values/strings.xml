@@ -58,6 +58,7 @@
     <string name="radiant_variant_unlocked_message" comment="Confirms a radiant character variant was unlocked; %1$s is the character name.">%1$s is now ready to assign.</string>
     <string name="radiant_unlock_share_title" comment="Chooser title for sharing a radiant variant unlock.">Share radiant unlock</string>
     <string name="radiant_unlock_share_card_title" comment="Heading on a radiant variant unlock share image.">RADIANT MONSTER UNLOCKED!</string>
+    <string name="radiant_unlock_share_card_link" translatable="false">linktr.ee/monsterdialer</string>
     <string name="show_grid_view" comment="Accessibility label for the control that switches the character selector to a grid.">Show grid view</string>
     <string name="show_list_view" comment="Accessibility label for the control that switches the character selector to a list.">Show list view</string>
     <string name="jump_to_selected_character" comment="Accessibility label for a button that scrolls to the selected character.">Jump to selected character</string>
