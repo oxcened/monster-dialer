@@ -131,6 +131,9 @@
     <string name="character_sprites_section" comment="Heading for the character sprites section.">Sprites</string>
     <string name="front_sprite_label" comment="Label for the front sprite picker.">Sprite frontal</string>
     <string name="back_sprite_label" comment="Label for the back sprite picker.">Sprite trasero</string>
+    <string name="radiant_sprites_section" comment="Heading for a monster's radiant sprite pickers.">Sprites radiantes</string>
+    <string name="radiant_front_sprite_label" comment="Label for the radiant front sprite picker.">Frontal radiante</string>
+    <string name="radiant_back_sprite_label" comment="Label for the radiant back sprite picker.">Trasero radiante</string>
     <string name="front_sprite_description" comment="Explains that the front sprite is required for contacts.">Añadir un sprite frontal permite asignar este personaje a los contactos.</string>
     <string name="back_sprite_description" comment="Explains that the back sprite is required for the player.">Añadir un sprite trasero permite asignarte este personaje a ti mismo.</string>
     <string name="advanced_section" comment="Heading for advanced character settings.">Avanzado</string>
@@ -157,5 +160,7 @@
     <string name="front_sprite_required_for_contact" comment="Message shown when a front sprite is missing but required by an assignment.">El sprite frontal es necesario porque este personaje está asignado a un contacto.</string>
     <string name="back_sprite_required_for_player" comment="Message shown when a back sprite is missing but required by an assignment.">El sprite trasero es necesario porque este personaje está asignado a ti.</string>
     <string name="remove_character_in_use_message" comment="Confirmation dialog message when deleting a character in use; %1$s is the character name.">%1$s está en uso. Al eliminarlo, se anulará su asignación a ti y a tus contactos.</string>
+    <string name="remove_character_with_radiant_variant_message" comment="Confirmation dialog message when deleting a character with a radiant variant; %1$s is the character name.">Al eliminar %1$s se eliminarán las variantes normal y radiante.</string>
+    <string name="remove_character_with_radiant_variant_in_use_message" comment="Confirmation dialog message when deleting an in-use character with a radiant variant; %1$s is the character name.">Al eliminar %1$s se eliminarán ambas variantes y se anularán sus asignaciones para ti y tus contactos.</string>
     <string name="remove_character_pack_in_use_message" comment="Confirmation dialog message when deleting a pack in use; %1$s is the character pack name.">Este paquete está en uso. Al eliminarlo, se anulará la asignación de sus personajes a ti y a tus contactos.</string>
 </resources>
