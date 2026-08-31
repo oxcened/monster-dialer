@@ -1,5 +1,6 @@
 package dev.alenajam.monsterdialer.battle.data
 
+import dev.alenajam.monsterdialer.BuildConfig
 import dev.alenajam.monsterdialer.characters.data.CharacterAssignmentRepository
 import dev.alenajam.monsterdialer.characters.data.CharactersRepository
 import dev.alenajam.monsterdialer.characters.data.RadiantVariantUnlockStore
@@ -57,7 +58,7 @@ class AssignedCharacterEncounterFactory(
             }
 
             val radiantWild = randomRadiantWild()
-            if (radiantWild != null && random.nextInt(RadiantEncounterDenominator) == 0) {
+            if (radiantWild != null && (shouldForceRadiantEncounter() || random.nextInt(RadiantEncounterDenominator) == 0)) {
                 val (wildCharacter, variant) = radiantWild
                 val wildMonster = wildCharacter.asBattleMonster(
                     frontSprite = requireNotNull(wildCharacter.imageFor(variant.frontImage)),
@@ -103,6 +104,9 @@ class AssignedCharacterEncounterFactory(
             }
         return candidates.randomOrNull(random)
     }
+
+    private fun shouldForceRadiantEncounter(): Boolean =
+        BuildConfig.DEBUG && BuildConfig.FORCE_RADIANT_ENCOUNTERS
 
     private fun InstalledPackCharacter.asPlayerBattleMonster(fallback: BattleMonster, variantId: String): BattleMonster {
         val variant = character.variant(variantId) ?: return fallback

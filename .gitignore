@@ -6,6 +6,9 @@ build/
 # Local Android SDK configuration
 local.properties
 
+# Local-only debug override for testing radiant wild encounters.
+app/radiant-encounter-debug.properties
+
 # Google Services (e.g. APIs or Firebase)
 google-services.json
 

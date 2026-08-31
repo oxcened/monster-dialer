@@ -1,0 +1,4 @@
+# Copy this file to radiant-encounter-debug.properties and set this to true to
+# force radiant wild encounters in debug builds. This override is ignored by Git
+# and release builds always disable it.
+forceRadiantEncounters=false

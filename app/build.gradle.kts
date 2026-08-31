@@ -1,3 +1,5 @@
+import java.util.Properties
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
@@ -7,6 +9,14 @@ plugins {
     alias(libs.plugins.kotlin.serialization)
     alias(libs.plugins.firebase.crashlytics) apply false
 }
+
+val radiantEncounterDebugProperties = Properties().apply {
+    val file = file("radiant-encounter-debug.properties")
+    if (file.isFile) file.inputStream().use { load(it) }
+}
+val forceRadiantEncounters = radiantEncounterDebugProperties
+    .getProperty("forceRadiantEncounters")
+    .equals("true", ignoreCase = true)
 
 // Firebase is used for production telemetry, but local debug builds should not
 // require credentials that are intentionally excluded from source control.
@@ -46,6 +56,7 @@ android {
 
     buildFeatures {
         compose = true
+        buildConfig = true
     }
 
     compileOptions {
@@ -56,8 +67,12 @@ android {
 
     val keystorePath = providers.environmentVariable("ANDROID_KEYSTORE_PATH").orNull
     buildTypes {
+        debug {
+            buildConfigField("boolean", "FORCE_RADIANT_ENCOUNTERS", forceRadiantEncounters.toString())
+        }
         release {
             isMinifyEnabled = true
+            buildConfigField("boolean", "FORCE_RADIANT_ENCOUNTERS", "false")
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
