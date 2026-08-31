@@ -131,6 +131,9 @@
     <string name="character_sprites_section" comment="Heading for the character sprites section.">Sprites</string>
     <string name="front_sprite_label" comment="Label for the front sprite picker.">Vorderansicht</string>
     <string name="back_sprite_label" comment="Label for the back sprite picker.">Rückansicht</string>
+    <string name="radiant_sprites_section" comment="Heading for a monster's radiant sprite pickers.">Strahlende Sprites</string>
+    <string name="radiant_front_sprite_label" comment="Label for the radiant front sprite picker.">Strahlende Vorderansicht</string>
+    <string name="radiant_back_sprite_label" comment="Label for the radiant back sprite picker.">Strahlende Rückansicht</string>
     <string name="front_sprite_description" comment="Explains that the front sprite is required for contacts.">Das Hinzufügen einer Vorderansicht ermöglicht es, diesen Charakter Kontakten zuzuweisen.</string>
     <string name="back_sprite_description" comment="Explains that the back sprite is required for the player.">Das Hinzufügen einer Rückansicht ermöglicht es, diesen Charakter dir selbst zuzuweisen.</string>
     <string name="advanced_section" comment="Heading for advanced character settings.">Erweitert</string>
@@ -157,5 +160,7 @@
     <string name="front_sprite_required_for_contact" comment="Message shown when a front sprite is missing but required by an assignment.">Die Vorderansicht ist erforderlich, da dieser Charakter einem Kontakt zugewiesen ist.</string>
     <string name="back_sprite_required_for_player" comment="Message shown when a back sprite is missing but required by an assignment.">Die Rückansicht ist erforderlich, da dieser Charakter dir zugewiesen ist.</string>
     <string name="remove_character_in_use_message" comment="Confirmation dialog message when deleting a character in use; %1$s is the character name.">%1$s wird derzeit verwendet. Durch das Löschen wird die Zuweisung zu dir und deinen Kontakten aufgehoben.</string>
+    <string name="remove_character_with_radiant_variant_message" comment="Confirmation dialog message when deleting a character with a radiant variant; %1$s is the character name.">Durch das Löschen von %1$s werden sowohl die normale als auch die strahlende Variante entfernt.</string>
+    <string name="remove_character_with_radiant_variant_in_use_message" comment="Confirmation dialog message when deleting an in-use character with a radiant variant; %1$s is the character name.">Durch das Löschen von %1$s werden beide Varianten entfernt und ihre Zuweisungen zu dir und deinen Kontakten aufgehoben.</string>
     <string name="remove_character_pack_in_use_message" comment="Confirmation dialog message when deleting a pack in use; %1$s is the character pack name.">Dieses Paket wird derzeit verwendet. Durch das Entfernen wird die Zuweisung seiner Charaktere zu dir und deinen Kontakten aufgehoben.</string>
 </resources>
