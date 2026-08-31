@@ -44,7 +44,8 @@ class CharacterPackArchiveReader {
     private fun fail(message: String): Nothing = throw CharacterPackValidationException(message)
 
     private companion object {
-        const val MaxArchiveEntries = 512
+        // A full 200-character pack can provide regular and radiant front/back sprites.
+        const val MaxArchiveEntries = 1024
         const val MaxManifestBytes = 256 * 1024L
         const val MaxSingleFileBytes = 8 * 1024 * 1024L
         const val MaxUncompressedBytes = 48 * 1024 * 1024L

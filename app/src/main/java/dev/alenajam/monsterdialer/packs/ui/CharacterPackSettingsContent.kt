@@ -231,8 +231,10 @@ fun ColumnScope.CharacterPackSettingsContent(
                                     if (preview != null) {
                                         AsyncImage(
                                             model = preview.imageFile(
-                                                preview.character.frontImage
-                                                    ?: requireNotNull(preview.character.backImage)
+                                                requireNotNull(
+                                                    preview.character.visualVariants.firstOrNull()?.frontImage
+                                                        ?: preview.character.visualVariants.firstOrNull()?.backImage
+                                                )
                                             ),
                                             contentDescription = stringResource(
                                                 R.string.character_artwork,

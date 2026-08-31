@@ -42,6 +42,9 @@
     <string name="import_and_enable_character_pack" comment="Empty-state message in the character selector.">添加你自己的角色或导入角色包以查看更多。</string>
     <string name="radiant" comment="Adjective for a rare, sparkling character variant.">闪耀</string>
     <string name="selected" comment="Status label for the currently chosen option.">已选择</string>
+    <string name="locked">已锁定</string>
+    <string name="radiant_variant_locked_title">闪耀变体已锁定</string>
+    <string name="radiant_variant_locked_message">在野外战斗中遇到闪耀 %1$s，即可解锁并分配它。</string>
     <string name="show_grid_view" comment="Accessibility label for the control that switches the character selector to a grid.">显示网格视图</string>
     <string name="show_list_view" comment="Accessibility label for the control that switches the character selector to a list.">显示列表视图</string>
     <string name="jump_to_selected_character" comment="Accessibility label for a button that scrolls to the selected character.">跳转到已选角色</string>

@@ -110,6 +110,7 @@ internal fun LazyListScope.characterTypeItems(
     onAddCharacter: () -> Unit,
     addLabel: String,
     isAddEnabled: Boolean = true,
+    unlockedVariants: Set<CharacterReference> = emptySet(),
     onDelete: (InstalledPackCharacter) -> Unit = {},
     onEdit: (InstalledPackCharacter) -> Unit = {},
     onShare: (InstalledPackCharacter) -> Unit = {}
@@ -161,10 +162,12 @@ internal fun LazyListScope.characterTypeItems(
         itemsIndexed(items = selections, key = { _, selection -> "custom:${selection.installed.character.id}:${selection.variant.id}" }) { index, selection ->
             val installed = selection.installed
             val reference = CharacterReference(installed.packId, installed.character.id, selection.variant.id)
+            val isUnlocked = !selection.variant.isRadiant || reference in unlockedVariants
             CharacterOptionCard(
                 name = installed.character.name,
                 isRadiant = selection.variant.isRadiant,
                 isSelected = availableSelection == reference,
+                isUnlocked = isUnlocked,
                 roundTop = index == 0,
                 roundBottom = index == selections.lastIndex,
                 artwork = {
@@ -174,7 +177,7 @@ internal fun LazyListScope.characterTypeItems(
                         modifier = Modifier.size(72.dp)
                     )
                 },
-                onSelect = { onSelect(reference) },
+                onSelect = { if (isUnlocked) onSelect(reference) },
                 onDelete = if (installed.isDeletable) { { onDelete(installed) } } else null,
                 onEdit = if (installed.isEditable) { { onEdit(installed) } } else null,
                 onShare = if (installed.isEditable) { { onShare(installed) } } else null
@@ -188,10 +191,12 @@ internal fun LazyListScope.characterTypeItems(
         itemsIndexed(items = selections, key = { _, selection -> "${packId}:${selection.installed.character.id}:${selection.variant.id}" }) { index, selection ->
             val installed = selection.installed
             val reference = CharacterReference(installed.packId, installed.character.id, selection.variant.id)
+            val isUnlocked = !selection.variant.isRadiant || reference in unlockedVariants
             CharacterOptionCard(
                 name = installed.character.name,
                 isRadiant = selection.variant.isRadiant,
                 isSelected = availableSelection == reference,
+                isUnlocked = isUnlocked,
                 roundTop = index == 0,
                 roundBottom = index == selections.lastIndex,
                 artwork = {
@@ -201,7 +206,7 @@ internal fun LazyListScope.characterTypeItems(
                         modifier = Modifier.size(72.dp)
                     )
                 },
-                onSelect = { onSelect(reference) }
+                onSelect = { if (isUnlocked) onSelect(reference) }
             )
         }
     }
@@ -221,6 +226,7 @@ internal fun LazyGridScope.characterTypeGridItems(
     onAddCharacter: () -> Unit,
     addLabel: String,
     isAddEnabled: Boolean = true,
+    unlockedVariants: Set<CharacterReference> = emptySet(),
     onDelete: (InstalledPackCharacter) -> Unit = {},
     onEdit: (InstalledPackCharacter) -> Unit = {},
     onShare: (InstalledPackCharacter) -> Unit = {}
@@ -273,10 +279,12 @@ internal fun LazyGridScope.characterTypeGridItems(
         gridItemsIndexed(items = selections, key = { _, selection -> "custom:${selection.installed.character.id}:${selection.variant.id}" }) { index, selection ->
             val installed = selection.installed
             val reference = CharacterReference(installed.packId, installed.character.id, selection.variant.id)
+            val isUnlocked = !selection.variant.isRadiant || reference in unlockedVariants
             CharacterGridItem(
                 name = installed.character.name,
                 isRadiant = selection.variant.isRadiant,
                 isSelected = availableSelection == reference,
+                isUnlocked = isUnlocked,
                 shape = gridItemShape(index = index, itemCount = selections.size),
                 artwork = {
                     AsyncImage(
@@ -285,7 +293,7 @@ internal fun LazyGridScope.characterTypeGridItems(
                         modifier = Modifier.size(88.dp)
                     )
                 },
-                onSelect = { onSelect(reference) },
+                onSelect = { if (isUnlocked) onSelect(reference) },
                 onDelete = if (installed.isDeletable) { { onDelete(installed) } } else null,
                 onEdit = if (installed.isEditable) { { onEdit(installed) } } else null,
                 onShare = if (installed.isEditable) { { onShare(installed) } } else null
@@ -299,10 +307,12 @@ internal fun LazyGridScope.characterTypeGridItems(
         gridItemsIndexed(items = selections, key = { _, selection -> "${packId}:${selection.installed.character.id}:${selection.variant.id}" }) { index, selection ->
             val installed = selection.installed
             val reference = CharacterReference(installed.packId, installed.character.id, selection.variant.id)
+            val isUnlocked = !selection.variant.isRadiant || reference in unlockedVariants
             CharacterGridItem(
                 name = installed.character.name,
                 isRadiant = selection.variant.isRadiant,
                 isSelected = availableSelection == reference,
+                isUnlocked = isUnlocked,
                 shape = gridItemShape(index = index, itemCount = selections.size),
                 artwork = {
                     AsyncImage(
@@ -311,7 +321,7 @@ internal fun LazyGridScope.characterTypeGridItems(
                         modifier = Modifier.size(88.dp)
                     )
                 },
-                onSelect = { onSelect(reference) }
+                onSelect = { if (isUnlocked) onSelect(reference) }
             )
         }
     }
@@ -339,12 +349,8 @@ private fun InstalledPackCharacter.matches(reference: CharacterReference): Boole
         character.id == reference.characterId &&
         character.variant(reference.variantId) != null
 
-private fun CharacterSelection.previewArtwork(regularArtwork: (InstalledPackCharacter) -> File): File =
-    if (variant.id != PackCharacter.DefaultVariantId) {
-        installed.imageFile(requireNotNull(variant.frontImage ?: variant.backImage))
-    } else {
-        regularArtwork(installed)
-    }
+private fun CharacterSelection.previewArtwork(@Suppress("UNUSED_PARAMETER") regularArtwork: (InstalledPackCharacter) -> File): File =
+    installed.imageFile(requireNotNull(variant.frontImage ?: variant.backImage))
 
 private fun gridItemShape(index: Int, itemCount: Int): RoundedCornerShape {
     val isLeftColumn = index % 2 == 0
@@ -575,13 +581,14 @@ private fun NoAdditionalCharacterOptionsCard(title: String) {
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 private fun CharacterOptionCard(
-    name: String, isRadiant: Boolean = false, isSelected: Boolean,
+    name: String, isRadiant: Boolean = false, isSelected: Boolean, isUnlocked: Boolean = true,
     roundTop: Boolean, roundBottom: Boolean, artwork: @Composable () -> Unit, onSelect: () -> Unit,
     onDelete: (() -> Unit)? = null,
     onEdit: (() -> Unit)? = null,
     onShare: (() -> Unit)? = null
 ) {
     var showMenu by remember { mutableStateOf(false) }
+    var showRadiantUnlockDialog by remember { mutableStateOf(false) }
     val shape = RoundedCornerShape(
         topStart = if (roundTop) 20.dp else 2.dp, topEnd = if (roundTop) 20.dp else 2.dp,
         bottomStart = if (roundBottom) 20.dp else 2.dp, bottomEnd = if (roundBottom) 20.dp else 2.dp
@@ -598,7 +605,9 @@ private fun CharacterOptionCard(
             Row(
                 modifier = Modifier
                     .combinedClickable(
-                        onClick = onSelect,
+                        onClick = {
+                            if (isUnlocked) onSelect() else showRadiantUnlockDialog = true
+                        },
                         onLongClick = if (onDelete != null || onEdit != null || onShare != null) { { showMenu = true } } else null
                     )
                     .padding(16.dp),
@@ -635,9 +644,18 @@ private fun CharacterOptionCard(
                         modifier = Modifier.padding(horizontal = 16.dp)
                     )
                 } else {
-                    OutlinedButton(onClick = onSelect) { Text(stringResource(R.string.select)) }
+                    OutlinedButton(onClick = onSelect, enabled = isUnlocked) {
+                        Text(stringResource(if (isUnlocked) R.string.select else R.string.locked))
+                    }
                 }
             }
+        }
+
+        if (showRadiantUnlockDialog) {
+            RadiantVariantUnlockDialog(
+                characterName = name,
+                onDismiss = { showRadiantUnlockDialog = false }
+            )
         }
 
         if (onDelete != null || onEdit != null || onShare != null) {
@@ -692,6 +710,7 @@ private fun CharacterGridItem(
     name: String,
     isRadiant: Boolean = false,
     isSelected: Boolean,
+    isUnlocked: Boolean = true,
     shape: Shape,
     artwork: @Composable () -> Unit,
     onSelect: () -> Unit,
@@ -700,6 +719,7 @@ private fun CharacterGridItem(
     onShare: (() -> Unit)? = null
 ) {
     var showMenu by remember { mutableStateOf(false) }
+    var showRadiantUnlockDialog by remember { mutableStateOf(false) }
     Box {
         Card(
             modifier = Modifier.fillMaxWidth(),
@@ -712,7 +732,9 @@ private fun CharacterGridItem(
             Column(
                 modifier = Modifier
                     .combinedClickable(
-                        onClick = onSelect,
+                        onClick = {
+                            if (isUnlocked) onSelect() else showRadiantUnlockDialog = true
+                        },
                         onLongClick = if (onDelete != null || onEdit != null || onShare != null) { { showMenu = true } } else null
                     )
                     .fillMaxWidth()
@@ -773,6 +795,13 @@ private fun CharacterGridItem(
             }
         }
 
+        if (showRadiantUnlockDialog) {
+            RadiantVariantUnlockDialog(
+                characterName = name,
+                onDismiss = { showRadiantUnlockDialog = false }
+            )
+        }
+
         if (onDelete != null || onEdit != null || onShare != null) {
             DropdownMenu(
                 expanded = showMenu,
@@ -817,6 +846,18 @@ private fun CharacterGridItem(
             }
         }
     }
+}
+
+@Composable
+private fun RadiantVariantUnlockDialog(characterName: String, onDismiss: () -> Unit) {
+    AlertDialog(
+        onDismissRequest = onDismiss,
+        title = { Text(stringResource(R.string.radiant_variant_locked_title)) },
+        text = { Text(stringResource(R.string.radiant_variant_locked_message, characterName)) },
+        confirmButton = {
+            TextButton(onClick = onDismiss) { Text(stringResource(R.string.cancel)) }
+        }
+    )
 }
 
 @Composable

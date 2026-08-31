@@ -2,18 +2,28 @@ package dev.alenajam.monsterdialer.battle.data
 
 import dev.alenajam.monsterdialer.characters.data.CharacterAssignmentRepository
 import dev.alenajam.monsterdialer.characters.data.CharactersRepository
+import dev.alenajam.monsterdialer.characters.data.RadiantVariantUnlockStore
 import dev.alenajam.monsterdialer.packs.data.CharacterAssignmentTarget
 import dev.alenajam.monsterdialer.packs.data.CharacterType
 import dev.alenajam.monsterdialer.packs.data.CharacterVisualVariant
 import dev.alenajam.monsterdialer.packs.data.InstalledPackCharacter
 import kotlinx.coroutines.runBlocking
+import kotlin.random.Random
 
 /** Builds a call encounter from local assignments, retaining the bundled fallback at all times. */
 class AssignedCharacterEncounterFactory(
     private val charactersRepository: CharactersRepository,
-    private val assignmentRepository: CharacterAssignmentRepository
+    private val assignmentRepository: CharacterAssignmentRepository,
+    private val radiantUnlocks: RadiantVariantUnlockStore,
+    private val random: Random = Random.Default,
 ) {
+    private var cachedCall: CallKey? = null
+    private var cachedEncounter: BattleEncounter? = null
+
     fun forCall(callId: String, contactKey: String, callerName: String, isAnonymous: Boolean): BattleEncounter {
+        val call = CallKey(callId, contactKey, callerName, isAnonymous)
+        if (cachedCall == call) return requireNotNull(cachedEncounter)
+
         val fallback = BattleEncounterFactory.forCall(callId, callerName, isAnonymous)
         
         // Note: Using runBlocking here because forCall is called from Composable composition/remember 
@@ -45,6 +55,31 @@ class AssignedCharacterEncounterFactory(
                     ?.contactTrainerSprite(fallback.enemyTrainerSprite)
                     ?: fallback.enemyTrainerSprite
             }
+
+            val radiantWild = randomRadiantWild()
+            if (radiantWild != null && random.nextInt(RadiantEncounterDenominator) == 0) {
+                val (wildCharacter, variant) = radiantWild
+                val wildMonster = wildCharacter.asBattleMonster(
+                    frontSprite = requireNotNull(wildCharacter.imageFor(variant.frontImage)),
+                    backSprite = null,
+                    variant = variant,
+                )
+                radiantUnlocks.unlock(
+                    dev.alenajam.monsterdialer.packs.data.CharacterReference(
+                        wildCharacter.packId,
+                        wildCharacter.character.id,
+                        variant.id,
+                    )
+                )
+                return@runBlocking fallback.copy(
+                    type = EncounterType.RadiantWild,
+                    player = player,
+                    enemy = wildMonster,
+                    enemyTrainerName = null,
+                    playerTrainerSprite = playerTrainer,
+                    enemyTrainerSprite = wildMonster.frontSprite,
+                )
+            }
             
             fallback.copy(
                 player = player,
@@ -52,7 +87,21 @@ class AssignedCharacterEncounterFactory(
                 playerTrainerSprite = playerTrainer,
                 enemyTrainerSprite = enemyTrainer
             )
+        }.also { encounter ->
+            cachedCall = call
+            cachedEncounter = encounter
         }
+    }
+
+    private fun randomRadiantWild(): Pair<InstalledPackCharacter, CharacterVisualVariant>? {
+        val candidates = charactersRepository
+            .getCharactersAssignableTo(CharacterAssignmentTarget.Contact, CharacterType.Monster)
+            .flatMap { character ->
+                character.character.visualVariants
+                    .filter(CharacterVisualVariant::isRadiant)
+                    .map { variant -> character to variant }
+            }
+        return candidates.randomOrNull(random)
     }
 
     private fun InstalledPackCharacter.asPlayerBattleMonster(fallback: BattleMonster, variantId: String): BattleMonster {
@@ -103,7 +152,15 @@ class AssignedCharacterEncounterFactory(
         character.visualVariants.first().frontImage?.let { BattleVisualAsset.LocalFile(imageFile(it).path) } ?: fallback
 
     private companion object {
+        const val RadiantEncounterDenominator = 64
         const val DefaultLevel = 5
         const val DefaultMaxHp = 20
     }
+
+    private data class CallKey(
+        val callId: String,
+        val contactKey: String,
+        val callerName: String,
+        val isAnonymous: Boolean,
+    )
 }

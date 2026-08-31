@@ -42,6 +42,9 @@
     <string name="import_and_enable_character_pack" comment="Empty-state message in the character selector.">أضف شخصيتك الخاصة أو استورد حزمة لرؤية المزيد.</string>
     <string name="radiant" comment="Adjective for a rare, sparkling character variant.">متألق</string>
     <string name="selected" comment="Status label for the currently chosen option.">محدد</string>
+    <string name="locked">مقفل</string>
+    <string name="radiant_variant_locked_title">النسخة المتألقة مقفلة</string>
+    <string name="radiant_variant_locked_message">قابل %1$s متألقًا في معركة برية لفتحه وتعيينه.</string>
     <string name="show_grid_view" comment="Accessibility label for the control that switches the character selector to a grid.">إظهار عرض الشبكة</string>
     <string name="show_list_view" comment="Accessibility label for the control that switches the character selector to a list.">إظهار عرض القائمة</string>
     <string name="jump_to_selected_character" comment="Accessibility label for a button that scrolls to the selected character.">الانتقال إلى الشخصية المحددة</string>

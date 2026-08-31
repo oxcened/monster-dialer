@@ -32,6 +32,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import dev.alenajam.monsterdialer.characters.data.CharacterAssignmentRepository
 import dev.alenajam.monsterdialer.characters.data.CharactersRepository
 import dev.alenajam.monsterdialer.battle.data.AssignedCharacterEncounterFactory
+import dev.alenajam.monsterdialer.characters.data.RadiantVariantUnlockStore
 import dev.alenajam.monsterdialer.R
 import dev.alenajam.monsterdialer.battle.ui.BattleScreen
 import dev.alenajam.monsterdialer.app.ui.rememberMonsterIcons
@@ -51,7 +52,8 @@ import javax.inject.Inject
 
 class MonsterInCallUI @Inject constructor(
     private val charactersRepository: CharactersRepository,
-    private val assignmentRepository: CharacterAssignmentRepository
+    private val assignmentRepository: CharacterAssignmentRepository,
+    private val radiantUnlocks: RadiantVariantUnlockStore,
 ) : InCallUI {
     @OptIn(ExperimentalMaterial3Api::class)
     @Composable
@@ -60,10 +62,11 @@ class MonsterInCallUI @Inject constructor(
         val uiState by viewModel.uiState.collectAsStateWithLifecycle()
         val durationMillis by viewModel.activeCallDuration.collectAsStateWithLifecycle(0L)
         val context = LocalContext.current
-        val encounterFactory = remember(charactersRepository, assignmentRepository) {
+        val encounterFactory = remember(charactersRepository, assignmentRepository, radiantUnlocks) {
             AssignedCharacterEncounterFactory(
                 charactersRepository = charactersRepository,
-                assignmentRepository = assignmentRepository
+                assignmentRepository = assignmentRepository,
+                radiantUnlocks = radiantUnlocks,
             )
         }
 

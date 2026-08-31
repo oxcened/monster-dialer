@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import dev.alenajam.monsterdialer.characters.data.CharacterAssignmentRepository
 import dev.alenajam.monsterdialer.characters.data.CharacterLayoutPreferences
 import dev.alenajam.monsterdialer.characters.data.CharactersRepository
+import dev.alenajam.monsterdialer.characters.data.RadiantVariantUnlockStore
 import dev.alenajam.monsterdialer.packs.data.CharacterAssignmentTarget
 import dev.alenajam.monsterdialer.packs.data.CharacterReference
 import dev.alenajam.monsterdialer.packs.data.CharacterType
@@ -25,8 +26,11 @@ class PlayerCharacterSettingsViewModel @Inject constructor(
     private val charactersRepository: CharactersRepository,
     private val assignmentRepository: CharacterAssignmentRepository,
     private val layoutPreferences: CharacterLayoutPreferences,
-    private val packsRepository: dev.alenajam.monsterdialer.packs.data.PacksRepository
+    private val packsRepository: dev.alenajam.monsterdialer.packs.data.PacksRepository,
+    radiantUnlocks: RadiantVariantUnlockStore,
 ) : ViewModel() {
+
+    val unlockedVariants = radiantUnlocks.unlocked
 
     val trainers: StateFlow<List<InstalledPackCharacter>> = charactersRepository.observeCharactersAssignableTo(
         CharacterAssignmentTarget.Player, CharacterType.Trainer
