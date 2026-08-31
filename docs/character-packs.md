@@ -9,8 +9,8 @@ This guide describes pack format exactly as the app imports it.
 ## Fast path
 
 1. Create a folder containing `manifest.json` and an `art` folder.
-2. Add a front image for every character assignable to a contact. Add a genuinely different
-   rear image for every character assignable to the player.
+2. Add a front image for every contact-assignable variant and a genuinely different rear image
+   for every player-assignable variant.
 3. Copy the manifest below and replace every example value.
 4. ZIP the **contents** of the folder, not the folder itself, using the `.monsterpack` extension.
 5. Verify the archive, then import it from **Settings → Character Packs → Import**.
@@ -24,7 +24,9 @@ my-pack.monsterpack
 │   ├── forest-guide-front.png
 │   ├── forest-guide-back.png
 │   ├── mossling-front.png
-│   └── mossling-back.png
+│   ├── mossling-back.png
+│   ├── mossling-radiant-front.png
+│   └── mossling-radiant-back.png
 └── audio/
     └── mossling.ogg
 ```
@@ -37,7 +39,7 @@ Unknown properties cause the entire pack to be rejected.
 
 ```json
 {
-  "formatVersion": 1,
+  "formatVersion": 2,
   "id": "com.example.forest-friends",
   "name": "Forest Friends",
   "version": "1.0.0",
@@ -49,19 +51,37 @@ Unknown properties cause the entire pack to be rejected.
       "name": "Forest Guide",
       "type": "trainer",
       "assignableTo": ["contact", "player"],
-      "frontImage": "art/forest-guide-front.png",
-      "backImage": "art/forest-guide-back.png"
+      "variants": [
+        {
+          "id": "default",
+          "name": "Default",
+          "frontImage": "art/forest-guide-front.png",
+          "backImage": "art/forest-guide-back.png"
+        }
+      ]
     },
     {
       "id": "mossling",
       "name": "Mossling",
       "type": "monster",
       "assignableTo": ["contact", "player"],
-      "frontImage": "art/mossling-front.png",
-      "backImage": "art/mossling-back.png",
+      "variants": [
+        {
+          "id": "default",
+          "name": "Default",
+          "frontImage": "art/mossling-front.png",
+          "backImage": "art/mossling-back.png"
+        },
+        {
+          "id": "radiant",
+          "name": "Radiant",
+          "frontImage": "art/mossling-radiant-front.png",
+          "backImage": "art/mossling-radiant-back.png",
+          "isRadiant": true
+        }
+      ],
       "level": 12,
       "maxHp": 45,
-      "isRadiant": true,
       "callSound": "audio/mossling.ogg"
     }
   ]
@@ -74,7 +94,7 @@ Unknown properties cause the entire pack to be rejected.
 
 | Field | Required | Exact rule |
 | --- | --- | --- |
-| `formatVersion` | Yes | JSON integer `1`. No other version is accepted. |
+| `formatVersion` | Yes | JSON integer `2` for new packs. Version `1` remains supported for previously published packs that use character-level image fields and `isRadiant`. |
 | `id` | Yes | 2–64 characters matching `[a-z0-9][a-z0-9._-]{1,63}`. Use a stable, globally distinctive ID such as reverse-domain notation. |
 | `name` | Yes | Non-blank string, at most 120 characters. |
 | `version` | Yes | Non-blank string, at most 64 characters. Semantic versioning such as `1.0.0` is recommended but not required. |
@@ -94,12 +114,22 @@ preserved. Changing the ID installs a separate pack. The app does not compare or
 | `name` | Yes | Non-blank string, at most 120 characters. |
 | `type` | Yes | Exactly `"trainer"` or `"monster"`. |
 | `assignableTo` | Yes | Non-empty array containing `"contact"`, `"player"`, or both. Each value may appear only once. |
-| `frontImage` | Sometimes | Exact, relative ZIP path to a `.png` or `.webp` image. Required whenever `assignableTo` contains `"contact"`; otherwise optional. |
-| `backImage` | Sometimes | Relative path to a `.png` or `.webp` image. Required whenever `assignableTo` contains `"player"`; otherwise optional. |
+| `variants` | Yes | Non-empty array of named visual variants. Every variant must provide a contact-side `frontImage` when `assignableTo` contains `"contact"`, and a player-side `backImage` when it contains `"player"`. |
 | `level` | No | JSON integer from 1 through 999. A monster defaults to level 5 when omitted. |
 | `maxHp` | No | JSON integer from 1 through 999. A monster defaults to 20 maximum HP when omitted. |
-| `isRadiant` | No | Boolean, defaulting to `false`. Only valid for monsters. When `true`, the monster displays a radiant sparkle animation on entering battle. |
 | `callSound` | No | Relative ZIP path to an `.ogg` file. The importer accepts and stores it, but the current call UI does not yet play it. |
+
+### Variant fields
+
+| Field | Required | Exact rule |
+| --- | --- | --- |
+| `id` | Yes | 2–64 characters matching `[a-z0-9][a-z0-9._-]{1,63}` and unique within its character. It is the stable value saved when a user selects the form. |
+| `name` | Yes | Non-blank string, at most 120 characters. This is the form’s author-facing display name. |
+| `frontImage` | Sometimes | Exact, relative ZIP path to a `.png`, `.webp`, `.jpg`, or `.jpeg` image. Required whenever the character is contact-assignable. |
+| `backImage` | Sometimes | Exact, relative ZIP path to a `.png`, `.webp`, `.jpg`, or `.jpeg` image. Required whenever the character is player-assignable. |
+| `isRadiant` | No | Boolean, defaulting to `false`. Only valid for monster variants. When `true`, that form displays the radiant entrance animation in battle. |
+
+Variants share the character’s name, type, assignment roles, level, maximum HP, and sound. They differ only in artwork and whether they receive radiant battle effects. A character may have any number of variants, such as `default`, `winter`, or `radiant`.
 
 `level` and `maxHp` must be integers, not quoted strings or decimals. Zero, negative numbers, and
 four-digit values are invalid. They affect monster battle data; trainer rendering ignores them.
@@ -113,10 +143,10 @@ player, or both.
 
 | Character configuration | Artwork the app uses |
 | --- | --- |
-| Contact trainer | Trainer `frontImage` in the contact-side trainer slot. |
-| Player trainer | Trainer `backImage` in the player-side trainer slot. |
-| Contact monster | Monster `frontImage` in the contact-side monster slot. |
-| Player monster | Monster `backImage` in the player-side monster slot. |
+| Contact trainer | Selected trainer variant’s `frontImage` in the contact-side trainer slot. |
+| Player trainer | Selected trainer variant’s `backImage` in the player-side trainer slot. |
+| Contact monster | Selected monster variant’s `frontImage` in the contact-side monster slot. |
+| Player monster | Selected monster variant’s `backImage` in the player-side monster slot. |
 
 Trainer and monster selections are separate. A call may show a trainer and a monster for the
 player and another trainer and monster for the contact. Never combine a trainer and monster into
@@ -130,7 +160,11 @@ For a contact-only character, this is valid and needs no rear image:
   "name": "Mossling",
   "type": "monster",
   "assignableTo": ["contact"],
-  "frontImage": "art/mossling-front.png"
+  "variants": [{
+    "id": "default",
+    "name": "Default",
+    "frontImage": "art/mossling-front.png"
+  }]
 }
 ```
 
@@ -142,7 +176,11 @@ For a player-only character, this is valid and needs no front image:
   "name": "Mossling",
   "type": "monster",
   "assignableTo": ["player"],
-  "backImage": "art/mossling-back.png"
+  "variants": [{
+    "id": "default",
+    "name": "Default",
+    "backImage": "art/mossling-back.png"
+  }]
 }
 ```
 
@@ -153,7 +191,7 @@ For a player-only character, this is valid and needs no front image:
   front image.
 - Transparent backgrounds are strongly recommended. Do not include names, labels, scenery,
   borders, logos, or watermarks unless they are intentionally part of the character artwork.
-- Each image must decode as PNG or WebP, be no wider or taller than 4096 pixels, and contain no
+- Each image must decode as PNG, WebP, JPEG, or JPG, be no wider or taller than 4096 pixels, and contain no
   more than 16,777,216 pixels total (`width × height`). There is no required minimum size.
 - Each media file may be at most 8 MiB.
 - Sounds must be Ogg files with the `.ogg` extension.
@@ -233,7 +271,7 @@ Run all of these checks:
    unzip -Z1 ../my-pack.monsterpack
    ```
 
-4. Confirm every path in `frontImage`, `backImage`, and `callSound` appears exactly in that list.
+4. Confirm every variant `frontImage` and `backImage`, plus `callSound`, appears exactly in that list.
 5. Import the pack in the app. This final step performs the authoritative schema, size, path, and
    on-device image-decoding checks.
 
