@@ -6,6 +6,22 @@
     <string name="settings_character_packs_title" comment="Settings title for managing character packs.">Charakterpakete</string>
     <string name="characters_navigation_label" comment="Bottom navigation label for character customization.">Charaktere</string>
     <string name="settings_character_packs_description" comment="Settings description for character packs.">Importiere und verwalte eigene Charaktergrafiken.</string>
+    <string name="import_character" comment="Action that starts selecting a shared single-character file.">Charakter importieren</string>
+    <string name="import_character_description" comment="Description of the action that imports a shared character.">Füge einen Charakter hinzu, den jemand mit dir geteilt hat.</string>
+    <string name="add_to_your_characters" comment="Button confirming that a shared character should be imported.">Hinzufügen</string>
+    <string name="shared_character_creator" comment="Creator shown in a shared-character import preview. %1$s is the creator name.">Ersteller: %1$s</string>
+    <string name="shared_character_license" comment="License shown in a shared-character import preview. %1$s is the license name.">Lizenz: %1$s</string>
+    <string name="shared_character_import_description" comment="Explains the result of importing one shared character. %1$s is a character type, such as Trainer or Monster.">Dieser %1$s wird deiner Sammlung hinzugefügt.</string>
+    <string name="shared_character_import_title" comment="Title confirming the import of a shared character. %1$s is the character name.">%1$s hinzufügen?</string>
+    <string name="shared_character_import_failed_title" comment="Title shown when a selected file is not a valid shared character.">Charakter konnte nicht importiert werden</string>
+    <string name="shared_character_import_failed_message" comment="Explains that the selected file is not a valid shared character.">Wähle eine aus MonsterDialer exportierte .monstercharacter-Datei aus.</string>
+    <string name="share_character_title" comment="Title of the export dialog. %1$s is the character name.">%1$s teilen</string>
+    <string name="creator_label" comment="Field label requesting the creator of a shared character.">Ersteller</string>
+    <string name="license_label" comment="Field label requesting the license of a shared character.">Lizenz</string>
+    <string name="default_license" comment="Default license used when sharing a character or creating a pack.">Alle Rechte vorbehalten</string>
+    <string name="export_character" comment="Button that exports one character as a shareable file.">Charakter exportieren</string>
+    <string name="save_to_device" comment="Button that saves a shared character file through the device's document picker.">Auf Gerät speichern</string>
+    <string name="shared_character_file_name" comment="Default filename for an exported character. Keep the .monstercharacter extension. %1$s is the character name.">%1$s.monstercharacter</string>
     <string name="settings_player_character_title" comment="Settings title for the player's battle character.">Spielercharakter</string>
     <string name="settings_player_character_description" comment="Settings description for the player's battle character.">Wähle, wer dich während Anrufen repräsentiert.</string>
     <string name="player_characters_not_set" comment="Settings subtitle when no player character is selected.">Nicht personalisiert</string>
@@ -20,6 +36,8 @@
     <string name="choose_contact" comment="Button that opens the contact picker.">Kontakt wählen</string>
     <string name="character_type_trainer" comment="Character category for a human battle character.">Trainer</string>
     <string name="character_type_monster" comment="Character category for a creature battle character.">Monster</string>
+    <string name="character_type_trainers" comment="Plural character category for a collection of human battle characters.">Trainern</string>
+    <string name="character_type_monsters" comment="Plural character category for a collection of creature battle characters.">Monstern</string>
     <string name="built_in_character" comment="Label for a character included with the app.">Integrierter Charakter</string>
     <string name="default_character_artwork" comment="%1$s is a character type, such as Trainer or Monster.">Standardgrafik für %1$s</string>
     <string name="character_artwork" comment="%1$s is a character name.">Grafik von %1$s</string>
@@ -38,6 +56,15 @@
     <string name="pack_collection_empty_title" comment="Title of the empty character-pack collection screen.">Deine Sammlung beginnt hier</string>
     <string name="pack_collection_empty_description" comment="Description of the empty character-pack collection screen.">Importiere ein Charakterpaket, um deine Anrufe zu personalisieren.</string>
     <string name="import_character_pack" comment="Button that starts selecting a character-pack file.">Charakterpaket importieren</string>
+    <string name="create_character_pack">Paket erstellen</string>
+    <string name="select_characters_for_pack">Charaktere auswählen</string>
+    <string name="pack_details">Paketdetails</string>
+    <string name="pack_name_label">Paketname</string>
+    <string name="pack_version_label">Version</string>
+    <string name="share_character_pack">Charakterpaket teilen</string>
+    <string name="character_pack_default_name">character-pack</string>
+    <string name="character_pack_file_name">%1$s.monsterpack</string>
+    <string name="character_pack_extension_required" comment="Shown when a selected file is not a MonsterDialer character pack or a legacy ZIP pack.">Wähle ein Charakterpaket mit der Dateiendung .monsterpack oder .zip.</string>
     <string name="pack_import_license_notice" comment="Legal notice shown before importing a character pack.">Importiere nur Grafiken und Sounds, die du erstellt hast oder für deren Nutzung du lizenziert bist.</string>
     <string name="your_character_packs" comment="Heading above installed character packs.">Deine Charakterpakete</string>
     <plurals name="installed_pack_count" comment="Number of installed character packs. %d is the count.">
@@ -121,8 +148,8 @@
     <string name="save_character" comment="Button to save the new character.">Charakter speichern</string>
     <string name="save" comment="Button label to save changes.">Speichern</string>
     <string name="edit" comment="Button label to edit an item.">Bearbeiten</string>
-    <string name="your_characters" comment="Section header for characters added by the user.">Deine Charaktere</string>
-    <string name="built_in_characters_section" comment="Section header for characters included with the app.">Integrierte Charaktere</string>
+    <string name="your_characters" comment="Section header for characters added by the user. %1$s is a plural character type, such as trainers or monsters.">Deine %1$s</string>
+    <string name="built_in_characters_section" comment="Section header for characters included with the app. %1$s is a plural character type, such as trainers or monsters.">Integrierte %1$s</string>
     <string name="character_created" comment="Confirmation after a character is successfully created.">Charakter erstellt</string>
     <string name="character_creation_failed" comment="Error when a character cannot be saved.">Charakter konnte nicht gespeichert werden</string>
     <string name="character_limit_reached_message" comment="Error message when the 200 character limit is hit.">Limit von 200 Charakteren erreicht. Lösche einige, um weitere hinzuzufügen.</string>
