@@ -19,6 +19,7 @@ import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -56,6 +57,7 @@ fun CreateCharacterPackScreen(
     val defaultVersion = stringResource(R.string.default_pack_version)
     var version by remember(defaultVersion) { mutableStateOf(defaultVersion) }
     var creator by remember { mutableStateOf("") }
+    var advancedExpanded by remember { mutableStateOf(false) }
     val defaultLicense = stringResource(R.string.default_license)
     var license by remember(defaultLicense) { mutableStateOf(defaultLicense) }
     val request = remember(selectedIds, name, version, creator, license) {
@@ -100,9 +102,19 @@ fun CreateCharacterPackScreen(
                 Column(verticalArrangement = Arrangement.spacedBy(10.dp)) {
                     Text(stringResource(R.string.pack_details))
                     OutlinedTextField(name, { name = it }, label = { Text(stringResource(R.string.pack_name_label)) }, modifier = Modifier.fillMaxWidth(), singleLine = true)
-                    OutlinedTextField(version, { version = it }, label = { Text(stringResource(R.string.pack_version_label)) }, modifier = Modifier.fillMaxWidth(), singleLine = true)
                     OutlinedTextField(creator, { creator = it }, label = { Text(stringResource(R.string.creator_label)) }, modifier = Modifier.fillMaxWidth(), singleLine = true)
-                    OutlinedTextField(license, { license = it }, label = { Text(stringResource(R.string.license_label)) }, modifier = Modifier.fillMaxWidth(), singleLine = true)
+                    OutlinedButton(onClick = { advancedExpanded = !advancedExpanded }) {
+                        Text(stringResource(R.string.advanced_section))
+                        AppIcon(
+                            icon = if (advancedExpanded) LocalAppIcons.current.arrowUp else LocalAppIcons.current.arrowDown,
+                            contentDescription = null,
+                            modifier = Modifier.padding(start = 8.dp),
+                        )
+                    }
+                    if (advancedExpanded) {
+                        OutlinedTextField(version, { version = it }, label = { Text(stringResource(R.string.pack_version_label)) }, modifier = Modifier.fillMaxWidth(), singleLine = true)
+                        OutlinedTextField(license, { license = it }, label = { Text(stringResource(R.string.license_label)) }, modifier = Modifier.fillMaxWidth(), singleLine = true)
+                    }
                     Button({ viewModel.exportForSharing(request, context, fileName) }, Modifier.fillMaxWidth(), enabled = canExport) { Text(stringResource(R.string.share)) }
                     Button({ save.launch(fileName) }, Modifier.fillMaxWidth(), enabled = canExport) { Text(stringResource(R.string.save_to_device)) }
                 }
