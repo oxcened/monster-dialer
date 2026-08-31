@@ -6,6 +6,22 @@
     <string name="settings_character_packs_title" comment="Settings title for managing character packs.">Figurpakker</string>
     <string name="characters_navigation_label" comment="Bottom navigation label for character customization.">Figurer</string>
     <string name="settings_character_packs_description" comment="Settings description for character packs.">Importér og administrér brugerdefinerede figurillustrationer.</string>
+    <string name="import_character" comment="Action that starts selecting a shared single-character file.">Importér figur</string>
+    <string name="import_character_description" comment="Description of the action that imports a shared character.">Tilføj en figur, som nogen har delt med dig.</string>
+    <string name="add_to_your_characters" comment="Button confirming that a shared character should be imported.">Tilføj</string>
+    <string name="shared_character_creator" comment="Creator shown in a shared-character import preview. %1$s is the creator name.">Opretter: %1$s</string>
+    <string name="shared_character_license" comment="License shown in a shared-character import preview. %1$s is the license name.">Licens: %1$s</string>
+    <string name="shared_character_import_description" comment="Explains the result of importing one shared character. %1$s is a character type, such as Trainer or Monster.">Denne %1$s føjes til din samling.</string>
+    <string name="shared_character_import_title" comment="Title confirming the import of a shared character. %1$s is the character name.">Tilføj %1$s?</string>
+    <string name="shared_character_import_failed_title" comment="Title shown when a selected file is not a valid shared character.">Kunne ikke importere figur</string>
+    <string name="shared_character_import_failed_message" comment="Explains that the selected file is not a valid shared character.">Vælg en .monstercharacter-fil, der er eksporteret fra MonsterDialer.</string>
+    <string name="share_character_title" comment="Title of the export dialog. %1$s is the character name.">Del %1$s</string>
+    <string name="creator_label" comment="Field label requesting the creator of a shared character.">Opretter</string>
+    <string name="license_label" comment="Field label requesting the license of a shared character.">Licens</string>
+    <string name="default_license" comment="Default license used when sharing a character or creating a pack.">Alle rettigheder forbeholdes</string>
+    <string name="export_character" comment="Button that exports one character as a shareable file.">Eksportér figur</string>
+    <string name="save_to_device" comment="Button that saves a shared character file through the device's document picker.">Gem på enheden</string>
+    <string name="shared_character_file_name" comment="Default filename for an exported character. Keep the .monstercharacter extension. %1$s is the character name.">%1$s.monstercharacter</string>
     <string name="settings_player_character_title" comment="Settings title for the player's battle character.">Spillerfigur</string>
     <string name="settings_player_character_description" comment="Settings description for the player's battle character.">Vælg, hvem der repræsenterer dig under opkald.</string>
     <string name="player_characters_not_set" comment="Settings subtitle when no player character is selected.">Ikke tilpasset</string>
@@ -20,6 +36,8 @@
     <string name="choose_contact" comment="Button that opens the contact picker.">Vælg kontakt</string>
     <string name="character_type_trainer" comment="Character category for a human battle character.">Træner</string>
     <string name="character_type_monster" comment="Character category for a creature battle character.">Monster</string>
+    <string name="character_type_trainers" comment="Plural character category for a collection of human battle characters.">trænere</string>
+    <string name="character_type_monsters" comment="Plural character category for a collection of creature battle characters.">monstre</string>
     <string name="built_in_character" comment="Label for a character included with the app.">Indbygget figur</string>
     <string name="default_character_artwork" comment="%1$s is a character type, such as Trainer or Monster.">Standardillustration af %1$s</string>
     <string name="character_artwork" comment="%1$s is a character name.">Illustration af %1$s</string>
@@ -38,6 +56,15 @@
     <string name="pack_collection_empty_title" comment="Title of the empty character-pack collection screen.">Din samling begynder her</string>
     <string name="pack_collection_empty_description" comment="Description of the empty character-pack collection screen.">Importér en figurpakke for at tilpasse dine opkald.</string>
     <string name="import_character_pack" comment="Button that starts selecting a character-pack file.">Importér figurpakke</string>
+    <string name="create_character_pack">Opret pakke</string>
+    <string name="select_characters_for_pack">Vælg figurer</string>
+    <string name="pack_details">Pakkedetaljer</string>
+    <string name="pack_name_label">Pakkenavn</string>
+    <string name="pack_version_label">Version</string>
+    <string name="share_character_pack">Del figurpakke</string>
+    <string name="character_pack_default_name">character-pack</string>
+    <string name="character_pack_file_name">%1$s.monsterpack</string>
+    <string name="character_pack_extension_required" comment="Shown when a selected file is not a MonsterDialer character pack or a legacy ZIP pack.">Vælg en figurpakke med filtypen .monsterpack eller .zip.</string>
     <string name="pack_import_license_notice" comment="Legal notice shown before importing a character pack.">Importér kun illustrationer og lyde, du selv har lavet eller har licens til at bruge.</string>
     <string name="your_character_packs" comment="Heading above installed character packs.">Dine figurpakker</string>
     <plurals name="installed_pack_count" comment="Number of installed character packs. %d is the count.">
@@ -121,8 +148,8 @@
     <string name="save_character" comment="Button to save the new character.">Gem figur</string>
     <string name="save" comment="Button label to save changes.">Gem</string>
     <string name="edit" comment="Button label to edit an item.">Rediger</string>
-    <string name="your_characters" comment="Section header for characters added by the user.">Dine figurer</string>
-    <string name="built_in_characters_section" comment="Section header for characters included with the app.">Indbyggede figurer</string>
+    <string name="your_characters" comment="Section header for characters added by the user. %1$s is a plural character type, such as trainers or monsters.">Dine %1$s</string>
+    <string name="built_in_characters_section" comment="Section header for characters included with the app. %1$s is a plural character type, such as trainers or monsters.">Indbyggede %1$s</string>
     <string name="character_created" comment="Confirmation after a character is successfully created.">Figur oprettet</string>
     <string name="character_creation_failed" comment="Error when a character cannot be saved.">Kunne ikke oprette figur</string>
     <string name="character_limit_reached_message" comment="Error message when the 200 character limit is hit.">Grænse på 200 figurer nået. Slet nogle for at tilføje flere.</string>
