@@ -6,22 +6,22 @@
     <string name="settings_character_packs_title" comment="Settings title for managing character packs.">角色包</string>
     <string name="characters_navigation_label" comment="Bottom navigation label for character customization.">角色</string>
     <string name="settings_character_packs_description" comment="Settings description for character packs.">导入和管理自定义角色插图。</string>
-    <string name="import_character">导入角色</string>
-    <string name="import_character_description">添加他人分享给你的角色。</string>
-    <string name="add_to_your_characters">添加</string>
-    <string name="shared_character_creator">创作者：%1$s</string>
-    <string name="shared_character_license">许可证：%1$s</string>
-    <string name="shared_character_import_description">此%1$s将添加到你的收藏中。</string>
-    <string name="shared_character_import_title">添加 %1$s？</string>
-    <string name="shared_character_import_failed_title">无法导入角色</string>
-    <string name="shared_character_import_failed_message">请选择从 MonsterDialer 导出的 .monstercharacter 文件。</string>
-    <string name="share_character_title">分享 %1$s</string>
-    <string name="creator_label">创作者</string>
-    <string name="license_label">许可证</string>
-    <string name="default_license">保留所有权利</string>
-    <string name="export_character">导出角色</string>
-    <string name="save_to_device">保存到设备</string>
-    <string name="shared_character_file_name">%1$s.monstercharacter</string>
+    <string name="import_character" comment="Action that starts selecting a shared single-character file.">导入角色</string>
+    <string name="import_character_description" comment="Description of the action that imports a shared character.">添加他人分享给你的角色。</string>
+    <string name="add_to_your_characters" comment="Button confirming that a shared character should be imported.">添加</string>
+    <string name="shared_character_creator" comment="Creator shown in a shared-character import preview. %1$s is the creator name.">创作者：%1$s</string>
+    <string name="shared_character_license" comment="License shown in a shared-character import preview. %1$s is the license name.">许可证：%1$s</string>
+    <string name="shared_character_import_description" comment="Explains the result of importing one shared character. %1$s is a character type, such as Trainer or Monster.">此%1$s将添加到你的收藏中。</string>
+    <string name="shared_character_import_title" comment="Title confirming the import of a shared character. %1$s is the character name.">添加 %1$s？</string>
+    <string name="shared_character_import_failed_title" comment="Title shown when a selected file is not a valid shared character.">无法导入角色</string>
+    <string name="shared_character_import_failed_message" comment="Explains that the selected file is not a valid shared character.">请选择从 MonsterDialer 导出的 .monstercharacter 文件。</string>
+    <string name="share_character_title" comment="Title of the export dialog. %1$s is the character name.">分享 %1$s</string>
+    <string name="creator_label" comment="Field label requesting the creator of a shared character.">创作者</string>
+    <string name="license_label" comment="Field label requesting the license of a shared character.">许可证</string>
+    <string name="default_license" comment="Default license used when sharing a character or creating a pack.">保留所有权利</string>
+    <string name="export_character" comment="Button that exports one character as a shareable file.">导出角色</string>
+    <string name="save_to_device" comment="Button that saves a shared character file through the device's document picker.">保存到设备</string>
+    <string name="shared_character_file_name" comment="Default filename for an exported character. Keep the .monstercharacter extension. %1$s is the character name.">%1$s.monstercharacter</string>
     <string name="settings_player_character_title" comment="Settings title for the player's battle character.">玩家角色</string>
     <string name="settings_player_character_description" comment="Settings description for the player's battle character.">选择通话时代表你的角色。</string>
     <string name="player_characters_not_set" comment="Settings subtitle when no player character is selected.">未自定义</string>
@@ -29,27 +29,30 @@
     <string name="settings_contact_characters_title" comment="Settings title for assigning characters to contacts.">联系人角色</string>
     <string name="settings_contact_characters_description" comment="Settings description for assigning characters to contacts.">为来电者分配角色。</string>
     <string name="contact_characters_not_set" comment="Settings subtitle when no contacts have a character assignment.">没有已自定义的联系人</string>
-    <plurals name="contact_character_assignment_count" comment="Settings subtitle showing how many contacts have a character assignment."><item quantity="one">已自定义 %d 位联系人</item><item quantity="other">已自定义 %d 位联系人</item></plurals>
+    <plurals name="contact_character_assignment_count" comment="Settings subtitle showing how many contacts have a character assignment.">
+        <item quantity="other">已自定义 %d 位联系人</item>
+    </plurals>
     <string name="choose_contact" comment="Button that opens the contact picker.">选择联系人</string>
     <string name="character_type_trainer" comment="Character category for a human battle character.">训练师</string>
     <string name="character_type_monster" comment="Character category for a creature battle character.">怪物</string>
-    <string name="character_type_trainers">训练师</string>
-    <string name="character_type_monsters">怪物</string>
+    <string name="character_type_trainers" comment="Plural character category for a collection of human battle characters.">训练师</string>
+    <string name="character_type_monsters" comment="Plural character category for a collection of creature battle characters.">怪物</string>
     <string name="built_in_character" comment="Label for a character included with the app.">内置角色</string>
     <string name="default_character_artwork" comment="%1$s is a character type, such as Trainer or Monster.">默认 %1$s 插图</string>
     <string name="character_artwork" comment="%1$s is a character name.">%1$s 插图</string>
     <string name="no_other_character_options" comment="%1$s is a character type, such as Trainer or Monster.">没有其他 %1$s 选项</string>
     <string name="import_and_enable_character_pack" comment="Empty-state message in the character selector.">添加你自己的角色或导入角色包以查看更多。</string>
     <string name="radiant" comment="Adjective for a rare, sparkling character variant.">闪耀</string>
+    <string name="regular" comment="Adjective for a standard, non-rare character variant.">普通</string>
     <string name="selected" comment="Status label for the currently chosen option.">已选择</string>
-    <string name="locked">已锁定</string>
-    <string name="radiant_variant_locked_title">闪耀变体已锁定</string>
-    <string name="radiant_variant_locked_message">在野外战斗中遇到闪耀 %1$s 时，它会在战斗开始时自动解锁，之后即可分配。</string>
-    <string name="radiant_unlock_notifications">闪耀解锁</string>
-    <string name="radiant_variant_unlocked_title">闪耀变体已解锁！</string>
-    <string name="radiant_variant_unlocked_message">%1$s 现已可以分配。</string>
-    <string name="radiant_unlock_share_title">分享闪耀解锁</string>
-    <string name="radiant_unlock_share_card_title">闪耀怪物已解锁！</string>
+    <string name="locked" comment="Status label for a character variant that must be unlocked before selection.">已锁定</string>
+    <string name="radiant_variant_locked_title" comment="Title of the dialog shown for a locked radiant character variant.">闪耀变体已锁定</string>
+    <string name="radiant_variant_locked_message" comment="Explains how to unlock a radiant character variant; %1$s is the character name.">在野外战斗中遇到闪耀 %1$s 时，它会在战斗开始时自动解锁，之后即可分配。</string>
+    <string name="radiant_unlock_notifications" comment="Notification channel name for radiant variant discoveries.">闪耀解锁</string>
+    <string name="radiant_variant_unlocked_title" comment="Title of the notification shown when a radiant character variant is discovered.">闪耀变体已解锁！</string>
+    <string name="radiant_variant_unlocked_message" comment="Confirms a radiant character variant was unlocked; %1$s is the character name.">%1$s 现已可以分配。</string>
+    <string name="radiant_unlock_share_title" comment="Chooser title for sharing a radiant variant unlock.">分享闪耀解锁</string>
+    <string name="radiant_unlock_share_card_title" comment="Heading on a radiant variant unlock share image.">闪耀怪物已解锁！</string>
     <string name="show_grid_view" comment="Accessibility label for the control that switches the character selector to a grid.">显示网格视图</string>
     <string name="show_list_view" comment="Accessibility label for the control that switches the character selector to a list.">显示列表视图</string>
     <string name="jump_to_selected_character" comment="Accessibility label for a button that scrolls to the selected character.">跳转到已选角色</string>
@@ -69,7 +72,7 @@
     <string name="share_character_pack">分享角色包</string>
     <string name="character_pack_default_name">character-pack</string>
     <string name="character_pack_file_name">%1$s.monsterpack</string>
-    <string name="character_pack_extension_required">请选择 .monsterpack 或 .zip 角色包。</string>
+    <string name="character_pack_extension_required" comment="Shown when a selected file is not a MonsterDialer character pack or a legacy ZIP pack.">请选择 .monsterpack 或 .zip 角色包。</string>
     <string name="pack_import_license_notice" comment="Legal notice shown before importing a character pack.">只能导入你创建的或获授权使用的插图和声音。</string>
     <string name="your_character_packs" comment="Heading above installed character packs.">你的角色包</string>
     <plurals name="installed_pack_count" comment="Number of installed character packs. %d is the count.">
@@ -96,6 +99,8 @@
     <string name="remove" comment="Button label to permanently remove a character pack.">移除</string>
     <string name="remove_character_pack_title" comment="Confirmation dialog title; %1$s is the character pack name.">要移除 %1$s 吗？</string>
     <string name="remove_character_pack_message" comment="Confirmation dialog message; %1$s is the character pack name.">这将从 MonsterDialer 中永久移除 %1$s 及其插图。</string>
+    <string name="disable_character_pack_title" comment="Confirmation dialog title; %1$s is the character pack name.">停用 %1$s 吗？</string>
+    <string name="disable_character_pack_message" comment="Confirmation dialog message; %1$s is the character pack name.">此角色包目前正在使用中。停用它将取消其角色与你及你的联系人的关联。</string>
     <string name="cancel" comment="Button label that dismisses an action without making changes.">取消</string>
     <string name="character_pack_removed" comment="Confirmation after a character pack is removed.">角色包已移除</string>
     <string name="character_pack_remove_failed" comment="Error when a character pack cannot be removed.">无法移除角色包</string>
@@ -123,7 +128,6 @@
     <string name="battle_trainer_sent_out" comment="Battle announcement; %1$s is the trainer name and %2$s is the monster name.">训练师 %1$s 派出了 %2$s！</string>
     <string name="battle_wild_radiant_appeared" comment="Battle announcement; %1$s is the wild monster name and radiant is its rare variant.">闪耀的野生 %1$s 出现了！</string>
     <string name="battle_wild_appeared" comment="Battle announcement; %1$s is the wild monster name.">野生 %1$s 出现了！</string>
-
     <!-- Character creation -->
     <string name="add_trainer" comment="Button to start adding a new custom trainer.">添加训练师</string>
     <string name="add_monster" comment="Button to start adding a new custom monster.">添加怪物</string>
@@ -132,9 +136,9 @@
     <string name="character_sprites_section" comment="Heading for the character sprites section.">图像</string>
     <string name="front_sprite_label" comment="Label for the front sprite picker.">前向图像</string>
     <string name="back_sprite_label" comment="Label for the back sprite picker.">后向图像</string>
-    <string name="radiant_sprites_section">闪耀图像</string>
-    <string name="radiant_front_sprite_label">闪耀前向图像</string>
-    <string name="radiant_back_sprite_label">闪耀后向图像</string>
+    <string name="radiant_sprites_section" comment="Heading for a monster's radiant sprite pickers.">闪耀图像</string>
+    <string name="radiant_front_sprite_label" comment="Label for the radiant front sprite picker.">闪耀前向图像</string>
+    <string name="radiant_back_sprite_label" comment="Label for the radiant back sprite picker.">闪耀后向图像</string>
     <string name="front_sprite_description" comment="Explains that the front sprite is required for contacts.">添加前向图像即可将此角色分配给联系人。</string>
     <string name="back_sprite_description" comment="Explains that the back sprite is required for the player.">添加后向图像即可将此角色分配给自己。</string>
     <string name="advanced_section" comment="Heading for advanced character settings.">高级</string>
@@ -152,23 +156,42 @@
     <string name="save_character" comment="Button to save the new character.">保存角色</string>
     <string name="save" comment="Button label to save changes.">保存</string>
     <string name="edit" comment="Button label to edit an item.">编辑</string>
-    <string name="your_characters">你的%1$s</string>
-    <string name="built_in_characters_section">内置%1$s</string>
+    <string name="your_characters" comment="Section header for characters added by the user. %1$s is a plural character type, such as trainers or monsters.">你的%1$s</string>
+    <string name="built_in_characters_section" comment="Section header for characters included with the app. %1$s is a plural character type, such as trainers or monsters.">内置%1$s</string>
     <string name="character_created" comment="Confirmation after a character is successfully created.">角色已创建</string>
     <string name="character_creation_failed" comment="Error when a character cannot be saved.">无法保存角色</string>
     <string name="character_limit_reached_message" comment="Error message when the 200 character limit is hit.">已达到 200 个角色的限制。请删除一些后再添加。</string>
     <string name="character_limit_reached_hint" comment="Short hint shown below the disabled add button.">已达到 200 个角色的限制</string>
-    <string name="disable_character_pack_title" comment="Confirmation dialog title; %1$s is the character pack name.">停用 %1$s 吗？</string>
-    <string name="disable_character_pack_message" comment="Confirmation dialog message; %1$s is the character pack name.">此角色包目前正在使用中。停用它将取消其角色与你及你的联系人的关联。</string>
     <string name="front_sprite_required_for_contact" comment="Message shown when a front sprite is missing but required by an assignment.">需要前向图像，因为此角色已分配给联系人。</string>
     <string name="back_sprite_required_for_player" comment="Message shown when a back sprite is missing but required by an assignment.">需要后向图像，因为此角色已分配给你。</string>
     <string name="remove_character_in_use_message" comment="Confirmation dialog message when deleting a character in use; %1$s is the character name.">%1$s 目前正在使用中。删除它将取消其与你及你的联系人的关联。</string>
-    <string name="remove_character_with_radiant_variant_message">删除 %1$s 会同时删除普通和闪耀变体。</string>
-    <string name="remove_character_with_radiant_variant_in_use_message">删除 %1$s 会同时删除两个变体，并取消分配给你和联系人的角色。</string>
+    <string name="remove_character_with_radiant_variant_message" comment="Confirmation dialog message when deleting a character with a radiant variant; %1$s is the character name.">删除 %1$s 会同时删除普通和闪耀变体。</string>
+    <string name="remove_character_with_radiant_variant_in_use_message" comment="Confirmation dialog message when deleting an in-use character with a radiant variant; %1$s is the character name.">删除 %1$s 会同时删除两个变体，并取消分配给你和联系人的角色。</string>
     <string name="remove_character_pack_in_use_message" comment="Confirmation dialog message when deleting a pack in use; %1$s is the character pack name.">此角色包目前正在使用中。移除它将取消其角色与你及你的联系人的关联。</string>
-    <string name="regular">普通</string><string name="characters_help_title">角色指南</string><string name="characters_help_description">了解 MonsterDialer 的角色系统。</string><string name="characters_help_intro_title">你的角色收藏</string><string name="characters_help_intro_message">“角色”标签页可为你和联系人自定义每次通话。</string>
-    <string name="characters_help_creating_title">创建自定义角色</string><string name="characters_help_creating_message">点按“添加训练师”或“添加怪物”，然后从图库选择图片用于：</string><string name="characters_help_creating_sprites_front"><b>前向图像：</b>联系人来电时显示。</string><string name="characters_help_creating_sprites_back"><b>后向图像：</b>战斗中代表你的角色。</string><string name="characters_help_advanced_title">高级属性</string><string name="characters_help_advanced_message">对于怪物，可在“高级”中设置等级和最大生命值，也可启用“闪耀”状态。</string>
-    <string name="characters_help_sharing_title">分享和导入</string><string name="characters_help_sharing_message">MonsterDialer 使用两种可分享文件：</string><string name="characters_help_sharing_files_character"><b>.monstercharacter：</b>包含属性和图像的单个角色。</string><string name="characters_help_sharing_files_pack"><b>.monsterpack：</b>多个角色的集合。</string><string name="characters_help_sharing_how_to">长按自己的角色即可导出。要导入，请打开收到的文件或使用“导入角色”。</string>
-    <string name="characters_help_packs_title">创建角色包</string><string name="characters_help_packs_message">在“角色包”中创建角色包，选择怪物后导出 .monsterpack 文件。</string><string name="characters_help_radiants_title">闪耀发现</string><string name="characters_help_radiants_message">闪耀怪物十分稀有。角色包中的变体会在你通话时于野外遇到它们后解锁。</string>
-    <string name="characters_help_management_title">管理收藏</string><string name="characters_help_management_message">长按“你的怪物”或“你的训练师”中的角色即可编辑、分享或删除。</string><string name="characters_help_assignments_title">个性化通话</string><string name="characters_help_assignments_message">角色有两种使用方式：</string><string name="characters_help_assignments_player"><b>玩家角色：</b>你每次通话中的头像。</string><string name="characters_help_assignments_contact"><b>联系人角色：</b>将怪物或训练师分配给联系人；他们来电时会成为你的对手。</string>
+    <!-- Help -->
+    <string name="characters_help_title">角色指南</string>
+    <string name="characters_help_description">了解 MonsterDialer 的角色系统。</string>
+    <string name="characters_help_intro_title">你的角色收藏</string>
+    <string name="characters_help_intro_message">“角色”标签页可为你和联系人自定义每次通话。</string>
+    <string name="characters_help_creating_title">创建自定义角色</string>
+    <string name="characters_help_creating_message">点按“添加训练师”或“添加怪物”，然后从图库选择图片用于：</string>
+    <string name="characters_help_creating_sprites_front"><b>前向图像：</b>联系人来电时显示。</string>
+    <string name="characters_help_creating_sprites_back"><b>后向图像：</b>战斗中代表你的角色。</string>
+    <string name="characters_help_advanced_title">高级属性</string>
+    <string name="characters_help_advanced_message">对于怪物，可在“高级”中设置等级和最大生命值，也可启用“闪耀”状态。</string>
+    <string name="characters_help_sharing_title">分享和导入</string>
+    <string name="characters_help_sharing_message">MonsterDialer 使用两种可分享文件：</string>
+    <string name="characters_help_sharing_files_character"><b>.monstercharacter：</b>包含属性和图像的单个角色。</string>
+    <string name="characters_help_sharing_files_pack"><b>.monsterpack：</b>多个角色的集合。</string>
+    <string name="characters_help_sharing_how_to">长按自己的角色即可导出。要导入，请打开收到的文件或使用“导入角色”。</string>
+    <string name="characters_help_packs_title">创建角色包</string>
+    <string name="characters_help_packs_message">在“角色包”中创建角色包，选择怪物后导出 .monsterpack 文件。</string>
+    <string name="characters_help_radiants_title">闪耀发现</string>
+    <string name="characters_help_radiants_message">闪耀怪物十分稀有。角色包中的变体会在你通话时于野外遇到它们后解锁。</string>
+    <string name="characters_help_management_title">管理收藏</string>
+    <string name="characters_help_management_message">长按“你的怪物”或“你的训练师”中的角色即可编辑、分享或删除。</string>
+    <string name="characters_help_assignments_title">个性化通话</string>
+    <string name="characters_help_assignments_message">角色有两种使用方式：</string>
+    <string name="characters_help_assignments_player"><b>玩家角色：</b>你每次通话中的头像。</string>
+    <string name="characters_help_assignments_contact"><b>联系人角色：</b>将怪物或训练师分配给联系人；他们来电时会成为你的对手。</string>
 </resources>
