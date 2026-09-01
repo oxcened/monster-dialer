@@ -49,6 +49,7 @@
     <string name="no_other_character_options" comment="%1$s is a character type, such as Trainer or Monster.">No other %1$s options</string>
     <string name="import_and_enable_character_pack" comment="Empty-state message in the character selector.">Add your own character or import a pack to see more.</string>
     <string name="radiant" comment="Adjective for a rare, sparkling character variant.">Radiant</string>
+    <string name="regular" comment="Adjective for a standard, non-rare character variant.">Regular</string>
     <string name="selected" comment="Status label for the currently chosen option.">Selected</string>
     <string name="locked" comment="Status label for a character variant that must be unlocked before selection.">Locked</string>
     <string name="radiant_variant_locked_title" comment="Title of the dialog shown for a locked radiant character variant.">Radiant variant locked</string>

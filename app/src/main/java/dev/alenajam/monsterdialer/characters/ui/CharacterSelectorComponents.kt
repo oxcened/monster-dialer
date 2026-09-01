@@ -61,8 +61,10 @@ import dev.alenajam.opendialer.core.common.ui.AppIcon
 import dev.alenajam.opendialer.core.common.ui.LocalAppIcons
 import dev.alenajam.monsterdialer.characters.data.BuiltInArtwork
 import dev.alenajam.monsterdialer.characters.data.BuiltInCharacter
+import dev.alenajam.monsterdialer.characters.data.BuiltInCharacters
 import dev.alenajam.monsterdialer.packs.data.CharacterReference
 import dev.alenajam.monsterdialer.packs.data.CharacterVisualVariant
+import dev.alenajam.monsterdialer.packs.data.CharacterType
 import dev.alenajam.monsterdialer.packs.data.PackCharacter
 import dev.alenajam.monsterdialer.packs.data.InstalledPackCharacter
 import java.io.File
@@ -115,6 +117,7 @@ internal fun LazyListScope.characterTypeItems(
     onEdit: (InstalledPackCharacter) -> Unit = {},
     onShare: (InstalledPackCharacter) -> Unit = {}
 ) {
+    val type = if (defaultCharacter == BuiltInCharacters.trainer) CharacterType.Trainer else CharacterType.Monster
     val availableSelection = selected?.takeIf { reference ->
         characters.any { it.matches(reference) }
     }
@@ -142,6 +145,7 @@ internal fun LazyListScope.characterTypeItems(
     item(key = "default") {
         CharacterOptionCard(
             name = defaultCharacter.name,
+            type = type,
             isSelected = availableSelection == null,
             roundTop = true,
             roundBottom = characters.isNotEmpty(),
@@ -165,6 +169,7 @@ internal fun LazyListScope.characterTypeItems(
             val isUnlocked = !selection.variant.isRadiant || reference in unlockedVariants
             CharacterOptionCard(
                 name = installed.character.name,
+                type = installed.character.type,
                 isRadiant = selection.variant.isRadiant,
                 isSelected = availableSelection == reference,
                 isUnlocked = isUnlocked,
@@ -194,6 +199,7 @@ internal fun LazyListScope.characterTypeItems(
             val isUnlocked = !selection.variant.isRadiant || reference in unlockedVariants
             CharacterOptionCard(
                 name = installed.character.name,
+                type = installed.character.type,
                 isRadiant = selection.variant.isRadiant,
                 isSelected = availableSelection == reference,
                 isUnlocked = isUnlocked,
@@ -231,6 +237,7 @@ internal fun LazyGridScope.characterTypeGridItems(
     onEdit: (InstalledPackCharacter) -> Unit = {},
     onShare: (InstalledPackCharacter) -> Unit = {}
 ) {
+    val type = if (defaultCharacter == BuiltInCharacters.trainer) CharacterType.Trainer else CharacterType.Monster
     val availableSelection = selected?.takeIf { reference ->
         characters.any { it.matches(reference) }
     }
@@ -260,6 +267,7 @@ internal fun LazyGridScope.characterTypeGridItems(
     item(key = "default") {
         CharacterGridItem(
             name = defaultCharacter.name,
+            type = type,
             isSelected = availableSelection == null,
             shape = gridItemShape(index = 0, itemCount = 1),
             artwork = {
@@ -282,6 +290,7 @@ internal fun LazyGridScope.characterTypeGridItems(
             val isUnlocked = !selection.variant.isRadiant || reference in unlockedVariants
             CharacterGridItem(
                 name = installed.character.name,
+                type = installed.character.type,
                 isRadiant = selection.variant.isRadiant,
                 isSelected = availableSelection == reference,
                 isUnlocked = isUnlocked,
@@ -310,6 +319,7 @@ internal fun LazyGridScope.characterTypeGridItems(
             val isUnlocked = !selection.variant.isRadiant || reference in unlockedVariants
             CharacterGridItem(
                 name = installed.character.name,
+                type = installed.character.type,
                 isRadiant = selection.variant.isRadiant,
                 isSelected = availableSelection == reference,
                 isUnlocked = isUnlocked,
@@ -581,7 +591,7 @@ private fun NoAdditionalCharacterOptionsCard(title: String) {
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 private fun CharacterOptionCard(
-    name: String, isRadiant: Boolean = false, isSelected: Boolean, isUnlocked: Boolean = true,
+    name: String, type: CharacterType, isRadiant: Boolean = false, isSelected: Boolean, isUnlocked: Boolean = true,
     roundTop: Boolean, roundBottom: Boolean, artwork: @Composable () -> Unit, onSelect: () -> Unit,
     onDelete: (() -> Unit)? = null,
     onEdit: (() -> Unit)? = null,
@@ -634,6 +644,12 @@ private fun CharacterOptionCard(
                                 tint = MaterialTheme.colorScheme.primary
                             )
                         }
+                    } else if (type == CharacterType.Monster) {
+                        Text(
+                            text = stringResource(R.string.regular),
+                            style = MaterialTheme.typography.bodySmall,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant
+                        )
                     }
                 }
                 if (isSelected) {
@@ -708,6 +724,7 @@ private fun CharacterOptionCard(
 @Composable
 private fun CharacterGridItem(
     name: String,
+    type: CharacterType,
     isRadiant: Boolean = false,
     isSelected: Boolean,
     isUnlocked: Boolean = true,
@@ -780,6 +797,13 @@ private fun CharacterGridItem(
                                 tint = MaterialTheme.colorScheme.primary
                             )
                         }
+                    } else if (type == CharacterType.Monster) {
+                        Text(
+                            text = stringResource(R.string.regular),
+                            style = MaterialTheme.typography.bodySmall,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant,
+                            maxLines = 1
+                        )
                     }
                 }
                 
