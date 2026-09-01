@@ -78,7 +78,8 @@ class PacksRepositoryImpl @Inject constructor(
             val pack = CharacterPackArchiveReader().read(archive)
             val previewImagePath = pack.manifest.characters
                 .asSequence()
-                .mapNotNull { character -> character.frontImage ?: character.backImage }
+                .flatMap { character -> character.visualVariants.asSequence() }
+                .mapNotNull { variant -> variant.frontImage ?: variant.backImage }
                 .firstOrNull()
             val previewImage = previewImagePath?.let { path ->
                 ZipFile(archive).use { zip ->

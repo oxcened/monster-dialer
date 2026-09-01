@@ -50,7 +50,10 @@ data class BattleEncounter(
     val enemy: BattleMonster?,
     val enemyTrainerName: String?,
     val playerTrainerSprite: BattleVisualAsset,
-    val enemyTrainerSprite: BattleVisualAsset
+    val enemyTrainerSprite: BattleVisualAsset,
+    /** Present only when this encounter discovers a radiant variant for the first time. */
+    val unlockedRadiantName: String? = null,
+    val unlockedRadiantFrontSpritePath: String? = null,
 )
 
 data class BattleUiState(

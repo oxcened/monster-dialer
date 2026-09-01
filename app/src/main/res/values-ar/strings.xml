@@ -42,6 +42,14 @@
     <string name="import_and_enable_character_pack" comment="Empty-state message in the character selector.">أضف شخصيتك الخاصة أو استورد حزمة لرؤية المزيد.</string>
     <string name="radiant" comment="Adjective for a rare, sparkling character variant.">متألق</string>
     <string name="selected" comment="Status label for the currently chosen option.">محدد</string>
+    <string name="locked">مقفل</string>
+    <string name="radiant_variant_locked_title">النسخة المتألقة مقفلة</string>
+    <string name="radiant_variant_locked_message">عندما تقابل %1$s متألقًا في معركة برية، يُفتح تلقائيًا عند بدء المعركة. يمكنك بعدها تعيينه.</string>
+    <string name="radiant_unlock_notifications">فتح النسخ المتألقة</string>
+    <string name="radiant_variant_unlocked_title">تم فتح النسخة المتألقة!</string>
+    <string name="radiant_variant_unlocked_message">أصبح %1$s جاهزًا للتعيين الآن.</string>
+    <string name="radiant_unlock_share_title">مشاركة فتح النسخة المتألقة</string>
+    <string name="radiant_unlock_share_card_title">تم فتح وحش متألق!</string>
     <string name="show_grid_view" comment="Accessibility label for the control that switches the character selector to a grid.">إظهار عرض الشبكة</string>
     <string name="show_list_view" comment="Accessibility label for the control that switches the character selector to a list.">إظهار عرض القائمة</string>
     <string name="jump_to_selected_character" comment="Accessibility label for a button that scrolls to the selected character.">الانتقال إلى الشخصية المحددة</string>
@@ -173,4 +181,9 @@
     <string name="remove_character_with_radiant_variant_message">سيؤدي حذف %1$s إلى إزالة النسختين العادية والمتألقة.</string>
     <string name="remove_character_with_radiant_variant_in_use_message">سيؤدي حذف %1$s إلى إزالة النسختين العادية والمتألقة وإلغاء تعيينهما منك ومن جهات اتصالك.</string>
     <string name="remove_character_pack_in_use_message" comment="Confirmation dialog message when deleting a pack in use; %1$s is the character pack name.">هذه الحزمة قيد الاستخدام حاليًا. ستؤدي إزالتها إلى إلغاء تعيين شخصياتها منك ومن جهات اتصالك.</string>
+    <string name="regular">عادي</string><string name="characters_help_title">دليل الشخصيات</string><string name="characters_help_description">تعرّف على شخصيات MonsterDialer.</string><string name="characters_help_intro_title">مجموعتك</string><string name="characters_help_intro_message">تتيح لك علامة الشخصيات تخصيص كل مكالمة لك ولجهات اتصالك.</string>
+    <string name="characters_help_creating_title">إنشاء شخصيات</string><string name="characters_help_creating_message">اضغط «إضافة مدرب» أو «إضافة وحش» واختر صوراً من المعرض لـ:</string><string name="characters_help_creating_sprites_front"><b>الرسم الأمامي:</b> يظهر عند اتصال جهة اتصال.</string><string name="characters_help_creating_sprites_back"><b>الرسم الخلفي:</b> شخصيتك في المعارك.</string><string name="characters_help_advanced_title">إحصاءات متقدمة</string><string name="characters_help_advanced_message">لل وحوش، اضبط المستوى وأقصى نقاط الصحة من «متقدم»، ويمكنك تفعيل حالة «متألق».</string>
+    <string name="characters_help_sharing_title">المشاركة والاستيراد</string><string name="characters_help_sharing_message">يستخدم MonsterDialer نوعين من الملفات:</string><string name="characters_help_sharing_files_character"><b>.monstercharacter:</b> شخصية بإحصاءات ورسومات.</string><string name="characters_help_sharing_files_pack"><b>.monsterpack:</b> مجموعة شخصيات.</string><string name="characters_help_sharing_how_to">اضغط مطولاً على شخصية لتصديرها. للاستيراد، افتح ملفاً مستلماً أو استخدم «استيراد شخصية».</string>
+    <string name="characters_help_packs_title">إنشاء حزم</string><string name="characters_help_packs_message">أنشئ حزمة من «حزم الشخصيات»، واختر الوحوش ثم صدّر ملف .monsterpack.</string><string name="characters_help_radiants_title">اكتشاف متألق</string><string name="characters_help_radiants_message">الوحوش المتألقة نادرة. تُفتح متغيرات الحزم عند مواجهتها في البرية أثناء مكالمة.</string>
+    <string name="characters_help_management_title">إدارة المجموعة</string><string name="characters_help_management_message">اضغط مطولاً على شخصية في «وحوشك» أو «مدربوك» لتعديلها أو مشاركتها أو حذفها.</string><string name="characters_help_assignments_title">تخصيص المكالمات</string><string name="characters_help_assignments_message">يمكن استخدام الشخصيات بطريقتين:</string><string name="characters_help_assignments_player"><b>شخصية اللاعب:</b> صورتك الرمزية في كل مكالمة.</string><string name="characters_help_assignments_contact"><b>شخصيات جهات الاتصال:</b> عيّن وحوشاً أو مدربين لجهات الاتصال؛ سيظهرون كخصوم عند اتصالهم.</string>
 </resources>

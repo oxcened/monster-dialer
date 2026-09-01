@@ -51,6 +51,10 @@ object CharacterPackValidator {
                     !variant.isRadiant || character.type == CharacterType.Monster,
                     "Only monster variant '${variant.id}' may be radiant"
                 )
+                requireThat(
+                    !variant.isRadiant || variant.frontImage != null,
+                    "Radiant variant '${variant.id}' must provide frontImage"
+                )
             }
             requireThat(
                 !character.isRadiant || character.type == CharacterType.Monster,

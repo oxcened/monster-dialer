@@ -219,7 +219,7 @@ fun AddCharacterScreen(
                             ) {
                                 SpritePicker(
                                     label = stringResource(R.string.radiant_front_sprite_label),
-                                    isRequired = frontImageUri != null || existingFrontImageFile != null,
+                                    isRequired = true,
                                     description = stringResource(R.string.front_sprite_description),
                                     image = radiantFrontImageUri ?: existingRadiantFrontImageFile,
                                     onPick = { radiantFrontPicker.launch("image/*") },
@@ -392,7 +392,7 @@ fun AddCharacterScreen(
                         val hasRadiantFront = radiantFrontImageUri != null || existingRadiantFrontImageFile != null
                         val hasRadiantBack = radiantBackImageUri != null || existingRadiantBackImageFile != null
                         val hasCompleteRadiantVariant = !isRadiant ||
-                            (!hasFront || hasRadiantFront) && (!hasBack || hasRadiantBack)
+                            hasRadiantFront && (!hasBack || hasRadiantBack)
                         val isValid = (!frontRequired || hasFront) && 
                             (!backRequired || hasBack) &&
                             (hasFront || hasBack) &&

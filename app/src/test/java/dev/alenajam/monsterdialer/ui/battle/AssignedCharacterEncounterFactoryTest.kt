@@ -2,8 +2,11 @@ package dev.alenajam.monsterdialer.ui.battle
 
 import dev.alenajam.monsterdialer.characters.data.CharacterAssignmentStore
 import dev.alenajam.monsterdialer.characters.data.CharactersRepositoryImpl
+import dev.alenajam.monsterdialer.characters.data.RadiantVariantUnlockStore
 import dev.alenajam.monsterdialer.characters.data.CharacterAssignmentRepositoryImpl
 import dev.alenajam.monsterdialer.battle.data.AssignedCharacterEncounterFactory
+import dev.alenajam.monsterdialer.battle.data.ActiveBattleEncounterStore
+import dev.alenajam.monsterdialer.battle.data.ActiveCallKey
 import dev.alenajam.monsterdialer.battle.data.BattleEncounterFactory
 import dev.alenajam.monsterdialer.battle.data.EncounterType
 import dev.alenajam.monsterdialer.packs.data.CharacterAssignmentTarget
@@ -12,14 +15,17 @@ import dev.alenajam.monsterdialer.packs.data.CharacterPackManifest
 import dev.alenajam.monsterdialer.packs.data.CharacterPackRepository
 import dev.alenajam.monsterdialer.packs.data.CharacterReference
 import dev.alenajam.monsterdialer.packs.data.CharacterType
+import dev.alenajam.monsterdialer.packs.data.CharacterVisualVariant
 import dev.alenajam.monsterdialer.packs.data.InstalledPackCharacter
 import dev.alenajam.monsterdialer.packs.data.PackCharacter
 import java.io.File
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNotEquals
+import org.junit.Assert.assertNotSame
 import org.junit.Rule
 import org.junit.Test
 import org.junit.rules.TemporaryFolder
+import kotlin.random.Random
 
 class AssignedCharacterEncounterFactoryTest {
     @get:Rule val temporaryFolder = TemporaryFolder()
@@ -31,7 +37,11 @@ class AssignedCharacterEncounterFactoryTest {
     private val repository by lazy { CharacterPackRepository(storageRoot, catalog) }
     private val assignmentRepository by lazy { CharacterAssignmentRepositoryImpl(store) }
     private val charactersRepository by lazy { CharactersRepositoryImpl(repository, assignmentRepository) }
-    private val factory by lazy { AssignedCharacterEncounterFactory(charactersRepository, assignmentRepository) }
+    private val radiantUnlocks by lazy { RadiantVariantUnlockStore(storageRoot) }
+    private val activeEncounterStore by lazy { ActiveBattleEncounterStore(storageRoot) }
+    private val factory by lazy {
+        AssignedCharacterEncounterFactory(charactersRepository, assignmentRepository, radiantUnlocks, activeEncounterStore)
+    }
 
     @Test
     fun forCallPicksAssignedMonsters() {
@@ -82,6 +92,123 @@ class AssignedCharacterEncounterFactoryTest {
 
         assertEquals(EncounterType.Anonymous, encounter.type)
         assertNotEquals("Monster 1", encounter.enemy?.name)
+    }
+
+    @Test
+    fun radiantRollReplacesAnyCallWithARandomRadiantWildMonster() {
+        setupRadiantPack()
+        val radiantFactory = AssignedCharacterEncounterFactory(
+            charactersRepository,
+            assignmentRepository,
+            radiantUnlocks,
+            activeEncounterStore,
+            random = AlwaysRadiantRandom,
+        )
+
+        val encounter = radiantFactory.forCall("call1", "123", "Alex", isAnonymous = false)
+
+        assertEquals(EncounterType.RadiantWild, encounter.type)
+        assertEquals("Radiant Monster", encounter.enemy?.name)
+        assertEquals(true, encounter.enemy?.isRadiant)
+    }
+
+    @Test
+    fun radiantEncounterSurvivesFactoryRecreationForTheSameCall() {
+        setupRadiantPack()
+        val firstFactory = AssignedCharacterEncounterFactory(
+            charactersRepository,
+            assignmentRepository,
+            radiantUnlocks,
+            activeEncounterStore,
+            random = AlwaysRadiantRandom,
+        )
+        firstFactory.forCall("telecom-call-1", "123", "Alex", isAnonymous = false)
+
+        val recreatedFactory = AssignedCharacterEncounterFactory(
+            charactersRepository,
+            assignmentRepository,
+            radiantUnlocks,
+            activeEncounterStore,
+            random = NeverRadiantRandom,
+        )
+        val restoredEncounter = recreatedFactory.forCall("telecom-call-1", "123", "Alex", isAnonymous = false)
+
+        assertEquals(EncounterType.RadiantWild, restoredEncounter.type)
+        assertEquals("Radiant Monster", restoredEncounter.enemy?.name)
+    }
+
+    @Test
+    fun encountersRemainIndependentWhenCallsAreSwitched() {
+        setupRadiantPack()
+        AssignedCharacterEncounterFactory(
+            charactersRepository,
+            assignmentRepository,
+            radiantUnlocks,
+            activeEncounterStore,
+            random = AlwaysRadiantRandom,
+        ).forCall("telecom-call-1", "123", "Alex", isAnonymous = false)
+        activeEncounterStore.save(
+            ActiveCallKey("telecom-call-2", "456", "Bea", isAnonymous = false),
+            radiantReference = null,
+        )
+
+        val recreatedFactory = AssignedCharacterEncounterFactory(
+            charactersRepository,
+            assignmentRepository,
+            radiantUnlocks,
+            activeEncounterStore,
+            random = NeverRadiantRandom,
+        )
+
+        assertEquals(
+            EncounterType.RadiantWild,
+            recreatedFactory.forCall("telecom-call-1", "123", "Alex", isAnonymous = false).type,
+        )
+        assertEquals(
+            EncounterType.Trainer,
+            recreatedFactory.forCall("telecom-call-2", "456", "Bea", isAnonymous = false).type,
+        )
+    }
+
+    @Test
+    fun clearingTheCacheBuildsAFreshEncounterForTheNextCall() {
+        val firstEncounter = factory.forCall("same-call-key", "123", "Alex", isAnonymous = false)
+
+        factory.clearCachedEncounter()
+
+        val nextEncounter = factory.forCall("same-call-key", "123", "Alex", isAnonymous = false)
+        assertNotSame(firstEncounter, nextEncounter)
+    }
+
+    private fun setupRadiantPack() {
+        val packId = "com.example.radiant"
+        val packDir = File(File(storageRoot, packId), "active")
+        packDir.mkdirs()
+        val manifest = CharacterPackManifest(
+            formatVersion = 2,
+            id = packId,
+            name = "Radiant Pack",
+            version = "1.0.0",
+            license = "MIT",
+            characters = listOf(
+                PackCharacter(
+                    id = "radiant-monster",
+                    name = "Radiant Monster",
+                    type = CharacterType.Monster,
+                    assignableTo = listOf(CharacterAssignmentTarget.Contact),
+                    variants = listOf(
+                        CharacterVisualVariant("default", "Default", frontImage = "front.png"),
+                        CharacterVisualVariant("radiant", "Radiant", frontImage = "radiant-front.png", isRadiant = true),
+                    )
+                )
+            )
+        )
+        File(packDir, "manifest.json").writeText(
+            """{"formatVersion":2,"id":"$packId","name":"Radiant Pack","version":"1.0.0","license":"MIT","characters":[{"id":"radiant-monster","name":"Radiant Monster","type":"monster","assignableTo":["contact"],"variants":[{"id":"default","name":"Default","frontImage":"front.png"},{"id":"radiant","name":"Radiant","frontImage":"radiant-front.png","isRadiant":true}]}]}"""
+        )
+        File(packDir, "front.png").writeText("fake image content")
+        File(packDir, "radiant-front.png").writeText("fake image content")
+        catalog.recordInstallation(manifest)
     }
 
     private fun setupPack(
@@ -136,5 +263,17 @@ class AssignedCharacterEncounterFactoryTest {
         File(packDir, "back.png").writeText("fake image content")
         
         catalog.recordInstallation(manifestObj)
+    }
+
+    private object AlwaysRadiantRandom : Random() {
+        override fun nextBits(bitCount: Int): Int = 0
+    }
+
+    private object NeverRadiantRandom : Random() {
+        override fun nextBits(bitCount: Int): Int = when (bitCount) {
+            0 -> 0
+            Int.SIZE_BITS -> -1
+            else -> (1 shl bitCount) - 1
+        }
     }
 }

@@ -42,6 +42,14 @@
     <string name="import_and_enable_character_pack" comment="Empty-state message in the character selector.">Füge einen eigenen Charakter hinzu oder importiere ein Paket, um mehr zu sehen.</string>
     <string name="radiant" comment="Adjective for a rare, sparkling character variant.">Strahlend</string>
     <string name="selected" comment="Status label for the currently chosen option.">Ausgewählt</string>
+    <string name="locked">Gesperrt</string>
+    <string name="radiant_variant_locked_title">Strahlende Variante gesperrt</string>
+    <string name="radiant_variant_locked_message">Wenn du einem strahlenden %1$s in einem wilden Kampf begegnest, wird er zu Kampfbeginn automatisch freigeschaltet. Danach kannst du ihn zuweisen.</string>
+    <string name="radiant_unlock_notifications">Strahlende Freischaltungen</string>
+    <string name="radiant_variant_unlocked_title">Strahlende Variante freigeschaltet!</string>
+    <string name="radiant_variant_unlocked_message">%1$s kann jetzt zugewiesen werden.</string>
+    <string name="radiant_unlock_share_title">Strahlende Freischaltung teilen</string>
+    <string name="radiant_unlock_share_card_title">STRAHLENDES MONSTER FREIGESCHALTET!</string>
     <string name="show_grid_view" comment="Accessibility label for the control that switches the character selector to a grid.">Rasteransicht anzeigen</string>
     <string name="show_list_view" comment="Accessibility label for the control that switches the character selector to a list.">Listenansicht anzeigen</string>
     <string name="jump_to_selected_character" comment="Accessibility label for a button that scrolls to the selected character.">Zur ausgewählten Figur</string>
@@ -161,4 +169,13 @@
     <string name="remove_character_with_radiant_variant_message">Durch das Löschen von %1$s werden sowohl die normale als auch die strahlende Variante entfernt.</string>
     <string name="remove_character_with_radiant_variant_in_use_message">Durch das Löschen von %1$s werden beide Varianten entfernt und ihre Zuweisungen zu dir und deinen Kontakten aufgehoben.</string>
     <string name="remove_character_pack_in_use_message" comment="Confirmation dialog message when deleting a pack in use; %1$s is the character pack name.">Dieses Paket wird derzeit verwendet. Durch das Entfernen wird die Zuweisung seiner Charaktere zu dir und deinen Kontakten aufgehoben.</string>
+    <string name="regular">Normal</string><string name="characters_help_title">Charakterleitfaden</string><string name="characters_help_description">Entdecke die Charaktere von MonsterDialer.</string>
+    <string name="characters_help_intro_title">Deine Sammlung</string><string name="characters_help_intro_message">Im Tab „Charaktere“ personalisierst du jeden Anruf für dich und deine Kontakte.</string>
+    <string name="characters_help_creating_title">Charaktere erstellen</string><string name="characters_help_creating_message">Tippe auf „Trainer hinzufügen“ oder „Monster hinzufügen“ und wähle Bilder aus deiner Galerie für:</string><string name="characters_help_creating_sprites_front"><b>Vorderansicht:</b> sichtbar beim Anruf eines Kontakts.</string><string name="characters_help_creating_sprites_back"><b>Rückansicht:</b> dein Charakter in Kämpfen.</string>
+    <string name="characters_help_advanced_title">Erweiterte Werte</string><string name="characters_help_advanced_message">Bei Monstern kannst du unter „Erweitert“ Level und maximale KP festlegen sowie den Status „Strahlend“ aktivieren.</string>
+    <string name="characters_help_sharing_title">Teilen und importieren</string><string name="characters_help_sharing_message">MonsterDialer nutzt zwei Dateitypen:</string><string name="characters_help_sharing_files_character"><b>.monstercharacter:</b> ein Charakter mit Werten und Grafik.</string><string name="characters_help_sharing_files_pack"><b>.monsterpack:</b> eine Charaktersammlung.</string><string name="characters_help_sharing_how_to">Halte einen eigenen Charakter gedrückt, um ihn zu exportieren. Zum Importieren öffne eine erhaltene Datei oder nutze „Charakter importieren“.</string>
+    <string name="characters_help_packs_title">Packs erstellen</string><string name="characters_help_packs_message">Erstelle unter „Charakter-Packs“ ein Pack, wähle Monster aus und exportiere die .monsterpack-Datei.</string>
+    <string name="characters_help_radiants_title">Strahlende Entdeckung</string><string name="characters_help_radiants_message">Strahlende Monster sind selten. Pack-Varianten werden freigeschaltet, wenn du ihnen während eines Anrufs in freier Wildbahn begegnest.</string>
+    <string name="characters_help_management_title">Sammlung verwalten</string><string name="characters_help_management_message">Halte einen Charakter unter „Deine Monster“ oder „Deine Trainer“ gedrückt, um ihn zu bearbeiten, zu teilen oder zu löschen.</string>
+    <string name="characters_help_assignments_title">Anrufe personalisieren</string><string name="characters_help_assignments_message">Charaktere lassen sich auf zwei Arten nutzen:</string><string name="characters_help_assignments_player"><b>Spielercharakter:</b> dein Avatar für jeden Anruf.</string><string name="characters_help_assignments_contact"><b>Kontaktcharaktere:</b> Weise Kontakten Monster oder Trainer zu; sie erscheinen als Gegner, wenn sie anrufen.</string>
 </resources>

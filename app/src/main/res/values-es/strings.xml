@@ -42,6 +42,14 @@
     <string name="import_and_enable_character_pack" comment="Empty-state message in the character selector.">Añade tu propio personaje o importa un paquete para ver más.</string>
     <string name="radiant" comment="Adjective for a rare, sparkling character variant.">Radiante</string>
     <string name="selected" comment="Status label for the currently chosen option.">Seleccionado</string>
+    <string name="locked">Bloqueado</string>
+    <string name="radiant_variant_locked_title">Variante radiante bloqueada</string>
+    <string name="radiant_variant_locked_message">Al encontrar un %1$s radiante en un combate salvaje, se desbloquea automáticamente al empezar el combate. Después podrás asignarlo.</string>
+    <string name="radiant_unlock_notifications">Desbloqueos radiantes</string>
+    <string name="radiant_variant_unlocked_title">¡Variante radiante desbloqueada!</string>
+    <string name="radiant_variant_unlocked_message">%1$s ya está listo para asignar.</string>
+    <string name="radiant_unlock_share_title">Compartir desbloqueo radiante</string>
+    <string name="radiant_unlock_share_card_title">¡MONSTRUO RADIANTE DESBLOQUEADO!</string>
     <string name="show_grid_view" comment="Accessibility label for the control that switches the character selector to a grid.">Mostrar cuadrícula</string>
     <string name="show_list_view" comment="Accessibility label for the control that switches the character selector to a list.">Mostrar lista</string>
     <string name="jump_to_selected_character" comment="Accessibility label for a button that scrolls to the selected character.">Ir al personaje seleccionado</string>
@@ -161,4 +169,13 @@
     <string name="remove_character_with_radiant_variant_message">Al eliminar %1$s se eliminarán las variantes normal y radiante.</string>
     <string name="remove_character_with_radiant_variant_in_use_message">Al eliminar %1$s se eliminarán ambas variantes y se anularán sus asignaciones para ti y tus contactos.</string>
     <string name="remove_character_pack_in_use_message" comment="Confirmation dialog message when deleting a pack in use; %1$s is the character pack name.">Este paquete está en uso. Al eliminarlo, se anulará la asignación de sus personajes a ti y a tus contactos.</string>
+    <string name="regular">Normal</string><string name="characters_help_title">Guía de personajes</string><string name="characters_help_description">Descubre los personajes de MonsterDialer.</string>
+    <string name="characters_help_intro_title">Tu colección</string><string name="characters_help_intro_message">La pestaña Personajes personaliza cada llamada para ti y tus contactos.</string>
+    <string name="characters_help_creating_title">Crear personajes</string><string name="characters_help_creating_message">Toca «Añadir entrenador» o «Añadir monstruo» y elige imágenes de tu galería para:</string><string name="characters_help_creating_sprites_front"><b>Sprite frontal:</b> se ve al recibir una llamada del contacto.</string><string name="characters_help_creating_sprites_back"><b>Sprite trasero:</b> representa a tu personaje en combate.</string>
+    <string name="characters_help_advanced_title">Estadísticas avanzadas</string><string name="characters_help_advanced_message">Para monstruos, establece nivel y PS máximos en «Avanzado». También puedes activar el estado «Radiante».</string>
+    <string name="characters_help_sharing_title">Compartir e importar</string><string name="characters_help_sharing_message">MonsterDialer usa dos tipos de archivos:</string><string name="characters_help_sharing_files_character"><b>.monstercharacter:</b> un personaje con estadísticas e ilustración.</string><string name="characters_help_sharing_files_pack"><b>.monsterpack:</b> una colección de personajes.</string><string name="characters_help_sharing_how_to">Mantén pulsado un personaje propio para exportarlo. Para importar, abre un archivo recibido o usa «Importar personaje».</string>
+    <string name="characters_help_packs_title">Crear paquetes</string><string name="characters_help_packs_message">En «Paquetes de personajes», crea un paquete, elige los monstruos y exporta el archivo .monsterpack.</string>
+    <string name="characters_help_radiants_title">Descubrimiento radiante</string><string name="characters_help_radiants_message">Los monstruos radiantes son raros. Las variantes de paquetes se desbloquean al encontrarlas en estado salvaje durante una llamada.</string>
+    <string name="characters_help_management_title">Gestionar la colección</string><string name="characters_help_management_message">Mantén pulsado un personaje en «Tus monstruos» o «Tus entrenadores» para editarlo, compartirlo o eliminarlo.</string>
+    <string name="characters_help_assignments_title">Personalizar llamadas</string><string name="characters_help_assignments_message">Hay dos maneras de usar personajes:</string><string name="characters_help_assignments_player"><b>Personaje del jugador:</b> tu avatar en cada llamada.</string><string name="characters_help_assignments_contact"><b>Personajes de contactos:</b> asigna monstruos o entrenadores a contactos; serán tus oponentes cuando llamen.</string>
 </resources>

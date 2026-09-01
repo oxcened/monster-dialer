@@ -61,8 +61,11 @@ import dev.alenajam.opendialer.core.common.ui.AppIcon
 import dev.alenajam.opendialer.core.common.ui.LocalAppIcons
 import dev.alenajam.monsterdialer.characters.data.BuiltInArtwork
 import dev.alenajam.monsterdialer.characters.data.BuiltInCharacter
+import dev.alenajam.monsterdialer.characters.data.BuiltInCharacters
 import dev.alenajam.monsterdialer.packs.data.CharacterReference
+import dev.alenajam.monsterdialer.packs.data.CharacterAssignmentTarget
 import dev.alenajam.monsterdialer.packs.data.CharacterVisualVariant
+import dev.alenajam.monsterdialer.packs.data.CharacterType
 import dev.alenajam.monsterdialer.packs.data.PackCharacter
 import dev.alenajam.monsterdialer.packs.data.InstalledPackCharacter
 import java.io.File
@@ -105,15 +108,17 @@ internal fun LazyListScope.characterTypeItems(
     characters: List<InstalledPackCharacter>,
     selected: CharacterReference?,
     defaultArtwork: (BuiltInCharacter) -> BuiltInArtwork,
-    packArtwork: (InstalledPackCharacter) -> File,
+    artworkTarget: CharacterAssignmentTarget,
     onSelect: (CharacterReference?) -> Unit,
     onAddCharacter: () -> Unit,
     addLabel: String,
     isAddEnabled: Boolean = true,
+    unlockedVariants: Set<CharacterReference> = emptySet(),
     onDelete: (InstalledPackCharacter) -> Unit = {},
     onEdit: (InstalledPackCharacter) -> Unit = {},
     onShare: (InstalledPackCharacter) -> Unit = {}
 ) {
+    val type = if (defaultCharacter == BuiltInCharacters.trainer) CharacterType.Trainer else CharacterType.Monster
     val availableSelection = selected?.takeIf { reference ->
         characters.any { it.matches(reference) }
     }
@@ -141,6 +146,7 @@ internal fun LazyListScope.characterTypeItems(
     item(key = "default") {
         CharacterOptionCard(
             name = defaultCharacter.name,
+            type = type,
             isSelected = availableSelection == null,
             roundTop = true,
             roundBottom = characters.isNotEmpty(),
@@ -161,20 +167,23 @@ internal fun LazyListScope.characterTypeItems(
         itemsIndexed(items = selections, key = { _, selection -> "custom:${selection.installed.character.id}:${selection.variant.id}" }) { index, selection ->
             val installed = selection.installed
             val reference = CharacterReference(installed.packId, installed.character.id, selection.variant.id)
+            val isUnlocked = !selection.variant.isRadiant || reference in unlockedVariants
             CharacterOptionCard(
                 name = installed.character.name,
+                type = installed.character.type,
                 isRadiant = selection.variant.isRadiant,
                 isSelected = availableSelection == reference,
+                isUnlocked = isUnlocked,
                 roundTop = index == 0,
                 roundBottom = index == selections.lastIndex,
                 artwork = {
                     AsyncImage(
-                        model = selection.previewArtwork(packArtwork),
+                        model = selection.previewArtwork(artworkTarget),
                         contentDescription = stringResource(R.string.character_artwork, installed.character.name),
                         modifier = Modifier.size(72.dp)
                     )
                 },
-                onSelect = { onSelect(reference) },
+                onSelect = { if (isUnlocked) onSelect(reference) },
                 onDelete = if (installed.isDeletable) { { onDelete(installed) } } else null,
                 onEdit = if (installed.isEditable) { { onEdit(installed) } } else null,
                 onShare = if (installed.isEditable) { { onShare(installed) } } else null
@@ -188,20 +197,23 @@ internal fun LazyListScope.characterTypeItems(
         itemsIndexed(items = selections, key = { _, selection -> "${packId}:${selection.installed.character.id}:${selection.variant.id}" }) { index, selection ->
             val installed = selection.installed
             val reference = CharacterReference(installed.packId, installed.character.id, selection.variant.id)
+            val isUnlocked = !selection.variant.isRadiant || reference in unlockedVariants
             CharacterOptionCard(
                 name = installed.character.name,
+                type = installed.character.type,
                 isRadiant = selection.variant.isRadiant,
                 isSelected = availableSelection == reference,
+                isUnlocked = isUnlocked,
                 roundTop = index == 0,
                 roundBottom = index == selections.lastIndex,
                 artwork = {
                     AsyncImage(
-                        model = selection.previewArtwork(packArtwork),
+                        model = selection.previewArtwork(artworkTarget),
                         contentDescription = stringResource(R.string.character_artwork, installed.character.name),
                         modifier = Modifier.size(72.dp)
                     )
                 },
-                onSelect = { onSelect(reference) }
+                onSelect = { if (isUnlocked) onSelect(reference) }
             )
         }
     }
@@ -216,15 +228,17 @@ internal fun LazyGridScope.characterTypeGridItems(
     characters: List<InstalledPackCharacter>,
     selected: CharacterReference?,
     defaultArtwork: (BuiltInCharacter) -> BuiltInArtwork,
-    packArtwork: (InstalledPackCharacter) -> File,
+    artworkTarget: CharacterAssignmentTarget,
     onSelect: (CharacterReference?) -> Unit,
     onAddCharacter: () -> Unit,
     addLabel: String,
     isAddEnabled: Boolean = true,
+    unlockedVariants: Set<CharacterReference> = emptySet(),
     onDelete: (InstalledPackCharacter) -> Unit = {},
     onEdit: (InstalledPackCharacter) -> Unit = {},
     onShare: (InstalledPackCharacter) -> Unit = {}
 ) {
+    val type = if (defaultCharacter == BuiltInCharacters.trainer) CharacterType.Trainer else CharacterType.Monster
     val availableSelection = selected?.takeIf { reference ->
         characters.any { it.matches(reference) }
     }
@@ -254,6 +268,7 @@ internal fun LazyGridScope.characterTypeGridItems(
     item(key = "default") {
         CharacterGridItem(
             name = defaultCharacter.name,
+            type = type,
             isSelected = availableSelection == null,
             shape = gridItemShape(index = 0, itemCount = 1),
             artwork = {
@@ -273,19 +288,22 @@ internal fun LazyGridScope.characterTypeGridItems(
         gridItemsIndexed(items = selections, key = { _, selection -> "custom:${selection.installed.character.id}:${selection.variant.id}" }) { index, selection ->
             val installed = selection.installed
             val reference = CharacterReference(installed.packId, installed.character.id, selection.variant.id)
+            val isUnlocked = !selection.variant.isRadiant || reference in unlockedVariants
             CharacterGridItem(
                 name = installed.character.name,
+                type = installed.character.type,
                 isRadiant = selection.variant.isRadiant,
                 isSelected = availableSelection == reference,
+                isUnlocked = isUnlocked,
                 shape = gridItemShape(index = index, itemCount = selections.size),
                 artwork = {
                     AsyncImage(
-                        model = selection.previewArtwork(packArtwork),
+                        model = selection.previewArtwork(artworkTarget),
                         contentDescription = stringResource(R.string.character_artwork, installed.character.name),
                         modifier = Modifier.size(88.dp)
                     )
                 },
-                onSelect = { onSelect(reference) },
+                onSelect = { if (isUnlocked) onSelect(reference) },
                 onDelete = if (installed.isDeletable) { { onDelete(installed) } } else null,
                 onEdit = if (installed.isEditable) { { onEdit(installed) } } else null,
                 onShare = if (installed.isEditable) { { onShare(installed) } } else null
@@ -299,19 +317,22 @@ internal fun LazyGridScope.characterTypeGridItems(
         gridItemsIndexed(items = selections, key = { _, selection -> "${packId}:${selection.installed.character.id}:${selection.variant.id}" }) { index, selection ->
             val installed = selection.installed
             val reference = CharacterReference(installed.packId, installed.character.id, selection.variant.id)
+            val isUnlocked = !selection.variant.isRadiant || reference in unlockedVariants
             CharacterGridItem(
                 name = installed.character.name,
+                type = installed.character.type,
                 isRadiant = selection.variant.isRadiant,
                 isSelected = availableSelection == reference,
+                isUnlocked = isUnlocked,
                 shape = gridItemShape(index = index, itemCount = selections.size),
                 artwork = {
                     AsyncImage(
-                        model = selection.previewArtwork(packArtwork),
+                        model = selection.previewArtwork(artworkTarget),
                         contentDescription = stringResource(R.string.character_artwork, installed.character.name),
                         modifier = Modifier.size(88.dp)
                     )
                 },
-                onSelect = { onSelect(reference) }
+                onSelect = { if (isUnlocked) onSelect(reference) }
             )
         }
     }
@@ -339,12 +360,13 @@ private fun InstalledPackCharacter.matches(reference: CharacterReference): Boole
         character.id == reference.characterId &&
         character.variant(reference.variantId) != null
 
-private fun CharacterSelection.previewArtwork(regularArtwork: (InstalledPackCharacter) -> File): File =
-    if (variant.id != PackCharacter.DefaultVariantId) {
-        installed.imageFile(requireNotNull(variant.frontImage ?: variant.backImage))
-    } else {
-        regularArtwork(installed)
+private fun CharacterSelection.previewArtwork(artworkTarget: CharacterAssignmentTarget): File {
+    val image = when (artworkTarget) {
+        CharacterAssignmentTarget.Player -> variant.backImage ?: variant.frontImage
+        CharacterAssignmentTarget.Contact -> variant.frontImage ?: variant.backImage
     }
+    return installed.imageFile(requireNotNull(image))
+}
 
 private fun gridItemShape(index: Int, itemCount: Int): RoundedCornerShape {
     val isLeftColumn = index % 2 == 0
@@ -575,13 +597,14 @@ private fun NoAdditionalCharacterOptionsCard(title: String) {
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 private fun CharacterOptionCard(
-    name: String, isRadiant: Boolean = false, isSelected: Boolean,
+    name: String, type: CharacterType, isRadiant: Boolean = false, isSelected: Boolean, isUnlocked: Boolean = true,
     roundTop: Boolean, roundBottom: Boolean, artwork: @Composable () -> Unit, onSelect: () -> Unit,
     onDelete: (() -> Unit)? = null,
     onEdit: (() -> Unit)? = null,
     onShare: (() -> Unit)? = null
 ) {
     var showMenu by remember { mutableStateOf(false) }
+    var showRadiantUnlockDialog by remember { mutableStateOf(false) }
     val shape = RoundedCornerShape(
         topStart = if (roundTop) 20.dp else 2.dp, topEnd = if (roundTop) 20.dp else 2.dp,
         bottomStart = if (roundBottom) 20.dp else 2.dp, bottomEnd = if (roundBottom) 20.dp else 2.dp
@@ -598,7 +621,9 @@ private fun CharacterOptionCard(
             Row(
                 modifier = Modifier
                     .combinedClickable(
-                        onClick = onSelect,
+                        onClick = {
+                            if (isUnlocked) onSelect() else showRadiantUnlockDialog = true
+                        },
                         onLongClick = if (onDelete != null || onEdit != null || onShare != null) { { showMenu = true } } else null
                     )
                     .padding(16.dp),
@@ -625,6 +650,12 @@ private fun CharacterOptionCard(
                                 tint = MaterialTheme.colorScheme.primary
                             )
                         }
+                    } else if (type == CharacterType.Monster) {
+                        Text(
+                            text = stringResource(R.string.regular),
+                            style = MaterialTheme.typography.bodySmall,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant
+                        )
                     }
                 }
                 if (isSelected) {
@@ -635,9 +666,18 @@ private fun CharacterOptionCard(
                         modifier = Modifier.padding(horizontal = 16.dp)
                     )
                 } else {
-                    OutlinedButton(onClick = onSelect) { Text(stringResource(R.string.select)) }
+                    OutlinedButton(onClick = onSelect, enabled = isUnlocked) {
+                        Text(stringResource(if (isUnlocked) R.string.select else R.string.locked))
+                    }
                 }
             }
+        }
+
+        if (showRadiantUnlockDialog) {
+            RadiantVariantUnlockDialog(
+                characterName = name,
+                onDismiss = { showRadiantUnlockDialog = false }
+            )
         }
 
         if (onDelete != null || onEdit != null || onShare != null) {
@@ -690,8 +730,10 @@ private fun CharacterOptionCard(
 @Composable
 private fun CharacterGridItem(
     name: String,
+    type: CharacterType,
     isRadiant: Boolean = false,
     isSelected: Boolean,
+    isUnlocked: Boolean = true,
     shape: Shape,
     artwork: @Composable () -> Unit,
     onSelect: () -> Unit,
@@ -700,6 +742,7 @@ private fun CharacterGridItem(
     onShare: (() -> Unit)? = null
 ) {
     var showMenu by remember { mutableStateOf(false) }
+    var showRadiantUnlockDialog by remember { mutableStateOf(false) }
     Box {
         Card(
             modifier = Modifier.fillMaxWidth(),
@@ -712,11 +755,13 @@ private fun CharacterGridItem(
             Column(
                 modifier = Modifier
                     .combinedClickable(
-                        onClick = onSelect,
+                        onClick = {
+                            if (isUnlocked) onSelect() else showRadiantUnlockDialog = true
+                        },
                         onLongClick = if (onDelete != null || onEdit != null || onShare != null) { { showMenu = true } } else null
                     )
                     .fillMaxWidth()
-                    .heightIn(min = 184.dp)
+                    .height(200.dp)
                     .padding(16.dp),
                 horizontalAlignment = Alignment.Start,
                 verticalArrangement = Arrangement.spacedBy(4.dp)
@@ -739,22 +784,31 @@ private fun CharacterGridItem(
                     overflow = TextOverflow.Ellipsis
                 )
                 
-                if (isRadiant) {
-                    Row(
-                        verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.spacedBy(4.dp)
-                    ) {
+                Box(modifier = Modifier.height(20.dp)) {
+                    if (isRadiant) {
+                        Row(
+                            verticalAlignment = Alignment.CenterVertically,
+                            horizontalArrangement = Arrangement.spacedBy(4.dp)
+                        ) {
+                            Text(
+                                text = stringResource(R.string.radiant),
+                                style = MaterialTheme.typography.bodySmall,
+                                color = MaterialTheme.colorScheme.primary,
+                                maxLines = 1
+                            )
+                            AppIcon(
+                                icon = LocalMonsterAppIcons.current.radiant,
+                                contentDescription = null,
+                                modifier = Modifier.size(12.dp),
+                                tint = MaterialTheme.colorScheme.primary
+                            )
+                        }
+                    } else if (type == CharacterType.Monster) {
                         Text(
-                            text = stringResource(R.string.radiant),
+                            text = stringResource(R.string.regular),
                             style = MaterialTheme.typography.bodySmall,
-                            color = MaterialTheme.colorScheme.primary,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant,
                             maxLines = 1
-                        )
-                        AppIcon(
-                            icon = LocalMonsterAppIcons.current.radiant,
-                            contentDescription = null,
-                            modifier = Modifier.size(12.dp),
-                            tint = MaterialTheme.colorScheme.primary
                         )
                     }
                 }
@@ -768,9 +822,22 @@ private fun CharacterGridItem(
                             style = MaterialTheme.typography.labelLarge,
                             color = MaterialTheme.colorScheme.primary
                         )
+                    } else if (!isUnlocked) {
+                        Text(
+                            text = stringResource(R.string.locked),
+                            style = MaterialTheme.typography.labelLarge,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant
+                        )
                     }
                 }
             }
+        }
+
+        if (showRadiantUnlockDialog) {
+            RadiantVariantUnlockDialog(
+                characterName = name,
+                onDismiss = { showRadiantUnlockDialog = false }
+            )
         }
 
         if (onDelete != null || onEdit != null || onShare != null) {
@@ -820,9 +887,21 @@ private fun CharacterGridItem(
 }
 
 @Composable
+private fun RadiantVariantUnlockDialog(characterName: String, onDismiss: () -> Unit) {
+    AlertDialog(
+        onDismissRequest = onDismiss,
+        title = { Text(stringResource(R.string.radiant_variant_locked_title)) },
+        text = { Text(stringResource(R.string.radiant_variant_locked_message, characterName)) },
+        confirmButton = {
+            TextButton(onClick = onDismiss) { Text(stringResource(R.string.cancel)) }
+        }
+    )
+}
+
+@Composable
 private fun NoAdditionalCharacterGridItem(title: String, shape: Shape) {
     Card(
-        modifier = Modifier.fillMaxWidth().height(184.dp),
+        modifier = Modifier.fillMaxWidth().height(200.dp),
         shape = shape,
         colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainerLow),
         elevation = CardDefaults.cardElevation(defaultElevation = 0.5.dp)

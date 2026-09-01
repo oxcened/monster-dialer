@@ -49,7 +49,17 @@
     <string name="no_other_character_options" comment="%1$s is a character type, such as Trainer or Monster.">No other %1$s options</string>
     <string name="import_and_enable_character_pack" comment="Empty-state message in the character selector.">Add your own character or import a pack to see more.</string>
     <string name="radiant" comment="Adjective for a rare, sparkling character variant.">Radiant</string>
+    <string name="regular" comment="Adjective for a standard, non-rare character variant.">Regular</string>
     <string name="selected" comment="Status label for the currently chosen option.">Selected</string>
+    <string name="locked" comment="Status label for a character variant that must be unlocked before selection.">Locked</string>
+    <string name="radiant_variant_locked_title" comment="Title of the dialog shown for a locked radiant character variant.">Radiant variant locked</string>
+    <string name="radiant_variant_locked_message" comment="Explains how to unlock a radiant character variant; %1$s is the character name.">When you encounter a radiant %1$s in a wild battle, it unlocks automatically as the battle begins. You can then assign it.</string>
+    <string name="radiant_unlock_notifications" comment="Notification channel name for radiant variant discoveries.">Radiant unlocks</string>
+    <string name="radiant_variant_unlocked_title" comment="Title of the notification shown when a radiant character variant is discovered.">Radiant variant unlocked!</string>
+    <string name="radiant_variant_unlocked_message" comment="Confirms a radiant character variant was unlocked; %1$s is the character name.">%1$s is now ready to assign.</string>
+    <string name="radiant_unlock_share_title" comment="Chooser title for sharing a radiant variant unlock.">Share radiant unlock</string>
+    <string name="radiant_unlock_share_card_title" comment="Heading on a radiant variant unlock share image.">RADIANT MONSTER UNLOCKED!</string>
+    <string name="radiant_unlock_share_card_link" translatable="false">linktr.ee/monsterdialer</string>
     <string name="show_grid_view" comment="Accessibility label for the control that switches the character selector to a grid.">Show grid view</string>
     <string name="show_list_view" comment="Accessibility label for the control that switches the character selector to a list.">Show list view</string>
     <string name="jump_to_selected_character" comment="Accessibility label for a button that scrolls to the selected character.">Jump to selected character</string>
@@ -161,4 +171,39 @@
     <string name="remove_character_with_radiant_variant_message" comment="Confirmation dialog message when deleting a character with a radiant variant; %1$s is the character name.">Deleting %1$s removes both its regular and radiant variants.</string>
     <string name="remove_character_with_radiant_variant_in_use_message" comment="Confirmation dialog message when deleting an in-use character with a radiant variant; %1$s is the character name.">Deleting %1$s removes both its regular and radiant variants and unassigns them from you and your contacts.</string>
     <string name="remove_character_pack_in_use_message" comment="Confirmation dialog message when deleting a pack in use; %1$s is the character pack name.">This pack is currently in use. Removing it will unassign its characters from you and your contacts.</string>
+
+    <!-- Help -->
+    <string name="characters_help_title">Character Guide</string>
+    <string name="characters_help_description">Master the MonsterDialer roster system.</string>
+
+    <string name="characters_help_intro_title">Your Character Collection</string>
+    <string name="characters_help_intro_message">The Character tab is your central hub for personalizing every call. You can choose a character to represent you (Player Character) and assign different characters to each of your contacts (Contact Characters).</string>
+
+    <string name="characters_help_creating_title">Creating Custom Characters</string>
+    <string name="characters_help_creating_message">Tap “Add trainer” or “Add monster” in the respective settings to create your own. You can pick images from your gallery for:</string>
+    <string name="characters_help_creating_sprites_front"><b>Front Sprite:</b> Seen by you when this contact calls.</string>
+    <string name="characters_help_creating_sprites_back"><b>Back Sprite:</b> Seen as your own character during battles.</string>
+
+    <string name="characters_help_advanced_title">Advanced Stats</string>
+    <string name="characters_help_advanced_message">For Monsters, you can expand the “Advanced” section to set their Level and Max HP. You can also toggle the “Radiant” status manually for characters you create yourself.</string>
+
+    <string name="characters_help_sharing_title">Sharing &amp; Importing</string>
+    <string name="characters_help_sharing_message">MonsterDialer uses two types of shareable files:</string>
+    <string name="characters_help_sharing_files_character"><b>.monstercharacter:</b> A single character with its stats and artwork.</string>
+    <string name="characters_help_sharing_files_pack"><b>.monsterpack:</b> A collection of multiple characters, often themed.</string>
+    <string name="characters_help_sharing_how_to">Long-press any of your custom characters to export them as .monstercharacter files. To import either type, simply open a file someone sent you or use the “Import character” button.</string>
+
+    <string name="characters_help_packs_title">Creating Character Packs</string>
+    <string name="characters_help_packs_message">To share a collection of your custom monsters, you can create a Pack. Go to “Character Packs” and tap “Create pack” (this button appears once you’ve created at least one character). Select the monsters you want to include, and you can then export the final .monsterpack file to share with others.</string>
+
+    <string name="characters_help_radiants_title">Radiant Discovery</string>
+    <string name="characters_help_radiants_message">Radiant monsters are rare, sparkling variants. Unlike normal characters, variants in packs are locked until you encounter them “in the wild” during a call. Once found, they unlock automatically for your collection, and you can share a special discovery card to show off your find!</string>
+
+    <string name="characters_help_management_title">Managing your Roster</string>
+    <string name="characters_help_management_message">Long-press any character in the “Your monsters” or “Your trainers” sections to Edit, Share, or Delete it. Built-in characters and those from imported packs cannot be modified.</string>
+
+    <string name="characters_help_assignments_title">Personalizing Calls</string>
+    <string name="characters_help_assignments_message">There are two ways to use characters:</string>
+    <string name="characters_help_assignments_player"><b>Player Character:</b> This is your avatar. Set it in “Player Character” settings to represent you in every call.</string>
+    <string name="characters_help_assignments_contact"><b>Contact Characters:</b> Assign specific monsters or trainers to individual contacts in “Contact Characters.” They will appear as your opponent when they call you.</string>
 </resources>
