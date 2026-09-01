@@ -169,4 +169,30 @@
     <string name="remove_character_with_radiant_variant_message">Eliminando %1$s verranno rimosse sia la variante normale sia quella radiosa.</string>
     <string name="remove_character_with_radiant_variant_in_use_message">Eliminando %1$s verranno rimosse sia la variante normale sia quella radiosa e le relative assegnazioni per te e per i tuoi contatti.</string>
     <string name="remove_character_pack_in_use_message" comment="Confirmation dialog message when deleting a pack in use; %1$s is the character pack name.">Questo pacchetto è attualmente in uso. Rimuovendolo, i suoi personaggi verranno rimossi dalle assegnazioni per te e per i tuoi contatti.</string>
+    <string name="regular">Normale</string>
+    <string name="characters_help_title">Guida ai personaggi</string>
+    <string name="characters_help_description">Scopri il sistema dei personaggi di MonsterDialer.</string>
+    <string name="characters_help_intro_title">La tua collezione di personaggi</string>
+    <string name="characters_help_intro_message">La scheda Personaggi è il centro per personalizzare ogni chiamata. Puoi scegliere chi ti rappresenta e assegnare personaggi diversi ai contatti.</string>
+    <string name="characters_help_creating_title">Creare personaggi personalizzati</string>
+    <string name="characters_help_creating_message">Tocca “Aggiungi allenatore” o “Aggiungi mostro” nelle rispettive impostazioni per crearne uno tuo. Puoi scegliere immagini dalla galleria per:</string>
+    <string name="characters_help_creating_sprites_front"><b>Sprite frontale:</b> lo vedi quando ti chiama questo contatto.</string>
+    <string name="characters_help_creating_sprites_back"><b>Sprite posteriore:</b> rappresenta il tuo personaggio nelle battaglie.</string>
+    <string name="characters_help_advanced_title">Statistiche avanzate</string>
+    <string name="characters_help_advanced_message">Per i mostri, espandi “Avanzate” per impostare livello e PS massimi. Puoi anche attivare manualmente lo stato “Radioso” per i personaggi creati da te.</string>
+    <string name="characters_help_sharing_title">Condivisione e importazione</string>
+    <string name="characters_help_sharing_message">MonsterDialer usa due tipi di file condivisibili:</string>
+    <string name="characters_help_sharing_files_character"><b>.monstercharacter:</b> un personaggio con statistiche e illustrazioni.</string>
+    <string name="characters_help_sharing_files_pack"><b>.monsterpack:</b> una raccolta di più personaggi, spesso a tema.</string>
+    <string name="characters_help_sharing_how_to">Tieni premuto un tuo personaggio per esportarlo come file .monstercharacter. Per importare entrambi i tipi, apri un file ricevuto oppure usa “Importa personaggio”.</string>
+    <string name="characters_help_packs_title">Creare pacchetti di personaggi</string>
+    <string name="characters_help_packs_message">Per condividere una raccolta di mostri personali, crea un pacchetto da “Pacchetti di personaggi” e tocca “Crea pacchetto”. Scegli i mostri da includere, poi esporta il file .monsterpack.</string>
+    <string name="characters_help_radiants_title">Scoperta radiosa</string>
+    <string name="characters_help_radiants_message">I mostri radiosi sono varianti rare e scintillanti. Le varianti nei pacchetti restano bloccate finché non le incontri in natura durante una chiamata; poi si sbloccano automaticamente e puoi condividere una carta della scoperta.</string>
+    <string name="characters_help_management_title">Gestire la collezione</string>
+    <string name="characters_help_management_message">Tieni premuto un personaggio nelle sezioni “I tuoi mostri” o “I tuoi allenatori” per modificarlo, condividerlo o eliminarlo. I personaggi inclusi e quelli dei pacchetti importati non sono modificabili.</string>
+    <string name="characters_help_assignments_title">Personalizzare le chiamate</string>
+    <string name="characters_help_assignments_message">Ci sono due modi per usare i personaggi:</string>
+    <string name="characters_help_assignments_player"><b>Personaggio del giocatore:</b> è il tuo avatar. Impostalo nelle opzioni “Personaggio del giocatore” per rappresentarti in ogni chiamata.</string>
+    <string name="characters_help_assignments_contact"><b>Personaggi dei contatti:</b> assegna mostri o allenatori a singoli contatti nelle opzioni “Personaggi dei contatti”. Appariranno come avversari quando ti chiamano.</string>
 </resources>
