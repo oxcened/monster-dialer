@@ -6,22 +6,22 @@
     <string name="settings_character_packs_title" comment="Settings title for managing character packs.">Pacotes de personagens</string>
     <string name="characters_navigation_label" comment="Bottom navigation label for character customization.">Personagens</string>
     <string name="settings_character_packs_description" comment="Settings description for character packs.">Importa e gere ilustrações personalizadas de personagens.</string>
-    <string name="import_character">Importar personagem</string>
-    <string name="import_character_description">Adiciona um personagem que alguém partilhou contigo.</string>
-    <string name="add_to_your_characters">Adicionar</string>
-    <string name="shared_character_creator">Criador: %1$s</string>
-    <string name="shared_character_license">Licença: %1$s</string>
-    <string name="shared_character_import_description">Este %1$s será adicionado à tua coleção.</string>
-    <string name="shared_character_import_title">Adicionar %1$s?</string>
-    <string name="shared_character_import_failed_title">Não foi possível importar o personagem</string>
-    <string name="shared_character_import_failed_message">Escolhe um ficheiro .monstercharacter exportado pelo MonsterDialer.</string>
-    <string name="share_character_title">Partilhar %1$s</string>
-    <string name="creator_label">Criador</string>
-    <string name="license_label">Licença</string>
-    <string name="default_license">Todos os direitos reservados</string>
-    <string name="export_character">Exportar personagem</string>
-    <string name="save_to_device">Guardar no dispositivo</string>
-    <string name="shared_character_file_name">%1$s.monstercharacter</string>
+    <string name="import_character" comment="Action that starts selecting a shared single-character file.">Importar personagem</string>
+    <string name="import_character_description" comment="Description of the action that imports a shared character.">Adiciona um personagem que alguém partilhou contigo.</string>
+    <string name="add_to_your_characters" comment="Button confirming that a shared character should be imported.">Adicionar</string>
+    <string name="shared_character_creator" comment="Creator shown in a shared-character import preview. %1$s is the creator name.">Criador: %1$s</string>
+    <string name="shared_character_license" comment="License shown in a shared-character import preview. %1$s is the license name.">Licença: %1$s</string>
+    <string name="shared_character_import_description" comment="Explains the result of importing one shared character. %1$s is a character type, such as Trainer or Monster.">Este %1$s será adicionado à tua coleção.</string>
+    <string name="shared_character_import_title" comment="Title confirming the import of a shared character. %1$s is the character name.">Adicionar %1$s?</string>
+    <string name="shared_character_import_failed_title" comment="Title shown when a selected file is not a valid shared character.">Não foi possível importar o personagem</string>
+    <string name="shared_character_import_failed_message" comment="Explains that the selected file is not a valid shared character.">Escolhe um ficheiro .monstercharacter exportado pelo MonsterDialer.</string>
+    <string name="share_character_title" comment="Title of the export dialog. %1$s is the character name.">Partilhar %1$s</string>
+    <string name="creator_label" comment="Field label requesting the creator of a shared character.">Criador</string>
+    <string name="license_label" comment="Field label requesting the license of a shared character.">Licença</string>
+    <string name="default_license" comment="Default license used when sharing a character or creating a pack.">Todos os direitos reservados</string>
+    <string name="export_character" comment="Button that exports one character as a shareable file.">Exportar personagem</string>
+    <string name="save_to_device" comment="Button that saves a shared character file through the device's document picker.">Guardar no dispositivo</string>
+    <string name="shared_character_file_name" comment="Default filename for an exported character. Keep the .monstercharacter extension. %1$s is the character name.">%1$s.monstercharacter</string>
     <string name="settings_player_character_title" comment="Settings title for the player's battle character.">Personagem do jogador</string>
     <string name="settings_player_character_description" comment="Settings description for the player's battle character.">Escolhe quem te representa durante as chamadas.</string>
     <string name="player_characters_not_set" comment="Settings subtitle when no player character is selected.">Não personalizada</string>
@@ -29,27 +29,31 @@
     <string name="settings_contact_characters_title" comment="Settings title for assigning characters to contacts.">Personagens dos contactos</string>
     <string name="settings_contact_characters_description" comment="Settings description for assigning characters to contacts.">Atribui personagens a quem te liga.</string>
     <string name="contact_characters_not_set" comment="Settings subtitle when no contacts have a character assignment.">Nenhum contacto personalizado</string>
-    <plurals name="contact_character_assignment_count" comment="Settings subtitle showing how many contacts have a character assignment."><item quantity="one">%d contacto personalizado</item><item quantity="other">%d contactos personalizados</item></plurals>
+    <plurals name="contact_character_assignment_count" comment="Settings subtitle showing how many contacts have a character assignment.">
+        <item quantity="one">%d contacto personalizado</item>
+        <item quantity="other">%d contactos personalizados</item>
+    </plurals>
     <string name="choose_contact" comment="Button that opens the contact picker.">Escolher contacto</string>
     <string name="character_type_trainer" comment="Character category for a human battle character.">Treinador</string>
     <string name="character_type_monster" comment="Character category for a creature battle character.">Monstro</string>
-    <string name="character_type_trainers">treinadores</string>
-    <string name="character_type_monsters">monstros</string>
+    <string name="character_type_trainers" comment="Plural character category for a collection of human battle characters.">treinadores</string>
+    <string name="character_type_monsters" comment="Plural character category for a collection of creature battle characters.">monstros</string>
     <string name="built_in_character" comment="Label for a character included with the app.">Personagem incluída</string>
     <string name="default_character_artwork" comment="%1$s is a character type, such as Trainer or Monster.">Ilustração predefinida de %1$s</string>
     <string name="character_artwork" comment="%1$s is a character name.">Ilustração de %1$s</string>
     <string name="no_other_character_options" comment="%1$s is a character type, such as Trainer or Monster.">Sem outras opções de %1$s</string>
     <string name="import_and_enable_character_pack" comment="Empty-state message in the character selector.">Adiciona a tua própria personagem ou importa um pacote para veres mais.</string>
     <string name="radiant" comment="Adjective for a rare, sparkling character variant.">Radiante</string>
+    <string name="regular" comment="Adjective for a standard, non-rare character variant.">Normal</string>
     <string name="selected" comment="Status label for the currently chosen option.">Selecionado</string>
-    <string name="locked">Bloqueado</string>
-    <string name="radiant_variant_locked_title">Variante radiante bloqueada</string>
-    <string name="radiant_variant_locked_message">Quando encontras um %1$s radiante numa batalha selvagem, é desbloqueado automaticamente quando a batalha começa. Podes depois atribuí-lo.</string>
-    <string name="radiant_unlock_notifications">Desbloqueios radiantes</string>
-    <string name="radiant_variant_unlocked_title">Variante radiante desbloqueada!</string>
-    <string name="radiant_variant_unlocked_message">%1$s está agora pronto para atribuir.</string>
-    <string name="radiant_unlock_share_title">Partilhar desbloqueio radiante</string>
-    <string name="radiant_unlock_share_card_title">MONSTRO RADIANTE DESBLOQUEADO!</string>
+    <string name="locked" comment="Status label for a character variant that must be unlocked before selection.">Bloqueado</string>
+    <string name="radiant_variant_locked_title" comment="Title of the dialog shown for a locked radiant character variant.">Variante radiante bloqueada</string>
+    <string name="radiant_variant_locked_message" comment="Explains how to unlock a radiant character variant; %1$s is the character name.">Quando encontras um %1$s radiante numa batalha selvagem, é desbloqueado automaticamente quando a batalha começa. Podes depois atribuí-lo.</string>
+    <string name="radiant_unlock_notifications" comment="Notification channel name for radiant variant discoveries.">Desbloqueios radiantes</string>
+    <string name="radiant_variant_unlocked_title" comment="Title of the notification shown when a radiant character variant is discovered.">Variante radiante desbloqueada!</string>
+    <string name="radiant_variant_unlocked_message" comment="Confirms a radiant character variant was unlocked; %1$s is the character name.">%1$s está agora pronto para atribuir.</string>
+    <string name="radiant_unlock_share_title" comment="Chooser title for sharing a radiant variant unlock.">Partilhar desbloqueio radiante</string>
+    <string name="radiant_unlock_share_card_title" comment="Heading on a radiant variant unlock share image.">MONSTRO RADIANTE DESBLOQUEADO!</string>
     <string name="show_grid_view" comment="Accessibility label for the control that switches the character selector to a grid.">Mostrar grelha</string>
     <string name="show_list_view" comment="Accessibility label for the control that switches the character selector to a list.">Mostrar lista</string>
     <string name="jump_to_selected_character" comment="Accessibility label for a button that scrolls to the selected character.">Ir para a personagem selecionada</string>
@@ -69,7 +73,7 @@
     <string name="share_character_pack">Partilhar pacote de personagens</string>
     <string name="character_pack_default_name">character-pack</string>
     <string name="character_pack_file_name">%1$s.monsterpack</string>
-    <string name="character_pack_extension_required">Escolhe um pacote de personagens .monsterpack ou .zip.</string>
+    <string name="character_pack_extension_required" comment="Shown when a selected file is not a MonsterDialer character pack or a legacy ZIP pack.">Escolhe um pacote de personagens .monsterpack ou .zip.</string>
     <string name="pack_import_license_notice" comment="Legal notice shown before importing a character pack.">Importa apenas ilustrações e sons que criaste ou que tens licença para usar.</string>
     <string name="your_character_packs" comment="Heading above installed character packs.">Os teus pacotes de personagens</string>
     <plurals name="installed_pack_count" comment="Number of installed character packs. %d is the count.">
@@ -99,6 +103,8 @@
     <string name="remove" comment="Button label to permanently remove a character pack.">Remover</string>
     <string name="remove_character_pack_title" comment="Confirmation dialog title; %1$s is the character pack name.">Remover %1$s?</string>
     <string name="remove_character_pack_message" comment="Confirmation dialog message; %1$s is the character pack name.">Isto remove permanentemente %1$s e as respetivas ilustrações do MonsterDialer.</string>
+    <string name="disable_character_pack_title" comment="Confirmation dialog title; %1$s is the character pack name.">Desativar %1$s?</string>
+    <string name="disable_character_pack_message" comment="Confirmation dialog message; %1$s is the character pack name.">Este pacote está em uso. Desativá-lo removerá a atribuição das suas personagens a si e aos seus contactos.</string>
     <string name="cancel" comment="Button label that dismisses an action without making changes.">Cancelar</string>
     <string name="character_pack_removed" comment="Confirmation after a character pack is removed.">Pacote de personagens removido</string>
     <string name="character_pack_remove_failed" comment="Error when a character pack cannot be removed.">Não foi possível remover o pacote de personagens</string>
@@ -126,7 +132,6 @@
     <string name="battle_trainer_sent_out" comment="Battle announcement; %1$s is the trainer name and %2$s is the monster name.">O treinador %1$s enviou %2$s!</string>
     <string name="battle_wild_radiant_appeared" comment="Battle announcement; %1$s is the wild monster name and radiant is its rare variant.">Apareceu um %1$s selvagem radiante!</string>
     <string name="battle_wild_appeared" comment="Battle announcement; %1$s is the wild monster name.">Apareceu um %1$s selvagem!</string>
-
     <!-- Character creation -->
     <string name="add_trainer" comment="Button to start adding a new custom trainer.">Adicionar treinador</string>
     <string name="add_monster" comment="Button to start adding a new custom monster.">Adicionar monstro</string>
@@ -135,9 +140,9 @@
     <string name="character_sprites_section" comment="Heading for the character sprites section.">Sprites</string>
     <string name="front_sprite_label" comment="Label for the front sprite picker.">Sprite Frontal</string>
     <string name="back_sprite_label" comment="Label for the back sprite picker.">Sprite Traseiro</string>
-    <string name="radiant_sprites_section">Sprites radiantes</string>
-    <string name="radiant_front_sprite_label">Sprite frontal radiante</string>
-    <string name="radiant_back_sprite_label">Sprite traseiro radiante</string>
+    <string name="radiant_sprites_section" comment="Heading for a monster's radiant sprite pickers.">Sprites radiantes</string>
+    <string name="radiant_front_sprite_label" comment="Label for the radiant front sprite picker.">Sprite frontal radiante</string>
+    <string name="radiant_back_sprite_label" comment="Label for the radiant back sprite picker.">Sprite traseiro radiante</string>
     <string name="front_sprite_description" comment="Explains that the front sprite is required for contacts.">Adicionar um sprite frontal permite atribuir esta personagem aos contactos.</string>
     <string name="back_sprite_description" comment="Explains that the back sprite is required for the player.">Adicionar um sprite traseiro permite atribuir esta personagem a ti mesmo.</string>
     <string name="advanced_section" comment="Heading for advanced character settings.">Avançado</string>
@@ -155,27 +160,42 @@
     <string name="save_character" comment="Button to save the new character.">Guardar personagem</string>
     <string name="save" comment="Button label to save changes.">Guardar</string>
     <string name="edit" comment="Button label to edit an item.">Editar</string>
-    <string name="your_characters">Os teus %1$s</string>
-    <string name="built_in_characters_section">%1$s incluídos</string>
+    <string name="your_characters" comment="Section header for characters added by the user. %1$s is a plural character type, such as trainers or monsters.">Os teus %1$s</string>
+    <string name="built_in_characters_section" comment="Section header for characters included with the app. %1$s is a plural character type, such as trainers or monsters.">%1$s incluídos</string>
     <string name="character_created" comment="Confirmation after a character is successfully created.">Personagem criada</string>
     <string name="character_creation_failed" comment="Error when a character cannot be saved.">Não foi possível criar a personagem</string>
     <string name="character_limit_reached_message" comment="Error message when the 200 character limit is hit.">Limite de 200 personagens atingido. Elimina algumas para adicionar mais.</string>
     <string name="character_limit_reached_hint" comment="Short hint shown below the disabled add button.">Limite de 200 personagens atingido</string>
-    <string name="disable_character_pack_title" comment="Confirmation dialog title; %1$s is the character pack name.">Desativar %1$s?</string>
-    <string name="disable_character_pack_message" comment="Confirmation dialog message; %1$s is the character pack name.">Este pacote está em uso. Desativá-lo removerá a atribuição das suas personagens a si e aos seus contactos.</string>
     <string name="front_sprite_required_for_contact" comment="Message shown when a front sprite is missing but required by an assignment.">O sprite frontal é obrigatório porque esta personagem está atribuída a um contacto.</string>
     <string name="back_sprite_required_for_player" comment="Message shown when a back sprite is missing but required by an assignment.">O sprite traseiro é obrigatório porque esta personagem está atribuída a si.</string>
     <string name="remove_character_in_use_message" comment="Confirmation dialog message when deleting a character in use; %1$s is the character name.">%1$s está em uso. Eliminá-lo removerá a sua atribuição a si e aos seus contactos.</string>
-    <string name="remove_character_with_radiant_variant_message">Eliminar %1$s remove as variantes normal e radiante.</string>
-    <string name="remove_character_with_radiant_variant_in_use_message">Eliminar %1$s remove ambas as variantes e as respetivas atribuições para si e os seus contactos.</string>
+    <string name="remove_character_with_radiant_variant_message" comment="Confirmation dialog message when deleting a character with a radiant variant; %1$s is the character name.">Eliminar %1$s remove as variantes normal e radiante.</string>
+    <string name="remove_character_with_radiant_variant_in_use_message" comment="Confirmation dialog message when deleting an in-use character with a radiant variant; %1$s is the character name.">Eliminar %1$s remove ambas as variantes e as respetivas atribuições para si e os seus contactos.</string>
     <string name="remove_character_pack_in_use_message" comment="Confirmation dialog message when deleting a pack in use; %1$s is the character pack name.">Este pacote está em uso. Removê-lo removerá a atribuição das suas personagens a si e aos seus contactos.</string>
-    <string name="regular">Normal</string><string name="characters_help_title">Guia de personagens</string><string name="characters_help_description">Conheça as personagens do MonsterDialer.</string>
-    <string name="characters_help_intro_title">A tua coleção</string><string name="characters_help_intro_message">O separador Personagens permite personalizar cada chamada para ti e para os teus contactos.</string>
-    <string name="characters_help_creating_title">Criar personagens</string><string name="characters_help_creating_message">Toca em “Adicionar treinador” ou “Adicionar monstro” e escolhe imagens da galeria para:</string><string name="characters_help_creating_sprites_front"><b>Sprite frontal:</b> visto quando um contacto te liga.</string><string name="characters_help_creating_sprites_back"><b>Sprite traseiro:</b> a tua personagem nas batalhas.</string>
-    <string name="characters_help_advanced_title">Atributos avançados</string><string name="characters_help_advanced_message">Para monstros, define o nível e os PV máximos em “Avançado”. Também podes ativar o estado “Radiante”.</string>
-    <string name="characters_help_sharing_title">Partilhar e importar</string><string name="characters_help_sharing_message">O MonsterDialer usa dois tipos de ficheiro:</string><string name="characters_help_sharing_files_character"><b>.monstercharacter:</b> uma personagem com atributos e arte.</string><string name="characters_help_sharing_files_pack"><b>.monsterpack:</b> uma coleção de personagens.</string><string name="characters_help_sharing_how_to">Mantém premida uma personagem tua para a exportar. Para importar, abre um ficheiro recebido ou usa “Importar personagem”.</string>
-    <string name="characters_help_packs_title">Criar pacotes</string><string name="characters_help_packs_message">Em “Pacotes de personagens”, cria um pacote, escolhe monstros e exporta o ficheiro .monsterpack.</string>
-    <string name="characters_help_radiants_title">Descoberta radiante</string><string name="characters_help_radiants_message">Monstros radiantes são raros. As variantes de pacotes desbloqueiam-se quando as encontras na natureza durante uma chamada.</string>
-    <string name="characters_help_management_title">Gerir a coleção</string><string name="characters_help_management_message">Mantém premida uma personagem em “Os teus monstros” ou “Os teus treinadores” para editar, partilhar ou eliminar.</string>
-    <string name="characters_help_assignments_title">Personalizar chamadas</string><string name="characters_help_assignments_message">Há duas formas de usar personagens:</string><string name="characters_help_assignments_player"><b>Personagem do jogador:</b> o teu avatar em cada chamada.</string><string name="characters_help_assignments_contact"><b>Personagens de contactos:</b> atribui monstros ou treinadores aos contactos; serão os adversários quando ligarem.</string>
+    <!-- Help -->
+    <string name="characters_help_title">Guia de personagens</string>
+    <string name="characters_help_description">Conheça as personagens do MonsterDialer.</string>
+    <string name="characters_help_intro_title">A tua coleção</string>
+    <string name="characters_help_intro_message">O separador Personagens permite personalizar cada chamada para ti e para os teus contactos.</string>
+    <string name="characters_help_creating_title">Criar personagens</string>
+    <string name="characters_help_creating_message">Toca em “Adicionar treinador” ou “Adicionar monstro” e escolhe imagens da galeria para:</string>
+    <string name="characters_help_creating_sprites_front"><b>Sprite frontal:</b> visto quando um contacto te liga.</string>
+    <string name="characters_help_creating_sprites_back"><b>Sprite traseiro:</b> a tua personagem nas batalhas.</string>
+    <string name="characters_help_advanced_title">Atributos avançados</string>
+    <string name="characters_help_advanced_message">Para monstros, define o nível e os PV máximos em “Avançado”. Também podes ativar o estado “Radiante”.</string>
+    <string name="characters_help_sharing_title">Partilhar e importar</string>
+    <string name="characters_help_sharing_message">O MonsterDialer usa dois tipos de ficheiro:</string>
+    <string name="characters_help_sharing_files_character"><b>.monstercharacter:</b> uma personagem com atributos e arte.</string>
+    <string name="characters_help_sharing_files_pack"><b>.monsterpack:</b> uma coleção de personagens.</string>
+    <string name="characters_help_sharing_how_to">Mantém premida uma personagem tua para a exportar. Para importar, abre um ficheiro recebido ou usa “Importar personagem”.</string>
+    <string name="characters_help_packs_title">Criar pacotes</string>
+    <string name="characters_help_packs_message">Em “Pacotes de personagens”, cria um pacote, escolhe monstros e exporta o ficheiro .monsterpack.</string>
+    <string name="characters_help_radiants_title">Descoberta radiante</string>
+    <string name="characters_help_radiants_message">Monstros radiantes são raros. As variantes de pacotes desbloqueiam-se quando as encontras na natureza durante uma chamada.</string>
+    <string name="characters_help_management_title">Gerir a coleção</string>
+    <string name="characters_help_management_message">Mantém premida uma personagem em “Os teus monstros” ou “Os teus treinadores” para editar, partilhar ou eliminar.</string>
+    <string name="characters_help_assignments_title">Personalizar chamadas</string>
+    <string name="characters_help_assignments_message">Há duas formas de usar personagens:</string>
+    <string name="characters_help_assignments_player"><b>Personagem do jogador:</b> o teu avatar em cada chamada.</string>
+    <string name="characters_help_assignments_contact"><b>Personagens de contactos:</b> atribui monstros ou treinadores aos contactos; serão os adversários quando ligarem.</string>
 </resources>
