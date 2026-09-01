@@ -63,6 +63,7 @@ import dev.alenajam.monsterdialer.characters.data.BuiltInArtwork
 import dev.alenajam.monsterdialer.characters.data.BuiltInCharacter
 import dev.alenajam.monsterdialer.characters.data.BuiltInCharacters
 import dev.alenajam.monsterdialer.packs.data.CharacterReference
+import dev.alenajam.monsterdialer.packs.data.CharacterAssignmentTarget
 import dev.alenajam.monsterdialer.packs.data.CharacterVisualVariant
 import dev.alenajam.monsterdialer.packs.data.CharacterType
 import dev.alenajam.monsterdialer.packs.data.PackCharacter
@@ -107,7 +108,7 @@ internal fun LazyListScope.characterTypeItems(
     characters: List<InstalledPackCharacter>,
     selected: CharacterReference?,
     defaultArtwork: (BuiltInCharacter) -> BuiltInArtwork,
-    packArtwork: (InstalledPackCharacter) -> File,
+    artworkTarget: CharacterAssignmentTarget,
     onSelect: (CharacterReference?) -> Unit,
     onAddCharacter: () -> Unit,
     addLabel: String,
@@ -177,7 +178,7 @@ internal fun LazyListScope.characterTypeItems(
                 roundBottom = index == selections.lastIndex,
                 artwork = {
                     AsyncImage(
-                        model = selection.previewArtwork(packArtwork),
+                        model = selection.previewArtwork(artworkTarget),
                         contentDescription = stringResource(R.string.character_artwork, installed.character.name),
                         modifier = Modifier.size(72.dp)
                     )
@@ -207,7 +208,7 @@ internal fun LazyListScope.characterTypeItems(
                 roundBottom = index == selections.lastIndex,
                 artwork = {
                     AsyncImage(
-                        model = selection.previewArtwork(packArtwork),
+                        model = selection.previewArtwork(artworkTarget),
                         contentDescription = stringResource(R.string.character_artwork, installed.character.name),
                         modifier = Modifier.size(72.dp)
                     )
@@ -227,7 +228,7 @@ internal fun LazyGridScope.characterTypeGridItems(
     characters: List<InstalledPackCharacter>,
     selected: CharacterReference?,
     defaultArtwork: (BuiltInCharacter) -> BuiltInArtwork,
-    packArtwork: (InstalledPackCharacter) -> File,
+    artworkTarget: CharacterAssignmentTarget,
     onSelect: (CharacterReference?) -> Unit,
     onAddCharacter: () -> Unit,
     addLabel: String,
@@ -297,7 +298,7 @@ internal fun LazyGridScope.characterTypeGridItems(
                 shape = gridItemShape(index = index, itemCount = selections.size),
                 artwork = {
                     AsyncImage(
-                        model = selection.previewArtwork(packArtwork),
+                        model = selection.previewArtwork(artworkTarget),
                         contentDescription = stringResource(R.string.character_artwork, installed.character.name),
                         modifier = Modifier.size(88.dp)
                     )
@@ -326,7 +327,7 @@ internal fun LazyGridScope.characterTypeGridItems(
                 shape = gridItemShape(index = index, itemCount = selections.size),
                 artwork = {
                     AsyncImage(
-                        model = selection.previewArtwork(packArtwork),
+                        model = selection.previewArtwork(artworkTarget),
                         contentDescription = stringResource(R.string.character_artwork, installed.character.name),
                         modifier = Modifier.size(88.dp)
                     )
@@ -359,8 +360,13 @@ private fun InstalledPackCharacter.matches(reference: CharacterReference): Boole
         character.id == reference.characterId &&
         character.variant(reference.variantId) != null
 
-private fun CharacterSelection.previewArtwork(@Suppress("UNUSED_PARAMETER") regularArtwork: (InstalledPackCharacter) -> File): File =
-    installed.imageFile(requireNotNull(variant.frontImage ?: variant.backImage))
+private fun CharacterSelection.previewArtwork(artworkTarget: CharacterAssignmentTarget): File {
+    val image = when (artworkTarget) {
+        CharacterAssignmentTarget.Player -> variant.backImage ?: variant.frontImage
+        CharacterAssignmentTarget.Contact -> variant.frontImage ?: variant.backImage
+    }
+    return installed.imageFile(requireNotNull(image))
+}
 
 private fun gridItemShape(index: Int, itemCount: Int): RoundedCornerShape {
     val isLeftColumn = index % 2 == 0
