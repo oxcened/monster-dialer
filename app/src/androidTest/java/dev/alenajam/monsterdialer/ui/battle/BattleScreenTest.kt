@@ -1,9 +1,12 @@
 package dev.alenajam.monsterdialer.ui.battle
 
+import androidx.compose.foundation.layout.width
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithText
+import androidx.compose.ui.unit.dp
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import dev.alenajam.monsterdialer.battle.data.BattleEncounter
 import dev.alenajam.monsterdialer.battle.data.BattleMonster
@@ -78,6 +81,19 @@ class BattleScreenTest {
         }
 
         composeTestRule.onNodeWithText("What will you do?").assertIsDisplayed()
+    }
+
+    @Test
+    fun handlesZeroWidthBattleLayout() {
+        composeTestRule.setContent {
+            BattleScreen(
+                encounter = encounter(EncounterType.Trainer, enemyTrainerName = "Alex"),
+                timing = BattleTiming.Instant,
+                modifier = Modifier.width(0.dp),
+            )
+        }
+
+        composeTestRule.waitForIdle()
     }
 
     private fun encounter(type: EncounterType, enemyTrainerName: String? = null) = BattleEncounter(

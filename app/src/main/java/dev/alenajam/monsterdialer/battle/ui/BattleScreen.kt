@@ -431,7 +431,9 @@ private fun BattleDialogue(
             .background(Color.White)
             .semantics { if (!isTyping) liveRegion = LiveRegionMode.Polite }
     ) {
-        val textWidth = with(LocalDensity.current) { (maxWidth - 10.dp).roundToPx() }
+        val textWidth = with(LocalDensity.current) {
+            (maxWidth - 10.dp).roundToPx().coerceAtLeast(0)
+        }
         val pages = remember(message, textWidth) {
             measuredDialoguePages(message, textMeasurer, style, textWidth)
         }
