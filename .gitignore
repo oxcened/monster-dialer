@@ -26,3 +26,5 @@ google-services.json
 app/src/main/res/font/ui_pixel_font.otf
 
 .kotlin
+
+app/release
