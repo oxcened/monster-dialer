@@ -6,22 +6,22 @@
     <string name="settings_character_packs_title" comment="Settings title for managing character packs.">Figurpakker</string>
     <string name="characters_navigation_label" comment="Bottom navigation label for character customization.">Figurer</string>
     <string name="settings_character_packs_description" comment="Settings description for character packs.">Importér og administrér brugerdefinerede figurillustrationer.</string>
-    <string name="import_character">Importér figur</string>
-    <string name="import_character_description">Tilføj en figur, som nogen har delt med dig.</string>
-    <string name="add_to_your_characters">Tilføj</string>
-    <string name="shared_character_creator">Opretter: %1$s</string>
-    <string name="shared_character_license">Licens: %1$s</string>
-    <string name="shared_character_import_description">Denne %1$s føjes til din samling.</string>
-    <string name="shared_character_import_title">Tilføj %1$s?</string>
-    <string name="shared_character_import_failed_title">Kunne ikke importere figur</string>
-    <string name="shared_character_import_failed_message">Vælg en .monstercharacter-fil, der er eksporteret fra MonsterDialer.</string>
-    <string name="share_character_title">Del %1$s</string>
-    <string name="creator_label">Opretter</string>
-    <string name="license_label">Licens</string>
-    <string name="default_license">Alle rettigheder forbeholdes</string>
-    <string name="export_character">Eksportér figur</string>
-    <string name="save_to_device">Gem på enheden</string>
-    <string name="shared_character_file_name">%1$s.monstercharacter</string>
+    <string name="import_character" comment="Action that starts selecting a shared single-character file.">Importér figur</string>
+    <string name="import_character_description" comment="Description of the action that imports a shared character.">Tilføj en figur, som nogen har delt med dig.</string>
+    <string name="add_to_your_characters" comment="Button confirming that a shared character should be imported.">Tilføj</string>
+    <string name="shared_character_creator" comment="Creator shown in a shared-character import preview. %1$s is the creator name.">Opretter: %1$s</string>
+    <string name="shared_character_license" comment="License shown in a shared-character import preview. %1$s is the license name.">Licens: %1$s</string>
+    <string name="shared_character_import_description" comment="Explains the result of importing one shared character. %1$s is a character type, such as Trainer or Monster.">Denne %1$s føjes til din samling.</string>
+    <string name="shared_character_import_title" comment="Title confirming the import of a shared character. %1$s is the character name.">Tilføj %1$s?</string>
+    <string name="shared_character_import_failed_title" comment="Title shown when a selected file is not a valid shared character.">Kunne ikke importere figur</string>
+    <string name="shared_character_import_failed_message" comment="Explains that the selected file is not a valid shared character.">Vælg en .monstercharacter-fil, der er eksporteret fra MonsterDialer.</string>
+    <string name="share_character_title" comment="Title of the export dialog. %1$s is the character name.">Del %1$s</string>
+    <string name="creator_label" comment="Field label requesting the creator of a shared character.">Opretter</string>
+    <string name="license_label" comment="Field label requesting the license of a shared character.">Licens</string>
+    <string name="default_license" comment="Default license used when sharing a character or creating a pack.">Alle rettigheder forbeholdes</string>
+    <string name="export_character" comment="Button that exports one character as a shareable file.">Eksportér figur</string>
+    <string name="save_to_device" comment="Button that saves a shared character file through the device's document picker.">Gem på enheden</string>
+    <string name="shared_character_file_name" comment="Default filename for an exported character. Keep the .monstercharacter extension. %1$s is the character name.">%1$s.monstercharacter</string>
     <string name="settings_player_character_title" comment="Settings title for the player's battle character.">Spillerfigur</string>
     <string name="settings_player_character_description" comment="Settings description for the player's battle character.">Vælg, hvem der repræsenterer dig under opkald.</string>
     <string name="player_characters_not_set" comment="Settings subtitle when no player character is selected.">Ikke tilpasset</string>
@@ -29,27 +29,31 @@
     <string name="settings_contact_characters_title" comment="Settings title for assigning characters to contacts.">Kontaktfigurer</string>
     <string name="settings_contact_characters_description" comment="Settings description for assigning characters to contacts.">Tildel figurer til indgående opkald.</string>
     <string name="contact_characters_not_set" comment="Settings subtitle when no contacts have a character assignment.">Ingen kontakter tilpasset</string>
-    <plurals name="contact_character_assignment_count" comment="Settings subtitle showing how many contacts have a character assignment."><item quantity="one">%d kontakt tilpasset</item><item quantity="other">%d kontakter tilpasset</item></plurals>
+    <plurals name="contact_character_assignment_count" comment="Settings subtitle showing how many contacts have a character assignment.">
+        <item quantity="one">%d kontakt tilpasset</item>
+        <item quantity="other">%d kontakter tilpasset</item>
+    </plurals>
     <string name="choose_contact" comment="Button that opens the contact picker.">Vælg kontakt</string>
     <string name="character_type_trainer" comment="Character category for a human battle character.">Træner</string>
     <string name="character_type_monster" comment="Character category for a creature battle character.">Monster</string>
-    <string name="character_type_trainers">trænere</string>
-    <string name="character_type_monsters">monstre</string>
+    <string name="character_type_trainers" comment="Plural character category for a collection of human battle characters.">trænere</string>
+    <string name="character_type_monsters" comment="Plural character category for a collection of creature battle characters.">monstre</string>
     <string name="built_in_character" comment="Label for a character included with the app.">Indbygget figur</string>
     <string name="default_character_artwork" comment="%1$s is a character type, such as Trainer or Monster.">Standardillustration af %1$s</string>
     <string name="character_artwork" comment="%1$s is a character name.">Illustration af %1$s</string>
     <string name="no_other_character_options" comment="%1$s is a character type, such as Trainer or Monster.">Ingen andre %1$s-muligheder</string>
     <string name="import_and_enable_character_pack" comment="Empty-state message in the character selector.">Tilføj din egen figur eller importér en pakke for at se flere.</string>
     <string name="radiant" comment="Adjective for a rare, sparkling character variant.">Strålende</string>
+    <string name="regular" comment="Adjective for a standard, non-rare character variant.">Normal</string>
     <string name="selected" comment="Status label for the currently chosen option.">Valgt</string>
-    <string name="locked">Låst</string>
-    <string name="radiant_variant_locked_title">Strålende variant er låst</string>
-    <string name="radiant_variant_locked_message">Når du møder en strålende %1$s i en vild kamp, låses den automatisk op, når kampen begynder. Du kan derefter tildele den.</string>
-    <string name="radiant_unlock_notifications">Strålende oplåsninger</string>
-    <string name="radiant_variant_unlocked_title">Strålende variant låst op!</string>
-    <string name="radiant_variant_unlocked_message">%1$s kan nu tildeles.</string>
-    <string name="radiant_unlock_share_title">Del strålende oplåsning</string>
-    <string name="radiant_unlock_share_card_title">STRÅLENDE MONSTER LÅST OP!</string>
+    <string name="locked" comment="Status label for a character variant that must be unlocked before selection.">Låst</string>
+    <string name="radiant_variant_locked_title" comment="Title of the dialog shown for a locked radiant character variant.">Strålende variant er låst</string>
+    <string name="radiant_variant_locked_message" comment="Explains how to unlock a radiant character variant; %1$s is the character name.">Når du møder en strålende %1$s i en vild kamp, låses den automatisk op, når kampen begynder. Du kan derefter tildele den.</string>
+    <string name="radiant_unlock_notifications" comment="Notification channel name for radiant variant discoveries.">Strålende oplåsninger</string>
+    <string name="radiant_variant_unlocked_title" comment="Title of the notification shown when a radiant character variant is discovered.">Strålende variant låst op!</string>
+    <string name="radiant_variant_unlocked_message" comment="Confirms a radiant character variant was unlocked; %1$s is the character name.">%1$s kan nu tildeles.</string>
+    <string name="radiant_unlock_share_title" comment="Chooser title for sharing a radiant variant unlock.">Del strålende oplåsning</string>
+    <string name="radiant_unlock_share_card_title" comment="Heading on a radiant variant unlock share image.">STRÅLENDE MONSTER LÅST OP!</string>
     <string name="show_grid_view" comment="Accessibility label for the control that switches the character selector to a grid.">Vis gittervisning</string>
     <string name="show_list_view" comment="Accessibility label for the control that switches the character selector to a list.">Vis listevisning</string>
     <string name="jump_to_selected_character" comment="Accessibility label for a button that scrolls to the selected character.">Gå til valgt figur</string>
@@ -69,7 +73,7 @@
     <string name="share_character_pack">Del figurpakke</string>
     <string name="character_pack_default_name">character-pack</string>
     <string name="character_pack_file_name">%1$s.monsterpack</string>
-    <string name="character_pack_extension_required">Vælg en figurpakke med filtypen .monsterpack eller .zip.</string>
+    <string name="character_pack_extension_required" comment="Shown when a selected file is not a MonsterDialer character pack or a legacy ZIP pack.">Vælg en figurpakke med filtypen .monsterpack eller .zip.</string>
     <string name="pack_import_license_notice" comment="Legal notice shown before importing a character pack.">Importér kun illustrationer og lyde, du selv har lavet eller har licens til at bruge.</string>
     <string name="your_character_packs" comment="Heading above installed character packs.">Dine figurpakker</string>
     <plurals name="installed_pack_count" comment="Number of installed character packs. %d is the count.">
@@ -99,6 +103,8 @@
     <string name="remove" comment="Button label to permanently remove a character pack.">Fjern</string>
     <string name="remove_character_pack_title" comment="Confirmation dialog title; %1$s is the character pack name.">Fjern %1$s?</string>
     <string name="remove_character_pack_message" comment="Confirmation dialog message; %1$s is the character pack name.">Dette fjerner %1$s og tilhørende illustrationer permanent fra MonsterDialer.</string>
+    <string name="disable_character_pack_title" comment="Confirmation dialog title; %1$s is the character pack name.">Deaktivér %1$s?</string>
+    <string name="disable_character_pack_message" comment="Confirmation dialog message; %1$s is the character pack name.">Denne pakke er i brug. Deaktivering af den vil ophæve tildelingen af dens figurer fra dig og dine kontakter.</string>
     <string name="cancel" comment="Button label that dismisses an action without making changes.">Annuller</string>
     <string name="character_pack_removed" comment="Confirmation after a character pack is removed.">Figurpakke fjernet</string>
     <string name="character_pack_remove_failed" comment="Error when a character pack cannot be removed.">Kunne ikke fjerne figurpakken</string>
@@ -126,7 +132,6 @@
     <string name="battle_trainer_sent_out" comment="Battle announcement; %1$s is the trainer name and %2$s is the monster name.">Træner %1$s sender %2$s ud!</string>
     <string name="battle_wild_radiant_appeared" comment="Battle announcement; %1$s is the wild monster name and radiant is its rare variant.">Et vildt strålende %1$s dukkede op!</string>
     <string name="battle_wild_appeared" comment="Battle announcement; %1$s is the wild monster name.">Et vildt %1$s dukkede op!</string>
-
     <!-- Character creation -->
     <string name="add_trainer" comment="Button to start adding a new custom trainer.">Tilføj træner</string>
     <string name="add_monster" comment="Button to start adding a new custom monster.">Tilføj monster</string>
@@ -135,9 +140,9 @@
     <string name="character_sprites_section" comment="Heading for the character sprites section.">Sprites</string>
     <string name="front_sprite_label" comment="Label for the front sprite picker.">Front-sprite</string>
     <string name="back_sprite_label" comment="Label for the back sprite picker.">Bagside-sprite</string>
-    <string name="radiant_sprites_section">Strålende sprites</string>
-    <string name="radiant_front_sprite_label">Strålende front-sprite</string>
-    <string name="radiant_back_sprite_label">Strålende bagside-sprite</string>
+    <string name="radiant_sprites_section" comment="Heading for a monster's radiant sprite pickers.">Strålende sprites</string>
+    <string name="radiant_front_sprite_label" comment="Label for the radiant front sprite picker.">Strålende front-sprite</string>
+    <string name="radiant_back_sprite_label" comment="Label for the radiant back sprite picker.">Strålende bagside-sprite</string>
     <string name="front_sprite_description" comment="Explains that the front sprite is required for contacts.">Tilføjelse af en front-sprite gør det muligt at tildele denne figur til kontakter.</string>
     <string name="back_sprite_description" comment="Explains that the back sprite is required for the player.">Tilføjelse af en bagside-sprite gør det muligt at tildele denne figur til dig selv.</string>
     <string name="advanced_section" comment="Heading for advanced character settings.">Avanceret</string>
@@ -155,23 +160,42 @@
     <string name="save_character" comment="Button to save the new character.">Gem figur</string>
     <string name="save" comment="Button label to save changes.">Gem</string>
     <string name="edit" comment="Button label to edit an item.">Rediger</string>
-    <string name="your_characters">Dine %1$s</string>
-    <string name="built_in_characters_section">Indbyggede %1$s</string>
+    <string name="your_characters" comment="Section header for characters added by the user. %1$s is a plural character type, such as trainers or monsters.">Dine %1$s</string>
+    <string name="built_in_characters_section" comment="Section header for characters included with the app. %1$s is a plural character type, such as trainers or monsters.">Indbyggede %1$s</string>
     <string name="character_created" comment="Confirmation after a character is successfully created.">Figur oprettet</string>
     <string name="character_creation_failed" comment="Error when a character cannot be saved.">Kunne ikke oprette figur</string>
     <string name="character_limit_reached_message" comment="Error message when the 200 character limit is hit.">Grænse på 200 figurer nået. Slet nogle for at tilføje flere.</string>
     <string name="character_limit_reached_hint" comment="Short hint shown below the disabled add button.">Grænse på 200 figurer nået</string>
-    <string name="disable_character_pack_title" comment="Confirmation dialog title; %1$s is the character pack name.">Deaktivér %1$s?</string>
-    <string name="disable_character_pack_message" comment="Confirmation dialog message; %1$s is the character pack name.">Denne pakke er i brug. Deaktivering af den vil ophæve tildelingen af dens figurer fra dig og dine kontakter.</string>
     <string name="front_sprite_required_for_contact" comment="Message shown when a front sprite is missing but required by an assignment.">Front-sprite er påkrævet, fordi denne figur er tildelt en kontakt.</string>
     <string name="back_sprite_required_for_player" comment="Message shown when a back sprite is missing but required by an assignment.">Bagside-sprite er påkrævet, fordi denne figur er tildelt dig.</string>
     <string name="remove_character_in_use_message" comment="Confirmation dialog message when deleting a character in use; %1$s is the character name.">%1$s er i brug. Sletning af den vil ophæve tildelingen fra dig og dine kontakter.</string>
-    <string name="remove_character_with_radiant_variant_message">Sletning af %1$s fjerner både den almindelige og den strålende variant.</string>
-    <string name="remove_character_with_radiant_variant_in_use_message">Sletning af %1$s fjerner både den almindelige og den strålende variant og ophæver deres tildeling fra dig og dine kontakter.</string>
+    <string name="remove_character_with_radiant_variant_message" comment="Confirmation dialog message when deleting a character with a radiant variant; %1$s is the character name.">Sletning af %1$s fjerner både den almindelige og den strålende variant.</string>
+    <string name="remove_character_with_radiant_variant_in_use_message" comment="Confirmation dialog message when deleting an in-use character with a radiant variant; %1$s is the character name.">Sletning af %1$s fjerner både den almindelige og den strålende variant og ophæver deres tildeling fra dig og dine kontakter.</string>
     <string name="remove_character_pack_in_use_message" comment="Confirmation dialog message when deleting a pack in use; %1$s is the character pack name.">Denne pakke er i brug. Fjernelse af den vil ophæve tildelingen af dens figurer fra dig og dine kontakter.</string>
-    <string name="regular">Normal</string><string name="characters_help_title">Karakterguide</string><string name="characters_help_description">Udforsk MonsterDialers karakterer.</string><string name="characters_help_intro_title">Din samling</string><string name="characters_help_intro_message">Fanen Figurer tilpasser hvert opkald for dig og dine kontakter.</string>
-    <string name="characters_help_creating_title">Opret figurer</string><string name="characters_help_creating_message">Tryk på “Tilføj træner” eller “Tilføj monster”, og vælg galleribilleder til:</string><string name="characters_help_creating_sprites_front"><b>Front-sprite:</b> ses ved opkald fra en kontakt.</string><string name="characters_help_creating_sprites_back"><b>Bagside-sprite:</b> din figur i kampe.</string><string name="characters_help_advanced_title">Avancerede statistikker</string><string name="characters_help_advanced_message">For monstre kan du angive niveau og maks. HP under “Avanceret” samt slå “Strålende” til.</string>
-    <string name="characters_help_sharing_title">Deling og import</string><string name="characters_help_sharing_message">MonsterDialer bruger to filtyper:</string><string name="characters_help_sharing_files_character"><b>.monstercharacter:</b> en figur med statistik og grafik.</string><string name="characters_help_sharing_files_pack"><b>.monsterpack:</b> en samling af figurer.</string><string name="characters_help_sharing_how_to">Hold en egen figur nede for at eksportere den. Importér ved at åbne en modtaget fil eller bruge “Importér figur”.</string>
-    <string name="characters_help_packs_title">Opret pakker</string><string name="characters_help_packs_message">Opret en pakke under “Figurpakker”, vælg monstre, og eksportér .monsterpack-filen.</string><string name="characters_help_radiants_title">Strålende opdagelse</string><string name="characters_help_radiants_message">Strålende monstre er sjældne. Pakkevarianter låses op, når du møder dem i naturen under et opkald.</string>
-    <string name="characters_help_management_title">Administrer samlingen</string><string name="characters_help_management_message">Hold en figur nede under “Dine monstre” eller “Dine trænere” for at redigere, dele eller slette den.</string><string name="characters_help_assignments_title">Tilpas opkald</string><string name="characters_help_assignments_message">Figurer kan bruges på to måder:</string><string name="characters_help_assignments_player"><b>Spillerfigur:</b> din avatar ved hvert opkald.</string><string name="characters_help_assignments_contact"><b>Kontaktfigurer:</b> tildel monstre eller trænere til kontakter; de bliver modstandere, når de ringer.</string>
+    <!-- Help -->
+    <string name="characters_help_title">Karakterguide</string>
+    <string name="characters_help_description">Udforsk MonsterDialers karakterer.</string>
+    <string name="characters_help_intro_title">Din samling</string>
+    <string name="characters_help_intro_message">Fanen Figurer tilpasser hvert opkald for dig og dine kontakter.</string>
+    <string name="characters_help_creating_title">Opret figurer</string>
+    <string name="characters_help_creating_message">Tryk på “Tilføj træner” eller “Tilføj monster”, og vælg galleribilleder til:</string>
+    <string name="characters_help_creating_sprites_front"><b>Front-sprite:</b> ses ved opkald fra en kontakt.</string>
+    <string name="characters_help_creating_sprites_back"><b>Bagside-sprite:</b> din figur i kampe.</string>
+    <string name="characters_help_advanced_title">Avancerede statistikker</string>
+    <string name="characters_help_advanced_message">For monstre kan du angive niveau og maks. HP under “Avanceret” samt slå “Strålende” til.</string>
+    <string name="characters_help_sharing_title">Deling og import</string>
+    <string name="characters_help_sharing_message">MonsterDialer bruger to filtyper:</string>
+    <string name="characters_help_sharing_files_character"><b>.monstercharacter:</b> en figur med statistik og grafik.</string>
+    <string name="characters_help_sharing_files_pack"><b>.monsterpack:</b> en samling af figurer.</string>
+    <string name="characters_help_sharing_how_to">Hold en egen figur nede for at eksportere den. Importér ved at åbne en modtaget fil eller bruge “Importér figur”.</string>
+    <string name="characters_help_packs_title">Opret pakker</string>
+    <string name="characters_help_packs_message">Opret en pakke under “Figurpakker”, vælg monstre, og eksportér .monsterpack-filen.</string>
+    <string name="characters_help_radiants_title">Strålende opdagelse</string>
+    <string name="characters_help_radiants_message">Strålende monstre er sjældne. Pakkevarianter låses op, når du møder dem i naturen under et opkald.</string>
+    <string name="characters_help_management_title">Administrer samlingen</string>
+    <string name="characters_help_management_message">Hold en figur nede under “Dine monstre” eller “Dine trænere” for at redigere, dele eller slette den.</string>
+    <string name="characters_help_assignments_title">Tilpas opkald</string>
+    <string name="characters_help_assignments_message">Figurer kan bruges på to måder:</string>
+    <string name="characters_help_assignments_player"><b>Spillerfigur:</b> din avatar ved hvert opkald.</string>
+    <string name="characters_help_assignments_contact"><b>Kontaktfigurer:</b> tildel monstre eller trænere til kontakter; de bliver modstandere, når de ringer.</string>
 </resources>
