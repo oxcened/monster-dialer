@@ -3,6 +3,7 @@ package dev.alenajam.monsterdialer.battle.data
 import dev.alenajam.monsterdialer.BuildConfig
 import dev.alenajam.monsterdialer.characters.data.CharacterAssignmentRepository
 import dev.alenajam.monsterdialer.characters.data.CharactersRepository
+import dev.alenajam.monsterdialer.characters.data.DefaultMonsterLevel
 import dev.alenajam.monsterdialer.characters.data.RadiantVariantUnlockStore
 import dev.alenajam.monsterdialer.packs.data.CharacterAssignmentTarget
 import dev.alenajam.monsterdialer.packs.data.CharacterType
@@ -204,7 +205,7 @@ class AssignedCharacterEncounterFactory @Inject constructor(
         variant: CharacterVisualVariant,
     ) = BattleMonster(
         name = character.name,
-        level = character.level ?: DefaultLevel,
+        level = character.level ?: DefaultMonsterLevel,
         hp = character.maxHp ?: DefaultMaxHp,
         maxHp = character.maxHp ?: DefaultMaxHp,
         frontSprite = frontSprite,
@@ -223,7 +224,6 @@ class AssignedCharacterEncounterFactory @Inject constructor(
 
     private companion object {
         const val RadiantEncounterDenominator = 64
-        const val DefaultLevel = 5
         const val DefaultMaxHp = 20
     }
 

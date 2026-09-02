@@ -65,6 +65,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil.compose.AsyncImage
 import dev.alenajam.monsterdialer.R
 import dev.alenajam.monsterdialer.app.ui.LocalMonsterAppIcons
+import dev.alenajam.monsterdialer.characters.data.DefaultMonsterLevel
 import dev.alenajam.monsterdialer.characters.data.MaxPlayerMonsterBenchSize
 import dev.alenajam.monsterdialer.characters.data.SharedCharacterImport
 import dev.alenajam.monsterdialer.packs.data.CharacterReference
@@ -333,8 +334,6 @@ private fun RosterMonsterContent(
         }
     }
 }
-
-private const val DefaultMonsterLevel = 1
 
 @Composable
 private fun RosterAddTile(onClick: () -> Unit) {
