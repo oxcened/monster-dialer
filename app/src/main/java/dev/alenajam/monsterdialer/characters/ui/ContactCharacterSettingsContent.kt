@@ -10,17 +10,13 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Button
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
@@ -30,7 +26,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -44,8 +39,6 @@ import dev.alenajam.monsterdialer.characters.data.BuiltInCharacters
 import dev.alenajam.monsterdialer.packs.data.CharacterAssignmentTarget
 import dev.alenajam.monsterdialer.packs.data.InstalledPackCharacter
 import kotlinx.coroutines.launch
-import dev.alenajam.monsterdialer.contacts.ui.formatPhoneNumber
-import dev.alenajam.opendialer.core.common.ui.ContactAvatar
 import dev.alenajam.opendialer.core.common.ui.AppIcon
 import dev.alenajam.opendialer.core.common.ui.LocalAppIcons
 import dev.alenajam.opendialer.feature.contacts.ContactPickerScreen
@@ -81,7 +74,6 @@ fun ColumnScope.ContactCharacterSettingsContent(
     val monstersTitle = stringResource(R.string.character_type_monsters)
     val addTrainerLabel = stringResource(R.string.add_trainer)
     val addMonsterLabel = stringResource(R.string.add_monster)
-    val locale = LocalConfiguration.current.locales[0]
 
     val lifecycleOwner = LocalLifecycleOwner.current
     val navigator = LocalSettingsSubpageNavigator.current
@@ -154,34 +146,6 @@ fun ColumnScope.ContactCharacterSettingsContent(
     Column(
         modifier = Modifier.fillMaxSize()
     ) {
-        Card(
-            modifier = Modifier.fillMaxWidth().padding(bottom = 8.dp),
-            colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainerLow)
-        ) {
-            Row(
-                modifier = Modifier.padding(horizontal = 12.dp, vertical = 8.dp),
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.spacedBy(8.dp)
-            ) {
-                ContactAvatar(
-                    name = currentContact.name,
-                    photoUri = currentContact.photoUri,
-                    modifier = Modifier.size(24.dp),
-                    initialTextStyle = MaterialTheme.typography.labelLarge
-                )
-                Column(modifier = Modifier.weight(1f)) {
-                    Text(currentContact.name, style = MaterialTheme.typography.titleMedium)
-                    Text(
-                        currentContact.numbers.firstOrNull()?.let { formatPhoneNumber(it, locale) }
-                            ?: stringResource(R.string.unknown),
-                        style = MaterialTheme.typography.bodySmall,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant
-                    )
-                }
-                TextButton(onClick = { navigator?.navigateTo(0) }) { Text(stringResource(R.string.change)) }
-            }
-        }
-
         CharacterTypeTabs(
             selectedTab = selectedTab,
             onTabSelected = { tab ->

@@ -87,9 +87,13 @@ class ContactCharacterSettingsViewModel @Inject constructor(
 
     fun onContactSelected(selectedContact: DialerContactSummary) {
         viewModelScope.launch {
-            selectionRepository.setSelectedContact(selectedContact)
-            restoreSelectedContactState()
+            selectContact(selectedContact)
         }
+    }
+
+    suspend fun selectContact(selectedContact: DialerContactSummary) {
+        selectionRepository.setSelectedContact(selectedContact)
+        restoreSelectedContactState()
     }
 
     fun assignTrainer(reference: CharacterReference?) {

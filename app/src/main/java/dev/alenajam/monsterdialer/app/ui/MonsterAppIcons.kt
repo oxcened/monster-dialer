@@ -9,11 +9,13 @@ import androidx.compose.material.icons.outlined.FolderOpen
 import androidx.compose.material.icons.outlined.GridView
 import androidx.compose.runtime.Immutable
 import androidx.compose.runtime.staticCompositionLocalOf
+import dev.alenajam.monsterdialer.R
 import dev.alenajam.opendialer.core.common.ui.IconSource
 
 @Immutable
 data class MonsterAppIcons(
     val addCharacter: IconSource,
+    val personalizeContact: IconSource,
     val radiant: IconSource,
     val importPacks: IconSource,
     val viewList: IconSource,
@@ -23,6 +25,7 @@ data class MonsterAppIcons(
 
 val DefaultMonsterAppIcons = MonsterAppIcons(
     addCharacter = IconSource.Vector(Icons.Outlined.AddCircleOutline),
+    personalizeContact = IconSource.Resource(R.drawable.edit, tintable = false),
     radiant = IconSource.Vector(Icons.Outlined.AutoAwesome),
     importPacks = IconSource.Vector(Icons.Outlined.FolderOpen),
     viewList = IconSource.Vector(Icons.AutoMirrored.Outlined.ViewList),

@@ -12,7 +12,28 @@
     <string name="url_feature_requests" translatable="false">https://monsterdialer.fider.io/</string>
     <string name="hang_up" comment="Button to end the current phone call.">Hang up</string>
     <string name="settings_character_packs_title" comment="Settings title for managing character packs.">Character Packs</string>
-    <string name="characters_navigation_label" comment="Bottom navigation label for character customization.">Characters</string>
+    <string name="characters_navigation_label" comment="Bottom navigation label for the player's profile and character collection.">Profile</string>
+    <string name="customize_your_calls" comment="Section heading above contact character customization.">Customize your calls</string>
+    <string name="character_collection_title" comment="Section heading above character pack and import actions.">Your collection</string>
+    <string name="profile_trainer_label" comment="Label above the player's name in the Character profile card.">Your trainer</string>
+    <string name="active_monster_label" comment="Label above the currently selected player monster in the Character profile card.">Active monster</string>
+    <string name="active_monster_name_with_level" comment="Active monster name with its level. %1$s is the monster name and %2$d is its level.">%1$s · Lv. %2$d</string>
+    <string name="calls_battled" comment="Label for the number of calls that have had a battle presentation.">Calls battled</string>
+    <string name="characters_collected" comment="Label for the number of characters in the player's collection.">Collected</string>
+    <string name="radiants_found" comment="Label for the number of rare radiant variants the player has found.">Radiants found</string>
+    <string name="profile_calls_battled" comment="Profile activity summary. %1$d is the number of calls with battle presentations.">%1$d calls battled</string>
+    <string name="profile_collection_summary" comment="Profile collection summary. %1$d is the number of collected characters and %2$d is the number of radiant variants found.">%1$d collected · %2$d radiants found</string>
+    <string name="character_tools_title" comment="Heading above character management actions.">Character tools</string>
+    <string name="your_roster" comment="Heading above the player's current active monster roster.">Your roster</string>
+    <string name="roster_monster_level" comment="Level shown below a monster in the roster. %1$d is the monster's level.">Lv. %1$d</string>
+    <string name="roster_monster_description" comment="Accessibility description for a roster monster. %1$s is its name and %2$d is its level.">%1$s, level %2$d</string>
+    <string name="roster_mock_plumguard" comment="Temporary mock roster monster name.">Plumguard</string>
+    <string name="roster_mock_nullith" comment="Temporary mock roster monster name.">Nullith</string>
+    <string name="roster_mock_dawnsprig" comment="Temporary mock roster monster name.">Dawnsprig</string>
+    <string name="contact_characters_ready" comment="Short status shown on the Contact Characters action when one or more contacts are configured.">Call roster ready</string>
+    <string name="character_packs_home_description" comment="Short description for the character packs action on the Characters home screen.">Browse your packs</string>
+    <string name="import_character_home_description" comment="Short description for the character import action on the Characters home screen.">Add a shared one</string>
+    <string name="open_character_guide" comment="Action label that opens the Character Guide.">Open Character Guide</string>
     <string name="settings_character_packs_description" comment="Settings description for character packs.">Import and manage custom character artwork.</string>
     <string name="import_character" comment="Action that starts selecting a shared single-character file.">Import character</string>
     <string name="import_character_description" comment="Description of the action that imports a shared character.">Add a character someone shared with you.</string>
@@ -35,6 +56,7 @@
     <string name="player_characters_not_set" comment="Settings subtitle when no player character is selected.">Not customized</string>
     <string name="using_characters" comment="Settings subtitle; %1$s is a list of selected character names.">Using %1$s</string>
     <string name="settings_contact_characters_title" comment="Settings title for assigning characters to contacts.">Contact Characters</string>
+    <string name="personalize_contact_character" comment="Accessibility label for the contact-list action that customizes a caller's battle characters.">Personalize caller characters</string>
     <string name="settings_contact_characters_description" comment="Settings description for assigning characters to contacts.">Assign characters to incoming callers.</string>
     <string name="contact_characters_not_set" comment="Settings subtitle when no contacts have a character assignment.">No contacts customized</string>
     <plurals name="contact_character_assignment_count" comment="Settings subtitle showing how many contacts have a character assignment."><item quantity="one">%d contact customized</item><item quantity="other">%d contacts customized</item></plurals>
