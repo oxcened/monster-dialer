@@ -148,11 +148,11 @@ class CharacterAssignmentStore(
         roster.forEach { reference -> reference.validate() }
         val document = read()
         val active = activeMonster(document)
-        require(active !in roster) { "Active monster cannot also be in the roster" }
+        val bench = roster.filterNot { it == active }
         write(document.copy(
             player = null,
             playerByType = document.playerByType - CharacterType.Monster,
-            playerMonsterRoster = roster,
+            playerMonsterRoster = bench,
             activePlayerMonster = active,
         ))
     }

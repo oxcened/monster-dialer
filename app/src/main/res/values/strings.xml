@@ -28,7 +28,6 @@
     <string name="roster_monster_level" comment="Level shown below a monster in the roster. %1$d is the monster's level.">Lv. %1$d</string>
     <string name="roster_monster_description" comment="Accessibility description for a roster monster. %1$s is its name and %2$d is its level.">%1$s, level %2$d</string>
     <string name="remove_roster_monster" comment="Accessibility label for removing a monster from the player's roster.">Remove monster</string>
-    <string name="drop_monster_to_remove" comment="Drop target text shown while reordering a monster roster.">Drop here to remove</string>
     <string name="contact_characters_ready" comment="Short status shown on the Contact Characters action when one or more contacts are configured.">Call roster ready</string>
     <string name="character_packs_home_description" comment="Short description for the character packs action on the Characters home screen.">Browse your packs</string>
     <string name="import_character_home_description" comment="Short description for the character import action on the Characters home screen.">Add a shared one</string>

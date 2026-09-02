@@ -130,8 +130,8 @@ fun ColumnScope.PlayerCharacterSettingsContent(
                         defaultCharacter = BuiltInCharacters.trainer,
                         characters = trainers,
                         selected = assignedTrainer,
-                        defaultArtwork = { it.playerArtwork },
-                        artworkTarget = CharacterAssignmentTarget.Player,
+                        defaultArtwork = { it.contactArtwork },
+                        artworkTarget = CharacterAssignmentTarget.Contact,
                         onSelect = {
                             viewModel.assignTrainer(it)
                             navigator?.navigateBack()
@@ -150,8 +150,8 @@ fun ColumnScope.PlayerCharacterSettingsContent(
                         defaultCharacter = BuiltInCharacters.monster.character,
                         characters = monsters,
                         selected = assignedMonster,
-                        defaultArtwork = { it.playerArtwork },
-                        artworkTarget = CharacterAssignmentTarget.Player,
+                        defaultArtwork = { it.contactArtwork },
+                        artworkTarget = CharacterAssignmentTarget.Contact,
                         onSelect = {
                             viewModel.assignMonster(it)
                             navigator?.navigateBack()
@@ -177,8 +177,8 @@ fun ColumnScope.PlayerCharacterSettingsContent(
                         defaultCharacter = BuiltInCharacters.trainer,
                         characters = trainers,
                         selected = assignedTrainer,
-                        defaultArtwork = { it.playerArtwork },
-                        artworkTarget = CharacterAssignmentTarget.Player,
+                        defaultArtwork = { it.contactArtwork },
+                        artworkTarget = CharacterAssignmentTarget.Contact,
                         onSelect = {
                             viewModel.assignTrainer(it)
                             navigator?.navigateBack()
@@ -197,8 +197,8 @@ fun ColumnScope.PlayerCharacterSettingsContent(
                         defaultCharacter = BuiltInCharacters.monster.character,
                         characters = monsters,
                         selected = assignedMonster,
-                        defaultArtwork = { it.playerArtwork },
-                        artworkTarget = CharacterAssignmentTarget.Player,
+                        defaultArtwork = { it.contactArtwork },
+                        artworkTarget = CharacterAssignmentTarget.Contact,
                         onSelect = {
                             viewModel.assignMonster(it)
                             navigator?.navigateBack()

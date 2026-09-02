@@ -3,9 +3,11 @@ package dev.alenajam.monsterdialer.characters.ui
 import android.graphics.BitmapFactory
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Arrangement
@@ -32,6 +34,8 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
+import androidx.compose.material3.DropdownMenu
+import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -167,6 +171,7 @@ private fun RosterSection(
                         monster = monster,
                         isDragged = isDragging,
                         onClick = { onSetActiveMonster(reference) },
+                        onRemove = { onRemoveRosterMonster(reference) },
                         interactionSource = interactionSource,
                         dragHandle = {
                             AppIcon(
@@ -199,33 +204,59 @@ private fun RosterSection(
 
 private fun CharacterReference.rosterKey(): String = "$packId:$characterId:$variantId"
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 private fun RosterMonsterTile(
     monster: PlayerRosterMonster,
     isDragged: Boolean,
     onClick: () -> Unit,
+    onRemove: () -> Unit,
     dragHandle: @Composable () -> Unit,
     interactionSource: MutableInteractionSource,
     modifier: Modifier = Modifier,
 ) {
-    Card(
-        onClick = onClick,
-        interactionSource = interactionSource,
-        modifier = Modifier
-            .width(82.dp)
-            .height(130.dp)
-            .then(modifier),
-        shape = RoundedCornerShape(18.dp),
-        colors = CardDefaults.cardColors(
-            containerColor = if (monster.isActive) {
-                MaterialTheme.colorScheme.secondaryContainer
-            } else {
-                MaterialTheme.colorScheme.surfaceContainerLow
-            }
-        ),
-        elevation = CardDefaults.cardElevation(defaultElevation = if (isDragged) 8.dp else 0.dp),
-    ) {
-        RosterMonsterContent(monster, dragHandle)
+    var showMenu by remember { mutableStateOf(false) }
+
+    Box {
+        Card(
+            modifier = Modifier
+                .width(82.dp)
+                .height(130.dp)
+                .combinedClickable(
+                    interactionSource = interactionSource,
+                    indication = androidx.compose.foundation.LocalIndication.current,
+                    onClick = onClick,
+                    onLongClick = { showMenu = true }
+                )
+                .then(modifier),
+            shape = RoundedCornerShape(18.dp),
+            colors = CardDefaults.cardColors(
+                containerColor = if (monster.isActive) {
+                    MaterialTheme.colorScheme.secondaryContainer
+                } else {
+                    MaterialTheme.colorScheme.surfaceContainerLow
+                }
+            ),
+            elevation = CardDefaults.cardElevation(defaultElevation = if (isDragged) 8.dp else 0.dp),
+        ) {
+            RosterMonsterContent(monster, dragHandle)
+        }
+
+        DropdownMenu(
+            expanded = showMenu,
+            onDismissRequest = { showMenu = false }
+        ) {
+            DropdownMenuItem(
+                text = { Text(stringResource(R.string.remove_roster_monster)) },
+                onClick = {
+                    showMenu = false
+                    onRemove()
+                },
+                leadingIcon = {
+                    AppIcon(LocalAppIcons.current.delete, contentDescription = null, modifier = Modifier.size(18.dp))
+                }
+            )
+        }
     }
 }
 
@@ -410,17 +441,17 @@ private fun ProfileMetricColumn(metrics: List<ProfileMetric>) {
 
 @Composable
 private fun profileMockMetrics(): List<ProfileMetric> = listOf(
-    ProfileMetric(ProfileMetricMock.CallsBattled, stringResource(R.string.calls_battled)),
-    ProfileMetric(ProfileMetricMock.CharactersCollected, stringResource(R.string.characters_collected)),
-    ProfileMetric(ProfileMetricMock.RadiantsFound, stringResource(R.string.radiants_found)),
+    ProfileMetric(ProfileMetricMock.CALLS_BATTLED, stringResource(R.string.calls_battled)),
+    ProfileMetric(ProfileMetricMock.CHARACTERS_COLLECTED, stringResource(R.string.characters_collected)),
+    ProfileMetric(ProfileMetricMock.RADIANTS_FOUND, stringResource(R.string.radiants_found)),
 )
 
 private data class ProfileMetric(val value: Int, val label: String)
 
 private object ProfileMetricMock {
-    const val CallsBattled = 42
-    const val CharactersCollected = 12
-    const val RadiantsFound = 3
+    const val CALLS_BATTLED = 42
+    const val CHARACTERS_COLLECTED = 12
+    const val RADIANTS_FOUND = 3
 }
 
 @Composable
