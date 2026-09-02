@@ -4,8 +4,10 @@ import dev.alenajam.monsterdialer.BuildConfig
 import dev.alenajam.monsterdialer.characters.data.CharacterAssignmentRepository
 import dev.alenajam.monsterdialer.characters.data.CharactersRepository
 import dev.alenajam.monsterdialer.characters.data.DefaultMonsterLevel
+import dev.alenajam.monsterdialer.characters.data.PlayerProfileStatsStore
 import dev.alenajam.monsterdialer.characters.data.RadiantVariantUnlockStore
 import dev.alenajam.monsterdialer.packs.data.CharacterAssignmentTarget
+import dev.alenajam.monsterdialer.packs.data.CharacterReference
 import dev.alenajam.monsterdialer.packs.data.CharacterType
 import dev.alenajam.monsterdialer.packs.data.CharacterVisualVariant
 import dev.alenajam.monsterdialer.packs.data.InstalledPackCharacter
@@ -21,6 +23,7 @@ class AssignedCharacterEncounterFactory @Inject constructor(
     private val assignmentRepository: CharacterAssignmentRepository,
     private val radiantUnlocks: RadiantVariantUnlockStore,
     private val activeEncounterStore: ActiveBattleEncounterStore,
+    private val profileStatsStore: PlayerProfileStatsStore,
 ) {
     private var random: Random = Random.Default
 
@@ -29,8 +32,9 @@ class AssignedCharacterEncounterFactory @Inject constructor(
         assignmentRepository: CharacterAssignmentRepository,
         radiantUnlocks: RadiantVariantUnlockStore,
         activeEncounterStore: ActiveBattleEncounterStore,
+        profileStatsStore: PlayerProfileStatsStore,
         random: Random,
-    ) : this(charactersRepository, assignmentRepository, radiantUnlocks, activeEncounterStore) {
+    ) : this(charactersRepository, assignmentRepository, radiantUnlocks, activeEncounterStore, profileStatsStore) {
         this.random = random
     }
 
@@ -108,7 +112,7 @@ class AssignedCharacterEncounterFactory @Inject constructor(
             val radiantWild = randomRadiantWild()
             if (radiantWild != null && (shouldForceRadiantEncounter() || random.nextInt(RadiantEncounterDenominator) == 0)) {
                 val (wildCharacter, variant) = radiantWild
-                val reference = dev.alenajam.monsterdialer.packs.data.CharacterReference(
+                val reference = CharacterReference(
                     wildCharacter.packId,
                     wildCharacter.character.id,
                     variant.id,
@@ -116,7 +120,7 @@ class AssignedCharacterEncounterFactory @Inject constructor(
                 val wasUnlocked = radiantUnlocks.unlock(
                     reference,
                 )
-                activeEncounterStore.save(call, reference)
+                saveEncounter(call, reference)
                 return@runBlocking radiantWildEncounter(
                     fallback = fallback,
                     player = player,
@@ -127,7 +131,7 @@ class AssignedCharacterEncounterFactory @Inject constructor(
                 )
             }
 
-            activeEncounterStore.save(call, radiantReference = null)
+            saveEncounter(call, radiantReference = null)
             regularEncounter
         }.also { encounter ->
             cachedCall = call
@@ -148,6 +152,11 @@ class AssignedCharacterEncounterFactory @Inject constructor(
 
     private fun shouldForceRadiantEncounter(): Boolean =
         BuildConfig.DEBUG && BuildConfig.FORCE_RADIANT_ENCOUNTERS
+
+    private fun saveEncounter(call: ActiveCallKey, radiantReference: CharacterReference?) {
+        activeEncounterStore.save(call, radiantReference)
+        profileStatsStore.recordBattle()
+    }
 
     private fun radiantWildEncounter(
         fallback: BattleEncounter,

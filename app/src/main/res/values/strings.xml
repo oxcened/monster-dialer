@@ -17,9 +17,18 @@
     <string name="character_collection_title" comment="Section heading above character pack and import actions.">Your collection</string>
     <string name="profile_trainer_label" comment="Label above the player's name in the Character profile card.">Your trainer</string>
     <string name="active_monster_label" comment="Label above the currently selected player monster in the Character profile card.">Active monster</string>
-    <string name="calls_battled" comment="Label for the number of calls that have had a battle presentation.">Calls battled</string>
-    <string name="characters_collected" comment="Label for the number of characters in the player's collection.">Collected</string>
-    <string name="radiants_found" comment="Label for the number of rare radiant variants the player has found.">Radiants found</string>
+    <plurals name="calls_battled" comment="Label for the number of calls that have had a battle presentation.">
+        <item quantity="one">%1$d Call battled</item>
+        <item quantity="other">%1$d Calls battled</item>
+    </plurals>
+    <plurals name="characters_collected" comment="Label for the number of characters in the player's collection.">
+        <item quantity="one">%1$d Character collected</item>
+        <item quantity="other">%1$d Characters collected</item>
+    </plurals>
+    <plurals name="radiants_found" comment="Label for the number of rare radiant variants the player has found.">
+        <item quantity="one">%1$d Radiant found</item>
+        <item quantity="other">%1$d Radiants found</item>
+    </plurals>
     <string name="profile_calls_battled" comment="Profile activity summary. %1$d is the number of calls with battle presentations.">%1$d calls battled</string>
     <string name="profile_collection_summary" comment="Profile collection summary. %1$d is the number of collected characters and %2$d is the number of radiant variants found.">%1$d collected · %2$d radiants found</string>
     <string name="character_tools_title" comment="Heading above character management actions.">Tools</string>

@@ -183,9 +183,18 @@
     <string name="character_collection_title">Deine Sammlung</string>
     <string name="profile_trainer_label">Dein Trainer</string>
     <string name="active_monster_label">Aktives Monster</string>
-    <string name="calls_battled">Kämpfe in Anrufen</string>
-    <string name="characters_collected">Gesammelt</string>
-    <string name="radiants_found">Strahlende gefunden</string>
+    <plurals name="calls_battled">
+        <item quantity="one">%1$d Kampf im Anruf</item>
+        <item quantity="other">%1$d Kämpfe in Anrufen</item>
+    </plurals>
+    <plurals name="characters_collected">
+        <item quantity="one">%1$d Charakter gesammelt</item>
+        <item quantity="other">%1$d Charaktere gesammelt</item>
+    </plurals>
+    <plurals name="radiants_found">
+        <item quantity="one">%1$d Strahlender gefunden</item>
+        <item quantity="other">%1$d Strahlende gefunden</item>
+    </plurals>
     <string name="profile_calls_battled">%1$d Kämpfe in Anrufen</string>
     <string name="profile_collection_summary">%1$d gesammelt · %2$d strahlende gefunden</string>
     <string name="character_tools_title">Werkzeuge</string>

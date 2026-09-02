@@ -176,9 +176,15 @@
     <string name="character_collection_title">你的收藏</string>
     <string name="profile_trainer_label">你的训练师</string>
     <string name="active_monster_label">当前怪物</string>
-    <string name="calls_battled">已战斗通话</string>
-    <string name="characters_collected">已收集</string>
-    <string name="radiants_found">已发现闪耀</string>
+    <plurals name="calls_battled">
+        <item quantity="other">%1$d 次战斗通话</item>
+    </plurals>
+    <plurals name="characters_collected">
+        <item quantity="other">已收集 %1$d 个角色</item>
+    </plurals>
+    <plurals name="radiants_found">
+        <item quantity="other">已发现 %1$d 个闪耀</item>
+    </plurals>
     <string name="profile_calls_battled">%1$d 次战斗通话</string>
     <string name="profile_collection_summary">已收集 %1$d 个 · 已发现 %2$d 个闪耀</string>
     <string name="character_tools_title">工具</string>

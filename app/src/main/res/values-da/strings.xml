@@ -179,9 +179,18 @@
     <string name="character_collection_title">Din samling</string>
     <string name="profile_trainer_label">Din træner</string>
     <string name="active_monster_label">Aktivt monster</string>
-    <string name="calls_battled">Kæmpede opkald</string>
-    <string name="characters_collected">Samlet</string>
-    <string name="radiants_found">Strålende fundet</string>
+    <plurals name="calls_battled">
+        <item quantity="one">%1$d kæmpet opkald</item>
+        <item quantity="other">%1$d kæmpede opkald</item>
+    </plurals>
+    <plurals name="characters_collected">
+        <item quantity="one">%1$d figur samlet</item>
+        <item quantity="other">%1$d figurer samlet</item>
+    </plurals>
+    <plurals name="radiants_found">
+        <item quantity="one">%1$d strålende fundet</item>
+        <item quantity="other">%1$d strålende fundet</item>
+    </plurals>
     <string name="profile_calls_battled">%1$d kæmpede opkald</string>
     <string name="profile_collection_summary">%1$d samlet · %2$d strålende fundet</string>
     <string name="character_tools_title">Værktøjer</string>

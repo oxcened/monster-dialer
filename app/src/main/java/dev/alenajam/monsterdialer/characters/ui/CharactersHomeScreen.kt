@@ -55,6 +55,7 @@ import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.annotation.DrawableRes
@@ -81,6 +82,7 @@ fun CharactersHomeScreen(
     onOpenSubpage: (Int, String?) -> Unit,
     sharingViewModel: CharacterSharingViewModel = hiltViewModel(),
     playerProfile: PlayerProfile,
+    profileMetrics: ProfileMetrics,
     onReorderRoster: (List<CharacterReference>) -> Unit,
     onSetActiveMonster: (CharacterReference) -> Unit,
     onRemoveRosterMonster: (CharacterReference) -> Unit,
@@ -99,11 +101,12 @@ fun CharactersHomeScreen(
         modifier = Modifier
             .fillMaxSize()
             .verticalScroll(rememberScrollState())
-            .padding(horizontal = 16.dp, vertical = 16.dp),
+            .padding(start = 16.dp, top = 16.dp, end = 16.dp, bottom = 96.dp),
         verticalArrangement = Arrangement.spacedBy(20.dp)
     ) {
         TeamProfileCard(
             playerProfile = playerProfile,
+            profileMetrics = profileMetrics,
             onChangeTrainer = { onOpenSubpage(0, PlayerCharacterSettingsRoute.ChangeTrainer.payload) }
         )
         RosterSection(
@@ -373,14 +376,13 @@ private fun RosterAddTile(onClick: () -> Unit) {
 @Composable
 private fun TeamProfileCard(
     playerProfile: PlayerProfile,
+    profileMetrics: ProfileMetrics,
     onChangeTrainer: () -> Unit,
 ) {
     val trainer = playerProfile.trainer
     val monster = playerProfile.monster
     val trainerTitle = stringResource(R.string.character_type_trainer)
     val monsterTitle = stringResource(R.string.character_type_monster)
-    val metrics = profileMockMetrics()
-
     Card(
         modifier = Modifier.fillMaxWidth(),
         shape = RoundedCornerShape(30.dp),
@@ -431,7 +433,7 @@ private fun TeamProfileCard(
                             maxLines = 1,
                             modifier = Modifier.padding(bottom = 4.dp)
                         )
-                        ProfileMetricColumn(metrics)
+                        ProfileMetricColumn(profileMetrics)
                     }
                 }
                 HorizontalDivider(color = MaterialTheme.colorScheme.onPrimaryContainer.copy(alpha = 0.16f))
@@ -472,31 +474,24 @@ private fun TeamProfileCard(
 }
 
 @Composable
-private fun ProfileMetricColumn(metrics: List<ProfileMetric>) {
+private fun ProfileMetricColumn(metrics: ProfileMetrics) {
     Column(verticalArrangement = Arrangement.spacedBy(2.dp)) {
-        metrics.forEach { metric ->
+        listOf(
+            ProfileMetric(label = pluralStringResource(R.plurals.calls_battled, metrics.callsBattled, metrics.callsBattled)),
+            ProfileMetric(label = pluralStringResource(R.plurals.characters_collected, metrics.charactersCollected, metrics.charactersCollected)),
+            ProfileMetric(label = pluralStringResource(R.plurals.radiants_found, metrics.radiantsFound, metrics.radiantsFound)),
+        ).forEach { metric ->
             Row(horizontalArrangement = Arrangement.spacedBy(6.dp), verticalAlignment = Alignment.CenterVertically) {
-                Text(metric.value.toString(), style = MaterialTheme.typography.titleSmall, color = MaterialTheme.colorScheme.onPrimaryContainer)
+                metric.value?.let { value ->
+                    Text(value.toString(), style = MaterialTheme.typography.titleSmall, color = MaterialTheme.colorScheme.onPrimaryContainer)
+                }
                 Text(metric.label, style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onPrimaryContainer.copy(alpha = 0.76f), maxLines = 1)
             }
         }
     }
 }
 
-@Composable
-private fun profileMockMetrics(): List<ProfileMetric> = listOf(
-    ProfileMetric(ProfileMetricMock.CALLS_BATTLED, stringResource(R.string.calls_battled)),
-    ProfileMetric(ProfileMetricMock.CHARACTERS_COLLECTED, stringResource(R.string.characters_collected)),
-    ProfileMetric(ProfileMetricMock.RADIANTS_FOUND, stringResource(R.string.radiants_found)),
-)
-
-private data class ProfileMetric(val value: Int, val label: String)
-
-private object ProfileMetricMock {
-    const val CALLS_BATTLED = 42
-    const val CHARACTERS_COLLECTED = 12
-    const val RADIANTS_FOUND = 3
-}
+private data class ProfileMetric(val value: Int? = null, val label: String)
 
 @Composable
 private fun TeamArtwork(

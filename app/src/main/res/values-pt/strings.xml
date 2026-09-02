@@ -183,9 +183,18 @@
     <string name="character_collection_title">A tua coleção</string>
     <string name="profile_trainer_label">O teu treinador</string>
     <string name="active_monster_label">Monstro ativo</string>
-    <string name="calls_battled">Chamadas combatidas</string>
-    <string name="characters_collected">Colecionados</string>
-    <string name="radiants_found">Radiantes encontrados</string>
+    <plurals name="calls_battled">
+        <item quantity="one">%1$d chamada combatida</item>
+        <item quantity="other">%1$d chamadas combatidas</item>
+    </plurals>
+    <plurals name="characters_collected">
+        <item quantity="one">%1$d personagem colecionado</item>
+        <item quantity="other">%1$d personagens colecionados</item>
+    </plurals>
+    <plurals name="radiants_found">
+        <item quantity="one">%1$d radiante encontrado</item>
+        <item quantity="other">%1$d radiantes encontrados</item>
+    </plurals>
     <string name="profile_calls_battled">%1$d chamadas combatidas</string>
     <string name="profile_collection_summary">%1$d colecionados · %2$d radiantes encontrados</string>
     <string name="character_tools_title">Ferramentas</string>

@@ -186,9 +186,21 @@
     <string name="character_collection_title">Colecția ta</string>
     <string name="profile_trainer_label">Antrenorul tău</string>
     <string name="active_monster_label">Monstru activ</string>
-    <string name="calls_battled">Apeluri cu lupte</string>
-    <string name="characters_collected">Colecționate</string>
-    <string name="radiants_found">Radiante găsite</string>
+    <plurals name="calls_battled">
+        <item quantity="one">%1$d apel cu luptă</item>
+        <item quantity="few">%1$d apeluri cu lupte</item>
+        <item quantity="other">%1$d apeluri cu lupte</item>
+    </plurals>
+    <plurals name="characters_collected">
+        <item quantity="one">%1$d personaj colecționat</item>
+        <item quantity="few">%1$d personaje colecționate</item>
+        <item quantity="other">%1$d personaje colecționate</item>
+    </plurals>
+    <plurals name="radiants_found">
+        <item quantity="one">%1$d radiant găsit</item>
+        <item quantity="few">%1$d radiante găsite</item>
+        <item quantity="other">%1$d radiante găsite</item>
+    </plurals>
     <string name="profile_calls_battled">%1$d apeluri cu lupte</string>
     <string name="profile_collection_summary">%1$d colecționate · %2$d radiante găsite</string>
     <string name="character_tools_title">Instrumente</string>

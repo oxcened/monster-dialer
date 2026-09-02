@@ -191,9 +191,30 @@
     <string name="character_collection_title">مجموعة شخصياتك</string>
     <string name="profile_trainer_label">مدربك</string>
     <string name="active_monster_label">الوحش النشط</string>
-    <string name="calls_battled">مكالمات خيضت فيها معارك</string>
-    <string name="characters_collected">تم جمعها</string>
-    <string name="radiants_found">تم العثور على المتألقات</string>
+    <plurals name="calls_battled">
+        <item quantity="zero">%1$d مكالمات قتال</item>
+        <item quantity="one">%1$d مكالمة قتال</item>
+        <item quantity="two">%1$d مكالمتا قتال</item>
+        <item quantity="few">%1$d مكالمات قتال</item>
+        <item quantity="many">%1$d مكالمات قتال</item>
+        <item quantity="other">%1$d مكالمات قتال</item>
+    </plurals>
+    <plurals name="characters_collected">
+        <item quantity="zero">تم جمع %1$d من الشخصيات</item>
+        <item quantity="one">تم جمع %1$d شخصية</item>
+        <item quantity="two">تم جمع %1$d شخصيتين</item>
+        <item quantity="few">تم جمع %1$d شخصيات</item>
+        <item quantity="many">تم جمع %1$d من الشخصيات</item>
+        <item quantity="other">تم جمع %1$d من الشخصيات</item>
+    </plurals>
+    <plurals name="radiants_found">
+        <item quantity="zero">تم العثور على %1$d من المتألقات</item>
+        <item quantity="one">تم العثور على %1$d متألق</item>
+        <item quantity="two">تم العثور على %1$d متألقين</item>
+        <item quantity="few">تم العثور على %1$d متألقات</item>
+        <item quantity="many">تم العثور على %1$d من المتألقات</item>
+        <item quantity="other">تم العثور على %1$d من المتألقات</item>
+    </plurals>
     <string name="profile_calls_battled">%1$d مكالمات خيضت فيها معارك</string>
     <string name="profile_collection_summary">%1$d تم جمعها · %2$d متألقات تم العثور عليها</string>
     <string name="character_tools_title">أدوات</string>

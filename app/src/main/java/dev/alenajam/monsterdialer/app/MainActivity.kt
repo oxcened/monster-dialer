@@ -90,6 +90,7 @@ class MainActivity : AppCompatActivity() {
             val characterSettingsSummaryViewModel: CharacterSettingsSummaryViewModel = hiltViewModel()
             val playerCharacterNames by characterSettingsSummaryViewModel.playerCharacterNames.collectAsStateWithLifecycle()
             val playerProfile by characterSettingsSummaryViewModel.playerProfile.collectAsStateWithLifecycle()
+            val profileMetrics by characterSettingsSummaryViewModel.profileMetrics.collectAsStateWithLifecycle()
             val selectedContact by contactCharacterSettingsViewModel.contact.collectAsStateWithLifecycle()
 
             CompositionLocalProvider(
@@ -125,6 +126,7 @@ class MainActivity : AppCompatActivity() {
                                     onOpenSubpage = onOpenSubpage,
                                     sharingViewModel = characterSharingViewModel,
                                     playerProfile = playerProfile,
+                                    profileMetrics = profileMetrics,
                                     onReorderRoster = characterSettingsSummaryViewModel::reorderPlayerMonsterRoster,
                                     onSetActiveMonster = characterSettingsSummaryViewModel::setActivePlayerMonster,
                                     onRemoveRosterMonster = characterSettingsSummaryViewModel::removePlayerMonsterFromRoster,

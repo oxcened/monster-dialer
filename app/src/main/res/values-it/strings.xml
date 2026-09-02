@@ -200,9 +200,18 @@
     <string name="character_collection_title">La tua collezione</string>
     <string name="profile_trainer_label">Il tuo allenatore</string>
     <string name="active_monster_label">Mostro attivo</string>
-    <string name="calls_battled">Chiamate combattute</string>
-    <string name="characters_collected">Collezionati</string>
-    <string name="radiants_found">Radiosi trovati</string>
+    <plurals name="calls_battled">
+        <item quantity="one">%1$d Chiamata combattuta</item>
+        <item quantity="other">%1$d Chiamate combattute</item>
+    </plurals>
+    <plurals name="characters_collected">
+        <item quantity="one">%1$d personaggio collezionato</item>
+        <item quantity="other">%1$d personaggi collezionati</item>
+    </plurals>
+    <plurals name="radiants_found">
+        <item quantity="one">%1$d Radioso trovato</item>
+        <item quantity="other">%1$d Radiosi trovati</item>
+    </plurals>
     <string name="profile_calls_battled">%1$d chiamate combattute</string>
     <string name="profile_collection_summary">%1$d collezionati · %2$d radiosi trovati</string>
     <string name="character_tools_title">Strumenti</string>

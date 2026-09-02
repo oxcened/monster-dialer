@@ -183,9 +183,18 @@
     <string name="character_collection_title">Votre collection</string>
     <string name="profile_trainer_label">Votre dresseur</string>
     <string name="active_monster_label">Monstre actif</string>
-    <string name="calls_battled">Appels combattus</string>
-    <string name="characters_collected">Collectés</string>
-    <string name="radiants_found">Radieux trouvés</string>
+    <plurals name="calls_battled">
+        <item quantity="one">%1$d appel combattu</item>
+        <item quantity="other">%1$d appels combattus</item>
+    </plurals>
+    <plurals name="characters_collected">
+        <item quantity="one">%1$d personnage collecté</item>
+        <item quantity="other">%1$d personnages collectés</item>
+    </plurals>
+    <plurals name="radiants_found">
+        <item quantity="one">%1$d radiant trouvé</item>
+        <item quantity="other">%1$d radiants trouvés</item>
+    </plurals>
     <string name="profile_calls_battled">%1$d appels combattus</string>
     <string name="profile_collection_summary">%1$d collectés · %2$d radieux trouvés</string>
     <string name="character_tools_title">Outils</string>

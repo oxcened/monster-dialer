@@ -7,6 +7,8 @@ import dev.alenajam.monsterdialer.characters.data.BuiltInCharacters
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dev.alenajam.monsterdialer.characters.data.CharacterAssignmentRepository
 import dev.alenajam.monsterdialer.characters.data.CharactersRepository
+import dev.alenajam.monsterdialer.characters.data.PlayerProfileStatsStore
+import dev.alenajam.monsterdialer.characters.data.RadiantVariantUnlockStore
 import dev.alenajam.monsterdialer.packs.data.CharacterAssignmentTarget
 import dev.alenajam.monsterdialer.packs.data.CharacterReference
 import java.io.File
@@ -14,6 +16,7 @@ import dev.alenajam.monsterdialer.packs.data.CharacterType
 import javax.inject.Inject
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
@@ -21,7 +24,9 @@ import kotlinx.coroutines.launch
 @HiltViewModel
 class CharacterSettingsSummaryViewModel @Inject constructor(
     private val assignmentRepository: CharacterAssignmentRepository,
-    private val charactersRepository: CharactersRepository
+    private val charactersRepository: CharactersRepository,
+    profileStatsStore: PlayerProfileStatsStore,
+    radiantUnlocks: RadiantVariantUnlockStore,
 ) : ViewModel() {
 
     val playerProfile: StateFlow<PlayerProfile> = assignmentRepository.assignmentVersion
@@ -44,6 +49,21 @@ class CharacterSettingsSummaryViewModel @Inject constructor(
     val assignedContactCount: StateFlow<Int> = assignmentRepository.assignmentVersion
         .map { assignmentRepository.assignedContactCount() }
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), 0)
+
+    val profileMetrics: StateFlow<ProfileMetrics> = combine(
+        profileStatsStore.callsBattled,
+        charactersRepository.observeCharactersAssignableTo(CharacterAssignmentTarget.Player),
+        radiantUnlocks.unlocked,
+    ) { callsBattled, characters, unlockedRadiants ->
+        ProfileMetrics(
+            callsBattled = callsBattled,
+            charactersCollected = characters
+                .map { character -> character.packId to character.character.id }
+                .distinct()
+                .size,
+            radiantsFound = unlockedRadiants.size,
+        )
+    }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), ProfileMetrics())
 
     fun setActivePlayerMonster(reference: CharacterReference) {
         viewModelScope.launch {
@@ -128,6 +148,12 @@ data class PlayerProfile(
     val trainer: PlayerProfileCharacter,
     val monster: PlayerProfileCharacter,
     val roster: List<PlayerRosterMonster>,
+)
+
+data class ProfileMetrics(
+    val callsBattled: Int = 0,
+    val charactersCollected: Int = 0,
+    val radiantsFound: Int = 0,
 )
 
 data class PlayerRosterMonster(
