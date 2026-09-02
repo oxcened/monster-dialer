@@ -32,7 +32,7 @@
     <string name="contact_characters_ready" comment="Short status shown on the Contact Characters action when one or more contacts are configured.">Call roster ready</string>
     <string name="character_packs_home_description" comment="Short description for the character packs action on the Characters home screen.">Browse your packs</string>
     <string name="import_character_home_description" comment="Short description for the character import action on the Characters home screen.">Add a shared one</string>
-    <string name="open_character_guide" comment="Action label that opens the Character Guide.">Open Character Guide</string>
+    <string name="open_character_guide" comment="Action label that opens the Character Guide.">Open guide</string>
     <string name="settings_character_packs_description" comment="Settings description for character packs.">Import and manage custom character artwork.</string>
     <string name="import_character" comment="Action that starts selecting a shared single-character file.">Import character</string>
     <string name="import_character_description" comment="Description of the action that imports a shared character.">Add a character someone shared with you.</string>
@@ -155,6 +155,7 @@
     <!-- Character creation -->
     <string name="add_trainer" comment="Button to start adding a new custom trainer.">Add trainer</string>
     <string name="add_monster" comment="Button to start adding a new custom monster.">Add monster</string>
+    <string name="reorder_monster">Reorder monster</string>
     <string name="create_trainer_title" comment="Title of the trainer creation screen.">Add trainer</string>
     <string name="create_monster_title" comment="Title of the monster creation screen.">Add monster</string>
     <string name="character_sprites_section" comment="Heading for the character sprites section.">Sprites</string>

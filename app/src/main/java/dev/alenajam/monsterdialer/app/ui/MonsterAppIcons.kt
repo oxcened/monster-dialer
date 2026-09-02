@@ -7,6 +7,7 @@ import androidx.compose.material.icons.outlined.AddCircleOutline
 import androidx.compose.material.icons.outlined.AutoAwesome
 import androidx.compose.material.icons.outlined.FolderOpen
 import androidx.compose.material.icons.outlined.GridView
+import androidx.compose.material.icons.outlined.Reorder
 import androidx.compose.runtime.Immutable
 import androidx.compose.runtime.staticCompositionLocalOf
 import dev.alenajam.monsterdialer.R
@@ -20,7 +21,8 @@ data class MonsterAppIcons(
     val importPacks: IconSource,
     val viewList: IconSource,
     val viewGrid: IconSource,
-    val help: IconSource
+    val help: IconSource,
+    val reorder: IconSource
 )
 
 val DefaultMonsterAppIcons = MonsterAppIcons(
@@ -30,7 +32,8 @@ val DefaultMonsterAppIcons = MonsterAppIcons(
     importPacks = IconSource.Vector(Icons.Outlined.FolderOpen),
     viewList = IconSource.Vector(Icons.AutoMirrored.Outlined.ViewList),
     viewGrid = IconSource.Vector(Icons.Outlined.GridView),
-    help = IconSource.Vector(Icons.AutoMirrored.Outlined.HelpOutline)
+    help = IconSource.Vector(Icons.AutoMirrored.Outlined.HelpOutline),
+    reorder = IconSource.Vector(Icons.Outlined.Reorder)
 )
 
 val LocalMonsterAppIcons = staticCompositionLocalOf { DefaultMonsterAppIcons }
