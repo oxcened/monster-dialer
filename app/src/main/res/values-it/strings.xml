@@ -130,6 +130,7 @@
     <!-- Character creation -->
     <string name="add_trainer" comment="Button to start adding a new custom trainer.">Aggiungi allenatore</string>
     <string name="add_monster" comment="Button to start adding a new custom monster.">Aggiungi mostro</string>
+    <string name="roster_full_message" comment="Message shown when the player tries to add a monster but the roster is full.">La tua squadra è al completo. Rimuovi prima un mostro per aggiungerne un altro.</string>
     <string name="create_trainer_title" comment="Title of the trainer creation screen.">Aggiungi allenatore</string>
     <string name="create_monster_title" comment="Title of the monster creation screen.">Aggiungi mostro</string>
     <string name="character_sprites_section" comment="Heading for the character sprites section.">Sprite</string>
@@ -195,4 +196,24 @@
     <string name="characters_help_assignments_message">Ci sono due modi per usare i personaggi:</string>
     <string name="characters_help_assignments_player"><b>Personaggio del giocatore:</b> è il tuo avatar. Impostalo nelle opzioni “Personaggio del giocatore” per rappresentarti in ogni chiamata.</string>
     <string name="characters_help_assignments_contact"><b>Personaggi dei contatti:</b> assegna mostri o allenatori a singoli contatti nelle opzioni “Personaggi dei contatti”. Appariranno come avversari quando ti chiamano.</string>
+    <string name="customize_your_calls">Personalizza le tue chiamate</string>
+    <string name="character_collection_title">La tua collezione</string>
+    <string name="profile_trainer_label">Il tuo allenatore</string>
+    <string name="active_monster_label">Mostro attivo</string>
+    <string name="calls_battled">Chiamate combattute</string>
+    <string name="characters_collected">Collezionati</string>
+    <string name="radiants_found">Radiosi trovati</string>
+    <string name="profile_calls_battled">%1$d chiamate combattute</string>
+    <string name="profile_collection_summary">%1$d collezionati · %2$d radiosi trovati</string>
+    <string name="character_tools_title">Strumenti</string>
+    <string name="your_roster">La tua squadra</string>
+    <string name="roster_monster_level">Lv. %1$d</string>
+    <string name="roster_monster_description">%1$s, livello %2$d</string>
+    <string name="remove_roster_monster">Rimuovi mostro</string>
+    <string name="contact_characters_ready">Squadra chiamate pronta</string>
+    <string name="character_packs_home_description">Sfoglia i tuoi pacchetti</string>
+    <string name="import_character_home_description">Aggiungi uno condiviso</string>
+    <string name="open_character_guide">Apri guida</string>
+    <string name="personalize_contact_character">Personalizza i personaggi del chiamante</string>
+    <string name="reorder_monster">Riordina mostro</string>
 </resources>

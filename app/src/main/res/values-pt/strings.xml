@@ -130,6 +130,7 @@
     <!-- Character creation -->
     <string name="add_trainer" comment="Button to start adding a new custom trainer.">Adicionar treinador</string>
     <string name="add_monster" comment="Button to start adding a new custom monster.">Adicionar monstro</string>
+    <string name="roster_full_message" comment="Message shown when the player tries to add a monster but the roster is full.">A tua equipa está cheia. Remove primeiro um monstro para adicionar outro.</string>
     <string name="create_trainer_title" comment="Title of the trainer creation screen.">Adicionar treinador</string>
     <string name="create_monster_title" comment="Title of the monster creation screen.">Adicionar monstro</string>
     <string name="character_sprites_section" comment="Heading for the character sprites section.">Sprites</string>
@@ -178,4 +179,24 @@
     <string name="characters_help_radiants_title">Descoberta radiante</string><string name="characters_help_radiants_message">Monstros radiantes são raros. As variantes de pacotes desbloqueiam-se quando as encontras na natureza durante uma chamada.</string>
     <string name="characters_help_management_title">Gerir a coleção</string><string name="characters_help_management_message">Mantém premida uma personagem em “Os teus monstros” ou “Os teus treinadores” para editar, partilhar ou eliminar.</string>
     <string name="characters_help_assignments_title">Personalizar chamadas</string><string name="characters_help_assignments_message">Há duas formas de usar personagens:</string><string name="characters_help_assignments_player"><b>Personagem do jogador:</b> o teu avatar em cada chamada.</string><string name="characters_help_assignments_contact"><b>Personagens de contactos:</b> atribui monstros ou treinadores aos contactos; serão os adversários quando ligarem.</string>
+    <string name="customize_your_calls">Personaliza as tuas chamadas</string>
+    <string name="character_collection_title">A tua coleção</string>
+    <string name="profile_trainer_label">O teu treinador</string>
+    <string name="active_monster_label">Monstro ativo</string>
+    <string name="calls_battled">Chamadas combatidas</string>
+    <string name="characters_collected">Colecionados</string>
+    <string name="radiants_found">Radiantes encontrados</string>
+    <string name="profile_calls_battled">%1$d chamadas combatidas</string>
+    <string name="profile_collection_summary">%1$d colecionados · %2$d radiantes encontrados</string>
+    <string name="character_tools_title">Ferramentas</string>
+    <string name="your_roster">A tua equipa</string>
+    <string name="roster_monster_level">Nv. %1$d</string>
+    <string name="roster_monster_description">%1$s, nível %2$d</string>
+    <string name="remove_roster_monster">Remover monstro</string>
+    <string name="contact_characters_ready">Equipa de chamadas pronta</string>
+    <string name="character_packs_home_description">Explora os teus pacotes</string>
+    <string name="import_character_home_description">Adiciona um partilhado</string>
+    <string name="open_character_guide">Abrir guia</string>
+    <string name="personalize_contact_character">Personalizar personagens do chamador</string>
+    <string name="reorder_monster">Reordenar monstro</string>
 </resources>

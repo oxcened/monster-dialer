@@ -30,9 +30,23 @@ import dev.alenajam.monsterdialer.packs.data.CharacterAssignmentTarget
 import dev.alenajam.monsterdialer.packs.data.InstalledPackCharacter
 import kotlinx.coroutines.launch
 
+internal enum class PlayerCharacterSettingsRoute(
+    val payload: String,
+    val selectedTab: Int,
+) {
+    ChangeTrainer(payload = "change_trainer", selectedTab = 0),
+    AddToRoster(payload = "add_to_roster", selectedTab = 1);
+
+    companion object {
+        fun fromPayload(payload: String?): PlayerCharacterSettingsRoute? =
+            entries.firstOrNull { it.payload == payload }
+    }
+}
+
 @Composable
-fun ColumnScope.PlayerCharacterSettingsContent(
-    viewModel: PlayerCharacterSettingsViewModel = hiltViewModel()
+internal fun ColumnScope.PlayerCharacterSettingsContent(
+    route: PlayerCharacterSettingsRoute? = null,
+    viewModel: PlayerCharacterSettingsViewModel = hiltViewModel(),
 ) {
     val assignedTrainer by viewModel.assignedTrainer.collectAsStateWithLifecycle()
     val assignedMonster by viewModel.assignedMonster.collectAsStateWithLifecycle()
@@ -65,6 +79,10 @@ fun ColumnScope.PlayerCharacterSettingsContent(
     val addTrainerLabel = stringResource(R.string.add_trainer)
     val addMonsterLabel = stringResource(R.string.add_monster)
     val navigator = dev.alenajam.opendialer.feature.settings.LocalSettingsSubpageNavigator.current
+
+    LaunchedEffect(route) {
+        route?.let { viewModel.setSelectedTab(it.selectedTab) }
+    }
 
     CharacterTypeTabs(
         selectedTab = selectedTab,
@@ -120,6 +138,8 @@ fun ColumnScope.PlayerCharacterSettingsContent(
         }
     }
 
+    val selectedReferences = monsterRoster.toSet() + listOfNotNull(assignedMonster)
+
     Box(modifier = Modifier.fillMaxWidth().weight(1f)) {
         if (effectiveLayout == CharacterLayout.List) {
             LazyColumn(state = listState, modifier = Modifier.fillMaxSize(), contentPadding = PaddingValues(top = 8.dp, bottom = 72.dp)) {
@@ -163,7 +183,7 @@ fun ColumnScope.PlayerCharacterSettingsContent(
                         onDelete = { character -> scope.launch { isPendingDeletionInUse = viewModel.isCharacterInUse(character.character.id); pendingDeletion = character } },
                         onEdit = { navigator?.navigateTo(1, it.character.id) },
                         onShare = { pendingShare = it },
-                        selectedReferences = monsterRoster.toSet() + listOfNotNull(assignedMonster),
+                        selectedReferences = selectedReferences,
                         hideSelected = true
                     )
                 }
@@ -210,7 +230,7 @@ fun ColumnScope.PlayerCharacterSettingsContent(
                         onDelete = { character -> scope.launch { isPendingDeletionInUse = viewModel.isCharacterInUse(character.character.id); pendingDeletion = character } },
                         onEdit = { navigator?.navigateTo(1, it.character.id) },
                         onShare = { pendingShare = it },
-                        selectedReferences = monsterRoster.toSet() + listOfNotNull(assignedMonster),
+                        selectedReferences = selectedReferences,
                         hideSelected = true
                     )
                 }

@@ -130,6 +130,7 @@
     <!-- Character creation -->
     <string name="add_trainer" comment="Button to start adding a new custom trainer.">Ajouter un dresseur</string>
     <string name="add_monster" comment="Button to start adding a new custom monster.">Ajouter un monstre</string>
+    <string name="roster_full_message" comment="Message shown when the player tries to add a monster but the roster is full.">Votre équipe est complète. Retirez d’abord un monstre pour en ajouter un autre.</string>
     <string name="create_trainer_title" comment="Title of the trainer creation screen.">Ajouter un dresseur</string>
     <string name="create_monster_title" comment="Title of the monster creation screen.">Ajouter un monstre</string>
     <string name="character_sprites_section" comment="Heading for the character sprites section.">Sprites</string>
@@ -178,4 +179,24 @@
     <string name="characters_help_radiants_title">Découverte radieuse</string><string name="characters_help_radiants_message">Les monstres radieux sont rares. Les variantes des packs se débloquent lorsque vous les rencontrez à l’état sauvage pendant un appel.</string>
     <string name="characters_help_management_title">Gérer la collection</string><string name="characters_help_management_message">Appuyez longuement sur un personnage dans « Vos monstres » ou « Vos dresseurs » pour le modifier, partager ou supprimer.</string>
     <string name="characters_help_assignments_title">Personnaliser les appels</string><string name="characters_help_assignments_message">Les personnages s’utilisent de deux façons :</string><string name="characters_help_assignments_player"><b>Personnage du joueur :</b> votre avatar pour chaque appel.</string><string name="characters_help_assignments_contact"><b>Personnages des contacts :</b> attribuez des monstres ou dresseurs à vos contacts ; ils seront vos adversaires lors de leurs appels.</string>
+    <string name="customize_your_calls">Personnalisez vos appels</string>
+    <string name="character_collection_title">Votre collection</string>
+    <string name="profile_trainer_label">Votre dresseur</string>
+    <string name="active_monster_label">Monstre actif</string>
+    <string name="calls_battled">Appels combattus</string>
+    <string name="characters_collected">Collectés</string>
+    <string name="radiants_found">Radieux trouvés</string>
+    <string name="profile_calls_battled">%1$d appels combattus</string>
+    <string name="profile_collection_summary">%1$d collectés · %2$d radieux trouvés</string>
+    <string name="character_tools_title">Outils</string>
+    <string name="your_roster">Votre équipe</string>
+    <string name="roster_monster_level">Niv. %1$d</string>
+    <string name="roster_monster_description">%1$s, niveau %2$d</string>
+    <string name="remove_roster_monster">Retirer le monstre</string>
+    <string name="contact_characters_ready">Équipe d’appel prête</string>
+    <string name="character_packs_home_description">Parcourez vos packs</string>
+    <string name="import_character_home_description">Ajoutez-en un partagé</string>
+    <string name="open_character_guide">Ouvrir le guide</string>
+    <string name="personalize_contact_character">Personnaliser les personnages de l’appelant</string>
+    <string name="reorder_monster">Réorganiser le monstre</string>
 </resources>

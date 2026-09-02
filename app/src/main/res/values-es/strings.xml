@@ -130,6 +130,7 @@
     <!-- Character creation -->
     <string name="add_trainer" comment="Button to start adding a new custom trainer.">Añadir entrenador</string>
     <string name="add_monster" comment="Button to start adding a new custom monster.">Añadir monstruo</string>
+    <string name="roster_full_message" comment="Message shown when the player tries to add a monster but the roster is full.">Tu equipo está completo. Elimina primero un monstruo para añadir otro.</string>
     <string name="create_trainer_title" comment="Title of the trainer creation screen.">Añadir entrenador</string>
     <string name="create_monster_title" comment="Title of the monster creation screen.">Añadir monstruo</string>
     <string name="character_sprites_section" comment="Heading for the character sprites section.">Sprites</string>
@@ -178,4 +179,24 @@
     <string name="characters_help_radiants_title">Descubrimiento radiante</string><string name="characters_help_radiants_message">Los monstruos radiantes son raros. Las variantes de paquetes se desbloquean al encontrarlas en estado salvaje durante una llamada.</string>
     <string name="characters_help_management_title">Gestionar la colección</string><string name="characters_help_management_message">Mantén pulsado un personaje en «Tus monstruos» o «Tus entrenadores» para editarlo, compartirlo o eliminarlo.</string>
     <string name="characters_help_assignments_title">Personalizar llamadas</string><string name="characters_help_assignments_message">Hay dos maneras de usar personajes:</string><string name="characters_help_assignments_player"><b>Personaje del jugador:</b> tu avatar en cada llamada.</string><string name="characters_help_assignments_contact"><b>Personajes de contactos:</b> asigna monstruos o entrenadores a contactos; serán tus oponentes cuando llamen.</string>
+    <string name="customize_your_calls">Personaliza tus llamadas</string>
+    <string name="character_collection_title">Tu colección</string>
+    <string name="profile_trainer_label">Tu entrenador</string>
+    <string name="active_monster_label">Monstruo activo</string>
+    <string name="calls_battled">Llamadas combatidas</string>
+    <string name="characters_collected">Coleccionados</string>
+    <string name="radiants_found">Radiantes encontrados</string>
+    <string name="profile_calls_battled">%1$d llamadas combatidas</string>
+    <string name="profile_collection_summary">%1$d coleccionados · %2$d radiantes encontrados</string>
+    <string name="character_tools_title">Herramientas</string>
+    <string name="your_roster">Tu equipo</string>
+    <string name="roster_monster_level">Nv. %1$d</string>
+    <string name="roster_monster_description">%1$s, nivel %2$d</string>
+    <string name="remove_roster_monster">Eliminar monstruo</string>
+    <string name="contact_characters_ready">Equipo de llamada listo</string>
+    <string name="character_packs_home_description">Explora tus paquetes</string>
+    <string name="import_character_home_description">Añade uno compartido</string>
+    <string name="open_character_guide">Abrir guía</string>
+    <string name="personalize_contact_character">Personalizar personajes del llamante</string>
+    <string name="reorder_monster">Reordenar monstruo</string>
 </resources>

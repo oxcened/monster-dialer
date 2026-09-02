@@ -133,6 +133,7 @@
     <!-- Character creation -->
     <string name="add_trainer" comment="Button to start adding a new custom trainer.">Adaugă antrenor</string>
     <string name="add_monster" comment="Button to start adding a new custom monster.">Adaugă monstru</string>
+    <string name="roster_full_message" comment="Message shown when the player tries to add a monster but the roster is full.">Echipa ta este completă. Elimină mai întâi un monstru pentru a adăuga altul.</string>
     <string name="create_trainer_title" comment="Title of the trainer creation screen.">Adaugă antrenor</string>
     <string name="create_monster_title" comment="Title of the monster creation screen.">Adaugă monstru</string>
     <string name="character_sprites_section" comment="Heading for the character sprites section.">Sprite-uri</string>
@@ -181,4 +182,24 @@
     <string name="characters_help_radiants_title">Descoperire radiantă</string><string name="characters_help_radiants_message">Monștrii radianți sunt rari. Variantele din pachete se deblochează când le întâlnești în sălbăticie în timpul unui apel.</string>
     <string name="characters_help_management_title">Gestionarea colecției</string><string name="characters_help_management_message">Ține apăsat un personaj din „Monștrii tăi” sau „Antrenorii tăi” pentru a-l edita, partaja sau șterge.</string>
     <string name="characters_help_assignments_title">Personalizarea apelurilor</string><string name="characters_help_assignments_message">Personajele pot fi folosite în două moduri:</string><string name="characters_help_assignments_player"><b>Personajul jucătorului:</b> avatarul tău la fiecare apel.</string><string name="characters_help_assignments_contact"><b>Personajele contactelor:</b> atribuie monștri sau antrenori contactelor; ei vor fi adversarii când te sună.</string>
+    <string name="customize_your_calls">Personalizează apelurile</string>
+    <string name="character_collection_title">Colecția ta</string>
+    <string name="profile_trainer_label">Antrenorul tău</string>
+    <string name="active_monster_label">Monstru activ</string>
+    <string name="calls_battled">Apeluri cu lupte</string>
+    <string name="characters_collected">Colecționate</string>
+    <string name="radiants_found">Radiante găsite</string>
+    <string name="profile_calls_battled">%1$d apeluri cu lupte</string>
+    <string name="profile_collection_summary">%1$d colecționate · %2$d radiante găsite</string>
+    <string name="character_tools_title">Instrumente</string>
+    <string name="your_roster">Echipa ta</string>
+    <string name="roster_monster_level">Nv. %1$d</string>
+    <string name="roster_monster_description">%1$s, nivelul %2$d</string>
+    <string name="remove_roster_monster">Elimină monstrul</string>
+    <string name="contact_characters_ready">Echipa de apel este gata</string>
+    <string name="character_packs_home_description">Răsfoiește pachetele</string>
+    <string name="import_character_home_description">Adaugă unul partajat</string>
+    <string name="open_character_guide">Deschide ghidul</string>
+    <string name="personalize_contact_character">Personalizează personajele apelantului</string>
+    <string name="reorder_monster">Reordonează monstrul</string>
 </resources>

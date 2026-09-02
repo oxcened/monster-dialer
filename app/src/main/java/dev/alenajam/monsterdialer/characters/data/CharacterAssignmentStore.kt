@@ -9,6 +9,8 @@ import kotlinx.serialization.Serializable
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 
+internal const val MaxPlayerMonsterBenchSize = 5
+
 @Serializable
 private data class CharacterAssignmentsDocument(
     /** Legacy v1 monster assignment. */
@@ -70,7 +72,7 @@ class CharacterAssignmentStore(
             val roster = character?.let { selected ->
                 when {
                     active == null || selected == active -> benchRoster(document)
-                    else -> benchRoster(document).filterNot { it == selected }.plus(selected).take(MaxBenchSize)
+                    else -> benchRoster(document).filterNot { it == selected }.plus(selected).take(MaxPlayerMonsterBenchSize)
                 }
             }.orEmpty()
             write(document.copy(
@@ -108,10 +110,14 @@ class CharacterAssignmentStore(
         val updatedRoster = if (character == active) {
             roster
         } else {
-            roster.toMutableList().apply {
-                removeAt(selectedIndex)
-                active?.let { add(selectedIndex, it) }
+            // Swap pattern: old active monster takes the spot of the new active monster
+            val newRoster = roster.toMutableList()
+            if (active != null) {
+                newRoster[selectedIndex] = active
+            } else {
+                newRoster.removeAt(selectedIndex)
             }
+            newRoster
         }
         write(document.copy(
             player = null,
@@ -136,14 +142,14 @@ class CharacterAssignmentStore(
                 playerMonsterRoster = emptyList(),
             ))
         } else {
-            require(roster.size < MaxBenchSize) { "Roster is full" }
+            require(roster.size < MaxPlayerMonsterBenchSize) { "Roster is full" }
             setPlayerMonsterRoster(roster + character)
         }
     }
 
     @Synchronized
     fun setPlayerMonsterRoster(roster: List<CharacterReference>) {
-        require(roster.size <= MaxBenchSize) { "Roster is too large" }
+        require(roster.size <= MaxPlayerMonsterBenchSize) { "Roster is too large" }
         require(roster.distinct().size == roster.size) { "Roster contains duplicate monsters" }
         roster.forEach { reference -> reference.validate() }
         val document = read()
@@ -351,7 +357,7 @@ class CharacterAssignmentStore(
         document.playerMonsterRoster
             .filterNot { it == activeMonster(document) }
             .distinct()
-            .take(MaxBenchSize)
+            .take(MaxPlayerMonsterBenchSize)
 
     private fun normalizeContactKey(value: String): String {
         return requireNotNull(normalizeContactKeyOrNull(value)) { "Contact key is invalid" }
@@ -402,8 +408,6 @@ class CharacterAssignmentStore(
     private fun fail(message: String): Nothing = throw CharacterPackValidationException(message)
 
     private companion object {
-        const val MaxRosterSize = 6
-        const val MaxBenchSize = MaxRosterSize - 1
         const val FileName = "character-assignments.json"
         const val MaxIdentifierLength = 128
         const val MaxContactKeyLength = 512

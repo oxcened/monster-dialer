@@ -42,6 +42,7 @@ import dev.alenajam.monsterdialer.characters.ui.ContactPickerDestination
 import dev.alenajam.monsterdialer.characters.ui.CharacterSettingsSummaryViewModel
 import dev.alenajam.monsterdialer.characters.ui.CharactersHomeScreen
 import dev.alenajam.monsterdialer.characters.ui.PlayerCharacterSettingsContent
+import dev.alenajam.monsterdialer.characters.ui.PlayerCharacterSettingsRoute
 import dev.alenajam.monsterdialer.characters.ui.CharacterSharingViewModel
 import dev.alenajam.monsterdialer.characters.ui.SharedCharacterImportHandler
 import dev.alenajam.monsterdialer.contacts.data.MonsterContact
@@ -141,7 +142,11 @@ class MainActivity : AppCompatActivity() {
                                 ?.joinToString(separator = " • ")
                                 ?.let { names -> stringResource(R.string.using_characters, names) }
                                 ?: stringResource(R.string.player_characters_not_set),
-                            content = { PlayerCharacterSettingsContent() },
+                            content = { payload ->
+                                PlayerCharacterSettingsContent(
+                                    route = PlayerCharacterSettingsRoute.fromPayload(payload),
+                                )
+                            },
                             isScrollable = false,
                             topContentPadding = 0.dp,
                             visibleInSettings = false,
@@ -170,7 +175,7 @@ class MainActivity : AppCompatActivity() {
                             topBarTitle = selectedContact?.let { contact ->
                                 { ContactCharacterTopBarTitle(contact) }
                             },
-                            content = { ContactCharacterSettingsContent() },
+                            content = { _ -> ContactCharacterSettingsContent() },
                             isScrollable = false,
                             topContentPadding = 0.dp,
                             visibleInSettings = false,
@@ -211,7 +216,7 @@ class MainActivity : AppCompatActivity() {
                                 }
                                 parts.joinToString(" • ")
                             },
-                            content = {
+                            content = { _ ->
                                 CharacterPackSettingsContent(
                                     viewModel = characterPackSettingsViewModel,
                                     showImportUi = false,
@@ -229,7 +234,7 @@ class MainActivity : AppCompatActivity() {
                         SettingsSubpage(
                             title = stringResource(R.string.characters_help_title),
                             description = stringResource(R.string.characters_help_description),
-                            content = { CharactersHelpScreen() },
+                            content = { _ -> CharactersHelpScreen() },
                             visibleInSettings = false,
                             isScrollable = true,
                             topContentPadding = 0.dp

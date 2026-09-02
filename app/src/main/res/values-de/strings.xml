@@ -130,6 +130,7 @@
     <!-- Character creation -->
     <string name="add_trainer" comment="Button to start adding a new custom trainer.">Trainer hinzufügen</string>
     <string name="add_monster" comment="Button to start adding a new custom monster.">Monster hinzufügen</string>
+    <string name="roster_full_message" comment="Message shown when the player tries to add a monster but the roster is full.">Dein Team ist voll. Entferne zuerst ein Monster, um ein weiteres hinzuzufügen.</string>
     <string name="create_trainer_title" comment="Title of the trainer creation screen.">Trainer hinzufügen</string>
     <string name="create_monster_title" comment="Title of the monster creation screen.">Monster hinzufügen</string>
     <string name="character_sprites_section" comment="Heading for the character sprites section.">Sprites</string>
@@ -178,4 +179,24 @@
     <string name="characters_help_radiants_title">Strahlende Entdeckung</string><string name="characters_help_radiants_message">Strahlende Monster sind selten. Pack-Varianten werden freigeschaltet, wenn du ihnen während eines Anrufs in freier Wildbahn begegnest.</string>
     <string name="characters_help_management_title">Sammlung verwalten</string><string name="characters_help_management_message">Halte einen Charakter unter „Deine Monster“ oder „Deine Trainer“ gedrückt, um ihn zu bearbeiten, zu teilen oder zu löschen.</string>
     <string name="characters_help_assignments_title">Anrufe personalisieren</string><string name="characters_help_assignments_message">Charaktere lassen sich auf zwei Arten nutzen:</string><string name="characters_help_assignments_player"><b>Spielercharakter:</b> dein Avatar für jeden Anruf.</string><string name="characters_help_assignments_contact"><b>Kontaktcharaktere:</b> Weise Kontakten Monster oder Trainer zu; sie erscheinen als Gegner, wenn sie anrufen.</string>
+    <string name="customize_your_calls">Passe deine Anrufe an</string>
+    <string name="character_collection_title">Deine Sammlung</string>
+    <string name="profile_trainer_label">Dein Trainer</string>
+    <string name="active_monster_label">Aktives Monster</string>
+    <string name="calls_battled">Kämpfe in Anrufen</string>
+    <string name="characters_collected">Gesammelt</string>
+    <string name="radiants_found">Strahlende gefunden</string>
+    <string name="profile_calls_battled">%1$d Kämpfe in Anrufen</string>
+    <string name="profile_collection_summary">%1$d gesammelt · %2$d strahlende gefunden</string>
+    <string name="character_tools_title">Werkzeuge</string>
+    <string name="your_roster">Dein Team</string>
+    <string name="roster_monster_level">Lv. %1$d</string>
+    <string name="roster_monster_description">%1$s, Level %2$d</string>
+    <string name="remove_roster_monster">Monster entfernen</string>
+    <string name="contact_characters_ready">Anrufteam bereit</string>
+    <string name="character_packs_home_description">Durchsuche deine Pakete</string>
+    <string name="import_character_home_description">Geteiltes hinzufügen</string>
+    <string name="open_character_guide">Guide öffnen</string>
+    <string name="personalize_contact_character">Anruferfiguren anpassen</string>
+    <string name="reorder_monster">Monster neu anordnen</string>
 </resources>

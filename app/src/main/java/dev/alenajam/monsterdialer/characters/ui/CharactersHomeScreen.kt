@@ -8,6 +8,7 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.combinedClickable
+import androidx.compose.foundation.indication
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Arrangement
@@ -64,6 +65,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil.compose.AsyncImage
 import dev.alenajam.monsterdialer.R
 import dev.alenajam.monsterdialer.app.ui.LocalMonsterAppIcons
+import dev.alenajam.monsterdialer.characters.data.MaxPlayerMonsterBenchSize
 import dev.alenajam.monsterdialer.characters.data.SharedCharacterImport
 import dev.alenajam.monsterdialer.packs.data.CharacterReference
 import dev.alenajam.monsterdialer.packs.data.CharacterType
@@ -75,7 +77,7 @@ import sh.calvin.reorderable.rememberReorderableLazyListState
 
 @Composable
 fun CharactersHomeScreen(
-    onOpenSubpage: (Int) -> Unit,
+    onOpenSubpage: (Int, String?) -> Unit,
     sharingViewModel: CharacterSharingViewModel = hiltViewModel(),
     playerProfile: PlayerProfile,
     onReorderRoster: (List<CharacterReference>) -> Unit,
@@ -101,11 +103,11 @@ fun CharactersHomeScreen(
     ) {
         TeamProfileCard(
             playerProfile = playerProfile,
-            onClick = { onOpenSubpage(0) }
+            onChangeTrainer = { onOpenSubpage(0, PlayerCharacterSettingsRoute.ChangeTrainer.payload) }
         )
         RosterSection(
             roster = playerProfile.roster,
-            onOpenRoster = { onOpenSubpage(0) },
+            onOpenRoster = { onOpenSubpage(0, PlayerCharacterSettingsRoute.AddToRoster.payload) },
             onReorderRoster = onReorderRoster,
             onSetActiveMonster = onSetActiveMonster,
             onRemoveRosterMonster = onRemoveRosterMonster,
@@ -117,12 +119,12 @@ fun CharactersHomeScreen(
                 color = MaterialTheme.colorScheme.onSurface
             )
             CharacterToolsGroup(
-                onOpenPacks = { onOpenSubpage(2) },
+                onOpenPacks = { onOpenSubpage(2, null) },
                 onImport = { picker.launch(arrayOf("*/*")) },
             )
         }
         TextButton(
-            onClick = { onOpenSubpage(3) },
+            onClick = { onOpenSubpage(3, null) },
             modifier = Modifier.align(Alignment.CenterHorizontally)
         ) {
             AppIcon(LocalMonsterAppIcons.current.help, contentDescription = null, modifier = Modifier.size(18.dp))
@@ -195,8 +197,18 @@ private fun RosterSection(
                     )
                 }
             }
-            if (orderedRoster.size < 5) {
-                item(key = "add-monster") { RosterAddTile(onClick = onOpenRoster) }
+            item(key = "add-monster") {
+                val context = androidx.compose.ui.platform.LocalContext.current
+                val rosterFullMessage = stringResource(R.string.roster_full_message)
+                RosterAddTile(
+                    onClick = {
+                        if (orderedRoster.size < MaxPlayerMonsterBenchSize) {
+                            onOpenRoster()
+                        } else {
+                            android.widget.Toast.makeText(context, rosterFullMessage, android.widget.Toast.LENGTH_SHORT).show()
+                        }
+                    }
+                )
             }
         }
     }
@@ -222,12 +234,6 @@ private fun RosterMonsterTile(
             modifier = Modifier
                 .width(82.dp)
                 .height(130.dp)
-                .combinedClickable(
-                    interactionSource = interactionSource,
-                    indication = androidx.compose.foundation.LocalIndication.current,
-                    onClick = onClick,
-                    onLongClick = { showMenu = true }
-                )
                 .then(modifier),
             shape = RoundedCornerShape(18.dp),
             colors = CardDefaults.cardColors(
@@ -239,7 +245,22 @@ private fun RosterMonsterTile(
             ),
             elevation = CardDefaults.cardElevation(defaultElevation = if (isDragged) 8.dp else 0.dp),
         ) {
-            RosterMonsterContent(monster, dragHandle)
+            Box(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .indication(
+                        interactionSource = interactionSource,
+                        indication = androidx.compose.foundation.LocalIndication.current,
+                    ),
+            ) {
+                RosterMonsterContent(
+                    monster = monster,
+                    dragHandle = dragHandle,
+                    interactionSource = interactionSource,
+                    onClick = onClick,
+                    onLongClick = { showMenu = true },
+                )
+            }
         }
 
         DropdownMenu(
@@ -260,10 +281,14 @@ private fun RosterMonsterTile(
     }
 }
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 private fun RosterMonsterContent(
     monster: PlayerRosterMonster,
-    dragHandle: @Composable () -> Unit
+    dragHandle: @Composable () -> Unit,
+    interactionSource: MutableInteractionSource,
+    onClick: () -> Unit,
+    onLongClick: () -> Unit,
 ) {
     Column(
         modifier = Modifier.fillMaxSize().padding(vertical = 4.dp),
@@ -275,23 +300,36 @@ private fun RosterMonsterContent(
         ) {
             dragHandle()
         }
-        TeamArtwork(
-            artworkFile = monster.character.artwork,
-            fallbackArtwork = monster.character.fallbackArtwork,
-            contentDescription = monster.character.name,
-            modifier = Modifier.size(54.dp),
-        )
-        Spacer(Modifier.height(4.dp))
         Column(
-            modifier = Modifier.fillMaxWidth().padding(horizontal = 8.dp),
-            horizontalAlignment = Alignment.Start,
+            modifier = Modifier
+                .fillMaxWidth()
+                .weight(1f)
+                .combinedClickable(
+                    interactionSource = interactionSource,
+                    indication = null,
+                    onClick = onClick,
+                    onLongClick = onLongClick,
+                ),
+            horizontalAlignment = Alignment.CenterHorizontally,
         ) {
-            Text(monster.character.name, style = MaterialTheme.typography.labelMedium, maxLines = 1, overflow = TextOverflow.Ellipsis)
-            Text(
-                text = stringResource(R.string.roster_monster_level, monster.character.level ?: DefaultMonsterLevel),
-                style = MaterialTheme.typography.labelSmall,
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
+            TeamArtwork(
+                artworkFile = monster.character.artwork,
+                fallbackArtwork = monster.character.fallbackArtwork,
+                contentDescription = monster.character.name,
+                modifier = Modifier.size(54.dp),
             )
+            Spacer(Modifier.height(4.dp))
+            Column(
+                modifier = Modifier.fillMaxWidth().padding(horizontal = 8.dp),
+                horizontalAlignment = Alignment.Start,
+            ) {
+                Text(monster.character.name, style = MaterialTheme.typography.labelMedium, maxLines = 1, overflow = TextOverflow.Ellipsis)
+                Text(
+                    text = stringResource(R.string.roster_monster_level, monster.character.level ?: DefaultMonsterLevel),
+                    style = MaterialTheme.typography.labelSmall,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                )
+            }
         }
     }
 }
@@ -336,7 +374,7 @@ private fun RosterAddTile(onClick: () -> Unit) {
 @Composable
 private fun TeamProfileCard(
     playerProfile: PlayerProfile,
-    onClick: () -> Unit,
+    onChangeTrainer: () -> Unit,
 ) {
     val trainer = playerProfile.trainer
     val monster = playerProfile.monster
@@ -345,7 +383,6 @@ private fun TeamProfileCard(
     val metrics = profileMockMetrics()
 
     Card(
-        onClick = onClick,
         modifier = Modifier.fillMaxWidth(),
         shape = RoundedCornerShape(30.dp),
         colors = CardDefaults.cardColors(containerColor = Color.Transparent),
@@ -367,7 +404,15 @@ private fun TeamProfileCard(
                 modifier = Modifier.padding(20.dp),
                 verticalArrangement = Arrangement.spacedBy(14.dp)
             ) {
-                Row(modifier = Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(16.dp)) {
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .clip(RoundedCornerShape(20.dp))
+                        .clickable(onClick = onChangeTrainer)
+                        .padding(4.dp),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.spacedBy(16.dp)
+                ) {
                     TeamArtwork(
                         artworkFile = trainer.artwork,
                         fallbackArtwork = trainer.fallbackArtwork,

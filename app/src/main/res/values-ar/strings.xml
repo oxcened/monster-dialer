@@ -142,6 +142,7 @@
     <!-- Character creation -->
     <string name="add_trainer" comment="Button to start adding a new custom trainer.">إضافة مدرب</string>
     <string name="add_monster" comment="Button to start adding a new custom monster.">إضافة وحش</string>
+    <string name="roster_full_message" comment="Message shown when the player tries to add a monster but the roster is full.">قائمتك ممتلئة. أزل وحشًا أولاً لإضافة وحش آخر.</string>
     <string name="create_trainer_title" comment="Title of the trainer creation screen.">إضافة مدرب</string>
     <string name="create_monster_title" comment="Title of the monster creation screen.">إضافة وحش</string>
     <string name="character_sprites_section" comment="Heading for the character sprites section.">الرسومات</string>
@@ -186,4 +187,24 @@
     <string name="characters_help_sharing_title">المشاركة والاستيراد</string><string name="characters_help_sharing_message">يستخدم MonsterDialer نوعين من الملفات:</string><string name="characters_help_sharing_files_character"><b>.monstercharacter:</b> شخصية بإحصاءات ورسومات.</string><string name="characters_help_sharing_files_pack"><b>.monsterpack:</b> مجموعة شخصيات.</string><string name="characters_help_sharing_how_to">اضغط مطولاً على شخصية لتصديرها. للاستيراد، افتح ملفاً مستلماً أو استخدم «استيراد شخصية».</string>
     <string name="characters_help_packs_title">إنشاء حزم</string><string name="characters_help_packs_message">أنشئ حزمة من «حزم الشخصيات»، واختر الوحوش ثم صدّر ملف .monsterpack.</string><string name="characters_help_radiants_title">اكتشاف متألق</string><string name="characters_help_radiants_message">الوحوش المتألقة نادرة. تُفتح متغيرات الحزم عند مواجهتها في البرية أثناء مكالمة.</string>
     <string name="characters_help_management_title">إدارة المجموعة</string><string name="characters_help_management_message">اضغط مطولاً على شخصية في «وحوشك» أو «مدربوك» لتعديلها أو مشاركتها أو حذفها.</string><string name="characters_help_assignments_title">تخصيص المكالمات</string><string name="characters_help_assignments_message">يمكن استخدام الشخصيات بطريقتين:</string><string name="characters_help_assignments_player"><b>شخصية اللاعب:</b> صورتك الرمزية في كل مكالمة.</string><string name="characters_help_assignments_contact"><b>شخصيات جهات الاتصال:</b> عيّن وحوشاً أو مدربين لجهات الاتصال؛ سيظهرون كخصوم عند اتصالهم.</string>
+    <string name="customize_your_calls">تخصيص مكالماتك</string>
+    <string name="character_collection_title">مجموعة شخصياتك</string>
+    <string name="profile_trainer_label">مدربك</string>
+    <string name="active_monster_label">الوحش النشط</string>
+    <string name="calls_battled">مكالمات خيضت فيها معارك</string>
+    <string name="characters_collected">تم جمعها</string>
+    <string name="radiants_found">تم العثور على المتألقات</string>
+    <string name="profile_calls_battled">%1$d مكالمات خيضت فيها معارك</string>
+    <string name="profile_collection_summary">%1$d تم جمعها · %2$d متألقات تم العثور عليها</string>
+    <string name="character_tools_title">أدوات</string>
+    <string name="your_roster">قائمتك</string>
+    <string name="roster_monster_level">المستوى %1$d</string>
+    <string name="roster_monster_description">%1$s، المستوى %2$d</string>
+    <string name="remove_roster_monster">إزالة الوحش</string>
+    <string name="contact_characters_ready">فريق المكالمات جاهز</string>
+    <string name="character_packs_home_description">استعرض حزمك</string>
+    <string name="import_character_home_description">أضف شخصية مشتركة</string>
+    <string name="open_character_guide">فتح الدليل</string>
+    <string name="personalize_contact_character">تخصيص شخصيات المتصل</string>
+    <string name="reorder_monster">إعادة ترتيب الوحش</string>
 </resources>
