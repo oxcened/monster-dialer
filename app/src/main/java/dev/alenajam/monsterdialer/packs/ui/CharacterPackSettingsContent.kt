@@ -150,7 +150,7 @@ fun ColumnScope.CharacterPackSettingsContent(
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.spacedBy(16.dp)
             ) {
-                AppIcon(LocalMonsterAppIcons.current.importPacks, null, modifier = Modifier.size(56.dp), tint = MaterialTheme.colorScheme.primary)
+                AppIcon(LocalMonsterAppIcons.current.importCharacter, null, modifier = Modifier.size(56.dp), tint = MaterialTheme.colorScheme.primary)
                 Column(
                     horizontalAlignment = Alignment.CenterHorizontally,
                     verticalArrangement = Arrangement.spacedBy(8.dp)
@@ -188,7 +188,7 @@ fun ColumnScope.CharacterPackSettingsContent(
                 onClick = importPack,
                 modifier = Modifier.fillMaxWidth()
             ) {
-                AppIcon(LocalMonsterAppIcons.current.importPacks, contentDescription = null, modifier = Modifier.size(18.dp))
+                AppIcon(LocalMonsterAppIcons.current.importCharacter, contentDescription = null, modifier = Modifier.size(18.dp))
                 Text(stringResource(R.string.import_pack), modifier = Modifier.padding(start = 8.dp))
             }
             if (canCreatePack) {

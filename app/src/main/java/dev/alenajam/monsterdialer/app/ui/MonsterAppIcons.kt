@@ -1,12 +1,7 @@
 package dev.alenajam.monsterdialer.app.ui
 
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.outlined.HelpOutline
-import androidx.compose.material.icons.automirrored.outlined.ViewList
 import androidx.compose.material.icons.outlined.AddCircleOutline
-import androidx.compose.material.icons.outlined.AutoAwesome
-import androidx.compose.material.icons.outlined.FolderOpen
-import androidx.compose.material.icons.outlined.GridView
 import androidx.compose.material.icons.outlined.Reorder
 import androidx.compose.runtime.Immutable
 import androidx.compose.runtime.staticCompositionLocalOf
@@ -16,23 +11,29 @@ import dev.alenajam.opendialer.core.common.ui.IconSource
 @Immutable
 data class MonsterAppIcons(
     val addCharacter: IconSource,
+    val frontSprite: IconSource,
+    val backSprite: IconSource,
     val personalizeContact: IconSource,
     val radiant: IconSource,
-    val importPacks: IconSource,
+    val characterPacks: IconSource,
+    val importCharacter: IconSource,
     val viewList: IconSource,
     val viewGrid: IconSource,
-    val help: IconSource,
+    val guide: IconSource,
     val reorder: IconSource
 )
 
 val DefaultMonsterAppIcons = MonsterAppIcons(
     addCharacter = IconSource.Vector(Icons.Outlined.AddCircleOutline),
+    frontSprite = IconSource.Resource(R.drawable.front_sprite, tintable = false),
+    backSprite = IconSource.Resource(R.drawable.back_sprite, tintable = false),
     personalizeContact = IconSource.Resource(R.drawable.edit, tintable = false),
-    radiant = IconSource.Vector(Icons.Outlined.AutoAwesome),
-    importPacks = IconSource.Vector(Icons.Outlined.FolderOpen),
-    viewList = IconSource.Vector(Icons.AutoMirrored.Outlined.ViewList),
-    viewGrid = IconSource.Vector(Icons.Outlined.GridView),
-    help = IconSource.Vector(Icons.AutoMirrored.Outlined.HelpOutline),
+    radiant = IconSource.Resource(R.drawable.radiant, tintable = false),
+    characterPacks = IconSource.Resource(R.drawable.package_icon, tintable = false),
+    importCharacter = IconSource.Resource(R.drawable.import_icon, tintable = false),
+    viewList = IconSource.Resource(R.drawable.menu, tintable = false),
+    viewGrid = IconSource.Resource(R.drawable.grid, tintable = false),
+    guide = IconSource.Resource(R.drawable.guide, tintable = false),
     reorder = IconSource.Vector(Icons.Outlined.Reorder)
 )
 

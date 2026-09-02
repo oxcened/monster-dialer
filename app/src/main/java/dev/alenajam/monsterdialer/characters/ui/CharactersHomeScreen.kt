@@ -131,7 +131,7 @@ fun CharactersHomeScreen(
             onClick = { onOpenSubpage(3, null) },
             modifier = Modifier.align(Alignment.CenterHorizontally)
         ) {
-            AppIcon(LocalMonsterAppIcons.current.help, contentDescription = null, modifier = Modifier.size(18.dp))
+            AppIcon(LocalMonsterAppIcons.current.guide, contentDescription = null, modifier = Modifier.size(18.dp))
             Spacer(Modifier.width(8.dp))
             Text(stringResource(R.string.open_character_guide))
         }
@@ -539,7 +539,7 @@ private fun CharacterToolsGroup(
         ) {
             CharacterToolRow(
                 title = stringResource(R.string.settings_character_packs_title),
-                icon = LocalAppIcons.current.edit,
+                icon = LocalMonsterAppIcons.current.characterPacks,
                 onClick = onOpenPacks,
             )
             HorizontalDivider(
@@ -548,7 +548,7 @@ private fun CharacterToolsGroup(
             )
             CharacterToolRow(
                 title = stringResource(R.string.import_character),
-                icon = LocalMonsterAppIcons.current.importPacks,
+                icon = LocalMonsterAppIcons.current.importCharacter,
                 onClick = onImport,
             )
         }
@@ -632,7 +632,7 @@ private fun SharedCharacterImportDialog(
                     if (artwork != null) {
                         Image(artwork, contentDescription = stringResource(R.string.character_artwork, shared.character.name), modifier = Modifier.size(72.dp))
                     } else {
-                        AppIcon(LocalMonsterAppIcons.current.addCharacter, contentDescription = null, modifier = Modifier.size(48.dp))
+                        AppIcon(LocalMonsterAppIcons.current.frontSprite, contentDescription = null, modifier = Modifier.size(48.dp))
                     }
                     Column(verticalArrangement = Arrangement.spacedBy(6.dp)) {
                         Text(stringResource(R.string.creator_label), style = MaterialTheme.typography.labelMedium, color = MaterialTheme.colorScheme.onSurfaceVariant)

@@ -56,6 +56,7 @@ import dev.alenajam.monsterdialer.app.ui.LocalMonsterAppIcons
 import dev.alenajam.monsterdialer.packs.data.CharacterAssignmentTarget
 import dev.alenajam.monsterdialer.packs.data.CharacterType
 import dev.alenajam.opendialer.core.common.ui.AppIcon
+import dev.alenajam.opendialer.core.common.ui.IconSource
 import dev.alenajam.opendialer.core.common.ui.LocalAppIcons
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -185,6 +186,7 @@ fun AddCharacterScreen(
                             // Front Sprite
                             SpritePicker(
                                 label = stringResource(R.string.front_sprite_label),
+                                placeholderIcon = LocalMonsterAppIcons.current.frontSprite,
                                 isRequired = frontRequired,
                                 description = stringResource(R.string.front_sprite_description),
                                 image = frontImageUri ?: existingFrontImageFile,
@@ -197,6 +199,7 @@ fun AddCharacterScreen(
                             // Back Sprite
                             SpritePicker(
                                 label = stringResource(R.string.back_sprite_label),
+                                placeholderIcon = LocalMonsterAppIcons.current.backSprite,
                                 isRequired = backRequired,
                                 description = stringResource(R.string.back_sprite_description),
                                 image = backImageUri ?: existingBackImageFile,
@@ -219,6 +222,7 @@ fun AddCharacterScreen(
                             ) {
                                 SpritePicker(
                                     label = stringResource(R.string.radiant_front_sprite_label),
+                                    placeholderIcon = LocalMonsterAppIcons.current.frontSprite,
                                     isRequired = true,
                                     description = stringResource(R.string.front_sprite_description),
                                     image = radiantFrontImageUri ?: existingRadiantFrontImageFile,
@@ -229,6 +233,7 @@ fun AddCharacterScreen(
                                 )
                                 SpritePicker(
                                     label = stringResource(R.string.radiant_back_sprite_label),
+                                    placeholderIcon = LocalMonsterAppIcons.current.backSprite,
                                     isRequired = backImageUri != null || existingBackImageFile != null,
                                     description = stringResource(R.string.back_sprite_description),
                                     image = radiantBackImageUri ?: existingRadiantBackImageFile,
@@ -556,6 +561,7 @@ private fun AdvancedSection(
 @Composable
 private fun SpritePicker(
     label: String,
+    placeholderIcon: IconSource,
     isRequired: Boolean,
     description: String,
     image: Any?,
@@ -645,7 +651,7 @@ private fun SpritePicker(
                     verticalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
                     AppIcon(
-                        icon = LocalMonsterAppIcons.current.addCharacter,
+                        icon = placeholderIcon,
                         contentDescription = null,
                         modifier = Modifier.size(40.dp),
                         tint = MaterialTheme.colorScheme.primary.copy(alpha = 0.6f)
