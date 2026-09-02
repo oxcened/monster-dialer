@@ -396,7 +396,7 @@ private fun CharacterToolsGroup(
                 onClick = onOpenPacks,
             )
             HorizontalDivider(
-                modifier = Modifier.padding(start = 68.dp),
+                modifier = Modifier.padding(start = 56.dp),
                 color = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.5f)
             )
             CharacterToolRow(
@@ -418,15 +418,15 @@ private fun CharacterToolRow(
         modifier = Modifier
             .fillMaxWidth()
             .clickable(onClick = onClick)
-            .padding(horizontal = 18.dp, vertical = 16.dp),
+            .padding(horizontal = 16.dp, vertical = 12.dp),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(16.dp),
     ) {
-        AppIcon(icon, contentDescription = null, modifier = Modifier.size(28.dp))
+        AppIcon(icon, contentDescription = null, modifier = Modifier.size(24.dp))
         Column(modifier = Modifier.weight(1f)) {
             Text(title, style = MaterialTheme.typography.titleSmall)
         }
-        AppIcon(LocalAppIcons.current.arrowRight, contentDescription = null, modifier = Modifier.size(20.dp))
+        AppIcon(LocalAppIcons.current.arrowRight, contentDescription = null, modifier = Modifier.size(18.dp))
     }
 }
 
