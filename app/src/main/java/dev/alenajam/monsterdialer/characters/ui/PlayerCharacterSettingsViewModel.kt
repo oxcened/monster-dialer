@@ -53,6 +53,9 @@ class PlayerCharacterSettingsViewModel @Inject constructor(
     private val _assignedMonster = MutableStateFlow<CharacterReference?>(null)
     val assignedMonster: StateFlow<CharacterReference?> = _assignedMonster.asStateFlow()
 
+    private val _monsterRoster = MutableStateFlow<List<CharacterReference>>(emptyList())
+    val monsterRoster: StateFlow<List<CharacterReference>> = _monsterRoster.asStateFlow()
+
     private val _layout = MutableStateFlow(
         if (layoutPreferences.isGridLayout()) {
             CharacterLayout.Grid
@@ -72,6 +75,7 @@ class PlayerCharacterSettingsViewModel @Inject constructor(
         viewModelScope.launch {
             _assignedTrainer.value = assignmentRepository.getPlayerCharacter(CharacterType.Trainer)
             _assignedMonster.value = assignmentRepository.getPlayerCharacter(CharacterType.Monster)
+            _monsterRoster.value = assignmentRepository.getPlayerMonsterRoster()
             _dataVersion.value += 1
         }
     }
@@ -85,8 +89,13 @@ class PlayerCharacterSettingsViewModel @Inject constructor(
 
     fun assignMonster(reference: CharacterReference?) {
         viewModelScope.launch {
-            assignmentRepository.setPlayerCharacter(CharacterType.Monster, reference)
-            _assignedMonster.value = reference
+            if (reference == null) {
+                assignmentRepository.setPlayerCharacter(CharacterType.Monster, null)
+            } else {
+                assignmentRepository.addPlayerMonsterToRoster(reference)
+            }
+            _assignedMonster.value = assignmentRepository.getPlayerCharacter(CharacterType.Monster)
+            _monsterRoster.value = assignmentRepository.getPlayerMonsterRoster()
         }
     }
 

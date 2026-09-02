@@ -124,6 +124,9 @@ class MainActivity : AppCompatActivity() {
                                     onOpenSubpage = onOpenSubpage,
                                     sharingViewModel = characterSharingViewModel,
                                     playerProfile = playerProfile,
+                                    onReorderRoster = characterSettingsSummaryViewModel::reorderPlayerMonsterRoster,
+                                    onSetActiveMonster = characterSettingsSummaryViewModel::setActivePlayerMonster,
+                                    onRemoveRosterMonster = characterSettingsSummaryViewModel::removePlayerMonsterFromRoster,
                                     showImportUi = false,
                                 )
                             }

@@ -6,7 +6,6 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -18,6 +17,9 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
@@ -31,7 +33,9 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -48,7 +52,6 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.annotation.DrawableRes
-import androidx.annotation.StringRes
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -57,16 +60,22 @@ import coil.compose.AsyncImage
 import dev.alenajam.monsterdialer.R
 import dev.alenajam.monsterdialer.app.ui.LocalMonsterAppIcons
 import dev.alenajam.monsterdialer.characters.data.SharedCharacterImport
+import dev.alenajam.monsterdialer.packs.data.CharacterReference
 import dev.alenajam.monsterdialer.packs.data.CharacterType
 import dev.alenajam.opendialer.core.common.ui.AppIcon
 import dev.alenajam.opendialer.core.common.ui.IconSource
 import dev.alenajam.opendialer.core.common.ui.LocalAppIcons
+import sh.calvin.reorderable.ReorderableItem
+import sh.calvin.reorderable.rememberReorderableLazyListState
 
 @Composable
 fun CharactersHomeScreen(
     onOpenSubpage: (Int) -> Unit,
     sharingViewModel: CharacterSharingViewModel = hiltViewModel(),
     playerProfile: PlayerProfile,
+    onReorderRoster: (List<CharacterReference>) -> Unit,
+    onSetActiveMonster: (CharacterReference) -> Unit,
+    onRemoveRosterMonster: (CharacterReference) -> Unit,
     showImportUi: Boolean = true,
 ) {
     val context = LocalContext.current
@@ -89,7 +98,13 @@ fun CharactersHomeScreen(
             playerProfile = playerProfile,
             onClick = { onOpenSubpage(0) }
         )
-        RosterSection(onOpenRoster = { onOpenSubpage(0) })
+        RosterSection(
+            roster = playerProfile.roster,
+            onOpenRoster = { onOpenSubpage(0) },
+            onReorderRoster = onReorderRoster,
+            onSetActiveMonster = onSetActiveMonster,
+            onRemoveRosterMonster = onRemoveRosterMonster,
+        )
         Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
             Text(
                 text = stringResource(R.string.character_tools_title),
@@ -113,8 +128,20 @@ fun CharactersHomeScreen(
 }
 
 @Composable
-private fun RosterSection(onOpenRoster: () -> Unit) {
-    val roster = rosterMockMonsters()
+private fun RosterSection(
+    roster: List<PlayerRosterMonster>,
+    onOpenRoster: () -> Unit,
+    onReorderRoster: (List<CharacterReference>) -> Unit,
+    onSetActiveMonster: (CharacterReference) -> Unit,
+    onRemoveRosterMonster: (CharacterReference) -> Unit,
+) {
+    var orderedRoster by remember(roster) { mutableStateOf(roster) }
+    val lazyListState = rememberLazyListState()
+    val reorderableState = rememberReorderableLazyListState(lazyListState) { from, to ->
+        orderedRoster = orderedRoster.toMutableList().apply {
+            add(to.index, removeAt(from.index))
+        }
+    }
 
     Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
         Text(
@@ -122,23 +149,52 @@ private fun RosterSection(onOpenRoster: () -> Unit) {
             style = MaterialTheme.typography.titleMedium,
             color = MaterialTheme.colorScheme.onSurface,
         )
-        Row(
-            modifier = Modifier.horizontalScroll(rememberScrollState()),
+        LazyRow(
+            state = lazyListState,
             horizontalArrangement = Arrangement.spacedBy(10.dp),
         ) {
-            roster.forEach { monster ->
-                RosterMonsterTile(monster = monster, onClick = onOpenRoster)
+            items(
+                items = orderedRoster,
+                key = { monster -> requireNotNull(monster.reference).rosterKey() },
+            ) { monster ->
+                val reference = requireNotNull(monster.reference)
+                ReorderableItem(reorderableState, key = reference.rosterKey()) { isDragging ->
+                    RosterMonsterTile(
+                        monster = monster,
+                        isDragged = isDragging,
+                        onClick = { onSetActiveMonster(reference) },
+                        modifier = with(this) {
+                            Modifier.longPressDraggableHandle(
+                                onDragStopped = {
+                                    onReorderRoster(orderedRoster.mapNotNull(PlayerRosterMonster::reference))
+                                },
+                            )
+                        },
+                    )
+                }
             }
-            RosterAddTile(onClick = onOpenRoster)
+            if (orderedRoster.size < 5) {
+                item(key = "add-monster") { RosterAddTile(onClick = onOpenRoster) }
+            }
         }
     }
 }
 
+private fun CharacterReference.rosterKey(): String = "$packId:$characterId:$variantId"
+
 @Composable
-private fun RosterMonsterTile(monster: RosterPreviewMonster, onClick: () -> Unit) {
+private fun RosterMonsterTile(
+    monster: PlayerRosterMonster,
+    isDragged: Boolean,
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier,
+) {
     Card(
         onClick = onClick,
-        modifier = Modifier.width(82.dp).height(116.dp),
+        modifier = Modifier
+            .width(82.dp)
+            .height(116.dp)
+            .then(modifier),
         shape = RoundedCornerShape(18.dp),
         colors = CardDefaults.cardColors(
             containerColor = if (monster.isActive) {
@@ -149,38 +205,30 @@ private fun RosterMonsterTile(monster: RosterPreviewMonster, onClick: () -> Unit
         ),
         elevation = CardDefaults.cardElevation(defaultElevation = 0.dp),
     ) {
+        RosterMonsterContent(monster)
+    }
+}
+
+@Composable
+private fun RosterMonsterContent(monster: PlayerRosterMonster) {
+    Column(
+        modifier = Modifier.fillMaxSize().padding(vertical = 8.dp),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.spacedBy(4.dp),
+    ) {
+        TeamArtwork(
+            artworkFile = monster.character.artwork,
+            fallbackArtwork = monster.character.fallbackArtwork,
+            contentDescription = monster.character.name,
+            modifier = Modifier.size(60.dp),
+        )
         Column(
-            modifier = Modifier.fillMaxSize().padding(vertical = 8.dp),
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.spacedBy(4.dp),
+            modifier = Modifier.fillMaxWidth().padding(start = 8.dp, end = 6.dp),
+            horizontalAlignment = Alignment.Start,
         ) {
-            Image(
-                painter = painterResource(monster.artwork),
-                contentDescription = stringResource(
-                    R.string.roster_monster_description,
-                    stringResource(monster.name),
-                    monster.level,
-                ),
-                contentScale = ContentScale.Fit,
-                modifier = Modifier.size(60.dp),
-            )
-            Column(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(start = 8.dp, end = 6.dp),
-                horizontalAlignment = Alignment.Start,
-            ) {
-                Text(
-                    text = stringResource(monster.name),
-                    style = MaterialTheme.typography.labelMedium,
-                    maxLines = 1,
-                    overflow = TextOverflow.Ellipsis,
-                )
-                Text(
-                    text = stringResource(R.string.roster_monster_level, monster.level),
-                    style = MaterialTheme.typography.labelSmall,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
-                )
+            Text(monster.character.name, style = MaterialTheme.typography.labelMedium, maxLines = 1, overflow = TextOverflow.Ellipsis)
+            monster.character.level?.let { level ->
+                Text(stringResource(R.string.roster_monster_level, level), style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
             }
         }
     }
@@ -220,18 +268,6 @@ private fun RosterAddTile(onClick: () -> Unit) {
     }
 }
 
-private fun rosterMockMonsters() = listOf(
-    RosterPreviewMonster(R.string.roster_mock_plumguard, 5, R.drawable.battle_player_monster, true),
-    RosterPreviewMonster(R.string.roster_mock_nullith, 12, R.drawable.battle_enemy_monster),
-    RosterPreviewMonster(R.string.roster_mock_dawnsprig, 9, R.drawable.battle_unknown_monster),
-)
-
-private data class RosterPreviewMonster(
-    @param:StringRes val name: Int,
-    val level: Int,
-    @param:DrawableRes val artwork: Int,
-    val isActive: Boolean = false,
-)
 
 @Composable
 private fun TeamProfileCard(
@@ -294,30 +330,38 @@ private fun TeamProfileCard(
                 Row(
                     modifier = Modifier.fillMaxWidth(),
                     verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.spacedBy(12.dp)
+                    horizontalArrangement = Arrangement.spacedBy(16.dp),
                 ) {
                     Column(modifier = Modifier.weight(1f)) {
-                        Text(stringResource(R.string.active_monster_label), style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onPrimaryContainer.copy(alpha = 0.72f))
                         Text(
-                            text = monster.level?.let { level ->
-                                stringResource(R.string.active_monster_name_with_level, monster.name, level)
-                            } ?: monster.name,
-                            style = MaterialTheme.typography.titleMedium,
+                            text = stringResource(R.string.active_monster_label),
+                            style = MaterialTheme.typography.labelSmall,
+                            color = MaterialTheme.colorScheme.onPrimaryContainer.copy(alpha = 0.72f),
+                        )
+                        Text(
+                            text = monster.characterNameWithLevel(),
+                            style = MaterialTheme.typography.titleLarge,
                             color = MaterialTheme.colorScheme.onPrimaryContainer,
-                            maxLines = 1
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis,
                         )
                     }
                     TeamArtwork(
                         artworkFile = monster.artwork,
                         fallbackArtwork = monster.fallbackArtwork,
                         contentDescription = stringResource(R.string.default_character_artwork, monsterTitle.lowercase()),
-                        modifier = Modifier.size(60.dp)
+                        modifier = Modifier.size(80.dp),
                     )
                 }
             }
         }
     }
 }
+
+@Composable
+private fun PlayerProfileCharacter.characterNameWithLevel(): String = level?.let {
+    stringResource(R.string.active_monster_name_with_level, name, it)
+} ?: name
 
 @Composable
 private fun ProfileMetricColumn(metrics: List<ProfileMetric>) {

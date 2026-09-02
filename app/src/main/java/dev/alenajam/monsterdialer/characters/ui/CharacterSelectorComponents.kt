@@ -116,12 +116,16 @@ internal fun LazyListScope.characterTypeItems(
     unlockedVariants: Set<CharacterReference> = emptySet(),
     onDelete: (InstalledPackCharacter) -> Unit = {},
     onEdit: (InstalledPackCharacter) -> Unit = {},
-    onShare: (InstalledPackCharacter) -> Unit = {}
+    onShare: (InstalledPackCharacter) -> Unit = {},
+    selectedReferences: Set<CharacterReference> = emptySet(),
 ) {
     val type = if (defaultCharacter == BuiltInCharacters.trainer) CharacterType.Trainer else CharacterType.Monster
     val availableSelection = selected?.takeIf { reference ->
         characters.any { it.matches(reference) }
     }
+    val isDefaultSelected = selectedReferences.isEmpty() && availableSelection == null
+    fun isReferenceSelected(reference: CharacterReference): Boolean =
+        if (selectedReferences.isEmpty()) availableSelection == reference else reference in selectedReferences
     item(key = "add") {
         AddCharacterButton(
             onClick = onAddCharacter,
@@ -147,7 +151,7 @@ internal fun LazyListScope.characterTypeItems(
         CharacterOptionCard(
             name = defaultCharacter.name,
             type = type,
-            isSelected = availableSelection == null,
+            isSelected = isDefaultSelected,
             roundTop = true,
             roundBottom = characters.isNotEmpty(),
             artwork = {
@@ -172,7 +176,7 @@ internal fun LazyListScope.characterTypeItems(
                 name = installed.character.name,
                 type = installed.character.type,
                 isRadiant = selection.variant.isRadiant,
-                isSelected = availableSelection == reference,
+                isSelected = isReferenceSelected(reference),
                 isUnlocked = isUnlocked,
                 roundTop = index == 0,
                 roundBottom = index == selections.lastIndex,
@@ -202,7 +206,7 @@ internal fun LazyListScope.characterTypeItems(
                 name = installed.character.name,
                 type = installed.character.type,
                 isRadiant = selection.variant.isRadiant,
-                isSelected = availableSelection == reference,
+                isSelected = isReferenceSelected(reference),
                 isUnlocked = isUnlocked,
                 roundTop = index == 0,
                 roundBottom = index == selections.lastIndex,
@@ -236,12 +240,16 @@ internal fun LazyGridScope.characterTypeGridItems(
     unlockedVariants: Set<CharacterReference> = emptySet(),
     onDelete: (InstalledPackCharacter) -> Unit = {},
     onEdit: (InstalledPackCharacter) -> Unit = {},
-    onShare: (InstalledPackCharacter) -> Unit = {}
+    onShare: (InstalledPackCharacter) -> Unit = {},
+    selectedReferences: Set<CharacterReference> = emptySet(),
 ) {
     val type = if (defaultCharacter == BuiltInCharacters.trainer) CharacterType.Trainer else CharacterType.Monster
     val availableSelection = selected?.takeIf { reference ->
         characters.any { it.matches(reference) }
     }
+    val isDefaultSelected = selectedReferences.isEmpty() && availableSelection == null
+    fun isReferenceSelected(reference: CharacterReference): Boolean =
+        if (selectedReferences.isEmpty()) availableSelection == reference else reference in selectedReferences
     item(key = "add", span = { GridItemSpan(2) }) {
         Column {
             AddCharacterButton(
@@ -269,7 +277,7 @@ internal fun LazyGridScope.characterTypeGridItems(
         CharacterGridItem(
             name = defaultCharacter.name,
             type = type,
-            isSelected = availableSelection == null,
+            isSelected = isDefaultSelected,
             shape = gridItemShape(index = 0, itemCount = 1),
             artwork = {
                 Image(
@@ -293,7 +301,7 @@ internal fun LazyGridScope.characterTypeGridItems(
                 name = installed.character.name,
                 type = installed.character.type,
                 isRadiant = selection.variant.isRadiant,
-                isSelected = availableSelection == reference,
+                isSelected = isReferenceSelected(reference),
                 isUnlocked = isUnlocked,
                 shape = gridItemShape(index = index, itemCount = selections.size),
                 artwork = {
@@ -322,7 +330,7 @@ internal fun LazyGridScope.characterTypeGridItems(
                 name = installed.character.name,
                 type = installed.character.type,
                 isRadiant = selection.variant.isRadiant,
-                isSelected = availableSelection == reference,
+                isSelected = isReferenceSelected(reference),
                 isUnlocked = isUnlocked,
                 shape = gridItemShape(index = index, itemCount = selections.size),
                 artwork = {

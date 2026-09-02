@@ -36,6 +36,7 @@ fun ColumnScope.PlayerCharacterSettingsContent(
 ) {
     val assignedTrainer by viewModel.assignedTrainer.collectAsStateWithLifecycle()
     val assignedMonster by viewModel.assignedMonster.collectAsStateWithLifecycle()
+    val monsterRoster by viewModel.monsterRoster.collectAsStateWithLifecycle()
     val trainers by viewModel.trainers.collectAsStateWithLifecycle()
     val monsters by viewModel.monsters.collectAsStateWithLifecycle()
     val dataVersion by viewModel.dataVersion.collectAsStateWithLifecycle()
@@ -124,14 +125,14 @@ fun ColumnScope.PlayerCharacterSettingsContent(
             LazyColumn(state = listState, modifier = Modifier.fillMaxSize(), contentPadding = PaddingValues(top = 8.dp, bottom = 72.dp)) {
                 when (selectedTab) {
                     0 -> characterTypeItems(trainerTitle, trainersTitle, BuiltInCharacters.trainer, trainers, assignedTrainer, { it.playerArtwork }, CharacterAssignmentTarget.Player, viewModel::assignTrainer, { navigator?.navigateTo(0) }, addTrainerLabel, !isLimitReached, unlockedVariants, onDelete = { character -> scope.launch { isPendingDeletionInUse = viewModel.isCharacterInUse(character.character.id); pendingDeletion = character } }, onEdit = { navigator?.navigateTo(0, it.character.id) }, onShare = { pendingShare = it })
-                    1 -> characterTypeItems(monsterTitle, monstersTitle, BuiltInCharacters.monster.character, monsters, assignedMonster, { it.playerArtwork }, CharacterAssignmentTarget.Player, viewModel::assignMonster, { navigator?.navigateTo(1) }, addMonsterLabel, !isLimitReached, unlockedVariants, onDelete = { character -> scope.launch { isPendingDeletionInUse = viewModel.isCharacterInUse(character.character.id); pendingDeletion = character } }, onEdit = { navigator?.navigateTo(1, it.character.id) }, onShare = { pendingShare = it })
+                    1 -> characterTypeItems(monsterTitle, monstersTitle, BuiltInCharacters.monster.character, monsters, assignedMonster, { it.playerArtwork }, CharacterAssignmentTarget.Player, viewModel::assignMonster, { navigator?.navigateTo(1) }, addMonsterLabel, !isLimitReached, unlockedVariants, onDelete = { character -> scope.launch { isPendingDeletionInUse = viewModel.isCharacterInUse(character.character.id); pendingDeletion = character } }, onEdit = { navigator?.navigateTo(1, it.character.id) }, onShare = { pendingShare = it }, selectedReferences = monsterRoster.toSet() + listOfNotNull(assignedMonster))
                 }
             }
         } else {
             LazyVerticalGrid(columns = GridCells.Fixed(2), state = gridState, modifier = Modifier.fillMaxSize(), contentPadding = PaddingValues(top = 8.dp, bottom = 72.dp), horizontalArrangement = Arrangement.spacedBy(2.dp), verticalArrangement = Arrangement.spacedBy(2.dp)) {
                 when (selectedTab) {
                     0 -> characterTypeGridItems(trainerTitle, trainersTitle, BuiltInCharacters.trainer, trainers, assignedTrainer, { it.playerArtwork }, CharacterAssignmentTarget.Player, viewModel::assignTrainer, { navigator?.navigateTo(0) }, addTrainerLabel, !isLimitReached, unlockedVariants, onDelete = { character -> scope.launch { isPendingDeletionInUse = viewModel.isCharacterInUse(character.character.id); pendingDeletion = character } }, onEdit = { navigator?.navigateTo(0, it.character.id) }, onShare = { pendingShare = it })
-                    1 -> characterTypeGridItems(monsterTitle, monstersTitle, BuiltInCharacters.monster.character, monsters, assignedMonster, { it.playerArtwork }, CharacterAssignmentTarget.Player, viewModel::assignMonster, { navigator?.navigateTo(1) }, addMonsterLabel, !isLimitReached, unlockedVariants, onDelete = { character -> scope.launch { isPendingDeletionInUse = viewModel.isCharacterInUse(character.character.id); pendingDeletion = character } }, onEdit = { navigator?.navigateTo(1, it.character.id) }, onShare = { pendingShare = it })
+                    1 -> characterTypeGridItems(monsterTitle, monstersTitle, BuiltInCharacters.monster.character, monsters, assignedMonster, { it.playerArtwork }, CharacterAssignmentTarget.Player, viewModel::assignMonster, { navigator?.navigateTo(1) }, addMonsterLabel, !isLimitReached, unlockedVariants, onDelete = { character -> scope.launch { isPendingDeletionInUse = viewModel.isCharacterInUse(character.character.id); pendingDeletion = character } }, onEdit = { navigator?.navigateTo(1, it.character.id) }, onShare = { pendingShare = it }, selectedReferences = monsterRoster.toSet() + listOfNotNull(assignedMonster))
                 }
             }
         }

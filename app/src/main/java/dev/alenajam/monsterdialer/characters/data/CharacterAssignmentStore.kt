@@ -16,6 +16,8 @@ private data class CharacterAssignmentsDocument(
     /** Legacy v1 monster assignments. */
     val contacts: Map<String, CharacterReference> = emptyMap(),
     val playerByType: Map<CharacterType, CharacterReference> = emptyMap(),
+    val playerMonsterRoster: List<CharacterReference> = emptyList(),
+    val activePlayerMonster: CharacterReference? = null,
     val contactsByType: Map<String, Map<CharacterType, CharacterReference>> = emptyMap(),
     val contactLabels: Map<String, String> = emptyMap(),
     val selectedContact: StoredSelectedContact? = null
@@ -51,6 +53,9 @@ class CharacterAssignmentStore(
     @Synchronized
     fun player(type: CharacterType): CharacterReference? {
         val document = read()
+        if (type == CharacterType.Monster) {
+            return activeMonster(document)
+        }
         return document.playerByType[type] ?: document.player.takeIf { type == CharacterType.Monster }
     }
 
@@ -60,6 +65,22 @@ class CharacterAssignmentStore(
     fun setPlayer(type: CharacterType, character: CharacterReference?) {
         character?.validate()
         val document = read()
+        if (type == CharacterType.Monster) {
+            val active = activeMonster(document)
+            val roster = character?.let { selected ->
+                when {
+                    active == null || selected == active -> benchRoster(document)
+                    else -> benchRoster(document).filterNot { it == selected }.plus(selected).take(MaxBenchSize)
+                }
+            }.orEmpty()
+            write(document.copy(
+                player = null,
+                playerByType = document.playerByType - CharacterType.Monster,
+                playerMonsterRoster = roster,
+                activePlayerMonster = character?.let { active ?: it },
+            ))
+            return
+        }
         val updated = document.playerByType.toMutableMap().apply {
             if (character == null) remove(type) else put(type, character)
         }
@@ -70,6 +91,76 @@ class CharacterAssignmentStore(
     }
 
     fun setPlayer(character: CharacterReference?) = setPlayer(CharacterType.Monster, character)
+
+    @Synchronized
+    fun playerMonsterRoster(): List<CharacterReference> {
+        return benchRoster(read())
+    }
+
+    @Synchronized
+    fun setActivePlayerMonster(character: CharacterReference) {
+        character.validate()
+        val document = read()
+        val active = activeMonster(document)
+        val roster = benchRoster(document)
+        val selectedIndex = roster.indexOf(character)
+        require(character == active || selectedIndex >= 0) { "Monster is not in the roster" }
+        val updatedRoster = if (character == active) {
+            roster
+        } else {
+            roster.toMutableList().apply {
+                removeAt(selectedIndex)
+                active?.let { add(selectedIndex, it) }
+            }
+        }
+        write(document.copy(
+            player = null,
+            playerByType = document.playerByType - CharacterType.Monster,
+            playerMonsterRoster = updatedRoster,
+            activePlayerMonster = character,
+        ))
+    }
+
+    @Synchronized
+    fun addPlayerMonsterToRoster(character: CharacterReference) {
+        character.validate()
+        val document = read()
+        val active = activeMonster(document)
+        val roster = benchRoster(document)
+        if (character == active || character in roster) return
+        if (active == null) {
+            write(document.copy(
+                player = null,
+                playerByType = document.playerByType - CharacterType.Monster,
+                activePlayerMonster = character,
+                playerMonsterRoster = emptyList(),
+            ))
+        } else {
+            require(roster.size < MaxBenchSize) { "Roster is full" }
+            setPlayerMonsterRoster(roster + character)
+        }
+    }
+
+    @Synchronized
+    fun setPlayerMonsterRoster(roster: List<CharacterReference>) {
+        require(roster.size <= MaxBenchSize) { "Roster is too large" }
+        require(roster.distinct().size == roster.size) { "Roster contains duplicate monsters" }
+        roster.forEach { reference -> reference.validate() }
+        val document = read()
+        val active = activeMonster(document)
+        require(active !in roster) { "Active monster cannot also be in the roster" }
+        write(document.copy(
+            player = null,
+            playerByType = document.playerByType - CharacterType.Monster,
+            playerMonsterRoster = roster,
+            activePlayerMonster = active,
+        ))
+    }
+
+    @Synchronized
+    fun removePlayerMonsterFromRoster(character: CharacterReference) {
+        setPlayerMonsterRoster(playerMonsterRoster().filterNot { it == character })
+    }
 
     @Synchronized
     fun characterForContact(contactKey: String, type: CharacterType): CharacterReference? {
@@ -184,6 +275,10 @@ class CharacterAssignmentStore(
     fun clearAssignmentsForPack(packId: String) {
         val document = read()
         val updatedPlayerByType = document.playerByType.filterValues { it.packId != packId }
+        val updatedRoster = benchRoster(document).filter { it.packId != packId }
+        val updatedActiveMonster = activeMonster(document)?.takeIf { it.packId != packId }
+            ?: updatedRoster.firstOrNull()
+        val updatedBench = updatedRoster.filterNot { it == updatedActiveMonster }
         
         val updatedContactsByType = document.contactsByType.mapValues { (_, assignments) ->
             assignments.filterValues { it.packId != packId }
@@ -199,6 +294,8 @@ class CharacterAssignmentStore(
             player = if (document.player?.packId == packId) null else document.player,
             contacts = legacyContacts,
             playerByType = updatedPlayerByType,
+            playerMonsterRoster = updatedBench,
+            activePlayerMonster = updatedActiveMonster,
             contactsByType = updatedContactsByType,
             contactLabels = updatedLabels
         ))
@@ -208,6 +305,10 @@ class CharacterAssignmentStore(
     fun clearAssignmentsForCharacter(reference: CharacterReference) {
         val document = read()
         val updatedPlayerByType = document.playerByType.filterValues { !it.sameCharacterAs(reference) }
+        val updatedRoster = benchRoster(document).filter { !it.sameCharacterAs(reference) }
+        val updatedActiveMonster = activeMonster(document)?.takeUnless { it.sameCharacterAs(reference) }
+            ?: updatedRoster.firstOrNull()
+        val updatedBench = updatedRoster.filterNot { it == updatedActiveMonster }
         
         val updatedContactsByType = document.contactsByType.mapValues { (_, assignments) ->
             assignments.filterValues { !it.sameCharacterAs(reference) }
@@ -223,6 +324,8 @@ class CharacterAssignmentStore(
             player = if (document.player?.sameCharacterAs(reference) == true) null else document.player,
             contacts = legacyContacts,
             playerByType = updatedPlayerByType,
+            playerMonsterRoster = updatedBench,
+            activePlayerMonster = updatedActiveMonster,
             contactsByType = updatedContactsByType,
             contactLabels = updatedLabels
         ))
@@ -235,6 +338,20 @@ class CharacterAssignmentStore(
 
     private fun CharacterReference.sameCharacterAs(other: CharacterReference): Boolean =
         packId == other.packId && characterId == other.characterId
+
+    /** Converts the released single-monster assignment and the earlier roster format on read. */
+    private fun activeMonster(document: CharacterAssignmentsDocument): CharacterReference? =
+        document.activePlayerMonster
+            ?: document.playerByType[CharacterType.Monster]
+            ?: document.player
+            ?: document.playerMonsterRoster.firstOrNull()
+
+    /** The roster holds the team members that are not currently active. */
+    private fun benchRoster(document: CharacterAssignmentsDocument): List<CharacterReference> =
+        document.playerMonsterRoster
+            .filterNot { it == activeMonster(document) }
+            .distinct()
+            .take(MaxBenchSize)
 
     private fun normalizeContactKey(value: String): String {
         return requireNotNull(normalizeContactKeyOrNull(value)) { "Contact key is invalid" }
@@ -285,6 +402,8 @@ class CharacterAssignmentStore(
     private fun fail(message: String): Nothing = throw CharacterPackValidationException(message)
 
     private companion object {
+        const val MaxRosterSize = 6
+        const val MaxBenchSize = MaxRosterSize - 1
         const val FileName = "character-assignments.json"
         const val MaxIdentifierLength = 128
         const val MaxContactKeyLength = 512
