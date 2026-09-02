@@ -169,7 +169,10 @@ fun ColumnScope.CharacterPackSettingsContent(
                         verticalArrangement = Arrangement.spacedBy(4.dp)
                     ) {
                         Button(onClick = importPack) { Text(stringResource(R.string.import_character_pack)) }
-                        OutlinedButton(onClick = createPack) { Text(stringResource(R.string.create_character_pack)) }
+                        OutlinedButton(onClick = createPack) {
+                            AppIcon(LocalMonsterAppIcons.current.createPack, contentDescription = null, modifier = Modifier.size(18.dp))
+                            Text(stringResource(R.string.create_character_pack), modifier = Modifier.padding(start = 8.dp))
+                        }
                     }
                 } else {
                     Button(onClick = importPack) { Text(stringResource(R.string.import_character_pack)) }
@@ -195,7 +198,10 @@ fun ColumnScope.CharacterPackSettingsContent(
                 OutlinedButton(
                     onClick = createPack,
                     modifier = Modifier.fillMaxWidth()
-                ) { Text(stringResource(R.string.create_character_pack)) }
+                ) {
+                    AppIcon(LocalMonsterAppIcons.current.createPack, contentDescription = null, modifier = Modifier.size(18.dp))
+                    Text(stringResource(R.string.create_character_pack), modifier = Modifier.padding(start = 8.dp))
+                }
             }
             Column {
                 packs.forEachIndexed { index, pack ->
