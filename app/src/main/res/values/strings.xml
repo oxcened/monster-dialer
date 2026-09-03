@@ -80,6 +80,7 @@
     <string name="radiant" comment="Adjective for a rare, sparkling character variant.">Radiant</string>
     <string name="regular" comment="Adjective for a standard, non-rare character variant.">Regular</string>
     <string name="selected" comment="Status label for the currently chosen option.">Selected</string>
+    <string name="randomize" comment="Character selection that chooses a different eligible character for every call.">Randomize</string>
     <string name="locked" comment="Status label for a character variant that must be unlocked before selection.">Locked</string>
     <string name="radiant_variant_locked_title" comment="Title of the dialog shown for a locked radiant character variant.">Radiant variant locked</string>
     <string name="radiant_variant_locked_message" comment="Explains how to unlock a radiant character variant; %1$s is the character name.">When you encounter a radiant %1$s in a wild battle, it unlocks automatically as the battle begins. You can then assign it.</string>

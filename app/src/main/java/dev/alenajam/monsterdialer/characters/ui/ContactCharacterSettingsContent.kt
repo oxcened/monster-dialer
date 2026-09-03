@@ -36,6 +36,7 @@ import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import dev.alenajam.monsterdialer.R
 import dev.alenajam.monsterdialer.characters.data.BuiltInCharacters
+import dev.alenajam.monsterdialer.characters.data.ContactCharacterMode
 import dev.alenajam.monsterdialer.packs.data.CharacterAssignmentTarget
 import dev.alenajam.monsterdialer.packs.data.InstalledPackCharacter
 import kotlinx.coroutines.launch
@@ -51,6 +52,8 @@ fun ColumnScope.ContactCharacterSettingsContent(
     val contact by viewModel.contact.collectAsStateWithLifecycle()
     val assignedTrainer by viewModel.assignedTrainer.collectAsStateWithLifecycle()
     val assignedMonster by viewModel.assignedMonster.collectAsStateWithLifecycle()
+    val trainerMode by viewModel.trainerMode.collectAsStateWithLifecycle()
+    val monsterMode by viewModel.monsterMode.collectAsStateWithLifecycle()
     val contactSelectionVersion by viewModel.contactSelectionVersion.collectAsStateWithLifecycle()
     val trainers by viewModel.trainers.collectAsStateWithLifecycle()
     val monsters by viewModel.monsters.collectAsStateWithLifecycle()
@@ -217,6 +220,11 @@ fun ColumnScope.ContactCharacterSettingsContent(
                             addLabel = addTrainerLabel,
                             isAddEnabled = !isLimitReached,
                             unlockedVariants = unlockedVariants,
+                            isRandomSelected = trainers.isNotEmpty() && trainerMode == ContactCharacterMode.Random,
+                            onRandomize = {
+                                viewModel.randomizeTrainer()
+                                navigator?.navigateBack()
+                            },
                             onDelete = { character -> scope.launch { isPendingDeletionInUse = viewModel.isCharacterInUse(character.character.id); pendingDeletion = character } },
                             onEdit = { navigator?.navigateTo(1, it.character.id) },
                             onShare = { pendingShare = it }
@@ -237,6 +245,11 @@ fun ColumnScope.ContactCharacterSettingsContent(
                             addLabel = addMonsterLabel,
                             isAddEnabled = !isLimitReached,
                             unlockedVariants = unlockedVariants,
+                            isRandomSelected = monsters.isNotEmpty() && monsterMode == ContactCharacterMode.Random,
+                            onRandomize = {
+                                viewModel.randomizeMonster()
+                                navigator?.navigateBack()
+                            },
                             onDelete = { character -> scope.launch { isPendingDeletionInUse = viewModel.isCharacterInUse(character.character.id); pendingDeletion = character } },
                             onEdit = { navigator?.navigateTo(2, it.character.id) },
                             onShare = { pendingShare = it }
@@ -262,6 +275,11 @@ fun ColumnScope.ContactCharacterSettingsContent(
                             addLabel = addTrainerLabel,
                             isAddEnabled = !isLimitReached,
                             unlockedVariants = unlockedVariants,
+                            isRandomSelected = trainers.isNotEmpty() && trainerMode == ContactCharacterMode.Random,
+                            onRandomize = {
+                                viewModel.randomizeTrainer()
+                                navigator?.navigateBack()
+                            },
                             onDelete = { character -> scope.launch { isPendingDeletionInUse = viewModel.isCharacterInUse(character.character.id); pendingDeletion = character } },
                             onEdit = { navigator?.navigateTo(1, it.character.id) },
                             onShare = { pendingShare = it }
@@ -282,6 +300,11 @@ fun ColumnScope.ContactCharacterSettingsContent(
                             addLabel = addMonsterLabel,
                             isAddEnabled = !isLimitReached,
                             unlockedVariants = unlockedVariants,
+                            isRandomSelected = monsters.isNotEmpty() && monsterMode == ContactCharacterMode.Random,
+                            onRandomize = {
+                                viewModel.randomizeMonster()
+                                navigator?.navigateBack()
+                            },
                             onDelete = { character -> scope.launch { isPendingDeletionInUse = viewModel.isCharacterInUse(character.character.id); pendingDeletion = character } },
                             onEdit = { navigator?.navigateTo(2, it.character.id) },
                             onShare = { pendingShare = it }

@@ -2,6 +2,7 @@ package dev.alenajam.monsterdialer.battle.data
 
 import dev.alenajam.monsterdialer.BuildConfig
 import dev.alenajam.monsterdialer.characters.data.CharacterAssignmentRepository
+import dev.alenajam.monsterdialer.characters.data.ContactCharacterMode
 import dev.alenajam.monsterdialer.characters.data.CharactersRepository
 import dev.alenajam.monsterdialer.characters.data.DefaultMonsterLevel
 import dev.alenajam.monsterdialer.characters.data.PlayerProfileStatsStore
@@ -65,7 +66,7 @@ class AssignedCharacterEncounterFactory @Inject constructor(
             val enemy = if (isAnonymous) {
                 fallback.enemy
             } else {
-                assignmentRepository.getAssignedCharacter(contactKey, CharacterType.Monster)
+                contactCharacterReference(contactKey, CharacterType.Monster)
                     ?.let { reference -> charactersRepository.findCharacter(reference, CharacterAssignmentTarget.Contact, CharacterType.Monster)?.asContactBattleMonster(fallback.enemy ?: fallback.player, reference.variantId) }
                     ?: fallback.enemy
             }
@@ -78,9 +79,11 @@ class AssignedCharacterEncounterFactory @Inject constructor(
             val enemyTrainer = if (isAnonymous) {
                 fallback.enemyTrainerSprite
             } else {
-                assignmentRepository.getAssignedCharacter(contactKey, CharacterType.Trainer)
-                    ?.let { charactersRepository.findCharacter(it, CharacterAssignmentTarget.Contact, CharacterType.Trainer) }
-                    ?.contactTrainerSprite(fallback.enemyTrainerSprite)
+                contactCharacterReference(contactKey, CharacterType.Trainer)
+                    ?.let { reference ->
+                        charactersRepository.findCharacter(reference, CharacterAssignmentTarget.Contact, CharacterType.Trainer)
+                            ?.contactTrainerSprite(fallback.enemyTrainerSprite, reference.variantId)
+                    }
                 ?: fallback.enemyTrainerSprite
             }
 
@@ -146,6 +149,24 @@ class AssignedCharacterEncounterFactory @Inject constructor(
                 character.character.visualVariants
                     .filter(CharacterVisualVariant::isRadiant)
                     .map { variant -> character to variant }
+            }
+        return candidates.randomOrNull(random)
+    }
+
+    private suspend fun contactCharacterReference(contactKey: String, type: CharacterType): CharacterReference? {
+        val selection = assignmentRepository.getContactCharacterSelection(contactKey, type)
+        if (selection.character != null) return selection.character
+        if (selection.mode != ContactCharacterMode.Random) return null
+        return randomContactCharacter(type)
+    }
+
+    private fun randomContactCharacter(type: CharacterType): CharacterReference? {
+        val candidates = charactersRepository
+            .getCharactersAssignableTo(CharacterAssignmentTarget.Contact, type)
+            .flatMap { character ->
+                character.character.visualVariants
+                    .filterNot(CharacterVisualVariant::isRadiant)
+                    .map { variant -> CharacterReference(character.packId, character.character.id, variant.id) }
             }
         return candidates.randomOrNull(random)
     }
@@ -228,8 +249,8 @@ class AssignedCharacterEncounterFactory @Inject constructor(
     private fun InstalledPackCharacter.playerTrainerSprite(fallback: BattleVisualAsset) =
         character.visualVariants.first().backImage?.let { BattleVisualAsset.LocalFile(imageFile(it).path) } ?: fallback
 
-    private fun InstalledPackCharacter.contactTrainerSprite(fallback: BattleVisualAsset) =
-        character.visualVariants.first().frontImage?.let { BattleVisualAsset.LocalFile(imageFile(it).path) } ?: fallback
+    private fun InstalledPackCharacter.contactTrainerSprite(fallback: BattleVisualAsset, variantId: String) =
+        character.variant(variantId)?.frontImage?.let { BattleVisualAsset.LocalFile(imageFile(it).path) } ?: fallback
 
     private companion object {
         const val RadiantEncounterDenominator = 64

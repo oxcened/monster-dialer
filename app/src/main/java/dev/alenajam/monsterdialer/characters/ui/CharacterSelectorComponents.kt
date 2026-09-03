@@ -117,6 +117,8 @@ internal fun LazyListScope.characterTypeItems(
     onDelete: (InstalledPackCharacter) -> Unit = {},
     onEdit: (InstalledPackCharacter) -> Unit = {},
     onShare: (InstalledPackCharacter) -> Unit = {},
+    isRandomSelected: Boolean = false,
+    onRandomize: (() -> Unit)? = null,
     selectedReferences: Set<CharacterReference> = emptySet(),
     hideSelected: Boolean = false,
 ) {
@@ -124,7 +126,7 @@ internal fun LazyListScope.characterTypeItems(
     val availableSelection = selected?.takeIf { reference ->
         characters.any { it.matches(reference) }
     }
-    val isDefaultSelected = selectedReferences.isEmpty() && availableSelection == null
+    val isDefaultSelected = selectedReferences.isEmpty() && availableSelection == null && !isRandomSelected
     fun isReferenceSelected(reference: CharacterReference): Boolean =
         if (selectedReferences.isEmpty()) availableSelection == reference else reference in selectedReferences
     item(key = "add") {
@@ -140,6 +142,27 @@ internal fun LazyListScope.characterTypeItems(
                 color = MaterialTheme.colorScheme.error,
                 textAlign = TextAlign.Center,
                 modifier = Modifier.fillMaxWidth().padding(bottom = 8.dp)
+            )
+        }
+    }
+
+    if (onRandomize != null && characters.isNotEmpty()) {
+        item(key = "random") {
+            CharacterOptionCard(
+                name = stringResource(R.string.randomize),
+                type = type,
+                isSelected = isRandomSelected,
+                showTypeSubtitle = false,
+                roundTop = true,
+                roundBottom = true,
+                artwork = {
+                    AppIcon(
+                        icon = LocalMonsterAppIcons.current.randomize,
+                        contentDescription = stringResource(R.string.randomize),
+                        modifier = Modifier.size(40.dp),
+                    )
+                },
+                onSelect = onRandomize,
             )
         }
     }
@@ -256,6 +279,8 @@ internal fun LazyGridScope.characterTypeGridItems(
     onDelete: (InstalledPackCharacter) -> Unit = {},
     onEdit: (InstalledPackCharacter) -> Unit = {},
     onShare: (InstalledPackCharacter) -> Unit = {},
+    isRandomSelected: Boolean = false,
+    onRandomize: (() -> Unit)? = null,
     selectedReferences: Set<CharacterReference> = emptySet(),
     hideSelected: Boolean = false,
 ) {
@@ -263,7 +288,7 @@ internal fun LazyGridScope.characterTypeGridItems(
     val availableSelection = selected?.takeIf { reference ->
         characters.any { it.matches(reference) }
     }
-    val isDefaultSelected = selectedReferences.isEmpty() && availableSelection == null
+    val isDefaultSelected = selectedReferences.isEmpty() && availableSelection == null && !isRandomSelected
     fun isReferenceSelected(reference: CharacterReference): Boolean =
         if (selectedReferences.isEmpty()) availableSelection == reference else reference in selectedReferences
     item(key = "add", span = { GridItemSpan(2) }) {
@@ -282,6 +307,26 @@ internal fun LazyGridScope.characterTypeGridItems(
                     modifier = Modifier.fillMaxWidth().padding(bottom = 8.dp)
                 )
             }
+        }
+    }
+
+    if (onRandomize != null && characters.isNotEmpty()) {
+        item(key = "random") {
+            CharacterGridItem(
+                name = stringResource(R.string.randomize),
+                type = type,
+                isSelected = isRandomSelected,
+                showTypeSubtitle = false,
+                shape = gridItemShape(index = 0, itemCount = 1),
+                artwork = {
+                    AppIcon(
+                        icon = LocalMonsterAppIcons.current.randomize,
+                        contentDescription = stringResource(R.string.randomize),
+                        modifier = Modifier.size(48.dp),
+                    )
+                },
+                onSelect = onRandomize,
+            )
         }
     }
 
@@ -636,6 +681,7 @@ private fun NoAdditionalCharacterOptionsCard(title: String) {
 @Composable
 private fun CharacterOptionCard(
     name: String, type: CharacterType, isRadiant: Boolean = false, isSelected: Boolean, isUnlocked: Boolean = true,
+    showTypeSubtitle: Boolean = true,
     roundTop: Boolean, roundBottom: Boolean, artwork: @Composable () -> Unit, onSelect: () -> Unit,
     onDelete: (() -> Unit)? = null,
     onEdit: (() -> Unit)? = null,
@@ -669,7 +715,10 @@ private fun CharacterOptionCard(
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.spacedBy(16.dp)
             ) {
-                Box(modifier = Modifier.size(72.dp)) {
+                Box(
+                    modifier = Modifier.size(72.dp),
+                    contentAlignment = Alignment.Center,
+                ) {
                     artwork()
                 }
                 Column(modifier = Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(2.dp)) {
@@ -689,7 +738,7 @@ private fun CharacterOptionCard(
                                 tint = MaterialTheme.colorScheme.primary
                             )
                         }
-                    } else if (type == CharacterType.Monster) {
+                    } else if (showTypeSubtitle && type == CharacterType.Monster) {
                         Text(
                             text = stringResource(R.string.regular),
                             style = MaterialTheme.typography.bodySmall,
@@ -773,6 +822,7 @@ private fun CharacterGridItem(
     isRadiant: Boolean = false,
     isSelected: Boolean,
     isUnlocked: Boolean = true,
+    showTypeSubtitle: Boolean = true,
     shape: Shape,
     artwork: @Composable () -> Unit,
     onSelect: () -> Unit,
@@ -842,7 +892,7 @@ private fun CharacterGridItem(
                                 tint = MaterialTheme.colorScheme.primary
                             )
                         }
-                    } else if (type == CharacterType.Monster) {
+                    } else if (showTypeSubtitle && type == CharacterType.Monster) {
                         Text(
                             text = stringResource(R.string.regular),
                             style = MaterialTheme.typography.bodySmall,

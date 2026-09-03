@@ -82,6 +82,23 @@ class AssignedCharacterEncounterFactoryTest {
     }
 
     @Test
+    fun randomContactMonsterChangesForEachCall() {
+        setupPack("com.example.first", "first", CharacterType.Monster, CharacterAssignmentTarget.Contact, name = "First Monster")
+        setupPack("com.example.second", "second", CharacterType.Monster, CharacterAssignmentTarget.Contact, name = "Second Monster")
+        store.randomizeContact("123", CharacterType.Monster)
+
+        val first = AssignedCharacterEncounterFactory(
+            charactersRepository, assignmentRepository, radiantUnlocks, activeEncounterStore, profileStatsStore, FirstRandom,
+        ).forCall("call1", "123", "Alex", isAnonymous = false)
+        val second = AssignedCharacterEncounterFactory(
+            charactersRepository, assignmentRepository, radiantUnlocks, activeEncounterStore, profileStatsStore, LastRandom,
+        ).forCall("call2", "123", "Alex", isAnonymous = false)
+
+        assertEquals("First Monster", first.enemy?.name)
+        assertEquals("Second Monster", second.enemy?.name)
+    }
+
+    @Test
     fun handlesAnonymousCallsByIgnoringContactAssignments() {
         val packId = "com.example.test"
         val characterId = "monster1"
@@ -223,7 +240,8 @@ class AssignedCharacterEncounterFactoryTest {
         packId: String,
         characterId: String,
         type: CharacterType,
-        vararg assignableTo: CharacterAssignmentTarget
+        vararg assignableTo: CharacterAssignmentTarget,
+        name: String = "Monster 1",
     ) {
         val packDir = File(File(storageRoot, packId), "active")
         packDir.mkdirs()
@@ -237,7 +255,7 @@ class AssignedCharacterEncounterFactoryTest {
             characters = listOf(
                 PackCharacter(
                     id = characterId,
-                    name = "Monster 1",
+                    name = name,
                     type = type,
                     assignableTo = assignableTo.toList(),
                     frontImage = "front.png",
@@ -256,7 +274,7 @@ class AssignedCharacterEncounterFactoryTest {
                 "characters": [
                     {
                         "id": "$characterId",
-                        "name": "Monster 1",
+                        "name": "$name",
                         "type": "${if (type == CharacterType.Monster) "monster" else "trainer"}",
                         "assignableTo": [${assignableTo.joinToString { "\"${if (it == CharacterAssignmentTarget.Contact) "contact" else "player"}\"" }}],
                         "frontImage": "front.png",
@@ -278,6 +296,18 @@ class AssignedCharacterEncounterFactoryTest {
     }
 
     private object NeverRadiantRandom : Random() {
+        override fun nextBits(bitCount: Int): Int = when (bitCount) {
+            0 -> 0
+            Int.SIZE_BITS -> -1
+            else -> (1 shl bitCount) - 1
+        }
+    }
+
+    private object FirstRandom : Random() {
+        override fun nextBits(bitCount: Int): Int = 0
+    }
+
+    private object LastRandom : Random() {
         override fun nextBits(bitCount: Int): Int = when (bitCount) {
             0 -> 0
             Int.SIZE_BITS -> -1

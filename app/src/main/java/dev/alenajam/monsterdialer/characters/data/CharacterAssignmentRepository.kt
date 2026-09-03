@@ -12,12 +12,14 @@ import javax.inject.Singleton
 interface CharacterAssignmentRepository {
     val assignmentVersion: StateFlow<Long>
     suspend fun getAssignedCharacter(contactKey: String, type: CharacterType): CharacterReference?
+    suspend fun getContactCharacterSelection(contactKey: String, type: CharacterType): ContactCharacterSelection
     suspend fun assignCharacter(
         contactKey: String,
         type: CharacterType,
         reference: CharacterReference?,
         label: String?
     )
+    suspend fun randomizeCharacter(contactKey: String, type: CharacterType, label: String?)
     suspend fun getPlayerCharacter(type: CharacterType): CharacterReference?
     suspend fun setPlayerCharacter(type: CharacterType, reference: CharacterReference?)
     suspend fun getPlayerMonsterRoster(): List<CharacterReference>
@@ -48,6 +50,13 @@ class CharacterAssignmentRepositoryImpl @Inject constructor(
         assignments.characterForContact(contactKey, type)
     }
 
+    override suspend fun getContactCharacterSelection(
+        contactKey: String,
+        type: CharacterType,
+    ): ContactCharacterSelection = withContext(Dispatchers.IO) {
+        assignments.selectionForContact(contactKey, type)
+    }
+
     override suspend fun assignCharacter(
         contactKey: String,
         type: CharacterType,
@@ -55,6 +64,11 @@ class CharacterAssignmentRepositoryImpl @Inject constructor(
         label: String?
     ) = withContext(Dispatchers.IO) {
         assignments.assignContact(contactKey, type, reference, label)
+        _assignmentVersion.value += 1
+    }
+
+    override suspend fun randomizeCharacter(contactKey: String, type: CharacterType, label: String?) = withContext(Dispatchers.IO) {
+        assignments.randomizeContact(contactKey, type, label)
         _assignmentVersion.value += 1
     }
 
