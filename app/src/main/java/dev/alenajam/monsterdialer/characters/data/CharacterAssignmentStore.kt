@@ -84,9 +84,11 @@ class CharacterAssignmentStore(
         val document = read()
         if (type == CharacterType.Monster) {
             val active = activeMonster(document)
+            val shouldReplaceInitialDefault =
+                active == BuiltInCharacters.defaultMonsterReference && benchRoster(document).isEmpty()
             val roster = character?.let { selected ->
                 when {
-                    active == null || selected == active -> benchRoster(document)
+                    active == null || selected == active || shouldReplaceInitialDefault -> benchRoster(document)
                     else -> benchRoster(document).filterNot { it == selected }.plus(selected).take(MaxPlayerMonsterBenchSize)
                 }
             }.orEmpty()
@@ -94,7 +96,9 @@ class CharacterAssignmentStore(
                 player = null,
                 playerByType = document.playerByType - CharacterType.Monster,
                 playerMonsterRoster = roster,
-                activePlayerMonster = character?.let { active ?: it },
+                activePlayerMonster = character?.let { selected ->
+                    if (shouldReplaceInitialDefault) selected else active ?: selected
+                } ?: BuiltInCharacters.defaultMonsterReference,
             ))
             return
         }
@@ -141,7 +145,8 @@ class CharacterAssignmentStore(
             player = null,
             playerByType = document.playerByType - CharacterType.Monster,
             playerMonsterRoster = roster.drop(1),
-            activePlayerMonster = roster.firstOrNull(),
+            activePlayerMonster = roster.firstOrNull()
+                ?: BuiltInCharacters.defaultMonsterReference,
         ))
     }
 
@@ -414,12 +419,17 @@ class CharacterAssignmentStore(
     private fun CharacterReference.sameCharacterAs(other: CharacterReference): Boolean =
         packId == other.packId && characterId == other.characterId
 
-    /** Converts the released single-monster assignment and the earlier roster format on read. */
+    /**
+     * Converts the released single-monster assignment and the earlier roster format on read.
+     * The bundled monster is always the initial active roster member, even before a user saves
+     * any character assignment.
+     */
     private fun activeMonster(document: CharacterAssignmentsDocument): CharacterReference? =
         document.activePlayerMonster
             ?: document.playerByType[CharacterType.Monster]
             ?: document.player
             ?: document.playerMonsterRoster.firstOrNull()
+            ?: BuiltInCharacters.defaultMonsterReference
 
     /** The roster holds the team members that are not currently active. */
     private fun benchRoster(document: CharacterAssignmentsDocument): List<CharacterReference> =
@@ -448,12 +458,23 @@ class CharacterAssignmentStore(
 
     private fun read(): CharacterAssignmentsDocument {
         val file = File(storageRoot, FileName)
-        if (!file.exists()) return CharacterAssignmentsDocument()
-        return try {
+        val document = if (!file.exists()) {
+            CharacterAssignmentsDocument()
+        } else try {
             json.decodeFromString<CharacterAssignmentsDocument>(file.readText())
         } catch (exception: Exception) {
             throw CharacterPackValidationException("Character assignments are unreadable: ${exception.message}")
         }
+        if (
+            document.activePlayerMonster == null &&
+            document.playerByType[CharacterType.Monster] == null &&
+            document.player == null &&
+            document.playerMonsterRoster.isEmpty()
+        ) {
+            return document.copy(activePlayerMonster = BuiltInCharacters.defaultMonsterReference)
+                .also(::write)
+        }
+        return document
     }
 
     private fun write(document: CharacterAssignmentsDocument) {
