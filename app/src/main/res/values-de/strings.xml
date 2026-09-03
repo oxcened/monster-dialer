@@ -42,6 +42,7 @@
     <string name="import_and_enable_character_pack" comment="Empty-state message in the character selector.">Füge einen eigenen Charakter hinzu oder importiere ein Paket, um mehr zu sehen.</string>
     <string name="radiant" comment="Adjective for a rare, sparkling character variant.">Strahlend</string>
     <string name="selected" comment="Status label for the currently chosen option.">Ausgewählt</string>
+    <string name="randomize" comment="Character selection that chooses a different eligible character for every call.">Zufällig</string>
     <string name="locked">Gesperrt</string>
     <string name="radiant_variant_locked_title">Strahlende Variante gesperrt</string>
     <string name="radiant_variant_locked_message">Wenn du einem strahlenden %1$s in einem wilden Kampf begegnest, wird er zu Kampfbeginn automatisch freigeschaltet. Danach kannst du ihn zuweisen.</string>

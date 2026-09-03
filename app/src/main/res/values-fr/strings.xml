@@ -42,6 +42,7 @@
     <string name="import_and_enable_character_pack" comment="Empty-state message in the character selector.">Ajoutez votre propre personnage ou importez un pack pour en voir plus.</string>
     <string name="radiant" comment="Adjective for a rare, sparkling character variant.">Radieux</string>
     <string name="selected" comment="Status label for the currently chosen option.">Sélectionné</string>
+    <string name="randomize" comment="Character selection that chooses a different eligible character for every call.">Aléatoire</string>
     <string name="locked">Verrouillé</string>
     <string name="radiant_variant_locked_title">Variante radieuse verrouillée</string>
     <string name="radiant_variant_locked_message">Lorsque vous rencontrez un %1$s radieux dans un combat sauvage, il se déverrouille automatiquement dès le début du combat. Vous pouvez ensuite l’assigner.</string>

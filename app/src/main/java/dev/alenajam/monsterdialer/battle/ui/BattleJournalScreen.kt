@@ -2,7 +2,6 @@ package dev.alenajam.monsterdialer.battle.ui
 
 import java.text.DateFormat
 import java.util.Date
-import java.util.Locale
 import java.time.ZoneId
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -42,6 +41,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalLocale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.clearAndSetSemantics
@@ -267,6 +267,7 @@ private fun BattleJournalEntryRow(
     roundBottom: Boolean,
     onClick: () -> Unit,
 ) {
+    val locale = LocalLocale.current.platformLocale
     val isRadiantEncounter = entry.encounterType == EncounterType.RadiantWild
     val cardShape = RoundedCornerShape(
         topStart = if (roundTop) 20.dp else 2.dp,
@@ -328,7 +329,7 @@ private fun BattleJournalEntryRow(
                                     } else {
                                         R.string.battle_journal_battle_label
                                     },
-                                ).uppercase(Locale.getDefault()),
+                                ).uppercase(locale),
                                 style = MaterialTheme.typography.labelSmall,
                                 color = if (isRadiantEncounter) {
                                     MaterialTheme.colorScheme.primary
