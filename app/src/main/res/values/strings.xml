@@ -4,6 +4,8 @@
     <string name="font_name" comment="Name of the typeface credited in the About screen." translatable="false">Pixel Operator</string>
     <string name="font_author" comment="Author of the typeface credited in the About screen." translatable="false">Jayvee Enaguas</string>
     <string name="url_font" comment="Font credit link opened from the About screen." translatable="false">https://www.dafont.com/pixel-operator.font</string>
+    <string name="icon_designer" comment="Name of the icon designer credited in the About screen." translatable="false">ArcherPanda</string>
+    <string name="url_icon_designer" comment="Icon designer credit link opened from the About screen." translatable="false">https://bsky.app/profile/archerpanda.bsky.social</string>
     <string name="additional_translation_project_title" comment="Title of the additional translation contribution card.">Contribute MonsterDialer translations</string>
     <string name="contribute_translations" comment="Title of the OpenDialer translation contribution link on the About screen.">Contribute OpenDialer translations</string>
     <string name="url_additional_translation_project" translatable="false">https://crowdin.com/project/monsterdialer</string>
