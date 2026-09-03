@@ -2,6 +2,7 @@ package dev.alenajam.monsterdialer.characters.data
 
 import androidx.annotation.DrawableRes
 import dev.alenajam.monsterdialer.R
+import dev.alenajam.monsterdialer.packs.data.CharacterReference
 
 const val DefaultMonsterLevel = 5
 
@@ -33,6 +34,12 @@ data class BuiltInArtwork(
 
 /** The app's fallback characters, used whenever no character pack assignment applies. */
 object BuiltInCharacters {
+    /** Stable roster reference for the bundled monster, which is not part of an installed pack. */
+    val defaultMonsterReference = CharacterReference(
+        packId = "builtin",
+        characterId = "default-monster",
+    )
+
     val trainer = BuiltInCharacter(
         name = "Kael",
         playerArtwork = BuiltInArtwork(R.drawable.battle_player_trainer, "battle_player_trainer"),

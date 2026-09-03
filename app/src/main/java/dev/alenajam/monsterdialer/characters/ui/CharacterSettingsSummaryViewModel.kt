@@ -110,6 +110,9 @@ class CharacterSettingsSummaryViewModel @Inject constructor(
         type: CharacterType,
         reference: CharacterReference,
     ): PlayerProfileCharacter? {
+        if (type == CharacterType.Monster && reference == BuiltInCharacters.defaultMonsterReference) {
+            return builtInProfileCharacter(CharacterType.Monster)
+        }
         val installed = charactersRepository.findCharacter(
             reference = reference,
             role = CharacterAssignmentTarget.Player,
