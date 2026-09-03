@@ -62,6 +62,7 @@ import dev.alenajam.opendialer.core.common.ui.LocalAppIcons
 import dev.alenajam.monsterdialer.characters.data.BuiltInArtwork
 import dev.alenajam.monsterdialer.characters.data.BuiltInCharacter
 import dev.alenajam.monsterdialer.characters.data.BuiltInCharacters
+import dev.alenajam.monsterdialer.characters.data.isBuiltInMonsterRosterReference
 import dev.alenajam.monsterdialer.packs.data.CharacterReference
 import dev.alenajam.monsterdialer.packs.data.CharacterAssignmentTarget
 import dev.alenajam.monsterdialer.packs.data.CharacterVisualVariant
@@ -126,9 +127,19 @@ internal fun LazyListScope.characterTypeItems(
     val availableSelection = selected?.takeIf { reference ->
         characters.any { it.matches(reference) }
     }
-    val isDefaultSelected = selectedReferences.isEmpty() && availableSelection == null && !isRandomSelected
+    val isDefaultSelected = (selected?.isBuiltInMonsterRosterReference() == true
+        || selectedReferences.any(CharacterReference::isBuiltInMonsterRosterReference)
+        || (selectedReferences.isEmpty() && availableSelection == null))
+        && !isRandomSelected
     fun isReferenceSelected(reference: CharacterReference): Boolean =
         if (selectedReferences.isEmpty()) availableSelection == reference else reference in selectedReferences
+    val hasSelectableCharacter = characters.any { installed ->
+        installed.selectionVariants().any { selection ->
+            val reference = CharacterReference(selection.installed.packId, selection.installed.character.id, selection.variant.id)
+            !hideSelected || !isReferenceSelected(reference)
+        }
+    }
+    val hasNoCharacterOptions = onRandomize == null && hideSelected && isDefaultSelected && !hasSelectableCharacter
     item(key = "add") {
         AddCharacterButton(
             onClick = onAddCharacter,
@@ -146,7 +157,7 @@ internal fun LazyListScope.characterTypeItems(
         }
     }
 
-    if (onRandomize != null && characters.isNotEmpty()) {
+    if (onRandomize != null) {
         item(key = "random") {
             CharacterOptionCard(
                 name = stringResource(R.string.randomize),
@@ -178,7 +189,7 @@ internal fun LazyListScope.characterTypeItems(
                 type = type,
                 isSelected = isDefaultSelected,
                 roundTop = true,
-                roundBottom = characters.isNotEmpty(),
+                roundBottom = true,
                 artwork = {
                     Image(
                         painter = painterResource(defaultArtwork(defaultCharacter).resource),
@@ -260,7 +271,10 @@ internal fun LazyListScope.characterTypeItems(
         }
     }
 
-    if (characters.isEmpty()) item(key = "empty") { NoAdditionalCharacterOptionsCard(title) }
+    if (hasNoCharacterOptions) {
+        item(key = "no-options") { NoCharacterOptionsPlaceholder(pluralTitle) }
+    }
+
 }
 
 internal fun LazyGridScope.characterTypeGridItems(
@@ -288,9 +302,19 @@ internal fun LazyGridScope.characterTypeGridItems(
     val availableSelection = selected?.takeIf { reference ->
         characters.any { it.matches(reference) }
     }
-    val isDefaultSelected = selectedReferences.isEmpty() && availableSelection == null && !isRandomSelected
+    val isDefaultSelected = (selected?.isBuiltInMonsterRosterReference() == true
+        || selectedReferences.any(CharacterReference::isBuiltInMonsterRosterReference)
+        || (selectedReferences.isEmpty() && availableSelection == null))
+        && !isRandomSelected
     fun isReferenceSelected(reference: CharacterReference): Boolean =
         if (selectedReferences.isEmpty()) availableSelection == reference else reference in selectedReferences
+    val hasSelectableCharacter = characters.any { installed ->
+        installed.selectionVariants().any { selection ->
+            val reference = CharacterReference(selection.installed.packId, selection.installed.character.id, selection.variant.id)
+            !hideSelected || !isReferenceSelected(reference)
+        }
+    }
+    val hasNoCharacterOptions = onRandomize == null && hideSelected && isDefaultSelected && !hasSelectableCharacter
     item(key = "add", span = { GridItemSpan(2) }) {
         Column {
             AddCharacterButton(
@@ -310,7 +334,7 @@ internal fun LazyGridScope.characterTypeGridItems(
         }
     }
 
-    if (onRandomize != null && characters.isNotEmpty()) {
+    if (onRandomize != null) {
         item(key = "random") {
             CharacterGridItem(
                 name = stringResource(R.string.randomize),
@@ -420,14 +444,10 @@ internal fun LazyGridScope.characterTypeGridItems(
         }
     }
 
-    if (characters.isEmpty()) {
-        item(key = "empty") {
-            NoAdditionalCharacterGridItem(
-                title = title,
-                shape = gridItemShape(index = 1, itemCount = 2)
-            )
-        }
+    if (hasNoCharacterOptions) {
+        item(key = "no-options", span = { GridItemSpan(2) }) { NoCharacterOptionsPlaceholder(pluralTitle) }
     }
+
 }
 
 private data class CharacterSelection(
@@ -658,23 +678,14 @@ fun CustomCharacterDeletionConfirmationDialog(
 }
 
 @Composable
-private fun NoAdditionalCharacterOptionsCard(title: String) {
-    Card(
-        modifier = Modifier.fillMaxWidth().padding(vertical = 1.dp),
-        shape = RoundedCornerShape(topStart = 2.dp, topEnd = 2.dp, bottomStart = 20.dp, bottomEnd = 20.dp),
-        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainerLow),
-        elevation = CardDefaults.cardElevation(defaultElevation = 0.5.dp)
-    ) {
-        Box(
-            modifier = Modifier.fillMaxWidth().heightIn(min = 104.dp).padding(horizontal = 24.dp),
-            contentAlignment = Alignment.Center
-        ) {
-            Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                Text(stringResource(R.string.no_other_character_options, title.lowercase()), style = MaterialTheme.typography.titleSmall, textAlign = TextAlign.Center)
-                Text(stringResource(R.string.import_and_enable_character_pack), style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant, textAlign = TextAlign.Center)
-            }
-        }
-    }
+private fun NoCharacterOptionsPlaceholder(pluralTitle: String) {
+    Text(
+        text = stringResource(R.string.no_available_character_options, pluralTitle.lowercase()),
+        style = MaterialTheme.typography.titleMedium,
+        color = MaterialTheme.colorScheme.onSurfaceVariant,
+        textAlign = TextAlign.Center,
+        modifier = Modifier.fillMaxWidth().padding(horizontal = 24.dp, vertical = 32.dp),
+    )
 }
 
 @OptIn(ExperimentalFoundationApi::class)
@@ -985,24 +996,4 @@ private fun RadiantVariantUnlockDialog(characterName: String, onDismiss: () -> U
             TextButton(onClick = onDismiss) { Text(stringResource(R.string.cancel)) }
         }
     )
-}
-
-@Composable
-private fun NoAdditionalCharacterGridItem(title: String, shape: Shape) {
-    Card(
-        modifier = Modifier.fillMaxWidth().height(200.dp),
-        shape = shape,
-        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainerLow),
-        elevation = CardDefaults.cardElevation(defaultElevation = 0.5.dp)
-    ) {
-        Box(
-            modifier = Modifier.fillMaxSize().padding(16.dp),
-            contentAlignment = Alignment.Center
-        ) {
-            Column(horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.spacedBy(4.dp)) {
-                Text(stringResource(R.string.no_other_character_options, title.lowercase()), style = MaterialTheme.typography.titleSmall, textAlign = TextAlign.Center)
-                Text(stringResource(R.string.import_and_enable_character_pack), style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant, textAlign = TextAlign.Center)
-            }
-        }
-    }
 }

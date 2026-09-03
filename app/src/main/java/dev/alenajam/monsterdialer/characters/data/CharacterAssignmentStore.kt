@@ -159,12 +159,18 @@ class CharacterAssignmentStore(
     fun replacePlayerMonsterInRoster(index: Int, character: CharacterReference) {
         character.validate()
         val roster = playerMonsterRoster().toMutableList()
+        if (roster.isEmpty() && index == 0) {
+            setPlayerMonsterRoster(listOf(character))
+            return
+        }
         if (index !in roster.indices) return
         if (roster[index] == character) return
 
         // Ensure the character is not already in the roster elsewhere
         val existingIndex = roster.indexOfFirst { it.sameCharacterAs(character) }
-        if (existingIndex != -1) {
+        if (existingIndex == index) {
+            roster[index] = character
+        } else if (existingIndex != -1) {
             roster.removeAt(existingIndex)
             // Adjust index if we removed something before it
             val finalIndex = if (existingIndex < index) index - 1 else index

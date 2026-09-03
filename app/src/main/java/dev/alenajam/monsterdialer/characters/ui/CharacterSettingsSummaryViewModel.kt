@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.annotation.DrawableRes
 import dev.alenajam.monsterdialer.characters.data.BuiltInCharacters
+import dev.alenajam.monsterdialer.characters.data.isBuiltInMonsterRosterReference
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dev.alenajam.monsterdialer.characters.data.CharacterAssignmentRepository
 import dev.alenajam.monsterdialer.characters.data.CharactersRepository
@@ -82,9 +83,9 @@ class CharacterSettingsSummaryViewModel @Inject constructor(
         val activeMonster = activeMonsterReference
             ?.let { playerProfileCharacter(CharacterType.Monster, it) }
             ?: builtInProfileCharacter(CharacterType.Monster)
-        // The roster is the full team, active monster first, so the active monster also
-        // appears in it at index 0.
-        val roster = assignmentRepository.getPlayerMonsterRoster()
+        val roster = if (activeMonsterReference == null) {
+            listOf(PlayerRosterMonster(activeMonster, reference = null, isActive = true))
+        } else assignmentRepository.getPlayerMonsterRoster()
             .mapNotNull { reference ->
                 playerProfileCharacter(CharacterType.Monster, reference)?.let { character ->
                     PlayerRosterMonster(
@@ -110,7 +111,12 @@ class CharacterSettingsSummaryViewModel @Inject constructor(
         type: CharacterType,
         reference: CharacterReference,
     ): PlayerProfileCharacter? {
-        if (type == CharacterType.Monster && reference == BuiltInCharacters.defaultMonsterReference) {
+        if (
+            type == CharacterType.Monster && (
+                reference == BuiltInCharacters.defaultMonsterReference ||
+                    reference.isBuiltInMonsterRosterReference()
+                )
+        ) {
             return builtInProfileCharacter(CharacterType.Monster)
         }
         val installed = charactersRepository.findCharacter(
@@ -131,7 +137,13 @@ class CharacterSettingsSummaryViewModel @Inject constructor(
     private fun defaultPlayerProfile() = PlayerProfile(
         trainer = builtInProfileCharacter(CharacterType.Trainer),
         monster = builtInProfileCharacter(CharacterType.Monster),
-        roster = emptyList(),
+        roster = listOf(
+            PlayerRosterMonster(
+                character = builtInProfileCharacter(CharacterType.Monster),
+                reference = null,
+                isActive = true,
+            ),
+        ),
     )
 
     private fun builtInProfileCharacter(type: CharacterType): PlayerProfileCharacter = when (type) {

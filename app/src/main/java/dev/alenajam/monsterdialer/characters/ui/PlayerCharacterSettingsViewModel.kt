@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import dev.alenajam.monsterdialer.characters.data.CharacterAssignmentRepository
 import dev.alenajam.monsterdialer.characters.data.CharacterLayoutPreferences
 import dev.alenajam.monsterdialer.characters.data.CharactersRepository
+import dev.alenajam.monsterdialer.characters.data.BuiltInMonsterRosterReference
 import dev.alenajam.monsterdialer.characters.data.RadiantVariantUnlockStore
 import dev.alenajam.monsterdialer.packs.data.CharacterAssignmentTarget
 import dev.alenajam.monsterdialer.packs.data.CharacterReference
@@ -92,15 +93,12 @@ class PlayerCharacterSettingsViewModel @Inject constructor(
 
     fun assignMonster(reference: CharacterReference?) {
         viewModelScope.launch {
-            if (reference == null) {
-                assignmentRepository.setPlayerCharacter(CharacterType.Monster, null)
+            val selectedMonster = reference ?: BuiltInMonsterRosterReference
+            val slotIndex = _targetSlotIndex.value
+            if (slotIndex != null) {
+                assignmentRepository.replacePlayerMonsterInRoster(slotIndex, selectedMonster)
             } else {
-                val slotIndex = _targetSlotIndex.value
-                if (slotIndex != null) {
-                    assignmentRepository.replacePlayerMonsterInRoster(slotIndex, reference)
-                } else {
-                    assignmentRepository.addPlayerMonsterToRoster(reference)
-                }
+                assignmentRepository.addPlayerMonsterToRoster(selectedMonster)
             }
             _assignedMonster.value = assignmentRepository.getPlayerCharacter(CharacterType.Monster)
             _monsterRoster.value = assignmentRepository.getPlayerMonsterRoster()

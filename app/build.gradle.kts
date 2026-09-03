@@ -17,6 +17,7 @@ val radiantEncounterDebugProperties = Properties().apply {
 val forceRadiantEncounters = radiantEncounterDebugProperties
     .getProperty("forceRadiantEncounters")
     .equals("true", ignoreCase = true)
+val profileSharingHost = "monsterdialer.web.app"
 
 // Firebase is used for production telemetry, but local debug builds should not
 // require credentials that are intentionally excluded from source control.
@@ -52,6 +53,8 @@ android {
         versionCode = appVersionCode
         versionName = appVersionName
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        manifestPlaceholders["profileSharingHost"] = profileSharingHost
+        buildConfigField("String", "PROFILE_SHARING_HOST", "\"$profileSharingHost\"")
     }
 
     buildFeatures {
@@ -125,6 +128,11 @@ dependencies {
     implementation(platform(libs.firebase.bom))
     implementation(libs.firebase.crashlytics)
     implementation(libs.firebase.analytics)
+    implementation(monster.firebase.auth)
+    implementation(monster.firebase.firestore)
+    implementation(monster.firebase.storage)
+    implementation(monster.coroutines.play.services)
+    implementation(monster.libphonenumber)
 
     // These would be Maven dependencies if OpenDialer were published
     // For now, we assume they are included in the settings.gradle.kts

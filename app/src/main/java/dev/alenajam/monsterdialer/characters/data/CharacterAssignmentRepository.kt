@@ -142,7 +142,8 @@ class CharacterAssignmentRepositoryImpl @Inject constructor(
     override suspend fun isPackInUse(
         packId: String
     ): Boolean = withContext(Dispatchers.IO) {
-        val playerInUse = CharacterType.entries.any { assignments.player(it)?.packId == packId }
+        val playerInUse = CharacterType.entries.any { assignments.player(it)?.packId == packId } ||
+            assignments.playerMonsterRoster().any { it.packId == packId }
         val contactsInUse = assignments.contactAssignments().any { it.character.packId == packId }
         playerInUse || contactsInUse
     }

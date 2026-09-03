@@ -82,7 +82,9 @@ fun BattleJournalScreen(viewModel: BattleJournalViewModel = hiltViewModel()) {
         BattleJournalFilter.RadiantFound -> entries.filter { entry ->
             entry.encounterType == EncounterType.RadiantWild
         }
-        BattleJournalFilter.Battles -> entries.filterNot(BattleJournalEntry::isRadiantDiscovery)
+        BattleJournalFilter.Battles -> entries.filter { entry ->
+            entry.encounterType != EncounterType.RadiantWild
+        }
     }
     val entriesByDate = filteredEntries.groupBy { entry ->
         Date(entry.timestampMillis).toInstant().atZone(ZoneId.systemDefault()).toLocalDate()

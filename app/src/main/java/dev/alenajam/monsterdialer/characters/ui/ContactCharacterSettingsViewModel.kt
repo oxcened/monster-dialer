@@ -14,6 +14,8 @@ import dev.alenajam.monsterdialer.packs.data.CharacterReference
 import dev.alenajam.monsterdialer.packs.data.CharacterType
 import dev.alenajam.monsterdialer.packs.data.CustomCharacterRepository
 import dev.alenajam.monsterdialer.packs.data.InstalledPackCharacter
+import dev.alenajam.monsterdialer.onlineprofiles.data.OnlineOpponentResolver
+import dev.alenajam.monsterdialer.onlineprofiles.data.PublicProfileId
 import dev.alenajam.opendialer.data.contacts.DialerContactSummary
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -33,6 +35,7 @@ class ContactCharacterSettingsViewModel @Inject constructor(
     private val layoutPreferences: CharacterLayoutPreferences,
     private val packsRepository: dev.alenajam.monsterdialer.packs.data.PacksRepository,
     radiantUnlocks: RadiantVariantUnlockStore,
+    private val onlineOpponentResolver: OnlineOpponentResolver,
 ) : ViewModel() {
 
     val unlockedVariants = radiantUnlocks.unlocked
@@ -82,6 +85,12 @@ class ContactCharacterSettingsViewModel @Inject constructor(
     private val _contactSelectionVersion = MutableStateFlow(0)
     val contactSelectionVersion: StateFlow<Int> = _contactSelectionVersion.asStateFlow()
 
+    private val _pendingOnlineProfileId = MutableStateFlow<String?>(null)
+    val pendingOnlineProfileId: StateFlow<String?> = _pendingOnlineProfileId.asStateFlow()
+
+    private val _linkedOnlineProfileId = MutableStateFlow<String?>(null)
+    val linkedOnlineProfileId: StateFlow<String?> = _linkedOnlineProfileId.asStateFlow()
+
     init {
         restoreSelectedContact()
     }
@@ -101,6 +110,38 @@ class ContactCharacterSettingsViewModel @Inject constructor(
     suspend fun selectContact(selectedContact: DialerContactSummary) {
         selectionRepository.setSelectedContact(selectedContact)
         restoreSelectedContactState()
+        val profileId = _pendingOnlineProfileId.value ?: return
+        val contact = _contact.value ?: return
+        if (onlineOpponentResolver.link(contact.numbers, profileId)) {
+            _pendingOnlineProfileId.value = null
+        }
+    }
+
+    /** Selects a contact and links the pending Online Profile, if one was opened from a shared URI. */
+    suspend fun selectContactForPendingOnlineProfile(selectedContact: DialerContactSummary): Boolean {
+        selectionRepository.setSelectedContact(selectedContact)
+        restoreSelectedContactState()
+        val profileId = _pendingOnlineProfileId.value ?: return true
+        val contact = _contact.value ?: return false
+        return onlineOpponentResolver.link(contact.numbers, profileId).also { linked ->
+            if (linked) _pendingOnlineProfileId.value = null
+        }
+    }
+
+    /** Called only after a validated, opt-in profile URI has been opened. */
+    fun prepareOnlineProfileLink(publicProfileId: String) {
+        if (PublicProfileId.isValid(publicProfileId)) _pendingOnlineProfileId.value = publicProfileId
+    }
+
+    fun clearPendingOnlineProfile() {
+        _pendingOnlineProfileId.value = null
+    }
+
+    fun unlinkOnlineProfile() {
+        _contact.value?.numbers?.let {
+            onlineOpponentResolver.unlink(it)
+            _linkedOnlineProfileId.value = null
+        }
     }
 
     fun assignTrainer(reference: CharacterReference?) {
@@ -181,6 +222,7 @@ class ContactCharacterSettingsViewModel @Inject constructor(
     private suspend fun restoreSelectedContactState() {
         val restored = selectionRepository.getSelectedContact()
         _contact.value = restored
+        _linkedOnlineProfileId.value = restored?.numbers?.let(onlineOpponentResolver::linkedProfileId)
 
         val trainerSelection = restored?.contactKeys()?.firstOrNull()?.let {
             assignmentRepository.getContactCharacterSelection(it, CharacterType.Trainer)

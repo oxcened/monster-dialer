@@ -34,9 +34,11 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import dev.alenajam.monsterdialer.battle.data.AssignedCharacterEncounterFactory
 import dev.alenajam.monsterdialer.characters.data.RadiantVariantUnlockNotifier
 import dev.alenajam.monsterdialer.R
+import dev.alenajam.monsterdialer.battle.data.BattleEncounter
 import dev.alenajam.monsterdialer.battle.ui.BattleScreen
 import dev.alenajam.monsterdialer.app.ui.rememberMonsterIcons
 import dev.alenajam.monsterdialer.app.ui.rememberMonsterTypography
+import dev.alenajam.monsterdialer.onlineprofiles.data.OnlineOpponentResolver
 import dev.alenajam.opendialer.core.common.getActivity
 import dev.alenajam.opendialer.core.common.ui.AppProviders
 import dev.alenajam.opendialer.core.common.ui.AppThemeExtension
@@ -49,10 +51,12 @@ import dev.alenajam.opendialer.feature.inCall.ui.IncomingCallControls
 import dev.alenajam.opendialer.feature.inCall.ui.ManageConferenceSheet
 import dev.alenajam.opendialer.feature.inCall.ui.SecondaryCallBanner
 import javax.inject.Inject
+import kotlinx.coroutines.withTimeoutOrNull
 
 class MonsterInCallUI @Inject constructor(
     private val encounterFactory: AssignedCharacterEncounterFactory,
     private val radiantUnlockNotifier: RadiantVariantUnlockNotifier,
+    private val onlineOpponentResolver: OnlineOpponentResolver,
 ) : InCallUI {
     @OptIn(ExperimentalMaterial3Api::class)
     @Composable
@@ -60,7 +64,9 @@ class MonsterInCallUI @Inject constructor(
         val viewModel: InCallViewModel = viewModel()
         val uiState by viewModel.uiState.collectAsStateWithLifecycle()
         val durationMillis by viewModel.activeCallDuration.collectAsStateWithLifecycle(0L)
+        val onlineOpponentCacheVersion by onlineOpponentResolver.cacheVersion.collectAsStateWithLifecycle()
         val context = LocalContext.current
+        val unknownCallerName = stringResource(R.string.unknown)
         val hasSecondaryCall = uiState.hasSecondaryCall
         val secondaryCallerName = uiState.secondaryCallerName
         val canSwap = hasSecondaryCall
@@ -70,6 +76,8 @@ class MonsterInCallUI @Inject constructor(
         val showSplitInManage = canManageConference && !hasSecondaryCall
         var showManageSheet by remember { mutableStateOf(false) }
         var hasObservedCall by remember { mutableStateOf(false) }
+        var preparedCallId by remember { mutableStateOf<String?>(null) }
+        var encounter by remember { mutableStateOf<BattleEncounter?>(null) }
         val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
         val radiantUnlockSnackbar = remember { SnackbarHostState() }
 
@@ -78,9 +86,30 @@ class MonsterInCallUI @Inject constructor(
                 if (hasObservedCall) {
                     encounterFactory.clearCachedEncounter()
                 }
+                preparedCallId = null
+                encounter = null
             } else {
                 hasObservedCall = true
             }
+        }
+
+        LaunchedEffect(uiState.callId, uiState.callerNumber, onlineOpponentCacheVersion) {
+            if (uiState.status == CallStatus.IDLE) return@LaunchedEffect
+            if (preparedCallId != uiState.callId) {
+                encounter = null
+                onlineOpponentResolver.refreshForNumberAsync(uiState.callerNumber)?.let { refresh ->
+                    withTimeoutOrNull(OnlineProfileRefreshWaitMillis) { refresh.await() }
+                }
+                preparedCallId = uiState.callId
+            }
+            encounter = encounterFactory.forCall(
+                callId = uiState.callId,
+                contactKey = uiState.callerNumber,
+                callerName = uiState.callerName.ifBlank {
+                    uiState.callerNumber.ifBlank { unknownCallerName }
+                },
+                isAnonymous = uiState.callerName.isBlank() && uiState.callerNumber.isBlank(),
+            )
         }
 
         LaunchedEffect(canManageConference) {
@@ -173,26 +202,6 @@ class MonsterInCallUI @Inject constructor(
                         modifier = Modifier.fillMaxSize()
                     ) {
                         if (uiState.status != CallStatus.IDLE) {
-                            val encounter = encounterFactory.forCall(
-                                callId = uiState.callId,
-                                contactKey = uiState.callerNumber,
-                                callerName = uiState.callerName.ifBlank {
-                                    uiState.callerNumber.ifBlank { stringResource(R.string.unknown) }
-                                },
-                                isAnonymous = uiState.callerName.isBlank() && uiState.callerNumber.isBlank()
-                            )
-                            val radiantUnlockMessage = encounter.unlockedRadiantName?.let { name ->
-                                stringResource(R.string.radiant_variant_unlocked_message, name)
-                            }
-                            LaunchedEffect(encounter.id, radiantUnlockMessage) {
-                                radiantUnlockMessage?.let { message ->
-                                    radiantUnlockNotifier.show(
-                                        characterName = requireNotNull(encounter.unlockedRadiantName),
-                                        frontSpritePath = encounter.unlockedRadiantFrontSpritePath,
-                                    )
-                                    radiantUnlockSnackbar.showSnackbar(message)
-                                }
-                            }
                             InCallDetails(
                                 callerName = uiState.callerName,
                                 callerNumber = uiState.callerNumber,
@@ -213,20 +222,34 @@ class MonsterInCallUI @Inject constructor(
                                     .align(Alignment.CenterHorizontally)
                             )
 
-                            Box(
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .weight(1f)
-                                    .padding(horizontal = 4.dp, vertical = 4.dp),
-                                contentAlignment = Alignment.Center
-                            ) {
-                                BattleScreen(
-                                    encounter = encounter,
+                            encounter?.let { preparedEncounter ->
+                                val radiantUnlockMessage = preparedEncounter.unlockedRadiantName?.let { name ->
+                                    stringResource(R.string.radiant_variant_unlocked_message, name)
+                                }
+                                LaunchedEffect(preparedEncounter.id, radiantUnlockMessage) {
+                                    radiantUnlockMessage?.let { message ->
+                                        radiantUnlockNotifier.show(
+                                            characterName = requireNotNull(preparedEncounter.unlockedRadiantName),
+                                            frontSpritePath = preparedEncounter.unlockedRadiantFrontSpritePath,
+                                        )
+                                        radiantUnlockSnackbar.showSnackbar(message)
+                                    }
+                                }
+                                Box(
                                     modifier = Modifier
-                                        .heightIn(max = 380.dp)
-                                        .aspectRatio(160f / 144f)
-                                        .fillMaxSize()
-                                )
+                                        .fillMaxWidth()
+                                        .weight(1f)
+                                        .padding(horizontal = 4.dp, vertical = 4.dp),
+                                    contentAlignment = Alignment.Center
+                                ) {
+                                    BattleScreen(
+                                        encounter = preparedEncounter,
+                                        modifier = Modifier
+                                            .heightIn(max = 380.dp)
+                                            .aspectRatio(160f / 144f)
+                                            .fillMaxSize()
+                                    )
+                                }
                             }
                         }
                     }
@@ -250,5 +273,9 @@ class MonsterInCallUI @Inject constructor(
                 }
             }
         }
+    }
+
+    private companion object {
+        const val OnlineProfileRefreshWaitMillis = 500L
     }
 }

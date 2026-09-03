@@ -1,0 +1,69 @@
+rules_version = '2';
+service cloud.firestore {
+  // Shared profile documents contain only displayable character metadata and
+  // sprite references. Ownership is isolated in the unreadable `private`
+  // subcollection. `retentionConfirmedAt` is a server timestamp used only by
+  // the profile-retention policy.
+  match /databases/{database}/documents {
+    function ownsProfile(profileId) {
+      return request.auth != null
+        && get(/databases/$(database)/documents/onlineProfiles/$(profileId)/private/ownership).data.ownerUid == request.auth.uid;
+    }
+
+    function isValidProfile(profileId) {
+      return request.resource.data.keys().hasAll([
+          'schemaVersion', 'publicProfileId', 'revision', 'updatedAt', 'trainer', 'monster'
+        ])
+        && request.resource.data.keys().hasOnly([
+          'schemaVersion', 'publicProfileId', 'revision', 'updatedAt', 'retentionConfirmedAt', 'trainer', 'monster'
+        ])
+        && request.resource.data.publicProfileId == profileId
+        && request.resource.data.schemaVersion == 1
+        && request.resource.data.revision is int
+        && request.resource.data.revision > 0
+        && request.resource.data.updatedAt is timestamp
+        && (!('retentionConfirmedAt' in request.resource.data)
+          || request.resource.data.retentionConfirmedAt is timestamp);
+    }
+
+    function timestampsAreValidForUpdate() {
+      return (request.resource.data.updatedAt == resource.data.updatedAt
+          || request.resource.data.updatedAt == request.time)
+        && (!('retentionConfirmedAt' in resource.data)
+          || ('retentionConfirmedAt' in request.resource.data
+            && (request.resource.data.retentionConfirmedAt == resource.data.retentionConfirmedAt
+              || request.resource.data.retentionConfirmedAt == request.time)))
+        && (('retentionConfirmedAt' in resource.data)
+          || !('retentionConfirmedAt' in request.resource.data)
+          || request.resource.data.retentionConfirmedAt == request.time);
+    }
+
+    match /onlineProfiles/{profileId} {
+      allow get: if true;
+      allow list: if false;
+      allow create: if request.auth != null
+        && isValidProfile(profileId)
+        && request.resource.data.retentionConfirmedAt == request.time
+        && getAfter(/databases/$(database)/documents/onlineProfiles/$(profileId)/private/ownership).data.ownerUid == request.auth.uid;
+      allow update: if ownsProfile(profileId)
+        && isValidProfile(profileId)
+        && timestampsAreValidForUpdate();
+      allow delete: if ownsProfile(profileId);
+    }
+
+    match /onlineProfiles/{profileId}/private/{document} {
+      allow read: if false;
+      allow create: if request.auth != null
+        && document == 'ownership'
+        && request.resource.data.keys().hasOnly(['ownerUid'])
+        && request.resource.data.ownerUid == request.auth.uid
+        && !exists(/databases/$(database)/documents/onlineProfiles/$(profileId))
+        && getAfter(/databases/$(database)/documents/onlineProfiles/$(profileId)).data.publicProfileId == profileId;
+      allow delete: if request.auth != null
+        && resource.data.ownerUid == request.auth.uid;
+      allow update: if request.auth != null
+        && resource.data.ownerUid == request.auth.uid
+        && request.resource.data.ownerUid == resource.data.ownerUid;
+    }
+  }
+}

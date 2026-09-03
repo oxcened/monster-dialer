@@ -70,6 +70,7 @@ import dev.alenajam.monsterdialer.app.ui.LocalMonsterAppIcons
 import dev.alenajam.monsterdialer.characters.data.DefaultMonsterLevel
 import dev.alenajam.monsterdialer.characters.data.MaxPlayerMonsterTeamSize
 import dev.alenajam.monsterdialer.characters.data.SharedCharacterImport
+import dev.alenajam.monsterdialer.onlineprofiles.ui.OnlineProfileSection
 import dev.alenajam.monsterdialer.packs.data.CharacterReference
 import dev.alenajam.monsterdialer.packs.data.CharacterType
 import dev.alenajam.opendialer.core.common.ui.AppIcon
@@ -119,6 +120,7 @@ fun CharactersHomeScreen(
             onReorderRoster = onReorderRoster,
             onRemoveRosterMonster = onRemoveRosterMonster,
         )
+        OnlineProfileSection()
         Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
             Text(
                 text = stringResource(R.string.character_tools_title),
@@ -172,38 +174,51 @@ private fun RosterSection(
         ) {
             itemsIndexed(
                 items = orderedRoster,
-                key = { _, monster -> requireNotNull(monster.reference).rosterKey() },
+                key = { _, monster -> monster.reference?.rosterKey() ?: "built-in-monster" },
             ) { index, monster ->
-                val reference = requireNotNull(monster.reference)
-                ReorderableItem(reorderableState, key = reference.rosterKey()) { isDragging ->
+                val reference = monster.reference
+                if (reference == null) {
                     val interactionSource = remember { MutableInteractionSource() }
                     RosterMonsterTile(
                         monster = monster,
-                        isDragged = isDragging,
-                        onRemove = { onRemoveRosterMonster(reference) },
-                        isRemoveEnabled = orderedRoster.size > 1,
+                        isDragged = false,
+                        onRemove = {},
+                        isRemoveEnabled = false,
                         onClick = { onOpenRosterSlot(index) },
+                        dragHandle = {},
                         interactionSource = interactionSource,
-                        dragHandle = {
-                            AppIcon(
-                                LocalMonsterAppIcons.current.reorder,
-                                contentDescription = stringResource(R.string.reorder_monster),
-                                modifier = Modifier
-                                    .size(24.dp)
-                                    .padding(4.dp)
-                                    .longPressDraggableHandle(
-                                        onDragStarted = {},
-                                        onDragStopped = {
-                                            if (hasReordered) {
-                                                onReorderRoster(orderedRoster.mapNotNull(PlayerRosterMonster::reference))
-                                            }
-                                            hasReordered = false
-                                        },
-                                        interactionSource = interactionSource,
-                                    )
-                            )
-                        },
                     )
+                } else {
+                    ReorderableItem(reorderableState, key = reference.rosterKey()) { isDragging ->
+                        val interactionSource = remember { MutableInteractionSource() }
+                        RosterMonsterTile(
+                            monster = monster,
+                            isDragged = isDragging,
+                            onRemove = { onRemoveRosterMonster(reference) },
+                            isRemoveEnabled = orderedRoster.size > 1,
+                            onClick = { onOpenRosterSlot(index) },
+                            interactionSource = interactionSource,
+                            dragHandle = {
+                                AppIcon(
+                                    LocalMonsterAppIcons.current.reorder,
+                                    contentDescription = stringResource(R.string.reorder_monster),
+                                    modifier = Modifier
+                                        .size(24.dp)
+                                        .padding(4.dp)
+                                        .longPressDraggableHandle(
+                                            onDragStarted = {},
+                                            onDragStopped = {
+                                                if (hasReordered) {
+                                                    onReorderRoster(orderedRoster.mapNotNull(PlayerRosterMonster::reference))
+                                                }
+                                                hasReordered = false
+                                            },
+                                            interactionSource = interactionSource,
+                                        )
+                                )
+                            },
+                        )
+                    }
                 }
             }
             item(key = "add-monster") {
@@ -225,6 +240,8 @@ private fun RosterSection(
 
 private fun CharacterReference.rosterKey(): String = "$packId:$characterId:$variantId"
 
+private val RosterAddTileHeight = 132.dp
+
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 private fun RosterMonsterTile(
@@ -243,7 +260,6 @@ private fun RosterMonsterTile(
         Card(
             modifier = Modifier
                 .width(82.dp)
-                .height(130.dp)
                 .then(modifier),
             shape = RoundedCornerShape(18.dp),
             colors = CardDefaults.cardColors(
@@ -257,7 +273,7 @@ private fun RosterMonsterTile(
         ) {
             Box(
                 modifier = Modifier
-                    .fillMaxSize()
+                    .fillMaxWidth()
                     .indication(
                         interactionSource = interactionSource,
                         indication = androidx.compose.foundation.LocalIndication.current,
@@ -302,11 +318,13 @@ private fun RosterMonsterContent(
     onLongClick: () -> Unit,
 ) {
     Column(
-        modifier = Modifier.fillMaxSize().padding(vertical = 4.dp),
+        modifier = Modifier.fillMaxWidth().padding(top = 4.dp, bottom = 8.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         Box(
-            modifier = Modifier.fillMaxWidth(),
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(24.dp),
             contentAlignment = Alignment.Center
         ) {
             dragHandle()
@@ -314,7 +332,6 @@ private fun RosterMonsterContent(
         Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .weight(1f)
                 .combinedClickable(
                     interactionSource = interactionSource,
                     indication = null,
@@ -327,7 +344,7 @@ private fun RosterMonsterContent(
                 artwork = monster.character.artwork,
                 fallbackArtwork = monster.character.fallbackArtwork,
                 contentDescription = monster.character.name,
-                modifier = Modifier.size(54.dp),
+                modifier = Modifier.padding(vertical = 4.dp).size(54.dp),
             )
             Spacer(Modifier.height(4.dp))
             Column(
@@ -353,7 +370,7 @@ private fun RosterAddTile(onClick: () -> Unit) {
         contentAlignment = Alignment.Center,
         modifier = Modifier
             .width(82.dp)
-            .height(130.dp)
+            .height(RosterAddTileHeight)
             .clip(RoundedCornerShape(18.dp))
             .background(containerColor, RoundedCornerShape(18.dp))
             .drawBehind {

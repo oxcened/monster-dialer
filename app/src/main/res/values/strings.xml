@@ -96,6 +96,7 @@
     <string name="default_character_artwork" comment="%1$s is a character type, such as Trainer or Monster.">Default %1$s artwork</string>
     <string name="character_artwork" comment="%1$s is a character name.">%1$s artwork</string>
     <string name="no_other_character_options" comment="%1$s is a character type, such as Trainer or Monster.">No other %1$s options</string>
+    <string name="no_available_character_options" comment="%1$s is a plural character type, such as monsters.">No %1$s available</string>
     <string name="import_and_enable_character_pack" comment="Empty-state message in the character selector.">Add your own character or import a pack to see more.</string>
     <string name="radiant" comment="Adjective for a rare, sparkling character variant.">Radiant</string>
     <string name="regular" comment="Adjective for a standard, non-rare character variant.">Regular</string>
@@ -116,6 +117,41 @@
     <string name="select" comment="Button label to choose an option.">Select</string>
     <string name="change" comment="Button label to change the current selection.">Change</string>
     <string name="contact_chooser_prompt" comment="Prompt above the contact picker.">Choose a contact to assign a character.</string>
+    <string name="online_profile_choose_contact_prompt" comment="Prompt shown after opening a shared Online Profile link.">Choose a contact to link with this Online Profile. This association stays on your device.</string>
+    <string name="online_profile_title">Online Profile</string>
+    <string name="online_profile_description">Let friends see the trainer and monster you bring into every call.</string>
+    <string name="online_profile_privacy_note">Only your character sprites and metadata are shared.</string>
+    <string name="online_profile_enable">Enable Online Profile</string>
+    <string name="online_profile_enabling">Enabling Online Profile</string>
+    <string name="online_profile_regenerating">Regenerating sharing link</string>
+    <string name="online_profile_deleting">Deleting Online Profile</string>
+    <string name="online_profile_keeping_online">Keeping Online Profile online</string>
+    <string name="online_profile_enabled">Online Profile enabled</string>
+    <string name="online_profile_check_in_title">Still sharing your profile?</string>
+    <string name="online_profile_check_in_description">Your Online Profile has not been confirmed in almost a year. Confirm it to keep sharing it.</string>
+    <string name="online_profile_keep_online">Keep Online</string>
+    <string name="online_profile_share">Share My Profile</string>
+    <string name="online_profile_regenerate">Regenerate sharing link</string>
+    <string name="online_profile_regenerate_message">This creates a new sharing link and invalidates the current one. Friends will need the new link to access your profile.</string>
+    <string name="online_profile_delete">Delete profile</string>
+    <string name="online_profile_delete_message">This deletes your shared profile and invalidates its link. Your characters and contact customizations stay on this device.</string>
+    <string name="online_profile_error_title">Couldn’t update Online Profile</string>
+    <string name="online_profile_sprite_decode_error">The selected character sprite can’t be decoded.</string>
+    <string name="online_profile_anonymous_auth_error">Couldn’t create an anonymous Online Profile.</string>
+    <string name="online_profile_firebase_not_configured">Firebase is not configured.</string>
+    <string name="online_profile_share_text" comment="%1$s is an HTTPS link to the user's shared MonsterDialer profile.">Check out my MonsterDialer profile:\n%1$s</string>
+    <string name="choose_team" comment="Contact-row overflow action that opens character customization for a contact.">Choose team</string>
+    <string name="contact_row_actions" comment="Accessibility label for the contact-row overflow menu trigger.">Contact actions</string>
+    <string name="linked_online_profile_title">Linked Online Profile</string>
+    <string name="linked_online_profile_none">No Online Profile is linked to this contact.</string>
+    <string name="linked_online_profile_link_hint">Open a shared MonsterDialer profile link to associate one with this contact.</string>
+    <string name="linked_online_profile_description">This contact is linked to this Online Profile:</string>
+    <string name="unlink_online_profile">Unlink Online Profile</string>
+    <string name="shared_profile_import_title">Shared profile</string>
+    <string name="shared_profile_import_heading">A MonsterDialer profile was shared with you</string>
+    <string name="shared_profile_import_description">Choose the contact from your contact list this profile belongs to. MonsterDialer will show it during calls with them. This link stays on your device.</string>
+    <string name="shared_profile_import_choose_contact">Choose contact</string>
+    <string name="shared_profile_import_link_failed">Could not find a valid phone number for the selected contact.</string>
     <string name="contact_chooser_title" comment="Title of the contact-character assignment screen.">Personalize a contact</string>
     <string name="contact_chooser_empty_prompt" comment="Empty state when no assignable characters are available.">Import and enable a pack containing a contact-assignable character first.</string>
     <string name="pack_collection_empty_title" comment="Title of the empty character-pack collection screen.">Your collection starts here</string>

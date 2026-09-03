@@ -114,6 +114,14 @@
     <string name="selected_file" comment="Label before the selected file name.">File selezionato</string>
     <string name="share_pack_import_diagnostic" comment="Title of Android's share sheet for an import diagnostic.">Condividi la diagnostica dell’importazione</string>
     <string name="battle_scene_description" comment="Accessibility description for the battle scene image.">Scena di battaglia tra mostri</string>
+    <string name="shared_profile_import_link_failed">Impossibile trovare un numero di telefono valido per il contatto selezionato.</string>
+    <string name="choose_team" comment="Contact-row overflow action that opens character customization for a contact.">Scegli squadra</string>
+    <string name="contact_row_actions" comment="Accessibility label for the contact-row overflow menu trigger.">Azioni del contatto</string>
+    <string name="linked_online_profile_title">Profilo online collegato</string>
+    <string name="linked_online_profile_none">Nessun profilo online è collegato a questo contatto.</string>
+    <string name="linked_online_profile_link_hint">Apri un link a un profilo MonsterDialer condiviso per associarlo a questo contatto.</string>
+    <string name="linked_online_profile_description">Questo contatto è collegato a questo profilo online:</string>
+    <string name="unlink_online_profile">Scollega profilo online</string>
     <string name="your_monster" comment="%1$s is the player's monster name.">Il tuo %1$s</string>
     <string name="radiant_sparkle" comment="Accessibility description for a rare-variant sparkle.">Scintillio radioso</string>
     <string name="available_monsters" comment="Heading for the selectable monster roster.">Mostri disponibili</string>

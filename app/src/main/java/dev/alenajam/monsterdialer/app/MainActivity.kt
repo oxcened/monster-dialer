@@ -52,6 +52,9 @@ import dev.alenajam.monsterdialer.contacts.ui.formatPhoneNumber
 import dev.alenajam.monsterdialer.packs.data.CharacterAssignmentTarget
 import dev.alenajam.monsterdialer.packs.data.CharacterPackArchive
 import dev.alenajam.monsterdialer.packs.data.CharacterType
+import dev.alenajam.monsterdialer.onlineprofiles.data.ProfileSharingLink
+import dev.alenajam.monsterdialer.onlineprofiles.ui.LinkedOnlineProfileContent
+import dev.alenajam.monsterdialer.onlineprofiles.ui.SharedProfileImportScreen
 import dev.alenajam.monsterdialer.packs.ui.CharacterPackSettingsContent
 import dev.alenajam.monsterdialer.packs.ui.CharacterPackSettingsViewModel
 import dev.alenajam.monsterdialer.packs.ui.CharacterPackImportHandler
@@ -63,7 +66,8 @@ import dev.alenajam.opendialer.core.common.ui.ContactAvatar
 import dev.alenajam.opendialer.feature.appShell.DialerApp
 import dev.alenajam.opendialer.feature.appShell.HomeNavigationItem
 import dev.alenajam.opendialer.feature.appShell.HomeScreenConfiguration
-import dev.alenajam.opendialer.feature.contacts.ContactRowTrailingAction
+import dev.alenajam.opendialer.feature.contacts.ContactRowOverflowAction
+import dev.alenajam.opendialer.feature.contacts.ContactRowOverflowMenu
 import dev.alenajam.opendialer.feature.settings.SettingsSubpage
 import dev.alenajam.opendialer.feature.settings.SettingsSubpageDestination
 import javax.inject.Inject
@@ -74,6 +78,7 @@ class MainActivity : AppCompatActivity() {
     lateinit var defaultPhoneManager: DefaultPhoneManager
 
     private var incomingImport by mutableStateOf<IncomingImport?>(null)
+    private var sharedProfileImportId by mutableStateOf<String?>(null)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -103,22 +108,43 @@ class MainActivity : AppCompatActivity() {
                     typography = rememberMonsterTypography(MaterialTheme.typography)
                 )
                 AppProviders(icons = appIcons, themeExtension = appThemeExtension) {
-                    DialerApp(
+                    if (sharedProfileImportId != null) {
+                        SharedProfileImportScreen(
+                            viewModel = contactCharacterSettingsViewModel,
+                            onNavigateBack = {
+                                contactCharacterSettingsViewModel.clearPendingOnlineProfile()
+                                sharedProfileImportId = null
+                            },
+                            onProfileLinked = { sharedProfileImportId = null },
+                        )
+                    } else DialerApp(
                         defaultPhoneManager = defaultPhoneManager,
                         icons = appIcons,
                         themeExtension = appThemeExtension,
                         homeScreenConfiguration = HomeScreenConfiguration(
                             showVoicemailInNavigation = false,
                             showVoicemailInOverflow = true,
-                            contactRowTrailingAction = ContactRowTrailingAction(
-                                settingsSubpageIndex = 1,
-                                onClick = contactCharacterSettingsViewModel::selectContact,
-                                content = {
+                            contactRowOverflowMenu = ContactRowOverflowMenu(
+                                trigger = {
                                     dev.alenajam.opendialer.core.common.ui.AppIcon(
-                                        LocalMonsterAppIcons.current.personalizeContact,
-                                        contentDescription = stringResource(R.string.personalize_contact_character)
+                                        dev.alenajam.opendialer.core.common.ui.LocalAppIcons.current.more,
+                                        contentDescription = stringResource(R.string.contact_row_actions),
                                     )
-                                }
+                                },
+                                actions = listOf(
+                                    ContactRowOverflowAction(
+                                        settingsSubpageIndex = 1,
+                                        onClick = contactCharacterSettingsViewModel::selectContact,
+                                        content = { Text(stringResource(R.string.choose_team)) },
+                                    ),
+                                    ContactRowOverflowAction(
+                                        settingsSubpageIndex = LinkedOnlineProfileSettingsIndex,
+                                        onClick = { contact ->
+                                            contactCharacterSettingsViewModel.selectContact(contact)
+                                        },
+                                        content = { Text(stringResource(R.string.linked_online_profile_title)) },
+                                    ),
+                                ),
                             ),
                             customNavigationItem = HomeNavigationItem(
                             label = { androidx.compose.material3.Text(stringResource(R.string.characters_navigation_label)) },
@@ -251,7 +277,15 @@ class MainActivity : AppCompatActivity() {
                             visibleInSettings = false,
                             isScrollable = true,
                             topContentPadding = 0.dp
-                        )
+                        ),
+                        SettingsSubpage(
+                            title = stringResource(R.string.linked_online_profile_title),
+                            description = null,
+                            content = { LinkedOnlineProfileContent(contactCharacterSettingsViewModel) },
+                            isScrollable = false,
+                            topContentPadding = 0.dp,
+                            visibleInSettings = false,
+                        ),
                         )
                     )
                     LaunchedEffect(incomingImport) {
@@ -263,6 +297,10 @@ class MainActivity : AppCompatActivity() {
                                 }
                                 is IncomingImport.CharacterPack -> {
                                     characterPackSettingsViewModel.previewPack(this@MainActivity, incoming.uri)
+                                }
+                                is IncomingImport.OnlineProfile -> {
+                                    contactCharacterSettingsViewModel.prepareOnlineProfileLink(incoming.publicProfileId)
+                                    sharedProfileImportId = incoming.publicProfileId
                                 }
                             }
                         }
@@ -281,11 +319,14 @@ class MainActivity : AppCompatActivity() {
     }
 }
 
+private const val LinkedOnlineProfileSettingsIndex = 5
+
 private sealed interface IncomingImport {
     val uri: Uri
 
     data class SharedCharacter(override val uri: Uri) : IncomingImport
     data class CharacterPack(override val uri: Uri) : IncomingImport
+    data class OnlineProfile(override val uri: Uri, val publicProfileId: String) : IncomingImport
 }
 
 private fun Intent.incomingImport(contentResolver: ContentResolver): IncomingImport? {
@@ -295,10 +336,13 @@ private fun Intent.incomingImport(contentResolver: ContentResolver): IncomingImp
     else -> null
     } ?: return null
 
-    return if (type == CharacterPackArchive.MimeType || uri.displayName(contentResolver).endsWith(".${CharacterPackArchive.Extension}", ignoreCase = true)) {
+    val onlineProfileId = ProfileSharingLink.profileIdFrom(uri.toString())
+    return when {
+        onlineProfileId != null -> IncomingImport.OnlineProfile(uri, onlineProfileId)
+        type == CharacterPackArchive.MimeType || uri.displayName(contentResolver).endsWith(".${CharacterPackArchive.Extension}", ignoreCase = true) -> {
         IncomingImport.CharacterPack(uri)
-    } else {
-        IncomingImport.SharedCharacter(uri)
+        }
+        else -> IncomingImport.SharedCharacter(uri)
     }
 }
 
