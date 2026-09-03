@@ -42,6 +42,7 @@
     <string name="import_and_enable_character_pack" comment="Empty-state message in the character selector.">Adiciona a tua própria personagem ou importa um pacote para veres mais.</string>
     <string name="radiant" comment="Adjective for a rare, sparkling character variant.">Radiante</string>
     <string name="selected" comment="Status label for the currently chosen option.">Selecionado</string>
+    <string name="randomize" comment="Character selection that chooses a different eligible character for every call.">Aleatório</string>
     <string name="locked">Bloqueado</string>
     <string name="radiant_variant_locked_title">Variante radiante bloqueada</string>
     <string name="radiant_variant_locked_message">Quando encontras um %1$s radiante numa batalha selvagem, é desbloqueado automaticamente quando a batalha começa. Podes depois atribuí-lo.</string>
@@ -130,6 +131,7 @@
     <!-- Character creation -->
     <string name="add_trainer" comment="Button to start adding a new custom trainer.">Adicionar treinador</string>
     <string name="add_monster" comment="Button to start adding a new custom monster.">Adicionar monstro</string>
+    <string name="roster_full_message" comment="Message shown when the player tries to add a monster but the roster is full.">A tua equipa está cheia. Remove primeiro um monstro para adicionar outro.</string>
     <string name="create_trainer_title" comment="Title of the trainer creation screen.">Adicionar treinador</string>
     <string name="create_monster_title" comment="Title of the monster creation screen.">Adicionar monstro</string>
     <string name="character_sprites_section" comment="Heading for the character sprites section.">Sprites</string>
@@ -178,4 +180,53 @@
     <string name="characters_help_radiants_title">Descoberta radiante</string><string name="characters_help_radiants_message">Monstros radiantes são raros. As variantes de pacotes desbloqueiam-se quando as encontras na natureza durante uma chamada.</string>
     <string name="characters_help_management_title">Gerir a coleção</string><string name="characters_help_management_message">Mantém premida uma personagem em “Os teus monstros” ou “Os teus treinadores” para editar, partilhar ou eliminar.</string>
     <string name="characters_help_assignments_title">Personalizar chamadas</string><string name="characters_help_assignments_message">Há duas formas de usar personagens:</string><string name="characters_help_assignments_player"><b>Personagem do jogador:</b> o teu avatar em cada chamada.</string><string name="characters_help_assignments_contact"><b>Personagens de contactos:</b> atribui monstros ou treinadores aos contactos; serão os adversários quando ligarem.</string>
+    <string name="customize_your_calls">Personaliza as tuas chamadas</string>
+    <string name="character_collection_title">A tua coleção</string>
+    <string name="profile_trainer_label">O teu treinador</string>
+    <string name="active_monster_label">Monstro ativo</string>
+    <plurals name="calls_battled">
+        <item quantity="one">%1$d chamada combatida</item>
+        <item quantity="other">%1$d chamadas combatidas</item>
+    </plurals>
+    <plurals name="characters_collected">
+        <item quantity="one">%1$d personagem colecionado</item>
+        <item quantity="other">%1$d personagens colecionados</item>
+    </plurals>
+    <plurals name="radiants_found">
+        <item quantity="one">%1$d radiante encontrado</item>
+        <item quantity="other">%1$d radiantes encontrados</item>
+    </plurals>
+    <string name="profile_calls_battled">%1$d chamadas combatidas</string>
+    <string name="profile_collection_summary">%1$d colecionados · %2$d radiantes encontrados</string>
+    <string name="character_tools_title">Caixa de ferramentas</string>
+    <string name="battle_journal_title">Diário de batalha</string>
+    <string name="battle_journal_description">Revise suas descobertas radiantes e batalhas recentes.</string>
+    <string name="battle_journal_empty_title">Ainda não há batalhas</string>
+    <string name="battle_journal_empty_description">Suas descobertas radiantes e batalhas recentes aparecerão aqui.</string>
+    <string name="battle_journal_no_matches_title">Ainda não há nada aqui</string>
+    <string name="battle_journal_no_matches_description">Tente outro filtro ou volte depois da sua próxima batalha.</string>
+    <string name="battle_journal_radiant_found">Encontrou %1$s radiante</string>
+    <string name="battle_journal_trainer_battle">Batalhou contra %1$s</string>
+    <string name="battle_journal_wild_battle">Encontrou %1$s selvagem</string>
+    <string name="battle_journal_anonymous_battle">Batalha anônima</string>
+    <string name="battle_journal_opponent_trainer">Treinador: %1$s</string>
+    <string name="battle_journal_player_monster">Seu monstro: %1$s</string>
+    <string name="battle_journal_matchup">%1$s contra %2$s</string>
+    <string name="battle_journal_battle_label">Batalha</string>
+    <string name="battle_journal_radiant_label">Radiante encontrado</string>
+    <string name="battle_journal_radiant_encounter_label">Encontro radiante</string>
+    <string name="battle_journal_more_options">Mais opções do diário de batalha</string>
+    <string name="battle_journal_clear">Limpar diário</string>
+    <string name="battle_journal_clear_confirmation_title">Limpar diário de batalha?</string>
+    <string name="battle_journal_clear_confirmation_message">Isso removerá permanentemente todo o histórico de batalhas e sprites salvos.</string>
+    <string name="your_roster">A tua equipa</string>
+    <string name="roster_monster_level">Nv. %1$d</string>
+    <string name="roster_monster_description">%1$s, nível %2$d</string>
+    <string name="remove_roster_monster">Remover monstro</string>
+    <string name="contact_characters_ready">Equipa de chamadas pronta</string>
+    <string name="character_packs_home_description">Explora os teus pacotes</string>
+    <string name="import_character_home_description">Adiciona um partilhado</string>
+    <string name="open_character_guide">Abrir guia</string>
+    <string name="personalize_contact_character">Personalizar personagens do chamador</string>
+    <string name="reorder_monster">Reordenar monstro</string>
 </resources>

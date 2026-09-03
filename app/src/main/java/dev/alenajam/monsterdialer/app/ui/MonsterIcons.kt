@@ -1,7 +1,5 @@
 package dev.alenajam.monsterdialer.app.ui
 
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.MoreVert
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import dev.alenajam.monsterdialer.R
@@ -22,7 +20,8 @@ fun rememberMonsterIcons(): AppIcons {
             dialpadActive = IconSource.Resource(R.drawable.dial_on_dark, tintable = false),
             mute = IconSource.Resource(R.drawable.mic_off, tintable = false),
             speaker = IconSource.Resource(R.drawable.speaker, tintable = false),
-            more = IconSource.Vector(Icons.Outlined.MoreVert),
+            more = IconSource.Resource(R.drawable.more, tintable = false),
+            backspace = IconSource.Resource(R.drawable.back, tintable = false),
             pause = IconSource.Resource(R.drawable.hold, tintable = false),
             addCall = IconSource.Resource(R.drawable.add_call, tintable = false),
             person = IconSource.Resource(R.drawable.player, tintable = false),
@@ -45,6 +44,7 @@ fun rememberMonsterIcons(): AppIcons {
             ),
             history = IconSource.Resource(R.drawable.book, tintable = false),
             merge = IconSource.Resource(R.drawable.merge, tintable = false),
+            split = IconSource.Resource(R.drawable.split, tintable = false),
             swapCalls = IconSource.Resource(R.drawable.swap, tintable = false),
             phonePaused = IconSource.Resource(R.drawable.hold, tintable = false),
             recents = IconSource.Resource(R.drawable.clock, tintable = false),

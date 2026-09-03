@@ -30,12 +30,30 @@ import dev.alenajam.monsterdialer.packs.data.CharacterAssignmentTarget
 import dev.alenajam.monsterdialer.packs.data.InstalledPackCharacter
 import kotlinx.coroutines.launch
 
+internal enum class PlayerCharacterSettingsRoute(
+    val payload: String,
+    val selectedTab: Int,
+) {
+    ChangeTrainer(payload = "change_trainer", selectedTab = 0),
+    AddToRoster(payload = "add_to_roster", selectedTab = 1);
+
+    companion object {
+        fun fromPayload(payload: String?): PlayerCharacterSettingsRoute? =
+            payload?.split(":")?.firstOrNull()?.let { p ->
+                entries.firstOrNull { it.payload == p }
+            }
+    }
+}
+
 @Composable
-fun ColumnScope.PlayerCharacterSettingsContent(
-    viewModel: PlayerCharacterSettingsViewModel = hiltViewModel()
+internal fun ColumnScope.PlayerCharacterSettingsContent(
+    route: PlayerCharacterSettingsRoute? = null,
+    payload: String? = null,
+    viewModel: PlayerCharacterSettingsViewModel = hiltViewModel(),
 ) {
     val assignedTrainer by viewModel.assignedTrainer.collectAsStateWithLifecycle()
     val assignedMonster by viewModel.assignedMonster.collectAsStateWithLifecycle()
+    val monsterRoster by viewModel.monsterRoster.collectAsStateWithLifecycle()
     val trainers by viewModel.trainers.collectAsStateWithLifecycle()
     val monsters by viewModel.monsters.collectAsStateWithLifecycle()
     val dataVersion by viewModel.dataVersion.collectAsStateWithLifecycle()
@@ -43,12 +61,17 @@ fun ColumnScope.PlayerCharacterSettingsContent(
     val selectedTab by viewModel.selectedTab.collectAsStateWithLifecycle()
     val layout by viewModel.layout.collectAsStateWithLifecycle()
     val unlockedVariants by viewModel.unlockedVariants.collectAsStateWithLifecycle()
+    val targetSlotIndex by viewModel.targetSlotIndex.collectAsStateWithLifecycle()
 
     val currentTabHasCharacters = if (selectedTab == 0) trainers.isNotEmpty() else monsters.isNotEmpty()
     val effectiveLayout = if (currentTabHasCharacters) layout else CharacterLayout.List
 
+    val assignedMonsterForSlot = targetSlotIndex?.let { index ->
+        monsterRoster.getOrNull(index)
+    } ?: assignedMonster
+
     val trainerSelectedItemIndex = selectedCharacterIndex(trainers, assignedTrainer)
-    val monsterSelectedItemIndex = selectedCharacterIndex(monsters, assignedMonster)
+    val monsterSelectedItemIndex = selectedCharacterIndex(monsters, assignedMonsterForSlot)
     val trainerListState = rememberLazyListState(
         initialFirstVisibleItemIndex = trainerSelectedItemIndex
     )
@@ -64,6 +87,12 @@ fun ColumnScope.PlayerCharacterSettingsContent(
     val addTrainerLabel = stringResource(R.string.add_trainer)
     val addMonsterLabel = stringResource(R.string.add_monster)
     val navigator = dev.alenajam.opendialer.feature.settings.LocalSettingsSubpageNavigator.current
+
+    LaunchedEffect(route, payload) {
+        val slotIndex = payload?.split(":")?.getOrNull(1)?.toIntOrNull()
+        viewModel.setTargetSlotIndex(slotIndex)
+        route?.let { viewModel.setSelectedTab(it.selectedTab) }
+    }
 
     CharacterTypeTabs(
         selectedTab = selectedTab,
@@ -119,19 +148,101 @@ fun ColumnScope.PlayerCharacterSettingsContent(
         }
     }
 
+    val selectedReferences = monsterRoster.toSet() + listOfNotNull(assignedMonster)
+
     Box(modifier = Modifier.fillMaxWidth().weight(1f)) {
         if (effectiveLayout == CharacterLayout.List) {
             LazyColumn(state = listState, modifier = Modifier.fillMaxSize(), contentPadding = PaddingValues(top = 8.dp, bottom = 72.dp)) {
                 when (selectedTab) {
-                    0 -> characterTypeItems(trainerTitle, trainersTitle, BuiltInCharacters.trainer, trainers, assignedTrainer, { it.playerArtwork }, CharacterAssignmentTarget.Player, viewModel::assignTrainer, { navigator?.navigateTo(0) }, addTrainerLabel, !isLimitReached, unlockedVariants, onDelete = { character -> scope.launch { isPendingDeletionInUse = viewModel.isCharacterInUse(character.character.id); pendingDeletion = character } }, onEdit = { navigator?.navigateTo(0, it.character.id) }, onShare = { pendingShare = it })
-                    1 -> characterTypeItems(monsterTitle, monstersTitle, BuiltInCharacters.monster.character, monsters, assignedMonster, { it.playerArtwork }, CharacterAssignmentTarget.Player, viewModel::assignMonster, { navigator?.navigateTo(1) }, addMonsterLabel, !isLimitReached, unlockedVariants, onDelete = { character -> scope.launch { isPendingDeletionInUse = viewModel.isCharacterInUse(character.character.id); pendingDeletion = character } }, onEdit = { navigator?.navigateTo(1, it.character.id) }, onShare = { pendingShare = it })
+                    0 -> characterTypeItems(
+                        title = trainerTitle,
+                        pluralTitle = trainersTitle,
+                        defaultCharacter = BuiltInCharacters.trainer,
+                        characters = trainers,
+                        selected = assignedTrainer,
+                        defaultArtwork = { it.contactArtwork },
+                        artworkTarget = CharacterAssignmentTarget.Contact,
+                        onSelect = {
+                            viewModel.assignTrainer(it)
+                            navigator?.navigateBack()
+                        },
+                        onAddCharacter = { navigator?.navigateTo(0) },
+                        addLabel = addTrainerLabel,
+                        isAddEnabled = !isLimitReached,
+                        unlockedVariants = unlockedVariants,
+                        onDelete = { character -> scope.launch { isPendingDeletionInUse = viewModel.isCharacterInUse(character.character.id); pendingDeletion = character } },
+                        onEdit = { navigator?.navigateTo(0, it.character.id) },
+                        onShare = { pendingShare = it }
+                    )
+                    1 -> characterTypeItems(
+                        title = monsterTitle,
+                        pluralTitle = monstersTitle,
+                        defaultCharacter = BuiltInCharacters.monster.character,
+                        characters = monsters,
+                        selected = assignedMonsterForSlot,
+                        defaultArtwork = { it.contactArtwork },
+                        artworkTarget = CharacterAssignmentTarget.Contact,
+                        onSelect = {
+                            viewModel.assignMonster(it)
+                            navigator?.navigateBack()
+                        },
+                        onAddCharacter = { navigator?.navigateTo(1) },
+                        addLabel = addMonsterLabel,
+                        isAddEnabled = !isLimitReached,
+                        unlockedVariants = unlockedVariants,
+                        onDelete = { character -> scope.launch { isPendingDeletionInUse = viewModel.isCharacterInUse(character.character.id); pendingDeletion = character } },
+                        onEdit = { navigator?.navigateTo(1, it.character.id) },
+                        onShare = { pendingShare = it },
+                        selectedReferences = selectedReferences,
+                        hideSelected = true
+                    )
                 }
             }
         } else {
             LazyVerticalGrid(columns = GridCells.Fixed(2), state = gridState, modifier = Modifier.fillMaxSize(), contentPadding = PaddingValues(top = 8.dp, bottom = 72.dp), horizontalArrangement = Arrangement.spacedBy(2.dp), verticalArrangement = Arrangement.spacedBy(2.dp)) {
                 when (selectedTab) {
-                    0 -> characterTypeGridItems(trainerTitle, trainersTitle, BuiltInCharacters.trainer, trainers, assignedTrainer, { it.playerArtwork }, CharacterAssignmentTarget.Player, viewModel::assignTrainer, { navigator?.navigateTo(0) }, addTrainerLabel, !isLimitReached, unlockedVariants, onDelete = { character -> scope.launch { isPendingDeletionInUse = viewModel.isCharacterInUse(character.character.id); pendingDeletion = character } }, onEdit = { navigator?.navigateTo(0, it.character.id) }, onShare = { pendingShare = it })
-                    1 -> characterTypeGridItems(monsterTitle, monstersTitle, BuiltInCharacters.monster.character, monsters, assignedMonster, { it.playerArtwork }, CharacterAssignmentTarget.Player, viewModel::assignMonster, { navigator?.navigateTo(1) }, addMonsterLabel, !isLimitReached, unlockedVariants, onDelete = { character -> scope.launch { isPendingDeletionInUse = viewModel.isCharacterInUse(character.character.id); pendingDeletion = character } }, onEdit = { navigator?.navigateTo(1, it.character.id) }, onShare = { pendingShare = it })
+                    0 -> characterTypeGridItems(
+                        title = trainerTitle,
+                        pluralTitle = trainersTitle,
+                        defaultCharacter = BuiltInCharacters.trainer,
+                        characters = trainers,
+                        selected = assignedTrainer,
+                        defaultArtwork = { it.contactArtwork },
+                        artworkTarget = CharacterAssignmentTarget.Contact,
+                        onSelect = {
+                            viewModel.assignTrainer(it)
+                            navigator?.navigateBack()
+                        },
+                        onAddCharacter = { navigator?.navigateTo(0) },
+                        addLabel = addTrainerLabel,
+                        isAddEnabled = !isLimitReached,
+                        unlockedVariants = unlockedVariants,
+                        onDelete = { character -> scope.launch { isPendingDeletionInUse = viewModel.isCharacterInUse(character.character.id); pendingDeletion = character } },
+                        onEdit = { navigator?.navigateTo(0, it.character.id) },
+                        onShare = { pendingShare = it }
+                    )
+                    1 -> characterTypeGridItems(
+                        title = monsterTitle,
+                        pluralTitle = monstersTitle,
+                        defaultCharacter = BuiltInCharacters.monster.character,
+                        characters = monsters,
+                        selected = assignedMonsterForSlot,
+                        defaultArtwork = { it.contactArtwork },
+                        artworkTarget = CharacterAssignmentTarget.Contact,
+                        onSelect = {
+                            viewModel.assignMonster(it)
+                            navigator?.navigateBack()
+                        },
+                        onAddCharacter = { navigator?.navigateTo(1) },
+                        addLabel = addMonsterLabel,
+                        isAddEnabled = !isLimitReached,
+                        unlockedVariants = unlockedVariants,
+                        onDelete = { character -> scope.launch { isPendingDeletionInUse = viewModel.isCharacterInUse(character.character.id); pendingDeletion = character } },
+                        onEdit = { navigator?.navigateTo(1, it.character.id) },
+                        onShare = { pendingShare = it },
+                        selectedReferences = selectedReferences,
+                        hideSelected = true
+                    )
                 }
             }
         }

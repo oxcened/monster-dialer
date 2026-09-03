@@ -116,12 +116,19 @@ internal fun LazyListScope.characterTypeItems(
     unlockedVariants: Set<CharacterReference> = emptySet(),
     onDelete: (InstalledPackCharacter) -> Unit = {},
     onEdit: (InstalledPackCharacter) -> Unit = {},
-    onShare: (InstalledPackCharacter) -> Unit = {}
+    onShare: (InstalledPackCharacter) -> Unit = {},
+    isRandomSelected: Boolean = false,
+    onRandomize: (() -> Unit)? = null,
+    selectedReferences: Set<CharacterReference> = emptySet(),
+    hideSelected: Boolean = false,
 ) {
     val type = if (defaultCharacter == BuiltInCharacters.trainer) CharacterType.Trainer else CharacterType.Monster
     val availableSelection = selected?.takeIf { reference ->
         characters.any { it.matches(reference) }
     }
+    val isDefaultSelected = selectedReferences.isEmpty() && availableSelection == null && !isRandomSelected
+    fun isReferenceSelected(reference: CharacterReference): Boolean =
+        if (selectedReferences.isEmpty()) availableSelection == reference else reference in selectedReferences
     item(key = "add") {
         AddCharacterButton(
             onClick = onAddCharacter,
@@ -139,82 +146,117 @@ internal fun LazyListScope.characterTypeItems(
         }
     }
 
-    val userCharacters = characters.filter { it.isEditable }
-    val otherPacks = characters.filter { !it.isEditable }.groupBy { it.packId }
-
-    item { SectionHeader(stringResource(R.string.built_in_characters_section, pluralTitle)) }
-    item(key = "default") {
-        CharacterOptionCard(
-            name = defaultCharacter.name,
-            type = type,
-            isSelected = availableSelection == null,
-            roundTop = true,
-            roundBottom = characters.isNotEmpty(),
-            artwork = {
-                Image(
-                    painter = painterResource(defaultArtwork(defaultCharacter).resource),
-                    contentDescription = stringResource(R.string.default_character_artwork, title.lowercase()),
-                    modifier = Modifier.size(72.dp)
-                )
-            },
-            onSelect = { onSelect(null) }
-        )
-    }
-
-    if (userCharacters.isNotEmpty()) {
-        item { SectionHeader(stringResource(R.string.your_characters, pluralTitle)) }
-        val selections = userCharacters.flatMap(InstalledPackCharacter::selectionVariants)
-        itemsIndexed(items = selections, key = { _, selection -> "custom:${selection.installed.character.id}:${selection.variant.id}" }) { index, selection ->
-            val installed = selection.installed
-            val reference = CharacterReference(installed.packId, installed.character.id, selection.variant.id)
-            val isUnlocked = !selection.variant.isRadiant || reference in unlockedVariants
+    if (onRandomize != null && characters.isNotEmpty()) {
+        item(key = "random") {
             CharacterOptionCard(
-                name = installed.character.name,
-                type = installed.character.type,
-                isRadiant = selection.variant.isRadiant,
-                isSelected = availableSelection == reference,
-                isUnlocked = isUnlocked,
-                roundTop = index == 0,
-                roundBottom = index == selections.lastIndex,
+                name = stringResource(R.string.randomize),
+                type = type,
+                isSelected = isRandomSelected,
+                showTypeSubtitle = false,
+                roundTop = true,
+                roundBottom = true,
                 artwork = {
-                    AsyncImage(
-                        model = selection.previewArtwork(artworkTarget),
-                        contentDescription = stringResource(R.string.character_artwork, installed.character.name),
-                        modifier = Modifier.size(72.dp)
+                    AppIcon(
+                        icon = LocalMonsterAppIcons.current.randomize,
+                        contentDescription = stringResource(R.string.randomize),
+                        modifier = Modifier.size(40.dp),
                     )
                 },
-                onSelect = { if (isUnlocked) onSelect(reference) },
-                onDelete = if (installed.isDeletable) { { onDelete(installed) } } else null,
-                onEdit = if (installed.isEditable) { { onEdit(installed) } } else null,
-                onShare = if (installed.isEditable) { { onShare(installed) } } else null
+                onSelect = onRandomize,
             )
         }
     }
 
-    otherPacks.forEach { (packId, packCharacters) ->
-        item { SectionHeader(packCharacters.first().packName) }
-        val selections = packCharacters.flatMap(InstalledPackCharacter::selectionVariants)
-        itemsIndexed(items = selections, key = { _, selection -> "${packId}:${selection.installed.character.id}:${selection.variant.id}" }) { index, selection ->
-            val installed = selection.installed
-            val reference = CharacterReference(installed.packId, installed.character.id, selection.variant.id)
-            val isUnlocked = !selection.variant.isRadiant || reference in unlockedVariants
+    val userCharacters = characters.filter { it.isEditable }
+    val otherPacks = characters.filter { !it.isEditable }.groupBy { it.packId }
+
+    if (!hideSelected || !isDefaultSelected) {
+        item { SectionHeader(stringResource(R.string.built_in_characters_section, pluralTitle)) }
+        item(key = "default") {
             CharacterOptionCard(
-                name = installed.character.name,
-                type = installed.character.type,
-                isRadiant = selection.variant.isRadiant,
-                isSelected = availableSelection == reference,
-                isUnlocked = isUnlocked,
-                roundTop = index == 0,
-                roundBottom = index == selections.lastIndex,
+                name = defaultCharacter.name,
+                type = type,
+                isSelected = isDefaultSelected,
+                roundTop = true,
+                roundBottom = characters.isNotEmpty(),
                 artwork = {
-                    AsyncImage(
-                        model = selection.previewArtwork(artworkTarget),
-                        contentDescription = stringResource(R.string.character_artwork, installed.character.name),
+                    Image(
+                        painter = painterResource(defaultArtwork(defaultCharacter).resource),
+                        contentDescription = stringResource(R.string.default_character_artwork, title.lowercase()),
                         modifier = Modifier.size(72.dp)
                     )
                 },
-                onSelect = { if (isUnlocked) onSelect(reference) }
+                onSelect = { onSelect(null) }
             )
+        }
+    }
+
+    if (userCharacters.isNotEmpty()) {
+        val selections = userCharacters.flatMap(InstalledPackCharacter::selectionVariants)
+            .filter { selection ->
+                val reference = CharacterReference(selection.installed.packId, selection.installed.character.id, selection.variant.id)
+                !hideSelected || !isReferenceSelected(reference)
+            }
+        if (selections.isNotEmpty()) {
+            item { SectionHeader(stringResource(R.string.your_characters, pluralTitle)) }
+            itemsIndexed(items = selections, key = { _, selection -> "custom:${selection.installed.character.id}:${selection.variant.id}" }) { index, selection ->
+                val installed = selection.installed
+                val reference = CharacterReference(installed.packId, installed.character.id, selection.variant.id)
+                val isUnlocked = !selection.variant.isRadiant || reference in unlockedVariants
+                CharacterOptionCard(
+                    name = installed.character.name,
+                    type = installed.character.type,
+                    isRadiant = selection.variant.isRadiant,
+                    isSelected = isReferenceSelected(reference),
+                    isUnlocked = isUnlocked,
+                    roundTop = index == 0,
+                    roundBottom = index == selections.lastIndex,
+                    artwork = {
+                        AsyncImage(
+                            model = selection.previewArtwork(artworkTarget),
+                            contentDescription = stringResource(R.string.character_artwork, installed.character.name),
+                            modifier = Modifier.size(72.dp)
+                        )
+                    },
+                    onSelect = { if (isUnlocked) onSelect(reference) },
+                    onDelete = if (installed.isDeletable) { { onDelete(installed) } } else null,
+                    onEdit = if (installed.isEditable) { { onEdit(installed) } } else null,
+                    onShare = if (installed.isEditable) { { onShare(installed) } } else null
+                )
+            }
+        }
+    }
+
+    otherPacks.forEach { (packId, packCharacters) ->
+        val selections = packCharacters.flatMap(InstalledPackCharacter::selectionVariants)
+            .filter { selection ->
+                val reference = CharacterReference(selection.installed.packId, selection.installed.character.id, selection.variant.id)
+                !hideSelected || !isReferenceSelected(reference)
+            }
+        if (selections.isNotEmpty()) {
+            item { SectionHeader(packCharacters.first().packName) }
+            itemsIndexed(items = selections, key = { _, selection -> "${packId}:${selection.installed.character.id}:${selection.variant.id}" }) { index, selection ->
+                val installed = selection.installed
+                val reference = CharacterReference(installed.packId, installed.character.id, selection.variant.id)
+                val isUnlocked = !selection.variant.isRadiant || reference in unlockedVariants
+                CharacterOptionCard(
+                    name = installed.character.name,
+                    type = installed.character.type,
+                    isRadiant = selection.variant.isRadiant,
+                    isSelected = isReferenceSelected(reference),
+                    isUnlocked = isUnlocked,
+                    roundTop = index == 0,
+                    roundBottom = index == selections.lastIndex,
+                    artwork = {
+                        AsyncImage(
+                            model = selection.previewArtwork(artworkTarget),
+                            contentDescription = stringResource(R.string.character_artwork, installed.character.name),
+                            modifier = Modifier.size(72.dp)
+                        )
+                    },
+                    onSelect = { if (isUnlocked) onSelect(reference) }
+                )
+            }
         }
     }
 
@@ -236,12 +278,19 @@ internal fun LazyGridScope.characterTypeGridItems(
     unlockedVariants: Set<CharacterReference> = emptySet(),
     onDelete: (InstalledPackCharacter) -> Unit = {},
     onEdit: (InstalledPackCharacter) -> Unit = {},
-    onShare: (InstalledPackCharacter) -> Unit = {}
+    onShare: (InstalledPackCharacter) -> Unit = {},
+    isRandomSelected: Boolean = false,
+    onRandomize: (() -> Unit)? = null,
+    selectedReferences: Set<CharacterReference> = emptySet(),
+    hideSelected: Boolean = false,
 ) {
     val type = if (defaultCharacter == BuiltInCharacters.trainer) CharacterType.Trainer else CharacterType.Monster
     val availableSelection = selected?.takeIf { reference ->
         characters.any { it.matches(reference) }
     }
+    val isDefaultSelected = selectedReferences.isEmpty() && availableSelection == null && !isRandomSelected
+    fun isReferenceSelected(reference: CharacterReference): Boolean =
+        if (selectedReferences.isEmpty()) availableSelection == reference else reference in selectedReferences
     item(key = "add", span = { GridItemSpan(2) }) {
         Column {
             AddCharacterButton(
@@ -261,79 +310,113 @@ internal fun LazyGridScope.characterTypeGridItems(
         }
     }
 
-    val userCharacters = characters.filter { it.isEditable }
-    val otherPacks = characters.filter { !it.isEditable }.groupBy { it.packId }
-
-    item(span = { GridItemSpan(2) }) { SectionHeader(stringResource(R.string.built_in_characters_section, pluralTitle)) }
-    item(key = "default") {
-        CharacterGridItem(
-            name = defaultCharacter.name,
-            type = type,
-            isSelected = availableSelection == null,
-            shape = gridItemShape(index = 0, itemCount = 1),
-            artwork = {
-                Image(
-                    painter = painterResource(defaultArtwork(defaultCharacter).resource),
-                    contentDescription = stringResource(R.string.default_character_artwork, title.lowercase()),
-                    modifier = Modifier.size(88.dp)
-                )
-            },
-            onSelect = { onSelect(null) }
-        )
-    }
-
-    if (userCharacters.isNotEmpty()) {
-        item(span = { GridItemSpan(2) }) { SectionHeader(stringResource(R.string.your_characters, pluralTitle)) }
-        val selections = userCharacters.flatMap(InstalledPackCharacter::selectionVariants)
-        gridItemsIndexed(items = selections, key = { _, selection -> "custom:${selection.installed.character.id}:${selection.variant.id}" }) { index, selection ->
-            val installed = selection.installed
-            val reference = CharacterReference(installed.packId, installed.character.id, selection.variant.id)
-            val isUnlocked = !selection.variant.isRadiant || reference in unlockedVariants
+    if (onRandomize != null && characters.isNotEmpty()) {
+        item(key = "random") {
             CharacterGridItem(
-                name = installed.character.name,
-                type = installed.character.type,
-                isRadiant = selection.variant.isRadiant,
-                isSelected = availableSelection == reference,
-                isUnlocked = isUnlocked,
-                shape = gridItemShape(index = index, itemCount = selections.size),
+                name = stringResource(R.string.randomize),
+                type = type,
+                isSelected = isRandomSelected,
+                showTypeSubtitle = false,
+                shape = gridItemShape(index = 0, itemCount = 1),
                 artwork = {
-                    AsyncImage(
-                        model = selection.previewArtwork(artworkTarget),
-                        contentDescription = stringResource(R.string.character_artwork, installed.character.name),
-                        modifier = Modifier.size(88.dp)
+                    AppIcon(
+                        icon = LocalMonsterAppIcons.current.randomize,
+                        contentDescription = stringResource(R.string.randomize),
+                        modifier = Modifier.size(48.dp),
                     )
                 },
-                onSelect = { if (isUnlocked) onSelect(reference) },
-                onDelete = if (installed.isDeletable) { { onDelete(installed) } } else null,
-                onEdit = if (installed.isEditable) { { onEdit(installed) } } else null,
-                onShare = if (installed.isEditable) { { onShare(installed) } } else null
+                onSelect = onRandomize,
             )
         }
     }
 
-    otherPacks.forEach { (packId, packCharacters) ->
-        item(span = { GridItemSpan(2) }) { SectionHeader(packCharacters.first().packName) }
-        val selections = packCharacters.flatMap(InstalledPackCharacter::selectionVariants)
-        gridItemsIndexed(items = selections, key = { _, selection -> "${packId}:${selection.installed.character.id}:${selection.variant.id}" }) { index, selection ->
-            val installed = selection.installed
-            val reference = CharacterReference(installed.packId, installed.character.id, selection.variant.id)
-            val isUnlocked = !selection.variant.isRadiant || reference in unlockedVariants
+    val userCharacters = characters.filter { it.isEditable }
+    val otherPacks = characters.filter { !it.isEditable }.groupBy { it.packId }
+
+    if (!hideSelected || !isDefaultSelected) {
+        item(span = { GridItemSpan(2) }) { SectionHeader(stringResource(R.string.built_in_characters_section, pluralTitle)) }
+        item(key = "default") {
             CharacterGridItem(
-                name = installed.character.name,
-                type = installed.character.type,
-                isRadiant = selection.variant.isRadiant,
-                isSelected = availableSelection == reference,
-                isUnlocked = isUnlocked,
-                shape = gridItemShape(index = index, itemCount = selections.size),
+                name = defaultCharacter.name,
+                type = type,
+                isSelected = isDefaultSelected,
+                shape = gridItemShape(index = 0, itemCount = 1),
                 artwork = {
-                    AsyncImage(
-                        model = selection.previewArtwork(artworkTarget),
-                        contentDescription = stringResource(R.string.character_artwork, installed.character.name),
+                    Image(
+                        painter = painterResource(defaultArtwork(defaultCharacter).resource),
+                        contentDescription = stringResource(R.string.default_character_artwork, title.lowercase()),
                         modifier = Modifier.size(88.dp)
                     )
                 },
-                onSelect = { if (isUnlocked) onSelect(reference) }
+                onSelect = { onSelect(null) }
             )
+        }
+    }
+
+    if (userCharacters.isNotEmpty()) {
+        val selections = userCharacters.flatMap(InstalledPackCharacter::selectionVariants)
+            .filter { selection ->
+                val reference = CharacterReference(selection.installed.packId, selection.installed.character.id, selection.variant.id)
+                !hideSelected || !isReferenceSelected(reference)
+            }
+        if (selections.isNotEmpty()) {
+            item(span = { GridItemSpan(2) }) { SectionHeader(stringResource(R.string.your_characters, pluralTitle)) }
+            gridItemsIndexed(items = selections, key = { _, selection -> "grid:custom:${selection.installed.character.id}:${selection.variant.id}" }) { index, selection ->
+                val installed = selection.installed
+                val reference = CharacterReference(installed.packId, installed.character.id, selection.variant.id)
+                val isUnlocked = !selection.variant.isRadiant || reference in unlockedVariants
+                CharacterGridItem(
+                    name = installed.character.name,
+                    type = installed.character.type,
+                    isRadiant = selection.variant.isRadiant,
+                    isSelected = isReferenceSelected(reference),
+                    isUnlocked = isUnlocked,
+                    shape = gridItemShape(index = index, itemCount = selections.size),
+                    artwork = {
+                        AsyncImage(
+                            model = selection.previewArtwork(artworkTarget),
+                            contentDescription = stringResource(R.string.character_artwork, installed.character.name),
+                            modifier = Modifier.size(88.dp)
+                        )
+                    },
+                    onSelect = { if (isUnlocked) onSelect(reference) },
+                    onDelete = if (installed.isDeletable) { { onDelete(installed) } } else null,
+                    onEdit = if (installed.isEditable) { { onEdit(installed) } } else null,
+                    onShare = if (installed.isEditable) { { onShare(installed) } } else null
+                )
+            }
+        }
+    }
+
+    otherPacks.forEach { (packId, packCharacters) ->
+        val selections = packCharacters.flatMap(InstalledPackCharacter::selectionVariants)
+            .filter { selection ->
+                val reference = CharacterReference(selection.installed.packId, selection.installed.character.id, selection.variant.id)
+                !hideSelected || !isReferenceSelected(reference)
+            }
+        if (selections.isNotEmpty()) {
+            item(span = { GridItemSpan(2) }) { SectionHeader(packCharacters.first().packName) }
+            gridItemsIndexed(items = selections, key = { _, selection -> "grid:${packId}:${selection.installed.character.id}:${selection.variant.id}" }) { index, selection ->
+                val installed = selection.installed
+                val reference = CharacterReference(installed.packId, installed.character.id, selection.variant.id)
+                val isUnlocked = !selection.variant.isRadiant || reference in unlockedVariants
+                CharacterGridItem(
+                    name = installed.character.name,
+                    type = installed.character.type,
+                    isRadiant = selection.variant.isRadiant,
+                    isSelected = isReferenceSelected(reference),
+                    isUnlocked = isUnlocked,
+                    shape = gridItemShape(index = index, itemCount = selections.size),
+                    artwork = {
+                        AsyncImage(
+                            model = selection.previewArtwork(artworkTarget),
+                            contentDescription = stringResource(R.string.character_artwork, installed.character.name),
+                            modifier = Modifier.size(88.dp)
+                        )
+                    },
+                    onSelect = { if (isUnlocked) onSelect(reference) }
+                )
+            }
         }
     }
 
@@ -598,6 +681,7 @@ private fun NoAdditionalCharacterOptionsCard(title: String) {
 @Composable
 private fun CharacterOptionCard(
     name: String, type: CharacterType, isRadiant: Boolean = false, isSelected: Boolean, isUnlocked: Boolean = true,
+    showTypeSubtitle: Boolean = true,
     roundTop: Boolean, roundBottom: Boolean, artwork: @Composable () -> Unit, onSelect: () -> Unit,
     onDelete: (() -> Unit)? = null,
     onEdit: (() -> Unit)? = null,
@@ -622,15 +706,19 @@ private fun CharacterOptionCard(
                 modifier = Modifier
                     .combinedClickable(
                         onClick = {
+                            if (isSelected) return@combinedClickable
                             if (isUnlocked) onSelect() else showRadiantUnlockDialog = true
                         },
-                        onLongClick = if (onDelete != null || onEdit != null || onShare != null) { { showMenu = true } } else null
+                        onLongClick = if (!isSelected && (onDelete != null || onEdit != null || onShare != null)) { { showMenu = true } } else null
                     )
                     .padding(16.dp),
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.spacedBy(16.dp)
             ) {
-                Box(modifier = Modifier.size(72.dp)) {
+                Box(
+                    modifier = Modifier.size(72.dp),
+                    contentAlignment = Alignment.Center,
+                ) {
                     artwork()
                 }
                 Column(modifier = Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(2.dp)) {
@@ -650,7 +738,7 @@ private fun CharacterOptionCard(
                                 tint = MaterialTheme.colorScheme.primary
                             )
                         }
-                    } else if (type == CharacterType.Monster) {
+                    } else if (showTypeSubtitle && type == CharacterType.Monster) {
                         Text(
                             text = stringResource(R.string.regular),
                             style = MaterialTheme.typography.bodySmall,
@@ -734,6 +822,7 @@ private fun CharacterGridItem(
     isRadiant: Boolean = false,
     isSelected: Boolean,
     isUnlocked: Boolean = true,
+    showTypeSubtitle: Boolean = true,
     shape: Shape,
     artwork: @Composable () -> Unit,
     onSelect: () -> Unit,
@@ -803,7 +892,7 @@ private fun CharacterGridItem(
                                 tint = MaterialTheme.colorScheme.primary
                             )
                         }
-                    } else if (type == CharacterType.Monster) {
+                    } else if (showTypeSubtitle && type == CharacterType.Monster) {
                         Text(
                             text = stringResource(R.string.regular),
                             style = MaterialTheme.typography.bodySmall,

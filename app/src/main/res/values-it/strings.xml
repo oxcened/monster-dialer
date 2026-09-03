@@ -42,6 +42,7 @@
     <string name="import_and_enable_character_pack" comment="Empty-state message in the character selector.">Aggiungi il tuo personaggio o importa un pacchetto per vederne altri.</string>
     <string name="radiant" comment="Adjective for a rare, sparkling character variant.">Radioso</string>
     <string name="selected" comment="Status label for the currently chosen option.">Selezionato</string>
+    <string name="randomize" comment="Character selection that chooses a different eligible character for every call.">Casuale</string>
     <string name="locked">Bloccato</string>
     <string name="radiant_variant_locked_title">Variante radiosa bloccata</string>
     <string name="radiant_variant_locked_message">Quando incontri un %1$s radioso in una battaglia selvaggia, si sblocca automaticamente all’inizio della battaglia. Potrai poi assegnarlo.</string>
@@ -130,6 +131,7 @@
     <!-- Character creation -->
     <string name="add_trainer" comment="Button to start adding a new custom trainer.">Aggiungi allenatore</string>
     <string name="add_monster" comment="Button to start adding a new custom monster.">Aggiungi mostro</string>
+    <string name="roster_full_message" comment="Message shown when the player tries to add a monster but the roster is full.">La tua squadra è al completo. Rimuovi prima un mostro per aggiungerne un altro.</string>
     <string name="create_trainer_title" comment="Title of the trainer creation screen.">Aggiungi allenatore</string>
     <string name="create_monster_title" comment="Title of the monster creation screen.">Aggiungi mostro</string>
     <string name="character_sprites_section" comment="Heading for the character sprites section.">Sprite</string>
@@ -195,4 +197,53 @@
     <string name="characters_help_assignments_message">Ci sono due modi per usare i personaggi:</string>
     <string name="characters_help_assignments_player"><b>Personaggio del giocatore:</b> è il tuo avatar. Impostalo nelle opzioni “Personaggio del giocatore” per rappresentarti in ogni chiamata.</string>
     <string name="characters_help_assignments_contact"><b>Personaggi dei contatti:</b> assegna mostri o allenatori a singoli contatti nelle opzioni “Personaggi dei contatti”. Appariranno come avversari quando ti chiamano.</string>
+    <string name="customize_your_calls">Personalizza le tue chiamate</string>
+    <string name="character_collection_title">La tua collezione</string>
+    <string name="profile_trainer_label">Il tuo allenatore</string>
+    <string name="active_monster_label">Mostro attivo</string>
+    <plurals name="calls_battled">
+        <item quantity="one">%1$d Chiamata combattuta</item>
+        <item quantity="other">%1$d Chiamate combattute</item>
+    </plurals>
+    <plurals name="characters_collected">
+        <item quantity="one">%1$d personaggio collezionato</item>
+        <item quantity="other">%1$d personaggi collezionati</item>
+    </plurals>
+    <plurals name="radiants_found">
+        <item quantity="one">%1$d Radioso trovato</item>
+        <item quantity="other">%1$d Radiosi trovati</item>
+    </plurals>
+    <string name="profile_calls_battled">%1$d chiamate combattute</string>
+    <string name="profile_collection_summary">%1$d collezionati · %2$d radiosi trovati</string>
+    <string name="character_tools_title">Cassetta degli attrezzi</string>
+    <string name="battle_journal_title">Diario delle battaglie</string>
+    <string name="battle_journal_description">Rivedi le scoperte radiose e le battaglie recenti.</string>
+    <string name="battle_journal_empty_title">Ancora nessuna battaglia</string>
+    <string name="battle_journal_empty_description">Qui appariranno le scoperte radiose e le battaglie recenti.</string>
+    <string name="battle_journal_no_matches_title">Qui non c’è ancora nulla</string>
+    <string name="battle_journal_no_matches_description">Prova un altro filtro o torna dopo la tua prossima battaglia.</string>
+    <string name="battle_journal_radiant_found">Trovato %1$s radioso</string>
+    <string name="battle_journal_trainer_battle">Hai affrontato %1$s</string>
+    <string name="battle_journal_wild_battle">Hai incontrato %1$s selvatico</string>
+    <string name="battle_journal_anonymous_battle">Battaglia anonima</string>
+    <string name="battle_journal_opponent_trainer">Allenatore: %1$s</string>
+    <string name="battle_journal_player_monster">Il tuo mostro: %1$s</string>
+    <string name="battle_journal_matchup">%1$s contro %2$s</string>
+    <string name="battle_journal_battle_label">Battaglia</string>
+    <string name="battle_journal_radiant_label">Radiante trovato</string>
+    <string name="battle_journal_radiant_encounter_label">Incontro radiante</string>
+    <string name="battle_journal_more_options">Altre opzioni del diario delle battaglie</string>
+    <string name="battle_journal_clear">Cancella diario</string>
+    <string name="battle_journal_clear_confirmation_title">Cancellare il diario delle battaglie?</string>
+    <string name="battle_journal_clear_confirmation_message">Questa azione rimuoverà definitivamente tutta la cronologia delle battaglie e gli sprite salvati.</string>
+    <string name="your_roster">La tua squadra</string>
+    <string name="roster_monster_level">Lv. %1$d</string>
+    <string name="roster_monster_description">%1$s, livello %2$d</string>
+    <string name="remove_roster_monster">Rimuovi mostro</string>
+    <string name="contact_characters_ready">Squadra chiamate pronta</string>
+    <string name="character_packs_home_description">Sfoglia i tuoi pacchetti</string>
+    <string name="import_character_home_description">Aggiungi uno condiviso</string>
+    <string name="open_character_guide">Apri guida</string>
+    <string name="personalize_contact_character">Personalizza i personaggi del chiamante</string>
+    <string name="reorder_monster">Riordina mostro</string>
 </resources>

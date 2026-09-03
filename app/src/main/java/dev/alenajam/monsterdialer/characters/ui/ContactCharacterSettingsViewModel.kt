@@ -3,6 +3,7 @@ package dev.alenajam.monsterdialer.characters.ui
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dev.alenajam.monsterdialer.characters.data.CharacterAssignmentRepository
+import dev.alenajam.monsterdialer.characters.data.ContactCharacterMode
 import dev.alenajam.monsterdialer.characters.data.CharacterLayoutPreferences
 import dev.alenajam.monsterdialer.characters.data.CharactersRepository
 import dev.alenajam.monsterdialer.characters.data.RadiantVariantUnlockStore
@@ -60,6 +61,12 @@ class ContactCharacterSettingsViewModel @Inject constructor(
     private val _assignedMonster = MutableStateFlow<CharacterReference?>(null)
     val assignedMonster: StateFlow<CharacterReference?> = _assignedMonster.asStateFlow()
 
+    private val _trainerMode = MutableStateFlow(ContactCharacterMode.Random)
+    val trainerMode: StateFlow<ContactCharacterMode> = _trainerMode.asStateFlow()
+
+    private val _monsterMode = MutableStateFlow(ContactCharacterMode.Random)
+    val monsterMode: StateFlow<ContactCharacterMode> = _monsterMode.asStateFlow()
+
     private val _layout = MutableStateFlow(
         if (layoutPreferences.isGridLayout()) {
             CharacterLayout.Grid
@@ -87,9 +94,13 @@ class ContactCharacterSettingsViewModel @Inject constructor(
 
     fun onContactSelected(selectedContact: DialerContactSummary) {
         viewModelScope.launch {
-            selectionRepository.setSelectedContact(selectedContact)
-            restoreSelectedContactState()
+            selectContact(selectedContact)
         }
+    }
+
+    suspend fun selectContact(selectedContact: DialerContactSummary) {
+        selectionRepository.setSelectedContact(selectedContact)
+        restoreSelectedContactState()
     }
 
     fun assignTrainer(reference: CharacterReference?) {
@@ -104,6 +115,7 @@ class ContactCharacterSettingsViewModel @Inject constructor(
                 )
             }
             _assignedTrainer.value = reference
+            _trainerMode.value = ContactCharacterMode.Default
         }
     }
 
@@ -119,6 +131,27 @@ class ContactCharacterSettingsViewModel @Inject constructor(
                 )
             }
             _assignedMonster.value = reference
+            _monsterMode.value = ContactCharacterMode.Default
+        }
+    }
+
+    fun randomizeTrainer() = setRandomMode(CharacterType.Trainer)
+
+    fun randomizeMonster() = setRandomMode(CharacterType.Monster)
+
+    private fun setRandomMode(type: CharacterType) {
+        val selected = _contact.value ?: return
+        viewModelScope.launch {
+            selected.numbers.forEach {
+                assignmentRepository.randomizeCharacter(it, type, selected.name)
+            }
+            if (type == CharacterType.Trainer) {
+                _assignedTrainer.value = null
+                _trainerMode.value = ContactCharacterMode.Random
+            } else {
+                _assignedMonster.value = null
+                _monsterMode.value = ContactCharacterMode.Random
+            }
         }
     }
 
@@ -149,12 +182,16 @@ class ContactCharacterSettingsViewModel @Inject constructor(
         val restored = selectionRepository.getSelectedContact()
         _contact.value = restored
 
-        _assignedTrainer.value = restored?.contactKeys()?.firstNotNullOfOrNull {
-            assignmentRepository.getAssignedCharacter(it, CharacterType.Trainer)
+        val trainerSelection = restored?.contactKeys()?.firstOrNull()?.let {
+            assignmentRepository.getContactCharacterSelection(it, CharacterType.Trainer)
         }
-        _assignedMonster.value = restored?.contactKeys()?.firstNotNullOfOrNull {
-            assignmentRepository.getAssignedCharacter(it, CharacterType.Monster)
+        val monsterSelection = restored?.contactKeys()?.firstOrNull()?.let {
+            assignmentRepository.getContactCharacterSelection(it, CharacterType.Monster)
         }
+        _assignedTrainer.value = trainerSelection?.character
+        _trainerMode.value = trainerSelection?.mode ?: ContactCharacterMode.Random
+        _assignedMonster.value = monsterSelection?.character
+        _monsterMode.value = monsterSelection?.mode ?: ContactCharacterMode.Random
         _contactSelectionVersion.value += 1
     }
 }

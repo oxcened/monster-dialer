@@ -3,11 +3,13 @@ package dev.alenajam.monsterdialer.ui.battle
 import dev.alenajam.monsterdialer.characters.data.CharacterAssignmentStore
 import dev.alenajam.monsterdialer.characters.data.CharactersRepositoryImpl
 import dev.alenajam.monsterdialer.characters.data.RadiantVariantUnlockStore
+import dev.alenajam.monsterdialer.characters.data.PlayerProfileStatsStore
 import dev.alenajam.monsterdialer.characters.data.CharacterAssignmentRepositoryImpl
 import dev.alenajam.monsterdialer.battle.data.AssignedCharacterEncounterFactory
 import dev.alenajam.monsterdialer.battle.data.ActiveBattleEncounterStore
 import dev.alenajam.monsterdialer.battle.data.ActiveCallKey
 import dev.alenajam.monsterdialer.battle.data.BattleEncounterFactory
+import dev.alenajam.monsterdialer.battle.data.BattleJournalStore
 import dev.alenajam.monsterdialer.battle.data.EncounterType
 import dev.alenajam.monsterdialer.packs.data.CharacterAssignmentTarget
 import dev.alenajam.monsterdialer.packs.data.CharacterPackCatalog
@@ -39,8 +41,10 @@ class AssignedCharacterEncounterFactoryTest {
     private val charactersRepository by lazy { CharactersRepositoryImpl(repository, assignmentRepository) }
     private val radiantUnlocks by lazy { RadiantVariantUnlockStore(storageRoot) }
     private val activeEncounterStore by lazy { ActiveBattleEncounterStore(storageRoot) }
+    private val profileStatsStore by lazy { PlayerProfileStatsStore(storageRoot) }
+    private val battleJournalStore by lazy { BattleJournalStore(storageRoot) }
     private val factory by lazy {
-        AssignedCharacterEncounterFactory(charactersRepository, assignmentRepository, radiantUnlocks, activeEncounterStore)
+        AssignedCharacterEncounterFactory(charactersRepository, assignmentRepository, radiantUnlocks, activeEncounterStore, profileStatsStore, battleJournalStore)
     }
 
     @Test
@@ -80,6 +84,23 @@ class AssignedCharacterEncounterFactoryTest {
     }
 
     @Test
+    fun randomContactMonsterChangesForEachCall() {
+        setupPack("com.example.first", "first", CharacterType.Monster, CharacterAssignmentTarget.Contact, name = "First Monster")
+        setupPack("com.example.second", "second", CharacterType.Monster, CharacterAssignmentTarget.Contact, name = "Second Monster")
+        store.randomizeContact("123", CharacterType.Monster)
+
+        val first = AssignedCharacterEncounterFactory(
+            charactersRepository, assignmentRepository, radiantUnlocks, activeEncounterStore, profileStatsStore, battleJournalStore, FirstRandom,
+        ).forCall("call1", "123", "Alex", isAnonymous = false)
+        val second = AssignedCharacterEncounterFactory(
+            charactersRepository, assignmentRepository, radiantUnlocks, activeEncounterStore, profileStatsStore, battleJournalStore, LastRandom,
+        ).forCall("call2", "123", "Alex", isAnonymous = false)
+
+        assertEquals("First Monster", first.enemy?.name)
+        assertEquals("Second Monster", second.enemy?.name)
+    }
+
+    @Test
     fun handlesAnonymousCallsByIgnoringContactAssignments() {
         val packId = "com.example.test"
         val characterId = "monster1"
@@ -102,6 +123,8 @@ class AssignedCharacterEncounterFactoryTest {
             assignmentRepository,
             radiantUnlocks,
             activeEncounterStore,
+            profileStatsStore,
+            battleJournalStore,
             random = AlwaysRadiantRandom,
         )
 
@@ -120,6 +143,8 @@ class AssignedCharacterEncounterFactoryTest {
             assignmentRepository,
             radiantUnlocks,
             activeEncounterStore,
+            profileStatsStore,
+            battleJournalStore,
             random = AlwaysRadiantRandom,
         )
         firstFactory.forCall("telecom-call-1", "123", "Alex", isAnonymous = false)
@@ -129,12 +154,15 @@ class AssignedCharacterEncounterFactoryTest {
             assignmentRepository,
             radiantUnlocks,
             activeEncounterStore,
+            profileStatsStore,
+            battleJournalStore,
             random = NeverRadiantRandom,
         )
         val restoredEncounter = recreatedFactory.forCall("telecom-call-1", "123", "Alex", isAnonymous = false)
 
         assertEquals(EncounterType.RadiantWild, restoredEncounter.type)
         assertEquals("Radiant Monster", restoredEncounter.enemy?.name)
+        assertEquals(1, profileStatsStore.callsBattled.value)
     }
 
     @Test
@@ -145,6 +173,8 @@ class AssignedCharacterEncounterFactoryTest {
             assignmentRepository,
             radiantUnlocks,
             activeEncounterStore,
+            profileStatsStore,
+            battleJournalStore,
             random = AlwaysRadiantRandom,
         ).forCall("telecom-call-1", "123", "Alex", isAnonymous = false)
         activeEncounterStore.save(
@@ -157,6 +187,8 @@ class AssignedCharacterEncounterFactoryTest {
             assignmentRepository,
             radiantUnlocks,
             activeEncounterStore,
+            profileStatsStore,
+            battleJournalStore,
             random = NeverRadiantRandom,
         )
 
@@ -215,7 +247,8 @@ class AssignedCharacterEncounterFactoryTest {
         packId: String,
         characterId: String,
         type: CharacterType,
-        vararg assignableTo: CharacterAssignmentTarget
+        vararg assignableTo: CharacterAssignmentTarget,
+        name: String = "Monster 1",
     ) {
         val packDir = File(File(storageRoot, packId), "active")
         packDir.mkdirs()
@@ -229,7 +262,7 @@ class AssignedCharacterEncounterFactoryTest {
             characters = listOf(
                 PackCharacter(
                     id = characterId,
-                    name = "Monster 1",
+                    name = name,
                     type = type,
                     assignableTo = assignableTo.toList(),
                     frontImage = "front.png",
@@ -248,7 +281,7 @@ class AssignedCharacterEncounterFactoryTest {
                 "characters": [
                     {
                         "id": "$characterId",
-                        "name": "Monster 1",
+                        "name": "$name",
                         "type": "${if (type == CharacterType.Monster) "monster" else "trainer"}",
                         "assignableTo": [${assignableTo.joinToString { "\"${if (it == CharacterAssignmentTarget.Contact) "contact" else "player"}\"" }}],
                         "frontImage": "front.png",
@@ -270,6 +303,18 @@ class AssignedCharacterEncounterFactoryTest {
     }
 
     private object NeverRadiantRandom : Random() {
+        override fun nextBits(bitCount: Int): Int = when (bitCount) {
+            0 -> 0
+            Int.SIZE_BITS -> -1
+            else -> (1 shl bitCount) - 1
+        }
+    }
+
+    private object FirstRandom : Random() {
+        override fun nextBits(bitCount: Int): Int = 0
+    }
+
+    private object LastRandom : Random() {
         override fun nextBits(bitCount: Int): Int = when (bitCount) {
             0 -> 0
             Int.SIZE_BITS -> -1

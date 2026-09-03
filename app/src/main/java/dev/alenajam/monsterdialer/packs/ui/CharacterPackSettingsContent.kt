@@ -150,7 +150,7 @@ fun ColumnScope.CharacterPackSettingsContent(
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.spacedBy(16.dp)
             ) {
-                AppIcon(LocalMonsterAppIcons.current.importPacks, null, modifier = Modifier.size(56.dp), tint = MaterialTheme.colorScheme.primary)
+                AppIcon(LocalMonsterAppIcons.current.importCharacter, null, modifier = Modifier.size(56.dp), tint = MaterialTheme.colorScheme.primary)
                 Column(
                     horizontalAlignment = Alignment.CenterHorizontally,
                     verticalArrangement = Arrangement.spacedBy(8.dp)
@@ -169,7 +169,10 @@ fun ColumnScope.CharacterPackSettingsContent(
                         verticalArrangement = Arrangement.spacedBy(4.dp)
                     ) {
                         Button(onClick = importPack) { Text(stringResource(R.string.import_character_pack)) }
-                        OutlinedButton(onClick = createPack) { Text(stringResource(R.string.create_character_pack)) }
+                        OutlinedButton(onClick = createPack) {
+                            AppIcon(LocalMonsterAppIcons.current.createPack, contentDescription = null, modifier = Modifier.size(18.dp))
+                            Text(stringResource(R.string.create_character_pack), modifier = Modifier.padding(start = 8.dp))
+                        }
                     }
                 } else {
                     Button(onClick = importPack) { Text(stringResource(R.string.import_character_pack)) }
@@ -188,14 +191,17 @@ fun ColumnScope.CharacterPackSettingsContent(
                 onClick = importPack,
                 modifier = Modifier.fillMaxWidth()
             ) {
-                AppIcon(LocalMonsterAppIcons.current.importPacks, contentDescription = null, modifier = Modifier.size(18.dp))
+                AppIcon(LocalMonsterAppIcons.current.importCharacter, contentDescription = null, modifier = Modifier.size(18.dp))
                 Text(stringResource(R.string.import_pack), modifier = Modifier.padding(start = 8.dp))
             }
             if (canCreatePack) {
                 OutlinedButton(
                     onClick = createPack,
                     modifier = Modifier.fillMaxWidth()
-                ) { Text(stringResource(R.string.create_character_pack)) }
+                ) {
+                    AppIcon(LocalMonsterAppIcons.current.createPack, contentDescription = null, modifier = Modifier.size(18.dp))
+                    Text(stringResource(R.string.create_character_pack), modifier = Modifier.padding(start = 8.dp))
+                }
             }
             Column {
                 packs.forEachIndexed { index, pack ->

@@ -10,17 +10,13 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Button
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
@@ -30,7 +26,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -41,11 +36,10 @@ import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import dev.alenajam.monsterdialer.R
 import dev.alenajam.monsterdialer.characters.data.BuiltInCharacters
+import dev.alenajam.monsterdialer.characters.data.ContactCharacterMode
 import dev.alenajam.monsterdialer.packs.data.CharacterAssignmentTarget
 import dev.alenajam.monsterdialer.packs.data.InstalledPackCharacter
 import kotlinx.coroutines.launch
-import dev.alenajam.monsterdialer.contacts.ui.formatPhoneNumber
-import dev.alenajam.opendialer.core.common.ui.ContactAvatar
 import dev.alenajam.opendialer.core.common.ui.AppIcon
 import dev.alenajam.opendialer.core.common.ui.LocalAppIcons
 import dev.alenajam.opendialer.feature.contacts.ContactPickerScreen
@@ -58,6 +52,8 @@ fun ColumnScope.ContactCharacterSettingsContent(
     val contact by viewModel.contact.collectAsStateWithLifecycle()
     val assignedTrainer by viewModel.assignedTrainer.collectAsStateWithLifecycle()
     val assignedMonster by viewModel.assignedMonster.collectAsStateWithLifecycle()
+    val trainerMode by viewModel.trainerMode.collectAsStateWithLifecycle()
+    val monsterMode by viewModel.monsterMode.collectAsStateWithLifecycle()
     val contactSelectionVersion by viewModel.contactSelectionVersion.collectAsStateWithLifecycle()
     val trainers by viewModel.trainers.collectAsStateWithLifecycle()
     val monsters by viewModel.monsters.collectAsStateWithLifecycle()
@@ -81,7 +77,6 @@ fun ColumnScope.ContactCharacterSettingsContent(
     val monstersTitle = stringResource(R.string.character_type_monsters)
     val addTrainerLabel = stringResource(R.string.add_trainer)
     val addMonsterLabel = stringResource(R.string.add_monster)
-    val locale = LocalConfiguration.current.locales[0]
 
     val lifecycleOwner = LocalLifecycleOwner.current
     val navigator = LocalSettingsSubpageNavigator.current
@@ -154,34 +149,6 @@ fun ColumnScope.ContactCharacterSettingsContent(
     Column(
         modifier = Modifier.fillMaxSize()
     ) {
-        Card(
-            modifier = Modifier.fillMaxWidth().padding(bottom = 8.dp),
-            colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainerLow)
-        ) {
-            Row(
-                modifier = Modifier.padding(horizontal = 12.dp, vertical = 8.dp),
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.spacedBy(8.dp)
-            ) {
-                ContactAvatar(
-                    name = currentContact.name,
-                    photoUri = currentContact.photoUri,
-                    modifier = Modifier.size(24.dp),
-                    initialTextStyle = MaterialTheme.typography.labelLarge
-                )
-                Column(modifier = Modifier.weight(1f)) {
-                    Text(currentContact.name, style = MaterialTheme.typography.titleMedium)
-                    Text(
-                        currentContact.numbers.firstOrNull()?.let { formatPhoneNumber(it, locale) }
-                            ?: stringResource(R.string.unknown),
-                        style = MaterialTheme.typography.bodySmall,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant
-                    )
-                }
-                TextButton(onClick = { navigator?.navigateTo(0) }) { Text(stringResource(R.string.change)) }
-            }
-        }
-
         CharacterTypeTabs(
             selectedTab = selectedTab,
             onTabSelected = { tab ->
@@ -237,15 +204,111 @@ fun ColumnScope.ContactCharacterSettingsContent(
             if (effectiveLayout == CharacterLayout.List) {
                 LazyColumn(state = listState, modifier = Modifier.fillMaxSize(), contentPadding = PaddingValues(top = 8.dp, bottom = 72.dp)) {
                     when (selectedTab) {
-                        0 -> characterTypeItems(trainerTitle, trainersTitle, BuiltInCharacters.trainer, trainers, assignedTrainer, { it.contactArtwork }, CharacterAssignmentTarget.Contact, viewModel::assignTrainer, { navigator?.navigateTo(1) }, addTrainerLabel, !isLimitReached, unlockedVariants, onDelete = { character -> scope.launch { isPendingDeletionInUse = viewModel.isCharacterInUse(character.character.id); pendingDeletion = character } }, onEdit = { navigator?.navigateTo(1, it.character.id) }, onShare = { pendingShare = it })
-                        1 -> characterTypeItems(monsterTitle, monstersTitle, BuiltInCharacters.monster.character, monsters, assignedMonster, { it.contactArtwork }, CharacterAssignmentTarget.Contact, viewModel::assignMonster, { navigator?.navigateTo(2) }, addMonsterLabel, !isLimitReached, unlockedVariants, onDelete = { character -> scope.launch { isPendingDeletionInUse = viewModel.isCharacterInUse(character.character.id); pendingDeletion = character } }, onEdit = { navigator?.navigateTo(2, it.character.id) }, onShare = { pendingShare = it })
+                        0 -> characterTypeItems(
+                            title = trainerTitle,
+                            pluralTitle = trainersTitle,
+                            defaultCharacter = BuiltInCharacters.trainer,
+                            characters = trainers,
+                            selected = assignedTrainer,
+                            defaultArtwork = { it.contactArtwork },
+                            artworkTarget = CharacterAssignmentTarget.Contact,
+                            onSelect = {
+                                viewModel.assignTrainer(it)
+                                navigator?.navigateBack()
+                            },
+                            onAddCharacter = { navigator?.navigateTo(1) },
+                            addLabel = addTrainerLabel,
+                            isAddEnabled = !isLimitReached,
+                            unlockedVariants = unlockedVariants,
+                            isRandomSelected = trainers.isNotEmpty() && trainerMode == ContactCharacterMode.Random,
+                            onRandomize = {
+                                viewModel.randomizeTrainer()
+                                navigator?.navigateBack()
+                            },
+                            onDelete = { character -> scope.launch { isPendingDeletionInUse = viewModel.isCharacterInUse(character.character.id); pendingDeletion = character } },
+                            onEdit = { navigator?.navigateTo(1, it.character.id) },
+                            onShare = { pendingShare = it }
+                        )
+                        1 -> characterTypeItems(
+                            title = monsterTitle,
+                            pluralTitle = monstersTitle,
+                            defaultCharacter = BuiltInCharacters.monster.character,
+                            characters = monsters,
+                            selected = assignedMonster,
+                            defaultArtwork = { it.contactArtwork },
+                            artworkTarget = CharacterAssignmentTarget.Contact,
+                            onSelect = {
+                                viewModel.assignMonster(it)
+                                navigator?.navigateBack()
+                            },
+                            onAddCharacter = { navigator?.navigateTo(2) },
+                            addLabel = addMonsterLabel,
+                            isAddEnabled = !isLimitReached,
+                            unlockedVariants = unlockedVariants,
+                            isRandomSelected = monsters.isNotEmpty() && monsterMode == ContactCharacterMode.Random,
+                            onRandomize = {
+                                viewModel.randomizeMonster()
+                                navigator?.navigateBack()
+                            },
+                            onDelete = { character -> scope.launch { isPendingDeletionInUse = viewModel.isCharacterInUse(character.character.id); pendingDeletion = character } },
+                            onEdit = { navigator?.navigateTo(2, it.character.id) },
+                            onShare = { pendingShare = it }
+                        )
                     }
                 }
             } else {
                 LazyVerticalGrid(columns = GridCells.Fixed(2), state = gridState, modifier = Modifier.fillMaxSize(), contentPadding = PaddingValues(top = 8.dp, bottom = 72.dp), horizontalArrangement = Arrangement.spacedBy(2.dp), verticalArrangement = Arrangement.spacedBy(2.dp)) {
                     when (selectedTab) {
-                        0 -> characterTypeGridItems(trainerTitle, trainersTitle, BuiltInCharacters.trainer, trainers, assignedTrainer, { it.contactArtwork }, CharacterAssignmentTarget.Contact, viewModel::assignTrainer, { navigator?.navigateTo(1) }, addTrainerLabel, !isLimitReached, unlockedVariants, onDelete = { character -> scope.launch { isPendingDeletionInUse = viewModel.isCharacterInUse(character.character.id); pendingDeletion = character } }, onEdit = { navigator?.navigateTo(1, it.character.id) }, onShare = { pendingShare = it })
-                        1 -> characterTypeGridItems(monsterTitle, monstersTitle, BuiltInCharacters.monster.character, monsters, assignedMonster, { it.contactArtwork }, CharacterAssignmentTarget.Contact, viewModel::assignMonster, { navigator?.navigateTo(2) }, addMonsterLabel, !isLimitReached, unlockedVariants, onDelete = { character -> scope.launch { isPendingDeletionInUse = viewModel.isCharacterInUse(character.character.id); pendingDeletion = character } }, onEdit = { navigator?.navigateTo(2, it.character.id) }, onShare = { pendingShare = it })
+                        0 -> characterTypeGridItems(
+                            title = trainerTitle,
+                            pluralTitle = trainersTitle,
+                            defaultCharacter = BuiltInCharacters.trainer,
+                            characters = trainers,
+                            selected = assignedTrainer,
+                            defaultArtwork = { it.contactArtwork },
+                            artworkTarget = CharacterAssignmentTarget.Contact,
+                            onSelect = {
+                                viewModel.assignTrainer(it)
+                                navigator?.navigateBack()
+                            },
+                            onAddCharacter = { navigator?.navigateTo(1) },
+                            addLabel = addTrainerLabel,
+                            isAddEnabled = !isLimitReached,
+                            unlockedVariants = unlockedVariants,
+                            isRandomSelected = trainers.isNotEmpty() && trainerMode == ContactCharacterMode.Random,
+                            onRandomize = {
+                                viewModel.randomizeTrainer()
+                                navigator?.navigateBack()
+                            },
+                            onDelete = { character -> scope.launch { isPendingDeletionInUse = viewModel.isCharacterInUse(character.character.id); pendingDeletion = character } },
+                            onEdit = { navigator?.navigateTo(1, it.character.id) },
+                            onShare = { pendingShare = it }
+                        )
+                        1 -> characterTypeGridItems(
+                            title = monsterTitle,
+                            pluralTitle = monstersTitle,
+                            defaultCharacter = BuiltInCharacters.monster.character,
+                            characters = monsters,
+                            selected = assignedMonster,
+                            defaultArtwork = { it.contactArtwork },
+                            artworkTarget = CharacterAssignmentTarget.Contact,
+                            onSelect = {
+                                viewModel.assignMonster(it)
+                                navigator?.navigateBack()
+                            },
+                            onAddCharacter = { navigator?.navigateTo(2) },
+                            addLabel = addMonsterLabel,
+                            isAddEnabled = !isLimitReached,
+                            unlockedVariants = unlockedVariants,
+                            isRandomSelected = monsters.isNotEmpty() && monsterMode == ContactCharacterMode.Random,
+                            onRandomize = {
+                                viewModel.randomizeMonster()
+                                navigator?.navigateBack()
+                            },
+                            onDelete = { character -> scope.launch { isPendingDeletionInUse = viewModel.isCharacterInUse(character.character.id); pendingDeletion = character } },
+                            onEdit = { navigator?.navigateTo(2, it.character.id) },
+                            onShare = { pendingShare = it }
+                        )
                     }
                 }
             }

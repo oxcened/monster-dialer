@@ -8,6 +8,12 @@ import android.provider.OpenableColumns
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.size
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.CompositionLocalProvider
@@ -16,6 +22,9 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.unit.dp
 import androidx.core.content.IntentCompat
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -28,12 +37,18 @@ import dev.alenajam.monsterdialer.app.ui.rememberMonsterTypography
 import dev.alenajam.monsterdialer.characters.ui.CharactersHelpScreen
 import dev.alenajam.monsterdialer.characters.ui.AddCharacterScreen
 import dev.alenajam.monsterdialer.characters.ui.ContactCharacterSettingsContent
+import dev.alenajam.monsterdialer.characters.ui.ContactCharacterSettingsViewModel
 import dev.alenajam.monsterdialer.characters.ui.ContactPickerDestination
 import dev.alenajam.monsterdialer.characters.ui.CharacterSettingsSummaryViewModel
 import dev.alenajam.monsterdialer.characters.ui.CharactersHomeScreen
 import dev.alenajam.monsterdialer.characters.ui.PlayerCharacterSettingsContent
+import dev.alenajam.monsterdialer.characters.ui.PlayerCharacterSettingsRoute
 import dev.alenajam.monsterdialer.characters.ui.CharacterSharingViewModel
 import dev.alenajam.monsterdialer.characters.ui.SharedCharacterImportHandler
+import dev.alenajam.monsterdialer.battle.ui.BattleJournalScreen
+import dev.alenajam.monsterdialer.battle.ui.BattleJournalOverflowMenu
+import dev.alenajam.monsterdialer.contacts.data.MonsterContact
+import dev.alenajam.monsterdialer.contacts.ui.formatPhoneNumber
 import dev.alenajam.monsterdialer.packs.data.CharacterAssignmentTarget
 import dev.alenajam.monsterdialer.packs.data.CharacterPackArchive
 import dev.alenajam.monsterdialer.packs.data.CharacterType
@@ -44,9 +59,11 @@ import dev.alenajam.monsterdialer.packs.ui.CreateCharacterPackScreen
 import dev.alenajam.opendialer.core.common.DefaultPhoneManager
 import dev.alenajam.opendialer.core.common.ui.AppThemeExtension
 import dev.alenajam.opendialer.core.common.ui.AppProviders
+import dev.alenajam.opendialer.core.common.ui.ContactAvatar
 import dev.alenajam.opendialer.feature.appShell.DialerApp
 import dev.alenajam.opendialer.feature.appShell.HomeNavigationItem
 import dev.alenajam.opendialer.feature.appShell.HomeScreenConfiguration
+import dev.alenajam.opendialer.feature.contacts.ContactRowTrailingAction
 import dev.alenajam.opendialer.feature.settings.SettingsSubpage
 import dev.alenajam.opendialer.feature.settings.SettingsSubpageDestination
 import javax.inject.Inject
@@ -70,10 +87,13 @@ class MainActivity : AppCompatActivity() {
         setContent {
             val characterPackSettingsViewModel: CharacterPackSettingsViewModel = hiltViewModel()
             val characterSharingViewModel: CharacterSharingViewModel = hiltViewModel()
+            val contactCharacterSettingsViewModel: ContactCharacterSettingsViewModel = hiltViewModel()
             val visiblePacks by characterPackSettingsViewModel.packs.collectAsStateWithLifecycle()
             val characterSettingsSummaryViewModel: CharacterSettingsSummaryViewModel = hiltViewModel()
             val playerCharacterNames by characterSettingsSummaryViewModel.playerCharacterNames.collectAsStateWithLifecycle()
-            val assignedContactCount by characterSettingsSummaryViewModel.assignedContactCount.collectAsStateWithLifecycle()
+            val playerProfile by characterSettingsSummaryViewModel.playerProfile.collectAsStateWithLifecycle()
+            val profileMetrics by characterSettingsSummaryViewModel.profileMetrics.collectAsStateWithLifecycle()
+            val selectedContact by contactCharacterSettingsViewModel.contact.collectAsStateWithLifecycle()
 
             CompositionLocalProvider(
                 LocalMonsterAppIcons provides LocalMonsterAppIcons.current
@@ -88,15 +108,29 @@ class MainActivity : AppCompatActivity() {
                         icons = appIcons,
                         themeExtension = appThemeExtension,
                         homeScreenConfiguration = HomeScreenConfiguration(
-                        showVoicemailInNavigation = false,
-                        showVoicemailInOverflow = true,
-                        customNavigationItem = HomeNavigationItem(
+                            showVoicemailInNavigation = false,
+                            showVoicemailInOverflow = true,
+                            contactRowTrailingAction = ContactRowTrailingAction(
+                                settingsSubpageIndex = 1,
+                                onClick = contactCharacterSettingsViewModel::selectContact,
+                                content = {
+                                    dev.alenajam.opendialer.core.common.ui.AppIcon(
+                                        LocalMonsterAppIcons.current.personalizeContact,
+                                        contentDescription = stringResource(R.string.personalize_contact_character)
+                                    )
+                                }
+                            ),
+                            customNavigationItem = HomeNavigationItem(
                             label = { androidx.compose.material3.Text(stringResource(R.string.characters_navigation_label)) },
                             icon = { _ -> dev.alenajam.opendialer.core.common.ui.AppIcon(dev.alenajam.opendialer.core.common.ui.LocalAppIcons.current.person, null) },
                             content = { onOpenSubpage ->
                                 CharactersHomeScreen(
                                     onOpenSubpage = onOpenSubpage,
                                     sharingViewModel = characterSharingViewModel,
+                                    playerProfile = playerProfile,
+                                    profileMetrics = profileMetrics,
+                                    onReorderRoster = characterSettingsSummaryViewModel::reorderPlayerMonsterRoster,
+                                    onRemoveRosterMonster = characterSettingsSummaryViewModel::removePlayerMonsterFromRoster,
                                     showImportUi = false,
                                 )
                             }
@@ -111,7 +145,12 @@ class MainActivity : AppCompatActivity() {
                                 ?.joinToString(separator = " • ")
                                 ?.let { names -> stringResource(R.string.using_characters, names) }
                                 ?: stringResource(R.string.player_characters_not_set),
-                            content = { PlayerCharacterSettingsContent() },
+                            content = { payload ->
+                                PlayerCharacterSettingsContent(
+                                    route = PlayerCharacterSettingsRoute.fromPayload(payload),
+                                    payload = payload,
+                                )
+                            },
                             isScrollable = false,
                             topContentPadding = 0.dp,
                             visibleInSettings = false,
@@ -135,18 +174,12 @@ class MainActivity : AppCompatActivity() {
                             )
                         ),
                         SettingsSubpage(
-                            title = stringResource(R.string.settings_contact_characters_title),
+                            title = selectedContact?.name ?: stringResource(R.string.settings_contact_characters_title),
                             description = stringResource(R.string.settings_contact_characters_description),
-                            subtitle = if (assignedContactCount == 0) {
-                                stringResource(R.string.contact_characters_not_set)
-                            } else {
-                                pluralStringResource(
-                                    R.plurals.contact_character_assignment_count,
-                                    assignedContactCount,
-                                    assignedContactCount
-                                )
+                            topBarTitle = selectedContact?.let { contact ->
+                                { ContactCharacterTopBarTitle(contact) }
                             },
-                            content = { ContactCharacterSettingsContent() },
+                            content = { _ -> ContactCharacterSettingsContent() },
                             isScrollable = false,
                             topContentPadding = 0.dp,
                             visibleInSettings = false,
@@ -187,7 +220,7 @@ class MainActivity : AppCompatActivity() {
                                 }
                                 parts.joinToString(" • ")
                             },
-                            content = {
+                            content = { _ ->
                                 CharacterPackSettingsContent(
                                     viewModel = characterPackSettingsViewModel,
                                     showImportUi = false,
@@ -203,9 +236,18 @@ class MainActivity : AppCompatActivity() {
                             )
                         ),
                         SettingsSubpage(
+                            title = stringResource(R.string.battle_journal_title),
+                            description = stringResource(R.string.battle_journal_description),
+                            content = { _ -> BattleJournalScreen() },
+                            actions = { BattleJournalOverflowMenu() },
+                            visibleInSettings = false,
+                            isScrollable = false,
+                            topContentPadding = 0.dp,
+                        ),
+                        SettingsSubpage(
                             title = stringResource(R.string.characters_help_title),
                             description = stringResource(R.string.characters_help_description),
-                            content = { CharactersHelpScreen() },
+                            content = { _ -> CharactersHelpScreen() },
                             visibleInSettings = false,
                             isScrollable = true,
                             topContentPadding = 0.dp
@@ -268,4 +310,29 @@ private fun Uri.displayName(contentResolver: ContentResolver): String {
         }
     }
     return lastPathSegment.orEmpty()
+}
+
+@Composable
+private fun ContactCharacterTopBarTitle(contact: MonsterContact) {
+    val locale = LocalConfiguration.current.locales[0]
+    Row(
+        horizontalArrangement = Arrangement.spacedBy(8.dp),
+        verticalAlignment = Alignment.CenterVertically,
+    ) {
+        ContactAvatar(
+            name = contact.name,
+            photoUri = contact.photoUri,
+            modifier = Modifier.size(32.dp),
+            initialTextStyle = MaterialTheme.typography.labelLarge,
+        )
+        Column {
+            Text(contact.name, style = MaterialTheme.typography.titleMedium)
+            Text(
+                text = contact.numbers.firstOrNull()?.let { formatPhoneNumber(it, locale) }
+                    ?: stringResource(R.string.unknown),
+                style = MaterialTheme.typography.bodySmall,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+            )
+        }
+    }
 }

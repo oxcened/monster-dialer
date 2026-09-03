@@ -3,6 +3,8 @@ package dev.alenajam.monsterdialer.characters.data
 import androidx.annotation.DrawableRes
 import dev.alenajam.monsterdialer.R
 
+const val DefaultMonsterLevel = 5
+
 /** Metadata for a bundled character and its perspective-specific artwork. */
 data class BuiltInCharacter(
     val name: String,
@@ -43,7 +45,7 @@ object BuiltInCharacters {
             playerArtwork = BuiltInArtwork(R.drawable.battle_player_monster, "battle_player_monster"),
             contactArtwork = BuiltInArtwork(R.drawable.battle_enemy_monster, "battle_enemy_monster")
         ),
-        level = 5,
+        level = DefaultMonsterLevel,
         maxHp = 20
     )
 

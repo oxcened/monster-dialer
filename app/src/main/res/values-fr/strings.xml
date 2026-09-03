@@ -42,6 +42,7 @@
     <string name="import_and_enable_character_pack" comment="Empty-state message in the character selector.">Ajoutez votre propre personnage ou importez un pack pour en voir plus.</string>
     <string name="radiant" comment="Adjective for a rare, sparkling character variant.">Radieux</string>
     <string name="selected" comment="Status label for the currently chosen option.">Sélectionné</string>
+    <string name="randomize" comment="Character selection that chooses a different eligible character for every call.">Aléatoire</string>
     <string name="locked">Verrouillé</string>
     <string name="radiant_variant_locked_title">Variante radieuse verrouillée</string>
     <string name="radiant_variant_locked_message">Lorsque vous rencontrez un %1$s radieux dans un combat sauvage, il se déverrouille automatiquement dès le début du combat. Vous pouvez ensuite l’assigner.</string>
@@ -130,6 +131,7 @@
     <!-- Character creation -->
     <string name="add_trainer" comment="Button to start adding a new custom trainer.">Ajouter un dresseur</string>
     <string name="add_monster" comment="Button to start adding a new custom monster.">Ajouter un monstre</string>
+    <string name="roster_full_message" comment="Message shown when the player tries to add a monster but the roster is full.">Votre équipe est complète. Retirez d’abord un monstre pour en ajouter un autre.</string>
     <string name="create_trainer_title" comment="Title of the trainer creation screen.">Ajouter un dresseur</string>
     <string name="create_monster_title" comment="Title of the monster creation screen.">Ajouter un monstre</string>
     <string name="character_sprites_section" comment="Heading for the character sprites section.">Sprites</string>
@@ -178,4 +180,53 @@
     <string name="characters_help_radiants_title">Découverte radieuse</string><string name="characters_help_radiants_message">Les monstres radieux sont rares. Les variantes des packs se débloquent lorsque vous les rencontrez à l’état sauvage pendant un appel.</string>
     <string name="characters_help_management_title">Gérer la collection</string><string name="characters_help_management_message">Appuyez longuement sur un personnage dans « Vos monstres » ou « Vos dresseurs » pour le modifier, partager ou supprimer.</string>
     <string name="characters_help_assignments_title">Personnaliser les appels</string><string name="characters_help_assignments_message">Les personnages s’utilisent de deux façons :</string><string name="characters_help_assignments_player"><b>Personnage du joueur :</b> votre avatar pour chaque appel.</string><string name="characters_help_assignments_contact"><b>Personnages des contacts :</b> attribuez des monstres ou dresseurs à vos contacts ; ils seront vos adversaires lors de leurs appels.</string>
+    <string name="customize_your_calls">Personnalisez vos appels</string>
+    <string name="character_collection_title">Votre collection</string>
+    <string name="profile_trainer_label">Votre dresseur</string>
+    <string name="active_monster_label">Monstre actif</string>
+    <plurals name="calls_battled">
+        <item quantity="one">%1$d appel combattu</item>
+        <item quantity="other">%1$d appels combattus</item>
+    </plurals>
+    <plurals name="characters_collected">
+        <item quantity="one">%1$d personnage collecté</item>
+        <item quantity="other">%1$d personnages collectés</item>
+    </plurals>
+    <plurals name="radiants_found">
+        <item quantity="one">%1$d radiant trouvé</item>
+        <item quantity="other">%1$d radiants trouvés</item>
+    </plurals>
+    <string name="profile_calls_battled">%1$d appels combattus</string>
+    <string name="profile_collection_summary">%1$d collectés · %2$d radieux trouvés</string>
+    <string name="character_tools_title">Boîte à outils</string>
+    <string name="battle_journal_title">Journal de combat</string>
+    <string name="battle_journal_description">Consultez vos trouvailles rayonnantes et vos derniers combats.</string>
+    <string name="battle_journal_empty_title">Aucun combat pour l’instant</string>
+    <string name="battle_journal_empty_description">Vos trouvailles rayonnantes et vos derniers combats apparaîtront ici.</string>
+    <string name="battle_journal_no_matches_title">Rien ici pour l’instant</string>
+    <string name="battle_journal_no_matches_description">Essayez un autre filtre ou revenez après votre prochain combat.</string>
+    <string name="battle_journal_radiant_found">%1$s rayonnant trouvé</string>
+    <string name="battle_journal_trainer_battle">Combat contre %1$s</string>
+    <string name="battle_journal_wild_battle">%1$s sauvage rencontré</string>
+    <string name="battle_journal_anonymous_battle">Combat anonyme</string>
+    <string name="battle_journal_opponent_trainer">Dresseur : %1$s</string>
+    <string name="battle_journal_player_monster">Votre monstre : %1$s</string>
+    <string name="battle_journal_matchup">%1$s contre %2$s</string>
+    <string name="battle_journal_battle_label">Combat</string>
+    <string name="battle_journal_radiant_label">Radiant trouvé</string>
+    <string name="battle_journal_radiant_encounter_label">Rencontre radiante</string>
+    <string name="battle_journal_more_options">Plus d’options pour le journal de combat</string>
+    <string name="battle_journal_clear">Effacer le journal</string>
+    <string name="battle_journal_clear_confirmation_title">Effacer le journal de combat ?</string>
+    <string name="battle_journal_clear_confirmation_message">Cette action supprimera définitivement tout l’historique des combats et les sprites enregistrés.</string>
+    <string name="your_roster">Votre équipe</string>
+    <string name="roster_monster_level">Niv. %1$d</string>
+    <string name="roster_monster_description">%1$s, niveau %2$d</string>
+    <string name="remove_roster_monster">Retirer le monstre</string>
+    <string name="contact_characters_ready">Équipe d’appel prête</string>
+    <string name="character_packs_home_description">Parcourez vos packs</string>
+    <string name="import_character_home_description">Ajoutez-en un partagé</string>
+    <string name="open_character_guide">Ouvrir le guide</string>
+    <string name="personalize_contact_character">Personnaliser les personnages de l’appelant</string>
+    <string name="reorder_monster">Réorganiser le monstre</string>
 </resources>

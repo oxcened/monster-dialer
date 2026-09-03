@@ -12,14 +12,21 @@ import javax.inject.Singleton
 interface CharacterAssignmentRepository {
     val assignmentVersion: StateFlow<Long>
     suspend fun getAssignedCharacter(contactKey: String, type: CharacterType): CharacterReference?
+    suspend fun getContactCharacterSelection(contactKey: String, type: CharacterType): ContactCharacterSelection
     suspend fun assignCharacter(
         contactKey: String,
         type: CharacterType,
         reference: CharacterReference?,
         label: String?
     )
+    suspend fun randomizeCharacter(contactKey: String, type: CharacterType, label: String?)
     suspend fun getPlayerCharacter(type: CharacterType): CharacterReference?
     suspend fun setPlayerCharacter(type: CharacterType, reference: CharacterReference?)
+    suspend fun getPlayerMonsterRoster(): List<CharacterReference>
+    suspend fun setPlayerMonsterRoster(roster: List<CharacterReference>)
+    suspend fun addPlayerMonsterToRoster(reference: CharacterReference)
+    suspend fun removePlayerMonsterFromRoster(reference: CharacterReference)
+    suspend fun replacePlayerMonsterInRoster(index: Int, reference: CharacterReference)
     suspend fun assignedContactCount(): Int
     suspend fun isCharacterAssignedToPlayer(reference: CharacterReference): Boolean
     suspend fun isCharacterAssignedToAnyContact(reference: CharacterReference): Boolean
@@ -43,6 +50,13 @@ class CharacterAssignmentRepositoryImpl @Inject constructor(
         assignments.characterForContact(contactKey, type)
     }
 
+    override suspend fun getContactCharacterSelection(
+        contactKey: String,
+        type: CharacterType,
+    ): ContactCharacterSelection = withContext(Dispatchers.IO) {
+        assignments.selectionForContact(contactKey, type)
+    }
+
     override suspend fun assignCharacter(
         contactKey: String,
         type: CharacterType,
@@ -50,6 +64,11 @@ class CharacterAssignmentRepositoryImpl @Inject constructor(
         label: String?
     ) = withContext(Dispatchers.IO) {
         assignments.assignContact(contactKey, type, reference, label)
+        _assignmentVersion.value += 1
+    }
+
+    override suspend fun randomizeCharacter(contactKey: String, type: CharacterType, label: String?) = withContext(Dispatchers.IO) {
+        assignments.randomizeContact(contactKey, type, label)
         _assignmentVersion.value += 1
     }
 
@@ -65,6 +84,30 @@ class CharacterAssignmentRepositoryImpl @Inject constructor(
         _assignmentVersion.value += 1
     }
 
+    override suspend fun getPlayerMonsterRoster(): List<CharacterReference> = withContext(Dispatchers.IO) {
+        assignments.playerMonsterRoster()
+    }
+
+    override suspend fun setPlayerMonsterRoster(roster: List<CharacterReference>) = withContext(Dispatchers.IO) {
+        assignments.setPlayerMonsterRoster(roster)
+        _assignmentVersion.value += 1
+    }
+
+    override suspend fun addPlayerMonsterToRoster(reference: CharacterReference) = withContext(Dispatchers.IO) {
+        assignments.addPlayerMonsterToRoster(reference)
+        _assignmentVersion.value += 1
+    }
+
+    override suspend fun removePlayerMonsterFromRoster(reference: CharacterReference) = withContext(Dispatchers.IO) {
+        assignments.removePlayerMonsterFromRoster(reference)
+        _assignmentVersion.value += 1
+    }
+
+    override suspend fun replacePlayerMonsterInRoster(index: Int, reference: CharacterReference) = withContext(Dispatchers.IO) {
+        assignments.replacePlayerMonsterInRoster(index, reference)
+        _assignmentVersion.value += 1
+    }
+
     override suspend fun assignedContactCount(): Int = withContext(Dispatchers.IO) {
         assignments.assignedContactCount()
     }
@@ -72,7 +115,8 @@ class CharacterAssignmentRepositoryImpl @Inject constructor(
     override suspend fun isCharacterAssignedToPlayer(
         reference: CharacterReference
     ): Boolean = withContext(Dispatchers.IO) {
-        CharacterType.entries.any { assignments.player(it)?.sameCharacterAs(reference) == true }
+        CharacterType.entries.any { assignments.player(it)?.sameCharacterAs(reference) == true } ||
+            assignments.playerMonsterRoster().any { it.sameCharacterAs(reference) }
     }
 
     override suspend fun isCharacterAssignedToAnyContact(

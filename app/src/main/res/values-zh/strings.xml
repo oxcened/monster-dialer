@@ -42,6 +42,7 @@
     <string name="import_and_enable_character_pack" comment="Empty-state message in the character selector.">添加你自己的角色或导入角色包以查看更多。</string>
     <string name="radiant" comment="Adjective for a rare, sparkling character variant.">闪耀</string>
     <string name="selected" comment="Status label for the currently chosen option.">已选择</string>
+    <string name="randomize" comment="Character selection that chooses a different eligible character for every call.">随机</string>
     <string name="locked">已锁定</string>
     <string name="radiant_variant_locked_title">闪耀变体已锁定</string>
     <string name="radiant_variant_locked_message">在野外战斗中遇到闪耀 %1$s 时，它会在战斗开始时自动解锁，之后即可分配。</string>
@@ -127,6 +128,7 @@
     <!-- Character creation -->
     <string name="add_trainer" comment="Button to start adding a new custom trainer.">添加训练师</string>
     <string name="add_monster" comment="Button to start adding a new custom monster.">添加怪物</string>
+    <string name="roster_full_message" comment="Message shown when the player tries to add a monster but the roster is full.">你的队伍已满。请先移除一只怪物，再添加新的怪物。</string>
     <string name="create_trainer_title" comment="Title of the trainer creation screen.">添加训练师</string>
     <string name="create_monster_title" comment="Title of the monster creation screen.">添加怪物</string>
     <string name="character_sprites_section" comment="Heading for the character sprites section.">图像</string>
@@ -171,4 +173,50 @@
     <string name="characters_help_sharing_title">分享和导入</string><string name="characters_help_sharing_message">MonsterDialer 使用两种可分享文件：</string><string name="characters_help_sharing_files_character"><b>.monstercharacter：</b>包含属性和图像的单个角色。</string><string name="characters_help_sharing_files_pack"><b>.monsterpack：</b>多个角色的集合。</string><string name="characters_help_sharing_how_to">长按自己的角色即可导出。要导入，请打开收到的文件或使用“导入角色”。</string>
     <string name="characters_help_packs_title">创建角色包</string><string name="characters_help_packs_message">在“角色包”中创建角色包，选择怪物后导出 .monsterpack 文件。</string><string name="characters_help_radiants_title">闪耀发现</string><string name="characters_help_radiants_message">闪耀怪物十分稀有。角色包中的变体会在你通话时于野外遇到它们后解锁。</string>
     <string name="characters_help_management_title">管理收藏</string><string name="characters_help_management_message">长按“你的怪物”或“你的训练师”中的角色即可编辑、分享或删除。</string><string name="characters_help_assignments_title">个性化通话</string><string name="characters_help_assignments_message">角色有两种使用方式：</string><string name="characters_help_assignments_player"><b>玩家角色：</b>你每次通话中的头像。</string><string name="characters_help_assignments_contact"><b>联系人角色：</b>将怪物或训练师分配给联系人；他们来电时会成为你的对手。</string>
+    <string name="customize_your_calls">自定义你的通话</string>
+    <string name="character_collection_title">你的收藏</string>
+    <string name="profile_trainer_label">你的训练师</string>
+    <string name="active_monster_label">当前怪物</string>
+    <plurals name="calls_battled">
+        <item quantity="other">%1$d 次战斗通话</item>
+    </plurals>
+    <plurals name="characters_collected">
+        <item quantity="other">已收集 %1$d 个角色</item>
+    </plurals>
+    <plurals name="radiants_found">
+        <item quantity="other">已发现 %1$d 个闪耀</item>
+    </plurals>
+    <string name="profile_calls_battled">%1$d 次战斗通话</string>
+    <string name="profile_collection_summary">已收集 %1$d 个 · 已发现 %2$d 个闪耀</string>
+    <string name="character_tools_title">工具箱</string>
+    <string name="battle_journal_title">对战日志</string>
+    <string name="battle_journal_description">查看你的闪耀发现和最近对战。</string>
+    <string name="battle_journal_empty_title">还没有对战</string>
+    <string name="battle_journal_empty_description">你的闪耀发现和最近对战将显示在这里。</string>
+    <string name="battle_journal_no_matches_title">这里还没有内容</string>
+    <string name="battle_journal_no_matches_description">请尝试其他筛选条件，或在下次对战后再来查看。</string>
+    <string name="battle_journal_radiant_found">发现闪耀 %1$s</string>
+    <string name="battle_journal_trainer_battle">与 %1$s 对战</string>
+    <string name="battle_journal_wild_battle">遇到野生 %1$s</string>
+    <string name="battle_journal_anonymous_battle">匿名对战</string>
+    <string name="battle_journal_opponent_trainer">训练师：%1$s</string>
+    <string name="battle_journal_player_monster">你的怪物：%1$s</string>
+    <string name="battle_journal_matchup">%1$s 对 %2$s</string>
+    <string name="battle_journal_battle_label">对战</string>
+    <string name="battle_journal_radiant_label">发现闪耀</string>
+    <string name="battle_journal_radiant_encounter_label">闪耀遭遇</string>
+    <string name="battle_journal_more_options">更多对战日志选项</string>
+    <string name="battle_journal_clear">清除日志</string>
+    <string name="battle_journal_clear_confirmation_title">清除对战日志？</string>
+    <string name="battle_journal_clear_confirmation_message">这将永久删除所有对战记录和已保存的精灵图。</string>
+    <string name="your_roster">你的队伍</string>
+    <string name="roster_monster_level">等级 %1$d</string>
+    <string name="roster_monster_description">%1$s，等级 %2$d</string>
+    <string name="remove_roster_monster">移除怪物</string>
+    <string name="contact_characters_ready">通话队伍已就绪</string>
+    <string name="character_packs_home_description">浏览你的包</string>
+    <string name="import_character_home_description">添加共享角色</string>
+    <string name="open_character_guide">打开指南</string>
+    <string name="personalize_contact_character">自定义来电者角色</string>
+    <string name="reorder_monster">重新排序怪物</string>
 </resources>

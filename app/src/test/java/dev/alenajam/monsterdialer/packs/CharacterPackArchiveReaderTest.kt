@@ -1,6 +1,7 @@
 package dev.alenajam.monsterdialer.packs.data
 
 import dev.alenajam.monsterdialer.characters.data.CharacterAssignmentStore
+import dev.alenajam.monsterdialer.characters.data.ContactCharacterMode
 import java.io.File
 import java.util.Base64
 import java.util.zip.ZipEntry
@@ -296,6 +297,17 @@ class CharacterPackArchiveReaderTest {
         assertEquals(monster, store.player(CharacterType.Monster))
         assertEquals(trainer, store.characterForContact("123", CharacterType.Trainer))
         assertEquals(monster, store.characterForContact("123", CharacterType.Monster))
+    }
+
+    @Test
+    fun unconfiguredContactCharactersDefaultToRandom() {
+        val store = CharacterAssignmentStore(temporaryFolder.newFolder("random-contact-default"))
+
+        assertEquals(ContactCharacterMode.Random, store.selectionForContact("123", CharacterType.Trainer).mode)
+        assertEquals(ContactCharacterMode.Random, store.selectionForContact("123", CharacterType.Monster).mode)
+
+        store.assignContact("123", CharacterType.Trainer, null)
+        assertEquals(ContactCharacterMode.Default, store.selectionForContact("123", CharacterType.Trainer).mode)
     }
 
     private fun archive(vararg entries: Pair<String, String>): File {

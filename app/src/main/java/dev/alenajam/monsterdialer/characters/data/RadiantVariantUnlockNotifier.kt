@@ -55,6 +55,20 @@ class RadiantVariantUnlockNotifier @Inject constructor(
         NotificationManagerCompat.from(context).notify(characterName.hashCode(), notification.build())
     }
 
+    /** Generates and opens the share sheet for a radiant discovery. */
+    suspend fun share(characterName: String, frontSpritePath: String) = withContext(Dispatchers.IO) {
+        val imageUri = shareCardFactory.create(characterName, frontSpritePath) ?: return@withContext
+        val shareIntent = Intent(Intent.ACTION_SEND).apply {
+            type = "image/png"
+            putExtra(Intent.EXTRA_STREAM, imageUri)
+            clipData = android.content.ClipData.newRawUri("radiant-unlock.png", imageUri)
+            addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+        }
+        val chooser = Intent.createChooser(shareIntent, context.getString(R.string.radiant_unlock_share_title))
+        chooser.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+        context.startActivity(chooser)
+    }
+
     private fun sharePendingIntent(imageUri: android.net.Uri): PendingIntent {
         val shareIntent = Intent(Intent.ACTION_SEND).apply {
             type = "image/png"
