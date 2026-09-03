@@ -45,6 +45,8 @@ import dev.alenajam.monsterdialer.characters.ui.PlayerCharacterSettingsContent
 import dev.alenajam.monsterdialer.characters.ui.PlayerCharacterSettingsRoute
 import dev.alenajam.monsterdialer.characters.ui.CharacterSharingViewModel
 import dev.alenajam.monsterdialer.characters.ui.SharedCharacterImportHandler
+import dev.alenajam.monsterdialer.battle.ui.BattleJournalScreen
+import dev.alenajam.monsterdialer.battle.ui.BattleJournalOverflowMenu
 import dev.alenajam.monsterdialer.contacts.data.MonsterContact
 import dev.alenajam.monsterdialer.contacts.ui.formatPhoneNumber
 import dev.alenajam.monsterdialer.packs.data.CharacterAssignmentTarget
@@ -128,7 +130,6 @@ class MainActivity : AppCompatActivity() {
                                     playerProfile = playerProfile,
                                     profileMetrics = profileMetrics,
                                     onReorderRoster = characterSettingsSummaryViewModel::reorderPlayerMonsterRoster,
-                                    onSetActiveMonster = characterSettingsSummaryViewModel::setActivePlayerMonster,
                                     onRemoveRosterMonster = characterSettingsSummaryViewModel::removePlayerMonsterFromRoster,
                                     showImportUi = false,
                                 )
@@ -147,6 +148,7 @@ class MainActivity : AppCompatActivity() {
                             content = { payload ->
                                 PlayerCharacterSettingsContent(
                                     route = PlayerCharacterSettingsRoute.fromPayload(payload),
+                                    payload = payload,
                                 )
                             },
                             isScrollable = false,
@@ -232,6 +234,15 @@ class MainActivity : AppCompatActivity() {
                                     CreateCharacterPackScreen(onNavigateBack)
                                 }
                             )
+                        ),
+                        SettingsSubpage(
+                            title = stringResource(R.string.battle_journal_title),
+                            description = stringResource(R.string.battle_journal_description),
+                            content = { _ -> BattleJournalScreen() },
+                            actions = { BattleJournalOverflowMenu() },
+                            visibleInSettings = false,
+                            isScrollable = false,
+                            topContentPadding = 0.dp,
                         ),
                         SettingsSubpage(
                             title = stringResource(R.string.characters_help_title),

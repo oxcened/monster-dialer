@@ -11,6 +11,9 @@ import kotlinx.serialization.json.Json
 
 internal const val MaxPlayerMonsterBenchSize = 5
 
+/** The active monster plus its bench: the full team shown in the roster, active first. */
+internal const val MaxPlayerMonsterTeamSize = MaxPlayerMonsterBenchSize + 1
+
 @Serializable
 private data class CharacterAssignmentsDocument(
     /** Legacy v1 monster assignment. */
@@ -106,78 +109,66 @@ class CharacterAssignmentStore(
 
     fun setPlayer(character: CharacterReference?) = setPlayer(CharacterType.Monster, character)
 
+    /** The full team, active monster first followed by the bench in order. */
     @Synchronized
     fun playerMonsterRoster(): List<CharacterReference> {
-        return benchRoster(read())
-    }
-
-    @Synchronized
-    fun setActivePlayerMonster(character: CharacterReference) {
-        character.validate()
         val document = read()
-        val active = activeMonster(document)
-        val roster = benchRoster(document)
-        val selectedIndex = roster.indexOf(character)
-        require(character == active || selectedIndex >= 0) { "Monster is not in the roster" }
-        val updatedRoster = if (character == active) {
-            roster
-        } else {
-            // Swap pattern: old active monster takes the spot of the new active monster
-            val newRoster = roster.toMutableList()
-            if (active != null) {
-                newRoster[selectedIndex] = active
-            } else {
-                newRoster.removeAt(selectedIndex)
-            }
-            newRoster
-        }
-        write(document.copy(
-            player = null,
-            playerByType = document.playerByType - CharacterType.Monster,
-            playerMonsterRoster = updatedRoster,
-            activePlayerMonster = character,
-        ))
+        return listOfNotNull(activeMonster(document)) + benchRoster(document)
     }
 
     @Synchronized
     fun addPlayerMonsterToRoster(character: CharacterReference) {
         character.validate()
         val document = read()
-        val active = activeMonster(document)
-        val roster = benchRoster(document)
-        if (character == active || character in roster) return
-        if (active == null) {
-            write(document.copy(
-                player = null,
-                playerByType = document.playerByType - CharacterType.Monster,
-                activePlayerMonster = character,
-                playerMonsterRoster = emptyList(),
-            ))
-        } else {
-            require(roster.size < MaxPlayerMonsterBenchSize) { "Roster is full" }
-            setPlayerMonsterRoster(roster + character)
-        }
+        val team = listOfNotNull(activeMonster(document)) + benchRoster(document)
+        if (character in team) return
+        require(team.size < MaxPlayerMonsterTeamSize) { "Roster is full" }
+        setPlayerMonsterRoster(team + character)
     }
 
+    /**
+     * Replaces the full team with [roster]: the first entry becomes the active monster and the
+     * rest become the bench, in order. Used both to persist a drag-and-drop reorder (whichever
+     * monster ends up at index 0 becomes active) and to append newly added monsters.
+     */
     @Synchronized
     fun setPlayerMonsterRoster(roster: List<CharacterReference>) {
-        require(roster.size <= MaxPlayerMonsterBenchSize) { "Roster is too large" }
+        require(roster.size <= MaxPlayerMonsterTeamSize) { "Roster is too large" }
         require(roster.distinct().size == roster.size) { "Roster contains duplicate monsters" }
         roster.forEach { reference -> reference.validate() }
         val document = read()
-        val active = activeMonster(document)
-        val bench = roster.filterNot { it == active }
         write(document.copy(
             player = null,
             playerByType = document.playerByType - CharacterType.Monster,
-            playerMonsterRoster = bench,
-            activePlayerMonster = active,
+            playerMonsterRoster = roster.drop(1),
+            activePlayerMonster = roster.firstOrNull(),
         ))
     }
 
     @Synchronized
     fun removePlayerMonsterFromRoster(character: CharacterReference) {
         setPlayerMonsterRoster(playerMonsterRoster().filterNot { it == character })
+    }
+
+    @Synchronized
+    fun replacePlayerMonsterInRoster(index: Int, character: CharacterReference) {
+        character.validate()
+        val roster = playerMonsterRoster().toMutableList()
+        if (index !in roster.indices) return
+        if (roster[index] == character) return
+
+        // Ensure the character is not already in the roster elsewhere
+        val existingIndex = roster.indexOfFirst { it.sameCharacterAs(character) }
+        if (existingIndex != -1) {
+            roster.removeAt(existingIndex)
+            // Adjust index if we removed something before it
+            val finalIndex = if (existingIndex < index) index - 1 else index
+            roster[finalIndex] = character
+        } else {
+            roster[index] = character
+        }
+
+        setPlayerMonsterRoster(roster)
     }
 
     @Synchronized

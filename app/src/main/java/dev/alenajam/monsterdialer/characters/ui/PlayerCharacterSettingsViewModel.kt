@@ -56,6 +56,9 @@ class PlayerCharacterSettingsViewModel @Inject constructor(
     private val _monsterRoster = MutableStateFlow<List<CharacterReference>>(emptyList())
     val monsterRoster: StateFlow<List<CharacterReference>> = _monsterRoster.asStateFlow()
 
+    private val _targetSlotIndex = MutableStateFlow<Int?>(null)
+    val targetSlotIndex: StateFlow<Int?> = _targetSlotIndex.asStateFlow()
+
     private val _layout = MutableStateFlow(
         if (layoutPreferences.isGridLayout()) {
             CharacterLayout.Grid
@@ -92,11 +95,20 @@ class PlayerCharacterSettingsViewModel @Inject constructor(
             if (reference == null) {
                 assignmentRepository.setPlayerCharacter(CharacterType.Monster, null)
             } else {
-                assignmentRepository.addPlayerMonsterToRoster(reference)
+                val slotIndex = _targetSlotIndex.value
+                if (slotIndex != null) {
+                    assignmentRepository.replacePlayerMonsterInRoster(slotIndex, reference)
+                } else {
+                    assignmentRepository.addPlayerMonsterToRoster(reference)
+                }
             }
             _assignedMonster.value = assignmentRepository.getPlayerCharacter(CharacterType.Monster)
             _monsterRoster.value = assignmentRepository.getPlayerMonsterRoster()
         }
+    }
+
+    fun setTargetSlotIndex(index: Int?) {
+        _targetSlotIndex.value = index
     }
 
     fun setLayout(layout: CharacterLayout) {

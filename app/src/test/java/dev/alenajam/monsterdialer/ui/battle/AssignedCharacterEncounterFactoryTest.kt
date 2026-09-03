@@ -9,6 +9,7 @@ import dev.alenajam.monsterdialer.battle.data.AssignedCharacterEncounterFactory
 import dev.alenajam.monsterdialer.battle.data.ActiveBattleEncounterStore
 import dev.alenajam.monsterdialer.battle.data.ActiveCallKey
 import dev.alenajam.monsterdialer.battle.data.BattleEncounterFactory
+import dev.alenajam.monsterdialer.battle.data.BattleJournalStore
 import dev.alenajam.monsterdialer.battle.data.EncounterType
 import dev.alenajam.monsterdialer.packs.data.CharacterAssignmentTarget
 import dev.alenajam.monsterdialer.packs.data.CharacterPackCatalog
@@ -41,8 +42,9 @@ class AssignedCharacterEncounterFactoryTest {
     private val radiantUnlocks by lazy { RadiantVariantUnlockStore(storageRoot) }
     private val activeEncounterStore by lazy { ActiveBattleEncounterStore(storageRoot) }
     private val profileStatsStore by lazy { PlayerProfileStatsStore(storageRoot) }
+    private val battleJournalStore by lazy { BattleJournalStore(storageRoot) }
     private val factory by lazy {
-        AssignedCharacterEncounterFactory(charactersRepository, assignmentRepository, radiantUnlocks, activeEncounterStore, profileStatsStore)
+        AssignedCharacterEncounterFactory(charactersRepository, assignmentRepository, radiantUnlocks, activeEncounterStore, profileStatsStore, battleJournalStore)
     }
 
     @Test
@@ -88,10 +90,10 @@ class AssignedCharacterEncounterFactoryTest {
         store.randomizeContact("123", CharacterType.Monster)
 
         val first = AssignedCharacterEncounterFactory(
-            charactersRepository, assignmentRepository, radiantUnlocks, activeEncounterStore, profileStatsStore, FirstRandom,
+            charactersRepository, assignmentRepository, radiantUnlocks, activeEncounterStore, profileStatsStore, battleJournalStore, FirstRandom,
         ).forCall("call1", "123", "Alex", isAnonymous = false)
         val second = AssignedCharacterEncounterFactory(
-            charactersRepository, assignmentRepository, radiantUnlocks, activeEncounterStore, profileStatsStore, LastRandom,
+            charactersRepository, assignmentRepository, radiantUnlocks, activeEncounterStore, profileStatsStore, battleJournalStore, LastRandom,
         ).forCall("call2", "123", "Alex", isAnonymous = false)
 
         assertEquals("First Monster", first.enemy?.name)
@@ -122,6 +124,7 @@ class AssignedCharacterEncounterFactoryTest {
             radiantUnlocks,
             activeEncounterStore,
             profileStatsStore,
+            battleJournalStore,
             random = AlwaysRadiantRandom,
         )
 
@@ -141,6 +144,7 @@ class AssignedCharacterEncounterFactoryTest {
             radiantUnlocks,
             activeEncounterStore,
             profileStatsStore,
+            battleJournalStore,
             random = AlwaysRadiantRandom,
         )
         firstFactory.forCall("telecom-call-1", "123", "Alex", isAnonymous = false)
@@ -151,6 +155,7 @@ class AssignedCharacterEncounterFactoryTest {
             radiantUnlocks,
             activeEncounterStore,
             profileStatsStore,
+            battleJournalStore,
             random = NeverRadiantRandom,
         )
         val restoredEncounter = recreatedFactory.forCall("telecom-call-1", "123", "Alex", isAnonymous = false)
@@ -169,6 +174,7 @@ class AssignedCharacterEncounterFactoryTest {
             radiantUnlocks,
             activeEncounterStore,
             profileStatsStore,
+            battleJournalStore,
             random = AlwaysRadiantRandom,
         ).forCall("telecom-call-1", "123", "Alex", isAnonymous = false)
         activeEncounterStore.save(
@@ -182,6 +188,7 @@ class AssignedCharacterEncounterFactoryTest {
             radiantUnlocks,
             activeEncounterStore,
             profileStatsStore,
+            battleJournalStore,
             random = NeverRadiantRandom,
         )
 

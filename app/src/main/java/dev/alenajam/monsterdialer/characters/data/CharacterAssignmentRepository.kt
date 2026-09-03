@@ -23,10 +23,10 @@ interface CharacterAssignmentRepository {
     suspend fun getPlayerCharacter(type: CharacterType): CharacterReference?
     suspend fun setPlayerCharacter(type: CharacterType, reference: CharacterReference?)
     suspend fun getPlayerMonsterRoster(): List<CharacterReference>
-    suspend fun setActivePlayerMonster(reference: CharacterReference)
     suspend fun setPlayerMonsterRoster(roster: List<CharacterReference>)
     suspend fun addPlayerMonsterToRoster(reference: CharacterReference)
     suspend fun removePlayerMonsterFromRoster(reference: CharacterReference)
+    suspend fun replacePlayerMonsterInRoster(index: Int, reference: CharacterReference)
     suspend fun assignedContactCount(): Int
     suspend fun isCharacterAssignedToPlayer(reference: CharacterReference): Boolean
     suspend fun isCharacterAssignedToAnyContact(reference: CharacterReference): Boolean
@@ -88,11 +88,6 @@ class CharacterAssignmentRepositoryImpl @Inject constructor(
         assignments.playerMonsterRoster()
     }
 
-    override suspend fun setActivePlayerMonster(reference: CharacterReference) = withContext(Dispatchers.IO) {
-        assignments.setActivePlayerMonster(reference)
-        _assignmentVersion.value += 1
-    }
-
     override suspend fun setPlayerMonsterRoster(roster: List<CharacterReference>) = withContext(Dispatchers.IO) {
         assignments.setPlayerMonsterRoster(roster)
         _assignmentVersion.value += 1
@@ -105,6 +100,11 @@ class CharacterAssignmentRepositoryImpl @Inject constructor(
 
     override suspend fun removePlayerMonsterFromRoster(reference: CharacterReference) = withContext(Dispatchers.IO) {
         assignments.removePlayerMonsterFromRoster(reference)
+        _assignmentVersion.value += 1
+    }
+
+    override suspend fun replacePlayerMonsterInRoster(index: Int, reference: CharacterReference) = withContext(Dispatchers.IO) {
+        assignments.replacePlayerMonsterInRoster(index, reference)
         _assignmentVersion.value += 1
     }
 

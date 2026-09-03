@@ -22,6 +22,7 @@ data class MonsterAppIcons(
     val viewList: IconSource,
     val viewGrid: IconSource,
     val guide: IconSource,
+    val battleJournal: IconSource,
     val reorder: IconSource,
     val randomize: IconSource,
 )
@@ -38,6 +39,7 @@ val DefaultMonsterAppIcons = MonsterAppIcons(
     viewList = IconSource.Resource(R.drawable.menu, tintable = false),
     viewGrid = IconSource.Resource(R.drawable.grid, tintable = false),
     guide = IconSource.Resource(R.drawable.guide, tintable = false),
+    battleJournal = IconSource.Resource(R.drawable.book, tintable = false),
     reorder = IconSource.Vector(Icons.Outlined.Reorder),
     randomize = IconSource.Vector(Icons.Outlined.Shuffle),
 )

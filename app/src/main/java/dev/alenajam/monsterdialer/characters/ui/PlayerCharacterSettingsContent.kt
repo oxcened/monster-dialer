@@ -39,13 +39,16 @@ internal enum class PlayerCharacterSettingsRoute(
 
     companion object {
         fun fromPayload(payload: String?): PlayerCharacterSettingsRoute? =
-            entries.firstOrNull { it.payload == payload }
+            payload?.split(":")?.firstOrNull()?.let { p ->
+                entries.firstOrNull { it.payload == p }
+            }
     }
 }
 
 @Composable
 internal fun ColumnScope.PlayerCharacterSettingsContent(
     route: PlayerCharacterSettingsRoute? = null,
+    payload: String? = null,
     viewModel: PlayerCharacterSettingsViewModel = hiltViewModel(),
 ) {
     val assignedTrainer by viewModel.assignedTrainer.collectAsStateWithLifecycle()
@@ -58,12 +61,17 @@ internal fun ColumnScope.PlayerCharacterSettingsContent(
     val selectedTab by viewModel.selectedTab.collectAsStateWithLifecycle()
     val layout by viewModel.layout.collectAsStateWithLifecycle()
     val unlockedVariants by viewModel.unlockedVariants.collectAsStateWithLifecycle()
+    val targetSlotIndex by viewModel.targetSlotIndex.collectAsStateWithLifecycle()
 
     val currentTabHasCharacters = if (selectedTab == 0) trainers.isNotEmpty() else monsters.isNotEmpty()
     val effectiveLayout = if (currentTabHasCharacters) layout else CharacterLayout.List
 
+    val assignedMonsterForSlot = targetSlotIndex?.let { index ->
+        monsterRoster.getOrNull(index)
+    } ?: assignedMonster
+
     val trainerSelectedItemIndex = selectedCharacterIndex(trainers, assignedTrainer)
-    val monsterSelectedItemIndex = selectedCharacterIndex(monsters, assignedMonster)
+    val monsterSelectedItemIndex = selectedCharacterIndex(monsters, assignedMonsterForSlot)
     val trainerListState = rememberLazyListState(
         initialFirstVisibleItemIndex = trainerSelectedItemIndex
     )
@@ -80,7 +88,9 @@ internal fun ColumnScope.PlayerCharacterSettingsContent(
     val addMonsterLabel = stringResource(R.string.add_monster)
     val navigator = dev.alenajam.opendialer.feature.settings.LocalSettingsSubpageNavigator.current
 
-    LaunchedEffect(route) {
+    LaunchedEffect(route, payload) {
+        val slotIndex = payload?.split(":")?.getOrNull(1)?.toIntOrNull()
+        viewModel.setTargetSlotIndex(slotIndex)
         route?.let { viewModel.setSelectedTab(it.selectedTab) }
     }
 
@@ -169,7 +179,7 @@ internal fun ColumnScope.PlayerCharacterSettingsContent(
                         pluralTitle = monstersTitle,
                         defaultCharacter = BuiltInCharacters.monster.character,
                         characters = monsters,
-                        selected = assignedMonster,
+                        selected = assignedMonsterForSlot,
                         defaultArtwork = { it.contactArtwork },
                         artworkTarget = CharacterAssignmentTarget.Contact,
                         onSelect = {
@@ -216,7 +226,7 @@ internal fun ColumnScope.PlayerCharacterSettingsContent(
                         pluralTitle = monstersTitle,
                         defaultCharacter = BuiltInCharacters.monster.character,
                         characters = monsters,
-                        selected = assignedMonster,
+                        selected = assignedMonsterForSlot,
                         defaultArtwork = { it.contactArtwork },
                         artworkTarget = CharacterAssignmentTarget.Contact,
                         onSelect = {

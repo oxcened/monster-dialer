@@ -65,12 +65,6 @@ class CharacterSettingsSummaryViewModel @Inject constructor(
         )
     }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), ProfileMetrics())
 
-    fun setActivePlayerMonster(reference: CharacterReference) {
-        viewModelScope.launch {
-            assignmentRepository.setActivePlayerMonster(reference)
-        }
-    }
-
     fun reorderPlayerMonsterRoster(roster: List<CharacterReference>) {
         viewModelScope.launch {
             assignmentRepository.setPlayerMonsterRoster(roster)
@@ -88,10 +82,16 @@ class CharacterSettingsSummaryViewModel @Inject constructor(
         val activeMonster = activeMonsterReference
             ?.let { playerProfileCharacter(CharacterType.Monster, it) }
             ?: builtInProfileCharacter(CharacterType.Monster)
+        // The roster is the full team, active monster first, so the active monster also
+        // appears in it at index 0.
         val roster = assignmentRepository.getPlayerMonsterRoster()
             .mapNotNull { reference ->
                 playerProfileCharacter(CharacterType.Monster, reference)?.let { character ->
-                    PlayerRosterMonster(character = character, reference = reference, isActive = false)
+                    PlayerRosterMonster(
+                        character = character,
+                        reference = reference,
+                        isActive = reference == activeMonsterReference,
+                    )
                 }
             }
         return PlayerProfile(

@@ -25,6 +25,7 @@ class AssignedCharacterEncounterFactory @Inject constructor(
     private val radiantUnlocks: RadiantVariantUnlockStore,
     private val activeEncounterStore: ActiveBattleEncounterStore,
     private val profileStatsStore: PlayerProfileStatsStore,
+    private val battleJournalStore: BattleJournalStore,
 ) {
     private var random: Random = Random.Default
 
@@ -34,8 +35,9 @@ class AssignedCharacterEncounterFactory @Inject constructor(
         radiantUnlocks: RadiantVariantUnlockStore,
         activeEncounterStore: ActiveBattleEncounterStore,
         profileStatsStore: PlayerProfileStatsStore,
+        battleJournalStore: BattleJournalStore,
         random: Random,
-    ) : this(charactersRepository, assignmentRepository, radiantUnlocks, activeEncounterStore, profileStatsStore) {
+    ) : this(charactersRepository, assignmentRepository, radiantUnlocks, activeEncounterStore, profileStatsStore, battleJournalStore) {
         this.random = random
     }
 
@@ -123,8 +125,7 @@ class AssignedCharacterEncounterFactory @Inject constructor(
                 val wasUnlocked = radiantUnlocks.unlock(
                     reference,
                 )
-                saveEncounter(call, reference)
-                return@runBlocking radiantWildEncounter(
+                val encounter = radiantWildEncounter(
                     fallback = fallback,
                     player = player,
                     playerTrainer = playerTrainer,
@@ -132,9 +133,11 @@ class AssignedCharacterEncounterFactory @Inject constructor(
                     variant = variant,
                     wasUnlocked = wasUnlocked,
                 )
+                saveEncounter(call, reference, encounter, isRadiantDiscovery = wasUnlocked)
+                return@runBlocking encounter
             }
 
-            saveEncounter(call, radiantReference = null)
+            saveEncounter(call, radiantReference = null, encounter = regularEncounter, isRadiantDiscovery = false)
             regularEncounter
         }.also { encounter ->
             cachedCall = call
@@ -174,9 +177,15 @@ class AssignedCharacterEncounterFactory @Inject constructor(
     private fun shouldForceRadiantEncounter(): Boolean =
         BuildConfig.DEBUG && BuildConfig.FORCE_RADIANT_ENCOUNTERS
 
-    private fun saveEncounter(call: ActiveCallKey, radiantReference: CharacterReference?) {
+    private fun saveEncounter(
+        call: ActiveCallKey,
+        radiantReference: CharacterReference?,
+        encounter: BattleEncounter,
+        isRadiantDiscovery: Boolean,
+    ) {
         activeEncounterStore.save(call, radiantReference)
         profileStatsStore.recordBattle()
+        battleJournalStore.record(encounter, isRadiantDiscovery)
     }
 
     private fun radiantWildEncounter(

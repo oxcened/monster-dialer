@@ -24,6 +24,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
@@ -67,7 +68,7 @@ import coil.compose.AsyncImage
 import dev.alenajam.monsterdialer.R
 import dev.alenajam.monsterdialer.app.ui.LocalMonsterAppIcons
 import dev.alenajam.monsterdialer.characters.data.DefaultMonsterLevel
-import dev.alenajam.monsterdialer.characters.data.MaxPlayerMonsterBenchSize
+import dev.alenajam.monsterdialer.characters.data.MaxPlayerMonsterTeamSize
 import dev.alenajam.monsterdialer.characters.data.SharedCharacterImport
 import dev.alenajam.monsterdialer.packs.data.CharacterReference
 import dev.alenajam.monsterdialer.packs.data.CharacterType
@@ -84,7 +85,6 @@ fun CharactersHomeScreen(
     playerProfile: PlayerProfile,
     profileMetrics: ProfileMetrics,
     onReorderRoster: (List<CharacterReference>) -> Unit,
-    onSetActiveMonster: (CharacterReference) -> Unit,
     onRemoveRosterMonster: (CharacterReference) -> Unit,
     showImportUi: Boolean = true,
 ) {
@@ -107,13 +107,16 @@ fun CharactersHomeScreen(
         TeamProfileCard(
             playerProfile = playerProfile,
             profileMetrics = profileMetrics,
-            onChangeTrainer = { onOpenSubpage(0, PlayerCharacterSettingsRoute.ChangeTrainer.payload) }
+            onChangeTrainer = { onOpenSubpage(0, PlayerCharacterSettingsRoute.ChangeTrainer.payload) },
+            onChangeMonster = { onOpenSubpage(0, "${PlayerCharacterSettingsRoute.AddToRoster.payload}:0") }
         )
         RosterSection(
             roster = playerProfile.roster,
             onOpenRoster = { onOpenSubpage(0, PlayerCharacterSettingsRoute.AddToRoster.payload) },
+            onOpenRosterSlot = { index ->
+                onOpenSubpage(0, "${PlayerCharacterSettingsRoute.AddToRoster.payload}:$index")
+            },
             onReorderRoster = onReorderRoster,
-            onSetActiveMonster = onSetActiveMonster,
             onRemoveRosterMonster = onRemoveRosterMonster,
         )
         Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
@@ -123,12 +126,13 @@ fun CharactersHomeScreen(
                 color = MaterialTheme.colorScheme.onSurface
             )
             CharacterToolsGroup(
+                onOpenJournal = { onOpenSubpage(3, null) },
                 onOpenPacks = { onOpenSubpage(2, null) },
                 onImport = { picker.launch(arrayOf("*/*")) },
             )
         }
         TextButton(
-            onClick = { onOpenSubpage(3, null) },
+            onClick = { onOpenSubpage(4, null) },
             modifier = Modifier.align(Alignment.CenterHorizontally)
         ) {
             AppIcon(LocalMonsterAppIcons.current.guide, contentDescription = null, modifier = Modifier.size(18.dp))
@@ -142,8 +146,8 @@ fun CharactersHomeScreen(
 private fun RosterSection(
     roster: List<PlayerRosterMonster>,
     onOpenRoster: () -> Unit,
+    onOpenRosterSlot: (Int) -> Unit,
     onReorderRoster: (List<CharacterReference>) -> Unit,
-    onSetActiveMonster: (CharacterReference) -> Unit,
     onRemoveRosterMonster: (CharacterReference) -> Unit,
 ) {
     var orderedRoster by remember(roster) { mutableStateOf(roster) }
@@ -166,18 +170,19 @@ private fun RosterSection(
             state = lazyListState,
             horizontalArrangement = Arrangement.spacedBy(10.dp),
         ) {
-            items(
+            itemsIndexed(
                 items = orderedRoster,
-                key = { monster -> requireNotNull(monster.reference).rosterKey() },
-            ) { monster ->
+                key = { _, monster -> requireNotNull(monster.reference).rosterKey() },
+            ) { index, monster ->
                 val reference = requireNotNull(monster.reference)
                 ReorderableItem(reorderableState, key = reference.rosterKey()) { isDragging ->
                     val interactionSource = remember { MutableInteractionSource() }
                     RosterMonsterTile(
                         monster = monster,
                         isDragged = isDragging,
-                        onClick = { onSetActiveMonster(reference) },
                         onRemove = { onRemoveRosterMonster(reference) },
+                        isRemoveEnabled = orderedRoster.size > 1,
+                        onClick = { onOpenRosterSlot(index) },
                         interactionSource = interactionSource,
                         dragHandle = {
                             AppIcon(
@@ -206,7 +211,7 @@ private fun RosterSection(
                 val rosterFullMessage = stringResource(R.string.roster_full_message)
                 RosterAddTile(
                     onClick = {
-                        if (orderedRoster.size < MaxPlayerMonsterBenchSize) {
+                        if (orderedRoster.size < MaxPlayerMonsterTeamSize) {
                             onOpenRoster()
                         } else {
                             android.widget.Toast.makeText(context, rosterFullMessage, android.widget.Toast.LENGTH_SHORT).show()
@@ -225,8 +230,9 @@ private fun CharacterReference.rosterKey(): String = "$packId:$characterId:$vari
 private fun RosterMonsterTile(
     monster: PlayerRosterMonster,
     isDragged: Boolean,
-    onClick: () -> Unit,
     onRemove: () -> Unit,
+    isRemoveEnabled: Boolean,
+    onClick: () -> Unit,
     dragHandle: @Composable () -> Unit,
     interactionSource: MutableInteractionSource,
     modifier: Modifier = Modifier,
@@ -277,6 +283,7 @@ private fun RosterMonsterTile(
                     showMenu = false
                     onRemove()
                 },
+                enabled = isRemoveEnabled,
                 leadingIcon = {
                     AppIcon(LocalAppIcons.current.delete, contentDescription = null, modifier = Modifier.size(18.dp))
                 }
@@ -317,7 +324,7 @@ private fun RosterMonsterContent(
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
             TeamArtwork(
-                artworkFile = monster.character.artwork,
+                artwork = monster.character.artwork,
                 fallbackArtwork = monster.character.fallbackArtwork,
                 contentDescription = monster.character.name,
                 modifier = Modifier.size(54.dp),
@@ -378,6 +385,7 @@ private fun TeamProfileCard(
     playerProfile: PlayerProfile,
     profileMetrics: ProfileMetrics,
     onChangeTrainer: () -> Unit,
+    onChangeMonster: () -> Unit,
 ) {
     val trainer = playerProfile.trainer
     val monster = playerProfile.monster
@@ -415,7 +423,7 @@ private fun TeamProfileCard(
                     horizontalArrangement = Arrangement.spacedBy(16.dp)
                 ) {
                     TeamArtwork(
-                        artworkFile = trainer.artwork,
+                        artwork = trainer.artwork,
                         fallbackArtwork = trainer.fallbackArtwork,
                         contentDescription = stringResource(R.string.default_character_artwork, trainerTitle.lowercase()),
                         modifier = Modifier.size(128.dp)
@@ -438,7 +446,11 @@ private fun TeamProfileCard(
                 }
                 HorizontalDivider(color = MaterialTheme.colorScheme.onPrimaryContainer.copy(alpha = 0.16f))
                 Row(
-                    modifier = Modifier.fillMaxWidth(),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .clip(RoundedCornerShape(20.dp))
+                        .clickable(onClick = onChangeMonster)
+                        .padding(4.dp),
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.spacedBy(16.dp),
                 ) {
@@ -462,7 +474,7 @@ private fun TeamProfileCard(
                         )
                     }
                     TeamArtwork(
-                        artworkFile = monster.artwork,
+                        artwork = monster.artwork,
                         fallbackArtwork = monster.fallbackArtwork,
                         contentDescription = stringResource(R.string.default_character_artwork, monsterTitle.lowercase()),
                         modifier = Modifier.size(80.dp),
@@ -495,7 +507,7 @@ private data class ProfileMetric(val value: Int? = null, val label: String)
 
 @Composable
 private fun TeamArtwork(
-    artworkFile: java.io.File?,
+    artwork: java.io.File?,
     fallbackArtwork: Int?,
     contentDescription: String,
     modifier: Modifier = Modifier,
@@ -505,7 +517,7 @@ private fun TeamArtwork(
         contentAlignment = Alignment.Center
     ) {
         val artworkModifier = Modifier.fillMaxSize()
-        if (artworkFile == null) {
+        if (artwork == null) {
             Image(
                 painter = painterResource(requireNotNull(fallbackArtwork)),
                 contentDescription = contentDescription,
@@ -514,7 +526,7 @@ private fun TeamArtwork(
             )
         } else {
             AsyncImage(
-                model = artworkFile,
+                model = artwork,
                 contentDescription = contentDescription,
                 contentScale = ContentScale.Fit,
                 modifier = artworkModifier
@@ -525,6 +537,7 @@ private fun TeamArtwork(
 
 @Composable
 private fun CharacterToolsGroup(
+    onOpenJournal: () -> Unit,
     onOpenPacks: () -> Unit,
     onImport: () -> Unit,
 ) {
@@ -537,6 +550,15 @@ private fun CharacterToolsGroup(
         Column(
             modifier = Modifier.fillMaxWidth(),
         ) {
+            CharacterToolRow(
+                title = stringResource(R.string.battle_journal_title),
+                icon = LocalMonsterAppIcons.current.battleJournal,
+                onClick = onOpenJournal,
+            )
+            HorizontalDivider(
+                modifier = Modifier.padding(start = 56.dp),
+                color = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.5f)
+            )
             CharacterToolRow(
                 title = stringResource(R.string.settings_character_packs_title),
                 icon = LocalMonsterAppIcons.current.characterPacks,
