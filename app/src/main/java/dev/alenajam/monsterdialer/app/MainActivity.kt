@@ -126,7 +126,9 @@ class MainActivity : AppCompatActivity() {
                             onProfileLinked = { sharedProfileImportId = null },
                         )
                     } else DialerApp(
-                        defaultPhoneManager = defaultPhoneManager,
+                        defaultPhoneManager = remember(defaultPhoneManager) {
+                            SafeDefaultPhoneManager(defaultPhoneManager, packageManager)
+                        },
                         icons = appIcons,
                         themeExtension = appThemeExtension,
                         homeScreenConfiguration = HomeScreenConfiguration(
