@@ -4,7 +4,52 @@
     <string name="contribute_translations" comment="Title of the OpenDialer translation contribution link on the About screen.">参与 OpenDialer 翻译</string>
     <string name="hang_up" comment="Button to end the current phone call.">挂断</string>
     <string name="settings_character_packs_title" comment="Settings title for managing character packs.">角色包</string>
-    <string name="characters_navigation_label" comment="Bottom navigation label for character customization.">角色</string>
+    <string name="characters_navigation_label" comment="Bottom navigation label for the player's profile and character collection.">角色</string>
+    <string name="customize_your_calls" comment="Section heading above contact character customization.">自定义你的通话</string>
+    <string name="character_collection_title" comment="Section heading above character pack and import actions.">你的收藏</string>
+    <string name="profile_trainer_label" comment="Label above the player's name in the Character profile card.">你的训练师</string>
+    <string name="active_monster_label" comment="Label above the currently selected player monster in the Character profile card.">当前怪物</string>
+    <plurals name="calls_battled" comment="Label for the number of calls that have had a battle presentation.">
+        <item quantity="other">%1$d 次战斗通话</item>
+    </plurals>
+    <plurals name="characters_collected" comment="Label for the number of characters in the player's collection.">
+        <item quantity="other">已收集 %1$d 个角色</item>
+    </plurals>
+    <plurals name="radiants_found" comment="Label for the number of rare radiant variants the player has found.">
+        <item quantity="other">已发现 %1$d 个闪耀</item>
+    </plurals>
+    <string name="profile_calls_battled" comment="Profile activity summary. %1$d is the number of calls with battle presentations.">%1$d 次战斗通话</string>
+    <string name="profile_collection_summary" comment="Profile collection summary. %1$d is the number of collected characters and %2$d is the number of radiant variants found.">已收集 %1$d 个 · 已发现 %2$d 个闪耀</string>
+    <string name="character_tools_title" comment="Heading above character management actions.">工具箱</string>
+    <string name="battle_journal_title" comment="Title for the local history of battle encounters.">对战日志</string>
+    <string name="battle_journal_description" comment="Description for the local history of battle encounters.">查看你的闪耀发现和最近对战。</string>
+    <string name="battle_journal_empty_title" comment="Empty-state title for the battle journal.">还没有对战</string>
+    <string name="battle_journal_empty_description" comment="Empty-state message for the battle journal.">你的闪耀发现和最近对战将显示在这里。</string>
+    <string name="battle_journal_no_matches_title" comment="Title shown when the selected Battle Journal filter has no entries.">这里还没有内容</string>
+    <string name="battle_journal_no_matches_description" comment="Message shown when the selected Battle Journal filter has no entries.">请尝试其他筛选条件，或在下次对战后再来查看。</string>
+    <string name="battle_journal_radiant_found" comment="Journal entry for a newly discovered radiant monster. %1$s is the monster name.">发现闪耀 %1$s</string>
+    <string name="battle_journal_trainer_battle" comment="Journal entry for a battle against a trainer. %1$s is the opponent monster name.">与 %1$s 对战</string>
+    <string name="battle_journal_wild_battle" comment="Journal entry for a non-discovery radiant wild encounter. %1$s is the opponent monster name.">遇到野生 %1$s</string>
+    <string name="battle_journal_anonymous_battle" comment="Journal entry for an anonymous call battle.">匿名对战</string>
+    <string name="battle_journal_opponent_trainer" comment="Journal entry detail. %1$s is the opponent trainer name.">训练师：%1$s</string>
+    <string name="battle_journal_player_monster" comment="Journal entry detail. %1$s is the player's active monster name.">你的怪物：%1$s</string>
+    <string name="battle_journal_matchup" comment="Journal entry matchup. %1$s is the player's monster and %2$s is the opponent monster.">%1$s 对 %2$s</string>
+    <string name="battle_journal_battle_label" comment="Compact category label for a regular journal entry.">对战</string>
+    <string name="battle_journal_radiant_label" comment="Compact category label for a radiant discovery journal entry.">发现闪耀</string>
+    <string name="battle_journal_radiant_encounter_label" comment="Compact category label for a repeat radiant encounter.">闪耀遭遇</string>
+    <string name="battle_journal_more_options" comment="Accessibility label for the Battle Journal overflow menu.">更多对战日志选项</string>
+    <string name="battle_journal_clear" comment="Overflow-menu action that removes all Battle Journal entries.">清除日志</string>
+    <string name="battle_journal_clear_confirmation_title" comment="Title for the confirmation dialog before clearing the Battle Journal.">清除对战日志？</string>
+    <string name="battle_journal_clear_confirmation_message" comment="Explanation of what clearing the Battle Journal removes.">这将永久删除所有对战记录和已保存的精灵图。</string>
+    <string name="your_roster" comment="Heading above the player's current active monster roster.">你的队伍</string>
+    <string name="roster_monster_level" comment="Level shown below a monster in the roster. %1$d is the monster's level.">等级 %1$d</string>
+    <string name="roster_monster_description" comment="Accessibility description for a roster monster. %1$s is its name and %2$d is its level.">%1$s，等级 %2$d</string>
+    <string name="roster_full_message" comment="Message shown when the player tries to add a monster but the roster is full.">你的队伍已满。请先移除一只怪物，再添加新的怪物。</string>
+    <string name="remove_roster_monster" comment="Accessibility label for removing a monster from the player's roster.">移除怪物</string>
+    <string name="contact_characters_ready" comment="Short status shown on the Contact Characters action when one or more contacts are configured.">通话队伍已就绪</string>
+    <string name="character_packs_home_description" comment="Short description for the character packs action on the Characters home screen.">浏览你的包</string>
+    <string name="import_character_home_description" comment="Short description for the character import action on the Characters home screen.">添加共享角色</string>
+    <string name="open_character_guide" comment="Action label that opens the Character Guide.">打开指南</string>
     <string name="settings_character_packs_description" comment="Settings description for character packs.">导入和管理自定义角色插图。</string>
     <string name="import_character" comment="Action that starts selecting a shared single-character file.">导入角色</string>
     <string name="import_character_description" comment="Description of the action that imports a shared character.">添加他人分享给你的角色。</string>
@@ -27,6 +72,7 @@
     <string name="player_characters_not_set" comment="Settings subtitle when no player character is selected.">未自定义</string>
     <string name="using_characters" comment="Settings subtitle; %1$s is a list of selected character names.">正在使用 %1$s</string>
     <string name="settings_contact_characters_title" comment="Settings title for assigning characters to contacts.">联系人角色</string>
+    <string name="personalize_contact_character" comment="Accessibility label for the contact-list action that customizes a caller's battle characters.">自定义来电者角色</string>
     <string name="settings_contact_characters_description" comment="Settings description for assigning characters to contacts.">为来电者分配角色。</string>
     <string name="contact_characters_not_set" comment="Settings subtitle when no contacts have a character assignment.">没有已自定义的联系人</string>
     <plurals name="contact_character_assignment_count" comment="Settings subtitle showing how many contacts have a character assignment.">
@@ -45,6 +91,7 @@
     <string name="radiant" comment="Adjective for a rare, sparkling character variant.">闪耀</string>
     <string name="regular" comment="Adjective for a standard, non-rare character variant.">普通</string>
     <string name="selected" comment="Status label for the currently chosen option.">已选择</string>
+    <string name="randomize" comment="Character selection that chooses a different eligible character for every call.">随机</string>
     <string name="locked" comment="Status label for a character variant that must be unlocked before selection.">已锁定</string>
     <string name="radiant_variant_locked_title" comment="Title of the dialog shown for a locked radiant character variant.">闪耀变体已锁定</string>
     <string name="radiant_variant_locked_message" comment="Explains how to unlock a radiant character variant; %1$s is the character name.">在野外战斗中遇到闪耀 %1$s 时，它会在战斗开始时自动解锁，之后即可分配。</string>
@@ -131,6 +178,7 @@
     <!-- Character creation -->
     <string name="add_trainer" comment="Button to start adding a new custom trainer.">添加训练师</string>
     <string name="add_monster" comment="Button to start adding a new custom monster.">添加怪物</string>
+    <string name="reorder_monster">重新排序怪物</string>
     <string name="create_trainer_title" comment="Title of the trainer creation screen.">添加训练师</string>
     <string name="create_monster_title" comment="Title of the monster creation screen.">添加怪物</string>
     <string name="character_sprites_section" comment="Heading for the character sprites section.">图像</string>
