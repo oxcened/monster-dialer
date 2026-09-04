@@ -34,19 +34,6 @@ class CharacterSettingsSummaryViewModel @Inject constructor(
         .map { playerProfile() }
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), defaultPlayerProfile())
 
-    val playerCharacterNames: StateFlow<List<String>> = assignmentRepository.assignmentVersion
-        .map {
-            CharacterType.entries.mapNotNull { type ->
-                val reference = assignmentRepository.getPlayerCharacter(type) ?: return@mapNotNull null
-                charactersRepository.findCharacter(
-                    reference = reference,
-                    role = CharacterAssignmentTarget.Player,
-                    type = type
-                )?.character?.name
-            }
-        }
-        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), emptyList())
-
     val assignedContactCount: StateFlow<Int> = assignmentRepository.assignmentVersion
         .map { assignmentRepository.assignedContactCount() }
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), 0)

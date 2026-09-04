@@ -100,7 +100,6 @@ class MainActivity : AppCompatActivity() {
             val contactCharacterSettingsViewModel: ContactCharacterSettingsViewModel = hiltViewModel()
             val visiblePacks by characterPackSettingsViewModel.packs.collectAsStateWithLifecycle()
             val characterSettingsSummaryViewModel: CharacterSettingsSummaryViewModel = hiltViewModel()
-            val playerCharacterNames by characterSettingsSummaryViewModel.playerCharacterNames.collectAsStateWithLifecycle()
             val playerProfile by characterSettingsSummaryViewModel.playerProfile.collectAsStateWithLifecycle()
             val profileMetrics by characterSettingsSummaryViewModel.profileMetrics.collectAsStateWithLifecycle()
             val selectedContact by contactCharacterSettingsViewModel.contact.collectAsStateWithLifecycle()
@@ -186,11 +185,11 @@ class MainActivity : AppCompatActivity() {
                         SettingsSubpage(
                             title = stringResource(R.string.settings_player_character_title),
                             description = stringResource(R.string.settings_player_character_description),
-                            subtitle = playerCharacterNames
-                                .takeIf { it.isNotEmpty() }
-                                ?.joinToString(separator = " • ")
-                                ?.let { names -> stringResource(R.string.using_characters, names) }
-                                ?: stringResource(R.string.player_characters_not_set),
+                            subtitle = stringResource(
+                                R.string.using_characters,
+                                listOf(playerProfile.trainer.name, playerProfile.monster.name)
+                                    .joinToString(separator = " • "),
+                            ),
                             content = { payload ->
                                 PlayerCharacterSettingsContent(
                                     route = PlayerCharacterSettingsRoute.fromPayload(payload),
