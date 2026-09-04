@@ -127,4 +127,14 @@ class CharacterAssignmentStoreTest {
 
         assertTrue(repository.isPackInUse(inactiveMonster.packId))
     }
+
+    @Test
+    fun `rejects a selected contact without a usable phone number`() {
+        val store = CharacterAssignmentStore(temporaryFolder.newFolder("contact-without-phone-number"))
+
+        val selected = store.setSelectedContact("Alex", listOf("", "Private number"), contactId = 42)
+
+        assertFalse(selected)
+        assertEquals(null, store.selectedContact())
+    }
 }

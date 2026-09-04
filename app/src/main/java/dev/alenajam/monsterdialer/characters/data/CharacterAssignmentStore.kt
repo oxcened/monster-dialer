@@ -254,9 +254,9 @@ class CharacterAssignmentStore(
         contactKeys: List<String>,
         contactId: Int? = null,
         photoUri: String? = null
-    ) {
-        val normalizedKeys = contactKeys.map(::normalizeContactKey).distinct()
-        require(normalizedKeys.isNotEmpty()) { "Selected contact must have a phone number" }
+    ): Boolean {
+        val normalizedKeys = contactKeys.mapNotNull(::normalizeContactKeyOrNull).distinct()
+        if (normalizedKeys.isEmpty()) return false
         val selected = StoredSelectedContact(
             label = label.trim().ifBlank { normalizedKeys.first() }.take(MaxContactLabelLength),
             contactKeys = normalizedKeys,
@@ -265,6 +265,7 @@ class CharacterAssignmentStore(
         )
         val document = read()
         write(document.copy(selectedContact = selected))
+        return true
     }
 
     @Synchronized

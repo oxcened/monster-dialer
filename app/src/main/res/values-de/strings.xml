@@ -31,6 +31,7 @@
     <string name="contact_characters_not_set" comment="Settings subtitle when no contacts have a character assignment.">Keine Kontakte personalisiert</string>
     <plurals name="contact_character_assignment_count" comment="Settings subtitle showing how many contacts have a character assignment."><item quantity="one">%d Kontakt personalisiert</item><item quantity="other">%d Kontakte personalisiert</item></plurals>
     <string name="choose_contact" comment="Button that opens the contact picker.">Kontakt wählen</string>
+    <string name="contact_phone_number_required" comment="Toast shown when the selected contact has no usable phone number.">Dieser Kontakt kann nicht ausgewählt werden, weil er keine Telefonnummer hat.</string>
     <string name="character_type_trainer" comment="Character category for a human battle character.">Trainer</string>
     <string name="character_type_monster" comment="Character category for a creature battle character.">Monster</string>
     <string name="character_type_trainers">Trainern</string>

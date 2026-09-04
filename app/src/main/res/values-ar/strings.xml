@@ -31,6 +31,7 @@
     <string name="contact_characters_not_set" comment="Settings subtitle when no contacts have a character assignment.">لا توجد جهات اتصال مخصصة</string>
     <plurals name="contact_character_assignment_count" comment="Settings subtitle showing how many contacts have a character assignment."><item quantity="zero">لم يتم تخصيص أي جهات اتصال</item><item quantity="one">تم تخصيص جهة اتصال واحدة</item><item quantity="two">تم تخصيص جهتي اتصال</item><item quantity="few">تم تخصيص %d جهات اتصال</item><item quantity="many">تم تخصيص %d جهة اتصال</item><item quantity="other">تم تخصيص %d جهة اتصال</item></plurals>
     <string name="choose_contact" comment="Button that opens the contact picker.">اختر جهة اتصال</string>
+    <string name="contact_phone_number_required" comment="Toast shown when the selected contact has no usable phone number.">لا يمكن اختيار جهة الاتصال هذه لأنها لا تحتوي على رقم هاتف.</string>
     <string name="character_type_trainer" comment="Character category for a human battle character.">مدرب</string>
     <string name="character_type_monster" comment="Character category for a creature battle character.">وحش</string>
     <string name="character_type_trainers">مدربون</string>

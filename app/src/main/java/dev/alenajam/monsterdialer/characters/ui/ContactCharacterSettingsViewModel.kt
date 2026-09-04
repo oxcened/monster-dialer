@@ -101,25 +101,29 @@ class ContactCharacterSettingsViewModel @Inject constructor(
         }
     }
 
-    fun onContactSelected(selectedContact: DialerContactSummary) {
+    fun onContactSelected(
+        selectedContact: DialerContactSummary,
+        onSelected: () -> Unit,
+        onRejected: () -> Unit,
+    ) {
         viewModelScope.launch {
-            selectContact(selectedContact)
+            if (selectContact(selectedContact)) onSelected() else onRejected()
         }
     }
 
-    suspend fun selectContact(selectedContact: DialerContactSummary) {
-        selectionRepository.setSelectedContact(selectedContact)
+    suspend fun selectContact(selectedContact: DialerContactSummary): Boolean {
+        if (!selectionRepository.setSelectedContact(selectedContact)) return false
         restoreSelectedContactState()
-        val profileId = _pendingOnlineProfileId.value ?: return
-        val contact = _contact.value ?: return
-        if (onlineOpponentResolver.link(contact.numbers, profileId)) {
-            _pendingOnlineProfileId.value = null
+        val profileId = _pendingOnlineProfileId.value ?: return true
+        val contact = _contact.value ?: return false
+        return onlineOpponentResolver.link(contact.numbers, profileId).also { linked ->
+            if (linked) _pendingOnlineProfileId.value = null
         }
     }
 
     /** Selects a contact and links the pending Online Profile, if one was opened from a shared URI. */
     suspend fun selectContactForPendingOnlineProfile(selectedContact: DialerContactSummary): Boolean {
-        selectionRepository.setSelectedContact(selectedContact)
+        if (!selectionRepository.setSelectedContact(selectedContact)) return false
         restoreSelectedContactState()
         val profileId = _pendingOnlineProfileId.value ?: return true
         val contact = _contact.value ?: return false
