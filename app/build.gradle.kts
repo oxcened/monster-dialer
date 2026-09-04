@@ -17,12 +17,13 @@ val radiantEncounterDebugProperties = Properties().apply {
 val forceRadiantEncounters = radiantEncounterDebugProperties
     .getProperty("forceRadiantEncounters")
     .equals("true", ignoreCase = true)
+val profileSharingHost = "monsterdialer.web.app"
 
 // Firebase is used for production telemetry, but local debug builds should not
 // require credentials that are intentionally excluded from source control.
 if (file("google-services.json").isFile) {
-    apply(plugin = "com.google.gms.google-services")
-    apply(plugin = "com.google.firebase.crashlytics")
+    apply(plugin = libs.plugins.google.services.get().pluginId)
+    apply(plugin = libs.plugins.firebase.crashlytics.get().pluginId)
 }
 
 val appVersionName = providers.gradleProperty("appVersionName").orNull
@@ -52,6 +53,8 @@ android {
         versionCode = appVersionCode
         versionName = appVersionName
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        manifestPlaceholders["profileSharingHost"] = profileSharingHost
+        buildConfigField("String", "PROFILE_SHARING_HOST", "\"$profileSharingHost\"")
     }
 
     buildFeatures {
@@ -125,6 +128,15 @@ dependencies {
     implementation(platform(libs.firebase.bom))
     implementation(libs.firebase.crashlytics)
     implementation(libs.firebase.analytics)
+    implementation(monster.firebase.auth)
+    implementation(monster.firebase.firestore)
+    implementation(monster.firebase.storage)
+    implementation(monster.coroutines.play.services)
+    implementation(monster.androidx.credentials)
+    implementation(monster.androidx.credentials.play.services.auth)
+    implementation(monster.googleid)
+    implementation(monster.libphonenumber)
+    implementation(monster.zxing.core)
 
     // These would be Maven dependencies if OpenDialer were published
     // For now, we assume they are included in the settings.gradle.kts
@@ -156,10 +168,14 @@ dependencies {
 
     testImplementation(libs.junit)
     testImplementation(libs.kotlinx.coroutines.test)
+    testImplementation(libs.mockito.core)
+    testImplementation(libs.mockito.kotlin)
     androidTestImplementation(libs.androidx.test.ext.junit)
     androidTestImplementation(libs.androidx.espresso.core)
     androidTestImplementation(platform(libs.androidx.compose.bom))
     androidTestImplementation(libs.androidx.compose.ui.test.junit4)
     debugImplementation(libs.androidx.compose.ui.tooling)
     debugImplementation(libs.androidx.compose.ui.test.manifest)
+    debugImplementation(monster.firebase.appcheck.debug)
+    releaseImplementation(monster.firebase.appcheck.playintegrity)
 }

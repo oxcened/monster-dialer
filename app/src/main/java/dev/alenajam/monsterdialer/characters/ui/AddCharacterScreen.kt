@@ -138,7 +138,16 @@ fun AddCharacterScreen(
                             contentDescription = null
                         )
                     }
-                }
+                },
+                actions = {
+                    ContextualGuideButton(
+                        contents = listOf(
+                            GuideContent(R.string.characters_help_creation_title, R.string.characters_help_creation_message),
+                            GuideContent(R.string.characters_help_sprites_title, R.string.characters_help_sprites_message),
+                            GuideContent(R.string.characters_help_radiant_title, R.string.characters_help_radiant_message),
+                        ),
+                    )
+                },
             )
         }
     ) { innerPadding ->

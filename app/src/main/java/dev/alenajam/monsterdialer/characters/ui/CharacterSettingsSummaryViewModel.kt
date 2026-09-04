@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.annotation.DrawableRes
 import dev.alenajam.monsterdialer.characters.data.BuiltInCharacters
+import dev.alenajam.monsterdialer.characters.data.isBuiltInMonsterRosterReference
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dev.alenajam.monsterdialer.characters.data.CharacterAssignmentRepository
 import dev.alenajam.monsterdialer.characters.data.CharactersRepository
@@ -32,19 +33,6 @@ class CharacterSettingsSummaryViewModel @Inject constructor(
     val playerProfile: StateFlow<PlayerProfile> = assignmentRepository.assignmentVersion
         .map { playerProfile() }
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), defaultPlayerProfile())
-
-    val playerCharacterNames: StateFlow<List<String>> = assignmentRepository.assignmentVersion
-        .map {
-            CharacterType.entries.mapNotNull { type ->
-                val reference = assignmentRepository.getPlayerCharacter(type) ?: return@mapNotNull null
-                charactersRepository.findCharacter(
-                    reference = reference,
-                    role = CharacterAssignmentTarget.Player,
-                    type = type
-                )?.character?.name
-            }
-        }
-        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), emptyList())
 
     val assignedContactCount: StateFlow<Int> = assignmentRepository.assignmentVersion
         .map { assignmentRepository.assignedContactCount() }
@@ -79,11 +67,9 @@ class CharacterSettingsSummaryViewModel @Inject constructor(
 
     private suspend fun playerProfile(): PlayerProfile {
         val activeMonsterReference = assignmentRepository.getPlayerCharacter(CharacterType.Monster)
-        val activeMonster = activeMonsterReference
-            ?.let { playerProfileCharacter(CharacterType.Monster, it) }
+            ?: BuiltInCharacters.defaultMonsterReference
+        val activeMonster = playerProfileCharacter(CharacterType.Monster, activeMonsterReference)
             ?: builtInProfileCharacter(CharacterType.Monster)
-        // The roster is the full team, active monster first, so the active monster also
-        // appears in it at index 0.
         val roster = assignmentRepository.getPlayerMonsterRoster()
             .mapNotNull { reference ->
                 playerProfileCharacter(CharacterType.Monster, reference)?.let { character ->
@@ -110,7 +96,12 @@ class CharacterSettingsSummaryViewModel @Inject constructor(
         type: CharacterType,
         reference: CharacterReference,
     ): PlayerProfileCharacter? {
-        if (type == CharacterType.Monster && reference == BuiltInCharacters.defaultMonsterReference) {
+        if (
+            type == CharacterType.Monster && (
+                reference == BuiltInCharacters.defaultMonsterReference ||
+                    reference.isBuiltInMonsterRosterReference()
+                )
+        ) {
             return builtInProfileCharacter(CharacterType.Monster)
         }
         val installed = charactersRepository.findCharacter(
@@ -118,20 +109,26 @@ class CharacterSettingsSummaryViewModel @Inject constructor(
             role = CharacterAssignmentTarget.Player,
             type = type
         ) ?: return null
-        val artwork = installed.character.variant(reference.variantId)?.let { variant ->
-            variant.frontImage ?: variant.backImage
-        } ?: return null
+        val variant = installed.character.variant(reference.variantId) ?: return null
+        val artworkPath = variant.frontImage ?: variant.backImage ?: return null
         return PlayerProfileCharacter(
             name = installed.character.name,
-            artwork = installed.imageFile(artwork),
+            artwork = installed.imageFile(artworkPath),
             level = installed.character.level,
+            isRadiant = variant.isRadiant
         )
     }
 
     private fun defaultPlayerProfile() = PlayerProfile(
         trainer = builtInProfileCharacter(CharacterType.Trainer),
         monster = builtInProfileCharacter(CharacterType.Monster),
-        roster = emptyList(),
+        roster = listOf(
+            PlayerRosterMonster(
+                character = builtInProfileCharacter(CharacterType.Monster),
+                reference = BuiltInCharacters.defaultMonsterReference,
+                isActive = true,
+            ),
+        ),
     )
 
     private fun builtInProfileCharacter(type: CharacterType): PlayerProfileCharacter = when (type) {
@@ -170,4 +167,5 @@ data class PlayerProfileCharacter(
     val artwork: File? = null,
     @param:DrawableRes val fallbackArtwork: Int? = null,
     val level: Int? = null,
+    val isRadiant: Boolean = false,
 )

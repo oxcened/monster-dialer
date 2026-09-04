@@ -12,6 +12,8 @@ import dev.alenajam.monsterdialer.packs.data.CharacterReference
 import dev.alenajam.monsterdialer.packs.data.CharacterType
 import dev.alenajam.monsterdialer.packs.data.CharacterVisualVariant
 import dev.alenajam.monsterdialer.packs.data.InstalledPackCharacter
+import dev.alenajam.monsterdialer.onlineprofiles.data.OnlineOpponentResolver
+import dev.alenajam.monsterdialer.onlineprofiles.data.RemoteBattleOpponent
 import javax.inject.Inject
 import javax.inject.Singleton
 import kotlinx.coroutines.runBlocking
@@ -26,6 +28,7 @@ class AssignedCharacterEncounterFactory @Inject constructor(
     private val activeEncounterStore: ActiveBattleEncounterStore,
     private val profileStatsStore: PlayerProfileStatsStore,
     private val battleJournalStore: BattleJournalStore,
+    private val onlineOpponentResolver: OnlineOpponentResolver? = null,
 ) {
     private var random: Random = Random.Default
 
@@ -53,9 +56,14 @@ class AssignedCharacterEncounterFactory @Inject constructor(
 
     fun forCall(callId: String, contactKey: String, callerName: String, isAnonymous: Boolean): BattleEncounter {
         val call = ActiveCallKey(callId, contactKey, callerName, isAnonymous)
-        if (cachedCall == call) return requireNotNull(cachedEncounter)
+        if (cachedCall == call) {
+            return requireNotNull(cachedEncounter).withOnlineOpponent(
+                if (isAnonymous) null else onlineOpponentResolver?.cachedOpponentForNumber(contactKey)
+            )
+        }
 
         val fallback = BattleEncounterFactory.forCall(callId, callerName, isAnonymous)
+        val onlineOpponent = if (isAnonymous) null else onlineOpponentResolver?.cachedOpponentForNumber(contactKey)
         
         // Note: Using runBlocking here because forCall is called from Composable composition/remember 
         // and currently the repository uses suspend functions. In a full architecture, 
@@ -133,12 +141,23 @@ class AssignedCharacterEncounterFactory @Inject constructor(
                     variant = variant,
                     wasUnlocked = wasUnlocked,
                 )
-                saveEncounter(call, reference, encounter, isRadiantDiscovery = wasUnlocked)
+                saveEncounter(
+                    call,
+                    reference,
+                    encounter,
+                    isRadiantDiscovery = wasUnlocked,
+                )
                 return@runBlocking encounter
             }
 
-            saveEncounter(call, radiantReference = null, encounter = regularEncounter, isRadiantDiscovery = false)
-            regularEncounter
+            val resolvedRegularEncounter = regularEncounter.withOnlineOpponent(onlineOpponent)
+            saveEncounter(
+                call,
+                radiantReference = null,
+                encounter = resolvedRegularEncounter,
+                isRadiantDiscovery = false,
+            )
+            resolvedRegularEncounter
         }.also { encounter ->
             cachedCall = call
             cachedEncounter = encounter
@@ -206,7 +225,9 @@ class AssignedCharacterEncounterFactory @Inject constructor(
             type = EncounterType.RadiantWild,
             player = player,
             enemy = wildMonster,
-            enemyTrainerName = null,
+            // The radiant monster is wild, but the journal should still retain the caller that
+            // triggered this discovery. The battle renderer does not display this as a trainer.
+            enemyTrainerName = fallback.enemyTrainerName,
             playerTrainerSprite = playerTrainer,
             enemyTrainerSprite = wildMonster.frontSprite,
             unlockedRadiantName = character.character.name.takeIf { wasUnlocked },

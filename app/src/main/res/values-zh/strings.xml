@@ -4,7 +4,7 @@
     <string name="contribute_translations" comment="Title of the OpenDialer translation contribution link on the About screen.">参与 OpenDialer 翻译</string>
     <string name="hang_up" comment="Button to end the current phone call.">挂断</string>
     <string name="settings_character_packs_title" comment="Settings title for managing character packs.">角色包</string>
-    <string name="characters_navigation_label" comment="Bottom navigation label for character customization.">角色</string>
+    <string name="characters_navigation_label" comment="Bottom navigation label for character customization.">个人资料</string>
     <string name="settings_character_packs_description" comment="Settings description for character packs.">导入和管理自定义角色插图。</string>
     <string name="import_character">导入角色</string>
     <string name="import_character_description">添加他人分享给你的角色。</string>
@@ -22,7 +22,7 @@
     <string name="export_character">导出角色</string>
     <string name="save_to_device">保存到设备</string>
     <string name="shared_character_file_name">%1$s.monstercharacter</string>
-    <string name="settings_player_character_title" comment="Settings title for the player's battle character.">玩家角色</string>
+    <string name="settings_player_character_title" comment="Settings title for the player's battle character.">你的角色</string>
     <string name="settings_player_character_description" comment="Settings description for the player's battle character.">选择通话时代表你的角色。</string>
     <string name="player_characters_not_set" comment="Settings subtitle when no player character is selected.">未自定义</string>
     <string name="using_characters" comment="Settings subtitle; %1$s is a list of selected character names.">正在使用 %1$s</string>
@@ -31,6 +31,7 @@
     <string name="contact_characters_not_set" comment="Settings subtitle when no contacts have a character assignment.">没有已自定义的联系人</string>
     <plurals name="contact_character_assignment_count" comment="Settings subtitle showing how many contacts have a character assignment."><item quantity="one">已自定义 %d 位联系人</item><item quantity="other">已自定义 %d 位联系人</item></plurals>
     <string name="choose_contact" comment="Button that opens the contact picker.">选择联系人</string>
+    <string name="contact_phone_number_required" comment="Toast shown when the selected contact has no usable phone number.">无法选择此联系人，因为它没有电话号码。</string>
     <string name="character_type_trainer" comment="Character category for a human battle character.">训练师</string>
     <string name="character_type_monster" comment="Character category for a creature battle character.">怪物</string>
     <string name="character_type_trainers">训练师</string>
@@ -41,6 +42,10 @@
     <string name="no_other_character_options" comment="%1$s is a character type, such as Trainer or Monster.">没有其他 %1$s 选项</string>
     <string name="import_and_enable_character_pack" comment="Empty-state message in the character selector.">添加你自己的角色或导入角色包以查看更多。</string>
     <string name="radiant" comment="Adjective for a rare, sparkling character variant.">闪耀</string>
+    <string name="filter_all">全部</string>
+    <string name="filter_regular">普通</string>
+    <string name="filter_unlocked_radiant">已解锁闪耀</string>
+    <string name="filter_locked_radiant">已锁定闪耀</string>
     <string name="selected" comment="Status label for the currently chosen option.">已选择</string>
     <string name="randomize" comment="Character selection that chooses a different eligible character for every call.">随机</string>
     <string name="locked">已锁定</string>
@@ -171,7 +176,7 @@
     <string name="regular">普通</string><string name="characters_help_title">角色指南</string><string name="characters_help_description">了解 MonsterDialer 的角色系统。</string><string name="characters_help_intro_title">你的角色收藏</string><string name="characters_help_intro_message">“角色”标签页可为你和联系人自定义每次通话。</string>
     <string name="characters_help_creating_title">创建自定义角色</string><string name="characters_help_creating_message">点按“添加训练师”或“添加怪物”，然后从图库选择图片用于：</string><string name="characters_help_creating_sprites_front"><b>前向图像：</b>联系人来电时显示。</string><string name="characters_help_creating_sprites_back"><b>后向图像：</b>战斗中代表你的角色。</string><string name="characters_help_advanced_title">高级属性</string><string name="characters_help_advanced_message">对于怪物，可在“高级”中设置等级和最大生命值，也可启用“闪耀”状态。</string>
     <string name="characters_help_sharing_title">分享和导入</string><string name="characters_help_sharing_message">MonsterDialer 使用两种可分享文件：</string><string name="characters_help_sharing_files_character"><b>.monstercharacter：</b>包含属性和图像的单个角色。</string><string name="characters_help_sharing_files_pack"><b>.monsterpack：</b>多个角色的集合。</string><string name="characters_help_sharing_how_to">长按自己的角色即可导出。要导入，请打开收到的文件或使用“导入角色”。</string>
-    <string name="characters_help_packs_title">创建角色包</string><string name="characters_help_packs_message">在“角色包”中创建角色包，选择怪物后导出 .monsterpack 文件。</string><string name="characters_help_radiants_title">闪耀发现</string><string name="characters_help_radiants_message">闪耀怪物十分稀有。角色包中的变体会在你通话时于野外遇到它们后解锁。</string>
+    <string name="characters_help_packs_title">创建角色包</string><string name="characters_help_packs_message">在“角色包”中创建角色包，选择怪物后导出 .monsterpack 文件。</string><string name="characters_help_packs_import_title">导入角色包</string><string name="characters_help_packs_import_message">轻点“导入角色包”以添加他人分享给你的 .monsterpack 文件。启用角色包后，便可选择导入的角色。仅导入你创作的，或已获授权使用的插画和声音。</string><string name="characters_help_radiants_title">闪耀发现</string><string name="characters_help_radiants_message">闪耀怪物十分稀有。角色包中的变体会在你通话时于野外遇到它们后解锁。</string>
     <string name="characters_help_management_title">管理收藏</string><string name="characters_help_management_message">长按“你的怪物”或“你的训练师”中的角色即可编辑、分享或删除。</string><string name="characters_help_assignments_title">个性化通话</string><string name="characters_help_assignments_message">角色有两种使用方式：</string><string name="characters_help_assignments_player"><b>玩家角色：</b>你每次通话中的头像。</string><string name="characters_help_assignments_contact"><b>联系人角色：</b>将怪物或训练师分配给联系人；他们来电时会成为你的对手。</string>
     <string name="customize_your_calls">自定义你的通话</string>
     <string name="character_collection_title">你的收藏</string>
@@ -219,4 +224,91 @@
     <string name="open_character_guide">打开指南</string>
     <string name="personalize_contact_character">自定义来电者角色</string>
     <string name="reorder_monster">重新排序怪物</string>
+    <string name="no_available_character_options">没有可用的%1$s</string>
+    <string name="online_profile_choose_contact_prompt">选择要与此在线个人资料关联的联系人。此关联会保留在你的设备上。</string>
+    <string name="online_profile_title">在线个人资料</string>
+    <string name="online_profile_description">让好友看到你每次通话时使用的训练师和怪物。</string>
+    <string name="online_profile_privacy_note">只会共享你的角色精灵图和元数据。</string>
+    <string name="online_profile_enable">启用在线个人资料</string>
+    <string name="online_profile_enabling">正在启用在线个人资料</string>
+    <string name="online_profile_regenerating">正在重新生成分享链接</string>
+    <string name="online_profile_deleting">正在删除在线个人资料</string>
+    <string name="online_profile_keeping_online">正在保持在线个人资料可用</string>
+    <string name="online_profile_enabled">已启用在线个人资料</string>
+    <string name="online_profile_check_in_title">仍在分享你的个人资料吗？</string>
+    <string name="online_profile_check_in_description">你的在线个人资料已有近一年未确认。请确认以继续分享。</string>
+    <string name="online_profile_keep_online">保持在线</string>
+    <string name="online_profile_share">分享我的个人资料</string>
+    <string name="online_profile_show_qr_code">显示二维码</string>
+    <string name="online_profile_qr_code_title">通过二维码分享</string>
+    <string name="online_profile_qr_code_description">请让朋友使用相机扫描此代码以打开你的个人资料。</string>
+    <string name="online_profile_qr_code_content_description">你的在线个人资料二维码</string>
+    <string name="online_profile_regenerate">重新生成分享链接</string>
+    <string name="online_profile_regenerate_message">这会创建新的分享链接，并使当前链接失效。好友需要使用新链接才能访问你的个人资料。</string>
+    <string name="online_profile_delete">删除个人资料</string>
+    <string name="online_profile_delete_message">这会删除你的共享个人资料并使其链接失效。你的角色和联系人自定义设置将保留在此设备上。</string>
+    <string name="online_profile_error_title">无法更新在线个人资料</string>
+    <string name="online_profile_sprite_decode_error">无法解码所选角色的精灵图。</string>
+    <string name="online_profile_google_sign_in_required">请使用 Google 登录以管理在线个人资料。</string>
+    <string name="online_profile_google_sign_in_error">无法使用 Google 登录。</string>
+    <string name="online_profile_google_sign_in_not_configured">Google 登录尚未配置。</string>
+    <string name="online_profile_signing_in">正在使用 Google 登录</string>
+    <string name="online_profile_sign_out_google">退出 Google 登录</string>
+    <string name="online_profile_firebase_not_configured">尚未配置 Firebase。</string>
+    <string name="online_profile_share_text">看看我的 MonsterDialer 个人资料：\n%1$s</string>
+    <string name="choose_team">选择队伍</string>
+    <string name="contact_row_actions">联系人操作</string>
+    <string name="linked_online_profile_title">已关联的在线个人资料</string>
+    <string name="linked_online_profile_none">此联系人未关联在线个人资料。</string>
+    <string name="linked_online_profile_link_hint">打开共享的 MonsterDialer 个人资料链接以将其关联到此联系人。</string>
+    <string name="linked_online_profile_description">此联系人已关联到以下在线个人资料：</string>
+    <string name="linked_online_profile_active_title">已关联在线个人资料</string>
+    <string name="linked_online_profile_active_message">可在通话期间使用此联系人的共享队伍。随时移除关联即可恢复使用联系人的本地队伍。</string>
+    <string name="linked_online_profile_id_label">个人资料 ID</string>
+    <string name="unlink_online_profile">取消关联在线个人资料</string>
+    <string name="unlink_online_profile_confirmation_title">移除个人资料关联？</string>
+    <string name="unlink_online_profile_confirmation_message">这会移除此设备上与共享在线个人资料的关联。该联系人将再次使用其本地队伍。共享个人资料及其所有者的数据不会被更改。</string>
+    <string name="shared_profile_import_title">共享个人资料</string>
+    <string name="shared_profile_import_heading">有人向你分享了 MonsterDialer 个人资料</string>
+    <string name="shared_profile_import_description">从你的联系人列表中选择此个人资料所属的联系人。MonsterDialer 会在与该联系人的通话中显示它。此链接会保留在你的设备上。</string>
+    <string name="shared_profile_import_choose_contact">选择联系人</string>
+    <string name="shared_profile_import_link_failed">找不到所选联系人的有效电话号码。</string>
+    <string name="characters_help_team_title">你的队伍</string>
+    <string name="characters_help_team_message">你的队伍由此处显示的训练师和当前出战的怪物组成。他们会在每次通话战斗中代表你。点按其中任一角色即可选择其他角色。</string>
+    <string name="characters_help_roster_title">你的怪物列表</string>
+    <string name="characters_help_roster_message">你的怪物列表最多包含六只为队伍选择的怪物。拖放自定义怪物即可重新排序。列表中的第一只怪物是你在通话战斗中的当前出战怪物。</string>
+    <string name="online_profile_guide_title">分享你的在线个人资料</string>
+    <string name="online_profile_guide_message">在线个人资料完全由你自愿开启，并以隐私和安全为设计重点。要启用它，请使用 Google 登录。你的 Google 账号用于识别谁可以管理个人资料；不会分享你的电子邮件或 Google 账号详情。启用个人资料或在另一台设备上登录时，该设备当前的训练师和出战怪物（包括所选精灵图）会通过可分享的链接发布。服务器不会存储你的电话号码、联系人列表、通话记录或其他个人及敏感数据。MonsterDialer 个人资料与联系人的关联仅保留在各自设备上。</string>
+    <string name="online_profile_public_id_title">你的公开个人资料 ID</string>
+    <string name="online_profile_public_id_message">收到你分享链接的任何人都可通过随机生成的公开 ID 找到你的个人资料。使用同一 Google 账号在另一台设备上登录时会保留此 ID，因此现有链接仍然有效。点按“重新生成分享链接”即可使当前公开 ID 失效并创建新的 ID。此前的链接将不再对你分享过的任何人有效。</string>
+    <string name="online_profile_delete_guide_title">删除你的个人资料</string>
+    <string name="online_profile_delete_guide_message">点按“删除个人资料”可永久移除已发布的个人资料数据。拥有你分享链接的人将无法再查看你的队伍。如果之后再次启用个人资料，它会有一个新的分享链接。</string>
+    <string name="characters_help_character_list_title">角色列表</string>
+    <string name="learn_about_radiants">关于闪耀变体</string>
+    <string name="open_radiants_guide">打开闪耀变体指南</string>
+    <string name="radiants_guide_title">闪耀变体</string>
+    <string name="radiants_guide_message">闪耀变体是怪物罕见的替代外观，你可以发现它们并将其加入怪物列表。</string>
+    <string name="radiants_guide_availability">• 只有拥有闪耀变体的怪物才可能出现。</string>
+    <string name="radiants_guide_unlock">• 闪耀变体可以替代符合条件的战斗。战斗开始时就会解锁，无需进行任何操作。</string>
+    <string name="radiants_guide_assign">• 发现后，请在“你的角色”→“怪物”中选择其闪耀变体来分配。</string>
+    <string name="radiants_guide_journal">• 可在战斗日志中查找和分享你的闪耀变体发现记录。</string>
+    <string name="open_shared_online_profile_guide">打开共享在线个人资料指南</string>
+    <string name="shared_online_profile_guide_title">使用共享在线个人资料</string>
+    <string name="shared_online_profile_guide_message">当有人与你分享在线个人资料链接时，你可以将其共享队伍关联到你的一个联系人，用于通话战斗。</string>
+    <string name="shared_online_profile_choose_contact_guide_title">选择正确的联系人</string>
+    <string name="shared_online_profile_choose_contact_guide_message">选择拥有共享个人资料的联系人。联系人与个人资料之间的关联仅保存在你的设备上；不会更改对方的个人资料，也不会向对方分享你的联系人。</string>
+    <string name="shared_online_profile_loading_guide_title">战斗期间加载</string>
+    <string name="shared_online_profile_loading_guide_message">战斗开始时，MonsterDialer 会尝试为该联系人加载关联的在线个人资料。最多等待 500 毫秒。如果个人资料无法及时加载，例如没有网络连接或连接缓慢，战斗将使用本地选择的角色离线开始。</string>
+    <string name="shared_online_profile_cache_guide_title">缓存和更新</string>
+    <string name="shared_online_profile_cache_guide_message">首次通话可能会在个人资料完成加载时离线开始，之后的通话则可使用该资料。加载后，个人资料会缓存一小时，到期前不会再次获取。其所有者可随时更新或移除共享个人资料。</string>
+    <string name="shared_online_profile_unlink_guide_title">随时解除关联</string>
+    <string name="shared_online_profile_unlink_guide_message">从联系人的菜单中打开“已关联的在线个人资料”，然后点按“解除在线个人资料关联”即可停止使用。该联系人将恢复使用本地队伍，共享个人资料保持不变。</string>
+    <string name="characters_help_player_character_list_message">角色按来源分组：内置角色随应用提供；“你的训练师”和“你的怪物”是你在应用中创建的角色；导入的角色则按其角色包整理。长按你创建的角色可编辑、分享或删除它。</string>
+    <string name="characters_help_contact_character_list_message">角色按来源分组：“随机选择”仅适用于联系人，会为每次通话自动选择符合条件的角色；内置角色随应用提供；“你的训练师”和“你的怪物”是你在应用中创建的角色；导入的角色则按其角色包整理。长按你创建的角色可编辑、分享或删除它。</string>
+    <string name="characters_help_creation_title">创建角色</string>
+    <string name="characters_help_creation_message">为你的角色命名并添加精灵图。当角色作为对手出现时会使用正面精灵图，而背面精灵图则用于表示战斗中位于你队伍里的角色。</string>
+    <string name="characters_help_sprites_title">精灵图文件与美术建议</string>
+    <string name="characters_help_sprites_message">请选择可通过设备图片选择器访问的图片文件。MonsterDialer 不会对自定义精灵图设置固定分辨率或文件大小限制。为了获得最清晰的效果，建议使用带透明背景的 PNG 图片，将角色置于画面中央并尽量减少周围的空白区域，同时让正面和背面精灵图保持相近的比例和姿势。</string>
+    <string name="characters_help_radiant_title">闪耀变体</string>
+    <string name="characters_help_radiant_message">仅限怪物：打开“高级”设置并开启“闪耀”开关，即可添加闪耀变体。之后在角色选择中，同一个怪物将显示普通版和闪耀版。闪耀版初始处于锁定状态，必须先在战斗中发现它才能选择。必须提供正面精灵图，因为“寻找”功能会使用该图片来发现并解锁闪耀变体。</string>
 </resources>

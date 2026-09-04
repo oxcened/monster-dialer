@@ -75,6 +75,18 @@ internal fun ShareCharacterDialog(
         title = { Text(stringResource(R.string.share_character_title, characterName)) },
         text = {
             androidx.compose.foundation.layout.Column {
+                ContextualGuideButton(
+                    contents = listOf(
+                        GuideContent(
+                            R.string.characters_help_sharing_title,
+                            R.string.characters_help_sharing_message,
+                            listOf(
+                                R.string.characters_help_sharing_files_character,
+                                R.string.characters_help_sharing_how_to,
+                            ),
+                        ),
+                    ),
+                )
                 OutlinedTextField(
                     value = creator,
                     onValueChange = { creator = it },

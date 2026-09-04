@@ -4,7 +4,7 @@
     <string name="contribute_translations" comment="Title of the OpenDialer translation contribution link on the About screen.">Contribuer aux traductions d’OpenDialer</string>
     <string name="hang_up" comment="Button to end the current phone call.">Raccrocher</string>
     <string name="settings_character_packs_title" comment="Settings title for managing character packs.">Packs de personnages</string>
-    <string name="characters_navigation_label" comment="Bottom navigation label for character customization.">Personnages</string>
+    <string name="characters_navigation_label" comment="Bottom navigation label for character customization.">Profil</string>
     <string name="settings_character_packs_description" comment="Settings description for character packs.">Importez et gérez des illustrations de personnages personnalisées.</string>
     <string name="import_character">Importer un personnage</string>
     <string name="import_character_description">Ajoutez un personnage que quelqu’un a partagé avec vous.</string>
@@ -22,7 +22,7 @@
     <string name="export_character">Exporter le personnage</string>
     <string name="save_to_device">Enregistrer sur l’appareil</string>
     <string name="shared_character_file_name">%1$s.monstercharacter</string>
-    <string name="settings_player_character_title" comment="Settings title for the player's battle character.">Personnage du joueur</string>
+    <string name="settings_player_character_title" comment="Settings title for the player's battle character.">Votre personnage</string>
     <string name="settings_player_character_description" comment="Settings description for the player's battle character.">Choisissez qui vous représente pendant les appels.</string>
     <string name="player_characters_not_set" comment="Settings subtitle when no player character is selected.">Non personnalisé</string>
     <string name="using_characters" comment="Settings subtitle; %1$s is a list of selected character names.">Utilise %1$s</string>
@@ -31,6 +31,7 @@
     <string name="contact_characters_not_set" comment="Settings subtitle when no contacts have a character assignment.">Aucun contact personnalisé</string>
     <plurals name="contact_character_assignment_count" comment="Settings subtitle showing how many contacts have a character assignment."><item quantity="one">%d contact personnalisé</item><item quantity="other">%d contacts personnalisés</item></plurals>
     <string name="choose_contact" comment="Button that opens the contact picker.">Choisir un contact</string>
+    <string name="contact_phone_number_required" comment="Toast shown when the selected contact has no usable phone number.">Ce contact ne peut pas être sélectionné, car il n’a pas de numéro de téléphone.</string>
     <string name="character_type_trainer" comment="Character category for a human battle character.">Dresseur</string>
     <string name="character_type_monster" comment="Character category for a creature battle character.">Monstre</string>
     <string name="character_type_trainers">dresseurs</string>
@@ -41,6 +42,10 @@
     <string name="no_other_character_options" comment="%1$s is a character type, such as Trainer or Monster.">Aucune autre option de %1$s</string>
     <string name="import_and_enable_character_pack" comment="Empty-state message in the character selector.">Ajoutez votre propre personnage ou importez un pack pour en voir plus.</string>
     <string name="radiant" comment="Adjective for a rare, sparkling character variant.">Radieux</string>
+    <string name="filter_all">Tous</string>
+    <string name="filter_regular">Normal</string>
+    <string name="filter_unlocked_radiant">Radieux déverrouillés</string>
+    <string name="filter_locked_radiant">Radieux verrouillés</string>
     <string name="selected" comment="Status label for the currently chosen option.">Sélectionné</string>
     <string name="randomize" comment="Character selection that chooses a different eligible character for every call.">Aléatoire</string>
     <string name="locked">Verrouillé</string>
@@ -177,6 +182,7 @@
     <string name="characters_help_advanced_title">Statistiques avancées</string><string name="characters_help_advanced_message">Pour les monstres, définissez le niveau et les PV max dans « Avancé ». Vous pouvez aussi activer l’état « Radieux ».</string>
     <string name="characters_help_sharing_title">Partager et importer</string><string name="characters_help_sharing_message">MonsterDialer utilise deux types de fichiers :</string><string name="characters_help_sharing_files_character"><b>.monstercharacter :</b> un personnage avec ses statistiques et illustrations.</string><string name="characters_help_sharing_files_pack"><b>.monsterpack :</b> une collection de personnages.</string><string name="characters_help_sharing_how_to">Appuyez longuement sur un personnage personnel pour l’exporter. Pour importer, ouvrez le fichier reçu ou utilisez « Importer un personnage ».</string>
     <string name="characters_help_packs_title">Créer des packs</string><string name="characters_help_packs_message">Dans « Packs de personnages », créez un pack, choisissez les monstres, puis exportez le fichier .monsterpack.</string>
+    <string name="characters_help_packs_import_title">Importer des packs de personnages</string><string name="characters_help_packs_import_message">Appuyez sur « Importer un pack » pour ajouter un fichier .monsterpack que quelqu’un a partagé avec vous. Les personnages importés peuvent être sélectionnés lorsque le pack est activé. Importez uniquement des illustrations et des sons que vous avez créés ou que vous êtes autorisé à utiliser.</string>
     <string name="characters_help_radiants_title">Découverte radieuse</string><string name="characters_help_radiants_message">Les monstres radieux sont rares. Les variantes des packs se débloquent lorsque vous les rencontrez à l’état sauvage pendant un appel.</string>
     <string name="characters_help_management_title">Gérer la collection</string><string name="characters_help_management_message">Appuyez longuement sur un personnage dans « Vos monstres » ou « Vos dresseurs » pour le modifier, partager ou supprimer.</string>
     <string name="characters_help_assignments_title">Personnaliser les appels</string><string name="characters_help_assignments_message">Les personnages s’utilisent de deux façons :</string><string name="characters_help_assignments_player"><b>Personnage du joueur :</b> votre avatar pour chaque appel.</string><string name="characters_help_assignments_contact"><b>Personnages des contacts :</b> attribuez des monstres ou dresseurs à vos contacts ; ils seront vos adversaires lors de leurs appels.</string>
@@ -229,4 +235,91 @@
     <string name="open_character_guide">Ouvrir le guide</string>
     <string name="personalize_contact_character">Personnaliser les personnages de l’appelant</string>
     <string name="reorder_monster">Réorganiser le monstre</string>
+    <string name="no_available_character_options">Aucun %1$s disponible</string>
+    <string name="online_profile_choose_contact_prompt">Choisissez le contact à associer à ce profil en ligne. Cette association reste sur votre appareil.</string>
+    <string name="online_profile_title">Profil en ligne</string>
+    <string name="online_profile_description">Permettez à vos amis de voir le dresseur et le monstre que vous utilisez à chaque appel.</string>
+    <string name="online_profile_privacy_note">Seuls les sprites et métadonnées de vos personnages sont partagés.</string>
+    <string name="online_profile_enable">Activer le profil en ligne</string>
+    <string name="online_profile_enabling">Activation du profil en ligne</string>
+    <string name="online_profile_regenerating">Génération d’un nouveau lien de partage</string>
+    <string name="online_profile_deleting">Suppression du profil en ligne</string>
+    <string name="online_profile_keeping_online">Maintien du profil en ligne</string>
+    <string name="online_profile_enabled">Profil en ligne activé</string>
+    <string name="online_profile_check_in_title">Partagez-vous toujours votre profil ?</string>
+    <string name="online_profile_check_in_description">Votre profil en ligne n’a pas été confirmé depuis près d’un an. Confirmez-le pour continuer à le partager.</string>
+    <string name="online_profile_keep_online">Garder en ligne</string>
+    <string name="online_profile_share">Partager mon profil</string>
+    <string name="online_profile_show_qr_code">Afficher le code QR</string>
+    <string name="online_profile_qr_code_title">Partager avec un code QR</string>
+    <string name="online_profile_qr_code_description">Demandez à un ami de scanner ce code avec son appareil photo pour ouvrir votre profil.</string>
+    <string name="online_profile_qr_code_content_description">Code QR de votre profil en ligne</string>
+    <string name="online_profile_regenerate">Générer un nouveau lien</string>
+    <string name="online_profile_regenerate_message">Cette action crée un nouveau lien de partage et invalide l’actuel. Vos amis auront besoin du nouveau lien pour accéder à votre profil.</string>
+    <string name="online_profile_delete">Supprimer le profil</string>
+    <string name="online_profile_delete_message">Cette action supprime votre profil partagé et invalide son lien. Vos personnages et personnalisations de contacts restent sur cet appareil.</string>
+    <string name="online_profile_error_title">Impossible de mettre à jour le profil en ligne</string>
+    <string name="online_profile_sprite_decode_error">Impossible de décoder le sprite du personnage sélectionné.</string>
+    <string name="online_profile_google_sign_in_required">Connectez-vous avec Google pour gérer un profil en ligne.</string>
+    <string name="online_profile_google_sign_in_error">Impossible de se connecter avec Google.</string>
+    <string name="online_profile_google_sign_in_not_configured">La connexion avec Google n’est pas encore configurée.</string>
+    <string name="online_profile_signing_in">Connexion avec Google</string>
+    <string name="online_profile_sign_out_google">Se déconnecter de Google</string>
+    <string name="online_profile_firebase_not_configured">Firebase n’est pas configuré.</string>
+    <string name="online_profile_share_text">Découvrez mon profil MonsterDialer :\n%1$s</string>
+    <string name="choose_team">Choisir l’équipe</string>
+    <string name="contact_row_actions">Actions du contact</string>
+    <string name="linked_online_profile_title">Profil en ligne associé</string>
+    <string name="linked_online_profile_none">Aucun profil en ligne n’est associé à ce contact.</string>
+    <string name="linked_online_profile_link_hint">Ouvrez un lien de profil MonsterDialer partagé pour l’associer à ce contact.</string>
+    <string name="linked_online_profile_description">Ce contact est associé à ce profil en ligne :</string>
+    <string name="linked_online_profile_active_title">Profil en ligne associé</string>
+    <string name="linked_online_profile_active_message">L’équipe partagée de ce contact peut être utilisée pendant les appels. Supprimez l’association à tout moment pour revenir à l’équipe locale du contact.</string>
+    <string name="linked_online_profile_id_label">ID du profil</string>
+    <string name="unlink_online_profile">Dissocier le profil en ligne</string>
+    <string name="unlink_online_profile_confirmation_title">Supprimer l’association du profil ?</string>
+    <string name="unlink_online_profile_confirmation_message">Cette action supprime sur cet appareil l’association au profil en ligne partagé. Le contact utilisera à nouveau son équipe locale. Le profil partagé et les données de son propriétaire ne seront pas modifiés.</string>
+    <string name="shared_profile_import_title">Profil partagé</string>
+    <string name="shared_profile_import_heading">Un profil MonsterDialer a été partagé avec vous</string>
+    <string name="shared_profile_import_description">Choisissez dans votre liste de contacts celui auquel appartient ce profil. MonsterDialer l’affichera pendant vos appels avec ce contact. Ce lien reste sur votre appareil.</string>
+    <string name="shared_profile_import_choose_contact">Choisir le contact</string>
+    <string name="shared_profile_import_link_failed">Aucun numéro de téléphone valide n’a été trouvé pour le contact sélectionné.</string>
+    <string name="characters_help_team_title">Votre équipe</string>
+    <string name="characters_help_team_message">Votre équipe est composée du dresseur et du monstre actif affichés ici. Ils vous représentent dans chaque combat pendant un appel. Touchez l’un des deux pour choisir un autre personnage.</string>
+    <string name="characters_help_roster_title">Votre sélection de monstres</string>
+    <string name="characters_help_roster_message">Votre sélection comprend jusqu’à six monstres choisis pour votre équipe. Faites glisser vos monstres personnalisés pour les réorganiser. Le premier monstre de la sélection est votre monstre actif pour les combats lors des appels.</string>
+    <string name="online_profile_guide_title">Partager votre profil en ligne</string>
+    <string name="online_profile_guide_message">Les profils en ligne sont entièrement facultatifs et conçus dans le respect de la confidentialité et de la sécurité. Pour en activer un, connectez-vous avec Google. Votre compte Google identifie la personne qui peut gérer le profil ; votre e-mail et les détails de votre compte Google ne sont pas partagés. L’activation d’un profil ou la connexion sur un autre appareil publie le dresseur et le monstre actifs de cet appareil, y compris leurs sprites sélectionnés, via un lien partageable. Les serveurs ne stockent ni votre numéro de téléphone, ni votre liste de contacts, ni votre historique d’appels, ni d’autres données personnelles ou sensibles. Les liens entre les profils MonsterDialer et les contacts restent uniquement sur chaque appareil.</string>
+    <string name="online_profile_public_id_title">Votre identifiant de profil public</string>
+    <string name="online_profile_public_id_message">Toute personne à qui vous envoyez votre lien de partage peut trouver votre profil grâce à son identifiant public généré aléatoirement. Le même compte Google conserve cet identifiant lors d’une connexion sur un autre appareil, afin que les liens existants continuent de fonctionner. Touchez « Générer un nouveau lien » pour invalider l’identifiant public actuel et en créer un nouveau. L’ancien lien ne fonctionnera plus pour les personnes avec qui vous l’avez partagé.</string>
+    <string name="online_profile_delete_guide_title">Supprimer votre profil</string>
+    <string name="online_profile_delete_guide_message">Touchez « Supprimer le profil » pour supprimer définitivement les données publiées de votre profil. Toute personne ayant votre lien de partage ne pourra plus voir votre équipe. Si vous activez à nouveau un profil plus tard, il aura un nouveau lien de partage.</string>
+    <string name="characters_help_character_list_title">Liste des personnages</string>
+    <string name="learn_about_radiants">À propos des radiants</string>
+    <string name="open_radiants_guide">Ouvrir le guide des radiants</string>
+    <string name="radiants_guide_title">Radiants</string>
+    <string name="radiants_guide_message">Les radiants sont de rares apparences alternatives de monstres que vous pouvez découvrir et ajouter à votre sélection.</string>
+    <string name="radiants_guide_availability">• Seuls les monstres ayant une variante radiante peuvent apparaître.</string>
+    <string name="radiants_guide_unlock">• Un radiant peut remplacer un combat éligible. Il se déverrouille dès le début du combat : vous n’avez rien à faire.</string>
+    <string name="radiants_guide_assign">• Après l’avoir découvert, choisissez sa variante radiante dans Votre personnage → Monstres pour l’assigner.</string>
+    <string name="radiants_guide_journal">• Retrouvez et partagez vos découvertes radiantes dans le Journal de combat.</string>
+    <string name="open_shared_online_profile_guide">Ouvrir le guide des profils en ligne partagés</string>
+    <string name="shared_online_profile_guide_title">Utiliser un profil en ligne partagé</string>
+    <string name="shared_online_profile_guide_message">Lorsqu’une personne partage avec vous un lien de profil en ligne, vous pouvez associer son équipe partagée à l’un de vos contacts pour les combats d’appel.</string>
+    <string name="shared_online_profile_choose_contact_guide_title">Choisir le bon contact</string>
+    <string name="shared_online_profile_choose_contact_guide_message">Sélectionnez le contact propriétaire du profil partagé. L’association entre ce contact et le profil est enregistrée uniquement sur votre appareil ; elle ne modifie pas son profil et ne partage pas vos contacts avec lui.</string>
+    <string name="shared_online_profile_loading_guide_title">Chargement pendant un combat</string>
+    <string name="shared_online_profile_loading_guide_message">Au début d’un combat, MonsterDialer tente de charger un profil en ligne associé à ce contact. L’application attend jusqu’à 500 millisecondes. Si le profil ne peut pas être chargé à temps, par exemple en l’absence de connexion ou si elle est lente, le combat commence hors ligne avec les personnages sélectionnés localement.</string>
+    <string name="shared_online_profile_cache_guide_title">Mise en cache et mises à jour</string>
+    <string name="shared_online_profile_cache_guide_message">Un premier appel peut commencer hors ligne pendant que le profil finit de charger, puis l’utiliser lors d’appels ultérieurs. Une fois chargé, le profil est mis en cache pendant une heure et n’est pas récupéré à nouveau avant l’expiration de ce délai. Son propriétaire peut mettre à jour ou supprimer le profil partagé à tout moment.</string>
+    <string name="shared_online_profile_unlink_guide_title">Supprimer un lien à tout moment</string>
+    <string name="shared_online_profile_unlink_guide_message">Ouvrez Profil en ligne associé depuis le menu du contact et touchez « Dissocier le profil en ligne » pour ne plus l’utiliser. Le contact reviendra à son équipe locale et le profil partagé restera inchangé.</string>
+    <string name="characters_help_player_character_list_message">Les personnages sont regroupés par source : les personnages intégrés sont fournis avec l’application ; Vos dresseurs et Vos monstres sont des personnages que vous avez créés dans l’application ; les personnages importés sont organisés par pack de personnages. Maintenez le doigt sur un personnage créé pour le modifier, le partager ou le supprimer.</string>
+    <string name="characters_help_contact_character_list_message">Les personnages sont regroupés par source : Aléatoire est disponible uniquement pour les contacts et choisit automatiquement un personnage éligible à chaque appel ; les personnages intégrés sont fournis avec l’application ; Vos dresseurs et Vos monstres sont des personnages que vous avez créés dans l’application ; les personnages importés sont organisés par pack de personnages. Maintenez le doigt sur un personnage créé pour le modifier, le partager ou le supprimer.</string>
+    <string name="characters_help_creation_title">Créer un personnage</string>
+    <string name="characters_help_creation_message">Donnez un nom à votre personnage et ajoutez son illustration de sprite. Le sprite de face est utilisé lorsque le personnage apparaît comme adversaire, tandis que le sprite de dos représente le personnage dans votre équipe pendant les combats.</string>
+    <string name="characters_help_sprites_title">Fichiers de sprites et conseils d’illustration</string>
+    <string name="characters_help_sprites_message">Choisissez un fichier image accessible via le sélecteur d’images de votre appareil. MonsterDialer n’impose ni résolution fixe ni limite de taille de fichier pour les sprites personnalisés. Pour un résultat plus net, utilisez une illustration PNG avec un arrière-plan transparent, gardez le personnage centré avec peu de marge vide et utilisez une échelle et une pose similaires pour les sprites de face et de dos.</string>
+    <string name="characters_help_radiant_title">Variantes radiantes</string>
+    <string name="characters_help_radiant_message">Pour les monstres uniquement : ouvrez Avancé et activez l’interrupteur Radiante pour ajouter une variante radiante. La sélection de personnages affichera alors les versions normale et radiante du même monstre. La version radiante est initialement verrouillée et doit être trouvée pendant les combats avant de pouvoir être sélectionnée. Un sprite de face est requis, car la fonction Trouver l’utilise pour découvrir et déverrouiller la variante radiante.</string>
 </resources>

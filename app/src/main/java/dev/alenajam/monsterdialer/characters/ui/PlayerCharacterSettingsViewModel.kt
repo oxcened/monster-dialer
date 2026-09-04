@@ -15,11 +15,14 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 import dagger.hilt.android.lifecycle.HiltViewModel
+
+enum class MonsterFilter { All, Regular, RadiantUnlocked, RadiantLocked }
 
 @HiltViewModel
 class PlayerCharacterSettingsViewModel @Inject constructor(
@@ -30,15 +33,37 @@ class PlayerCharacterSettingsViewModel @Inject constructor(
     radiantUnlocks: RadiantVariantUnlockStore,
 ) : ViewModel() {
 
+    private val _filter = MutableStateFlow(MonsterFilter.All)
+    val filter: StateFlow<MonsterFilter> = _filter.asStateFlow()
+
     val unlockedVariants = radiantUnlocks.unlocked
 
     val trainers: StateFlow<List<InstalledPackCharacter>> = charactersRepository.observeCharactersAssignableTo(
         CharacterAssignmentTarget.Player, CharacterType.Trainer
     ).stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), emptyList())
 
-    val monsters: StateFlow<List<InstalledPackCharacter>> = charactersRepository.observeCharactersAssignableTo(
-        CharacterAssignmentTarget.Player, CharacterType.Monster
-    ).stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), emptyList())
+    val monsters: StateFlow<List<InstalledPackCharacter>> = combine(
+        charactersRepository.observeCharactersAssignableTo(CharacterAssignmentTarget.Player, CharacterType.Monster),
+        filter,
+        unlockedVariants
+    ) { monsters, filter, unlocked ->
+        when (filter) {
+            MonsterFilter.All -> monsters
+            MonsterFilter.Regular -> monsters.filter { character ->
+                character.character.visualVariants.any { !it.isRadiant }
+            }
+            MonsterFilter.RadiantUnlocked -> monsters.filter { character ->
+                character.character.visualVariants.any { variant ->
+                    variant.isRadiant && CharacterReference(character.packId, character.character.id, variant.id) in unlocked
+                }
+            }
+            MonsterFilter.RadiantLocked -> monsters.filter { character ->
+                character.character.visualVariants.any { variant ->
+                    variant.isRadiant && CharacterReference(character.packId, character.character.id, variant.id) !in unlocked
+                }
+            }
+        }
+    }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), emptyList())
 
     val isLimitReached: StateFlow<Boolean> = packsRepository.getPacks()
         .map { packs ->
@@ -71,16 +96,16 @@ class PlayerCharacterSettingsViewModel @Inject constructor(
     private val _selectedTab = MutableStateFlow(layoutPreferences.getSelectedTab())
     val selectedTab: StateFlow<Int> = _selectedTab.asStateFlow()
 
-    private val _dataVersion = MutableStateFlow(0)
-    val dataVersion: StateFlow<Int> = _dataVersion.asStateFlow()
-
     init {
         viewModelScope.launch {
             _assignedTrainer.value = assignmentRepository.getPlayerCharacter(CharacterType.Trainer)
             _assignedMonster.value = assignmentRepository.getPlayerCharacter(CharacterType.Monster)
             _monsterRoster.value = assignmentRepository.getPlayerMonsterRoster()
-            _dataVersion.value += 1
         }
+    }
+
+    fun setFilter(filter: MonsterFilter) {
+        _filter.value = filter
     }
 
     fun assignTrainer(reference: CharacterReference?) {
@@ -90,17 +115,13 @@ class PlayerCharacterSettingsViewModel @Inject constructor(
         }
     }
 
-    fun assignMonster(reference: CharacterReference?) {
+    fun assignMonster(reference: CharacterReference) {
         viewModelScope.launch {
-            if (reference == null) {
-                assignmentRepository.setPlayerCharacter(CharacterType.Monster, null)
+            val slotIndex = _targetSlotIndex.value
+            if (slotIndex != null) {
+                assignmentRepository.replacePlayerMonsterInRoster(slotIndex, reference)
             } else {
-                val slotIndex = _targetSlotIndex.value
-                if (slotIndex != null) {
-                    assignmentRepository.replacePlayerMonsterInRoster(slotIndex, reference)
-                } else {
-                    assignmentRepository.addPlayerMonsterToRoster(reference)
-                }
+                assignmentRepository.addPlayerMonsterToRoster(reference)
             }
             _assignedMonster.value = assignmentRepository.getPlayerCharacter(CharacterType.Monster)
             _monsterRoster.value = assignmentRepository.getPlayerMonsterRoster()

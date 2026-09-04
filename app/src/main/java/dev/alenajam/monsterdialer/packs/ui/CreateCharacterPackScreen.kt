@@ -42,6 +42,8 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil.compose.AsyncImage
 import dev.alenajam.monsterdialer.R
+import dev.alenajam.monsterdialer.characters.ui.ContextualGuideButton
+import dev.alenajam.monsterdialer.characters.ui.GuideContent
 import dev.alenajam.monsterdialer.packs.data.CharacterPackArchive
 import dev.alenajam.monsterdialer.packs.data.CharacterPackExportRequest
 import dev.alenajam.opendialer.core.common.ui.AppIcon
@@ -92,7 +94,15 @@ fun CreateCharacterPackScreen(
             modifier = Modifier.fillMaxSize().padding(padding).padding(16.dp),
             verticalArrangement = Arrangement.spacedBy(12.dp),
         ) {
-            item { Text(stringResource(R.string.select_characters_for_pack)) }
+            item {
+                Column {
+                    Text(stringResource(R.string.select_characters_for_pack))
+                    ContextualGuideButton(
+                        contents = listOf(GuideContent(R.string.characters_help_packs_title, R.string.characters_help_packs_message)),
+                        modifier = Modifier.align(Alignment.End),
+                    )
+                }
+            }
             items(viewModel.characters, key = { it.character.id }) { exported ->
                 Card(onClick = { viewModel.toggle(exported.character.id) }, colors = CardDefaults.cardColors()) {
                     Row(Modifier.fillMaxWidth().padding(12.dp), verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(12.dp)) {

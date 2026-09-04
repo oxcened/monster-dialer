@@ -88,7 +88,7 @@ class CharacterAssignmentStore(
                 active == BuiltInCharacters.defaultMonsterReference && benchRoster(document).isEmpty()
             val roster = character?.let { selected ->
                 when {
-                    active == null || selected == active || shouldReplaceInitialDefault -> benchRoster(document)
+                    selected == active || shouldReplaceInitialDefault -> benchRoster(document)
                     else -> benchRoster(document).filterNot { it == selected }.plus(selected).take(MaxPlayerMonsterBenchSize)
                 }
             }.orEmpty()
@@ -159,16 +159,28 @@ class CharacterAssignmentStore(
     fun replacePlayerMonsterInRoster(index: Int, character: CharacterReference) {
         character.validate()
         val roster = playerMonsterRoster().toMutableList()
-        if (index !in roster.indices) return
-        if (roster[index] == character) return
+        val current = roster.getOrNull(index)
+        if (current == null) {
+            if (roster.isEmpty() && index == 0) {
+                setPlayerMonsterRoster(listOf(character))
+            }
+            return
+        }
+        if (current == character) return
 
         // Ensure the character is not already in the roster elsewhere
         val existingIndex = roster.indexOfFirst { it.sameCharacterAs(character) }
-        if (existingIndex != -1) {
+        if (existingIndex == index) {
+            roster[index] = character
+        } else if (existingIndex != -1) {
             roster.removeAt(existingIndex)
             // Adjust index if we removed something before it
             val finalIndex = if (existingIndex < index) index - 1 else index
-            roster[finalIndex] = character
+            if (finalIndex in roster.indices) {
+                roster[finalIndex] = character
+            } else {
+                roster.add(character)
+            }
         } else {
             roster[index] = character
         }
@@ -248,9 +260,9 @@ class CharacterAssignmentStore(
         contactKeys: List<String>,
         contactId: Int? = null,
         photoUri: String? = null
-    ) {
-        val normalizedKeys = contactKeys.map(::normalizeContactKey).distinct()
-        require(normalizedKeys.isNotEmpty()) { "Selected contact must have a phone number" }
+    ): Boolean {
+        val normalizedKeys = contactKeys.mapNotNull(::normalizeContactKeyOrNull).distinct()
+        if (normalizedKeys.isEmpty()) return false
         val selected = StoredSelectedContact(
             label = label.trim().ifBlank { normalizedKeys.first() }.take(MaxContactLabelLength),
             contactKeys = normalizedKeys,
@@ -259,6 +271,7 @@ class CharacterAssignmentStore(
         )
         val document = read()
         write(document.copy(selectedContact = selected))
+        return true
     }
 
     @Synchronized
@@ -424,12 +437,8 @@ class CharacterAssignmentStore(
      * The bundled monster is always the initial active roster member, even before a user saves
      * any character assignment.
      */
-    private fun activeMonster(document: CharacterAssignmentsDocument): CharacterReference? =
-        document.activePlayerMonster
-            ?: document.playerByType[CharacterType.Monster]
-            ?: document.player
-            ?: document.playerMonsterRoster.firstOrNull()
-            ?: BuiltInCharacters.defaultMonsterReference
+    private fun activeMonster(document: CharacterAssignmentsDocument): CharacterReference =
+        document.activePlayerMonster ?: BuiltInCharacters.defaultMonsterReference
 
     /** The roster holds the team members that are not currently active. */
     private fun benchRoster(document: CharacterAssignmentsDocument): List<CharacterReference> =
@@ -465,16 +474,42 @@ class CharacterAssignmentStore(
         } catch (exception: Exception) {
             throw CharacterPackValidationException("Character assignments are unreadable: ${exception.message}")
         }
-        if (
-            document.activePlayerMonster == null &&
-            document.playerByType[CharacterType.Monster] == null &&
-            document.player == null &&
-            document.playerMonsterRoster.isEmpty()
-        ) {
-            return document.copy(activePlayerMonster = BuiltInCharacters.defaultMonsterReference)
-                .also(::write)
+        val referencesNormalized = document.copy(
+            player = document.player?.normalizedBuiltInMonsterRosterReference(),
+            contacts = document.contacts.mapValues { (_, reference) ->
+                reference.normalizedBuiltInMonsterRosterReference()
+            },
+            playerByType = document.playerByType.mapValues { (_, reference) ->
+                reference.normalizedBuiltInMonsterRosterReference()
+            },
+            playerMonsterRoster = document.playerMonsterRoster
+                .map(CharacterReference::normalizedBuiltInMonsterRosterReference)
+                .distinct(),
+            activePlayerMonster = document.activePlayerMonster?.normalizedBuiltInMonsterRosterReference(),
+            contactsByType = document.contactsByType.mapValues { (_, assignments) ->
+                assignments.mapValues { (_, reference) -> reference.normalizedBuiltInMonsterRosterReference() }
+            },
+        )
+        val activeMonster = referencesNormalized.activePlayerMonster
+            ?: referencesNormalized.playerByType[CharacterType.Monster]
+            ?: referencesNormalized.player
+            ?: referencesNormalized.playerMonsterRoster.firstOrNull()
+            ?: BuiltInCharacters.defaultMonsterReference
+        val normalizedDocument = referencesNormalized.copy(
+            // Player monsters used to be represented by null or one of these legacy fields.
+            // Persist a single roster model instead: an explicit active monster plus its bench.
+            player = null,
+            playerByType = referencesNormalized.playerByType - CharacterType.Monster,
+            playerMonsterRoster = referencesNormalized.playerMonsterRoster
+                .filterNot { it == activeMonster }
+                .distinct()
+                .take(MaxPlayerMonsterBenchSize),
+            activePlayerMonster = activeMonster,
+        )
+        if (normalizedDocument != document) {
+            write(normalizedDocument)
         }
-        return document
+        return normalizedDocument
     }
 
     private fun write(document: CharacterAssignmentsDocument) {

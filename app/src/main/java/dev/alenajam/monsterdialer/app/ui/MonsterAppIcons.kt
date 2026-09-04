@@ -31,7 +31,7 @@ val DefaultMonsterAppIcons = MonsterAppIcons(
     addCharacter = IconSource.Vector(Icons.Outlined.AddCircleOutline),
     frontSprite = IconSource.Resource(R.drawable.front_sprite, tintable = false),
     backSprite = IconSource.Resource(R.drawable.back_sprite, tintable = false),
-    personalizeContact = IconSource.Resource(R.drawable.edit, tintable = false),
+    personalizeContact = IconSource.Resource(R.drawable.more, tintable = false),
     radiant = IconSource.Resource(R.drawable.radiant, tintable = false),
     characterPacks = IconSource.Resource(R.drawable.package_icon, tintable = false),
     importCharacter = IconSource.Resource(R.drawable.import_icon, tintable = false),

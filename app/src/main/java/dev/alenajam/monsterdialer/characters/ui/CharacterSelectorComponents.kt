@@ -62,6 +62,7 @@ import dev.alenajam.opendialer.core.common.ui.LocalAppIcons
 import dev.alenajam.monsterdialer.characters.data.BuiltInArtwork
 import dev.alenajam.monsterdialer.characters.data.BuiltInCharacter
 import dev.alenajam.monsterdialer.characters.data.BuiltInCharacters
+import dev.alenajam.monsterdialer.characters.data.isBuiltInMonsterRosterReference
 import dev.alenajam.monsterdialer.packs.data.CharacterReference
 import dev.alenajam.monsterdialer.packs.data.CharacterAssignmentTarget
 import dev.alenajam.monsterdialer.packs.data.CharacterVisualVariant
@@ -110,6 +111,7 @@ internal fun LazyListScope.characterTypeItems(
     defaultArtwork: (BuiltInCharacter) -> BuiltInArtwork,
     artworkTarget: CharacterAssignmentTarget,
     onSelect: (CharacterReference?) -> Unit,
+    defaultReference: CharacterReference? = null,
     onAddCharacter: () -> Unit,
     addLabel: String,
     isAddEnabled: Boolean = true,
@@ -121,14 +123,36 @@ internal fun LazyListScope.characterTypeItems(
     onRandomize: (() -> Unit)? = null,
     selectedReferences: Set<CharacterReference> = emptySet(),
     hideSelected: Boolean = false,
+    filter: MonsterFilter = MonsterFilter.All,
 ) {
     val type = if (defaultCharacter == BuiltInCharacters.trainer) CharacterType.Trainer else CharacterType.Monster
     val availableSelection = selected?.takeIf { reference ->
         characters.any { it.matches(reference) }
     }
-    val isDefaultSelected = selectedReferences.isEmpty() && availableSelection == null && !isRandomSelected
+    val isDefaultSelected = (selected?.isBuiltInMonsterRosterReference() == true
+        || selectedReferences.any(CharacterReference::isBuiltInMonsterRosterReference)
+        || (selectedReferences.isEmpty() && availableSelection == null))
+        && !isRandomSelected
     fun isReferenceSelected(reference: CharacterReference): Boolean =
         if (selectedReferences.isEmpty()) availableSelection == reference else reference in selectedReferences
+
+    fun CharacterSelection.matchesFilter(): Boolean {
+        if (type != CharacterType.Monster) return true
+        val reference = CharacterReference(installed.packId, installed.character.id, variant.id)
+        return when (filter) {
+            MonsterFilter.All -> true
+            MonsterFilter.Regular -> !variant.isRadiant
+            MonsterFilter.RadiantUnlocked -> variant.isRadiant && reference in unlockedVariants
+            MonsterFilter.RadiantLocked -> variant.isRadiant && reference !in unlockedVariants
+        }
+    }
+
+    val hasSelectableCharacter = characters.any { installed ->
+        installed.selectionVariants().any { selection ->
+            selection.matchesFilter() && (!hideSelected || !isReferenceSelected(CharacterReference(selection.installed.packId, selection.installed.character.id, selection.variant.id)))
+        }
+    }
+    val hasNoCharacterOptions = onRandomize == null && hideSelected && isDefaultSelected && !hasSelectableCharacter
     item(key = "add") {
         AddCharacterButton(
             onClick = onAddCharacter,
@@ -146,7 +170,7 @@ internal fun LazyListScope.characterTypeItems(
         }
     }
 
-    if (onRandomize != null && characters.isNotEmpty()) {
+    if (onRandomize != null) {
         item(key = "random") {
             CharacterOptionCard(
                 name = stringResource(R.string.randomize),
@@ -170,7 +194,7 @@ internal fun LazyListScope.characterTypeItems(
     val userCharacters = characters.filter { it.isEditable }
     val otherPacks = characters.filter { !it.isEditable }.groupBy { it.packId }
 
-    if (!hideSelected || !isDefaultSelected) {
+    if (filter.allowsBuiltInMonster && (!hideSelected || !isDefaultSelected)) {
         item { SectionHeader(stringResource(R.string.built_in_characters_section, pluralTitle)) }
         item(key = "default") {
             CharacterOptionCard(
@@ -178,7 +202,7 @@ internal fun LazyListScope.characterTypeItems(
                 type = type,
                 isSelected = isDefaultSelected,
                 roundTop = true,
-                roundBottom = characters.isNotEmpty(),
+                roundBottom = true,
                 artwork = {
                     Image(
                         painter = painterResource(defaultArtwork(defaultCharacter).resource),
@@ -186,7 +210,7 @@ internal fun LazyListScope.characterTypeItems(
                         modifier = Modifier.size(72.dp)
                     )
                 },
-                onSelect = { onSelect(null) }
+                onSelect = { onSelect(defaultReference) }
             )
         }
     }
@@ -195,7 +219,7 @@ internal fun LazyListScope.characterTypeItems(
         val selections = userCharacters.flatMap(InstalledPackCharacter::selectionVariants)
             .filter { selection ->
                 val reference = CharacterReference(selection.installed.packId, selection.installed.character.id, selection.variant.id)
-                !hideSelected || !isReferenceSelected(reference)
+                selection.matchesFilter() && (!hideSelected || !isReferenceSelected(reference))
             }
         if (selections.isNotEmpty()) {
             item { SectionHeader(stringResource(R.string.your_characters, pluralTitle)) }
@@ -206,6 +230,7 @@ internal fun LazyListScope.characterTypeItems(
                 CharacterOptionCard(
                     name = installed.character.name,
                     type = installed.character.type,
+                    level = installed.character.level,
                     isRadiant = selection.variant.isRadiant,
                     isSelected = isReferenceSelected(reference),
                     isUnlocked = isUnlocked,
@@ -231,7 +256,7 @@ internal fun LazyListScope.characterTypeItems(
         val selections = packCharacters.flatMap(InstalledPackCharacter::selectionVariants)
             .filter { selection ->
                 val reference = CharacterReference(selection.installed.packId, selection.installed.character.id, selection.variant.id)
-                !hideSelected || !isReferenceSelected(reference)
+                selection.matchesFilter() && (!hideSelected || !isReferenceSelected(reference))
             }
         if (selections.isNotEmpty()) {
             item { SectionHeader(packCharacters.first().packName) }
@@ -242,6 +267,7 @@ internal fun LazyListScope.characterTypeItems(
                 CharacterOptionCard(
                     name = installed.character.name,
                     type = installed.character.type,
+                    level = installed.character.level,
                     isRadiant = selection.variant.isRadiant,
                     isSelected = isReferenceSelected(reference),
                     isUnlocked = isUnlocked,
@@ -260,7 +286,10 @@ internal fun LazyListScope.characterTypeItems(
         }
     }
 
-    if (characters.isEmpty()) item(key = "empty") { NoAdditionalCharacterOptionsCard(title) }
+    if (hasNoCharacterOptions) {
+        item(key = "no-options") { NoCharacterOptionsPlaceholder(pluralTitle) }
+    }
+
 }
 
 internal fun LazyGridScope.characterTypeGridItems(
@@ -272,6 +301,7 @@ internal fun LazyGridScope.characterTypeGridItems(
     defaultArtwork: (BuiltInCharacter) -> BuiltInArtwork,
     artworkTarget: CharacterAssignmentTarget,
     onSelect: (CharacterReference?) -> Unit,
+    defaultReference: CharacterReference? = null,
     onAddCharacter: () -> Unit,
     addLabel: String,
     isAddEnabled: Boolean = true,
@@ -283,14 +313,36 @@ internal fun LazyGridScope.characterTypeGridItems(
     onRandomize: (() -> Unit)? = null,
     selectedReferences: Set<CharacterReference> = emptySet(),
     hideSelected: Boolean = false,
+    filter: MonsterFilter = MonsterFilter.All,
 ) {
     val type = if (defaultCharacter == BuiltInCharacters.trainer) CharacterType.Trainer else CharacterType.Monster
     val availableSelection = selected?.takeIf { reference ->
         characters.any { it.matches(reference) }
     }
-    val isDefaultSelected = selectedReferences.isEmpty() && availableSelection == null && !isRandomSelected
+    val isDefaultSelected = (selected?.isBuiltInMonsterRosterReference() == true
+        || selectedReferences.any(CharacterReference::isBuiltInMonsterRosterReference)
+        || (selectedReferences.isEmpty() && availableSelection == null))
+        && !isRandomSelected
     fun isReferenceSelected(reference: CharacterReference): Boolean =
         if (selectedReferences.isEmpty()) availableSelection == reference else reference in selectedReferences
+
+    fun CharacterSelection.matchesFilter(): Boolean {
+        if (type != CharacterType.Monster) return true
+        val reference = CharacterReference(installed.packId, installed.character.id, variant.id)
+        return when (filter) {
+            MonsterFilter.All -> true
+            MonsterFilter.Regular -> !variant.isRadiant
+            MonsterFilter.RadiantUnlocked -> variant.isRadiant && reference in unlockedVariants
+            MonsterFilter.RadiantLocked -> variant.isRadiant && reference !in unlockedVariants
+        }
+    }
+
+    val hasSelectableCharacter = characters.any { installed ->
+        installed.selectionVariants().any { selection ->
+            selection.matchesFilter() && (!hideSelected || !isReferenceSelected(CharacterReference(selection.installed.packId, selection.installed.character.id, selection.variant.id)))
+        }
+    }
+    val hasNoCharacterOptions = onRandomize == null && hideSelected && isDefaultSelected && !hasSelectableCharacter
     item(key = "add", span = { GridItemSpan(2) }) {
         Column {
             AddCharacterButton(
@@ -310,7 +362,7 @@ internal fun LazyGridScope.characterTypeGridItems(
         }
     }
 
-    if (onRandomize != null && characters.isNotEmpty()) {
+    if (onRandomize != null) {
         item(key = "random") {
             CharacterGridItem(
                 name = stringResource(R.string.randomize),
@@ -333,7 +385,7 @@ internal fun LazyGridScope.characterTypeGridItems(
     val userCharacters = characters.filter { it.isEditable }
     val otherPacks = characters.filter { !it.isEditable }.groupBy { it.packId }
 
-    if (!hideSelected || !isDefaultSelected) {
+    if (filter.allowsBuiltInMonster && (!hideSelected || !isDefaultSelected)) {
         item(span = { GridItemSpan(2) }) { SectionHeader(stringResource(R.string.built_in_characters_section, pluralTitle)) }
         item(key = "default") {
             CharacterGridItem(
@@ -348,7 +400,7 @@ internal fun LazyGridScope.characterTypeGridItems(
                         modifier = Modifier.size(88.dp)
                     )
                 },
-                onSelect = { onSelect(null) }
+                onSelect = { onSelect(defaultReference) }
             )
         }
     }
@@ -357,7 +409,7 @@ internal fun LazyGridScope.characterTypeGridItems(
         val selections = userCharacters.flatMap(InstalledPackCharacter::selectionVariants)
             .filter { selection ->
                 val reference = CharacterReference(selection.installed.packId, selection.installed.character.id, selection.variant.id)
-                !hideSelected || !isReferenceSelected(reference)
+                selection.matchesFilter() && (!hideSelected || !isReferenceSelected(reference))
             }
         if (selections.isNotEmpty()) {
             item(span = { GridItemSpan(2) }) { SectionHeader(stringResource(R.string.your_characters, pluralTitle)) }
@@ -368,6 +420,7 @@ internal fun LazyGridScope.characterTypeGridItems(
                 CharacterGridItem(
                     name = installed.character.name,
                     type = installed.character.type,
+                    level = installed.character.level,
                     isRadiant = selection.variant.isRadiant,
                     isSelected = isReferenceSelected(reference),
                     isUnlocked = isUnlocked,
@@ -392,7 +445,7 @@ internal fun LazyGridScope.characterTypeGridItems(
         val selections = packCharacters.flatMap(InstalledPackCharacter::selectionVariants)
             .filter { selection ->
                 val reference = CharacterReference(selection.installed.packId, selection.installed.character.id, selection.variant.id)
-                !hideSelected || !isReferenceSelected(reference)
+                selection.matchesFilter() && (!hideSelected || !isReferenceSelected(reference))
             }
         if (selections.isNotEmpty()) {
             item(span = { GridItemSpan(2) }) { SectionHeader(packCharacters.first().packName) }
@@ -403,6 +456,7 @@ internal fun LazyGridScope.characterTypeGridItems(
                 CharacterGridItem(
                     name = installed.character.name,
                     type = installed.character.type,
+                    level = installed.character.level,
                     isRadiant = selection.variant.isRadiant,
                     isSelected = isReferenceSelected(reference),
                     isUnlocked = isUnlocked,
@@ -420,14 +474,10 @@ internal fun LazyGridScope.characterTypeGridItems(
         }
     }
 
-    if (characters.isEmpty()) {
-        item(key = "empty") {
-            NoAdditionalCharacterGridItem(
-                title = title,
-                shape = gridItemShape(index = 1, itemCount = 2)
-            )
-        }
+    if (hasNoCharacterOptions) {
+        item(key = "no-options", span = { GridItemSpan(2) }) { NoCharacterOptionsPlaceholder(pluralTitle) }
     }
+
 }
 
 private data class CharacterSelection(
@@ -437,6 +487,9 @@ private data class CharacterSelection(
 
 private fun InstalledPackCharacter.selectionVariants(): List<CharacterSelection> =
     character.visualVariants.map { CharacterSelection(this, it) }
+
+private val MonsterFilter.allowsBuiltInMonster: Boolean
+    get() = this == MonsterFilter.All || this == MonsterFilter.Regular
 
 private fun InstalledPackCharacter.matches(reference: CharacterReference): Boolean =
     packId == reference.packId &&
@@ -658,31 +711,30 @@ fun CustomCharacterDeletionConfirmationDialog(
 }
 
 @Composable
-private fun NoAdditionalCharacterOptionsCard(title: String) {
-    Card(
-        modifier = Modifier.fillMaxWidth().padding(vertical = 1.dp),
-        shape = RoundedCornerShape(topStart = 2.dp, topEnd = 2.dp, bottomStart = 20.dp, bottomEnd = 20.dp),
-        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainerLow),
-        elevation = CardDefaults.cardElevation(defaultElevation = 0.5.dp)
-    ) {
-        Box(
-            modifier = Modifier.fillMaxWidth().heightIn(min = 104.dp).padding(horizontal = 24.dp),
-            contentAlignment = Alignment.Center
-        ) {
-            Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                Text(stringResource(R.string.no_other_character_options, title.lowercase()), style = MaterialTheme.typography.titleSmall, textAlign = TextAlign.Center)
-                Text(stringResource(R.string.import_and_enable_character_pack), style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant, textAlign = TextAlign.Center)
-            }
-        }
-    }
+private fun NoCharacterOptionsPlaceholder(pluralTitle: String) {
+    Text(
+        text = stringResource(R.string.no_available_character_options, pluralTitle.lowercase()),
+        style = MaterialTheme.typography.titleMedium,
+        color = MaterialTheme.colorScheme.onSurfaceVariant,
+        textAlign = TextAlign.Center,
+        modifier = Modifier.fillMaxWidth().padding(horizontal = 24.dp, vertical = 32.dp),
+    )
 }
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 private fun CharacterOptionCard(
-    name: String, type: CharacterType, isRadiant: Boolean = false, isSelected: Boolean, isUnlocked: Boolean = true,
+    name: String,
+    type: CharacterType,
+    level: Int? = null,
+    isRadiant: Boolean = false,
+    isSelected: Boolean,
+    isUnlocked: Boolean = true,
     showTypeSubtitle: Boolean = true,
-    roundTop: Boolean, roundBottom: Boolean, artwork: @Composable () -> Unit, onSelect: () -> Unit,
+    roundTop: Boolean,
+    roundBottom: Boolean,
+    artwork: @Composable () -> Unit,
+    onSelect: () -> Unit,
     onDelete: (() -> Unit)? = null,
     onEdit: (() -> Unit)? = null,
     onShare: (() -> Unit)? = null
@@ -725,25 +777,28 @@ private fun CharacterOptionCard(
                     Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(6.dp)) {
                         Text(name, style = MaterialTheme.typography.titleMedium)
                     }
-                    if (isRadiant) {
+
+                    if (showTypeSubtitle && type == CharacterType.Monster) {
+                        val variant = stringResource(if (isRadiant) R.string.radiant else R.string.regular)
+                        val levelText = stringResource(R.string.roster_monster_level, level ?: dev.alenajam.monsterdialer.characters.data.DefaultMonsterLevel)
                         Row(
                             verticalAlignment = Alignment.CenterVertically,
                             horizontalArrangement = Arrangement.spacedBy(4.dp)
                         ) {
-                            Text(stringResource(R.string.radiant), style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.primary)
-                            AppIcon(
-                                icon = LocalMonsterAppIcons.current.radiant,
-                                contentDescription = null,
-                                modifier = Modifier.size(14.dp),
-                                tint = MaterialTheme.colorScheme.primary
+                            Text(
+                                text = stringResource(R.string.monster_variant_and_level, variant, levelText),
+                                style = MaterialTheme.typography.bodySmall,
+                                color = if (isRadiant) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurfaceVariant
                             )
+                            if (isRadiant) {
+                                AppIcon(
+                                    icon = LocalMonsterAppIcons.current.radiant,
+                                    contentDescription = null,
+                                    modifier = Modifier.size(14.dp),
+                                    tint = MaterialTheme.colorScheme.primary
+                                )
+                            }
                         }
-                    } else if (showTypeSubtitle && type == CharacterType.Monster) {
-                        Text(
-                            text = stringResource(R.string.regular),
-                            style = MaterialTheme.typography.bodySmall,
-                            color = MaterialTheme.colorScheme.onSurfaceVariant
-                        )
                     }
                 }
                 if (isSelected) {
@@ -819,6 +874,7 @@ private fun CharacterOptionCard(
 private fun CharacterGridItem(
     name: String,
     type: CharacterType,
+    level: Int? = null,
     isRadiant: Boolean = false,
     isSelected: Boolean,
     isUnlocked: Boolean = true,
@@ -874,31 +930,28 @@ private fun CharacterGridItem(
                 )
                 
                 Box(modifier = Modifier.height(20.dp)) {
-                    if (isRadiant) {
+                    if (showTypeSubtitle && type == CharacterType.Monster) {
+                        val variant = stringResource(if (isRadiant) R.string.radiant else R.string.regular)
+                        val levelText = stringResource(R.string.roster_monster_level, level ?: dev.alenajam.monsterdialer.characters.data.DefaultMonsterLevel)
                         Row(
                             verticalAlignment = Alignment.CenterVertically,
                             horizontalArrangement = Arrangement.spacedBy(4.dp)
                         ) {
                             Text(
-                                text = stringResource(R.string.radiant),
+                                text = stringResource(R.string.monster_variant_and_level, variant, levelText),
                                 style = MaterialTheme.typography.bodySmall,
-                                color = MaterialTheme.colorScheme.primary,
+                                color = if (isRadiant) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurfaceVariant,
                                 maxLines = 1
                             )
-                            AppIcon(
-                                icon = LocalMonsterAppIcons.current.radiant,
-                                contentDescription = null,
-                                modifier = Modifier.size(12.dp),
-                                tint = MaterialTheme.colorScheme.primary
-                            )
+                            if (isRadiant) {
+                                AppIcon(
+                                    icon = LocalMonsterAppIcons.current.radiant,
+                                    contentDescription = null,
+                                    modifier = Modifier.size(12.dp),
+                                    tint = MaterialTheme.colorScheme.primary
+                                )
+                            }
                         }
-                    } else if (showTypeSubtitle && type == CharacterType.Monster) {
-                        Text(
-                            text = stringResource(R.string.regular),
-                            style = MaterialTheme.typography.bodySmall,
-                            color = MaterialTheme.colorScheme.onSurfaceVariant,
-                            maxLines = 1
-                        )
                     }
                 }
                 
@@ -977,32 +1030,24 @@ private fun CharacterGridItem(
 
 @Composable
 private fun RadiantVariantUnlockDialog(characterName: String, onDismiss: () -> Unit) {
+    var showGuide by remember { mutableStateOf(false) }
+    if (showGuide) {
+        ContextualGuideDialog(
+            contents = radiantGuideContents(),
+            onDismiss = { showGuide = false },
+        )
+    }
     AlertDialog(
         onDismissRequest = onDismiss,
         title = { Text(stringResource(R.string.radiant_variant_locked_title)) },
         text = { Text(stringResource(R.string.radiant_variant_locked_message, characterName)) },
         confirmButton = {
             TextButton(onClick = onDismiss) { Text(stringResource(R.string.cancel)) }
-        }
+        },
+        dismissButton = {
+            TextButton(onClick = {
+                showGuide = true
+            }) { Text(stringResource(R.string.learn_about_radiants)) }
+        },
     )
-}
-
-@Composable
-private fun NoAdditionalCharacterGridItem(title: String, shape: Shape) {
-    Card(
-        modifier = Modifier.fillMaxWidth().height(200.dp),
-        shape = shape,
-        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainerLow),
-        elevation = CardDefaults.cardElevation(defaultElevation = 0.5.dp)
-    ) {
-        Box(
-            modifier = Modifier.fillMaxSize().padding(16.dp),
-            contentAlignment = Alignment.Center
-        ) {
-            Column(horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.spacedBy(4.dp)) {
-                Text(stringResource(R.string.no_other_character_options, title.lowercase()), style = MaterialTheme.typography.titleSmall, textAlign = TextAlign.Center)
-                Text(stringResource(R.string.import_and_enable_character_pack), style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant, textAlign = TextAlign.Center)
-            }
-        }
-    }
 }

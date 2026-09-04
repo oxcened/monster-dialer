@@ -4,7 +4,7 @@
     <string name="contribute_translations" comment="Title of the OpenDialer translation contribution link on the About screen.">Bidrag til OpenDialer-oversættelser</string>
     <string name="hang_up" comment="Button to end the current phone call.">Læg på</string>
     <string name="settings_character_packs_title" comment="Settings title for managing character packs.">Figurpakker</string>
-    <string name="characters_navigation_label" comment="Bottom navigation label for character customization.">Figurer</string>
+    <string name="characters_navigation_label" comment="Bottom navigation label for character customization.">Profil</string>
     <string name="settings_character_packs_description" comment="Settings description for character packs.">Importér og administrér brugerdefinerede figurillustrationer.</string>
     <string name="import_character">Importér figur</string>
     <string name="import_character_description">Tilføj en figur, som nogen har delt med dig.</string>
@@ -22,7 +22,7 @@
     <string name="export_character">Eksportér figur</string>
     <string name="save_to_device">Gem på enheden</string>
     <string name="shared_character_file_name">%1$s.monstercharacter</string>
-    <string name="settings_player_character_title" comment="Settings title for the player's battle character.">Spillerfigur</string>
+    <string name="settings_player_character_title" comment="Settings title for the player's battle character.">Din figur</string>
     <string name="settings_player_character_description" comment="Settings description for the player's battle character.">Vælg, hvem der repræsenterer dig under opkald.</string>
     <string name="player_characters_not_set" comment="Settings subtitle when no player character is selected.">Ikke tilpasset</string>
     <string name="using_characters" comment="Settings subtitle; %1$s is a list of selected character names.">Bruger %1$s</string>
@@ -31,6 +31,7 @@
     <string name="contact_characters_not_set" comment="Settings subtitle when no contacts have a character assignment.">Ingen kontakter tilpasset</string>
     <plurals name="contact_character_assignment_count" comment="Settings subtitle showing how many contacts have a character assignment."><item quantity="one">%d kontakt tilpasset</item><item quantity="other">%d kontakter tilpasset</item></plurals>
     <string name="choose_contact" comment="Button that opens the contact picker.">Vælg kontakt</string>
+    <string name="contact_phone_number_required" comment="Toast shown when the selected contact has no usable phone number.">Denne kontakt kan ikke vælges, fordi den ikke har et telefonnummer.</string>
     <string name="character_type_trainer" comment="Character category for a human battle character.">Træner</string>
     <string name="character_type_monster" comment="Character category for a creature battle character.">Monster</string>
     <string name="character_type_trainers">trænere</string>
@@ -41,6 +42,10 @@
     <string name="no_other_character_options" comment="%1$s is a character type, such as Trainer or Monster.">Ingen andre %1$s-muligheder</string>
     <string name="import_and_enable_character_pack" comment="Empty-state message in the character selector.">Tilføj din egen figur eller importér en pakke for at se flere.</string>
     <string name="radiant" comment="Adjective for a rare, sparkling character variant.">Strålende</string>
+    <string name="filter_all">Alle</string>
+    <string name="filter_regular">Normal</string>
+    <string name="filter_unlocked_radiant">Ulåst strålende</string>
+    <string name="filter_locked_radiant">Låst strålende</string>
     <string name="selected" comment="Status label for the currently chosen option.">Valgt</string>
     <string name="randomize" comment="Character selection that chooses a different eligible character for every call.">Tilfældig</string>
     <string name="locked">Låst</string>
@@ -174,7 +179,7 @@
     <string name="regular">Normal</string><string name="characters_help_title">Karakterguide</string><string name="characters_help_description">Udforsk MonsterDialers karakterer.</string><string name="characters_help_intro_title">Din samling</string><string name="characters_help_intro_message">Fanen Figurer tilpasser hvert opkald for dig og dine kontakter.</string>
     <string name="characters_help_creating_title">Opret figurer</string><string name="characters_help_creating_message">Tryk på “Tilføj træner” eller “Tilføj monster”, og vælg galleribilleder til:</string><string name="characters_help_creating_sprites_front"><b>Front-sprite:</b> ses ved opkald fra en kontakt.</string><string name="characters_help_creating_sprites_back"><b>Bagside-sprite:</b> din figur i kampe.</string><string name="characters_help_advanced_title">Avancerede statistikker</string><string name="characters_help_advanced_message">For monstre kan du angive niveau og maks. HP under “Avanceret” samt slå “Strålende” til.</string>
     <string name="characters_help_sharing_title">Deling og import</string><string name="characters_help_sharing_message">MonsterDialer bruger to filtyper:</string><string name="characters_help_sharing_files_character"><b>.monstercharacter:</b> en figur med statistik og grafik.</string><string name="characters_help_sharing_files_pack"><b>.monsterpack:</b> en samling af figurer.</string><string name="characters_help_sharing_how_to">Hold en egen figur nede for at eksportere den. Importér ved at åbne en modtaget fil eller bruge “Importér figur”.</string>
-    <string name="characters_help_packs_title">Opret pakker</string><string name="characters_help_packs_message">Opret en pakke under “Figurpakker”, vælg monstre, og eksportér .monsterpack-filen.</string><string name="characters_help_radiants_title">Strålende opdagelse</string><string name="characters_help_radiants_message">Strålende monstre er sjældne. Pakkevarianter låses op, når du møder dem i naturen under et opkald.</string>
+    <string name="characters_help_packs_title">Opret pakker</string><string name="characters_help_packs_message">Opret en pakke under “Figurpakker”, vælg monstre, og eksportér .monsterpack-filen.</string><string name="characters_help_packs_import_title">Importér figurpakker</string><string name="characters_help_packs_import_message">Tryk på “Importér pakke” for at tilføje en .monsterpack-fil, som nogen har delt med dig. Importerede figurer kan vælges, når pakken er aktiveret. Importér kun illustrationer og lyde, som du har skabt eller har licens til at bruge.</string><string name="characters_help_radiants_title">Strålende opdagelse</string><string name="characters_help_radiants_message">Strålende monstre er sjældne. Pakkevarianter låses op, når du møder dem i naturen under et opkald.</string>
     <string name="characters_help_management_title">Administrer samlingen</string><string name="characters_help_management_message">Hold en figur nede under “Dine monstre” eller “Dine trænere” for at redigere, dele eller slette den.</string><string name="characters_help_assignments_title">Tilpas opkald</string><string name="characters_help_assignments_message">Figurer kan bruges på to måder:</string><string name="characters_help_assignments_player"><b>Spillerfigur:</b> din avatar ved hvert opkald.</string><string name="characters_help_assignments_contact"><b>Kontaktfigurer:</b> tildel monstre eller trænere til kontakter; de bliver modstandere, når de ringer.</string>
     <string name="customize_your_calls">Tilpas dine opkald</string>
     <string name="character_collection_title">Din samling</string>
@@ -225,4 +230,91 @@
     <string name="open_character_guide">Åbn guide</string>
     <string name="personalize_contact_character">Tilpas opkalderfigurer</string>
     <string name="reorder_monster">Omarranger monster</string>
+    <string name="no_available_character_options">Ingen %1$s tilgængelige</string>
+    <string name="online_profile_choose_contact_prompt">Vælg en kontakt, der skal knyttes til denne onlineprofil. Tilknytningen bliver på din enhed.</string>
+    <string name="online_profile_title">Onlineprofil</string>
+    <string name="online_profile_description">Lad venner se træneren og monsteret, du tager med i hvert opkald.</string>
+    <string name="online_profile_privacy_note">Kun dine figur-sprites og metadata deles.</string>
+    <string name="online_profile_enable">Aktivér onlineprofil</string>
+    <string name="online_profile_enabling">Aktiverer onlineprofil</string>
+    <string name="online_profile_regenerating">Opretter nyt delingslink</string>
+    <string name="online_profile_deleting">Sletter onlineprofil</string>
+    <string name="online_profile_keeping_online">Holder onlineprofil aktiv</string>
+    <string name="online_profile_enabled">Onlineprofil aktiveret</string>
+    <string name="online_profile_check_in_title">Deler du stadig din profil?</string>
+    <string name="online_profile_check_in_description">Din onlineprofil er ikke blevet bekræftet i næsten et år. Bekræft den for fortsat at dele den.</string>
+    <string name="online_profile_keep_online">Behold aktiv</string>
+    <string name="online_profile_share">Del min profil</string>
+    <string name="online_profile_show_qr_code">Vis QR-kode</string>
+    <string name="online_profile_qr_code_title">Del med QR-kode</string>
+    <string name="online_profile_qr_code_description">Bed en ven om at scanne denne kode med kameraet for at åbne din profil.</string>
+    <string name="online_profile_qr_code_content_description">QR-kode til din onlineprofil</string>
+    <string name="online_profile_regenerate">Opret nyt delingslink</string>
+    <string name="online_profile_regenerate_message">Dette opretter et nyt delingslink og gør det nuværende ugyldigt. Venner skal bruge det nye link for at få adgang til din profil.</string>
+    <string name="online_profile_delete">Slet profil</string>
+    <string name="online_profile_delete_message">Dette sletter din delte profil og gør dens link ugyldigt. Dine figurer og kontakttilpasninger bliver på denne enhed.</string>
+    <string name="online_profile_error_title">Onlineprofilen kunne ikke opdateres</string>
+    <string name="online_profile_sprite_decode_error">Den valgte figurs sprite kan ikke afkodes.</string>
+    <string name="online_profile_google_sign_in_required">Log ind med Google for at administrere en onlineprofil.</string>
+    <string name="online_profile_google_sign_in_error">Kunne ikke logge ind med Google.</string>
+    <string name="online_profile_google_sign_in_not_configured">Google-login er ikke konfigureret endnu.</string>
+    <string name="online_profile_signing_in">Logger ind med Google</string>
+    <string name="online_profile_sign_out_google">Log ud af Google</string>
+    <string name="online_profile_firebase_not_configured">Firebase er ikke konfigureret.</string>
+    <string name="online_profile_share_text">Se min MonsterDialer-profil:\n%1$s</string>
+    <string name="choose_team">Vælg hold</string>
+    <string name="contact_row_actions">Kontakthandlinger</string>
+    <string name="linked_online_profile_title">Tilknyttet onlineprofil</string>
+    <string name="linked_online_profile_none">Ingen onlineprofil er knyttet til denne kontakt.</string>
+    <string name="linked_online_profile_link_hint">Åbn et delt MonsterDialer-profillink for at knytte det til denne kontakt.</string>
+    <string name="linked_online_profile_description">Denne kontakt er knyttet til denne onlineprofil:</string>
+    <string name="linked_online_profile_active_title">Onlineprofil tilknyttet</string>
+    <string name="linked_online_profile_active_message">Kontaktens delte hold kan bruges under opkald. Fjern tilknytningen når som helst for at vende tilbage til kontaktens lokale hold.</string>
+    <string name="linked_online_profile_id_label">Profil-id</string>
+    <string name="unlink_online_profile">Fjern tilknytning til onlineprofil</string>
+    <string name="unlink_online_profile_confirmation_title">Fjern profillink?</string>
+    <string name="unlink_online_profile_confirmation_message">Dette fjerner linket til den delte onlineprofil på denne enhed. Kontakten bruger igen sit lokale hold. Den delte profil og ejerens data ændres ikke.</string>
+    <string name="shared_profile_import_title">Delt profil</string>
+    <string name="shared_profile_import_heading">En MonsterDialer-profil er delt med dig</string>
+    <string name="shared_profile_import_description">Vælg den kontakt i din kontaktliste, som denne profil tilhører. MonsterDialer viser den under opkald med kontakten. Linket bliver på din enhed.</string>
+    <string name="shared_profile_import_choose_contact">Vælg kontakt</string>
+    <string name="shared_profile_import_link_failed">Der blev ikke fundet et gyldigt telefonnummer til den valgte kontakt.</string>
+    <string name="characters_help_team_title">Dit hold</string>
+    <string name="characters_help_team_message">Dit hold er træneren og det aktive monster, der vises her. De repræsenterer dig i hver kamp under et opkald. Tryk på en af dem for at vælge en anden figur.</string>
+    <string name="characters_help_roster_title">Din monsterliste</string>
+    <string name="characters_help_roster_message">Din monsterliste består af op til seks monstre, du vælger til dit hold. Træk og slip tilpassede monstre for at ændre rækkefølgen. Det første monster på listen er dit aktive monster i kampene under opkald.</string>
+    <string name="online_profile_guide_title">Deling af din onlineprofil</string>
+    <string name="online_profile_guide_message">Onlineprofiler er helt frivillige og udformet med fokus på privatliv og sikkerhed. For at aktivere en skal du logge ind med Google. Din Google-konto identificerer, hvem der kan administrere profilen; din e-mail og Google-kontooplysninger deles ikke. Når du aktiverer en profil eller logger ind på en anden enhed, offentliggøres den pågældende enheds nuværende træner og aktive monster, herunder deres valgte sprites, via et delbart link. Servere gemmer ikke dit telefonnummer, din kontaktliste, opkaldshistorik eller andre personlige eller følsomme data. Forbindelser mellem MonsterDialer-profiler og kontakter forbliver kun på hver enhed.</string>
+    <string name="online_profile_public_id_title">Dit offentlige profil-id</string>
+    <string name="online_profile_public_id_message">Alle, du sender dit delingslink til, kan finde din profil via det tilfældigt genererede offentlige id. Den samme Google-konto beholder dette id, når du logger ind på en anden enhed, så eksisterende links fortsat virker. Tryk på “Opret nyt delingslink” for at ugyldiggøre det aktuelle offentlige id og oprette et nyt. Det tidligere link virker ikke længere for nogen, du har delt det med.</string>
+    <string name="online_profile_delete_guide_title">Sletning af din profil</string>
+    <string name="online_profile_delete_guide_message">Tryk på “Slet profil” for at fjerne dine offentliggjorte profildata permanent. Alle med dit delingslink kan ikke længere se dit hold. Hvis du aktiverer en profil igen senere, får den et nyt delingslink.</string>
+    <string name="characters_help_character_list_title">Figurliste</string>
+    <string name="learn_about_radiants">Om strålende</string>
+    <string name="open_radiants_guide">Åbn guiden til strålende</string>
+    <string name="radiants_guide_title">Strålende</string>
+    <string name="radiants_guide_message">Strålende er sjældne alternative udseender for monstre, som du kan opdage og føje til din liste.</string>
+    <string name="radiants_guide_availability">• Kun monstre med en strålende variant kan dukke op.</string>
+    <string name="radiants_guide_unlock">• En strålende kan erstatte en kvalificeret kamp. Den låses op, så snart kampen begynder — du behøver ikke gøre noget.</string>
+    <string name="radiants_guide_assign">• Når du har opdaget den, skal du vælge dens strålende variant under Din figur → Monstre for at tildele den.</string>
+    <string name="radiants_guide_journal">• Find og del dine strålende opdagelser i Kampjournal.</string>
+    <string name="open_shared_online_profile_guide">Åbn guiden til delte onlineprofiler</string>
+    <string name="shared_online_profile_guide_title">Brug af en delt onlineprofil</string>
+    <string name="shared_online_profile_guide_message">Når nogen deler et link til en onlineprofil med dig, kan du knytte deres delte hold til en af dine kontakter til opkaldskampe.</string>
+    <string name="shared_online_profile_choose_contact_guide_title">Vælg den rigtige kontakt</string>
+    <string name="shared_online_profile_choose_contact_guide_message">Vælg den kontakt, der ejer den delte profil. Tilknytningen mellem kontakten og profilen gemmes kun på din enhed; den ændrer ikke deres profil og deler ikke dine kontakter med dem.</string>
+    <string name="shared_online_profile_loading_guide_title">Indlæsning under en kamp</string>
+    <string name="shared_online_profile_loading_guide_message">Når en kamp begynder, prøver MonsterDialer at indlæse en tilknyttet onlineprofil for kontakten. Den venter i op til 500 millisekunder. Hvis profilen ikke kan indlæses i tide — f.eks. fordi der ikke er forbindelse, eller den er langsom — starter kampen offline med de lokalt valgte figurer.</string>
+    <string name="shared_online_profile_cache_guide_title">Cachelagring og opdateringer</string>
+    <string name="shared_online_profile_cache_guide_message">Et første opkald kan starte offline, mens profilen indlæses færdig, og derefter bruge den ved senere opkald. Når den er indlæst, gemmes profilen i cache i en time og hentes ikke igen, før tiden udløber. Ejeren kan når som helst opdatere eller fjerne den delte profil.</string>
+    <string name="shared_online_profile_unlink_guide_title">Fjern en tilknytning når som helst</string>
+    <string name="shared_online_profile_unlink_guide_message">Åbn Tilknyttet onlineprofil fra kontaktens menu, og tryk på “Fjern tilknytning til onlineprofil” for at holde op med at bruge den. Kontakten vender tilbage til sit lokale hold, og den delte profil forbliver uændret.</string>
+    <string name="characters_help_player_character_list_message">Figurer er grupperet efter kilde: Indbyggede figurer følger med appen; Dine trænere og Dine monstre er figurer, du har oprettet i appen; og importerede figurer er organiseret efter deres figurpakke. Tryk længe på en figur, du har oprettet, for at redigere, dele eller slette den.</string>
+    <string name="characters_help_contact_character_list_message">Figurer er grupperet efter kilde: Tilfældig er kun tilgængelig for kontakter og vælger automatisk en kvalificeret figur for hvert opkald; indbyggede figurer følger med appen; Dine trænere og Dine monstre er figurer, du har oprettet i appen; og importerede figurer er organiseret efter deres figurpakke. Tryk længe på en figur, du har oprettet, for at redigere, dele eller slette den.</string>
+    <string name="characters_help_creation_title">Opret en figur</string>
+    <string name="characters_help_creation_message">Giv din figur et navn, og tilføj dens sprite-grafik. Det forreste sprite bruges, når figuren optræder som modstander, mens det bageste sprite repræsenterer figuren på dit hold under kampe.</string>
+    <string name="characters_help_sprites_title">Sprite-filer og råd om grafik</string>
+    <string name="characters_help_sprites_message">Vælg en billedfil, der er tilgængelig via enhedens billedvælger. MonsterDialer pålægger ikke brugerdefinerede sprites en fast opløsning eller filstørrelsesgrænse. Brug PNG-grafik med gennemsigtig baggrund for det tydeligste resultat, hold figuren centreret med lidt tom plads, og brug en lignende størrelse og positur for forreste og bageste sprites.</string>
+    <string name="characters_help_radiant_title">Strålende varianter</string>
+    <string name="characters_help_radiant_message">Kun for monstre: Åbn Avanceret, og slå kontakten Strålende til for at tilføje en strålende variant. Figurvalg viser derefter almindelige og strålende versioner af det samme monster. Den strålende version starter låst og skal findes i kampe, før den kan vælges. Et forreste sprite er påkrævet, fordi funktionen Find bruger det til at opdage og låse den strålende variant op.</string>
 </resources>

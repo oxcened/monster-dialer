@@ -4,7 +4,7 @@
     <string name="contribute_translations" comment="Title of the OpenDialer translation contribution link on the About screen.">Contribuie la traducerile OpenDialer</string>
     <string name="hang_up" comment="Button to end the current phone call.">Închide</string>
     <string name="settings_character_packs_title" comment="Settings title for managing character packs.">Pachete de personaje</string>
-    <string name="characters_navigation_label" comment="Bottom navigation label for character customization.">Personaje</string>
+    <string name="characters_navigation_label" comment="Bottom navigation label for character customization.">Profil</string>
     <string name="settings_character_packs_description" comment="Settings description for character packs.">Importă și gestionează ilustrații personalizate ale personajelor.</string>
     <string name="import_character">Importă personaj</string>
     <string name="import_character_description">Adaugă un personaj pe care cineva l-a distribuit cu tine.</string>
@@ -22,7 +22,7 @@
     <string name="export_character">Exportă personajul</string>
     <string name="save_to_device">Salvează pe dispozitiv</string>
     <string name="shared_character_file_name">%1$s.monstercharacter</string>
-    <string name="settings_player_character_title" comment="Settings title for the player's battle character.">Personajul jucătorului</string>
+    <string name="settings_player_character_title" comment="Settings title for the player's battle character.">Personajul tău</string>
     <string name="settings_player_character_description" comment="Settings description for the player's battle character.">Alege cine te reprezintă în timpul apelurilor.</string>
     <string name="player_characters_not_set" comment="Settings subtitle when no player character is selected.">Nepersonalizat</string>
     <string name="using_characters" comment="Settings subtitle; %1$s is a list of selected character names.">Folosește %1$s</string>
@@ -31,6 +31,7 @@
     <string name="contact_characters_not_set" comment="Settings subtitle when no contacts have a character assignment.">Niciun contact personalizat</string>
     <plurals name="contact_character_assignment_count" comment="Settings subtitle showing how many contacts have a character assignment."><item quantity="one">%d contact personalizat</item><item quantity="few">%d contacte personalizate</item><item quantity="other">%d contacte personalizate</item></plurals>
     <string name="choose_contact" comment="Button that opens the contact picker.">Alege contactul</string>
+    <string name="contact_phone_number_required" comment="Toast shown when the selected contact has no usable phone number.">Acest contact nu poate fi selectat deoarece nu are un număr de telefon.</string>
     <string name="character_type_trainer" comment="Character category for a human battle character.">Antrenor</string>
     <string name="character_type_monster" comment="Character category for a creature battle character.">Monstru</string>
     <string name="character_type_trainers">antrenori</string>
@@ -41,6 +42,10 @@
     <string name="no_other_character_options" comment="%1$s is a character type, such as Trainer or Monster.">Nicio altă opțiune pentru %1$s</string>
     <string name="import_and_enable_character_pack" comment="Empty-state message in the character selector.">Adaugă propriul personaj sau importă un pachet pentru a vedea mai multe.</string>
     <string name="radiant" comment="Adjective for a rare, sparkling character variant.">Radiant</string>
+    <string name="filter_all">Toate</string>
+    <string name="filter_regular">Normal</string>
+    <string name="filter_unlocked_radiant">Radiant deblocat</string>
+    <string name="filter_locked_radiant">Radiant blocat</string>
     <string name="selected" comment="Status label for the currently chosen option.">Selectat</string>
     <string name="randomize" comment="Character selection that chooses a different eligible character for every call.">Aleatoriu</string>
     <string name="locked">Blocat</string>
@@ -179,7 +184,7 @@
     <string name="characters_help_creating_title">Crearea personajelor</string><string name="characters_help_creating_message">Atinge „Adaugă antrenor” sau „Adaugă monstru” și alege imagini din galerie pentru:</string><string name="characters_help_creating_sprites_front"><b>Sprite frontal:</b> vizibil la apelul unui contact.</string><string name="characters_help_creating_sprites_back"><b>Sprite posterior:</b> personajul tău în lupte.</string>
     <string name="characters_help_advanced_title">Statistici avansate</string><string name="characters_help_advanced_message">Pentru monștri, setează nivelul și PS max în „Avansat”. Poți activa și starea „Radiant”.</string>
     <string name="characters_help_sharing_title">Partajare și import</string><string name="characters_help_sharing_message">MonsterDialer folosește două tipuri de fișiere:</string><string name="characters_help_sharing_files_character"><b>.monstercharacter:</b> un personaj cu statistici și ilustrații.</string><string name="characters_help_sharing_files_pack"><b>.monsterpack:</b> o colecție de personaje.</string><string name="characters_help_sharing_how_to">Ține apăsat un personaj propriu pentru a-l exporta. Pentru import, deschide un fișier primit sau folosește „Importă personaj”.</string>
-    <string name="characters_help_packs_title">Crearea pachetelor</string><string name="characters_help_packs_message">În „Pachete de personaje”, creează un pachet, alege monștrii și exportă fișierul .monsterpack.</string>
+    <string name="characters_help_packs_title">Crearea pachetelor</string><string name="characters_help_packs_message">În „Pachete de personaje”, creează un pachet, alege monștrii și exportă fișierul .monsterpack.</string><string name="characters_help_packs_import_title">Importarea pachetelor de personaje</string><string name="characters_help_packs_import_message">Atinge „Importă pachet” pentru a adăuga un fișier .monsterpack pe care cineva l-a partajat cu tine. Personajele importate devin disponibile pentru selectare când pachetul este activat. Importă doar ilustrații și sunete pe care le-ai creat sau pentru care ai licență de utilizare.</string>
     <string name="characters_help_radiants_title">Descoperire radiantă</string><string name="characters_help_radiants_message">Monștrii radianți sunt rari. Variantele din pachete se deblochează când le întâlnești în sălbăticie în timpul unui apel.</string>
     <string name="characters_help_management_title">Gestionarea colecției</string><string name="characters_help_management_message">Ține apăsat un personaj din „Monștrii tăi” sau „Antrenorii tăi” pentru a-l edita, partaja sau șterge.</string>
     <string name="characters_help_assignments_title">Personalizarea apelurilor</string><string name="characters_help_assignments_message">Personajele pot fi folosite în două moduri:</string><string name="characters_help_assignments_player"><b>Personajul jucătorului:</b> avatarul tău la fiecare apel.</string><string name="characters_help_assignments_contact"><b>Personajele contactelor:</b> atribuie monștri sau antrenori contactelor; ei vor fi adversarii când te sună.</string>
@@ -235,4 +240,91 @@
     <string name="open_character_guide">Deschide ghidul</string>
     <string name="personalize_contact_character">Personalizează personajele apelantului</string>
     <string name="reorder_monster">Reordonează monstrul</string>
+    <string name="no_available_character_options">Nu există %1$s disponibili</string>
+    <string name="online_profile_choose_contact_prompt">Alege un contact pe care să-l asociezi acestui profil online. Asocierea rămâne pe dispozitivul tău.</string>
+    <string name="online_profile_title">Profil online</string>
+    <string name="online_profile_description">Permite-le prietenilor să vadă antrenorul și monstrul pe care le aduci în fiecare apel.</string>
+    <string name="online_profile_privacy_note">Sunt partajate doar sprite-urile și metadatele personajelor tale.</string>
+    <string name="online_profile_enable">Activează profilul online</string>
+    <string name="online_profile_enabling">Se activează profilul online</string>
+    <string name="online_profile_regenerating">Se regenerează linkul de partajare</string>
+    <string name="online_profile_deleting">Se șterge profilul online</string>
+    <string name="online_profile_keeping_online">Profilul online rămâne activ</string>
+    <string name="online_profile_enabled">Profil online activat</string>
+    <string name="online_profile_check_in_title">Îți mai partajezi profilul?</string>
+    <string name="online_profile_check_in_description">Profilul tău online nu a fost confirmat de aproape un an. Confirmă-l ca să continui să-l partajezi.</string>
+    <string name="online_profile_keep_online">Păstrează online</string>
+    <string name="online_profile_share">Partajează-mi profilul</string>
+    <string name="online_profile_show_qr_code">Afișează codul QR</string>
+    <string name="online_profile_qr_code_title">Partajează cu cod QR</string>
+    <string name="online_profile_qr_code_description">Roagă un prieten să scaneze acest cod cu camera pentru a-ți deschide profilul.</string>
+    <string name="online_profile_qr_code_content_description">Cod QR pentru profilul tău online</string>
+    <string name="online_profile_regenerate">Regenerează linkul de partajare</string>
+    <string name="online_profile_regenerate_message">Aceasta creează un link de partajare nou și îl invalidează pe cel actual. Prietenii vor avea nevoie de noul link ca să îți acceseze profilul.</string>
+    <string name="online_profile_delete">Șterge profilul</string>
+    <string name="online_profile_delete_message">Aceasta șterge profilul tău partajat și îi invalidează linkul. Personajele și personalizările contactelor rămân pe acest dispozitiv.</string>
+    <string name="online_profile_error_title">Nu s-a putut actualiza profilul online</string>
+    <string name="online_profile_sprite_decode_error">Sprite-ul personajului selectat nu poate fi decodat.</string>
+    <string name="online_profile_google_sign_in_required">Conectează-te cu Google pentru a gestiona un profil online.</string>
+    <string name="online_profile_google_sign_in_error">Nu s-a putut conecta cu Google.</string>
+    <string name="online_profile_google_sign_in_not_configured">Conectarea cu Google nu este configurată încă.</string>
+    <string name="online_profile_signing_in">Se conectează cu Google</string>
+    <string name="online_profile_sign_out_google">Deconectează-te de la Google</string>
+    <string name="online_profile_firebase_not_configured">Firebase nu este configurat.</string>
+    <string name="online_profile_share_text">Vezi profilul meu MonsterDialer:\n%1$s</string>
+    <string name="choose_team">Alege echipa</string>
+    <string name="contact_row_actions">Acțiuni contact</string>
+    <string name="linked_online_profile_title">Profil online asociat</string>
+    <string name="linked_online_profile_none">Niciun profil online nu este asociat acestui contact.</string>
+    <string name="linked_online_profile_link_hint">Deschide un link de profil MonsterDialer partajat pentru a-l asocia acestui contact.</string>
+    <string name="linked_online_profile_description">Acest contact este asociat acestui profil online:</string>
+    <string name="linked_online_profile_active_title">Profil online asociat</string>
+    <string name="linked_online_profile_active_message">Echipa partajată a acestui contact poate fi utilizată în timpul apelurilor. Elimină asocierea oricând pentru a reveni la echipa locală a contactului.</string>
+    <string name="linked_online_profile_id_label">ID profil</string>
+    <string name="unlink_online_profile">Anulează asocierea profilului online</string>
+    <string name="unlink_online_profile_confirmation_title">Elimini asocierea profilului?</string>
+    <string name="unlink_online_profile_confirmation_message">Aceasta elimină de pe acest dispozitiv asocierea cu profilul online partajat. Contactul va folosi din nou echipa locală. Profilul partajat și datele proprietarului nu vor fi modificate.</string>
+    <string name="shared_profile_import_title">Profil partajat</string>
+    <string name="shared_profile_import_heading">Un profil MonsterDialer a fost partajat cu tine</string>
+    <string name="shared_profile_import_description">Alege din lista de contacte persoana căreia îi aparține acest profil. MonsterDialer îl va afișa în timpul apelurilor cu acea persoană. Linkul rămâne pe dispozitivul tău.</string>
+    <string name="shared_profile_import_choose_contact">Alege contactul</string>
+    <string name="shared_profile_import_link_failed">Nu s-a găsit un număr de telefon valid pentru contactul selectat.</string>
+    <string name="characters_help_team_title">Echipa ta</string>
+    <string name="characters_help_team_message">Echipa ta este antrenorul și monstrul activ afișate aici. Te reprezintă în fiecare luptă din timpul unui apel. Atinge oricare dintre ele pentru a alege un alt personaj.</string>
+    <string name="characters_help_roster_title">Lista ta de monștri</string>
+    <string name="characters_help_roster_message">Lista ta conține până la șase monștri pe care îi alegi pentru echipă. Trage și plasează monștrii personalizați pentru a le schimba ordinea. Primul monstru din listă este monstrul tău activ în luptele din apeluri.</string>
+    <string name="online_profile_guide_title">Partajarea profilului tău online</string>
+    <string name="online_profile_guide_message">Profilurile online sunt complet opționale și create cu grijă pentru confidențialitate și securitate. Pentru a activa unul, conectează-te cu Google. Contul tău Google identifică persoana care poate administra profilul; e-mailul și detaliile contului Google nu sunt partajate. Când activezi un profil sau te conectezi pe alt dispozitiv, antrenorul actual și monstrul activ de pe acel dispozitiv, inclusiv sprite-urile alese, sunt publicate printr-un link care poate fi partajat. Serverele nu stochează numărul tău de telefon, lista de contacte, istoricul apelurilor sau alte date personale ori sensibile. Legăturile dintre profilurile MonsterDialer și contacte rămân exclusiv pe fiecare dispozitiv.</string>
+    <string name="online_profile_public_id_title">ID-ul tău de profil public</string>
+    <string name="online_profile_public_id_message">Oricine primește linkul tău de partajare îți poate găsi profilul prin ID-ul public generat aleatoriu. Același cont Google păstrează acest ID când te conectezi pe alt dispozitiv, astfel încât linkurile existente continuă să funcționeze. Atinge „Regenerează linkul de partajare” pentru a invalida ID-ul public curent și a crea unul nou. Linkul anterior nu va mai funcționa pentru nimeni cu care l-ai partajat.</string>
+    <string name="online_profile_delete_guide_title">Ștergerea profilului tău</string>
+    <string name="online_profile_delete_guide_message">Atinge „Șterge profilul” pentru a elimina definitiv datele publicate ale profilului tău. Oricine are linkul tău de partajare nu va mai putea vedea echipa ta. Dacă activezi din nou un profil mai târziu, acesta va avea un link nou.</string>
+    <string name="characters_help_character_list_title">Lista de personaje</string>
+    <string name="learn_about_radiants">Despre radianți</string>
+    <string name="open_radiants_guide">Deschide ghidul radianților</string>
+    <string name="radiants_guide_title">Radianți</string>
+    <string name="radiants_guide_message">Radianții sunt aspecte alternative rare ale monștrilor pe care îi poți descoperi și adăuga în lista ta.</string>
+    <string name="radiants_guide_availability">• Pot apărea numai monștrii cu o variantă radiantă.</string>
+    <string name="radiants_guide_unlock">• Un radiant poate înlocui o luptă eligibilă. Se deblochează imediat ce începe lupta — nu trebuie să faci nimic.</string>
+    <string name="radiants_guide_assign">• După ce îl descoperi, alege varianta sa radiantă din Personajul tău → Monștri pentru a o atribui.</string>
+    <string name="radiants_guide_journal">• Găsește și distribuie descoperirile tale radiante în Jurnalul de lupte.</string>
+    <string name="open_shared_online_profile_guide">Deschide ghidul profilurilor online partajate</string>
+    <string name="shared_online_profile_guide_title">Folosirea unui profil online partajat</string>
+    <string name="shared_online_profile_guide_message">Când cineva îți partajează un link de profil online, poți asocia echipa sa partajată cu unul dintre contactele tale pentru lupte în apeluri.</string>
+    <string name="shared_online_profile_choose_contact_guide_title">Alege contactul potrivit</string>
+    <string name="shared_online_profile_choose_contact_guide_message">Selectează contactul care deține profilul partajat. Asocierea dintre contact și profil este salvată numai pe dispozitivul tău; nu îi modifică profilul și nu îți partajează contactele cu acea persoană.</string>
+    <string name="shared_online_profile_loading_guide_title">Încărcarea în timpul unei lupte</string>
+    <string name="shared_online_profile_loading_guide_message">Când începe o luptă, MonsterDialer încearcă să încarce un profil online asociat pentru acel contact. Așteaptă până la 500 de milisecunde. Dacă profilul nu se poate încărca la timp — de exemplu, deoarece nu există conexiune sau este lentă — lupta începe offline, folosind personajele selectate local.</string>
+    <string name="shared_online_profile_cache_guide_title">Stocare în cache și actualizări</string>
+    <string name="shared_online_profile_cache_guide_message">Un prim apel poate începe offline în timp ce profilul termină de încărcat, apoi îl poate folosi la apelurile ulterioare. După încărcare, profilul este stocat în cache timp de o oră și nu este preluat din nou până la expirarea acestui timp. Proprietarul poate actualiza sau elimina profilul partajat oricând.</string>
+    <string name="shared_online_profile_unlink_guide_title">Elimină o legătură oricând</string>
+    <string name="shared_online_profile_unlink_guide_message">Deschide Profil online asociat din meniul contactului și atinge „Dezasociază profilul online” pentru a nu-l mai folosi. Contactul va reveni la echipa locală, iar profilul partajat va rămâne neschimbat.</string>
+    <string name="characters_help_player_character_list_message">Personajele sunt grupate după sursă: personajele încorporate vin cu aplicația; Antrenorii tăi și Monștrii tăi sunt personaje create de tine în aplicație; iar personajele importate sunt organizate după pachetul lor de personaje. Apasă lung un personaj creat de tine pentru a-l edita, partaja sau șterge.</string>
+    <string name="characters_help_contact_character_list_message">Personajele sunt grupate după sursă: Aleatoriu este disponibil numai pentru contacte și alege automat un personaj eligibil la fiecare apel; personajele încorporate vin cu aplicația; Antrenorii tăi și Monștrii tăi sunt personaje create de tine în aplicație; iar personajele importate sunt organizate după pachetul lor de personaje. Apasă lung un personaj creat de tine pentru a-l edita, partaja sau șterge.</string>
+    <string name="characters_help_creation_title">Crearea unui personaj</string>
+    <string name="characters_help_creation_message">Dă-i personajului tău un nume și adaugă grafica sprite. Sprite-ul frontal este folosit atunci când personajul apare ca adversar, iar sprite-ul din spate reprezintă personajul din echipa ta în timpul luptelor.</string>
+    <string name="characters_help_sprites_title">Fișiere sprite și sfaturi pentru grafică</string>
+    <string name="characters_help_sprites_message">Alege un fișier imagine disponibil prin selectorul de imagini al dispozitivului. MonsterDialer nu impune o rezoluție fixă sau o limită de dimensiune a fișierului pentru sprite-urile personalizate. Pentru cel mai clar rezultat, folosește imagini PNG cu fundal transparent, menține personajul centrat cu cât mai puțin spațiu liber în jur și folosește o scară și o poziție similare pentru sprite-urile frontal și din spate.</string>
+    <string name="characters_help_radiant_title">Variante radiante</string>
+    <string name="characters_help_radiant_message">Doar pentru monștri, deschide secțiunea Avansat și activează opțiunea Radiant pentru a adăuga o variantă radiantă. La selectarea personajului vor fi afișate apoi versiunile normală și radiantă ale aceluiași monstru. Versiunea radiantă este inițial blocată și trebuie găsită în timpul luptelor înainte de a putea fi selectată. Este necesar un sprite frontal, deoarece funcția Găsește îl folosește pentru a descoperi și debloca varianta radiantă.</string>
 </resources>

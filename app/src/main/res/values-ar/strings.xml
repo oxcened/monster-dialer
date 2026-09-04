@@ -4,7 +4,7 @@
     <string name="contribute_translations" comment="Title of the OpenDialer translation contribution link on the About screen.">المساهمة في ترجمة OpenDialer</string>
     <string name="hang_up" comment="Button to end the current phone call.">إنهاء</string>
     <string name="settings_character_packs_title" comment="Settings title for managing character packs.">حزم الشخصيات</string>
-    <string name="characters_navigation_label" comment="Bottom navigation label for character customization.">الشخصيات</string>
+    <string name="characters_navigation_label" comment="Bottom navigation label for character customization.">الملف الشخصي</string>
     <string name="settings_character_packs_description" comment="Settings description for character packs.">استورد وأدر رسومات الشخصيات المخصصة.</string>
     <string name="import_character">استيراد شخصية</string>
     <string name="import_character_description">أضف شخصية شاركها معك شخص آخر.</string>
@@ -22,7 +22,7 @@
     <string name="export_character">تصدير الشخصية</string>
     <string name="save_to_device">حفظ على الجهاز</string>
     <string name="shared_character_file_name">%1$s.monstercharacter</string>
-    <string name="settings_player_character_title" comment="Settings title for the player's battle character.">شخصية اللاعب</string>
+    <string name="settings_player_character_title" comment="Settings title for the player's battle character.">شخصيتك</string>
     <string name="settings_player_character_description" comment="Settings description for the player's battle character.">اختر من يمثلك أثناء المكالمات.</string>
     <string name="player_characters_not_set" comment="Settings subtitle when no player character is selected.">غير مخصص</string>
     <string name="using_characters" comment="Settings subtitle; %1$s is a list of selected character names.">يستخدم %1$s</string>
@@ -31,6 +31,7 @@
     <string name="contact_characters_not_set" comment="Settings subtitle when no contacts have a character assignment.">لا توجد جهات اتصال مخصصة</string>
     <plurals name="contact_character_assignment_count" comment="Settings subtitle showing how many contacts have a character assignment."><item quantity="zero">لم يتم تخصيص أي جهات اتصال</item><item quantity="one">تم تخصيص جهة اتصال واحدة</item><item quantity="two">تم تخصيص جهتي اتصال</item><item quantity="few">تم تخصيص %d جهات اتصال</item><item quantity="many">تم تخصيص %d جهة اتصال</item><item quantity="other">تم تخصيص %d جهة اتصال</item></plurals>
     <string name="choose_contact" comment="Button that opens the contact picker.">اختر جهة اتصال</string>
+    <string name="contact_phone_number_required" comment="Toast shown when the selected contact has no usable phone number.">لا يمكن اختيار جهة الاتصال هذه لأنها لا تحتوي على رقم هاتف.</string>
     <string name="character_type_trainer" comment="Character category for a human battle character.">مدرب</string>
     <string name="character_type_monster" comment="Character category for a creature battle character.">وحش</string>
     <string name="character_type_trainers">مدربون</string>
@@ -41,6 +42,10 @@
     <string name="no_other_character_options" comment="%1$s is a character type, such as Trainer or Monster.">لا توجد خيارات أخرى لـ %1$s</string>
     <string name="import_and_enable_character_pack" comment="Empty-state message in the character selector.">أضف شخصيتك الخاصة أو استورد حزمة لرؤية المزيد.</string>
     <string name="radiant" comment="Adjective for a rare, sparkling character variant.">متألق</string>
+    <string name="filter_all">الكل</string>
+    <string name="filter_regular">عادي</string>
+    <string name="filter_unlocked_radiant">متألق مفتوح</string>
+    <string name="filter_locked_radiant">متألق مقفل</string>
     <string name="selected" comment="Status label for the currently chosen option.">محدد</string>
     <string name="randomize" comment="Character selection that chooses a different eligible character for every call.">اختيار عشوائي</string>
     <string name="locked">مقفل</string>
@@ -186,7 +191,7 @@
     <string name="regular">عادي</string><string name="characters_help_title">دليل الشخصيات</string><string name="characters_help_description">تعرّف على شخصيات MonsterDialer.</string><string name="characters_help_intro_title">مجموعتك</string><string name="characters_help_intro_message">تتيح لك علامة الشخصيات تخصيص كل مكالمة لك ولجهات اتصالك.</string>
     <string name="characters_help_creating_title">إنشاء شخصيات</string><string name="characters_help_creating_message">اضغط «إضافة مدرب» أو «إضافة وحش» واختر صوراً من المعرض لـ:</string><string name="characters_help_creating_sprites_front"><b>الرسم الأمامي:</b> يظهر عند اتصال جهة اتصال.</string><string name="characters_help_creating_sprites_back"><b>الرسم الخلفي:</b> شخصيتك في المعارك.</string><string name="characters_help_advanced_title">إحصاءات متقدمة</string><string name="characters_help_advanced_message">لل وحوش، اضبط المستوى وأقصى نقاط الصحة من «متقدم»، ويمكنك تفعيل حالة «متألق».</string>
     <string name="characters_help_sharing_title">المشاركة والاستيراد</string><string name="characters_help_sharing_message">يستخدم MonsterDialer نوعين من الملفات:</string><string name="characters_help_sharing_files_character"><b>.monstercharacter:</b> شخصية بإحصاءات ورسومات.</string><string name="characters_help_sharing_files_pack"><b>.monsterpack:</b> مجموعة شخصيات.</string><string name="characters_help_sharing_how_to">اضغط مطولاً على شخصية لتصديرها. للاستيراد، افتح ملفاً مستلماً أو استخدم «استيراد شخصية».</string>
-    <string name="characters_help_packs_title">إنشاء حزم</string><string name="characters_help_packs_message">أنشئ حزمة من «حزم الشخصيات»، واختر الوحوش ثم صدّر ملف .monsterpack.</string><string name="characters_help_radiants_title">اكتشاف متألق</string><string name="characters_help_radiants_message">الوحوش المتألقة نادرة. تُفتح متغيرات الحزم عند مواجهتها في البرية أثناء مكالمة.</string>
+    <string name="characters_help_packs_title">إنشاء حزم</string><string name="characters_help_packs_message">أنشئ حزمة من «حزم الشخصيات»، واختر الوحوش ثم صدّر ملف .monsterpack.</string><string name="characters_help_packs_import_title">استيراد حزم الشخصيات</string><string name="characters_help_packs_import_message">اضغط «استيراد حزمة» لإضافة ملف .monsterpack شاركه معك شخص ما. تصبح الشخصيات المستوردة متاحة للاختيار عند تفعيل الحزمة. لا تستورد إلا الرسومات والأصوات التي أنشأتها أو تملك ترخيصًا لاستخدامها.</string><string name="characters_help_radiants_title">اكتشاف متألق</string><string name="characters_help_radiants_message">الوحوش المتألقة نادرة. تُفتح متغيرات الحزم عند مواجهتها في البرية أثناء مكالمة.</string>
     <string name="characters_help_management_title">إدارة المجموعة</string><string name="characters_help_management_message">اضغط مطولاً على شخصية في «وحوشك» أو «مدربوك» لتعديلها أو مشاركتها أو حذفها.</string><string name="characters_help_assignments_title">تخصيص المكالمات</string><string name="characters_help_assignments_message">يمكن استخدام الشخصيات بطريقتين:</string><string name="characters_help_assignments_player"><b>شخصية اللاعب:</b> صورتك الرمزية في كل مكالمة.</string><string name="characters_help_assignments_contact"><b>شخصيات جهات الاتصال:</b> عيّن وحوشاً أو مدربين لجهات الاتصال؛ سيظهرون كخصوم عند اتصالهم.</string>
     <string name="customize_your_calls">تخصيص مكالماتك</string>
     <string name="character_collection_title">مجموعة شخصياتك</string>
@@ -249,4 +254,91 @@
     <string name="open_character_guide">فتح الدليل</string>
     <string name="personalize_contact_character">تخصيص شخصيات المتصل</string>
     <string name="reorder_monster">إعادة ترتيب الوحش</string>
+    <string name="no_available_character_options">لا تتوفر %1$s</string>
+    <string name="online_profile_choose_contact_prompt">اختر جهة اتصال لربطها بهذا الملف الشخصي على الإنترنت. يبقى هذا الربط على جهازك.</string>
+    <string name="online_profile_title">الملف الشخصي على الإنترنت</string>
+    <string name="online_profile_description">اسمح لأصدقائك برؤية المدرّب والوحش اللذين تصطحبهما في كل مكالمة.</string>
+    <string name="online_profile_privacy_note">تتم مشاركة رسوم شخصياتك وبياناتها الوصفية فقط.</string>
+    <string name="online_profile_enable">تفعيل الملف الشخصي على الإنترنت</string>
+    <string name="online_profile_enabling">جارٍ تفعيل الملف الشخصي على الإنترنت</string>
+    <string name="online_profile_regenerating">جارٍ إنشاء رابط مشاركة جديد</string>
+    <string name="online_profile_deleting">جارٍ حذف الملف الشخصي على الإنترنت</string>
+    <string name="online_profile_keeping_online">جارٍ إبقاء الملف الشخصي على الإنترنت</string>
+    <string name="online_profile_enabled">تم تفعيل الملف الشخصي على الإنترنت</string>
+    <string name="online_profile_check_in_title">هل ما زلت تشارك ملفك الشخصي؟</string>
+    <string name="online_profile_check_in_description">لم يتم تأكيد ملفك الشخصي على الإنترنت منذ قرابة عام. أكّده لمواصلة مشاركته.</string>
+    <string name="online_profile_keep_online">إبقاء متصلاً</string>
+    <string name="online_profile_share">مشاركة ملفي الشخصي</string>
+    <string name="online_profile_show_qr_code">عرض رمز QR</string>
+    <string name="online_profile_qr_code_title">المشاركة عبر رمز QR</string>
+    <string name="online_profile_qr_code_description">اطلب من صديق مسح هذا الرمز بالكاميرا لفتح ملفك الشخصي.</string>
+    <string name="online_profile_qr_code_content_description">رمز QR لملفك الشخصي على الإنترنت</string>
+    <string name="online_profile_regenerate">إنشاء رابط مشاركة جديد</string>
+    <string name="online_profile_regenerate_message">سيؤدي هذا إلى إنشاء رابط مشاركة جديد وإبطال الرابط الحالي. سيحتاج أصدقاؤك إلى الرابط الجديد للوصول إلى ملفك الشخصي.</string>
+    <string name="online_profile_delete">حذف الملف الشخصي</string>
+    <string name="online_profile_delete_message">سيؤدي هذا إلى حذف ملفك الشخصي المشترك وإبطال رابطه. تبقى شخصياتك وتخصيصات جهات الاتصال على هذا الجهاز.</string>
+    <string name="online_profile_error_title">تعذر تحديث الملف الشخصي على الإنترنت</string>
+    <string name="online_profile_sprite_decode_error">تعذر فك ترميز رسم الشخصية المحددة.</string>
+    <string name="online_profile_google_sign_in_required">سجّل الدخول باستخدام Google لإدارة ملف شخصي على الإنترنت.</string>
+    <string name="online_profile_google_sign_in_error">تعذر تسجيل الدخول باستخدام Google.</string>
+    <string name="online_profile_google_sign_in_not_configured">لم يتم إعداد تسجيل الدخول باستخدام Google بعد.</string>
+    <string name="online_profile_signing_in">جارٍ تسجيل الدخول باستخدام Google</string>
+    <string name="online_profile_sign_out_google">تسجيل الخروج من Google</string>
+    <string name="online_profile_firebase_not_configured">لم يتم إعداد Firebase.</string>
+    <string name="online_profile_share_text">اطّلع على ملفي الشخصي في MonsterDialer:\n%1$s</string>
+    <string name="choose_team">اختيار الفريق</string>
+    <string name="contact_row_actions">إجراءات جهة الاتصال</string>
+    <string name="linked_online_profile_title">ملف شخصي مرتبط على الإنترنت</string>
+    <string name="linked_online_profile_none">لا يوجد ملف شخصي على الإنترنت مرتبط بجهة الاتصال هذه.</string>
+    <string name="linked_online_profile_link_hint">افتح رابط ملف شخصي مشترك في MonsterDialer لربطه بجهة الاتصال هذه.</string>
+    <string name="linked_online_profile_description">جهة الاتصال هذه مرتبطة بهذا الملف الشخصي على الإنترنت:</string>
+    <string name="linked_online_profile_active_title">تم ربط الملف الشخصي على الإنترنت</string>
+    <string name="linked_online_profile_active_message">يمكن استخدام فريق جهة الاتصال المشترك أثناء المكالمات. أزل الرابط في أي وقت للعودة إلى فريق جهة الاتصال المحلي.</string>
+    <string name="linked_online_profile_id_label">معرّف الملف الشخصي</string>
+    <string name="unlink_online_profile">إلغاء ربط الملف الشخصي على الإنترنت</string>
+    <string name="unlink_online_profile_confirmation_title">إزالة رابط الملف الشخصي؟</string>
+    <string name="unlink_online_profile_confirmation_message">سيؤدي هذا إلى إزالة رابط الملف الشخصي المشترك على هذا الجهاز. ستستخدم جهة الاتصال فريقها المحلي مجددًا. لن يتغير الملف الشخصي المشترك أو بيانات مالكه.</string>
+    <string name="shared_profile_import_title">ملف شخصي مشترك</string>
+    <string name="shared_profile_import_heading">تمت مشاركة ملف شخصي من MonsterDialer معك</string>
+    <string name="shared_profile_import_description">اختر من قائمة جهات اتصالك جهة الاتصال التي ينتمي إليها هذا الملف الشخصي. سيعرضه MonsterDialer أثناء المكالمات معها. يبقى هذا الرابط على جهازك.</string>
+    <string name="shared_profile_import_choose_contact">اختيار جهة اتصال</string>
+    <string name="shared_profile_import_link_failed">تعذر العثور على رقم هاتف صالح لجهة الاتصال المحددة.</string>
+    <string name="characters_help_team_title">فريقك</string>
+    <string name="characters_help_team_message">يتكوّن فريقك من المدرّب والوحش النشط المعروضين هنا. وهما يمثلانك في كل معركة أثناء المكالمة. اضغط على أي منهما لاختيار شخصية مختلفة.</string>
+    <string name="characters_help_roster_title">قائمة وحوشك</string>
+    <string name="characters_help_roster_message">تتضمن قائمة وحوشك ما يصل إلى ستة وحوش تختارها لفريقك. اسحب الوحوش المخصصة وأفلتها لإعادة ترتيبها. الوحش الأول في القائمة هو وحشك النشط في معارك المكالمات.</string>
+    <string name="online_profile_guide_title">مشاركة ملفك الشخصي على الإنترنت</string>
+    <string name="online_profile_guide_message">الملفات الشخصية على الإنترنت اختيارية تمامًا ومصممة مع مراعاة الخصوصية والأمان. لتفعيل أحدها، سجّل الدخول باستخدام Google. يحدد حساب Google الخاص بك من يمكنه إدارة الملف الشخصي؛ ولا تتم مشاركة بريدك الإلكتروني أو تفاصيل حساب Google. عند تفعيل ملف شخصي أو تسجيل الدخول على جهاز آخر، يُنشر المدرّب الحالي والوحش النشط على ذلك الجهاز، بما في ذلك الرسومات المختارة، عبر رابط قابل للمشاركة. لا تخزن الخوادم رقم هاتفك أو قائمة جهات اتصالك أو سجل المكالمات أو أي بيانات شخصية أو حساسة أخرى. تظل الروابط بين ملفات MonsterDialer وجهات الاتصال على كل جهاز فقط.</string>
+    <string name="online_profile_public_id_title">معرّف ملفك الشخصي العام</string>
+    <string name="online_profile_public_id_message">يمكن لأي شخص ترسل إليه رابط المشاركة العثور على ملفك الشخصي عبر معرّفه العام المُنشأ عشوائيًا. يحتفظ حساب Google نفسه بهذا المعرّف عند تسجيل الدخول على جهاز آخر، لذلك تظل الروابط الحالية فعالة. اضغط على «إنشاء رابط مشاركة جديد» لإبطال المعرّف العام الحالي وإنشاء آخر جديد. لن يعمل الرابط السابق بعد ذلك مع أي شخص شاركته معه.</string>
+    <string name="online_profile_delete_guide_title">حذف ملفك الشخصي</string>
+    <string name="online_profile_delete_guide_message">اضغط على «حذف الملف الشخصي» لإزالة بيانات ملفك الشخصي المنشورة نهائيًا. لن يتمكن أي شخص لديه رابط المشاركة من رؤية فريقك بعد الآن. إذا فعّلت ملفًا شخصيًا مرة أخرى لاحقًا، فسيكون له رابط مشاركة جديد.</string>
+    <string name="characters_help_character_list_title">قائمة الشخصيات</string>
+    <string name="learn_about_radiants">حول المتوهجات</string>
+    <string name="open_radiants_guide">فتح دليل المتوهجات</string>
+    <string name="radiants_guide_title">المتوهجات</string>
+    <string name="radiants_guide_message">المتوهجات هي مظاهر بديلة نادرة للوحوش يمكنك اكتشافها وإضافتها إلى قائمتك.</string>
+    <string name="radiants_guide_availability">• لا يمكن أن تظهر إلا الوحوش ذات النسخة المتوهجة.</string>
+    <string name="radiants_guide_unlock">• يمكن لمتوهج أن يحل محل معركة مؤهلة. يُفتح فور بدء المعركة، ولا تحتاج إلى فعل أي شيء.</string>
+    <string name="radiants_guide_assign">• بعد اكتشافه، اختر نسخته المتوهجة من شخصيتك ← الوحوش لتعيينها.</string>
+    <string name="radiants_guide_journal">• اعثر على اكتشافاتك المتوهجة وشاركها في سجل المعارك.</string>
+    <string name="open_shared_online_profile_guide">فتح دليل الملفات الشخصية المتصلة المشتركة</string>
+    <string name="shared_online_profile_guide_title">استخدام ملف شخصي متصل مشترك</string>
+    <string name="shared_online_profile_guide_message">عندما يشارك شخص ما رابط ملف شخصي متصل معك، يمكنك ربط فريقه المشترك بإحدى جهات اتصالك لمعارك المكالمات.</string>
+    <string name="shared_online_profile_choose_contact_guide_title">اختر جهة الاتصال المناسبة</string>
+    <string name="shared_online_profile_choose_contact_guide_message">حدد جهة الاتصال التي تملك الملف الشخصي المشترك. يُحفظ الارتباط بين جهة الاتصال والملف الشخصي على جهازك فقط؛ ولا يغير ملفه الشخصي أو يشارك جهات اتصالك معه.</string>
+    <string name="shared_online_profile_loading_guide_title">التحميل أثناء المعركة</string>
+    <string name="shared_online_profile_loading_guide_message">عند بدء المعركة، يحاول MonsterDialer تحميل ملف شخصي متصل مرتبط لجهة الاتصال تلك. ينتظر لمدة تصل إلى 500 مللي ثانية. إذا تعذر تحميل الملف الشخصي في الوقت المناسب، مثل عدم وجود اتصال أو بطئه، تبدأ المعركة دون اتصال باستخدام الشخصيات المحددة محليًا.</string>
+    <string name="shared_online_profile_cache_guide_title">التخزين المؤقت والتحديثات</string>
+    <string name="shared_online_profile_cache_guide_message">قد تبدأ المكالمة الأولى دون اتصال أثناء اكتمال تحميل الملف الشخصي، ثم تستخدمه المكالمات اللاحقة. بعد تحميله، يُخزن الملف الشخصي مؤقتًا لمدة ساعة ولا يُجلب مجددًا حتى تنتهي تلك المدة. يمكن لمالكه تحديث الملف الشخصي المشترك أو إزالته في أي وقت.</string>
+    <string name="shared_online_profile_unlink_guide_title">إزالة ارتباط في أي وقت</string>
+    <string name="shared_online_profile_unlink_guide_message">افتح الملف الشخصي المتصل المرتبط من قائمة جهة الاتصال، ثم اضغط على «إلغاء ربط الملف الشخصي المتصل» للتوقف عن استخدامه. ستعود جهة الاتصال إلى فريقها المحلي، وسيبقى الملف الشخصي المشترك دون تغيير.</string>
+    <string name="characters_help_player_character_list_message">تُجمع الشخصيات حسب المصدر: الشخصيات المدمجة تأتي مع التطبيق؛ مدربوك ووحوشك هي شخصيات أنشأتها في التطبيق؛ وتُنظم الشخصيات المستوردة حسب حزمة الشخصيات الخاصة بها. اضغط مطولًا على شخصية أنشأتها لتعديلها أو مشاركتها أو حذفها.</string>
+    <string name="characters_help_contact_character_list_message">تُجمع الشخصيات حسب المصدر: التوزيع العشوائي متاح لجهات الاتصال فقط ويختار تلقائيًا شخصية مؤهلة لكل مكالمة؛ الشخصيات المدمجة تأتي مع التطبيق؛ مدربوك ووحوشك هي شخصيات أنشأتها في التطبيق؛ وتُنظم الشخصيات المستوردة حسب حزمة الشخصيات الخاصة بها. اضغط مطولًا على شخصية أنشأتها لتعديلها أو مشاركتها أو حذفها.</string>
+    <string name="characters_help_creation_title">إنشاء شخصية</string>
+    <string name="characters_help_creation_message">امنح شخصيتك اسمًا وأضف رسومات السبرايت الخاصة بها. يُستخدم السبرايت الأمامي عندما تظهر الشخصية كخصم، بينما يمثّل السبرايت الخلفي الشخصية في فريقك أثناء المعارك.</string>
+    <string name="characters_help_sprites_title">ملفات السبرايت ونصائح الرسومات</string>
+    <string name="characters_help_sprites_message">اختر ملف صورة متاحًا من خلال منتقي الصور على جهازك. لا يفرض MonsterDialer دقة ثابتة أو حدًا لحجم الملف للسبرايتات المخصصة. للحصول على أوضح نتيجة، استخدم رسومات PNG بخلفية شفافة، واجعل الشخصية في المنتصف مع أقل قدر ممكن من المساحات الفارغة حولها، واستخدم مقياسًا ووضعية متشابهين للسبرايتين الأمامي والخلفي.</string>
+    <string name="characters_help_radiant_title">النسخ المتألقة</string>
+    <string name="characters_help_radiant_message">بالنسبة للوحوش فقط، افتح الإعدادات المتقدمة وفعّل مفتاح «متألق» لإضافة نسخة متألقة. سيعرض اختيار الشخصية بعد ذلك النسختين العادية والمتألقة من الوحش نفسه. تبدأ النسخة المتألقة مقفلة، ويجب العثور عليها أثناء المعارك قبل أن يصبح من الممكن اختيارها. يلزم وجود سبرايت أمامي لأن ميزة «العثور» تستخدمه لاكتشاف النسخة المتألقة وفتحها.</string>
 </resources>

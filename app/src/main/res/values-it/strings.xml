@@ -4,7 +4,7 @@
     <string name="contribute_translations" comment="Title of the OpenDialer translation contribution link on the About screen.">Contribuisci alle traduzioni di OpenDialer</string>
     <string name="hang_up" comment="Button to end the current phone call.">Riaggancia</string>
     <string name="settings_character_packs_title" comment="Settings title for managing character packs.">Pacchetti di personaggi</string>
-    <string name="characters_navigation_label" comment="Bottom navigation label for character customization.">Personaggi</string>
+    <string name="characters_navigation_label" comment="Bottom navigation label for character customization.">Profilo</string>
     <string name="settings_character_packs_description" comment="Settings description for character packs.">Importa e gestisci illustrazioni personalizzate dei personaggi.</string>
     <string name="import_character">Importa personaggio</string>
     <string name="import_character_description">Aggiungi un personaggio che qualcuno ha condiviso con te.</string>
@@ -22,7 +22,7 @@
     <string name="export_character">Esporta personaggio</string>
     <string name="save_to_device">Salva sul dispositivo</string>
     <string name="shared_character_file_name">%1$s.monstercharacter</string>
-    <string name="settings_player_character_title" comment="Settings title for the player's battle character.">Personaggio del giocatore</string>
+    <string name="settings_player_character_title" comment="Settings title for the player's battle character.">Il tuo personaggio</string>
     <string name="settings_player_character_description" comment="Settings description for the player's battle character.">Scegli chi ti rappresenta durante le chiamate.</string>
     <string name="player_characters_not_set" comment="Settings subtitle when no player character is selected.">Non personalizzato</string>
     <string name="using_characters" comment="Settings subtitle; %1$s is a list of selected character names.">Usa %1$s</string>
@@ -31,6 +31,7 @@
     <string name="contact_characters_not_set" comment="Settings subtitle when no contacts have a character assignment.">Nessun contatto personalizzato</string>
     <plurals name="contact_character_assignment_count" comment="Settings subtitle showing how many contacts have a character assignment."><item quantity="one">%d contatto personalizzato</item><item quantity="other">%d contatti personalizzati</item></plurals>
     <string name="choose_contact" comment="Button that opens the contact picker.">Scegli contatto</string>
+    <string name="contact_phone_number_required" comment="Toast shown when the selected contact has no usable phone number.">Non puoi selezionare questo contatto perché non ha un numero di telefono.</string>
     <string name="character_type_trainer" comment="Character category for a human battle character.">Allenatore</string>
     <string name="character_type_monster" comment="Character category for a creature battle character.">Mostro</string>
     <string name="character_type_trainers">allenatori</string>
@@ -41,11 +42,23 @@
     <string name="no_other_character_options" comment="%1$s is a character type, such as Trainer or Monster.">Nessun’altra opzione per %1$s</string>
     <string name="import_and_enable_character_pack" comment="Empty-state message in the character selector.">Aggiungi il tuo personaggio o importa un pacchetto per vederne altri.</string>
     <string name="radiant" comment="Adjective for a rare, sparkling character variant.">Radioso</string>
+    <string name="filter_all">Tutti</string>
+    <string name="filter_regular">Normale</string>
+    <string name="filter_unlocked_radiant">Radioso sbloccato</string>
+    <string name="filter_locked_radiant">Radioso bloccato</string>
     <string name="selected" comment="Status label for the currently chosen option.">Selezionato</string>
     <string name="randomize" comment="Character selection that chooses a different eligible character for every call.">Casuale</string>
     <string name="locked">Bloccato</string>
     <string name="radiant_variant_locked_title">Variante radiosa bloccata</string>
     <string name="radiant_variant_locked_message">Quando incontri un %1$s radioso in una battaglia selvaggia, si sblocca automaticamente all’inizio della battaglia. Potrai poi assegnarlo.</string>
+    <string name="learn_about_radiants">Info sui radiosi</string>
+    <string name="open_radiants_guide">Apri la guida ai radiosi</string>
+    <string name="radiants_guide_title">Radiosi</string>
+    <string name="radiants_guide_message">I radiosi sono rare varianti estetiche dei mostri che puoi scoprire e aggiungere alla tua squadra.</string>
+    <string name="radiants_guide_availability">• Possono apparire solo i mostri con una variante radiosa.</string>
+    <string name="radiants_guide_unlock">• Un radioso può sostituire una battaglia idonea. Si sblocca all’inizio della battaglia: non devi fare nulla.</string>
+    <string name="radiants_guide_assign">• Dopo averlo scoperto, scegli la sua variante radiosa in Il tuo personaggio → Mostri per assegnarla.</string>
+    <string name="radiants_guide_journal">• Trova e condividi le tue scoperte radiose nel Diario delle battaglie.</string>
     <string name="radiant_unlock_notifications">Sblocchi radiosi</string>
     <string name="radiant_variant_unlocked_title">Variante radiosa sbloccata!</string>
     <string name="radiant_variant_unlocked_message">%1$s è ora pronto da assegnare.</string>
@@ -114,6 +127,14 @@
     <string name="selected_file" comment="Label before the selected file name.">File selezionato</string>
     <string name="share_pack_import_diagnostic" comment="Title of Android's share sheet for an import diagnostic.">Condividi la diagnostica dell’importazione</string>
     <string name="battle_scene_description" comment="Accessibility description for the battle scene image.">Scena di battaglia tra mostri</string>
+    <string name="shared_profile_import_link_failed">Impossibile trovare un numero di telefono valido per il contatto selezionato.</string>
+    <string name="choose_team" comment="Contact-row overflow action that opens character customization for a contact.">Scegli squadra</string>
+    <string name="contact_row_actions" comment="Accessibility label for the contact-row overflow menu trigger.">Azioni del contatto</string>
+    <string name="linked_online_profile_title">Profilo online collegato</string>
+    <string name="linked_online_profile_none">Nessun profilo online è collegato a questo contatto.</string>
+    <string name="linked_online_profile_link_hint">Apri un link a un profilo MonsterDialer condiviso per associarlo a questo contatto.</string>
+    <string name="linked_online_profile_description">Questo contatto è collegato a questo profilo online:</string>
+    <string name="unlink_online_profile">Scollega profilo online</string>
     <string name="your_monster" comment="%1$s is the player's monster name.">Il tuo %1$s</string>
     <string name="radiant_sparkle" comment="Accessibility description for a rare-variant sparkle.">Scintillio radioso</string>
     <string name="available_monsters" comment="Heading for the selectable monster roster.">Mostri disponibili</string>
@@ -189,6 +210,8 @@
     <string name="characters_help_sharing_how_to">Tieni premuto un tuo personaggio per esportarlo come file .monstercharacter. Per importare entrambi i tipi, apri un file ricevuto oppure usa “Importa personaggio”.</string>
     <string name="characters_help_packs_title">Creare pacchetti di personaggi</string>
     <string name="characters_help_packs_message">Per condividere una raccolta di mostri personali, crea un pacchetto da “Pacchetti di personaggi” e tocca “Crea pacchetto”. Scegli i mostri da includere, poi esporta il file .monsterpack.</string>
+    <string name="characters_help_packs_import_title">Importare pacchetti di personaggi</string>
+    <string name="characters_help_packs_import_message">Tocca “Importa pacchetto” per aggiungere un file .monsterpack condiviso con te. I personaggi importati diventano selezionabili quando il pacchetto è attivato. Importa solo illustrazioni e suoni che hai creato o per cui hai una licenza d’uso.</string>
     <string name="characters_help_radiants_title">Scoperta radiosa</string>
     <string name="characters_help_radiants_message">I mostri radiosi sono varianti rare e scintillanti. Le varianti nei pacchetti restano bloccate finché non le incontri in natura durante una chiamata; poi si sbloccano automaticamente e puoi condividere una carta della scoperta.</string>
     <string name="characters_help_management_title">Gestire la collezione</string>
@@ -246,4 +269,75 @@
     <string name="open_character_guide">Apri guida</string>
     <string name="personalize_contact_character">Personalizza i personaggi del chiamante</string>
     <string name="reorder_monster">Riordina mostro</string>
+    <string name="online_profile_choose_contact_prompt">Scegli un contatto da collegare a questo profilo online. L’associazione rimane sul tuo dispositivo.</string>
+    <string name="online_profile_title">Profilo online</string>
+    <string name="online_profile_description">Permetti agli amici di vedere l’allenatore e il mostro che porti in ogni chiamata.</string>
+    <string name="online_profile_privacy_note">Vengono condivisi solo gli sprite e i metadati dei tuoi personaggi.</string>
+    <string name="online_profile_enable">Attiva profilo online</string>
+    <string name="online_profile_enabling">Attivazione profilo online</string>
+    <string name="online_profile_regenerating">Rigenerazione del link di condivisione</string>
+    <string name="online_profile_deleting">Eliminazione profilo online</string>
+    <string name="online_profile_keeping_online">Mantenimento del profilo online</string>
+    <string name="online_profile_enabled">Profilo online attivato</string>
+    <string name="online_profile_check_in_title">Stai ancora condividendo il tuo profilo?</string>
+    <string name="online_profile_check_in_description">Il tuo profilo online non è stato confermato da quasi un anno. Confermalo per continuare a condividerlo.</string>
+    <string name="online_profile_keep_online">Mantieni online</string>
+    <string name="online_profile_share">Condividi il mio profilo</string>
+    <string name="online_profile_show_qr_code">Mostra codice QR</string>
+    <string name="online_profile_qr_code_title">Condividi con codice QR</string>
+    <string name="online_profile_qr_code_description">Chiedi a un amico di scansionare questo codice con la fotocamera per aprire il tuo profilo.</string>
+    <string name="online_profile_qr_code_content_description">Codice QR del tuo profilo online</string>
+    <string name="online_profile_regenerate">Rigenera link di condivisione</string>
+    <string name="online_profile_regenerate_message">Verrà creato un nuovo link di condivisione e quello attuale non sarà più valido. Gli amici avranno bisogno del nuovo link per accedere al tuo profilo.</string>
+    <string name="online_profile_delete">Elimina profilo</string>
+    <string name="online_profile_delete_message">Questa azione elimina il tuo profilo condiviso e rende non valido il suo link. I tuoi personaggi e le personalizzazioni dei contatti restano su questo dispositivo.</string>
+    <string name="online_profile_error_title">Impossibile aggiornare il profilo online</string>
+    <string name="online_profile_sprite_decode_error">Impossibile decodificare lo sprite del personaggio selezionato.</string>
+    <string name="online_profile_google_sign_in_required">Accedi con Google per gestire un profilo online.</string>
+    <string name="online_profile_google_sign_in_error">Impossibile accedere con Google.</string>
+    <string name="online_profile_google_sign_in_not_configured">L’accesso con Google non è ancora configurato.</string>
+    <string name="online_profile_signing_in">Accesso con Google in corso</string>
+    <string name="online_profile_sign_out_google">Esci da Google</string>
+    <string name="online_profile_firebase_not_configured">Firebase non è configurato.</string>
+    <string name="online_profile_share_text">Guarda il mio profilo MonsterDialer:\n%1$s</string>
+    <string name="linked_online_profile_active_title">Profilo online collegato</string>
+    <string name="linked_online_profile_active_message">La squadra condivisa di questo contatto può essere usata durante le chiamate. Rimuovi il collegamento in qualsiasi momento per tornare alla squadra locale del contatto.</string>
+    <string name="linked_online_profile_id_label">ID profilo</string>
+    <string name="unlink_online_profile_confirmation_title">Rimuovere il collegamento al profilo?</string>
+    <string name="unlink_online_profile_confirmation_message">Questa azione rimuove dal dispositivo il collegamento al profilo online condiviso. Il contatto tornerà a usare la sua squadra locale. Il profilo condiviso e i dati del suo proprietario non verranno modificati.</string>
+    <string name="shared_profile_import_title">Profilo condiviso</string>
+    <string name="shared_profile_import_heading">Un profilo MonsterDialer è stato condiviso con te</string>
+    <string name="shared_profile_import_description">Scegli dalla tua rubrica il contatto a cui appartiene questo profilo. MonsterDialer lo mostrerà durante le chiamate con quel contatto. Il link rimane sul tuo dispositivo.</string>
+    <string name="shared_profile_import_choose_contact">Scegli contatto</string>
+    <string name="open_shared_online_profile_guide">Apri la guida ai profili online condivisi</string>
+    <string name="shared_online_profile_guide_title">Usare un profilo online condiviso</string>
+    <string name="shared_online_profile_guide_message">Quando qualcuno condivide con te un link al proprio profilo online, puoi associare la sua squadra condivisa a uno dei tuoi contatti per le battaglie durante le chiamate.</string>
+    <string name="shared_online_profile_choose_contact_guide_title">Scegli il contatto giusto</string>
+    <string name="shared_online_profile_choose_contact_guide_message">Seleziona il contatto proprietario del profilo condiviso. L’associazione tra contatto e profilo viene salvata solo sul tuo dispositivo: non modifica il loro profilo né condivide i tuoi contatti con loro.</string>
+    <string name="shared_online_profile_loading_guide_title">Caricamento durante una battaglia</string>
+    <string name="shared_online_profile_loading_guide_message">All’inizio di una battaglia, MonsterDialer prova a caricare il profilo online collegato a quel contatto. Attende fino a 500 millisecondi. Se il profilo non si carica in tempo, ad esempio per assenza o lentezza della connessione, la battaglia inizia offline usando i personaggi scelti localmente.</string>
+    <string name="shared_online_profile_cache_guide_title">Cache e aggiornamenti</string>
+    <string name="shared_online_profile_cache_guide_message">La prima chiamata può iniziare offline mentre il profilo completa il caricamento, per poi usarlo nelle chiamate successive. Una volta caricato, il profilo viene conservato nella cache per un’ora e non viene recuperato di nuovo prima della scadenza. Il proprietario può aggiornare o rimuovere il profilo condiviso in qualsiasi momento.</string>
+    <string name="shared_online_profile_unlink_guide_title">Rimuovi il collegamento quando vuoi</string>
+    <string name="shared_online_profile_unlink_guide_message">Apri Profilo online collegato dal menu del contatto e tocca “Scollega profilo online” per smettere di usarlo. Il contatto tornerà alla sua squadra locale e il profilo condiviso rimarrà invariato.</string>
+    <string name="characters_help_player_character_list_message">I personaggi sono raggruppati per origine: quelli inclusi sono forniti dall’app; i tuoi allenatori e mostri sono creati nell’app; quelli importati sono organizzati per pacchetto di personaggi. Tieni premuto un personaggio creato da te per modificarlo, condividerlo o eliminarlo.</string>
+    <string name="characters_help_contact_character_list_message">I personaggi sono raggruppati per origine: Casuale è disponibile solo per i contatti e sceglie automaticamente un personaggio idoneo a ogni chiamata; quelli inclusi sono forniti dall’app; i tuoi allenatori e mostri sono creati nell’app; quelli importati sono organizzati per pacchetto di personaggi. Tieni premuto un personaggio creato da te per modificarlo, condividerlo o eliminarlo.</string>
+    <string name="characters_help_team_title">La tua squadra</string>
+    <string name="characters_help_team_message">La tua squadra è composta dall’allenatore e dal mostro attivo mostrati qui. Ti rappresentano in ogni battaglia durante una chiamata. Tocca uno dei due per scegliere un personaggio diverso.</string>
+    <string name="characters_help_roster_title">La tua squadra</string>
+    <string name="characters_help_roster_message">La tua squadra contiene fino a sei mostri scelti per la tua squadra. Trascina e rilascia i mostri personalizzati per riordinarli. Il primo mostro della squadra è quello attivo nelle battaglie durante le chiamate.</string>
+    <string name="online_profile_guide_title">Condividere il tuo profilo online</string>
+    <string name="online_profile_guide_message">I profili online sono facoltativi e progettati pensando a privacy e sicurezza. Per attivarne uno, accedi con Google. Il tuo account Google identifica chi può gestire il profilo; la tua email e i dettagli dell’account Google non vengono condivisi. L’attivazione di un profilo, o l’accesso su un altro dispositivo, pubblica l’allenatore e il mostro attivi di quel dispositivo, inclusi gli sprite selezionati, tramite un link condivisibile. I server non memorizzano il tuo numero di telefono, elenco contatti, cronologia chiamate né altri dati personali o sensibili. I collegamenti tra profili MonsterDialer e contatti restano esclusivamente su ogni dispositivo.</string>
+    <string name="online_profile_public_id_title">Il tuo ID profilo pubblico</string>
+    <string name="online_profile_public_id_message">Chiunque riceva il tuo link di condivisione può trovare il tuo profilo tramite il suo ID pubblico generato casualmente. Lo stesso account Google conserva questo ID quando accedi su un altro dispositivo, così i link esistenti continuano a funzionare. Tocca “Rigenera link di condivisione” per invalidare l’ID pubblico corrente e crearne uno nuovo. Il link precedente non funzionerà più per chiunque l’abbia ricevuto.</string>
+    <string name="online_profile_delete_guide_title">Eliminare il tuo profilo</string>
+    <string name="online_profile_delete_guide_message">Tocca “Elimina profilo” per rimuovere definitivamente i dati del tuo profilo pubblicato. Chiunque abbia il tuo link di condivisione non potrà più visualizzare la tua squadra. Se attivi di nuovo un profilo in seguito, avrà un nuovo link di condivisione.</string>
+    <string name="no_available_character_options">Nessun %1$s disponibile</string>
+    <string name="characters_help_character_list_title">Elenco dei personaggi</string>
+    <string name="characters_help_creation_title">Creare un personaggio</string>
+    <string name="characters_help_creation_message">Dai un nome al personaggio e aggiungi la sua grafica sprite. Lo sprite frontale viene usato quando il personaggio appare come avversario, mentre quello posteriore lo rappresenta nella tua squadra durante le battaglie.</string>
+    <string name="characters_help_sprites_title">File sprite e consigli per la grafica</string>
+    <string name="characters_help_sprites_message">Scegli un file immagine disponibile dal selettore immagini del dispositivo. MonsterDialer non impone una risoluzione fissa né un limite di dimensione dei file per gli sprite personalizzati. Per un risultato più nitido, usa grafica PNG con sfondo trasparente, mantieni il personaggio centrato con poco spazio vuoto attorno e usa scala e posa simili per gli sprite frontale e posteriore.</string>
+    <string name="characters_help_radiant_title">Varianti radiose</string>
+    <string name="characters_help_radiant_message">Solo per i mostri: apri Avanzate e attiva l’interruttore Radioso per aggiungere una variante radiosa. La selezione dei personaggi mostrerà le versioni normale e radiosa dello stesso mostro. La versione radiosa è inizialmente bloccata e deve essere trovata nelle battaglie prima di poter essere selezionata. È necessario uno sprite frontale perché la funzione Trova lo usa per scoprire e sbloccare la variante radiosa.</string>
 </resources>

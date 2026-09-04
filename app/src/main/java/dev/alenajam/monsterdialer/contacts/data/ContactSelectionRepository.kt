@@ -10,7 +10,7 @@ import javax.inject.Singleton
 
 interface ContactSelectionRepository {
     suspend fun getSelectedContact(): MonsterContact?
-    suspend fun setSelectedContact(selectedContact: DialerContactSummary)
+    suspend fun setSelectedContact(selectedContact: DialerContactSummary): Boolean
     suspend fun clearSelectedContact()
 }
 
@@ -31,7 +31,7 @@ class ContactSelectionRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun setSelectedContact(selectedContact: DialerContactSummary) = withContext(Dispatchers.IO) {
+    override suspend fun setSelectedContact(selectedContact: DialerContactSummary): Boolean = withContext(Dispatchers.IO) {
         val numbers = contactsRepository.getContactNumbers(selectedContact.id)
         assignments.setSelectedContact(
             label = selectedContact.name,
