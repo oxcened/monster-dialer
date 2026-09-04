@@ -152,6 +152,10 @@
     <string name="online_profile_check_in_description" comment="Explanation in the profile-sharing reminder dialog. It asks the player to confirm sharing after a long period of inactivity.">Your Online Profile has not been confirmed in almost a year. Confirm it to keep sharing it.</string>
     <string name="online_profile_keep_online" comment="Confirmation button that keeps the player's Online Profile shared.">Keep Online</string>
     <string name="online_profile_share" comment="Button that opens Android's share sheet for the player's Online Profile link.">Share My Profile</string>
+    <string name="online_profile_show_qr_code" comment="Button that displays a scannable QR code for the player's Online Profile link.">Show QR code</string>
+    <string name="online_profile_qr_code_title" comment="Title of the dialog displaying the player's shareable Online Profile QR code.">Share with QR code</string>
+    <string name="online_profile_qr_code_description" comment="Instructions shown below the Online Profile QR code.">Have a friend scan this code with their camera to open your profile.</string>
+    <string name="online_profile_qr_code_content_description" comment="Accessibility description for the player's Online Profile QR code.">QR code for your Online Profile</string>
     <string name="online_profile_regenerate" comment="Button that replaces the current Online Profile sharing link.">Regenerate sharing link</string>
     <string name="online_profile_regenerate_message" comment="Confirmation dialog message explaining that replacing a sharing link invalidates the old link.">This creates a new sharing link and invalidates the current one. Friends will need the new link to access your profile.</string>
     <string name="online_profile_delete" comment="Button that deletes the player's shared Online Profile.">Delete profile</string>

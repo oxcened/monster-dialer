@@ -2,6 +2,7 @@
 # Extensions and overrides for MonsterDialer
 coroutines-play-services = "1.10.2"
 libphonenumber = "9.0.24"
+zxing = "3.5.3"
 
 [libraries]
 firebase-auth = { module = "com.google.firebase:firebase-auth" }
@@ -9,5 +10,6 @@ firebase-firestore = { module = "com.google.firebase:firebase-firestore" }
 firebase-storage = { module = "com.google.firebase:firebase-storage" }
 coroutines-play-services = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-play-services", version.ref = "coroutines-play-services" }
 libphonenumber = { module = "com.googlecode.libphonenumber:libphonenumber", version.ref = "libphonenumber" }
+zxing-core = { module = "com.google.zxing:core", version.ref = "zxing" }
 
 [plugins]

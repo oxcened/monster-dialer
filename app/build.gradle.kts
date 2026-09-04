@@ -133,6 +133,7 @@ dependencies {
     implementation(monster.firebase.storage)
     implementation(monster.coroutines.play.services)
     implementation(monster.libphonenumber)
+    implementation(monster.zxing.core)
 
     // These would be Maven dependencies if OpenDialer were published
     // For now, we assume they are included in the settings.gradle.kts

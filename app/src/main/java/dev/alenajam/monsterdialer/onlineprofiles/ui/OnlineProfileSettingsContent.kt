@@ -1,7 +1,9 @@
 package dev.alenajam.monsterdialer.onlineprofiles.ui
 
 import android.content.Intent
+import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -26,6 +28,10 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.geometry.Size
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.contentDescription
@@ -38,6 +44,8 @@ import dev.alenajam.monsterdialer.R
 import dev.alenajam.monsterdialer.characters.ui.ContextualGuideButton
 import dev.alenajam.monsterdialer.characters.ui.GuideContent
 import dev.alenajam.monsterdialer.onlineprofiles.data.ProfileSharingLink
+import dev.alenajam.monsterdialer.onlineprofiles.data.ProfileSharingQrCode
+import dev.alenajam.monsterdialer.onlineprofiles.data.QrCodeMatrix
 import dev.alenajam.opendialer.core.common.ui.AppIcon
 import dev.alenajam.opendialer.core.common.ui.LocalAppIcons
 
@@ -55,6 +63,7 @@ fun OnlineProfileSection(viewModel: OnlineProfileSettingsViewModel = hiltViewMod
     val keepingOnlineDescription = stringResource(R.string.online_profile_keeping_online)
     var confirmDelete by remember { mutableStateOf(false) }
     var confirmRegenerate by remember { mutableStateOf(false) }
+    var showQrCode by remember { mutableStateOf(false) }
     if (profile == null) {
         Card(
             modifier = Modifier.fillMaxWidth(),
@@ -120,9 +129,10 @@ fun OnlineProfileSection(viewModel: OnlineProfileSettingsViewModel = hiltViewMod
         }
     } else {
         val currentProfile = requireNotNull(profile)
+        val sharingLink = ProfileSharingLink.urlFor(currentProfile.publicProfileId)
         val shareText = stringResource(
             R.string.online_profile_share_text,
-            ProfileSharingLink.urlFor(currentProfile.publicProfileId),
+            sharingLink,
         )
         val shareTitle = stringResource(R.string.online_profile_share)
         Card(
@@ -159,6 +169,11 @@ fun OnlineProfileSection(viewModel: OnlineProfileSettingsViewModel = hiltViewMod
                         }, shareTitle))
                     }, enabled = !working, modifier = Modifier.fillMaxWidth()) { Text(stringResource(R.string.online_profile_share)) }
                     OutlinedButton(
+                        onClick = { showQrCode = true },
+                        enabled = !working,
+                        modifier = Modifier.fillMaxWidth(),
+                    ) { Text(stringResource(R.string.online_profile_show_qr_code)) }
+                    OutlinedButton(
                         onClick = { confirmRegenerate = true },
                         enabled = !working,
                         modifier = Modifier.fillMaxWidth(),
@@ -191,6 +206,24 @@ fun OnlineProfileSection(viewModel: OnlineProfileSettingsViewModel = hiltViewMod
                     }
                 }
             }
+        }
+        if (showQrCode) {
+            AlertDialog(
+                onDismissRequest = { showQrCode = false },
+                title = { Text(stringResource(R.string.online_profile_qr_code_title)) },
+                text = {
+                    Column(
+                        verticalArrangement = Arrangement.spacedBy(16.dp),
+                        horizontalAlignment = Alignment.CenterHorizontally,
+                    ) {
+                        ProfileSharingQrCodeImage(sharingLink)
+                        Text(stringResource(R.string.online_profile_qr_code_description))
+                    }
+                },
+                confirmButton = {
+                    TextButton(onClick = { showQrCode = false }) { Text(stringResource(R.string.close)) }
+                },
+            )
         }
         if (showRetentionCheckIn) {
             Card(
@@ -253,4 +286,34 @@ fun OnlineProfileSection(viewModel: OnlineProfileSettingsViewModel = hiltViewMod
         dismissButton = { TextButton(onClick = { confirmRegenerate = false }) { Text(stringResource(R.string.cancel)) } },
     )
     error?.let { AlertDialog(onDismissRequest = viewModel::clearError, title = { Text(stringResource(R.string.online_profile_error_title)) }, text = { Text(it) }, confirmButton = { TextButton(onClick = viewModel::clearError) { Text(stringResource(R.string.close)) } }) }
+}
+
+@Composable
+private fun ProfileSharingQrCodeImage(sharingLink: String) {
+    val qrCode = remember(sharingLink) { ProfileSharingQrCode.encode(sharingLink) }
+    val contentDescription = stringResource(R.string.online_profile_qr_code_content_description)
+    Canvas(
+        modifier = Modifier
+            .fillMaxWidth()
+            .aspectRatio(1f)
+            .semantics { this.contentDescription = contentDescription },
+    ) {
+        drawQrCode(qrCode)
+    }
+}
+
+private fun DrawScope.drawQrCode(qrCode: QrCodeMatrix) {
+    val moduleSize = size.width / qrCode.width
+    drawRect(Color.White)
+    for (y in 0 until qrCode.height) {
+        for (x in 0 until qrCode.width) {
+            if (qrCode[x, y]) {
+                drawRect(
+                    color = Color.Black,
+                    topLeft = Offset(x * moduleSize, y * moduleSize),
+                    size = Size(moduleSize, moduleSize),
+                )
+            }
+        }
+    }
 }
