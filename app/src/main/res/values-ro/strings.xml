@@ -265,6 +265,10 @@
     <string name="online_profile_error_title">Nu s-a putut actualiza profilul online</string>
     <string name="online_profile_sprite_decode_error">Sprite-ul personajului selectat nu poate fi decodat.</string>
     <string name="online_profile_google_sign_in_required">Conectează-te cu Google pentru a gestiona un profil online.</string>
+    <string name="online_profile_google_sign_in_error">Nu s-a putut conecta cu Google.</string>
+    <string name="online_profile_google_sign_in_not_configured">Conectarea cu Google nu este configurată încă.</string>
+    <string name="online_profile_signing_in">Se conectează cu Google</string>
+    <string name="online_profile_sign_out_google">Deconectează-te de la Google</string>
     <string name="online_profile_firebase_not_configured">Firebase nu este configurat.</string>
     <string name="online_profile_share_text">Vezi profilul meu MonsterDialer:\n%1$s</string>
     <string name="choose_team">Alege echipa</string>

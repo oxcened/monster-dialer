@@ -255,6 +255,10 @@
     <string name="online_profile_error_title">Onlineprofilen kunne ikke opdateres</string>
     <string name="online_profile_sprite_decode_error">Den valgte figurs sprite kan ikke afkodes.</string>
     <string name="online_profile_google_sign_in_required">Log ind med Google for at administrere en onlineprofil.</string>
+    <string name="online_profile_google_sign_in_error">Kunne ikke logge ind med Google.</string>
+    <string name="online_profile_google_sign_in_not_configured">Google-login er ikke konfigureret endnu.</string>
+    <string name="online_profile_signing_in">Logger ind med Google</string>
+    <string name="online_profile_sign_out_google">Log ud af Google</string>
     <string name="online_profile_firebase_not_configured">Firebase er ikke konfigureret.</string>
     <string name="online_profile_share_text">Se min MonsterDialer-profil:\n%1$s</string>
     <string name="choose_team">Vælg hold</string>

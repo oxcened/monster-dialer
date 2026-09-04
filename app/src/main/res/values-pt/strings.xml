@@ -260,6 +260,10 @@
     <string name="online_profile_error_title">Não foi possível atualizar o perfil online</string>
     <string name="online_profile_sprite_decode_error">Não foi possível descodificar o sprite da personagem selecionada.</string>
     <string name="online_profile_google_sign_in_required">Inicie sessão com o Google para gerir um perfil online.</string>
+    <string name="online_profile_google_sign_in_error">Não foi possível iniciar sessão com o Google.</string>
+    <string name="online_profile_google_sign_in_not_configured">O início de sessão com o Google ainda não está configurado.</string>
+    <string name="online_profile_signing_in">A iniciar sessão com o Google</string>
+    <string name="online_profile_sign_out_google">Terminar sessão no Google</string>
     <string name="online_profile_firebase_not_configured">O Firebase não está configurado.</string>
     <string name="online_profile_share_text">Vê o meu perfil MonsterDialer:\n%1$s</string>
     <string name="choose_team">Escolher equipa</string>

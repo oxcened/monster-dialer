@@ -260,6 +260,10 @@
     <string name="online_profile_error_title">Impossible de mettre à jour le profil en ligne</string>
     <string name="online_profile_sprite_decode_error">Impossible de décoder le sprite du personnage sélectionné.</string>
     <string name="online_profile_google_sign_in_required">Connectez-vous avec Google pour gérer un profil en ligne.</string>
+    <string name="online_profile_google_sign_in_error">Impossible de se connecter avec Google.</string>
+    <string name="online_profile_google_sign_in_not_configured">La connexion avec Google n’est pas encore configurée.</string>
+    <string name="online_profile_signing_in">Connexion avec Google</string>
+    <string name="online_profile_sign_out_google">Se déconnecter de Google</string>
     <string name="online_profile_firebase_not_configured">Firebase n’est pas configuré.</string>
     <string name="online_profile_share_text">Découvrez mon profil MonsterDialer :\n%1$s</string>
     <string name="choose_team">Choisir l’équipe</string>

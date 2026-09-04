@@ -260,6 +260,10 @@
     <string name="online_profile_error_title">Online-Profil konnte nicht aktualisiert werden</string>
     <string name="online_profile_sprite_decode_error">Der Sprite der ausgewählten Figur kann nicht dekodiert werden.</string>
     <string name="online_profile_google_sign_in_required">Melde dich mit Google an, um ein Online-Profil zu verwalten.</string>
+    <string name="online_profile_google_sign_in_error">Anmeldung mit Google nicht möglich.</string>
+    <string name="online_profile_google_sign_in_not_configured">Google-Anmeldung ist noch nicht konfiguriert.</string>
+    <string name="online_profile_signing_in">Anmeldung mit Google</string>
+    <string name="online_profile_sign_out_google">Bei Google abmelden</string>
     <string name="online_profile_firebase_not_configured">Firebase ist nicht konfiguriert.</string>
     <string name="online_profile_share_text">Sieh dir mein MonsterDialer-Profil an:\n%1$s</string>
     <string name="choose_team">Team auswählen</string>

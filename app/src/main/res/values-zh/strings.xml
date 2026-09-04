@@ -249,6 +249,10 @@
     <string name="online_profile_error_title">无法更新在线个人资料</string>
     <string name="online_profile_sprite_decode_error">无法解码所选角色的精灵图。</string>
     <string name="online_profile_google_sign_in_required">请使用 Google 登录以管理在线个人资料。</string>
+    <string name="online_profile_google_sign_in_error">无法使用 Google 登录。</string>
+    <string name="online_profile_google_sign_in_not_configured">Google 登录尚未配置。</string>
+    <string name="online_profile_signing_in">正在使用 Google 登录</string>
+    <string name="online_profile_sign_out_google">退出 Google 登录</string>
     <string name="online_profile_firebase_not_configured">尚未配置 Firebase。</string>
     <string name="online_profile_share_text">看看我的 MonsterDialer 个人资料：\n%1$s</string>
     <string name="choose_team">选择队伍</string>
