@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.size
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -124,11 +125,13 @@ class MainActivity : AppCompatActivity() {
                             showVoicemailInNavigation = false,
                             showVoicemailInOverflow = true,
                             contactRowOverflowMenu = ContactRowOverflowMenu(
-                                trigger = {
-                                    dev.alenajam.opendialer.core.common.ui.AppIcon(
-                                        dev.alenajam.opendialer.core.common.ui.LocalAppIcons.current.more,
-                                        contentDescription = stringResource(R.string.contact_row_actions),
-                                    )
+                                trigger = { onClick ->
+                                    IconButton(onClick = onClick) {
+                                        dev.alenajam.opendialer.core.common.ui.AppIcon(
+                                            LocalMonsterAppIcons.current.personalizeContact,
+                                            contentDescription = stringResource(R.string.contact_row_actions),
+                                        )
+                                    }
                                 },
                                 actions = listOf(
                                     ContactRowOverflowAction(
