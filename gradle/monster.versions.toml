@@ -8,6 +8,8 @@ zxing = "3.5.3"
 
 [libraries]
 firebase-auth = { module = "com.google.firebase:firebase-auth" }
+firebase-appcheck-debug = { module = "com.google.firebase:firebase-appcheck-debug" }
+firebase-appcheck-playintegrity = { module = "com.google.firebase:firebase-appcheck-playintegrity" }
 firebase-firestore = { module = "com.google.firebase:firebase-firestore" }
 firebase-storage = { module = "com.google.firebase:firebase-storage" }
 coroutines-play-services = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-play-services", version.ref = "coroutines-play-services" }
