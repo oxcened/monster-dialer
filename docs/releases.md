@@ -34,8 +34,9 @@ keystore or any of these values.
 | `ANDROID_KEY_ALIAS` | Alias of the signing key |
 | `ANDROID_KEY_PASSWORD` | Password for that key |
 | `DISCORD_WEBHOOK` | Discord webhook URL for published-release notifications |
+| `GOOGLE_SERVICES_JSON_BASE64` | Base64-encoded Firebase `google-services.json` file |
 
-On macOS or Linux, create the first value without line wrapping:
+On macOS or Linux, create the keystore value without line wrapping:
 
 ```bash
 base64 < release-keystore.jks | tr -d '\n'
@@ -44,6 +45,16 @@ base64 < release-keystore.jks | tr -d '\n'
 Copy the resulting single line into `ANDROID_KEYSTORE_BASE64`. Keep the
 original keystore backed up securely: losing it prevents signing updates that
 Android accepts as upgrades.
+
+When Firebase generates an updated `google-services.json`, encode that file
+the same way and replace the `GOOGLE_SERVICES_JSON_BASE64` Actions secret:
+
+```bash
+base64 < app/google-services.json | tr -d '\n'
+```
+
+Do not commit `app/google-services.json`; the Android and release workflows
+decode this secret into that path only while CI is running.
 
 ## Licensed font for CI
 
@@ -111,6 +122,9 @@ sha256sum -c MonsterDialer-v0.4.0.apk.sha256
   it, then tag the exact matching `vMAJOR.MINOR.PATCH` version.
 * **Signing failed:** confirm all four secrets exist, the Base64 value was
   copied as one line, and the alias/password values open the original keystore.
+* **Firebase configuration failed:** replace `GOOGLE_SERVICES_JSON_BASE64`
+  with the one-line Base64 encoding of the latest Firebase-generated
+  `google-services.json`.
 * **OpenDialer checkout or build failed:** verify `opendialerRef` identifies an
   accessible compatible commit in `oxcened/opendialer`.
 * **A release already exists:** GitHub rejects duplicate tag releases. Correct
