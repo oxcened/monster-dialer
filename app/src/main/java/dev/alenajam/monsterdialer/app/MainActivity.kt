@@ -9,6 +9,7 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.size
@@ -18,6 +19,8 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.getValue
@@ -68,8 +71,8 @@ import dev.alenajam.opendialer.core.common.ui.ContactAvatar
 import dev.alenajam.opendialer.feature.appShell.DialerApp
 import dev.alenajam.opendialer.feature.appShell.HomeNavigationItem
 import dev.alenajam.opendialer.feature.appShell.HomeScreenConfiguration
-import dev.alenajam.opendialer.feature.contacts.ContactRowOverflowAction
-import dev.alenajam.opendialer.feature.contacts.ContactRowOverflowMenu
+import dev.alenajam.opendialer.feature.contacts.ContactRowTrailingContent
+import kotlinx.coroutines.launch
 import dev.alenajam.opendialer.feature.settings.SettingsSubpage
 import dev.alenajam.opendialer.feature.settings.SettingsSubpageDestination
 import javax.inject.Inject
@@ -126,23 +129,11 @@ class MainActivity : AppCompatActivity() {
                         homeScreenConfiguration = HomeScreenConfiguration(
                             showVoicemailInNavigation = false,
                             showVoicemailInOverflow = true,
-                            contactRowOverflowMenu = ContactRowOverflowMenu(
-                                actions = listOf(
-                                    ContactRowOverflowAction(
-                                        settingsSubpageIndex = 1,
-                                        onClick = contactCharacterSettingsViewModel::selectContact,
-                                        content = { Text(stringResource(R.string.choose_team)) },
-                                    ),
-                                    ContactRowOverflowAction(
-                                        settingsSubpageIndex = LinkedOnlineProfileSettingsIndex,
-                                        onClick = { contact ->
-                                            contactCharacterSettingsViewModel.selectContact(contact)
-                                        },
-                                        content = { Text(stringResource(R.string.linked_online_profile_title)) },
-                                    ),
-                                ),
-                                content = { actions, expanded, onExpandedChange, onActionClick ->
-                                    IconButton(onClick = { onExpandedChange(true) }) {
+                            contactRowTrailingContent = ContactRowTrailingContent { contact, onOpenSettingsSubpage ->
+                                val coroutineScope = rememberCoroutineScope()
+                                var expanded by remember(contact.id) { mutableStateOf(false) }
+                                Box {
+                                    IconButton(onClick = { expanded = true }) {
                                         dev.alenajam.opendialer.core.common.ui.AppIcon(
                                             LocalMonsterAppIcons.current.personalizeContact,
                                             contentDescription = stringResource(R.string.contact_row_actions),
@@ -150,17 +141,31 @@ class MainActivity : AppCompatActivity() {
                                     }
                                     DropdownMenu(
                                         expanded = expanded,
-                                        onDismissRequest = { onExpandedChange(false) },
+                                        onDismissRequest = { expanded = false },
                                     ) {
-                                        actions.forEach { action ->
-                                            DropdownMenuItem(
-                                                text = action.content,
-                                                onClick = { onActionClick(action) },
-                                            )
-                                        }
+                                        DropdownMenuItem(
+                                            text = { Text(stringResource(R.string.choose_team)) },
+                                            onClick = {
+                                                expanded = false
+                                                coroutineScope.launch {
+                                                    contactCharacterSettingsViewModel.selectContact(contact)
+                                                    onOpenSettingsSubpage(1, null)
+                                                }
+                                            },
+                                        )
+                                        DropdownMenuItem(
+                                            text = { Text(stringResource(R.string.linked_online_profile_title)) },
+                                            onClick = {
+                                                expanded = false
+                                                coroutineScope.launch {
+                                                    contactCharacterSettingsViewModel.selectContact(contact)
+                                                    onOpenSettingsSubpage(LinkedOnlineProfileSettingsIndex, null)
+                                                }
+                                            },
+                                        )
                                     }
-                                },
-                            ),
+                                }
+                            },
                             customNavigationItem = HomeNavigationItem(
                             label = { androidx.compose.material3.Text(stringResource(R.string.characters_navigation_label)) },
                             icon = { _ -> dev.alenajam.opendialer.core.common.ui.AppIcon(dev.alenajam.opendialer.core.common.ui.LocalAppIcons.current.person, null) },
