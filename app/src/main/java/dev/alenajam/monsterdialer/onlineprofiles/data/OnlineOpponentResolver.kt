@@ -1,5 +1,6 @@
 package dev.alenajam.monsterdialer.onlineprofiles.data
 
+import android.graphics.BitmapFactory
 import java.io.File
 import java.security.MessageDigest
 import javax.inject.Inject
@@ -88,7 +89,11 @@ class OnlineOpponentResolver @Inject constructor(
         target.parentFile?.mkdirs()
         try {
             if (!remoteDataSource.downloadSprite(sprite, temporary)) return
-            if (temporary.length() != sprite.byteSize || temporary.sha256() != sprite.sha256 || !temporary.renameTo(target)) return
+            if (temporary.length() != sprite.byteSize ||
+                temporary.sha256() != sprite.sha256 ||
+                !temporary.isExpectedPng(sprite) ||
+                !temporary.renameTo(target)
+            ) return
         } finally {
             temporary.delete()
         }
@@ -107,7 +112,18 @@ class OnlineOpponentResolver @Inject constructor(
         digest.digest().joinToString("") { byte -> "%02x".format(byte) }
     }
 
+    /** Reads only image bounds, so untrusted images are rejected before pixel allocation. */
+    private fun File.isExpectedPng(sprite: SharedSprite): Boolean {
+        val options = BitmapFactory.Options().apply { inJustDecodeBounds = true }
+        BitmapFactory.decodeFile(path, options)
+        return options.outMimeType == PngMimeType &&
+            options.outWidth == sprite.width && options.outHeight == sprite.height &&
+            options.outWidth in 1..MaxSpriteDimension && options.outHeight in 1..MaxSpriteDimension
+    }
+
     private companion object {
         const val ProfileRefreshIntervalMillis = 1L * 60 * 60 * 1000
+        const val MaxSpriteDimension = 1024
+        const val PngMimeType = "image/png"
     }
 }

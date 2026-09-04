@@ -2,7 +2,11 @@ rules_version = '2';
 service firebase.storage {
   match /b/{bucket}/o {
     match /onlineProfiles/{profileId}/sprites/{objectName} {
-      allow get: if true;
+      // A deleted profile immediately loses public access even if a transient
+      // Storage deletion failure leaves an orphaned object behind.
+      allow get: if firestore.exists(
+        /databases/(default)/documents/onlineProfiles/$(profileId)
+      );
       allow list: if false;
       allow create, update: if request.auth != null
         && objectName.matches('^(trainer|monster)\\.png$')

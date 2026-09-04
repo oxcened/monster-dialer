@@ -4,38 +4,86 @@ service cloud.firestore {
   // sprite references. Ownership is isolated in the unreadable `private`
   // subcollection. `retentionConfirmedAt` is a server timestamp used only by
   // the profile-retention policy.
+  //
+  // Assumed public document schema:
+  // - schemaVersion: integer 1
+  // - publicProfileId: the document ID
+  // - revision: positive integer, advanced for profile-content changes
+  // - updatedAt / retentionConfirmedAt: server timestamps
+  // - trainer: { name, frontSprite }
+  // - monster: { name, level, maxHp, frontSprite }
+  // - frontSprite: canonical Storage path, SHA-256, decoded dimensions, size
   match /databases/{database}/documents {
     function ownsProfile(profileId) {
       return request.auth != null
         && get(/databases/$(database)/documents/onlineProfiles/$(profileId)/private/ownership).data.ownerUid == request.auth.uid;
     }
 
+    function isValidSprite(sprite, profileId, spriteName) {
+      return sprite is map
+        && sprite.keys().hasOnly(['storagePath', 'sha256', 'width', 'height', 'byteSize'])
+        && sprite.storagePath is string
+        && sprite.storagePath == 'onlineProfiles/' + profileId + '/sprites/' + spriteName + '.png'
+        && sprite.sha256 is string
+        && sprite.sha256.matches('^[a-f0-9]{64}$')
+        && sprite.width is int
+        && sprite.width >= 1 && sprite.width <= 1024
+        && sprite.height is int
+        && sprite.height >= 1 && sprite.height <= 1024
+        && sprite.byteSize is int
+        && sprite.byteSize >= 1 && sprite.byteSize < 2 * 1024 * 1024;
+    }
+
+    function isValidTrainer(trainer, profileId) {
+      return trainer is map
+        && trainer.keys().hasOnly(['name', 'frontSprite'])
+        && trainer.name is string
+        && trainer.name.size() >= 1 && trainer.name.size() <= 120
+        && isValidSprite(trainer.frontSprite, profileId, 'trainer');
+    }
+
+    function isValidMonster(monster, profileId) {
+      return monster is map
+        && monster.keys().hasOnly(['name', 'level', 'maxHp', 'frontSprite'])
+        && monster.name is string
+        && monster.name.size() >= 1 && monster.name.size() <= 120
+        && monster.level is int
+        && monster.level >= 1 && monster.level <= 999
+        && monster.maxHp is int
+        && monster.maxHp >= 1 && monster.maxHp <= 999
+        && isValidSprite(monster.frontSprite, profileId, 'monster');
+    }
+
     function isValidProfile(profileId) {
       return request.resource.data.keys().hasAll([
-          'schemaVersion', 'publicProfileId', 'revision', 'updatedAt', 'trainer', 'monster'
+          'schemaVersion', 'publicProfileId', 'revision', 'updatedAt', 'retentionConfirmedAt', 'trainer', 'monster'
         ])
         && request.resource.data.keys().hasOnly([
           'schemaVersion', 'publicProfileId', 'revision', 'updatedAt', 'retentionConfirmedAt', 'trainer', 'monster'
         ])
+        && profileId.matches('^[A-Za-z0-9_-]{22,128}$')
         && request.resource.data.publicProfileId == profileId
         && request.resource.data.schemaVersion == 1
         && request.resource.data.revision is int
         && request.resource.data.revision > 0
         && request.resource.data.updatedAt is timestamp
-        && (!('retentionConfirmedAt' in request.resource.data)
-          || request.resource.data.retentionConfirmedAt is timestamp);
+        && request.resource.data.retentionConfirmedAt is timestamp
+        && isValidTrainer(request.resource.data.trainer, profileId)
+        && isValidMonster(request.resource.data.monster, profileId);
     }
 
     function timestampsAreValidForUpdate() {
-      return (request.resource.data.updatedAt == resource.data.updatedAt
-          || request.resource.data.updatedAt == request.time)
-        && (!('retentionConfirmedAt' in resource.data)
-          || ('retentionConfirmedAt' in request.resource.data
-            && (request.resource.data.retentionConfirmedAt == resource.data.retentionConfirmedAt
-              || request.resource.data.retentionConfirmedAt == request.time)))
-        && (('retentionConfirmedAt' in resource.data)
-          || !('retentionConfirmedAt' in request.resource.data)
-          || request.resource.data.retentionConfirmedAt == request.time);
+      let onlyRetentionChanged = request.resource.data.diff(resource.data)
+        .affectedKeys().hasOnly(['retentionConfirmedAt']);
+      return (onlyRetentionChanged
+          && request.resource.data.revision == resource.data.revision
+          && request.resource.data.updatedAt == resource.data.updatedAt
+          && request.resource.data.retentionConfirmedAt == request.time)
+        || (!onlyRetentionChanged
+          && request.resource.data.revision == resource.data.revision + 1
+          && request.resource.data.updatedAt == request.time
+          && (request.resource.data.retentionConfirmedAt == resource.data.retentionConfirmedAt
+            || request.resource.data.retentionConfirmedAt == request.time));
     }
 
     match /onlineProfiles/{profileId} {
@@ -43,6 +91,7 @@ service cloud.firestore {
       allow list: if false;
       allow create: if request.auth != null
         && isValidProfile(profileId)
+        && request.resource.data.updatedAt == request.time
         && request.resource.data.retentionConfirmedAt == request.time
         && getAfter(/databases/$(database)/documents/onlineProfiles/$(profileId)/private/ownership).data.ownerUid == request.auth.uid;
       allow update: if ownsProfile(profileId)

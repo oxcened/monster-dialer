@@ -9,13 +9,17 @@ Firebase, analytics, crash reports, or logs.
 
 Enable Anonymous Authentication, Cloud Firestore, and Cloud Storage in the Firebase project.
 Deploy [`firebase/firestore.rules`](../firebase/firestore.rules) and
-[`firebase/storage.rules`](../firebase/storage.rules). Production rules should additionally
-validate every nested profile field before launch; the checked-in rules establish ownership,
-public single-document reads, and disabled listing.
+[`firebase/storage.rules`](../firebase/storage.rules). The checked-in rules validate every field
+in the public schema, establish ownership, permit only single-document reads, and disable
+listing. Before release, test them against the deployed Firestore emulator and enable Firebase
+App Check enforcement for Authentication, Firestore, and Storage; rules cannot rate-limit
+anonymous profile creation.
 
 The public document path is `onlineProfiles/{publicProfileId}`. The profile ID is an opaque,
-cryptographically random capability, not a Firebase UID. Sprite files are PNGs beneath
-`onlineProfiles/{publicProfileId}/sprites/{sha256}.png`.
+cryptographically random capability, not a Firebase UID. Sprite files use the fixed paths
+`onlineProfiles/{publicProfileId}/sprites/trainer.png` and
+`onlineProfiles/{publicProfileId}/sprites/monster.png`. Storage access is revoked when the
+corresponding profile document is deleted, including when blob cleanup must be retried.
 
 ## Call behavior
 
