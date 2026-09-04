@@ -292,4 +292,10 @@
     <string name="shared_online_profile_unlink_guide_message">从联系人的菜单中打开“已关联的在线个人资料”，然后点按“解除在线个人资料关联”即可停止使用。该联系人将恢复使用本地队伍，共享个人资料保持不变。</string>
     <string name="characters_help_player_character_list_message">角色按来源分组：内置角色随应用提供；“你的训练师”和“你的怪物”是你在应用中创建的角色；导入的角色则按其角色包整理。长按你创建的角色可编辑、分享或删除它。</string>
     <string name="characters_help_contact_character_list_message">角色按来源分组：“随机选择”仅适用于联系人，会为每次通话自动选择符合条件的角色；内置角色随应用提供；“你的训练师”和“你的怪物”是你在应用中创建的角色；导入的角色则按其角色包整理。长按你创建的角色可编辑、分享或删除它。</string>
+    <string name="characters_help_creation_title">创建角色</string>
+    <string name="characters_help_creation_message">为你的角色命名并添加精灵图。当角色作为对手出现时会使用正面精灵图，而背面精灵图则用于表示战斗中位于你队伍里的角色。</string>
+    <string name="characters_help_sprites_title">精灵图文件与美术建议</string>
+    <string name="characters_help_sprites_message">请选择可通过设备图片选择器访问的图片文件。MonsterDialer 不会对自定义精灵图设置固定分辨率或文件大小限制。为了获得最清晰的效果，建议使用带透明背景的 PNG 图片，将角色置于画面中央并尽量减少周围的空白区域，同时让正面和背面精灵图保持相近的比例和姿势。</string>
+    <string name="characters_help_radiant_title">闪耀变体</string>
+    <string name="characters_help_radiant_message">仅限怪物：打开“高级”设置并开启“闪耀”开关，即可添加闪耀变体。之后在角色选择中，同一个怪物将显示普通版和闪耀版。闪耀版初始处于锁定状态，必须先在战斗中发现它才能选择。必须提供正面精灵图，因为“寻找”功能会使用该图片来发现并解锁闪耀变体。</string>
 </resources>
