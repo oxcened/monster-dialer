@@ -9,9 +9,15 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.items
+import androidx.compose.material3.FilterChip
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -27,6 +33,8 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import dev.alenajam.monsterdialer.R
 import dev.alenajam.monsterdialer.characters.data.BuiltInCharacters
 import dev.alenajam.monsterdialer.packs.data.CharacterAssignmentTarget
+import dev.alenajam.monsterdialer.packs.data.CharacterReference
+import dev.alenajam.monsterdialer.packs.data.CharacterType
 import dev.alenajam.monsterdialer.packs.data.InstalledPackCharacter
 import kotlinx.coroutines.launch
 
@@ -56,12 +64,12 @@ internal fun ColumnScope.PlayerCharacterSettingsContent(
     val monsterRoster by viewModel.monsterRoster.collectAsStateWithLifecycle()
     val trainers by viewModel.trainers.collectAsStateWithLifecycle()
     val monsters by viewModel.monsters.collectAsStateWithLifecycle()
-    val dataVersion by viewModel.dataVersion.collectAsStateWithLifecycle()
     val isLimitReached by viewModel.isLimitReached.collectAsStateWithLifecycle()
     val selectedTab by viewModel.selectedTab.collectAsStateWithLifecycle()
     val layout by viewModel.layout.collectAsStateWithLifecycle()
     val unlockedVariants by viewModel.unlockedVariants.collectAsStateWithLifecycle()
     val targetSlotIndex by viewModel.targetSlotIndex.collectAsStateWithLifecycle()
+    val filter by viewModel.filter.collectAsStateWithLifecycle()
 
     val currentTabHasCharacters = if (selectedTab == 0) trainers.isNotEmpty() else monsters.isNotEmpty()
     val effectiveLayout = if (currentTabHasCharacters) layout else CharacterLayout.List
@@ -91,6 +99,7 @@ internal fun ColumnScope.PlayerCharacterSettingsContent(
     LaunchedEffect(route, payload) {
         val slotIndex = payload?.split(":")?.getOrNull(1)?.toIntOrNull()
         viewModel.setTargetSlotIndex(slotIndex)
+        if (slotIndex != null) viewModel.setFilter(MonsterFilter.All)
         route?.let { viewModel.setSelectedTab(it.selectedTab) }
     }
 
@@ -109,6 +118,14 @@ internal fun ColumnScope.PlayerCharacterSettingsContent(
             viewModel.setSelectedTab(tab)
         }
     )
+
+    if (selectedTab == 1) {
+        MonsterFilterChips(
+            selectedFilter = filter,
+            onFilterSelected = viewModel::setFilter
+        )
+    }
+
     val selectedItemIndex = when (selectedTab) {
         0 -> trainerSelectedItemIndex
         else -> monsterSelectedItemIndex
@@ -140,9 +157,14 @@ internal fun ColumnScope.PlayerCharacterSettingsContent(
         )
     }
 
-    LaunchedEffect(dataVersion, trainers.isEmpty(), monsters.isEmpty()) {
-        if (trainers.isNotEmpty() || monsters.isNotEmpty()) {
-            val selectedItemIndex = if (selectedTab == 0) trainerSelectedItemIndex else monsterSelectedItemIndex
+    LaunchedEffect(
+        selectedTab,
+        selectedItemIndex,
+        effectiveLayout,
+        trainers,
+        monsters,
+    ) {
+        if (currentTabHasCharacters) {
             if (effectiveLayout == CharacterLayout.List) listState.requestScrollToItem(selectedItemIndex)
             else gridState.requestScrollToItem(selectedItemIndex)
         }
@@ -195,7 +217,8 @@ internal fun ColumnScope.PlayerCharacterSettingsContent(
                         onEdit = { navigator?.navigateTo(1, it.character.id) },
                         onShare = { pendingShare = it },
                         selectedReferences = selectedReferences,
-                        hideSelected = true
+                        hideSelected = true,
+                        filter = filter
                     )
                 }
             }
@@ -243,7 +266,8 @@ internal fun ColumnScope.PlayerCharacterSettingsContent(
                         onEdit = { navigator?.navigateTo(1, it.character.id) },
                         onShare = { pendingShare = it },
                         selectedReferences = selectedReferences,
-                        hideSelected = true
+                        hideSelected = true,
+                        filter = filter
                     )
                 }
             }
@@ -261,6 +285,37 @@ internal fun ColumnScope.PlayerCharacterSettingsContent(
             )
             if (effectiveLayout == CharacterLayout.List) JumpToSelectedCharacterButton(listState, selectedItemIndex, Modifier.align(Alignment.BottomEnd).padding(16.dp))
             else JumpToSelectedCharacterButton(gridState, selectedItemIndex, Modifier.align(Alignment.BottomEnd).padding(16.dp))
+        }
+    }
+}
+
+@OptIn(androidx.compose.material3.ExperimentalMaterial3Api::class)
+@Composable
+private fun MonsterFilterChips(
+    selectedFilter: MonsterFilter,
+    onFilterSelected: (MonsterFilter) -> Unit
+) {
+    LazyRow(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 16.dp, vertical = 8.dp),
+        horizontalArrangement = Arrangement.spacedBy(8.dp)
+    ) {
+        items(MonsterFilter.entries) { filter ->
+            FilterChip(
+                selected = selectedFilter == filter,
+                onClick = { onFilterSelected(filter) },
+                label = {
+                    Text(
+                        text = when (filter) {
+                            MonsterFilter.All -> stringResource(R.string.filter_all)
+                            MonsterFilter.Regular -> stringResource(R.string.filter_regular)
+                            MonsterFilter.RadiantUnlocked -> stringResource(R.string.filter_unlocked_radiant)
+                            MonsterFilter.RadiantLocked -> stringResource(R.string.filter_locked_radiant)
+                        }
+                    )
+                }
+            )
         }
     }
 }

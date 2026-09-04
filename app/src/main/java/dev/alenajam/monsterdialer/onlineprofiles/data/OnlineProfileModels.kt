@@ -22,6 +22,7 @@ data class SharedMonster(
     val level: Int,
     val maxHp: Int,
     val frontSprite: SharedSprite,
+    val isRadiant: Boolean = false,
 )
 
 @Serializable

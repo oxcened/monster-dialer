@@ -41,6 +41,10 @@
     <string name="no_other_character_options" comment="%1$s is a character type, such as Trainer or Monster.">Ingen andre %1$s-muligheder</string>
     <string name="import_and_enable_character_pack" comment="Empty-state message in the character selector.">Tilføj din egen figur eller importér en pakke for at se flere.</string>
     <string name="radiant" comment="Adjective for a rare, sparkling character variant.">Strålende</string>
+    <string name="filter_all">Alle</string>
+    <string name="filter_regular">Normal</string>
+    <string name="filter_unlocked_radiant">Ulåst strålende</string>
+    <string name="filter_locked_radiant">Låst strålende</string>
     <string name="selected" comment="Status label for the currently chosen option.">Valgt</string>
     <string name="randomize" comment="Character selection that chooses a different eligible character for every call.">Tilfældig</string>
     <string name="locked">Låst</string>

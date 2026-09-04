@@ -46,6 +46,7 @@ class OnlineProfileCache(
                 hp = profile.monster.maxHp,
                 maxHp = profile.monster.maxHp,
                 frontSprite = BattleVisualAsset.LocalFile(monsterFile.path),
+                isRadiant = profile.monster.isRadiant
             ),
         )
     }

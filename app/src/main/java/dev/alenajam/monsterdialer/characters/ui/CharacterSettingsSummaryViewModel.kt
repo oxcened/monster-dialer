@@ -109,13 +109,13 @@ class CharacterSettingsSummaryViewModel @Inject constructor(
             role = CharacterAssignmentTarget.Player,
             type = type
         ) ?: return null
-        val artwork = installed.character.variant(reference.variantId)?.let { variant ->
-            variant.frontImage ?: variant.backImage
-        } ?: return null
+        val variant = installed.character.variant(reference.variantId) ?: return null
+        val artworkPath = variant.frontImage ?: variant.backImage ?: return null
         return PlayerProfileCharacter(
             name = installed.character.name,
-            artwork = installed.imageFile(artwork),
+            artwork = installed.imageFile(artworkPath),
             level = installed.character.level,
+            isRadiant = variant.isRadiant
         )
     }
 
@@ -167,4 +167,5 @@ data class PlayerProfileCharacter(
     val artwork: File? = null,
     @param:DrawableRes val fallbackArtwork: Int? = null,
     val level: Int? = null,
+    val isRadiant: Boolean = false,
 )

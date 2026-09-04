@@ -144,23 +144,24 @@ class AssignedCharacterEncounterFactory @Inject constructor(
                 saveEncounter(
                     call,
                     reference,
-                    encounter.withOnlineOpponent(onlineOpponent),
+                    encounter,
                     isRadiantDiscovery = wasUnlocked,
                 )
                 return@runBlocking encounter
             }
 
+            val resolvedRegularEncounter = regularEncounter.withOnlineOpponent(onlineOpponent)
             saveEncounter(
                 call,
                 radiantReference = null,
-                encounter = regularEncounter.withOnlineOpponent(onlineOpponent),
+                encounter = resolvedRegularEncounter,
                 isRadiantDiscovery = false,
             )
-            regularEncounter
+            resolvedRegularEncounter
         }.also { encounter ->
             cachedCall = call
             cachedEncounter = encounter
-        }.withOnlineOpponent(onlineOpponent)
+        }
     }
 
     private fun randomRadiantWild(): Pair<InstalledPackCharacter, CharacterVisualVariant>? {
@@ -280,15 +281,6 @@ class AssignedCharacterEncounterFactory @Inject constructor(
 
     private fun InstalledPackCharacter.contactTrainerSprite(fallback: BattleVisualAsset, variantId: String) =
         character.variant(variantId)?.frontImage?.let { BattleVisualAsset.LocalFile(imageFile(it).path) } ?: fallback
-
-    /** An online opponent only replaces contact-side visuals; the local player stays untouched. */
-    private fun BattleEncounter.withOnlineOpponent(opponent: RemoteBattleOpponent?): BattleEncounter {
-        if (opponent == null) return this
-        return copy(
-            enemy = opponent.monster,
-            enemyTrainerSprite = opponent.trainerSprite,
-        )
-    }
 
     private companion object {
         const val RadiantEncounterDenominator = 64

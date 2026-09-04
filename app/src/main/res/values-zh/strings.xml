@@ -41,6 +41,10 @@
     <string name="no_other_character_options" comment="%1$s is a character type, such as Trainer or Monster.">没有其他 %1$s 选项</string>
     <string name="import_and_enable_character_pack" comment="Empty-state message in the character selector.">添加你自己的角色或导入角色包以查看更多。</string>
     <string name="radiant" comment="Adjective for a rare, sparkling character variant.">闪耀</string>
+    <string name="filter_all">全部</string>
+    <string name="filter_regular">普通</string>
+    <string name="filter_unlocked_radiant">已解锁闪耀</string>
+    <string name="filter_locked_radiant">已锁定闪耀</string>
     <string name="selected" comment="Status label for the currently chosen option.">已选择</string>
     <string name="randomize" comment="Character selection that chooses a different eligible character for every call.">随机</string>
     <string name="locked">已锁定</string>

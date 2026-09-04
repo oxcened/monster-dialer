@@ -68,7 +68,13 @@ class OnlineProfilePublisher @Inject constructor(
             publicProfileId = profileId,
             revision = revision,
             trainer = SharedTrainer(assets.trainerName, assets.trainerSprite.shared()),
-            monster = SharedMonster(assets.monsterName, assets.monsterLevel, assets.monsterHp, assets.monsterSprite.shared()),
+            monster = SharedMonster(
+                name = assets.monsterName,
+                level = assets.monsterLevel,
+                maxHp = assets.monsterHp,
+                frontSprite = assets.monsterSprite.shared(),
+                isRadiant = assets.monsterIsRadiant
+            ),
         )
         remoteDataSource.publish(
             OnlineProfileUpload(
@@ -121,6 +127,7 @@ class OnlineProfilePublisher @Inject constructor(
             monsterName = monster?.character?.name ?: BuiltInCharacters.monster.character.name,
             monsterLevel = monster?.character?.level ?: BuiltInCharacters.monster.level,
             monsterHp = monster?.character?.maxHp ?: BuiltInCharacters.monster.maxHp,
+            monsterIsRadiant = monsterVariant?.isRadiant == true,
             trainerSprite = trainerSprite,
             monsterSprite = monsterSprite,
         )
@@ -154,7 +161,15 @@ class OnlineProfilePublisher @Inject constructor(
     }
 }
 
-private data class ActiveAssets(val trainerName: String, val monsterName: String, val monsterLevel: Int, val monsterHp: Int, val trainerSprite: PreparedSprite, val monsterSprite: PreparedSprite) {
+private data class ActiveAssets(
+    val trainerName: String,
+    val monsterName: String,
+    val monsterLevel: Int,
+    val monsterHp: Int,
+    val monsterIsRadiant: Boolean,
+    val trainerSprite: PreparedSprite,
+    val monsterSprite: PreparedSprite
+) {
     val all get() = listOf(trainerSprite, monsterSprite)
 
     fun contentFingerprint(): String = listOf(
@@ -162,6 +177,7 @@ private data class ActiveAssets(val trainerName: String, val monsterName: String
         monsterName,
         monsterLevel.toString(),
         monsterHp.toString(),
+        monsterIsRadiant.toString(),
         trainerSprite.sha256,
         monsterSprite.sha256,
     ).joinToString("\u0000").encodeToByteArray().sha256()

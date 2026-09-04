@@ -41,6 +41,10 @@
     <string name="no_other_character_options" comment="%1$s is a character type, such as Trainer or Monster.">No hay más opciones de %1$s</string>
     <string name="import_and_enable_character_pack" comment="Empty-state message in the character selector.">Añade tu propio personaje o importa un paquete para ver más.</string>
     <string name="radiant" comment="Adjective for a rare, sparkling character variant.">Radiante</string>
+    <string name="filter_all">Todos</string>
+    <string name="filter_regular">Normal</string>
+    <string name="filter_unlocked_radiant">Radiante desbloqueado</string>
+    <string name="filter_locked_radiant">Radiante bloqueado</string>
     <string name="selected" comment="Status label for the currently chosen option.">Seleccionado</string>
     <string name="randomize" comment="Character selection that chooses a different eligible character for every call.">Aleatorio</string>
     <string name="locked">Bloqueado</string>

@@ -54,6 +54,11 @@
     <string name="battle_journal_clear" comment="Overflow-menu action that removes all Battle Journal entries.">Clear journal</string>
     <string name="battle_journal_clear_confirmation_title" comment="Title for the confirmation dialog before clearing the Battle Journal.">Clear Battle Journal?</string>
     <string name="battle_journal_clear_confirmation_message" comment="Explanation of what clearing the Battle Journal removes.">This permanently removes all battle history and saved journal sprites.</string>
+    <string name="monster_variant_and_level" comment="Monster variant and level subtitle. %1$s is the variant (e.g., Regular) and %2$s is the level (e.g., Lv. 12).">%1$s · %2$s</string>
+    <string name="filter_all" comment="Filter option to show all monster variants.">All</string>
+    <string name="filter_regular" comment="Filter option to show only regular monster variants.">Regular</string>
+    <string name="filter_unlocked_radiant" comment="Filter option to show only unlocked radiant monster variants.">Unlocked Radiant</string>
+    <string name="filter_locked_radiant" comment="Filter option to show only locked radiant monster variants.">Locked Radiant</string>
     <string name="your_roster" comment="Heading above the player's current active monster roster.">Your roster</string>
     <string name="roster_monster_level" comment="Level shown below a monster in the roster. %1$d is the monster's level.">Lv. %1$d</string>
     <string name="roster_monster_description" comment="Accessibility description for a roster monster. %1$s is its name and %2$d is its level.">%1$s, level %2$d</string>
@@ -120,7 +125,7 @@
     <string name="radiant_variant_unlocked_message" comment="Confirms a radiant character variant was unlocked; %1$s is the character name.">%1$s is now ready to assign.</string>
     <string name="radiant_unlock_share_title" comment="Chooser title for sharing a radiant variant unlock.">Share radiant unlock</string>
     <string name="radiant_unlock_share_card_title" comment="Heading on a radiant variant unlock share image.">RADIANT MONSTER UNLOCKED!</string>
-    <string name="radiant_unlock_share_card_link" comment="Link printed on the radiant-unlock share card. Do not translate." translatable="false">linktr.ee/monsterdialer</string>
+    <string name="radiant_unlock_share_card_link" comment="Link printed on the radiant-unlock share card. Do not translate." translatable="false">monsterdialer.web.app</string>
     <string name="show_grid_view" comment="Accessibility label for the control that switches the character selector to a grid.">Show grid view</string>
     <string name="show_list_view" comment="Accessibility label for the control that switches the character selector to a list.">Show list view</string>
     <string name="jump_to_selected_character" comment="Accessibility label for a button that scrolls to the selected character.">Jump to selected character</string>
