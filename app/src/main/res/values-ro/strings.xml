@@ -4,7 +4,7 @@
     <string name="contribute_translations" comment="Title of the OpenDialer translation contribution link on the About screen.">Contribuie la traducerile OpenDialer</string>
     <string name="hang_up" comment="Button to end the current phone call.">Închide</string>
     <string name="settings_character_packs_title" comment="Settings title for managing character packs.">Pachete de personaje</string>
-    <string name="characters_navigation_label" comment="Bottom navigation label for character customization.">Personaje</string>
+    <string name="characters_navigation_label" comment="Bottom navigation label for character customization.">Profil</string>
     <string name="settings_character_packs_description" comment="Settings description for character packs.">Importă și gestionează ilustrații personalizate ale personajelor.</string>
     <string name="import_character">Importă personaj</string>
     <string name="import_character_description">Adaugă un personaj pe care cineva l-a distribuit cu tine.</string>
@@ -22,7 +22,7 @@
     <string name="export_character">Exportă personajul</string>
     <string name="save_to_device">Salvează pe dispozitiv</string>
     <string name="shared_character_file_name">%1$s.monstercharacter</string>
-    <string name="settings_player_character_title" comment="Settings title for the player's battle character.">Personajul jucătorului</string>
+    <string name="settings_player_character_title" comment="Settings title for the player's battle character.">Personajul tău</string>
     <string name="settings_player_character_description" comment="Settings description for the player's battle character.">Alege cine te reprezintă în timpul apelurilor.</string>
     <string name="player_characters_not_set" comment="Settings subtitle when no player character is selected.">Nepersonalizat</string>
     <string name="using_characters" comment="Settings subtitle; %1$s is a list of selected character names.">Folosește %1$s</string>
@@ -179,7 +179,7 @@
     <string name="characters_help_creating_title">Crearea personajelor</string><string name="characters_help_creating_message">Atinge „Adaugă antrenor” sau „Adaugă monstru” și alege imagini din galerie pentru:</string><string name="characters_help_creating_sprites_front"><b>Sprite frontal:</b> vizibil la apelul unui contact.</string><string name="characters_help_creating_sprites_back"><b>Sprite posterior:</b> personajul tău în lupte.</string>
     <string name="characters_help_advanced_title">Statistici avansate</string><string name="characters_help_advanced_message">Pentru monștri, setează nivelul și PS max în „Avansat”. Poți activa și starea „Radiant”.</string>
     <string name="characters_help_sharing_title">Partajare și import</string><string name="characters_help_sharing_message">MonsterDialer folosește două tipuri de fișiere:</string><string name="characters_help_sharing_files_character"><b>.monstercharacter:</b> un personaj cu statistici și ilustrații.</string><string name="characters_help_sharing_files_pack"><b>.monsterpack:</b> o colecție de personaje.</string><string name="characters_help_sharing_how_to">Ține apăsat un personaj propriu pentru a-l exporta. Pentru import, deschide un fișier primit sau folosește „Importă personaj”.</string>
-    <string name="characters_help_packs_title">Crearea pachetelor</string><string name="characters_help_packs_message">În „Pachete de personaje”, creează un pachet, alege monștrii și exportă fișierul .monsterpack.</string>
+    <string name="characters_help_packs_title">Crearea pachetelor</string><string name="characters_help_packs_message">În „Pachete de personaje”, creează un pachet, alege monștrii și exportă fișierul .monsterpack.</string><string name="characters_help_packs_import_title">Importarea pachetelor de personaje</string><string name="characters_help_packs_import_message">Atinge „Importă pachet” pentru a adăuga un fișier .monsterpack pe care cineva l-a partajat cu tine. Personajele importate devin disponibile pentru selectare când pachetul este activat. Importă doar ilustrații și sunete pe care le-ai creat sau pentru care ai licență de utilizare.</string>
     <string name="characters_help_radiants_title">Descoperire radiantă</string><string name="characters_help_radiants_message">Monștrii radianți sunt rari. Variantele din pachete se deblochează când le întâlnești în sălbăticie în timpul unui apel.</string>
     <string name="characters_help_management_title">Gestionarea colecției</string><string name="characters_help_management_message">Ține apăsat un personaj din „Monștrii tăi” sau „Antrenorii tăi” pentru a-l edita, partaja sau șterge.</string>
     <string name="characters_help_assignments_title">Personalizarea apelurilor</string><string name="characters_help_assignments_message">Personajele pot fi folosite în două moduri:</string><string name="characters_help_assignments_player"><b>Personajul jucătorului:</b> avatarul tău la fiecare apel.</string><string name="characters_help_assignments_contact"><b>Personajele contactelor:</b> atribuie monștri sau antrenori contactelor; ei vor fi adversarii când te sună.</string>

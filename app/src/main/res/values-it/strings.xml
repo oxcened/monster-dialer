@@ -4,7 +4,7 @@
     <string name="contribute_translations" comment="Title of the OpenDialer translation contribution link on the About screen.">Contribuisci alle traduzioni di OpenDialer</string>
     <string name="hang_up" comment="Button to end the current phone call.">Riaggancia</string>
     <string name="settings_character_packs_title" comment="Settings title for managing character packs.">Pacchetti di personaggi</string>
-    <string name="characters_navigation_label" comment="Bottom navigation label for character customization.">Personaggi</string>
+    <string name="characters_navigation_label" comment="Bottom navigation label for character customization.">Profilo</string>
     <string name="settings_character_packs_description" comment="Settings description for character packs.">Importa e gestisci illustrazioni personalizzate dei personaggi.</string>
     <string name="import_character">Importa personaggio</string>
     <string name="import_character_description">Aggiungi un personaggio che qualcuno ha condiviso con te.</string>
@@ -22,7 +22,7 @@
     <string name="export_character">Esporta personaggio</string>
     <string name="save_to_device">Salva sul dispositivo</string>
     <string name="shared_character_file_name">%1$s.monstercharacter</string>
-    <string name="settings_player_character_title" comment="Settings title for the player's battle character.">Personaggio del giocatore</string>
+    <string name="settings_player_character_title" comment="Settings title for the player's battle character.">Il tuo personaggio</string>
     <string name="settings_player_character_description" comment="Settings description for the player's battle character.">Scegli chi ti rappresenta durante le chiamate.</string>
     <string name="player_characters_not_set" comment="Settings subtitle when no player character is selected.">Non personalizzato</string>
     <string name="using_characters" comment="Settings subtitle; %1$s is a list of selected character names.">Usa %1$s</string>
@@ -197,6 +197,8 @@
     <string name="characters_help_sharing_how_to">Tieni premuto un tuo personaggio per esportarlo come file .monstercharacter. Per importare entrambi i tipi, apri un file ricevuto oppure usa “Importa personaggio”.</string>
     <string name="characters_help_packs_title">Creare pacchetti di personaggi</string>
     <string name="characters_help_packs_message">Per condividere una raccolta di mostri personali, crea un pacchetto da “Pacchetti di personaggi” e tocca “Crea pacchetto”. Scegli i mostri da includere, poi esporta il file .monsterpack.</string>
+    <string name="characters_help_packs_import_title">Importare pacchetti di personaggi</string>
+    <string name="characters_help_packs_import_message">Tocca “Importa pacchetto” per aggiungere un file .monsterpack condiviso con te. I personaggi importati diventano selezionabili quando il pacchetto è attivato. Importa solo illustrazioni e suoni che hai creato o per cui hai una licenza d’uso.</string>
     <string name="characters_help_radiants_title">Scoperta radiosa</string>
     <string name="characters_help_radiants_message">I mostri radiosi sono varianti rare e scintillanti. Le varianti nei pacchetti restano bloccate finché non le incontri in natura durante una chiamata; poi si sbloccano automaticamente e puoi condividere una carta della scoperta.</string>
     <string name="characters_help_management_title">Gestire la collezione</string>

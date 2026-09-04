@@ -4,7 +4,7 @@
     <string name="contribute_translations" comment="Title of the OpenDialer translation contribution link on the About screen.">参与 OpenDialer 翻译</string>
     <string name="hang_up" comment="Button to end the current phone call.">挂断</string>
     <string name="settings_character_packs_title" comment="Settings title for managing character packs.">角色包</string>
-    <string name="characters_navigation_label" comment="Bottom navigation label for character customization.">角色</string>
+    <string name="characters_navigation_label" comment="Bottom navigation label for character customization.">个人资料</string>
     <string name="settings_character_packs_description" comment="Settings description for character packs.">导入和管理自定义角色插图。</string>
     <string name="import_character">导入角色</string>
     <string name="import_character_description">添加他人分享给你的角色。</string>
@@ -22,7 +22,7 @@
     <string name="export_character">导出角色</string>
     <string name="save_to_device">保存到设备</string>
     <string name="shared_character_file_name">%1$s.monstercharacter</string>
-    <string name="settings_player_character_title" comment="Settings title for the player's battle character.">玩家角色</string>
+    <string name="settings_player_character_title" comment="Settings title for the player's battle character.">你的角色</string>
     <string name="settings_player_character_description" comment="Settings description for the player's battle character.">选择通话时代表你的角色。</string>
     <string name="player_characters_not_set" comment="Settings subtitle when no player character is selected.">未自定义</string>
     <string name="using_characters" comment="Settings subtitle; %1$s is a list of selected character names.">正在使用 %1$s</string>
@@ -171,7 +171,7 @@
     <string name="regular">普通</string><string name="characters_help_title">角色指南</string><string name="characters_help_description">了解 MonsterDialer 的角色系统。</string><string name="characters_help_intro_title">你的角色收藏</string><string name="characters_help_intro_message">“角色”标签页可为你和联系人自定义每次通话。</string>
     <string name="characters_help_creating_title">创建自定义角色</string><string name="characters_help_creating_message">点按“添加训练师”或“添加怪物”，然后从图库选择图片用于：</string><string name="characters_help_creating_sprites_front"><b>前向图像：</b>联系人来电时显示。</string><string name="characters_help_creating_sprites_back"><b>后向图像：</b>战斗中代表你的角色。</string><string name="characters_help_advanced_title">高级属性</string><string name="characters_help_advanced_message">对于怪物，可在“高级”中设置等级和最大生命值，也可启用“闪耀”状态。</string>
     <string name="characters_help_sharing_title">分享和导入</string><string name="characters_help_sharing_message">MonsterDialer 使用两种可分享文件：</string><string name="characters_help_sharing_files_character"><b>.monstercharacter：</b>包含属性和图像的单个角色。</string><string name="characters_help_sharing_files_pack"><b>.monsterpack：</b>多个角色的集合。</string><string name="characters_help_sharing_how_to">长按自己的角色即可导出。要导入，请打开收到的文件或使用“导入角色”。</string>
-    <string name="characters_help_packs_title">创建角色包</string><string name="characters_help_packs_message">在“角色包”中创建角色包，选择怪物后导出 .monsterpack 文件。</string><string name="characters_help_radiants_title">闪耀发现</string><string name="characters_help_radiants_message">闪耀怪物十分稀有。角色包中的变体会在你通话时于野外遇到它们后解锁。</string>
+    <string name="characters_help_packs_title">创建角色包</string><string name="characters_help_packs_message">在“角色包”中创建角色包，选择怪物后导出 .monsterpack 文件。</string><string name="characters_help_packs_import_title">导入角色包</string><string name="characters_help_packs_import_message">轻点“导入角色包”以添加他人分享给你的 .monsterpack 文件。启用角色包后，便可选择导入的角色。仅导入你创作的，或已获授权使用的插画和声音。</string><string name="characters_help_radiants_title">闪耀发现</string><string name="characters_help_radiants_message">闪耀怪物十分稀有。角色包中的变体会在你通话时于野外遇到它们后解锁。</string>
     <string name="characters_help_management_title">管理收藏</string><string name="characters_help_management_message">长按“你的怪物”或“你的训练师”中的角色即可编辑、分享或删除。</string><string name="characters_help_assignments_title">个性化通话</string><string name="characters_help_assignments_message">角色有两种使用方式：</string><string name="characters_help_assignments_player"><b>玩家角色：</b>你每次通话中的头像。</string><string name="characters_help_assignments_contact"><b>联系人角色：</b>将怪物或训练师分配给联系人；他们来电时会成为你的对手。</string>
     <string name="customize_your_calls">自定义你的通话</string>
     <string name="character_collection_title">你的收藏</string>

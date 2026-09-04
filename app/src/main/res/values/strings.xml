@@ -80,7 +80,7 @@
     <string name="export_character" comment="Button that exports one character as a shareable file.">Export character</string>
     <string name="save_to_device" comment="Button that saves a shared character file through the device's document picker.">Save to device</string>
     <string name="shared_character_file_name" comment="Default filename for an exported character. Keep the .monstercharacter extension. %1$s is the character name.">%1$s.monstercharacter</string>
-    <string name="settings_player_character_title" comment="Settings title for the player's battle character.">Player Character</string>
+    <string name="settings_player_character_title" comment="Settings title for the player's battle character.">Your character</string>
     <string name="settings_player_character_description" comment="Settings description for the player's battle character.">Choose who represents you during calls.</string>
     <string name="player_characters_not_set" comment="Settings subtitle when no player character is selected.">Not customized</string>
     <string name="using_characters" comment="Settings subtitle; %1$s is a list of selected character names.">Using %1$s</string>

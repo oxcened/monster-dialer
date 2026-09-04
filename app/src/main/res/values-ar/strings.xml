@@ -4,7 +4,7 @@
     <string name="contribute_translations" comment="Title of the OpenDialer translation contribution link on the About screen.">المساهمة في ترجمة OpenDialer</string>
     <string name="hang_up" comment="Button to end the current phone call.">إنهاء</string>
     <string name="settings_character_packs_title" comment="Settings title for managing character packs.">حزم الشخصيات</string>
-    <string name="characters_navigation_label" comment="Bottom navigation label for character customization.">الشخصيات</string>
+    <string name="characters_navigation_label" comment="Bottom navigation label for character customization.">الملف الشخصي</string>
     <string name="settings_character_packs_description" comment="Settings description for character packs.">استورد وأدر رسومات الشخصيات المخصصة.</string>
     <string name="import_character">استيراد شخصية</string>
     <string name="import_character_description">أضف شخصية شاركها معك شخص آخر.</string>
@@ -22,7 +22,7 @@
     <string name="export_character">تصدير الشخصية</string>
     <string name="save_to_device">حفظ على الجهاز</string>
     <string name="shared_character_file_name">%1$s.monstercharacter</string>
-    <string name="settings_player_character_title" comment="Settings title for the player's battle character.">شخصية اللاعب</string>
+    <string name="settings_player_character_title" comment="Settings title for the player's battle character.">شخصيتك</string>
     <string name="settings_player_character_description" comment="Settings description for the player's battle character.">اختر من يمثلك أثناء المكالمات.</string>
     <string name="player_characters_not_set" comment="Settings subtitle when no player character is selected.">غير مخصص</string>
     <string name="using_characters" comment="Settings subtitle; %1$s is a list of selected character names.">يستخدم %1$s</string>
@@ -186,7 +186,7 @@
     <string name="regular">عادي</string><string name="characters_help_title">دليل الشخصيات</string><string name="characters_help_description">تعرّف على شخصيات MonsterDialer.</string><string name="characters_help_intro_title">مجموعتك</string><string name="characters_help_intro_message">تتيح لك علامة الشخصيات تخصيص كل مكالمة لك ولجهات اتصالك.</string>
     <string name="characters_help_creating_title">إنشاء شخصيات</string><string name="characters_help_creating_message">اضغط «إضافة مدرب» أو «إضافة وحش» واختر صوراً من المعرض لـ:</string><string name="characters_help_creating_sprites_front"><b>الرسم الأمامي:</b> يظهر عند اتصال جهة اتصال.</string><string name="characters_help_creating_sprites_back"><b>الرسم الخلفي:</b> شخصيتك في المعارك.</string><string name="characters_help_advanced_title">إحصاءات متقدمة</string><string name="characters_help_advanced_message">لل وحوش، اضبط المستوى وأقصى نقاط الصحة من «متقدم»، ويمكنك تفعيل حالة «متألق».</string>
     <string name="characters_help_sharing_title">المشاركة والاستيراد</string><string name="characters_help_sharing_message">يستخدم MonsterDialer نوعين من الملفات:</string><string name="characters_help_sharing_files_character"><b>.monstercharacter:</b> شخصية بإحصاءات ورسومات.</string><string name="characters_help_sharing_files_pack"><b>.monsterpack:</b> مجموعة شخصيات.</string><string name="characters_help_sharing_how_to">اضغط مطولاً على شخصية لتصديرها. للاستيراد، افتح ملفاً مستلماً أو استخدم «استيراد شخصية».</string>
-    <string name="characters_help_packs_title">إنشاء حزم</string><string name="characters_help_packs_message">أنشئ حزمة من «حزم الشخصيات»، واختر الوحوش ثم صدّر ملف .monsterpack.</string><string name="characters_help_radiants_title">اكتشاف متألق</string><string name="characters_help_radiants_message">الوحوش المتألقة نادرة. تُفتح متغيرات الحزم عند مواجهتها في البرية أثناء مكالمة.</string>
+    <string name="characters_help_packs_title">إنشاء حزم</string><string name="characters_help_packs_message">أنشئ حزمة من «حزم الشخصيات»، واختر الوحوش ثم صدّر ملف .monsterpack.</string><string name="characters_help_packs_import_title">استيراد حزم الشخصيات</string><string name="characters_help_packs_import_message">اضغط «استيراد حزمة» لإضافة ملف .monsterpack شاركه معك شخص ما. تصبح الشخصيات المستوردة متاحة للاختيار عند تفعيل الحزمة. لا تستورد إلا الرسومات والأصوات التي أنشأتها أو تملك ترخيصًا لاستخدامها.</string><string name="characters_help_radiants_title">اكتشاف متألق</string><string name="characters_help_radiants_message">الوحوش المتألقة نادرة. تُفتح متغيرات الحزم عند مواجهتها في البرية أثناء مكالمة.</string>
     <string name="characters_help_management_title">إدارة المجموعة</string><string name="characters_help_management_message">اضغط مطولاً على شخصية في «وحوشك» أو «مدربوك» لتعديلها أو مشاركتها أو حذفها.</string><string name="characters_help_assignments_title">تخصيص المكالمات</string><string name="characters_help_assignments_message">يمكن استخدام الشخصيات بطريقتين:</string><string name="characters_help_assignments_player"><b>شخصية اللاعب:</b> صورتك الرمزية في كل مكالمة.</string><string name="characters_help_assignments_contact"><b>شخصيات جهات الاتصال:</b> عيّن وحوشاً أو مدربين لجهات الاتصال؛ سيظهرون كخصوم عند اتصالهم.</string>
     <string name="customize_your_calls">تخصيص مكالماتك</string>
     <string name="character_collection_title">مجموعة شخصياتك</string>

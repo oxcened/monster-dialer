@@ -4,7 +4,7 @@
     <string name="contribute_translations" comment="Title of the OpenDialer translation contribution link on the About screen.">Zu OpenDialer-Übersetzungen beitragen</string>
     <string name="hang_up" comment="Button to end the current phone call.">Auflegen</string>
     <string name="settings_character_packs_title" comment="Settings title for managing character packs.">Charakterpakete</string>
-    <string name="characters_navigation_label" comment="Bottom navigation label for character customization.">Charaktere</string>
+    <string name="characters_navigation_label" comment="Bottom navigation label for character customization.">Profil</string>
     <string name="settings_character_packs_description" comment="Settings description for character packs.">Importiere und verwalte eigene Charaktergrafiken.</string>
     <string name="import_character">Charakter importieren</string>
     <string name="import_character_description">Füge einen Charakter hinzu, den jemand mit dir geteilt hat.</string>
@@ -22,7 +22,7 @@
     <string name="export_character">Charakter exportieren</string>
     <string name="save_to_device">Auf Gerät speichern</string>
     <string name="shared_character_file_name">%1$s.monstercharacter</string>
-    <string name="settings_player_character_title" comment="Settings title for the player's battle character.">Spielercharakter</string>
+    <string name="settings_player_character_title" comment="Settings title for the player's battle character.">Dein Charakter</string>
     <string name="settings_player_character_description" comment="Settings description for the player's battle character.">Wähle, wer dich während Anrufen repräsentiert.</string>
     <string name="player_characters_not_set" comment="Settings subtitle when no player character is selected.">Nicht personalisiert</string>
     <string name="using_characters" comment="Settings subtitle; %1$s is a list of selected character names.">Verwendet %1$s</string>
@@ -177,6 +177,7 @@
     <string name="characters_help_advanced_title">Erweiterte Werte</string><string name="characters_help_advanced_message">Bei Monstern kannst du unter „Erweitert“ Level und maximale KP festlegen sowie den Status „Strahlend“ aktivieren.</string>
     <string name="characters_help_sharing_title">Teilen und importieren</string><string name="characters_help_sharing_message">MonsterDialer nutzt zwei Dateitypen:</string><string name="characters_help_sharing_files_character"><b>.monstercharacter:</b> ein Charakter mit Werten und Grafik.</string><string name="characters_help_sharing_files_pack"><b>.monsterpack:</b> eine Charaktersammlung.</string><string name="characters_help_sharing_how_to">Halte einen eigenen Charakter gedrückt, um ihn zu exportieren. Zum Importieren öffne eine erhaltene Datei oder nutze „Charakter importieren“.</string>
     <string name="characters_help_packs_title">Packs erstellen</string><string name="characters_help_packs_message">Erstelle unter „Charakter-Packs“ ein Pack, wähle Monster aus und exportiere die .monsterpack-Datei.</string>
+    <string name="characters_help_packs_import_title">Charakter-Packs importieren</string><string name="characters_help_packs_import_message">Tippe auf „Pack importieren“, um eine .monsterpack-Datei hinzuzufügen, die jemand mit dir geteilt hat. Importierte Charaktere kannst du auswählen, sobald das Pack aktiviert ist. Importiere nur Grafiken und Sounds, die du erstellt hast oder für deren Nutzung du lizenziert bist.</string>
     <string name="characters_help_radiants_title">Strahlende Entdeckung</string><string name="characters_help_radiants_message">Strahlende Monster sind selten. Pack-Varianten werden freigeschaltet, wenn du ihnen während eines Anrufs in freier Wildbahn begegnest.</string>
     <string name="characters_help_management_title">Sammlung verwalten</string><string name="characters_help_management_message">Halte einen Charakter unter „Deine Monster“ oder „Deine Trainer“ gedrückt, um ihn zu bearbeiten, zu teilen oder zu löschen.</string>
     <string name="characters_help_assignments_title">Anrufe personalisieren</string><string name="characters_help_assignments_message">Charaktere lassen sich auf zwei Arten nutzen:</string><string name="characters_help_assignments_player"><b>Spielercharakter:</b> dein Avatar für jeden Anruf.</string><string name="characters_help_assignments_contact"><b>Kontaktcharaktere:</b> Weise Kontakten Monster oder Trainer zu; sie erscheinen als Gegner, wenn sie anrufen.</string>
