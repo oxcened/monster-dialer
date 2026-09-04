@@ -303,4 +303,10 @@
     <string name="online_profile_delete_guide_title">Eliminar tu perfil</string>
     <string name="online_profile_delete_guide_message">Toca “Eliminar perfil” para eliminar permanentemente los datos publicados de tu perfil. Quien tenga tu enlace para compartir ya no podrá ver tu equipo.</string>
     <string name="characters_help_character_list_title">Lista de personajes</string>
+    <string name="characters_help_creation_title">Crear un personaje</string>
+    <string name="characters_help_creation_message">Pon un nombre a tu personaje y añade su ilustración de sprite. El sprite frontal se usa cuando el personaje aparece como oponente, mientras que el sprite trasero representa al personaje en tu equipo durante los combates.</string>
+    <string name="characters_help_sprites_title">Archivos de sprites y consejos de ilustración</string>
+    <string name="characters_help_sprites_message">Elige un archivo de imagen disponible mediante el selector de imágenes de tu dispositivo. MonsterDialer no impone una resolución ni un límite de tamaño de archivo fijos para los sprites personalizados. Para obtener el resultado más claro, usa ilustraciones PNG con fondo transparente, mantén el personaje centrado y con poco margen vacío, y usa una escala y pose similares para los sprites frontal y trasero.</string>
+    <string name="characters_help_radiant_title">Variantes radiantes</string>
+    <string name="characters_help_radiant_message">Solo para monstruos: abre Avanzado y activa el interruptor Radiante para añadir una variante radiante. La selección de personajes mostrará versiones normales y radiantes del mismo monstruo. La versión radiante empieza bloqueada y debe encontrarse durante los combates antes de poder seleccionarla. Se requiere un sprite frontal porque la función Encontrar lo usa para descubrir y desbloquear la variante radiante.</string>
 </resources>

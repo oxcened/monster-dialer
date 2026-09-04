@@ -301,4 +301,25 @@
     <string name="online_profile_delete_guide_title">حذف ملفك الشخصي</string>
     <string name="online_profile_delete_guide_message">اضغط على «حذف الملف الشخصي» لإزالة بيانات ملفك الشخصي المنشورة نهائيًا. لن يتمكن أي شخص لديه رابط المشاركة من رؤية فريقك بعد الآن.</string>
     <string name="characters_help_character_list_title">قائمة الشخصيات</string>
+    <string name="learn_about_radiants">حول المتوهجات</string>
+    <string name="open_radiants_guide">فتح دليل المتوهجات</string>
+    <string name="radiants_guide_title">المتوهجات</string>
+    <string name="radiants_guide_message">المتوهجات هي مظاهر بديلة نادرة للوحوش يمكنك اكتشافها وإضافتها إلى قائمتك.</string>
+    <string name="radiants_guide_availability">• لا يمكن أن تظهر إلا الوحوش ذات النسخة المتوهجة.</string>
+    <string name="radiants_guide_unlock">• يمكن لمتوهج أن يحل محل معركة مؤهلة. يُفتح فور بدء المعركة، ولا تحتاج إلى فعل أي شيء.</string>
+    <string name="radiants_guide_assign">• بعد اكتشافه، اختر نسخته المتوهجة من شخصيتك ← الوحوش لتعيينها.</string>
+    <string name="radiants_guide_journal">• اعثر على اكتشافاتك المتوهجة وشاركها في سجل المعارك.</string>
+    <string name="open_shared_online_profile_guide">فتح دليل الملفات الشخصية المتصلة المشتركة</string>
+    <string name="shared_online_profile_guide_title">استخدام ملف شخصي متصل مشترك</string>
+    <string name="shared_online_profile_guide_message">عندما يشارك شخص ما رابط ملف شخصي متصل معك، يمكنك ربط فريقه المشترك بإحدى جهات اتصالك لمعارك المكالمات.</string>
+    <string name="shared_online_profile_choose_contact_guide_title">اختر جهة الاتصال المناسبة</string>
+    <string name="shared_online_profile_choose_contact_guide_message">حدد جهة الاتصال التي تملك الملف الشخصي المشترك. يُحفظ الارتباط بين جهة الاتصال والملف الشخصي على جهازك فقط؛ ولا يغير ملفه الشخصي أو يشارك جهات اتصالك معه.</string>
+    <string name="shared_online_profile_loading_guide_title">التحميل أثناء المعركة</string>
+    <string name="shared_online_profile_loading_guide_message">عند بدء المعركة، يحاول MonsterDialer تحميل ملف شخصي متصل مرتبط لجهة الاتصال تلك. ينتظر لمدة تصل إلى 500 مللي ثانية. إذا تعذر تحميل الملف الشخصي في الوقت المناسب، مثل عدم وجود اتصال أو بطئه، تبدأ المعركة دون اتصال باستخدام الشخصيات المحددة محليًا.</string>
+    <string name="shared_online_profile_cache_guide_title">التخزين المؤقت والتحديثات</string>
+    <string name="shared_online_profile_cache_guide_message">قد تبدأ المكالمة الأولى دون اتصال أثناء اكتمال تحميل الملف الشخصي، ثم تستخدمه المكالمات اللاحقة. بعد تحميله، يُخزن الملف الشخصي مؤقتًا لمدة ساعة ولا يُجلب مجددًا حتى تنتهي تلك المدة. يمكن لمالكه تحديث الملف الشخصي المشترك أو إزالته في أي وقت.</string>
+    <string name="shared_online_profile_unlink_guide_title">إزالة ارتباط في أي وقت</string>
+    <string name="shared_online_profile_unlink_guide_message">افتح الملف الشخصي المتصل المرتبط من قائمة جهة الاتصال، ثم اضغط على «إلغاء ربط الملف الشخصي المتصل» للتوقف عن استخدامه. ستعود جهة الاتصال إلى فريقها المحلي، وسيبقى الملف الشخصي المشترك دون تغيير.</string>
+    <string name="characters_help_player_character_list_message">تُجمع الشخصيات حسب المصدر: الشخصيات المدمجة تأتي مع التطبيق؛ مدربوك ووحوشك هي شخصيات أنشأتها في التطبيق؛ وتُنظم الشخصيات المستوردة حسب حزمة الشخصيات الخاصة بها. اضغط مطولًا على شخصية أنشأتها لتعديلها أو مشاركتها أو حذفها.</string>
+    <string name="characters_help_contact_character_list_message">تُجمع الشخصيات حسب المصدر: التوزيع العشوائي متاح لجهات الاتصال فقط ويختار تلقائيًا شخصية مؤهلة لكل مكالمة؛ الشخصيات المدمجة تأتي مع التطبيق؛ مدربوك ووحوشك هي شخصيات أنشأتها في التطبيق؛ وتُنظم الشخصيات المستوردة حسب حزمة الشخصيات الخاصة بها. اضغط مطولًا على شخصية أنشأتها لتعديلها أو مشاركتها أو حذفها.</string>
 </resources>

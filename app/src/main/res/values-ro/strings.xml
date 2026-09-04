@@ -287,4 +287,25 @@
     <string name="online_profile_delete_guide_title">Ștergerea profilului tău</string>
     <string name="online_profile_delete_guide_message">Atinge „Șterge profilul” pentru a elimina definitiv datele publicate ale profilului tău. Oricine are linkul tău de partajare nu va mai putea vedea echipa ta.</string>
     <string name="characters_help_character_list_title">Lista de personaje</string>
+    <string name="learn_about_radiants">Despre radianți</string>
+    <string name="open_radiants_guide">Deschide ghidul radianților</string>
+    <string name="radiants_guide_title">Radianți</string>
+    <string name="radiants_guide_message">Radianții sunt aspecte alternative rare ale monștrilor pe care îi poți descoperi și adăuga în lista ta.</string>
+    <string name="radiants_guide_availability">• Pot apărea numai monștrii cu o variantă radiantă.</string>
+    <string name="radiants_guide_unlock">• Un radiant poate înlocui o luptă eligibilă. Se deblochează imediat ce începe lupta — nu trebuie să faci nimic.</string>
+    <string name="radiants_guide_assign">• După ce îl descoperi, alege varianta sa radiantă din Personajul tău → Monștri pentru a o atribui.</string>
+    <string name="radiants_guide_journal">• Găsește și distribuie descoperirile tale radiante în Jurnalul de lupte.</string>
+    <string name="open_shared_online_profile_guide">Deschide ghidul profilurilor online partajate</string>
+    <string name="shared_online_profile_guide_title">Folosirea unui profil online partajat</string>
+    <string name="shared_online_profile_guide_message">Când cineva îți partajează un link de profil online, poți asocia echipa sa partajată cu unul dintre contactele tale pentru lupte în apeluri.</string>
+    <string name="shared_online_profile_choose_contact_guide_title">Alege contactul potrivit</string>
+    <string name="shared_online_profile_choose_contact_guide_message">Selectează contactul care deține profilul partajat. Asocierea dintre contact și profil este salvată numai pe dispozitivul tău; nu îi modifică profilul și nu îți partajează contactele cu acea persoană.</string>
+    <string name="shared_online_profile_loading_guide_title">Încărcarea în timpul unei lupte</string>
+    <string name="shared_online_profile_loading_guide_message">Când începe o luptă, MonsterDialer încearcă să încarce un profil online asociat pentru acel contact. Așteaptă până la 500 de milisecunde. Dacă profilul nu se poate încărca la timp — de exemplu, deoarece nu există conexiune sau este lentă — lupta începe offline, folosind personajele selectate local.</string>
+    <string name="shared_online_profile_cache_guide_title">Stocare în cache și actualizări</string>
+    <string name="shared_online_profile_cache_guide_message">Un prim apel poate începe offline în timp ce profilul termină de încărcat, apoi îl poate folosi la apelurile ulterioare. După încărcare, profilul este stocat în cache timp de o oră și nu este preluat din nou până la expirarea acestui timp. Proprietarul poate actualiza sau elimina profilul partajat oricând.</string>
+    <string name="shared_online_profile_unlink_guide_title">Elimină o legătură oricând</string>
+    <string name="shared_online_profile_unlink_guide_message">Deschide Profil online asociat din meniul contactului și atinge „Dezasociază profilul online” pentru a nu-l mai folosi. Contactul va reveni la echipa locală, iar profilul partajat va rămâne neschimbat.</string>
+    <string name="characters_help_player_character_list_message">Personajele sunt grupate după sursă: personajele încorporate vin cu aplicația; Antrenorii tăi și Monștrii tăi sunt personaje create de tine în aplicație; iar personajele importate sunt organizate după pachetul lor de personaje. Apasă lung un personaj creat de tine pentru a-l edita, partaja sau șterge.</string>
+    <string name="characters_help_contact_character_list_message">Personajele sunt grupate după sursă: Aleatoriu este disponibil numai pentru contacte și alege automat un personaj eligibil la fiecare apel; personajele încorporate vin cu aplicația; Antrenorii tăi și Monștrii tăi sunt personaje create de tine în aplicație; iar personajele importate sunt organizate după pachetul lor de personaje. Apasă lung un personaj creat de tine pentru a-l edita, partaja sau șterge.</string>
 </resources>

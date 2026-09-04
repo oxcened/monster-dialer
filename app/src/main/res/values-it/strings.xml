@@ -322,4 +322,10 @@
     <string name="no_available_character_options">Nessun %1$s disponibile</string>
     <string name="radiant_unlock_share_card_link" translatable="false">linktr.ee/monsterdialer</string>
     <string name="characters_help_character_list_title">Elenco dei personaggi</string>
+    <string name="characters_help_creation_title">Creare un personaggio</string>
+    <string name="characters_help_creation_message">Dai un nome al personaggio e aggiungi la sua grafica sprite. Lo sprite frontale viene usato quando il personaggio appare come avversario, mentre quello posteriore lo rappresenta nella tua squadra durante le battaglie.</string>
+    <string name="characters_help_sprites_title">File sprite e consigli per la grafica</string>
+    <string name="characters_help_sprites_message">Scegli un file immagine disponibile dal selettore immagini del dispositivo. MonsterDialer non impone una risoluzione fissa né un limite di dimensione dei file per gli sprite personalizzati. Per un risultato più nitido, usa grafica PNG con sfondo trasparente, mantieni il personaggio centrato con poco spazio vuoto attorno e usa scala e posa simili per gli sprite frontale e posteriore.</string>
+    <string name="characters_help_radiant_title">Varianti radiose</string>
+    <string name="characters_help_radiant_message">Solo per i mostri: apri Avanzate e attiva l’interruttore Radioso per aggiungere una variante radiosa. La selezione dei personaggi mostrerà le versioni normale e radiosa dello stesso mostro. La versione radiosa è inizialmente bloccata e deve essere trovata nelle battaglie prima di poter essere selezionata. È necessario uno sprite frontale perché la funzione Trova lo usa per scoprire e sbloccare la variante radiosa.</string>
 </resources>
