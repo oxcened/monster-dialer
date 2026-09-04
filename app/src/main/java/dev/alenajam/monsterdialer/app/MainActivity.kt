@@ -12,6 +12,8 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.size
+import androidx.compose.material3.DropdownMenu
+import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -125,14 +127,6 @@ class MainActivity : AppCompatActivity() {
                             showVoicemailInNavigation = false,
                             showVoicemailInOverflow = true,
                             contactRowOverflowMenu = ContactRowOverflowMenu(
-                                trigger = { onClick ->
-                                    IconButton(onClick = onClick) {
-                                        dev.alenajam.opendialer.core.common.ui.AppIcon(
-                                            LocalMonsterAppIcons.current.personalizeContact,
-                                            contentDescription = stringResource(R.string.contact_row_actions),
-                                        )
-                                    }
-                                },
                                 actions = listOf(
                                     ContactRowOverflowAction(
                                         settingsSubpageIndex = 1,
@@ -147,6 +141,25 @@ class MainActivity : AppCompatActivity() {
                                         content = { Text(stringResource(R.string.linked_online_profile_title)) },
                                     ),
                                 ),
+                                content = { actions, expanded, onExpandedChange, onActionClick ->
+                                    IconButton(onClick = { onExpandedChange(true) }) {
+                                        dev.alenajam.opendialer.core.common.ui.AppIcon(
+                                            LocalMonsterAppIcons.current.personalizeContact,
+                                            contentDescription = stringResource(R.string.contact_row_actions),
+                                        )
+                                    }
+                                    DropdownMenu(
+                                        expanded = expanded,
+                                        onDismissRequest = { onExpandedChange(false) },
+                                    ) {
+                                        actions.forEach { action ->
+                                            DropdownMenuItem(
+                                                text = action.content,
+                                                onClick = { onActionClick(action) },
+                                            )
+                                        }
+                                    }
+                                },
                             ),
                             customNavigationItem = HomeNavigationItem(
                             label = { androidx.compose.material3.Text(stringResource(R.string.characters_navigation_label)) },
