@@ -268,6 +268,10 @@
     <string name="online_profile_check_in_description">لم يتم تأكيد ملفك الشخصي على الإنترنت منذ قرابة عام. أكّده لمواصلة مشاركته.</string>
     <string name="online_profile_keep_online">إبقاء متصلاً</string>
     <string name="online_profile_share">مشاركة ملفي الشخصي</string>
+    <string name="online_profile_show_qr_code">عرض رمز QR</string>
+    <string name="online_profile_qr_code_title">المشاركة عبر رمز QR</string>
+    <string name="online_profile_qr_code_description">اطلب من صديق مسح هذا الرمز بالكاميرا لفتح ملفك الشخصي.</string>
+    <string name="online_profile_qr_code_content_description">رمز QR لملفك الشخصي على الإنترنت</string>
     <string name="online_profile_regenerate">إنشاء رابط مشاركة جديد</string>
     <string name="online_profile_regenerate_message">سيؤدي هذا إلى إنشاء رابط مشاركة جديد وإبطال الرابط الحالي. سيحتاج أصدقاؤك إلى الرابط الجديد للوصول إلى ملفك الشخصي.</string>
     <string name="online_profile_delete">حذف الملف الشخصي</string>

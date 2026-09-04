@@ -282,6 +282,10 @@
     <string name="online_profile_check_in_description">Il tuo profilo online non è stato confermato da quasi un anno. Confermalo per continuare a condividerlo.</string>
     <string name="online_profile_keep_online">Mantieni online</string>
     <string name="online_profile_share">Condividi il mio profilo</string>
+    <string name="online_profile_show_qr_code">Mostra codice QR</string>
+    <string name="online_profile_qr_code_title">Condividi con codice QR</string>
+    <string name="online_profile_qr_code_description">Chiedi a un amico di scansionare questo codice con la fotocamera per aprire il tuo profilo.</string>
+    <string name="online_profile_qr_code_content_description">Codice QR del tuo profilo online</string>
     <string name="online_profile_regenerate">Rigenera link di condivisione</string>
     <string name="online_profile_regenerate_message">Verrà creato un nuovo link di condivisione e quello attuale non sarà più valido. Gli amici avranno bisogno del nuovo link per accedere al tuo profilo.</string>
     <string name="online_profile_delete">Elimina profilo</string>

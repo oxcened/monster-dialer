@@ -249,6 +249,10 @@
     <string name="online_profile_check_in_description">Votre profil en ligne n’a pas été confirmé depuis près d’un an. Confirmez-le pour continuer à le partager.</string>
     <string name="online_profile_keep_online">Garder en ligne</string>
     <string name="online_profile_share">Partager mon profil</string>
+    <string name="online_profile_show_qr_code">Afficher le code QR</string>
+    <string name="online_profile_qr_code_title">Partager avec un code QR</string>
+    <string name="online_profile_qr_code_description">Demandez à un ami de scanner ce code avec son appareil photo pour ouvrir votre profil.</string>
+    <string name="online_profile_qr_code_content_description">Code QR de votre profil en ligne</string>
     <string name="online_profile_regenerate">Générer un nouveau lien</string>
     <string name="online_profile_regenerate_message">Cette action crée un nouveau lien de partage et invalide l’actuel. Vos amis auront besoin du nouveau lien pour accéder à votre profil.</string>
     <string name="online_profile_delete">Supprimer le profil</string>

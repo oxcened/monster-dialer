@@ -244,6 +244,10 @@
     <string name="online_profile_check_in_description">Din onlineprofil er ikke blevet bekræftet i næsten et år. Bekræft den for fortsat at dele den.</string>
     <string name="online_profile_keep_online">Behold aktiv</string>
     <string name="online_profile_share">Del min profil</string>
+    <string name="online_profile_show_qr_code">Vis QR-kode</string>
+    <string name="online_profile_qr_code_title">Del med QR-kode</string>
+    <string name="online_profile_qr_code_description">Bed en ven om at scanne denne kode med kameraet for at åbne din profil.</string>
+    <string name="online_profile_qr_code_content_description">QR-kode til din onlineprofil</string>
     <string name="online_profile_regenerate">Opret nyt delingslink</string>
     <string name="online_profile_regenerate_message">Dette opretter et nyt delingslink og gør det nuværende ugyldigt. Venner skal bruge det nye link for at få adgang til din profil.</string>
     <string name="online_profile_delete">Slet profil</string>

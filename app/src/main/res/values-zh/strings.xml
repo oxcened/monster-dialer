@@ -238,6 +238,10 @@
     <string name="online_profile_check_in_description">你的在线个人资料已有近一年未确认。请确认以继续分享。</string>
     <string name="online_profile_keep_online">保持在线</string>
     <string name="online_profile_share">分享我的个人资料</string>
+    <string name="online_profile_show_qr_code">显示二维码</string>
+    <string name="online_profile_qr_code_title">通过二维码分享</string>
+    <string name="online_profile_qr_code_description">请让朋友使用相机扫描此代码以打开你的个人资料。</string>
+    <string name="online_profile_qr_code_content_description">你的在线个人资料二维码</string>
     <string name="online_profile_regenerate">重新生成分享链接</string>
     <string name="online_profile_regenerate_message">这会创建新的分享链接，并使当前链接失效。好友需要使用新链接才能访问你的个人资料。</string>
     <string name="online_profile_delete">删除个人资料</string>

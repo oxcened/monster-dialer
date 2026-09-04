@@ -249,6 +249,10 @@
     <string name="online_profile_check_in_description">Dein Online-Profil wurde seit fast einem Jahr nicht bestätigt. Bestätige es, um es weiterhin zu teilen.</string>
     <string name="online_profile_keep_online">Online lassen</string>
     <string name="online_profile_share">Mein Profil teilen</string>
+    <string name="online_profile_show_qr_code">QR-Code anzeigen</string>
+    <string name="online_profile_qr_code_title">Mit QR-Code teilen</string>
+    <string name="online_profile_qr_code_description">Bitte einen Freund, diesen Code mit der Kamera zu scannen, um dein Profil zu öffnen.</string>
+    <string name="online_profile_qr_code_content_description">QR-Code für dein Online-Profil</string>
     <string name="online_profile_regenerate">Freigabelink neu erstellen</string>
     <string name="online_profile_regenerate_message">Dadurch wird ein neuer Freigabelink erstellt und der aktuelle ungültig. Freunde benötigen den neuen Link, um auf dein Profil zuzugreifen.</string>
     <string name="online_profile_delete">Profil löschen</string>

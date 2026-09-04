@@ -249,6 +249,10 @@
     <string name="online_profile_check_in_description">O teu perfil online não é confirmado há quase um ano. Confirma-o para continuares a partilhá-lo.</string>
     <string name="online_profile_keep_online">Manter online</string>
     <string name="online_profile_share">Partilhar o meu perfil</string>
+    <string name="online_profile_show_qr_code">Mostrar código QR</string>
+    <string name="online_profile_qr_code_title">Partilhar com código QR</string>
+    <string name="online_profile_qr_code_description">Pede a um amigo para digitalizar este código com a câmara e abrir o teu perfil.</string>
+    <string name="online_profile_qr_code_content_description">Código QR do teu perfil online</string>
     <string name="online_profile_regenerate">Gerar nova ligação de partilha</string>
     <string name="online_profile_regenerate_message">Isto cria uma nova ligação de partilha e invalida a atual. Os amigos vão precisar da nova ligação para aceder ao teu perfil.</string>
     <string name="online_profile_delete">Eliminar perfil</string>

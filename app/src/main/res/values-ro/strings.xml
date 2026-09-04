@@ -254,6 +254,10 @@
     <string name="online_profile_check_in_description">Profilul tău online nu a fost confirmat de aproape un an. Confirmă-l ca să continui să-l partajezi.</string>
     <string name="online_profile_keep_online">Păstrează online</string>
     <string name="online_profile_share">Partajează-mi profilul</string>
+    <string name="online_profile_show_qr_code">Afișează codul QR</string>
+    <string name="online_profile_qr_code_title">Partajează cu cod QR</string>
+    <string name="online_profile_qr_code_description">Roagă un prieten să scaneze acest cod cu camera pentru a-ți deschide profilul.</string>
+    <string name="online_profile_qr_code_content_description">Cod QR pentru profilul tău online</string>
     <string name="online_profile_regenerate">Regenerează linkul de partajare</string>
     <string name="online_profile_regenerate_message">Aceasta creează un link de partajare nou și îl invalidează pe cel actual. Prietenii vor avea nevoie de noul link ca să îți acceseze profilul.</string>
     <string name="online_profile_delete">Șterge profilul</string>
