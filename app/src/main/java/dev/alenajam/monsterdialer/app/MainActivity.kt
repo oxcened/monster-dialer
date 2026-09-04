@@ -34,7 +34,6 @@ import dev.alenajam.monsterdialer.R
 import dev.alenajam.monsterdialer.app.ui.LocalMonsterAppIcons
 import dev.alenajam.monsterdialer.app.ui.rememberMonsterIcons
 import dev.alenajam.monsterdialer.app.ui.rememberMonsterTypography
-import dev.alenajam.monsterdialer.characters.ui.CharactersHelpScreen
 import dev.alenajam.monsterdialer.characters.ui.AddCharacterScreen
 import dev.alenajam.monsterdialer.characters.ui.ContactCharacterSettingsContent
 import dev.alenajam.monsterdialer.characters.ui.ContactCharacterSettingsViewModel
@@ -271,14 +270,6 @@ class MainActivity : AppCompatActivity() {
                             topContentPadding = 0.dp,
                         ),
                         SettingsSubpage(
-                            title = stringResource(R.string.characters_help_title),
-                            description = stringResource(R.string.characters_help_description),
-                            content = { _ -> CharactersHelpScreen() },
-                            visibleInSettings = false,
-                            isScrollable = true,
-                            topContentPadding = 0.dp
-                        ),
-                        SettingsSubpage(
                             title = stringResource(R.string.linked_online_profile_title),
                             description = null,
                             content = { LinkedOnlineProfileContent(contactCharacterSettingsViewModel) },
@@ -319,7 +310,7 @@ class MainActivity : AppCompatActivity() {
     }
 }
 
-private const val LinkedOnlineProfileSettingsIndex = 5
+private const val LinkedOnlineProfileSettingsIndex = 4
 
 private sealed interface IncomingImport {
     val uri: Uri

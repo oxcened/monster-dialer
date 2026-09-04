@@ -133,14 +133,6 @@ fun CharactersHomeScreen(
                 onImport = { picker.launch(arrayOf("*/*")) },
             )
         }
-        TextButton(
-            onClick = { onOpenSubpage(4, null) },
-            modifier = Modifier.align(Alignment.CenterHorizontally)
-        ) {
-            AppIcon(LocalMonsterAppIcons.current.guide, contentDescription = null, modifier = Modifier.size(18.dp))
-            Spacer(Modifier.width(8.dp))
-            Text(stringResource(R.string.open_character_guide))
-        }
     }
 }
 

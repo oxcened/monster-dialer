@@ -80,12 +80,10 @@ class CharacterSettingsSummaryViewModel @Inject constructor(
 
     private suspend fun playerProfile(): PlayerProfile {
         val activeMonsterReference = assignmentRepository.getPlayerCharacter(CharacterType.Monster)
-        val activeMonster = activeMonsterReference
-            ?.let { playerProfileCharacter(CharacterType.Monster, it) }
+            ?: BuiltInCharacters.defaultMonsterReference
+        val activeMonster = playerProfileCharacter(CharacterType.Monster, activeMonsterReference)
             ?: builtInProfileCharacter(CharacterType.Monster)
-        val roster = if (activeMonsterReference == null) {
-            listOf(PlayerRosterMonster(activeMonster, reference = null, isActive = true))
-        } else assignmentRepository.getPlayerMonsterRoster()
+        val roster = assignmentRepository.getPlayerMonsterRoster()
             .mapNotNull { reference ->
                 playerProfileCharacter(CharacterType.Monster, reference)?.let { character ->
                     PlayerRosterMonster(
@@ -140,7 +138,7 @@ class CharacterSettingsSummaryViewModel @Inject constructor(
         roster = listOf(
             PlayerRosterMonster(
                 character = builtInProfileCharacter(CharacterType.Monster),
-                reference = null,
+                reference = BuiltInCharacters.defaultMonsterReference,
                 isActive = true,
             ),
         ),

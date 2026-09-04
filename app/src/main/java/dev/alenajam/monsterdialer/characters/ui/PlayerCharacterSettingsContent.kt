@@ -182,8 +182,9 @@ internal fun ColumnScope.PlayerCharacterSettingsContent(
                         selected = assignedMonsterForSlot,
                         defaultArtwork = { it.contactArtwork },
                         artworkTarget = CharacterAssignmentTarget.Contact,
+                        defaultReference = BuiltInCharacters.defaultMonsterReference,
                         onSelect = {
-                            viewModel.assignMonster(it)
+                            viewModel.assignMonster(requireNotNull(it))
                             navigator?.navigateBack()
                         },
                         onAddCharacter = { navigator?.navigateTo(1) },
@@ -229,8 +230,9 @@ internal fun ColumnScope.PlayerCharacterSettingsContent(
                         selected = assignedMonsterForSlot,
                         defaultArtwork = { it.contactArtwork },
                         artworkTarget = CharacterAssignmentTarget.Contact,
+                        defaultReference = BuiltInCharacters.defaultMonsterReference,
                         onSelect = {
-                            viewModel.assignMonster(it)
+                            viewModel.assignMonster(requireNotNull(it))
                             navigator?.navigateBack()
                         },
                         onAddCharacter = { navigator?.navigateTo(1) },

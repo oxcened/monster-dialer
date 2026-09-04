@@ -2,8 +2,10 @@ package dev.alenajam.monsterdialer.characters.data
 
 import dev.alenajam.monsterdialer.packs.data.CharacterReference
 import dev.alenajam.monsterdialer.packs.data.CharacterType
+import java.io.File
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals
+import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
 import org.junit.Rule
 import org.junit.Test
@@ -32,6 +34,64 @@ class CharacterAssignmentStoreTest {
             listOf(BuiltInCharacters.defaultMonsterReference, customMonster),
             store.playerMonsterRoster(),
         )
+    }
+
+    @Test
+    fun `normalizes the legacy bundled monster roster entry`() {
+        val assignmentsDirectory = temporaryFolder.newFolder("legacy-bundled-monster")
+        File(assignmentsDirectory, "character-assignments.json").writeText(
+            """{"playerMonsterRoster":[{"packId":"builtin","characterId":"monster"}],"activePlayerMonster":{"packId":"builtin","characterId":"default-monster"}}"""
+        )
+
+        val store = CharacterAssignmentStore(assignmentsDirectory)
+
+        assertEquals(listOf(BuiltInCharacters.defaultMonsterReference), store.playerMonsterRoster())
+        assertEquals(1, File(assignmentsDirectory, "character-assignments.json").readText().split("default-monster").size - 1)
+    }
+
+    @Test
+    fun `migrates a partial legacy document to an explicit bundled active monster`() {
+        val assignmentsDirectory = temporaryFolder.newFolder("partial-legacy-document")
+        val assignmentsFile = File(assignmentsDirectory, "character-assignments.json")
+        assignmentsFile.writeText(
+            """{"contacts":{"123":{"packId":"com.example.forest","characterId":"mossling"}}}"""
+        )
+
+        val store = CharacterAssignmentStore(assignmentsDirectory)
+
+        assertEquals(BuiltInCharacters.defaultMonsterReference, store.player(CharacterType.Monster))
+        assertTrue(assignmentsFile.readText().contains("default-monster"))
+    }
+
+    @Test
+    fun `migrates the legacy single player monster into the roster`() {
+        val assignmentsDirectory = temporaryFolder.newFolder("legacy-single-monster")
+        val assignmentsFile = File(assignmentsDirectory, "character-assignments.json")
+        val legacyMonster = CharacterReference("com.example.forest", "mossling")
+        assignmentsFile.writeText(
+            """{"player":{"packId":"${legacyMonster.packId}","characterId":"${legacyMonster.characterId}"}}"""
+        )
+
+        val store = CharacterAssignmentStore(assignmentsDirectory)
+
+        assertEquals(legacyMonster, store.player(CharacterType.Monster))
+        assertEquals(listOf(legacyMonster), store.playerMonsterRoster())
+        assertFalse(assignmentsFile.readText().contains("\"player\":"))
+    }
+
+    @Test
+    fun `removes a duplicated active monster from the persisted bench`() {
+        val assignmentsDirectory = temporaryFolder.newFolder("duplicated-active-monster")
+        val assignmentsFile = File(assignmentsDirectory, "character-assignments.json")
+        assignmentsFile.writeText(
+            """{"playerMonsterRoster":[{"packId":"builtin","characterId":"default-monster"}],"activePlayerMonster":{"packId":"builtin","characterId":"default-monster"}}"""
+        )
+
+        val store = CharacterAssignmentStore(assignmentsDirectory)
+
+        assertEquals(listOf(BuiltInCharacters.defaultMonsterReference), store.playerMonsterRoster())
+        assertEquals(1, assignmentsFile.readText().split("default-monster").size - 1)
+        assertFalse(assignmentsFile.readText().contains("\"playerMonsterRoster\""))
     }
 
     @Test

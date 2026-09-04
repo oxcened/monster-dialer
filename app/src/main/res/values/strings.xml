@@ -146,7 +146,12 @@
     <string name="linked_online_profile_none">No Online Profile is linked to this contact.</string>
     <string name="linked_online_profile_link_hint">Open a shared MonsterDialer profile link to associate one with this contact.</string>
     <string name="linked_online_profile_description">This contact is linked to this Online Profile:</string>
+    <string name="linked_online_profile_active_title">Online Profile linked</string>
+    <string name="linked_online_profile_active_message">This contact’s shared team can be used during calls. Remove the link at any time to return to the contact’s local team.</string>
+    <string name="linked_online_profile_id_label">Profile ID</string>
     <string name="unlink_online_profile">Unlink Online Profile</string>
+    <string name="unlink_online_profile_confirmation_title">Remove profile link?</string>
+    <string name="unlink_online_profile_confirmation_message">This removes the link to the shared Online Profile on this device. The contact will use their local team again. The shared profile and its owner’s data will not be changed.</string>
     <string name="shared_profile_import_title">Shared profile</string>
     <string name="shared_profile_import_heading">A MonsterDialer profile was shared with you</string>
     <string name="shared_profile_import_description">Choose the contact from your contact list this profile belongs to. MonsterDialer will show it during calls with them. This link stays on your device.</string>

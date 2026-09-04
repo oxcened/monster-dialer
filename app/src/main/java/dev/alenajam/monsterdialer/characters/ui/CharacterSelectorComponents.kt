@@ -111,6 +111,7 @@ internal fun LazyListScope.characterTypeItems(
     defaultArtwork: (BuiltInCharacter) -> BuiltInArtwork,
     artworkTarget: CharacterAssignmentTarget,
     onSelect: (CharacterReference?) -> Unit,
+    defaultReference: CharacterReference? = null,
     onAddCharacter: () -> Unit,
     addLabel: String,
     isAddEnabled: Boolean = true,
@@ -197,7 +198,7 @@ internal fun LazyListScope.characterTypeItems(
                         modifier = Modifier.size(72.dp)
                     )
                 },
-                onSelect = { onSelect(null) }
+                onSelect = { onSelect(defaultReference) }
             )
         }
     }
@@ -286,6 +287,7 @@ internal fun LazyGridScope.characterTypeGridItems(
     defaultArtwork: (BuiltInCharacter) -> BuiltInArtwork,
     artworkTarget: CharacterAssignmentTarget,
     onSelect: (CharacterReference?) -> Unit,
+    defaultReference: CharacterReference? = null,
     onAddCharacter: () -> Unit,
     addLabel: String,
     isAddEnabled: Boolean = true,
@@ -372,7 +374,7 @@ internal fun LazyGridScope.characterTypeGridItems(
                         modifier = Modifier.size(88.dp)
                     )
                 },
-                onSelect = { onSelect(null) }
+                onSelect = { onSelect(defaultReference) }
             )
         }
     }
