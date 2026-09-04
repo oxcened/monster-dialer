@@ -117,6 +117,16 @@ class CharacterAssignmentStoreTest {
     }
 
     @Test
+    fun `ignores a replacement outside the roster bounds`() {
+        val store = CharacterAssignmentStore(temporaryFolder.newFolder("invalid-roster-index"))
+        val replacement = CharacterReference("com.example.forest", "mossling")
+
+        store.replacePlayerMonsterInRoster(index = 1, character = replacement)
+
+        assertEquals(listOf(BuiltInCharacters.defaultMonsterReference), store.playerMonsterRoster())
+    }
+
+    @Test
     fun `a pack is in use when only an inactive roster monster belongs to it`() = runTest {
         val store = CharacterAssignmentStore(temporaryFolder.newFolder("pack-in-use-roster"))
         val activeMonster = CharacterReference("com.example.coast", "tidescale")
