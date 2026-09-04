@@ -132,6 +132,9 @@ dependencies {
     implementation(monster.firebase.firestore)
     implementation(monster.firebase.storage)
     implementation(monster.coroutines.play.services)
+    implementation(monster.androidx.credentials)
+    implementation(monster.androidx.credentials.play.services.auth)
+    implementation(monster.googleid)
     implementation(monster.libphonenumber)
     implementation(monster.zxing.core)
 

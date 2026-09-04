@@ -278,7 +278,7 @@
     <string name="online_profile_delete_message">سيؤدي هذا إلى حذف ملفك الشخصي المشترك وإبطال رابطه. تبقى شخصياتك وتخصيصات جهات الاتصال على هذا الجهاز.</string>
     <string name="online_profile_error_title">تعذر تحديث الملف الشخصي على الإنترنت</string>
     <string name="online_profile_sprite_decode_error">تعذر فك ترميز رسم الشخصية المحددة.</string>
-    <string name="online_profile_anonymous_auth_error">تعذر إنشاء ملف شخصي مجهول على الإنترنت.</string>
+    <string name="online_profile_google_sign_in_required">سجّل الدخول باستخدام Google لإدارة ملف شخصي على الإنترنت.</string>
     <string name="online_profile_firebase_not_configured">لم يتم إعداد Firebase.</string>
     <string name="online_profile_share_text">اطّلع على ملفي الشخصي في MonsterDialer:\n%1$s</string>
     <string name="choose_team">اختيار الفريق</string>
@@ -303,11 +303,11 @@
     <string name="characters_help_roster_title">قائمة وحوشك</string>
     <string name="characters_help_roster_message">تتضمن قائمة وحوشك ما يصل إلى ستة وحوش تختارها لفريقك. اسحب الوحوش المخصصة وأفلتها لإعادة ترتيبها. الوحش الأول في القائمة هو وحشك النشط في معارك المكالمات.</string>
     <string name="online_profile_guide_title">مشاركة ملفك الشخصي على الإنترنت</string>
-    <string name="online_profile_guide_message">الملفات الشخصية على الإنترنت اختيارية تمامًا ومصممة مع مراعاة الخصوصية والأمان. عند تفعيل أحدها، تنشر مدرّبك الحالي والوحش النشط، بما في ذلك الرسومات المختارة، عبر رابط قابل للمشاركة. إذا غيّرت فريقك لاحقًا، يُحدَّث ملفك الشخصي على الإنترنت. لا تخزن الخوادم رقم هاتفك أو قائمة جهات اتصالك أو سجل المكالمات أو أي بيانات شخصية أو حساسة أخرى. تظل الروابط بين ملفات MonsterDialer وجهات الاتصال على كل جهاز فقط.</string>
+    <string name="online_profile_guide_message">الملفات الشخصية على الإنترنت اختيارية تمامًا ومصممة مع مراعاة الخصوصية والأمان. لتفعيل أحدها، سجّل الدخول باستخدام Google. يحدد حساب Google الخاص بك من يمكنه إدارة الملف الشخصي؛ ولا تتم مشاركة بريدك الإلكتروني أو تفاصيل حساب Google. عند تفعيل ملف شخصي أو تسجيل الدخول على جهاز آخر، يُنشر المدرّب الحالي والوحش النشط على ذلك الجهاز، بما في ذلك الرسومات المختارة، عبر رابط قابل للمشاركة. لا تخزن الخوادم رقم هاتفك أو قائمة جهات اتصالك أو سجل المكالمات أو أي بيانات شخصية أو حساسة أخرى. تظل الروابط بين ملفات MonsterDialer وجهات الاتصال على كل جهاز فقط.</string>
     <string name="online_profile_public_id_title">معرّف ملفك الشخصي العام</string>
-    <string name="online_profile_public_id_message">يمكن لأي شخص ترسل إليه رابط المشاركة العثور على ملفك الشخصي عبر معرّفه العام المُنشأ عشوائيًا. اضغط على «إنشاء رابط مشاركة جديد» لإبطال المعرّف العام الحالي وإنشاء آخر جديد. لن يعمل الرابط السابق بعد ذلك مع أي شخص شاركته معه.</string>
+    <string name="online_profile_public_id_message">يمكن لأي شخص ترسل إليه رابط المشاركة العثور على ملفك الشخصي عبر معرّفه العام المُنشأ عشوائيًا. يحتفظ حساب Google نفسه بهذا المعرّف عند تسجيل الدخول على جهاز آخر، لذلك تظل الروابط الحالية فعالة. اضغط على «إنشاء رابط مشاركة جديد» لإبطال المعرّف العام الحالي وإنشاء آخر جديد. لن يعمل الرابط السابق بعد ذلك مع أي شخص شاركته معه.</string>
     <string name="online_profile_delete_guide_title">حذف ملفك الشخصي</string>
-    <string name="online_profile_delete_guide_message">اضغط على «حذف الملف الشخصي» لإزالة بيانات ملفك الشخصي المنشورة نهائيًا. لن يتمكن أي شخص لديه رابط المشاركة من رؤية فريقك بعد الآن.</string>
+    <string name="online_profile_delete_guide_message">اضغط على «حذف الملف الشخصي» لإزالة بيانات ملفك الشخصي المنشورة نهائيًا. لن يتمكن أي شخص لديه رابط المشاركة من رؤية فريقك بعد الآن. إذا فعّلت ملفًا شخصيًا مرة أخرى لاحقًا، فسيكون له رابط مشاركة جديد.</string>
     <string name="characters_help_character_list_title">قائمة الشخصيات</string>
     <string name="learn_about_radiants">حول المتوهجات</string>
     <string name="open_radiants_guide">فتح دليل المتوهجات</string>

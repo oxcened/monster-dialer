@@ -25,6 +25,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.Alignment
@@ -33,6 +34,7 @@ import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalResources
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
@@ -48,22 +50,46 @@ import dev.alenajam.monsterdialer.onlineprofiles.data.ProfileSharingQrCode
 import dev.alenajam.monsterdialer.onlineprofiles.data.QrCodeMatrix
 import dev.alenajam.opendialer.core.common.ui.AppIcon
 import dev.alenajam.opendialer.core.common.ui.LocalAppIcons
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 
 @Composable
 fun OnlineProfileSection(viewModel: OnlineProfileSettingsViewModel = hiltViewModel()) {
     val profile by viewModel.profile.collectAsStateWithLifecycle()
+    val isSignedIn by viewModel.isSignedIn.collectAsStateWithLifecycle()
     val working by viewModel.isWorking.collectAsStateWithLifecycle()
     val operation by viewModel.operation.collectAsStateWithLifecycle()
     val error by viewModel.error.collectAsStateWithLifecycle()
     val showRetentionCheckIn by viewModel.showRetentionCheckIn.collectAsStateWithLifecycle()
     val context = LocalContext.current
+    val scope = rememberCoroutineScope()
+    val resources = LocalResources.current
     val enablingDescription = stringResource(R.string.online_profile_enabling)
     val regeneratingDescription = stringResource(R.string.online_profile_regenerating)
     val deletingDescription = stringResource(R.string.online_profile_deleting)
     val keepingOnlineDescription = stringResource(R.string.online_profile_keeping_online)
+    val signingInDescription = stringResource(R.string.online_profile_signing_in)
+    val googleSignInNotConfigured = stringResource(R.string.online_profile_google_sign_in_not_configured)
+    val googleServerClientId = remember(resources) {
+        resources.getIdentifier("default_web_client_id", "string", context.packageName)
+            .takeIf { it != 0 }
+            ?.let(resources::getString)
+    }
     var confirmDelete by remember { mutableStateOf(false) }
     var confirmRegenerate by remember { mutableStateOf(false) }
     var showQrCode by remember { mutableStateOf(false) }
+    androidx.compose.runtime.LaunchedEffect(viewModel, googleServerClientId) {
+        viewModel.signInRequests.collectLatest {
+            val serverClientId = googleServerClientId
+            if (serverClientId == null) {
+                viewModel.failGoogleSignIn(googleSignInNotConfigured)
+            } else {
+                runCatching { GoogleProfileSignIn.idToken(context, serverClientId) }
+                    .onSuccess(viewModel::completeGoogleSignIn)
+                    .onFailure { exception -> viewModel.failGoogleSignIn(exception.message) }
+            }
+        }
+    }
     if (profile == null) {
         Card(
             modifier = Modifier.fillMaxWidth(),
@@ -110,19 +136,37 @@ fun OnlineProfileSection(viewModel: OnlineProfileSettingsViewModel = hiltViewMod
                     style = MaterialTheme.typography.bodySmall,
                     color = MaterialTheme.colorScheme.onSecondaryContainer.copy(alpha = 0.72f),
                 )
-                Button(
-                    onClick = viewModel::enable,
-                    enabled = !working,
-                    modifier = Modifier.fillMaxWidth(),
-                ) {
-                    if (working) {
-                        CircularProgressIndicator(
-                            modifier = Modifier.size(20.dp).semantics { contentDescription = enablingDescription },
-                            color = MaterialTheme.colorScheme.onPrimary,
-                            strokeWidth = 2.dp,
-                        )
-                    } else {
-                        Text(stringResource(R.string.online_profile_enable))
+                Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
+                    Button(
+                        onClick = viewModel::enable,
+                        enabled = !working,
+                        modifier = Modifier.fillMaxWidth(),
+                    ) {
+                        if (working) {
+                            CircularProgressIndicator(
+                                modifier = Modifier.size(20.dp).semantics {
+                                    contentDescription = if (operation == OnlineProfileOperation.SignIn) signingInDescription else enablingDescription
+                                },
+                                color = MaterialTheme.colorScheme.onPrimary,
+                                strokeWidth = 2.dp,
+                            )
+                        } else {
+                            Text(stringResource(R.string.online_profile_enable))
+                        }
+                    }
+                    if (isSignedIn) {
+                        OutlinedButton(
+                            onClick = {
+                                scope.launch {
+                                    runCatching { GoogleProfileSignIn.clearCredentialState(context) }
+                                    viewModel.signOut()
+                                }
+                            },
+                            enabled = !working,
+                            modifier = Modifier.fillMaxWidth(),
+                        ) {
+                            Text(stringResource(R.string.online_profile_sign_out_google))
+                        }
                     }
                 }
             }

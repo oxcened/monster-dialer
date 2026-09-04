@@ -259,7 +259,7 @@
     <string name="online_profile_delete_message">Isto elimina o teu perfil partilhado e invalida a respetiva ligação. As tuas personagens e personalizações de contactos permanecem neste dispositivo.</string>
     <string name="online_profile_error_title">Não foi possível atualizar o perfil online</string>
     <string name="online_profile_sprite_decode_error">Não foi possível descodificar o sprite da personagem selecionada.</string>
-    <string name="online_profile_anonymous_auth_error">Não foi possível criar um perfil online anónimo.</string>
+    <string name="online_profile_google_sign_in_required">Inicie sessão com o Google para gerir um perfil online.</string>
     <string name="online_profile_firebase_not_configured">O Firebase não está configurado.</string>
     <string name="online_profile_share_text">Vê o meu perfil MonsterDialer:\n%1$s</string>
     <string name="choose_team">Escolher equipa</string>
@@ -284,11 +284,11 @@
     <string name="characters_help_roster_title">A tua lista de monstros</string>
     <string name="characters_help_roster_message">A tua lista inclui até seis monstros que escolhes para a tua equipa. Arrasta e larga monstros personalizados para os reordenar. O primeiro monstro da lista é o teu monstro ativo nas batalhas durante as chamadas.</string>
     <string name="online_profile_guide_title">Partilhar o teu perfil online</string>
-    <string name="online_profile_guide_message">Os perfis online são totalmente opcionais e concebidos a pensar na privacidade e segurança. Ao ativares um, publicas o teu treinador e monstro ativo atuais, incluindo os sprites selecionados, através de uma ligação partilhável. Se mudares de equipa mais tarde, o teu perfil online é atualizado. Os servidores não armazenam o teu número de telefone, lista de contactos, histórico de chamadas nem outros dados pessoais ou sensíveis. As ligações entre perfis MonsterDialer e contactos permanecem exclusivamente em cada dispositivo.</string>
+    <string name="online_profile_guide_message">Os perfis online são totalmente opcionais e concebidos a pensar na privacidade e segurança. Para ativares um, inicia sessão com o Google. A tua conta Google identifica quem pode gerir o perfil; o teu e-mail e os dados da tua conta Google não são partilhados. Ao ativares um perfil ou iniciares sessão noutro dispositivo, o treinador e o monstro ativo desse dispositivo, incluindo os sprites selecionados, são publicados através de uma ligação partilhável. Os servidores não armazenam o teu número de telefone, lista de contactos, histórico de chamadas nem outros dados pessoais ou sensíveis. As ligações entre perfis MonsterDialer e contactos permanecem exclusivamente em cada dispositivo.</string>
     <string name="online_profile_public_id_title">O teu ID de perfil público</string>
-    <string name="online_profile_public_id_message">Qualquer pessoa a quem enviares a tua ligação de partilha pode encontrar o teu perfil através do ID público gerado aleatoriamente. Toca em “Gerar nova ligação de partilha” para invalidar o ID público atual e criar um novo. A ligação anterior deixará de funcionar para qualquer pessoa com quem a tenhas partilhado.</string>
+    <string name="online_profile_public_id_message">Qualquer pessoa a quem enviares a tua ligação de partilha pode encontrar o teu perfil através do ID público gerado aleatoriamente. A mesma conta Google mantém este ID quando inicias sessão noutro dispositivo, por isso as ligações existentes continuam a funcionar. Toca em “Gerar nova ligação de partilha” para invalidar o ID público atual e criar um novo. A ligação anterior deixará de funcionar para qualquer pessoa com quem a tenhas partilhado.</string>
     <string name="online_profile_delete_guide_title">Eliminar o teu perfil</string>
-    <string name="online_profile_delete_guide_message">Toca em “Eliminar perfil” para remover permanentemente os dados publicados do teu perfil. Quem tiver a tua ligação de partilha deixará de poder ver a tua equipa.</string>
+    <string name="online_profile_delete_guide_message">Toca em “Eliminar perfil” para remover permanentemente os dados publicados do teu perfil. Quem tiver a tua ligação de partilha deixará de poder ver a tua equipa. Se ativares novamente um perfil mais tarde, terá uma nova ligação de partilha.</string>
     <string name="characters_help_character_list_title">Lista de personagens</string>
     <string name="learn_about_radiants">Sobre os radiantes</string>
     <string name="open_radiants_guide">Abrir o guia de radiantes</string>

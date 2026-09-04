@@ -12,10 +12,10 @@ service firebase.storage {
         && objectName.matches('^(trainer|monster)\\.png$')
         && request.resource.contentType == 'image/png'
         && request.resource.size < 2 * 1024 * 1024
-        && firestore.get(/databases/(default)/documents/onlineProfiles/$(profileId)/private/ownership).data.ownerUid == request.auth.uid;
+        && firestore.get(/databases/(default)/documents/onlineProfileOwners/$(request.auth.uid)).data.activeProfileId == profileId;
       allow delete: if request.auth != null
         && objectName.matches('^(trainer|monster)\\.png$')
-        && firestore.get(/databases/(default)/documents/onlineProfiles/$(profileId)/private/ownership).data.ownerUid == request.auth.uid;
+        && firestore.get(/databases/(default)/documents/onlineProfileOwners/$(request.auth.uid)).data.activeProfileId == profileId;
     }
   }
 }

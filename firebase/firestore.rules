@@ -1,9 +1,9 @@
 rules_version = '2';
 service cloud.firestore {
   // Shared profile documents contain only displayable character metadata and
-  // sprite references. Ownership is isolated in the unreadable `private`
-  // subcollection. `retentionConfirmedAt` is a server timestamp used only by
-  // the profile-retention policy.
+  // sprite references. The private owner index maps a Firebase Auth UID to its
+  // one active profile ID. `retentionConfirmedAt` is a server timestamp used
+  // only by the profile-retention policy.
   //
   // Assumed public document schema:
   // - schemaVersion: integer 1
@@ -13,10 +13,28 @@ service cloud.firestore {
   // - trainer: { name, frontSprite }
   // - monster: { name, level, maxHp, frontSprite }
   // - frontSprite: canonical Storage path, SHA-256, decoded dimensions, size
+  //
+  // Assumed private owner-index schema:
+  // - document ID: the Firebase Auth UID
+  // - activeProfileId: the owner's active public profile ID
+  // - updatedAt: server timestamp
   match /databases/{database}/documents {
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+
+    function isOwner(ownerUid) {
+      return isAuthenticated() && request.auth.uid == ownerUid;
+    }
+
+    function ownerIndex(ownerUid) {
+      return /databases/$(database)/documents/onlineProfileOwners/$(ownerUid);
+    }
+
     function ownsProfile(profileId) {
-      return request.auth != null
-        && get(/databases/$(database)/documents/onlineProfiles/$(profileId)/private/ownership).data.ownerUid == request.auth.uid;
+      return isAuthenticated()
+        && exists(ownerIndex(request.auth.uid))
+        && get(ownerIndex(request.auth.uid)).data.activeProfileId == profileId;
     }
 
     function isValidSprite(sprite, profileId, spriteName) {
@@ -72,6 +90,14 @@ service cloud.firestore {
         && isValidMonster(request.resource.data.monster, profileId);
     }
 
+    function isValidOwnerIndex() {
+      return request.resource.data.keys().hasAll(['activeProfileId', 'updatedAt'])
+        && request.resource.data.keys().hasOnly(['activeProfileId', 'updatedAt'])
+        && request.resource.data.activeProfileId is string
+        && request.resource.data.activeProfileId.matches('^[A-Za-z0-9_-]{22,128}$')
+        && request.resource.data.updatedAt is timestamp;
+    }
+
     function timestampsAreValidForUpdate() {
       let onlyRetentionChanged = request.resource.data.diff(resource.data)
         .affectedKeys().hasOnly(['retentionConfirmedAt']);
@@ -89,30 +115,34 @@ service cloud.firestore {
     match /onlineProfiles/{profileId} {
       allow get: if true;
       allow list: if false;
-      allow create: if request.auth != null
+      allow create: if isAuthenticated()
         && isValidProfile(profileId)
         && request.resource.data.updatedAt == request.time
         && request.resource.data.retentionConfirmedAt == request.time
-        && getAfter(/databases/$(database)/documents/onlineProfiles/$(profileId)/private/ownership).data.ownerUid == request.auth.uid;
+        && getAfter(ownerIndex(request.auth.uid)).data.activeProfileId == profileId;
       allow update: if ownsProfile(profileId)
         && isValidProfile(profileId)
         && timestampsAreValidForUpdate();
       allow delete: if ownsProfile(profileId);
     }
 
-    match /onlineProfiles/{profileId}/private/{document} {
-      allow read: if false;
-      allow create: if request.auth != null
-        && document == 'ownership'
-        && request.resource.data.keys().hasOnly(['ownerUid'])
-        && request.resource.data.ownerUid == request.auth.uid
-        && !exists(/databases/$(database)/documents/onlineProfiles/$(profileId))
-        && getAfter(/databases/$(database)/documents/onlineProfiles/$(profileId)).data.publicProfileId == profileId;
-      allow delete: if request.auth != null
-        && resource.data.ownerUid == request.auth.uid;
-      allow update: if request.auth != null
-        && resource.data.ownerUid == request.auth.uid
-        && request.resource.data.ownerUid == resource.data.ownerUid;
+    match /onlineProfileOwners/{ownerUid} {
+      allow get: if isOwner(ownerUid);
+      allow list: if false;
+      allow create: if isOwner(ownerUid)
+        && isValidOwnerIndex()
+        && request.resource.data.updatedAt == request.time
+        && !exists(/databases/$(database)/documents/onlineProfiles/$(request.resource.data.activeProfileId))
+        && getAfter(/databases/$(database)/documents/onlineProfiles/$(request.resource.data.activeProfileId)).data.publicProfileId == request.resource.data.activeProfileId;
+      allow update: if isOwner(ownerUid)
+        && isValidOwnerIndex()
+        && request.resource.data.updatedAt == request.time
+        && request.resource.data.activeProfileId != resource.data.activeProfileId
+        && !exists(/databases/$(database)/documents/onlineProfiles/$(request.resource.data.activeProfileId))
+        && getAfter(/databases/$(database)/documents/onlineProfiles/$(request.resource.data.activeProfileId)).data.publicProfileId == request.resource.data.activeProfileId
+        && !existsAfter(/databases/$(database)/documents/onlineProfiles/$(resource.data.activeProfileId));
+      allow delete: if isOwner(ownerUid)
+        && !existsAfter(/databases/$(database)/documents/onlineProfiles/$(resource.data.activeProfileId));
     }
   }
 }

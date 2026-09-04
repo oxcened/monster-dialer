@@ -32,6 +32,7 @@ data class OwnedOnlineProfile(
     val revision: Long,
     val spritePaths: List<String>,
     val contentFingerprint: String = "",
+    val ownerUid: String = "",
 )
 
 /** Publishes only the active trainer and monster contact-side artwork. */
@@ -40,15 +41,39 @@ class OnlineProfilePublisher @Inject constructor(
     @ApplicationContext private val context: Context,
     private val assignments: CharacterAssignmentRepository,
     private val characters: CharactersRepository,
+    private val authentication: OnlineProfileAuthentication,
     private val remoteDataSource: OnlineProfileRemoteDataSource,
 ) {
     private val _retentionConfirmed = MutableSharedFlow<Unit>(extraBufferCapacity = 1)
     val retentionConfirmed: SharedFlow<Unit> = _retentionConfirmed.asSharedFlow()
 
     fun currentProfile(): OwnedOnlineProfile? = ownerStore.read()
+        ?.takeIf { it.ownerUid == authentication.currentUserId() }
+
+    fun isSignedIn(): Boolean = authentication.currentUserId() != null
+
+    suspend fun signInWithGoogle(idToken: String): String = authentication.signInWithGoogle(idToken)
+
+    fun signOut() = authentication.signOut()
 
     suspend fun publish(regenerateId: Boolean = false): OwnedOnlineProfile = withContext(Dispatchers.IO) {
         requireNotNull(publishInternal(regenerateId, skipUnchanged = false))
+    }
+
+    /** Restores the signed-in owner's profile metadata from the private Firestore index. */
+    suspend fun restoreProfile(): OwnedOnlineProfile? = withContext(Dispatchers.IO) {
+        val ownerUid = authentication.requireCurrentUserId()
+        val profileId = remoteDataSource.ownedProfileId() ?: run {
+            ownerStore.clear()
+            return@withContext null
+        }
+        val profile = remoteDataSource.fetch(profileId, forceServer = true) ?: return@withContext null
+        OwnedOnlineProfile(
+            publicProfileId = profile.publicProfileId,
+            revision = profile.revision,
+            spritePaths = spritePaths(profile.publicProfileId),
+            ownerUid = ownerUid,
+        ).also(ownerStore::write)
     }
 
     /** Uploads a changed enabled profile, returning null when there is nothing to publish. */
@@ -57,7 +82,15 @@ class OnlineProfilePublisher @Inject constructor(
     }
 
     private suspend fun publishInternal(regenerateId: Boolean, skipUnchanged: Boolean): OwnedOnlineProfile? {
-        val previous = ownerStore.read()
+        val ownerUid = authentication.requireCurrentUserId()
+        val cachedProfile = currentProfile()
+        val restoredProfile = restoreProfile()
+        val previous = restoredProfile?.copy(
+            contentFingerprint = cachedProfile
+                ?.takeIf { it.publicProfileId == restoredProfile.publicProfileId }
+                ?.contentFingerprint
+                .orEmpty(),
+        )
         if (skipUnchanged && previous == null) return null
         val profileId = if (regenerateId || previous == null) newProfileId() else previous.publicProfileId
         val assets = activeAssets(profileId)
@@ -76,34 +109,43 @@ class OnlineProfilePublisher @Inject constructor(
                 isRadiant = assets.monsterIsRadiant
             ),
         )
+        if (regenerateId && previous != null) remoteDataSource.deleteSprites(previous)
         remoteDataSource.publish(
             OnlineProfileUpload(
                 profile = profile,
                 sprites = assets.all.map { asset -> OnlineProfileUploadSprite(asset.shared(), asset.pngBytes) },
                 refreshRetention = previous == null || regenerateId,
+                createsOrReplacesOwnerIndex = previous == null || regenerateId,
+                previousProfileId = previous?.takeIf { regenerateId }?.publicProfileId,
             ),
         )
-        val owned = OwnedOnlineProfile(profileId, revision, assets.all.map(PreparedSprite::storagePath), fingerprint)
+        val owned = OwnedOnlineProfile(
+            publicProfileId = profileId,
+            revision = revision,
+            spritePaths = assets.all.map(PreparedSprite::storagePath),
+            contentFingerprint = fingerprint,
+            ownerUid = ownerUid,
+        )
         ownerStore.write(owned)
-        if (regenerateId && previous != null) remoteDataSource.delete(previous)
         return owned
     }
 
     suspend fun delete(): Unit = withContext(Dispatchers.IO) {
-        ownerStore.read()?.let { owned ->
+        currentProfile()?.let { owned ->
             remoteDataSource.delete(owned)
             ownerStore.clear()
         }
     }
 
     suspend fun needsRetentionConfirmation(): Boolean = withContext(Dispatchers.IO) {
-        val profile = ownerStore.read() ?: return@withContext false
+        val profile = currentProfile() ?: return@withContext false
         val retention = remoteDataSource.retention(profile.publicProfileId) ?: return@withContext true
         retention.needsConfirmation(System.currentTimeMillis())
     }
 
     suspend fun confirmRetention(): OwnedOnlineProfile = withContext(Dispatchers.IO) {
-        val profile = requireNotNull(ownerStore.read())
+        authentication.requireCurrentUserId()
+        val profile = requireNotNull(currentProfile())
         remoteDataSource.confirmRetention(profile.publicProfileId)
         _retentionConfirmed.emit(Unit)
         profile
@@ -152,6 +194,11 @@ class OnlineProfilePublisher @Inject constructor(
     }
 
     private val ownerStore = OwnerStore(File(context.filesDir, "online-profiles/owned-profile.json"))
+
+    private fun spritePaths(profileId: String) = listOf(
+        "onlineProfiles/$profileId/sprites/$TrainerSpriteFileName",
+        "onlineProfiles/$profileId/sprites/$MonsterSpriteFileName",
+    )
 
     private companion object {
         const val MaxDimension = 1024

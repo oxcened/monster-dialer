@@ -292,7 +292,7 @@
     <string name="online_profile_delete_message">Questa azione elimina il tuo profilo condiviso e rende non valido il suo link. I tuoi personaggi e le personalizzazioni dei contatti restano su questo dispositivo.</string>
     <string name="online_profile_error_title">Impossibile aggiornare il profilo online</string>
     <string name="online_profile_sprite_decode_error">Impossibile decodificare lo sprite del personaggio selezionato.</string>
-    <string name="online_profile_anonymous_auth_error">Impossibile creare un profilo online anonimo.</string>
+    <string name="online_profile_google_sign_in_required">Accedi con Google per gestire un profilo online.</string>
     <string name="online_profile_firebase_not_configured">Firebase non è configurato.</string>
     <string name="online_profile_share_text">Guarda il mio profilo MonsterDialer:\n%1$s</string>
     <string name="linked_online_profile_active_title">Profilo online collegato</string>
@@ -322,11 +322,11 @@
     <string name="characters_help_roster_title">La tua squadra</string>
     <string name="characters_help_roster_message">La tua squadra contiene fino a sei mostri scelti per la tua squadra. Trascina e rilascia i mostri personalizzati per riordinarli. Il primo mostro della squadra è quello attivo nelle battaglie durante le chiamate.</string>
     <string name="online_profile_guide_title">Condividere il tuo profilo online</string>
-    <string name="online_profile_guide_message">I profili online sono facoltativi e progettati pensando a privacy e sicurezza. Attivandone uno pubblichi il tuo allenatore e mostro attivo, inclusi gli sprite selezionati, tramite un link condivisibile. Se cambi squadra in seguito, il profilo online si aggiorna. I server non memorizzano il tuo numero di telefono, elenco contatti, cronologia chiamate né altri dati personali o sensibili. I collegamenti tra profili MonsterDialer e contatti restano esclusivamente su ogni dispositivo.</string>
+    <string name="online_profile_guide_message">I profili online sono facoltativi e progettati pensando a privacy e sicurezza. Per attivarne uno, accedi con Google. Il tuo account Google identifica chi può gestire il profilo; la tua email e i dettagli dell’account Google non vengono condivisi. L’attivazione di un profilo, o l’accesso su un altro dispositivo, pubblica l’allenatore e il mostro attivi di quel dispositivo, inclusi gli sprite selezionati, tramite un link condivisibile. I server non memorizzano il tuo numero di telefono, elenco contatti, cronologia chiamate né altri dati personali o sensibili. I collegamenti tra profili MonsterDialer e contatti restano esclusivamente su ogni dispositivo.</string>
     <string name="online_profile_public_id_title">Il tuo ID profilo pubblico</string>
-    <string name="online_profile_public_id_message">Chiunque riceva il tuo link di condivisione può trovare il tuo profilo tramite il suo ID pubblico generato casualmente. Tocca “Rigenera link di condivisione” per invalidare l’ID pubblico corrente e crearne uno nuovo. Il link precedente non funzionerà più per chiunque l’abbia ricevuto.</string>
+    <string name="online_profile_public_id_message">Chiunque riceva il tuo link di condivisione può trovare il tuo profilo tramite il suo ID pubblico generato casualmente. Lo stesso account Google conserva questo ID quando accedi su un altro dispositivo, così i link esistenti continuano a funzionare. Tocca “Rigenera link di condivisione” per invalidare l’ID pubblico corrente e crearne uno nuovo. Il link precedente non funzionerà più per chiunque l’abbia ricevuto.</string>
     <string name="online_profile_delete_guide_title">Eliminare il tuo profilo</string>
-    <string name="online_profile_delete_guide_message">Tocca “Elimina profilo” per rimuovere definitivamente i dati del tuo profilo pubblicato. Chiunque abbia il tuo link di condivisione non potrà più visualizzare la tua squadra.</string>
+    <string name="online_profile_delete_guide_message">Tocca “Elimina profilo” per rimuovere definitivamente i dati del tuo profilo pubblicato. Chiunque abbia il tuo link di condivisione non potrà più visualizzare la tua squadra. Se attivi di nuovo un profilo in seguito, avrà un nuovo link di condivisione.</string>
     <string name="no_available_character_options">Nessun %1$s disponibile</string>
     <string name="characters_help_character_list_title">Elenco dei personaggi</string>
     <string name="characters_help_creation_title">Creare un personaggio</string>

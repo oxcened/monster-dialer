@@ -259,7 +259,7 @@
     <string name="online_profile_delete_message">Cette action supprime votre profil partagé et invalide son lien. Vos personnages et personnalisations de contacts restent sur cet appareil.</string>
     <string name="online_profile_error_title">Impossible de mettre à jour le profil en ligne</string>
     <string name="online_profile_sprite_decode_error">Impossible de décoder le sprite du personnage sélectionné.</string>
-    <string name="online_profile_anonymous_auth_error">Impossible de créer un profil en ligne anonyme.</string>
+    <string name="online_profile_google_sign_in_required">Connectez-vous avec Google pour gérer un profil en ligne.</string>
     <string name="online_profile_firebase_not_configured">Firebase n’est pas configuré.</string>
     <string name="online_profile_share_text">Découvrez mon profil MonsterDialer :\n%1$s</string>
     <string name="choose_team">Choisir l’équipe</string>
@@ -284,11 +284,11 @@
     <string name="characters_help_roster_title">Votre sélection de monstres</string>
     <string name="characters_help_roster_message">Votre sélection comprend jusqu’à six monstres choisis pour votre équipe. Faites glisser vos monstres personnalisés pour les réorganiser. Le premier monstre de la sélection est votre monstre actif pour les combats lors des appels.</string>
     <string name="online_profile_guide_title">Partager votre profil en ligne</string>
-    <string name="online_profile_guide_message">Les profils en ligne sont entièrement facultatifs et conçus dans le respect de la confidentialité et de la sécurité. En activant un profil, vous publiez votre dresseur et votre monstre actif, y compris leurs sprites sélectionnés, via un lien partageable. Si vous changez d’équipe plus tard, votre profil en ligne se met à jour. Les serveurs ne stockent ni votre numéro de téléphone, ni votre liste de contacts, ni votre historique d’appels, ni d’autres données personnelles ou sensibles. Les liens entre les profils MonsterDialer et les contacts restent uniquement sur chaque appareil.</string>
+    <string name="online_profile_guide_message">Les profils en ligne sont entièrement facultatifs et conçus dans le respect de la confidentialité et de la sécurité. Pour en activer un, connectez-vous avec Google. Votre compte Google identifie la personne qui peut gérer le profil ; votre e-mail et les détails de votre compte Google ne sont pas partagés. L’activation d’un profil ou la connexion sur un autre appareil publie le dresseur et le monstre actifs de cet appareil, y compris leurs sprites sélectionnés, via un lien partageable. Les serveurs ne stockent ni votre numéro de téléphone, ni votre liste de contacts, ni votre historique d’appels, ni d’autres données personnelles ou sensibles. Les liens entre les profils MonsterDialer et les contacts restent uniquement sur chaque appareil.</string>
     <string name="online_profile_public_id_title">Votre identifiant de profil public</string>
-    <string name="online_profile_public_id_message">Toute personne à qui vous envoyez votre lien de partage peut trouver votre profil grâce à son identifiant public généré aléatoirement. Touchez « Générer un nouveau lien » pour invalider l’identifiant public actuel et en créer un nouveau. L’ancien lien ne fonctionnera plus pour les personnes avec qui vous l’avez partagé.</string>
+    <string name="online_profile_public_id_message">Toute personne à qui vous envoyez votre lien de partage peut trouver votre profil grâce à son identifiant public généré aléatoirement. Le même compte Google conserve cet identifiant lors d’une connexion sur un autre appareil, afin que les liens existants continuent de fonctionner. Touchez « Générer un nouveau lien » pour invalider l’identifiant public actuel et en créer un nouveau. L’ancien lien ne fonctionnera plus pour les personnes avec qui vous l’avez partagé.</string>
     <string name="online_profile_delete_guide_title">Supprimer votre profil</string>
-    <string name="online_profile_delete_guide_message">Touchez « Supprimer le profil » pour supprimer définitivement les données publiées de votre profil. Toute personne ayant votre lien de partage ne pourra plus voir votre équipe.</string>
+    <string name="online_profile_delete_guide_message">Touchez « Supprimer le profil » pour supprimer définitivement les données publiées de votre profil. Toute personne ayant votre lien de partage ne pourra plus voir votre équipe. Si vous activez à nouveau un profil plus tard, il aura un nouveau lien de partage.</string>
     <string name="characters_help_character_list_title">Liste des personnages</string>
     <string name="learn_about_radiants">À propos des radiants</string>
     <string name="open_radiants_guide">Ouvrir le guide des radiants</string>

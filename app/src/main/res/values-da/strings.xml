@@ -254,7 +254,7 @@
     <string name="online_profile_delete_message">Dette sletter din delte profil og gør dens link ugyldigt. Dine figurer og kontakttilpasninger bliver på denne enhed.</string>
     <string name="online_profile_error_title">Onlineprofilen kunne ikke opdateres</string>
     <string name="online_profile_sprite_decode_error">Den valgte figurs sprite kan ikke afkodes.</string>
-    <string name="online_profile_anonymous_auth_error">En anonym onlineprofil kunne ikke oprettes.</string>
+    <string name="online_profile_google_sign_in_required">Log ind med Google for at administrere en onlineprofil.</string>
     <string name="online_profile_firebase_not_configured">Firebase er ikke konfigureret.</string>
     <string name="online_profile_share_text">Se min MonsterDialer-profil:\n%1$s</string>
     <string name="choose_team">Vælg hold</string>
@@ -279,11 +279,11 @@
     <string name="characters_help_roster_title">Din monsterliste</string>
     <string name="characters_help_roster_message">Din monsterliste består af op til seks monstre, du vælger til dit hold. Træk og slip tilpassede monstre for at ændre rækkefølgen. Det første monster på listen er dit aktive monster i kampene under opkald.</string>
     <string name="online_profile_guide_title">Deling af din onlineprofil</string>
-    <string name="online_profile_guide_message">Onlineprofiler er helt frivillige og udformet med fokus på privatliv og sikkerhed. Når du aktiverer en, offentliggør du din nuværende træner og dit aktive monster, herunder deres valgte sprites, via et delbart link. Hvis du senere ændrer dit hold, opdateres din onlineprofil. Servere gemmer ikke dit telefonnummer, din kontaktliste, opkaldshistorik eller andre personlige eller følsomme data. Forbindelser mellem MonsterDialer-profiler og kontakter forbliver kun på hver enhed.</string>
+    <string name="online_profile_guide_message">Onlineprofiler er helt frivillige og udformet med fokus på privatliv og sikkerhed. For at aktivere en skal du logge ind med Google. Din Google-konto identificerer, hvem der kan administrere profilen; din e-mail og Google-kontooplysninger deles ikke. Når du aktiverer en profil eller logger ind på en anden enhed, offentliggøres den pågældende enheds nuværende træner og aktive monster, herunder deres valgte sprites, via et delbart link. Servere gemmer ikke dit telefonnummer, din kontaktliste, opkaldshistorik eller andre personlige eller følsomme data. Forbindelser mellem MonsterDialer-profiler og kontakter forbliver kun på hver enhed.</string>
     <string name="online_profile_public_id_title">Dit offentlige profil-id</string>
-    <string name="online_profile_public_id_message">Alle, du sender dit delingslink til, kan finde din profil via det tilfældigt genererede offentlige id. Tryk på “Opret nyt delingslink” for at ugyldiggøre det aktuelle offentlige id og oprette et nyt. Det tidligere link virker ikke længere for nogen, du har delt det med.</string>
+    <string name="online_profile_public_id_message">Alle, du sender dit delingslink til, kan finde din profil via det tilfældigt genererede offentlige id. Den samme Google-konto beholder dette id, når du logger ind på en anden enhed, så eksisterende links fortsat virker. Tryk på “Opret nyt delingslink” for at ugyldiggøre det aktuelle offentlige id og oprette et nyt. Det tidligere link virker ikke længere for nogen, du har delt det med.</string>
     <string name="online_profile_delete_guide_title">Sletning af din profil</string>
-    <string name="online_profile_delete_guide_message">Tryk på “Slet profil” for at fjerne dine offentliggjorte profildata permanent. Alle med dit delingslink kan ikke længere se dit hold.</string>
+    <string name="online_profile_delete_guide_message">Tryk på “Slet profil” for at fjerne dine offentliggjorte profildata permanent. Alle med dit delingslink kan ikke længere se dit hold. Hvis du aktiverer en profil igen senere, får den et nyt delingslink.</string>
     <string name="characters_help_character_list_title">Figurliste</string>
     <string name="learn_about_radiants">Om strålende</string>
     <string name="open_radiants_guide">Åbn guiden til strålende</string>

@@ -267,7 +267,7 @@
     <string name="online_profile_delete_message">Esto elimina tu perfil compartido e invalida su enlace. Tus personajes y personalizaciones de contactos permanecen en este dispositivo.</string>
     <string name="online_profile_error_title">No se pudo actualizar el perfil en línea</string>
     <string name="online_profile_sprite_decode_error">No se puede decodificar el sprite del personaje seleccionado.</string>
-    <string name="online_profile_anonymous_auth_error">No se pudo crear un perfil en línea anónimo.</string>
+    <string name="online_profile_google_sign_in_required">Inicia sesión con Google para gestionar un perfil en línea.</string>
     <string name="online_profile_firebase_not_configured">Firebase no está configurado.</string>
     <string name="online_profile_share_text">Mira mi perfil de MonsterDialer:\n%1$s</string>
     <string name="choose_team">Elegir equipo</string>
@@ -305,11 +305,11 @@
     <string name="characters_help_roster_title">Tu plantilla</string>
     <string name="characters_help_roster_message">Tu plantilla contiene hasta seis monstruos que eliges para tu equipo. Arrastra y suelta monstruos personalizados para reordenarlos. El primer monstruo de la plantilla es tu monstruo activo en los combates durante las llamadas.</string>
     <string name="online_profile_guide_title">Compartir tu perfil en línea</string>
-    <string name="online_profile_guide_message">Los perfiles en línea son completamente opcionales y se diseñaron pensando en la privacidad y la seguridad. Al activar uno, publicas tu entrenador y monstruo activos, incluidos los sprites seleccionados, mediante un enlace que puedes compartir. Si después cambias de equipo, tu perfil en línea se actualiza. Los servidores no almacenan tu número de teléfono, lista de contactos, historial de llamadas ni otros datos personales o sensibles. Los vínculos entre los perfiles de MonsterDialer y los contactos permanecen únicamente en cada dispositivo.</string>
+    <string name="online_profile_guide_message">Los perfiles en línea son completamente opcionales y se diseñaron pensando en la privacidad y la seguridad. Para activar uno, inicia sesión con Google. Tu cuenta de Google identifica quién puede administrar el perfil; tu correo y los datos de tu cuenta de Google no se comparten. Al activar un perfil o iniciar sesión en otro dispositivo, se publican el entrenador y el monstruo activos de ese dispositivo, incluidos los sprites seleccionados, mediante un enlace que puedes compartir. Los servidores no almacenan tu número de teléfono, lista de contactos, historial de llamadas ni otros datos personales o sensibles. Los vínculos entre los perfiles de MonsterDialer y los contactos permanecen únicamente en cada dispositivo.</string>
     <string name="online_profile_public_id_title">Tu ID de perfil público</string>
-    <string name="online_profile_public_id_message">Cualquier persona a la que envíes tu enlace para compartir puede encontrar tu perfil mediante su ID público generado al azar. Toca “Regenerar enlace para compartir” para invalidar el ID público actual y crear uno nuevo. El enlace anterior dejará de funcionar para quien lo haya recibido.</string>
+    <string name="online_profile_public_id_message">Cualquier persona a la que envíes tu enlace para compartir puede encontrar tu perfil mediante su ID público generado al azar. La misma cuenta de Google conserva este ID al iniciar sesión en otro dispositivo, por lo que los enlaces existentes siguen funcionando. Toca “Regenerar enlace para compartir” para invalidar el ID público actual y crear uno nuevo. El enlace anterior dejará de funcionar para quien lo haya recibido.</string>
     <string name="online_profile_delete_guide_title">Eliminar tu perfil</string>
-    <string name="online_profile_delete_guide_message">Toca “Eliminar perfil” para eliminar permanentemente los datos publicados de tu perfil. Quien tenga tu enlace para compartir ya no podrá ver tu equipo.</string>
+    <string name="online_profile_delete_guide_message">Toca “Eliminar perfil” para eliminar permanentemente los datos publicados de tu perfil. Quien tenga tu enlace para compartir ya no podrá ver tu equipo. Si vuelves a activar un perfil más adelante, tendrá un enlace nuevo.</string>
     <string name="characters_help_character_list_title">Lista de personajes</string>
     <string name="characters_help_creation_title">Crear un personaje</string>
     <string name="characters_help_creation_message">Pon un nombre a tu personaje y añade su ilustración de sprite. El sprite frontal se usa cuando el personaje aparece como oponente, mientras que el sprite trasero representa al personaje en tu equipo durante los combates.</string>

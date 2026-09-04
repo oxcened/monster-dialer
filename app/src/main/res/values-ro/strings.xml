@@ -264,7 +264,7 @@
     <string name="online_profile_delete_message">Aceasta șterge profilul tău partajat și îi invalidează linkul. Personajele și personalizările contactelor rămân pe acest dispozitiv.</string>
     <string name="online_profile_error_title">Nu s-a putut actualiza profilul online</string>
     <string name="online_profile_sprite_decode_error">Sprite-ul personajului selectat nu poate fi decodat.</string>
-    <string name="online_profile_anonymous_auth_error">Nu s-a putut crea un profil online anonim.</string>
+    <string name="online_profile_google_sign_in_required">Conectează-te cu Google pentru a gestiona un profil online.</string>
     <string name="online_profile_firebase_not_configured">Firebase nu este configurat.</string>
     <string name="online_profile_share_text">Vezi profilul meu MonsterDialer:\n%1$s</string>
     <string name="choose_team">Alege echipa</string>
@@ -289,11 +289,11 @@
     <string name="characters_help_roster_title">Lista ta de monștri</string>
     <string name="characters_help_roster_message">Lista ta conține până la șase monștri pe care îi alegi pentru echipă. Trage și plasează monștrii personalizați pentru a le schimba ordinea. Primul monstru din listă este monstrul tău activ în luptele din apeluri.</string>
     <string name="online_profile_guide_title">Partajarea profilului tău online</string>
-    <string name="online_profile_guide_message">Profilurile online sunt complet opționale și create cu grijă pentru confidențialitate și securitate. Când activezi unul, publici antrenorul actual și monstrul activ, inclusiv sprite-urile alese, printr-un link care poate fi partajat. Dacă îți schimbi echipa mai târziu, profilul online se actualizează. Serverele nu stochează numărul tău de telefon, lista de contacte, istoricul apelurilor sau alte date personale ori sensibile. Legăturile dintre profilurile MonsterDialer și contacte rămân exclusiv pe fiecare dispozitiv.</string>
+    <string name="online_profile_guide_message">Profilurile online sunt complet opționale și create cu grijă pentru confidențialitate și securitate. Pentru a activa unul, conectează-te cu Google. Contul tău Google identifică persoana care poate administra profilul; e-mailul și detaliile contului Google nu sunt partajate. Când activezi un profil sau te conectezi pe alt dispozitiv, antrenorul actual și monstrul activ de pe acel dispozitiv, inclusiv sprite-urile alese, sunt publicate printr-un link care poate fi partajat. Serverele nu stochează numărul tău de telefon, lista de contacte, istoricul apelurilor sau alte date personale ori sensibile. Legăturile dintre profilurile MonsterDialer și contacte rămân exclusiv pe fiecare dispozitiv.</string>
     <string name="online_profile_public_id_title">ID-ul tău de profil public</string>
-    <string name="online_profile_public_id_message">Oricine primește linkul tău de partajare îți poate găsi profilul prin ID-ul public generat aleatoriu. Atinge „Regenerează linkul de partajare” pentru a invalida ID-ul public curent și a crea unul nou. Linkul anterior nu va mai funcționa pentru nimeni cu care l-ai partajat.</string>
+    <string name="online_profile_public_id_message">Oricine primește linkul tău de partajare îți poate găsi profilul prin ID-ul public generat aleatoriu. Același cont Google păstrează acest ID când te conectezi pe alt dispozitiv, astfel încât linkurile existente continuă să funcționeze. Atinge „Regenerează linkul de partajare” pentru a invalida ID-ul public curent și a crea unul nou. Linkul anterior nu va mai funcționa pentru nimeni cu care l-ai partajat.</string>
     <string name="online_profile_delete_guide_title">Ștergerea profilului tău</string>
-    <string name="online_profile_delete_guide_message">Atinge „Șterge profilul” pentru a elimina definitiv datele publicate ale profilului tău. Oricine are linkul tău de partajare nu va mai putea vedea echipa ta.</string>
+    <string name="online_profile_delete_guide_message">Atinge „Șterge profilul” pentru a elimina definitiv datele publicate ale profilului tău. Oricine are linkul tău de partajare nu va mai putea vedea echipa ta. Dacă activezi din nou un profil mai târziu, acesta va avea un link nou.</string>
     <string name="characters_help_character_list_title">Lista de personaje</string>
     <string name="learn_about_radiants">Despre radianți</string>
     <string name="open_radiants_guide">Deschide ghidul radianților</string>

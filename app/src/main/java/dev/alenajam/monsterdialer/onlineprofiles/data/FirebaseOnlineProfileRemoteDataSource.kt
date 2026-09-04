@@ -23,16 +23,24 @@ class FirebaseOnlineProfileRemoteDataSource @Inject constructor(
 ) : OnlineProfileRemoteDataSource {
     override suspend fun publish(profile: OnlineProfileUpload) {
         val app = firebaseApp()
-        val auth = FirebaseAuth.getInstance(app)
-        val user = auth.currentUser ?: auth.signInAnonymously().await().user
-        requireNotNull(user) { context.getString(R.string.online_profile_anonymous_auth_error) }
+        val user = requireNotNull(FirebaseAuth.getInstance(app).currentUser) {
+            context.getString(R.string.online_profile_google_sign_in_required)
+        }
         val firestore = FirebaseFirestore.getInstance(app)
         val storage = FirebaseStorage.getInstance(app)
         val profileRef = firestore.collection(Collection).document(profile.profile.publicProfileId)
-        val ownershipRef = profileRef.collection(PrivateCollection).document(OwnershipDocument)
+        val ownerRef = firestore.collection(OwnerCollection).document(user.uid)
         firestore.runBatch { batch ->
             batch.set(profileRef, profile.profile.asFirestoreDocument(profile.refreshRetention), SetOptions.merge())
-            batch.set(ownershipRef, mapOf(OwnerUid to user.uid))
+            if (profile.createsOrReplacesOwnerIndex) {
+                batch.set(ownerRef, mapOf(
+                    ActiveProfileId to profile.profile.publicProfileId,
+                    OwnerUpdatedAt to FieldValue.serverTimestamp(),
+                ))
+            }
+            profile.previousProfileId?.let { previousProfileId ->
+                batch.delete(firestore.collection(Collection).document(previousProfileId))
+            }
         }.await()
         profile.sprites.forEach { upload ->
             storage.reference.child(upload.sprite.storagePath).putBytes(
@@ -40,6 +48,18 @@ class FirebaseOnlineProfileRemoteDataSource @Inject constructor(
                 StorageMetadata.Builder().setContentType(PngContentType).build(),
             ).await()
         }
+    }
+
+    override suspend fun ownedProfileId(): String? {
+        val app = FirebaseApp.initializeApp(context) ?: return null
+        val user = FirebaseAuth.getInstance(app).currentUser ?: return null
+        return FirebaseFirestore.getInstance(app)
+            .collection(OwnerCollection)
+            .document(user.uid)
+            .get(Source.SERVER)
+            .await()
+            .getString(ActiveProfileId)
+            ?.takeIf(PublicProfileId::isValid)
     }
 
     override suspend fun retention(publicProfileId: String): OnlineProfileRetention? {
@@ -79,15 +99,22 @@ class FirebaseOnlineProfileRemoteDataSource @Inject constructor(
         return true
     }
 
-    override suspend fun delete(profile: OwnedOnlineProfile) {
+    override suspend fun deleteSprites(profile: OwnedOnlineProfile) {
         val app = FirebaseApp.initializeApp(context) ?: return
         val storage = FirebaseStorage.getInstance(app)
         profile.spritePaths.forEach { path -> runCatching { storage.reference.child(path).delete().await() } }
+    }
+
+    override suspend fun delete(profile: OwnedOnlineProfile) {
+        val app = FirebaseApp.initializeApp(context) ?: return
+        deleteSprites(profile)
         val firestore = FirebaseFirestore.getInstance(app)
         val profileRef = firestore.collection(Collection).document(profile.publicProfileId)
+        val user = FirebaseAuth.getInstance(app).currentUser
+        requireNotNull(user) { context.getString(R.string.online_profile_google_sign_in_required) }
         firestore.runBatch { batch ->
             batch.delete(profileRef)
-            batch.delete(profileRef.collection(PrivateCollection).document(OwnershipDocument))
+            batch.delete(firestore.collection(OwnerCollection).document(user.uid))
         }.await()
     }
 
@@ -150,9 +177,9 @@ class FirebaseOnlineProfileRemoteDataSource @Inject constructor(
 
     private companion object {
         const val Collection = "onlineProfiles"
-        const val PrivateCollection = "private"
-        const val OwnershipDocument = "ownership"
-        const val OwnerUid = "ownerUid"
+        const val OwnerCollection = "onlineProfileOwners"
+        const val ActiveProfileId = "activeProfileId"
+        const val OwnerUpdatedAt = "updatedAt"
         const val RetentionConfirmedAt = "retentionConfirmedAt"
         const val PngContentType = "image/png"
         const val MaxNameLength = 120

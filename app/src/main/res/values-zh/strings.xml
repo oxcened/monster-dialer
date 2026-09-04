@@ -248,7 +248,7 @@
     <string name="online_profile_delete_message">这会删除你的共享个人资料并使其链接失效。你的角色和联系人自定义设置将保留在此设备上。</string>
     <string name="online_profile_error_title">无法更新在线个人资料</string>
     <string name="online_profile_sprite_decode_error">无法解码所选角色的精灵图。</string>
-    <string name="online_profile_anonymous_auth_error">无法创建匿名在线个人资料。</string>
+    <string name="online_profile_google_sign_in_required">请使用 Google 登录以管理在线个人资料。</string>
     <string name="online_profile_firebase_not_configured">尚未配置 Firebase。</string>
     <string name="online_profile_share_text">看看我的 MonsterDialer 个人资料：\n%1$s</string>
     <string name="choose_team">选择队伍</string>
@@ -273,11 +273,11 @@
     <string name="characters_help_roster_title">你的怪物列表</string>
     <string name="characters_help_roster_message">你的怪物列表最多包含六只为队伍选择的怪物。拖放自定义怪物即可重新排序。列表中的第一只怪物是你在通话战斗中的当前出战怪物。</string>
     <string name="online_profile_guide_title">分享你的在线个人资料</string>
-    <string name="online_profile_guide_message">在线个人资料完全由你自愿开启，并以隐私和安全为设计重点。开启后，你当前的训练师和出战怪物（包括所选精灵图）会通过可分享的链接发布。如果之后更换队伍，在线个人资料会随之更新。服务器不会存储你的电话号码、联系人列表、通话记录或其他个人及敏感数据。MonsterDialer 个人资料与联系人的关联仅保留在各自设备上。</string>
+    <string name="online_profile_guide_message">在线个人资料完全由你自愿开启，并以隐私和安全为设计重点。要启用它，请使用 Google 登录。你的 Google 账号用于识别谁可以管理个人资料；不会分享你的电子邮件或 Google 账号详情。启用个人资料或在另一台设备上登录时，该设备当前的训练师和出战怪物（包括所选精灵图）会通过可分享的链接发布。服务器不会存储你的电话号码、联系人列表、通话记录或其他个人及敏感数据。MonsterDialer 个人资料与联系人的关联仅保留在各自设备上。</string>
     <string name="online_profile_public_id_title">你的公开个人资料 ID</string>
-    <string name="online_profile_public_id_message">收到你分享链接的任何人都可通过随机生成的公开 ID 找到你的个人资料。点按“重新生成分享链接”即可使当前公开 ID 失效并创建新的 ID。此前的链接将不再对你分享过的任何人有效。</string>
+    <string name="online_profile_public_id_message">收到你分享链接的任何人都可通过随机生成的公开 ID 找到你的个人资料。使用同一 Google 账号在另一台设备上登录时会保留此 ID，因此现有链接仍然有效。点按“重新生成分享链接”即可使当前公开 ID 失效并创建新的 ID。此前的链接将不再对你分享过的任何人有效。</string>
     <string name="online_profile_delete_guide_title">删除你的个人资料</string>
-    <string name="online_profile_delete_guide_message">点按“删除个人资料”可永久移除已发布的个人资料数据。拥有你分享链接的人将无法再查看你的队伍。</string>
+    <string name="online_profile_delete_guide_message">点按“删除个人资料”可永久移除已发布的个人资料数据。拥有你分享链接的人将无法再查看你的队伍。如果之后再次启用个人资料，它会有一个新的分享链接。</string>
     <string name="characters_help_character_list_title">角色列表</string>
     <string name="learn_about_radiants">关于闪耀变体</string>
     <string name="open_radiants_guide">打开闪耀变体指南</string>
