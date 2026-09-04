@@ -482,7 +482,14 @@ private fun TeamProfileCard(
                             overflow = TextOverflow.Ellipsis,
                         )
                         Text(
-                            text = stringResource(R.string.roster_monster_level, monster.level ?: DefaultMonsterLevel),
+                            text = stringResource(
+                                R.string.active_monster_variant_and_level,
+                                stringResource(if (monster.isRadiant) R.string.radiant else R.string.regular),
+                                stringResource(
+                                    R.string.roster_monster_level,
+                                    monster.level ?: DefaultMonsterLevel,
+                                ),
+                            ),
                             style = MaterialTheme.typography.labelSmall,
                             color = MaterialTheme.colorScheme.onPrimaryContainer.copy(alpha = 0.72f),
                         )
