@@ -108,6 +108,11 @@ fun OnlineProfileSection(viewModel: OnlineProfileSettingsViewModel = hiltViewMod
         }
     } else {
         val currentProfile = requireNotNull(profile)
+        val shareText = stringResource(
+            R.string.online_profile_share_text,
+            ProfileSharingLink.urlFor(currentProfile.publicProfileId),
+        )
+        val shareTitle = stringResource(R.string.online_profile_share)
         Card(
             modifier = Modifier.fillMaxWidth(),
             shape = RoundedCornerShape(24.dp),
@@ -127,13 +132,9 @@ fun OnlineProfileSection(viewModel: OnlineProfileSettingsViewModel = hiltViewMod
                 }
                 Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
                     Button(onClick = {
-                        val shareText = context.getString(
-                            R.string.online_profile_share_text,
-                            ProfileSharingLink.urlFor(currentProfile.publicProfileId),
-                        )
                         context.startActivity(Intent.createChooser(Intent(Intent.ACTION_SEND).apply {
                             type = "text/plain"; putExtra(Intent.EXTRA_TEXT, shareText)
-                        }, context.getString(R.string.online_profile_share)))
+                        }, shareTitle))
                     }, enabled = !working, modifier = Modifier.fillMaxWidth()) { Text(stringResource(R.string.online_profile_share)) }
                     OutlinedButton(
                         onClick = { confirmRegenerate = true },
