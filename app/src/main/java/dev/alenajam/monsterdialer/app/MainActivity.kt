@@ -44,6 +44,8 @@ import dev.alenajam.monsterdialer.characters.ui.AddCharacterScreen
 import dev.alenajam.monsterdialer.characters.ui.ContactCharacterSettingsContent
 import dev.alenajam.monsterdialer.characters.ui.ContactCharacterSettingsViewModel
 import dev.alenajam.monsterdialer.characters.ui.ContactPickerDestination
+import dev.alenajam.monsterdialer.characters.ui.ContextualGuideButton
+import dev.alenajam.monsterdialer.characters.ui.GuideContent
 import dev.alenajam.monsterdialer.characters.ui.CharacterSettingsSummaryViewModel
 import dev.alenajam.monsterdialer.characters.ui.CharactersHomeScreen
 import dev.alenajam.monsterdialer.characters.ui.PlayerCharacterSettingsContent
@@ -199,6 +201,13 @@ class MainActivity : AppCompatActivity() {
                             isScrollable = false,
                             topContentPadding = 0.dp,
                             visibleInSettings = false,
+                            actions = {
+                                ContextualGuideButton(
+                                    contents = listOf(
+                                        GuideContent(R.string.characters_help_character_list_title, R.string.characters_help_player_character_list_message),
+                                    ),
+                                )
+                            },
                             destinations = listOf(
                                 SettingsSubpageDestination(title = stringResource(R.string.add_trainer)) { payload, onNavigateBack ->
                                     AddCharacterScreen(
@@ -228,6 +237,18 @@ class MainActivity : AppCompatActivity() {
                             isScrollable = false,
                             topContentPadding = 0.dp,
                             visibleInSettings = false,
+                            actions = {
+                                ContextualGuideButton(
+                                    contents = listOf(
+                                        GuideContent(
+                                            R.string.characters_help_assignments_title,
+                                            R.string.characters_help_assignments_message,
+                                            listOf(R.string.characters_help_assignments_contact),
+                                        ),
+                                        GuideContent(R.string.characters_help_character_list_title, R.string.characters_help_contact_character_list_message),
+                                    ),
+                                )
+                            },
                             destinations = listOf(
                                 SettingsSubpageDestination(title = stringResource(R.string.choose_contact)) { _, onNavigateBack ->
                                     ContactPickerDestination(onNavigateBack)
@@ -274,6 +295,14 @@ class MainActivity : AppCompatActivity() {
                             isScrollable = visiblePacks.isNotEmpty(),
                             visibleInSettings = false,
                             topContentPadding = 0.dp,
+                            actions = {
+                                ContextualGuideButton(
+                                    contents = listOf(
+                                        GuideContent(R.string.characters_help_packs_import_title, R.string.characters_help_packs_import_message),
+                                        GuideContent(R.string.characters_help_packs_title, R.string.characters_help_packs_message),
+                                    ),
+                                )
+                            },
                             destinations = listOf(
                                 SettingsSubpageDestination(title = stringResource(R.string.create_character_pack)) { _, onNavigateBack ->
                                     CreateCharacterPackScreen(onNavigateBack)

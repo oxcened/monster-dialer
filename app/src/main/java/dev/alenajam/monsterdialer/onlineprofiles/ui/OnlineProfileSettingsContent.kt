@@ -35,6 +35,8 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import dev.alenajam.monsterdialer.R
+import dev.alenajam.monsterdialer.characters.ui.ContextualGuideButton
+import dev.alenajam.monsterdialer.characters.ui.GuideContent
 import dev.alenajam.monsterdialer.onlineprofiles.data.ProfileSharingLink
 import dev.alenajam.opendialer.core.common.ui.AppIcon
 import dev.alenajam.opendialer.core.common.ui.LocalAppIcons
@@ -72,11 +74,21 @@ fun OnlineProfileSection(viewModel: OnlineProfileSettingsViewModel = hiltViewMod
                     )
                     Spacer(Modifier.width(12.dp))
                     Column(verticalArrangement = Arrangement.spacedBy(2.dp)) {
-                        Text(
-                            stringResource(R.string.online_profile_title),
-                            style = MaterialTheme.typography.titleMedium,
-                            color = MaterialTheme.colorScheme.onSecondaryContainer,
-                        )
+                        Row(verticalAlignment = Alignment.CenterVertically) {
+                            Text(
+                                stringResource(R.string.online_profile_title),
+                                style = MaterialTheme.typography.titleMedium,
+                                color = MaterialTheme.colorScheme.onSecondaryContainer,
+                            )
+                            ContextualGuideButton(
+                                contents = listOf(
+                                    GuideContent(R.string.online_profile_guide_title, R.string.online_profile_guide_message),
+                                    GuideContent(R.string.online_profile_public_id_title, R.string.online_profile_public_id_message),
+                                    GuideContent(R.string.online_profile_delete_guide_title, R.string.online_profile_delete_guide_message),
+                                ),
+                                modifier = Modifier.size(32.dp),
+                            )
+                        }
                         Text(
                             stringResource(R.string.online_profile_description),
                             style = MaterialTheme.typography.bodyMedium,
@@ -126,7 +138,17 @@ fun OnlineProfileSection(viewModel: OnlineProfileSettingsViewModel = hiltViewMod
                     AppIcon(LocalAppIcons.current.person, null, Modifier.size(32.dp), tint = MaterialTheme.colorScheme.primary)
                     Spacer(Modifier.width(12.dp))
                     Column(verticalArrangement = Arrangement.spacedBy(2.dp)) {
-                        Text(stringResource(R.string.online_profile_title), style = MaterialTheme.typography.titleMedium, color = MaterialTheme.colorScheme.onSecondaryContainer)
+                        Row(verticalAlignment = Alignment.CenterVertically) {
+                            Text(stringResource(R.string.online_profile_title), style = MaterialTheme.typography.titleMedium, color = MaterialTheme.colorScheme.onSecondaryContainer)
+                            ContextualGuideButton(
+                                contents = listOf(
+                                    GuideContent(R.string.online_profile_guide_title, R.string.online_profile_guide_message),
+                                    GuideContent(R.string.online_profile_public_id_title, R.string.online_profile_public_id_message),
+                                    GuideContent(R.string.online_profile_delete_guide_title, R.string.online_profile_delete_guide_message),
+                                ),
+                                modifier = Modifier.size(32.dp),
+                            )
+                        }
                         Text(stringResource(R.string.online_profile_enabled), style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onSecondaryContainer.copy(alpha = 0.76f))
                     }
                 }

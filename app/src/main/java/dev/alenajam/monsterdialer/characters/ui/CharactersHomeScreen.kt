@@ -155,11 +155,16 @@ private fun RosterSection(
     }
 
     Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
-        Text(
-            text = stringResource(R.string.your_roster),
-            style = MaterialTheme.typography.titleMedium,
-            color = MaterialTheme.colorScheme.onSurface,
-        )
+        Row(verticalAlignment = Alignment.CenterVertically) {
+            Text(
+                text = stringResource(R.string.your_roster),
+                style = MaterialTheme.typography.titleMedium,
+                color = MaterialTheme.colorScheme.onSurface,
+            )
+            ContextualGuideButton(
+                contents = listOf(GuideContent(R.string.characters_help_roster_title, R.string.characters_help_roster_message)),
+            )
+        }
         LazyRow(
             state = lazyListState,
             horizontalArrangement = Arrangement.spacedBy(10.dp),
@@ -490,6 +495,12 @@ private fun TeamProfileCard(
                     )
                 }
             }
+            ContextualGuideButton(
+                contents = listOf(GuideContent(R.string.characters_help_team_title, R.string.characters_help_team_message)),
+                modifier = Modifier
+                    .align(Alignment.TopEnd)
+                    .padding(8.dp),
+            )
         }
     }
 }
