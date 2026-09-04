@@ -4,7 +4,58 @@
     <string name="contribute_translations" comment="Title of the OpenDialer translation contribution link on the About screen.">Contribuie la traducerile OpenDialer</string>
     <string name="hang_up" comment="Button to end the current phone call.">Închide</string>
     <string name="settings_character_packs_title" comment="Settings title for managing character packs.">Pachete de personaje</string>
-    <string name="characters_navigation_label" comment="Bottom navigation label for character customization.">Personaje</string>
+    <string name="characters_navigation_label" comment="Bottom navigation label for the player's profile and character collection.">Personaje</string>
+    <string name="customize_your_calls" comment="Section heading above contact character customization.">Personalizează apelurile</string>
+    <string name="character_collection_title" comment="Section heading above character pack and import actions.">Colecția ta</string>
+    <string name="profile_trainer_label" comment="Label above the player's name in the Character profile card.">Antrenorul tău</string>
+    <string name="active_monster_label" comment="Label above the currently selected player monster in the Character profile card.">Monstru activ</string>
+    <plurals name="calls_battled" comment="Label for the number of calls that have had a battle presentation.">
+        <item quantity="one">%1$d apel cu luptă</item>
+        <item quantity="few">%1$d apeluri cu lupte</item>
+        <item quantity="other">%1$d apeluri cu lupte</item>
+    </plurals>
+    <plurals name="characters_collected" comment="Label for the number of characters in the player's collection.">
+        <item quantity="one">%1$d personaj colecționat</item>
+        <item quantity="few">%1$d personaje colecționate</item>
+        <item quantity="other">%1$d personaje colecționate</item>
+    </plurals>
+    <plurals name="radiants_found" comment="Label for the number of rare radiant variants the player has found.">
+        <item quantity="one">%1$d radiant găsit</item>
+        <item quantity="few">%1$d radiante găsite</item>
+        <item quantity="other">%1$d radiante găsite</item>
+    </plurals>
+    <string name="profile_calls_battled" comment="Profile activity summary. %1$d is the number of calls with battle presentations.">%1$d apeluri cu lupte</string>
+    <string name="profile_collection_summary" comment="Profile collection summary. %1$d is the number of collected characters and %2$d is the number of radiant variants found.">%1$d colecționate · %2$d radiante găsite</string>
+    <string name="character_tools_title" comment="Heading above character management actions.">Trusă de unelte</string>
+    <string name="battle_journal_title" comment="Title for the local history of battle encounters.">Jurnal de lupte</string>
+    <string name="battle_journal_description" comment="Description for the local history of battle encounters.">Vezi descoperirile radiante și luptele recente.</string>
+    <string name="battle_journal_empty_title" comment="Empty-state title for the battle journal.">Încă nu ai lupte</string>
+    <string name="battle_journal_empty_description" comment="Empty-state message for the battle journal.">Descoperirile radiante și luptele recente vor apărea aici.</string>
+    <string name="battle_journal_no_matches_title" comment="Title shown when the selected Battle Journal filter has no entries.">Încă nu este nimic aici</string>
+    <string name="battle_journal_no_matches_description" comment="Message shown when the selected Battle Journal filter has no entries.">Încearcă un alt filtru sau revino după următoarea luptă.</string>
+    <string name="battle_journal_radiant_found" comment="Journal entry for a newly discovered radiant monster. %1$s is the monster name.">Ai găsit %1$s radiant</string>
+    <string name="battle_journal_trainer_battle" comment="Journal entry for a battle against a trainer. %1$s is the opponent monster name.">Ai luptat cu %1$s</string>
+    <string name="battle_journal_wild_battle" comment="Journal entry for a non-discovery radiant wild encounter. %1$s is the opponent monster name.">Ai întâlnit un %1$s sălbatic</string>
+    <string name="battle_journal_anonymous_battle" comment="Journal entry for an anonymous call battle.">Luptă anonimă</string>
+    <string name="battle_journal_opponent_trainer" comment="Journal entry detail. %1$s is the opponent trainer name.">Antrenor: %1$s</string>
+    <string name="battle_journal_player_monster" comment="Journal entry detail. %1$s is the player's active monster name.">Monstrul tău: %1$s</string>
+    <string name="battle_journal_matchup" comment="Journal entry matchup. %1$s is the player's monster and %2$s is the opponent monster.">%1$s contra %2$s</string>
+    <string name="battle_journal_battle_label" comment="Compact category label for a regular journal entry.">Luptă</string>
+    <string name="battle_journal_radiant_label" comment="Compact category label for a radiant discovery journal entry.">Radiant găsit</string>
+    <string name="battle_journal_radiant_encounter_label" comment="Compact category label for a repeat radiant encounter.">Întâlnire radiantă</string>
+    <string name="battle_journal_more_options" comment="Accessibility label for the Battle Journal overflow menu.">Mai multe opțiuni pentru jurnalul de lupte</string>
+    <string name="battle_journal_clear" comment="Overflow-menu action that removes all Battle Journal entries.">Golește jurnalul</string>
+    <string name="battle_journal_clear_confirmation_title" comment="Title for the confirmation dialog before clearing the Battle Journal.">Golești jurnalul de lupte?</string>
+    <string name="battle_journal_clear_confirmation_message" comment="Explanation of what clearing the Battle Journal removes.">Aceasta va elimina definitiv tot istoricul luptelor și sprite-urile salvate.</string>
+    <string name="your_roster" comment="Heading above the player's current active monster roster.">Echipa ta</string>
+    <string name="roster_monster_level" comment="Level shown below a monster in the roster. %1$d is the monster's level.">Nv. %1$d</string>
+    <string name="roster_monster_description" comment="Accessibility description for a roster monster. %1$s is its name and %2$d is its level.">%1$s, nivelul %2$d</string>
+    <string name="roster_full_message" comment="Message shown when the player tries to add a monster but the roster is full.">Echipa ta este completă. Elimină mai întâi un monstru pentru a adăuga altul.</string>
+    <string name="remove_roster_monster" comment="Accessibility label for removing a monster from the player's roster.">Elimină monstrul</string>
+    <string name="contact_characters_ready" comment="Short status shown on the Contact Characters action when one or more contacts are configured.">Echipa de apel este gata</string>
+    <string name="character_packs_home_description" comment="Short description for the character packs action on the Characters home screen.">Răsfoiește pachetele</string>
+    <string name="import_character_home_description" comment="Short description for the character import action on the Characters home screen.">Adaugă unul partajat</string>
+    <string name="open_character_guide" comment="Action label that opens the Character Guide.">Deschide ghidul</string>
     <string name="settings_character_packs_description" comment="Settings description for character packs.">Importă și gestionează ilustrații personalizate ale personajelor.</string>
     <string name="import_character" comment="Action that starts selecting a shared single-character file.">Importă personaj</string>
     <string name="import_character_description" comment="Description of the action that imports a shared character.">Adaugă un personaj pe care cineva l-a distribuit cu tine.</string>
@@ -27,6 +78,7 @@
     <string name="player_characters_not_set" comment="Settings subtitle when no player character is selected.">Nepersonalizat</string>
     <string name="using_characters" comment="Settings subtitle; %1$s is a list of selected character names.">Folosește %1$s</string>
     <string name="settings_contact_characters_title" comment="Settings title for assigning characters to contacts.">Personajele contactelor</string>
+    <string name="personalize_contact_character" comment="Accessibility label for the contact-list action that customizes a caller's battle characters.">Personalizează personajele apelantului</string>
     <string name="settings_contact_characters_description" comment="Settings description for assigning characters to contacts.">Atribuie personaje apelanților.</string>
     <string name="contact_characters_not_set" comment="Settings subtitle when no contacts have a character assignment.">Niciun contact personalizat</string>
     <plurals name="contact_character_assignment_count" comment="Settings subtitle showing how many contacts have a character assignment.">
@@ -47,6 +99,7 @@
     <string name="radiant" comment="Adjective for a rare, sparkling character variant.">Radiant</string>
     <string name="regular" comment="Adjective for a standard, non-rare character variant.">Normal</string>
     <string name="selected" comment="Status label for the currently chosen option.">Selectat</string>
+    <string name="randomize" comment="Character selection that chooses a different eligible character for every call.">Aleatoriu</string>
     <string name="locked" comment="Status label for a character variant that must be unlocked before selection.">Blocat</string>
     <string name="radiant_variant_locked_title" comment="Title of the dialog shown for a locked radiant character variant.">Variantă radiantă blocată</string>
     <string name="radiant_variant_locked_message" comment="Explains how to unlock a radiant character variant; %1$s is the character name.">Când întâlnești un %1$s radiant într-o luptă sălbatică, se deblochează automat la începutul luptei. Îl poți apoi atribui.</string>
@@ -139,6 +192,7 @@
     <!-- Character creation -->
     <string name="add_trainer" comment="Button to start adding a new custom trainer.">Adaugă antrenor</string>
     <string name="add_monster" comment="Button to start adding a new custom monster.">Adaugă monstru</string>
+    <string name="reorder_monster">Reordonează monstrul</string>
     <string name="create_trainer_title" comment="Title of the trainer creation screen.">Adaugă antrenor</string>
     <string name="create_monster_title" comment="Title of the monster creation screen.">Adaugă monstru</string>
     <string name="character_sprites_section" comment="Heading for the character sprites section.">Sprite-uri</string>
