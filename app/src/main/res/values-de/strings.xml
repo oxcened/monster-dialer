@@ -271,4 +271,15 @@
     <string name="shared_profile_import_description">Wähle in deiner Kontaktliste den Kontakt aus, zu dem dieses Profil gehört. MonsterDialer zeigt es während Anrufen mit diesem Kontakt an. Der Link bleibt auf deinem Gerät.</string>
     <string name="shared_profile_import_choose_contact">Kontakt auswählen</string>
     <string name="shared_profile_import_link_failed">Für den ausgewählten Kontakt wurde keine gültige Telefonnummer gefunden.</string>
+    <string name="characters_help_team_title">Dein Team</string>
+    <string name="characters_help_team_message">Dein Team besteht aus dem hier angezeigten Trainer und aktiven Monster. Sie repräsentieren dich in jedem Kampf während eines Anrufs. Tippe auf eines davon, um eine andere Figur auszuwählen.</string>
+    <string name="characters_help_roster_title">Deine Monsterliste</string>
+    <string name="characters_help_roster_message">Deine Monsterliste umfasst bis zu sechs Monster, die du für dein Team auswählst. Ziehe eigene Monster per Drag-and-drop, um sie neu anzuordnen. Das erste Monster in der Liste ist dein aktives Monster für Anrufkämpfe.</string>
+    <string name="online_profile_guide_title">Dein Online-Profil teilen</string>
+    <string name="online_profile_guide_message">Online-Profile sind vollständig optional und auf Datenschutz und Sicherheit ausgelegt. Wenn du eines aktivierst, veröffentlichst du deinen aktuellen Trainer und dein aktives Monster einschließlich der gewählten Sprites über einen teilbaren Link. Änderst du später dein Team, wird dein Online-Profil entsprechend aktualisiert. Server speichern weder deine Telefonnummer, deine Kontaktliste oder deinen Anrufverlauf noch andere persönliche oder sensible Daten. Verknüpfungen zwischen MonsterDialer-Profilen und Kontakten bleiben ausschließlich auf dem jeweiligen Gerät.</string>
+    <string name="online_profile_public_id_title">Deine öffentliche Profil-ID</string>
+    <string name="online_profile_public_id_message">Jede Person, der du deinen Freigabelink sendest, kann dein Profil über seine zufällig erzeugte öffentliche ID finden. Tippe auf „Freigabelink neu erstellen“, um die aktuelle öffentliche ID ungültig zu machen und eine neue zu erstellen. Der bisherige Link funktioniert dann für niemanden mehr, mit dem du ihn geteilt hast.</string>
+    <string name="online_profile_delete_guide_title">Dein Profil löschen</string>
+    <string name="online_profile_delete_guide_message">Tippe auf „Profil löschen“, um deine veröffentlichten Profildaten dauerhaft zu entfernen. Niemand mit deinem Freigabelink kann dein Team dann noch sehen.</string>
+    <string name="characters_help_character_list_title">Figurenliste</string>
 </resources>

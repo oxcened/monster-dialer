@@ -35,32 +35,54 @@ internal data class GuideContent(
 )
 
 @Composable
-internal fun ContextualGuideButton(contents: List<GuideContent>, modifier: Modifier = Modifier) {
+internal fun ContextualGuideButton(
+    contents: List<GuideContent>,
+    @StringRes contentDescription: Int = R.string.open_character_guide,
+    modifier: Modifier = Modifier,
+) {
     var isOpen by remember { mutableStateOf(false) }
     IconButton(onClick = { isOpen = true }, modifier = modifier) {
         AppIcon(
             icon = LocalMonsterAppIcons.current.guide,
-            contentDescription = stringResource(R.string.open_character_guide),
+            contentDescription = stringResource(contentDescription),
         )
     }
     if (isOpen) {
-        AlertDialog(
-            onDismissRequest = { isOpen = false },
-            title = { Text(stringResource(contents.first().title)) },
-            text = {
-                Column(
-                    modifier = Modifier.heightIn(max = 480.dp).verticalScroll(rememberScrollState()),
-                    verticalArrangement = Arrangement.spacedBy(24.dp),
-                ) {
-                    contents.forEachIndexed { index, content ->
-                        GuideContentSection(content, showTitle = index != 0)
-                    }
-                }
-            },
-            confirmButton = { TextButton(onClick = { isOpen = false }) { Text(stringResource(R.string.close)) } },
-        )
+        ContextualGuideDialog(contents = contents, onDismiss = { isOpen = false })
     }
 }
+
+@Composable
+internal fun ContextualGuideDialog(contents: List<GuideContent>, onDismiss: () -> Unit) {
+    AlertDialog(
+        onDismissRequest = onDismiss,
+        title = { Text(stringResource(contents.first().title)) },
+        text = {
+            Column(
+                modifier = Modifier.heightIn(max = 480.dp).verticalScroll(rememberScrollState()),
+                verticalArrangement = Arrangement.spacedBy(24.dp),
+            ) {
+                contents.forEachIndexed { index, content ->
+                    GuideContentSection(content, showTitle = index != 0)
+                }
+            }
+        },
+        confirmButton = { TextButton(onClick = onDismiss) { Text(stringResource(R.string.close)) } },
+    )
+}
+
+internal fun radiantGuideContents(): List<GuideContent> = listOf(
+    GuideContent(
+        R.string.radiants_guide_title,
+        R.string.radiants_guide_message,
+        listOf(
+            R.string.radiants_guide_availability,
+            R.string.radiants_guide_unlock,
+            R.string.radiants_guide_assign,
+            R.string.radiants_guide_journal,
+        ),
+    ),
+)
 
 @Composable
 private fun GuideContentSection(content: GuideContent, showTitle: Boolean) {

@@ -290,4 +290,15 @@
     <string name="shared_profile_import_description">اختر من قائمة جهات اتصالك جهة الاتصال التي ينتمي إليها هذا الملف الشخصي. سيعرضه MonsterDialer أثناء المكالمات معها. يبقى هذا الرابط على جهازك.</string>
     <string name="shared_profile_import_choose_contact">اختيار جهة اتصال</string>
     <string name="shared_profile_import_link_failed">تعذر العثور على رقم هاتف صالح لجهة الاتصال المحددة.</string>
+    <string name="characters_help_team_title">فريقك</string>
+    <string name="characters_help_team_message">يتكوّن فريقك من المدرّب والوحش النشط المعروضين هنا. وهما يمثلانك في كل معركة أثناء المكالمة. اضغط على أي منهما لاختيار شخصية مختلفة.</string>
+    <string name="characters_help_roster_title">قائمة وحوشك</string>
+    <string name="characters_help_roster_message">تتضمن قائمة وحوشك ما يصل إلى ستة وحوش تختارها لفريقك. اسحب الوحوش المخصصة وأفلتها لإعادة ترتيبها. الوحش الأول في القائمة هو وحشك النشط في معارك المكالمات.</string>
+    <string name="online_profile_guide_title">مشاركة ملفك الشخصي على الإنترنت</string>
+    <string name="online_profile_guide_message">الملفات الشخصية على الإنترنت اختيارية تمامًا ومصممة مع مراعاة الخصوصية والأمان. عند تفعيل أحدها، تنشر مدرّبك الحالي والوحش النشط، بما في ذلك الرسومات المختارة، عبر رابط قابل للمشاركة. إذا غيّرت فريقك لاحقًا، يُحدَّث ملفك الشخصي على الإنترنت. لا تخزن الخوادم رقم هاتفك أو قائمة جهات اتصالك أو سجل المكالمات أو أي بيانات شخصية أو حساسة أخرى. تظل الروابط بين ملفات MonsterDialer وجهات الاتصال على كل جهاز فقط.</string>
+    <string name="online_profile_public_id_title">معرّف ملفك الشخصي العام</string>
+    <string name="online_profile_public_id_message">يمكن لأي شخص ترسل إليه رابط المشاركة العثور على ملفك الشخصي عبر معرّفه العام المُنشأ عشوائيًا. اضغط على «إنشاء رابط مشاركة جديد» لإبطال المعرّف العام الحالي وإنشاء آخر جديد. لن يعمل الرابط السابق بعد ذلك مع أي شخص شاركته معه.</string>
+    <string name="online_profile_delete_guide_title">حذف ملفك الشخصي</string>
+    <string name="online_profile_delete_guide_message">اضغط على «حذف الملف الشخصي» لإزالة بيانات ملفك الشخصي المنشورة نهائيًا. لن يتمكن أي شخص لديه رابط المشاركة من رؤية فريقك بعد الآن.</string>
+    <string name="characters_help_character_list_title">قائمة الشخصيات</string>
 </resources>

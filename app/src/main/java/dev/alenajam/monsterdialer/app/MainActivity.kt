@@ -49,9 +49,10 @@ import dev.alenajam.monsterdialer.characters.ui.GuideContent
 import dev.alenajam.monsterdialer.characters.ui.CharacterSettingsSummaryViewModel
 import dev.alenajam.monsterdialer.characters.ui.CharactersHomeScreen
 import dev.alenajam.monsterdialer.characters.ui.PlayerCharacterSettingsContent
-import dev.alenajam.monsterdialer.characters.ui.PlayerCharacterSettingsRoute
 import dev.alenajam.monsterdialer.characters.ui.CharacterSharingViewModel
+import dev.alenajam.monsterdialer.characters.ui.PlayerCharacterSettingsRoute
 import dev.alenajam.monsterdialer.characters.ui.SharedCharacterImportHandler
+import dev.alenajam.monsterdialer.characters.ui.radiantGuideContents
 import dev.alenajam.monsterdialer.battle.ui.BattleJournalScreen
 import dev.alenajam.monsterdialer.battle.ui.BattleJournalOverflowMenu
 import dev.alenajam.monsterdialer.contacts.data.MonsterContact
@@ -62,6 +63,7 @@ import dev.alenajam.monsterdialer.packs.data.CharacterType
 import dev.alenajam.monsterdialer.onlineprofiles.data.ProfileSharingLink
 import dev.alenajam.monsterdialer.onlineprofiles.ui.LinkedOnlineProfileContent
 import dev.alenajam.monsterdialer.onlineprofiles.ui.SharedProfileImportScreen
+import dev.alenajam.monsterdialer.onlineprofiles.ui.sharedOnlineProfileGuideContents
 import dev.alenajam.monsterdialer.packs.ui.CharacterPackSettingsContent
 import dev.alenajam.monsterdialer.packs.ui.CharacterPackSettingsViewModel
 import dev.alenajam.monsterdialer.packs.ui.CharacterPackImportHandler
@@ -205,6 +207,7 @@ class MainActivity : AppCompatActivity() {
                                 ContextualGuideButton(
                                     contents = listOf(
                                         GuideContent(R.string.characters_help_character_list_title, R.string.characters_help_player_character_list_message),
+                                        *radiantGuideContents().toTypedArray(),
                                     ),
                                 )
                             },
@@ -322,6 +325,12 @@ class MainActivity : AppCompatActivity() {
                             title = stringResource(R.string.linked_online_profile_title),
                             description = null,
                             content = { LinkedOnlineProfileContent(contactCharacterSettingsViewModel) },
+                            actions = {
+                                ContextualGuideButton(
+                                    contents = sharedOnlineProfileGuideContents(),
+                                    contentDescription = R.string.open_shared_online_profile_guide,
+                                )
+                            },
                             isScrollable = false,
                             topContentPadding = 0.dp,
                             visibleInSettings = false,

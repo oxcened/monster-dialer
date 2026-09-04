@@ -271,4 +271,15 @@
     <string name="shared_profile_import_description">Escolhe, na tua lista de contactos, a quem pertence este perfil. O MonsterDialer vai mostrá-lo durante as chamadas com esse contacto. Esta ligação fica no teu dispositivo.</string>
     <string name="shared_profile_import_choose_contact">Escolher contacto</string>
     <string name="shared_profile_import_link_failed">Não foi encontrado um número de telefone válido para o contacto selecionado.</string>
+    <string name="characters_help_team_title">A tua equipa</string>
+    <string name="characters_help_team_message">A tua equipa é o treinador e o monstro ativo apresentados aqui. Representam-te em cada batalha durante uma chamada. Toca em qualquer um deles para escolher outra personagem.</string>
+    <string name="characters_help_roster_title">A tua lista de monstros</string>
+    <string name="characters_help_roster_message">A tua lista inclui até seis monstros que escolhes para a tua equipa. Arrasta e larga monstros personalizados para os reordenar. O primeiro monstro da lista é o teu monstro ativo nas batalhas durante as chamadas.</string>
+    <string name="online_profile_guide_title">Partilhar o teu perfil online</string>
+    <string name="online_profile_guide_message">Os perfis online são totalmente opcionais e concebidos a pensar na privacidade e segurança. Ao ativares um, publicas o teu treinador e monstro ativo atuais, incluindo os sprites selecionados, através de uma ligação partilhável. Se mudares de equipa mais tarde, o teu perfil online é atualizado. Os servidores não armazenam o teu número de telefone, lista de contactos, histórico de chamadas nem outros dados pessoais ou sensíveis. As ligações entre perfis MonsterDialer e contactos permanecem exclusivamente em cada dispositivo.</string>
+    <string name="online_profile_public_id_title">O teu ID de perfil público</string>
+    <string name="online_profile_public_id_message">Qualquer pessoa a quem enviares a tua ligação de partilha pode encontrar o teu perfil através do ID público gerado aleatoriamente. Toca em “Gerar nova ligação de partilha” para invalidar o ID público atual e criar um novo. A ligação anterior deixará de funcionar para qualquer pessoa com quem a tenhas partilhado.</string>
+    <string name="online_profile_delete_guide_title">Eliminar o teu perfil</string>
+    <string name="online_profile_delete_guide_message">Toca em “Eliminar perfil” para remover permanentemente os dados publicados do teu perfil. Quem tiver a tua ligação de partilha deixará de poder ver a tua equipa.</string>
+    <string name="characters_help_character_list_title">Lista de personagens</string>
 </resources>

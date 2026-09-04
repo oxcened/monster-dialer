@@ -26,6 +26,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.runtime.Composable
 import dev.alenajam.monsterdialer.R
 import dev.alenajam.monsterdialer.characters.ui.ContactCharacterSettingsViewModel
+import dev.alenajam.monsterdialer.characters.ui.ContextualGuideButton
 import dev.alenajam.opendialer.core.common.ui.AppIcon
 import dev.alenajam.opendialer.core.common.ui.LocalAppIcons
 import dev.alenajam.opendialer.feature.contacts.ContactPickerScreen
@@ -70,6 +71,12 @@ fun SharedProfileImportScreen(
                                 contentDescription = stringResource(R.string.navigate_back),
                             )
                         }
+                    },
+                    actions = {
+                        ContextualGuideButton(
+                            contents = sharedOnlineProfileGuideContents(),
+                            contentDescription = R.string.open_shared_online_profile_guide,
+                        )
                     },
                 )
             },

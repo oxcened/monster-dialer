@@ -260,4 +260,15 @@
     <string name="shared_profile_import_description">从你的联系人列表中选择此个人资料所属的联系人。MonsterDialer 会在与该联系人的通话中显示它。此链接会保留在你的设备上。</string>
     <string name="shared_profile_import_choose_contact">选择联系人</string>
     <string name="shared_profile_import_link_failed">找不到所选联系人的有效电话号码。</string>
+    <string name="characters_help_team_title">你的队伍</string>
+    <string name="characters_help_team_message">你的队伍由此处显示的训练师和当前出战的怪物组成。他们会在每次通话战斗中代表你。点按其中任一角色即可选择其他角色。</string>
+    <string name="characters_help_roster_title">你的怪物列表</string>
+    <string name="characters_help_roster_message">你的怪物列表最多包含六只为队伍选择的怪物。拖放自定义怪物即可重新排序。列表中的第一只怪物是你在通话战斗中的当前出战怪物。</string>
+    <string name="online_profile_guide_title">分享你的在线个人资料</string>
+    <string name="online_profile_guide_message">在线个人资料完全由你自愿开启，并以隐私和安全为设计重点。开启后，你当前的训练师和出战怪物（包括所选精灵图）会通过可分享的链接发布。如果之后更换队伍，在线个人资料会随之更新。服务器不会存储你的电话号码、联系人列表、通话记录或其他个人及敏感数据。MonsterDialer 个人资料与联系人的关联仅保留在各自设备上。</string>
+    <string name="online_profile_public_id_title">你的公开个人资料 ID</string>
+    <string name="online_profile_public_id_message">收到你分享链接的任何人都可通过随机生成的公开 ID 找到你的个人资料。点按“重新生成分享链接”即可使当前公开 ID 失效并创建新的 ID。此前的链接将不再对你分享过的任何人有效。</string>
+    <string name="online_profile_delete_guide_title">删除你的个人资料</string>
+    <string name="online_profile_delete_guide_message">点按“删除个人资料”可永久移除已发布的个人资料数据。拥有你分享链接的人将无法再查看你的队伍。</string>
+    <string name="characters_help_character_list_title">角色列表</string>
 </resources>

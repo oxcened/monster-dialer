@@ -46,6 +46,14 @@
     <string name="locked">Bloccato</string>
     <string name="radiant_variant_locked_title">Variante radiosa bloccata</string>
     <string name="radiant_variant_locked_message">Quando incontri un %1$s radioso in una battaglia selvaggia, si sblocca automaticamente all’inizio della battaglia. Potrai poi assegnarlo.</string>
+    <string name="learn_about_radiants">Info sui radiosi</string>
+    <string name="open_radiants_guide">Apri la guida ai radiosi</string>
+    <string name="radiants_guide_title">Radiosi</string>
+    <string name="radiants_guide_message">I radiosi sono rare varianti estetiche dei mostri che puoi scoprire e aggiungere alla tua squadra.</string>
+    <string name="radiants_guide_availability">• Possono apparire solo i mostri con una variante radiosa.</string>
+    <string name="radiants_guide_unlock">• Un radioso può sostituire una battaglia idonea. Si sblocca all’inizio della battaglia: non devi fare nulla.</string>
+    <string name="radiants_guide_assign">• Dopo averlo scoperto, scegli la sua variante radiosa in Il tuo personaggio → Mostri per assegnarla.</string>
+    <string name="radiants_guide_journal">• Trova e condividi le tue scoperte radiose nel Diario delle battaglie.</string>
     <string name="radiant_unlock_notifications">Sblocchi radiosi</string>
     <string name="radiant_variant_unlocked_title">Variante radiosa sbloccata!</string>
     <string name="radiant_variant_unlocked_message">%1$s è ora pronto da assegnare.</string>
@@ -288,6 +296,30 @@
     <string name="shared_profile_import_heading">Un profilo MonsterDialer è stato condiviso con te</string>
     <string name="shared_profile_import_description">Scegli dalla tua rubrica il contatto a cui appartiene questo profilo. MonsterDialer lo mostrerà durante le chiamate con quel contatto. Il link rimane sul tuo dispositivo.</string>
     <string name="shared_profile_import_choose_contact">Scegli contatto</string>
+    <string name="open_shared_online_profile_guide">Apri la guida ai profili online condivisi</string>
+    <string name="shared_online_profile_guide_title">Usare un profilo online condiviso</string>
+    <string name="shared_online_profile_guide_message">Quando qualcuno condivide con te un link al proprio profilo online, puoi associare la sua squadra condivisa a uno dei tuoi contatti per le battaglie durante le chiamate.</string>
+    <string name="shared_online_profile_choose_contact_guide_title">Scegli il contatto giusto</string>
+    <string name="shared_online_profile_choose_contact_guide_message">Seleziona il contatto proprietario del profilo condiviso. L’associazione tra contatto e profilo viene salvata solo sul tuo dispositivo: non modifica il loro profilo né condivide i tuoi contatti con loro.</string>
+    <string name="shared_online_profile_loading_guide_title">Caricamento durante una battaglia</string>
+    <string name="shared_online_profile_loading_guide_message">All’inizio di una battaglia, MonsterDialer prova a caricare il profilo online collegato a quel contatto. Attende fino a 500 millisecondi. Se il profilo non si carica in tempo, ad esempio per assenza o lentezza della connessione, la battaglia inizia offline usando i personaggi scelti localmente.</string>
+    <string name="shared_online_profile_cache_guide_title">Cache e aggiornamenti</string>
+    <string name="shared_online_profile_cache_guide_message">La prima chiamata può iniziare offline mentre il profilo completa il caricamento, per poi usarlo nelle chiamate successive. Una volta caricato, il profilo viene conservato nella cache per un’ora e non viene recuperato di nuovo prima della scadenza. Il proprietario può aggiornare o rimuovere il profilo condiviso in qualsiasi momento.</string>
+    <string name="shared_online_profile_unlink_guide_title">Rimuovi il collegamento quando vuoi</string>
+    <string name="shared_online_profile_unlink_guide_message">Apri Profilo online collegato dal menu del contatto e tocca “Scollega profilo online” per smettere di usarlo. Il contatto tornerà alla sua squadra locale e il profilo condiviso rimarrà invariato.</string>
+    <string name="characters_help_player_character_list_message">I personaggi sono raggruppati per origine: quelli inclusi sono forniti dall’app; i tuoi allenatori e mostri sono creati nell’app; quelli importati sono organizzati per pacchetto di personaggi. Tieni premuto un personaggio creato da te per modificarlo, condividerlo o eliminarlo.</string>
+    <string name="characters_help_contact_character_list_message">I personaggi sono raggruppati per origine: Casuale è disponibile solo per i contatti e sceglie automaticamente un personaggio idoneo a ogni chiamata; quelli inclusi sono forniti dall’app; i tuoi allenatori e mostri sono creati nell’app; quelli importati sono organizzati per pacchetto di personaggi. Tieni premuto un personaggio creato da te per modificarlo, condividerlo o eliminarlo.</string>
+    <string name="characters_help_team_title">La tua squadra</string>
+    <string name="characters_help_team_message">La tua squadra è composta dall’allenatore e dal mostro attivo mostrati qui. Ti rappresentano in ogni battaglia durante una chiamata. Tocca uno dei due per scegliere un personaggio diverso.</string>
+    <string name="characters_help_roster_title">La tua squadra</string>
+    <string name="characters_help_roster_message">La tua squadra contiene fino a sei mostri scelti per la tua squadra. Trascina e rilascia i mostri personalizzati per riordinarli. Il primo mostro della squadra è quello attivo nelle battaglie durante le chiamate.</string>
+    <string name="online_profile_guide_title">Condividere il tuo profilo online</string>
+    <string name="online_profile_guide_message">I profili online sono facoltativi e progettati pensando a privacy e sicurezza. Attivandone uno pubblichi il tuo allenatore e mostro attivo, inclusi gli sprite selezionati, tramite un link condivisibile. Se cambi squadra in seguito, il profilo online si aggiorna. I server non memorizzano il tuo numero di telefono, elenco contatti, cronologia chiamate né altri dati personali o sensibili. I collegamenti tra profili MonsterDialer e contatti restano esclusivamente su ogni dispositivo.</string>
+    <string name="online_profile_public_id_title">Il tuo ID profilo pubblico</string>
+    <string name="online_profile_public_id_message">Chiunque riceva il tuo link di condivisione può trovare il tuo profilo tramite il suo ID pubblico generato casualmente. Tocca “Rigenera link di condivisione” per invalidare l’ID pubblico corrente e crearne uno nuovo. Il link precedente non funzionerà più per chiunque l’abbia ricevuto.</string>
+    <string name="online_profile_delete_guide_title">Eliminare il tuo profilo</string>
+    <string name="online_profile_delete_guide_message">Tocca “Elimina profilo” per rimuovere definitivamente i dati del tuo profilo pubblicato. Chiunque abbia il tuo link di condivisione non potrà più visualizzare la tua squadra.</string>
     <string name="no_available_character_options">Nessun %1$s disponibile</string>
     <string name="radiant_unlock_share_card_link" translatable="false">linktr.ee/monsterdialer</string>
+    <string name="characters_help_character_list_title">Elenco dei personaggi</string>
 </resources>

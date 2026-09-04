@@ -990,12 +990,24 @@ private fun CharacterGridItem(
 
 @Composable
 private fun RadiantVariantUnlockDialog(characterName: String, onDismiss: () -> Unit) {
+    var showGuide by remember { mutableStateOf(false) }
+    if (showGuide) {
+        ContextualGuideDialog(
+            contents = radiantGuideContents(),
+            onDismiss = { showGuide = false },
+        )
+    }
     AlertDialog(
         onDismissRequest = onDismiss,
         title = { Text(stringResource(R.string.radiant_variant_locked_title)) },
         text = { Text(stringResource(R.string.radiant_variant_locked_message, characterName)) },
         confirmButton = {
             TextButton(onClick = onDismiss) { Text(stringResource(R.string.cancel)) }
-        }
+        },
+        dismissButton = {
+            TextButton(onClick = {
+                showGuide = true
+            }) { Text(stringResource(R.string.learn_about_radiants)) }
+        },
     )
 }

@@ -266,4 +266,15 @@
     <string name="shared_profile_import_description">Vælg den kontakt i din kontaktliste, som denne profil tilhører. MonsterDialer viser den under opkald med kontakten. Linket bliver på din enhed.</string>
     <string name="shared_profile_import_choose_contact">Vælg kontakt</string>
     <string name="shared_profile_import_link_failed">Der blev ikke fundet et gyldigt telefonnummer til den valgte kontakt.</string>
+    <string name="characters_help_team_title">Dit hold</string>
+    <string name="characters_help_team_message">Dit hold er træneren og det aktive monster, der vises her. De repræsenterer dig i hver kamp under et opkald. Tryk på en af dem for at vælge en anden figur.</string>
+    <string name="characters_help_roster_title">Din monsterliste</string>
+    <string name="characters_help_roster_message">Din monsterliste består af op til seks monstre, du vælger til dit hold. Træk og slip tilpassede monstre for at ændre rækkefølgen. Det første monster på listen er dit aktive monster i kampene under opkald.</string>
+    <string name="online_profile_guide_title">Deling af din onlineprofil</string>
+    <string name="online_profile_guide_message">Onlineprofiler er helt frivillige og udformet med fokus på privatliv og sikkerhed. Når du aktiverer en, offentliggør du din nuværende træner og dit aktive monster, herunder deres valgte sprites, via et delbart link. Hvis du senere ændrer dit hold, opdateres din onlineprofil. Servere gemmer ikke dit telefonnummer, din kontaktliste, opkaldshistorik eller andre personlige eller følsomme data. Forbindelser mellem MonsterDialer-profiler og kontakter forbliver kun på hver enhed.</string>
+    <string name="online_profile_public_id_title">Dit offentlige profil-id</string>
+    <string name="online_profile_public_id_message">Alle, du sender dit delingslink til, kan finde din profil via det tilfældigt genererede offentlige id. Tryk på “Opret nyt delingslink” for at ugyldiggøre det aktuelle offentlige id og oprette et nyt. Det tidligere link virker ikke længere for nogen, du har delt det med.</string>
+    <string name="online_profile_delete_guide_title">Sletning af din profil</string>
+    <string name="online_profile_delete_guide_message">Tryk på “Slet profil” for at fjerne dine offentliggjorte profildata permanent. Alle med dit delingslink kan ikke længere se dit hold.</string>
+    <string name="characters_help_character_list_title">Figurliste</string>
 </resources>
