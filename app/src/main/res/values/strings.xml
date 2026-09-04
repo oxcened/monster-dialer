@@ -54,7 +54,7 @@
     <string name="battle_journal_clear" comment="Overflow-menu action that removes all Battle Journal entries.">Clear journal</string>
     <string name="battle_journal_clear_confirmation_title" comment="Title for the confirmation dialog before clearing the Battle Journal.">Clear Battle Journal?</string>
     <string name="battle_journal_clear_confirmation_message" comment="Explanation of what clearing the Battle Journal removes.">This permanently removes all battle history and saved journal sprites.</string>
-    <string name="monster_variant_and_level" comment="Monster variant and level subtitle. %1$s is the variant (e.g., Regular) and %2$s is the level (e.g., Lv. 12).">%1$s · %2$s</string>
+    <string name="monster_variant_and_level" translatable="false" comment="Language-neutral formatter for a monster variant and an already-localized level. %1$s is the variant (e.g., Regular) and %2$s is the level (e.g., Lv. 12).">%1$s · %2$s</string>
     <string name="filter_all" comment="Filter option to show all monster variants.">All</string>
     <string name="filter_regular" comment="Filter option to show only regular monster variants.">Regular</string>
     <string name="filter_unlocked_radiant" comment="Filter option to show only unlocked radiant monster variants.">Unlocked Radiant</string>
