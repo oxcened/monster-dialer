@@ -4,7 +4,55 @@
     <string name="contribute_translations" comment="Title of the OpenDialer translation contribution link on the About screen.">Zu OpenDialer-Übersetzungen beitragen</string>
     <string name="hang_up" comment="Button to end the current phone call.">Auflegen</string>
     <string name="settings_character_packs_title" comment="Settings title for managing character packs.">Charakterpakete</string>
-    <string name="characters_navigation_label" comment="Bottom navigation label for character customization.">Charaktere</string>
+    <string name="characters_navigation_label" comment="Bottom navigation label for the player's profile and character collection.">Charaktere</string>
+    <string name="customize_your_calls" comment="Section heading above contact character customization.">Passe deine Anrufe an</string>
+    <string name="character_collection_title" comment="Section heading above character pack and import actions.">Deine Sammlung</string>
+    <string name="profile_trainer_label" comment="Label above the player's name in the Character profile card.">Dein Trainer</string>
+    <string name="active_monster_label" comment="Label above the currently selected player monster in the Character profile card.">Aktives Monster</string>
+    <plurals name="calls_battled" comment="Label for the number of calls that have had a battle presentation.">
+        <item quantity="one">%1$d Kampf im Anruf</item>
+        <item quantity="other">%1$d Kämpfe in Anrufen</item>
+    </plurals>
+    <plurals name="characters_collected" comment="Label for the number of characters in the player's collection.">
+        <item quantity="one">%1$d Charakter gesammelt</item>
+        <item quantity="other">%1$d Charaktere gesammelt</item>
+    </plurals>
+    <plurals name="radiants_found" comment="Label for the number of rare radiant variants the player has found.">
+        <item quantity="one">%1$d Strahlender gefunden</item>
+        <item quantity="other">%1$d Strahlende gefunden</item>
+    </plurals>
+    <string name="profile_calls_battled" comment="Profile activity summary. %1$d is the number of calls with battle presentations.">%1$d Kämpfe in Anrufen</string>
+    <string name="profile_collection_summary" comment="Profile collection summary. %1$d is the number of collected characters and %2$d is the number of radiant variants found.">%1$d gesammelt · %2$d strahlende gefunden</string>
+    <string name="character_tools_title" comment="Heading above character management actions.">Werkzeugkasten</string>
+    <string name="battle_journal_title" comment="Title for the local history of battle encounters.">Kampjournal</string>
+    <string name="battle_journal_description" comment="Description for the local history of battle encounters.">Sieh dir leuchtende Funde und letzte Kämpfe an.</string>
+    <string name="battle_journal_empty_title" comment="Empty-state title for the battle journal.">Noch keine Kämpfe</string>
+    <string name="battle_journal_empty_description" comment="Empty-state message for the battle journal.">Deine leuchtenden Funde und letzten Kämpfe erscheinen hier.</string>
+    <string name="battle_journal_no_matches_title" comment="Title shown when the selected Battle Journal filter has no entries.">Hier ist noch nichts</string>
+    <string name="battle_journal_no_matches_description" comment="Message shown when the selected Battle Journal filter has no entries.">Probiere einen anderen Filter oder schau nach deinem nächsten Kampf wieder vorbei.</string>
+    <string name="battle_journal_radiant_found" comment="Journal entry for a newly discovered radiant monster. %1$s is the monster name.">Leuchtendes %1$s gefunden</string>
+    <string name="battle_journal_trainer_battle" comment="Journal entry for a battle against a trainer. %1$s is the opponent monster name.">Gegen %1$s gekämpft</string>
+    <string name="battle_journal_wild_battle" comment="Journal entry for a non-discovery radiant wild encounter. %1$s is the opponent monster name.">Wildes %1$s angetroffen</string>
+    <string name="battle_journal_anonymous_battle" comment="Journal entry for an anonymous call battle.">Anonymer Kampf</string>
+    <string name="battle_journal_opponent_trainer" comment="Journal entry detail. %1$s is the opponent trainer name.">Trainer: %1$s</string>
+    <string name="battle_journal_player_monster" comment="Journal entry detail. %1$s is the player's active monster name.">Dein Monster: %1$s</string>
+    <string name="battle_journal_matchup" comment="Journal entry matchup. %1$s is the player's monster and %2$s is the opponent monster.">%1$s gegen %2$s</string>
+    <string name="battle_journal_battle_label" comment="Compact category label for a regular journal entry.">Kampf</string>
+    <string name="battle_journal_radiant_label" comment="Compact category label for a radiant discovery journal entry.">Radiant gefunden</string>
+    <string name="battle_journal_radiant_encounter_label" comment="Compact category label for a repeat radiant encounter.">Radiant-Begegnung</string>
+    <string name="battle_journal_more_options" comment="Accessibility label for the Battle Journal overflow menu.">Weitere Optionen für das Kampfjournal</string>
+    <string name="battle_journal_clear" comment="Overflow-menu action that removes all Battle Journal entries.">Journal leeren</string>
+    <string name="battle_journal_clear_confirmation_title" comment="Title for the confirmation dialog before clearing the Battle Journal.">Kampfjournal leeren?</string>
+    <string name="battle_journal_clear_confirmation_message" comment="Explanation of what clearing the Battle Journal removes.">Dadurch werden der gesamte Kampfverlauf und gespeicherte Journal-Sprites dauerhaft entfernt.</string>
+    <string name="your_roster" comment="Heading above the player's current active monster roster.">Dein Team</string>
+    <string name="roster_monster_level" comment="Level shown below a monster in the roster. %1$d is the monster's level.">Lv. %1$d</string>
+    <string name="roster_monster_description" comment="Accessibility description for a roster monster. %1$s is its name and %2$d is its level.">%1$s, Level %2$d</string>
+    <string name="roster_full_message" comment="Message shown when the player tries to add a monster but the roster is full.">Dein Team ist voll. Entferne zuerst ein Monster, um ein weiteres hinzuzufügen.</string>
+    <string name="remove_roster_monster" comment="Accessibility label for removing a monster from the player's roster.">Monster entfernen</string>
+    <string name="contact_characters_ready" comment="Short status shown on the Contact Characters action when one or more contacts are configured.">Anrufteam bereit</string>
+    <string name="character_packs_home_description" comment="Short description for the character packs action on the Characters home screen.">Durchsuche deine Pakete</string>
+    <string name="import_character_home_description" comment="Short description for the character import action on the Characters home screen.">Geteiltes hinzufügen</string>
+    <string name="open_character_guide" comment="Action label that opens the Character Guide.">Guide öffnen</string>
     <string name="settings_character_packs_description" comment="Settings description for character packs.">Importiere und verwalte eigene Charaktergrafiken.</string>
     <string name="import_character" comment="Action that starts selecting a shared single-character file.">Charakter importieren</string>
     <string name="import_character_description" comment="Description of the action that imports a shared character.">Füge einen Charakter hinzu, den jemand mit dir geteilt hat.</string>
@@ -27,6 +75,7 @@
     <string name="player_characters_not_set" comment="Settings subtitle when no player character is selected.">Nicht personalisiert</string>
     <string name="using_characters" comment="Settings subtitle; %1$s is a list of selected character names.">Verwendet %1$s</string>
     <string name="settings_contact_characters_title" comment="Settings title for assigning characters to contacts.">Kontaktcharaktere</string>
+    <string name="personalize_contact_character" comment="Accessibility label for the contact-list action that customizes a caller's battle characters.">Anruferfiguren anpassen</string>
     <string name="settings_contact_characters_description" comment="Settings description for assigning characters to contacts.">Weise Anrufenden Charaktere zu.</string>
     <string name="contact_characters_not_set" comment="Settings subtitle when no contacts have a character assignment.">Keine Kontakte personalisiert</string>
     <plurals name="contact_character_assignment_count" comment="Settings subtitle showing how many contacts have a character assignment.">
@@ -46,6 +95,7 @@
     <string name="radiant" comment="Adjective for a rare, sparkling character variant.">Strahlend</string>
     <string name="regular" comment="Adjective for a standard, non-rare character variant.">Normal</string>
     <string name="selected" comment="Status label for the currently chosen option.">Ausgewählt</string>
+    <string name="randomize" comment="Character selection that chooses a different eligible character for every call.">Zufällig</string>
     <string name="locked" comment="Status label for a character variant that must be unlocked before selection.">Gesperrt</string>
     <string name="radiant_variant_locked_title" comment="Title of the dialog shown for a locked radiant character variant.">Strahlende Variante gesperrt</string>
     <string name="radiant_variant_locked_message" comment="Explains how to unlock a radiant character variant; %1$s is the character name.">Wenn du einem strahlenden %1$s in einem wilden Kampf begegnest, wird er zu Kampfbeginn automatisch freigeschaltet. Danach kannst du ihn zuweisen.</string>
@@ -135,6 +185,7 @@
     <!-- Character creation -->
     <string name="add_trainer" comment="Button to start adding a new custom trainer.">Trainer hinzufügen</string>
     <string name="add_monster" comment="Button to start adding a new custom monster.">Monster hinzufügen</string>
+    <string name="reorder_monster">Monster neu anordnen</string>
     <string name="create_trainer_title" comment="Title of the trainer creation screen.">Trainer hinzufügen</string>
     <string name="create_monster_title" comment="Title of the monster creation screen.">Monster hinzufügen</string>
     <string name="character_sprites_section" comment="Heading for the character sprites section.">Sprites</string>
