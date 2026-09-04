@@ -22,8 +22,8 @@ val profileSharingHost = "monsterdialer.web.app"
 // Firebase is used for production telemetry, but local debug builds should not
 // require credentials that are intentionally excluded from source control.
 if (file("google-services.json").isFile) {
-    apply(plugin = "com.google.gms.google-services")
-    apply(plugin = "com.google.firebase.crashlytics")
+    apply(plugin = libs.plugins.google.services.get().pluginId)
+    apply(plugin = libs.plugins.firebase.crashlytics.get().pluginId)
 }
 
 val appVersionName = providers.gradleProperty("appVersionName").orNull
