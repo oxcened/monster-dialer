@@ -3,6 +3,7 @@
     <string name="additional_translation_project_title" comment="Title of the additional translation contribution card.">Contribuisci alle traduzioni di MonsterDialer</string>
     <string name="contribute_translations" comment="Title of the OpenDialer translation contribution link on the About screen.">Contribuisci alle traduzioni di OpenDialer</string>
     <string name="hang_up" comment="Button to end the current phone call.">Riaggancia</string>
+    <string name="add" comment="Generic label for adding a new item.">Aggiungi</string>
     <string name="settings_character_packs_title" comment="Settings title for managing character packs.">Pacchetti di personaggi</string>
     <string name="characters_navigation_label" comment="Bottom navigation label for the player's profile and character collection.">Profilo</string>
     <string name="customize_your_calls" comment="Section heading above contact character customization.">Personalizza le tue chiamate</string>
@@ -102,6 +103,39 @@
     <string name="regular" comment="Adjective for a standard, non-rare character variant.">Normale</string>
     <string name="selected" comment="Status label for the currently chosen option.">Selezionato</string>
     <string name="randomize" comment="Character selection that chooses a different eligible character for every call.">Casuale</string>
+    <string name="contact_defaults_title">Contatti non assegnati</string>
+    <string name="contact_defaults_toolbox_title">Impostazioni predefinite dei contatti</string>
+    <string name="contact_defaults_description">Scegli le impostazioni predefinite e limita il gruppo di selezione casuale dei contatti.</string>
+    <string name="contact_default_trainer">Allenatore predefinito</string>
+    <string name="contact_default_monster">Mostro predefinito</string>
+    <string name="contact_choose_trainer" comment="Dropdown option that opens the trainer picker for the contact default.">Scegli allenatore</string>
+    <string name="contact_choose_monster" comment="Dropdown option that opens the monster picker for the contact default.">Scegli mostro</string>
+    <string name="contact_default_random">Casuale</string>
+    <string name="contact_random_pool_all">Tutti i personaggi disponibili</string>
+    <string name="contact_random_pool_choose">Scegli gruppo di selezione casuale</string>
+    <string name="contact_default_choose">Scegli personaggio predefinito</string>
+    <string name="contact_defaults_mode_default">Personaggio predefinito</string>
+    <string name="contact_defaults_mode_pool">Gruppo di selezione casuale</string>
+    <string name="open_contact_defaults_guide" comment="Accessibility label for the help button on the contact defaults screen.">Apri la guida alle impostazioni predefinite dei contatti</string>
+    <string name="contact_defaults_guide_title" comment="Title of the guide explaining contact character defaults.">Impostazioni predefinite dei contatti</string>
+    <string name="contact_defaults_guide_message">Queste impostazioni si applicano ai contatti che non dispongono di una personalizzazione del personaggio specifica.</string>
+    <string name="contact_defaults_guide_default">• Scegli un allenatore o un mostro predefinito da usare per i contatti non assegnati.</string>
+    <string name="contact_defaults_guide_randomizer">• Scegli Casuale per consentire all’app di selezionare un personaggio dal gruppo di selezione casuale scelto.</string>
+    <string name="contact_defaults_guide_overrides">• L’impostazione Personalizza contatto di un contatto sostituisce queste impostazioni predefinite globali. I contatti che usano Non personalizzare continueranno a seguirle.</string>
+    <string name="contact_random_pool_reset">Reimposta</string>
+    <string name="contact_random_pool_description" comment="Explains what the selected characters mean when Randomize is enabled.">Casuale può scegliere tra i personaggi selezionati.</string>
+    <string name="contact_random_pool_select_all">Seleziona tutto</string>
+    <string name="contact_random_pool_deselect_all">Deseleziona tutto</string>
+    <string name="contact_character_source_global">Non personalizzare</string>
+    <string name="contact_character_source_custom">Personalizza contatto</string>
+    <string name="contact_character_inherited_title">Uso delle impostazioni predefinite globali</string>
+    <string name="contact_character_inherited_message">Questo contatto segue le impostazioni globali di %1$s. Scegli «Scegli %1$s» o «Casuale» qui sopra per sostituirle.</string>
+    <string name="contact_character_edit_global_defaults" comment="Button that opens the global contact character defaults from an inherited contact setting.">Modifica impostazioni predefinite globali</string>
+    <string name="contact_random_pool_save">Salva gruppo</string>
+    <string name="contact_random_pool_empty_title">Scegli almeno un personaggio</string>
+    <string name="contact_random_pool_empty_exit_message">Il gruppo di selezione casuale è vuoto, quindi queste modifiche non sono state salvate. Seleziona almeno un personaggio per salvare il gruppo oppure scarta le modifiche non salvate per uscire.</string>
+    <string name="contact_random_pool_continue_editing">Continua a modificare</string>
+    <string name="contact_random_pool_discard_changes">Scarta modifiche</string>
     <string name="locked" comment="Status label for a character variant that must be unlocked before selection.">Bloccato</string>
     <string name="radiant_variant_locked_title" comment="Title of the dialog shown for a locked radiant character variant.">Variante radiosa bloccata</string>
     <string name="radiant_variant_locked_message" comment="Explains how to unlock a radiant character variant; %1$s is the character name.">Quando incontri un %1$s radioso in una battaglia selvaggia, si sblocca automaticamente all’inizio della battaglia. Potrai poi assegnarlo.</string>
@@ -134,7 +168,7 @@
     <string name="online_profile_public_id_message">Chiunque riceva il tuo link di condivisione può trovare il tuo profilo tramite il suo ID pubblico generato casualmente. Lo stesso account Google conserva questo ID quando accedi su un altro dispositivo, così i link esistenti continuano a funzionare. Tocca “Rigenera link di condivisione” per invalidare l’ID pubblico corrente e crearne uno nuovo. Il link precedente non funzionerà più per chiunque l’abbia ricevuto.</string>
     <string name="online_profile_delete_guide_title">Eliminare il tuo profilo</string>
     <string name="online_profile_delete_guide_message">Tocca “Elimina profilo” per rimuovere definitivamente i dati del tuo profilo pubblicato. Chiunque abbia il tuo link di condivisione non potrà più visualizzare la tua squadra. Se attivi di nuovo un profilo in seguito, avrà un nuovo link di condivisione.</string>
-    <string name="online_profile_enable" comment="Button that creates and enables the player's Online Profile.">Attiva profilo online</string>
+    <string name="online_profile_enable" comment="Button that creates and enables the player's Online Profile.">Attiva</string>
     <string name="online_profile_enabling" comment="Progress label shown while an Online Profile is being enabled.">Attivazione profilo online</string>
     <string name="online_profile_regenerating" comment="Progress label shown while a new profile sharing link is being created.">Rigenerazione del link di condivisione</string>
     <string name="online_profile_deleting" comment="Progress label shown while the player's Online Profile is being deleted.">Eliminazione profilo online</string>
@@ -161,7 +195,7 @@
     <string name="online_profile_sign_out_google" comment="Button that signs the player out of Google so they can use a different account for Online Profiles.">Esci da Google</string>
     <string name="online_profile_firebase_not_configured" comment="Technical configuration error shown when the Online Profile backend is unavailable.">Firebase non è configurato.</string>
     <string name="online_profile_share_text" comment="%1$s is an HTTPS link to the user's shared MonsterDialer profile.">Guarda il mio profilo MonsterDialer:\n%1$s</string>
-    <string name="choose_team" comment="Contact-row overflow action that opens character customization for a contact.">Scegli squadra</string>
+    <string name="contact_characters_action" comment="Contact-row overflow action that opens character customization for a contact.">Personaggi</string>
     <string name="contact_row_actions" comment="Accessibility label for the contact-row overflow menu trigger.">Azioni del contatto</string>
     <string name="linked_online_profile_title" comment="Heading in a contact's character settings for its associated Online Profile.">Profilo online collegato</string>
     <string name="linked_online_profile_none" comment="Empty-state message when a contact has no associated Online Profile.">Nessun profilo online è collegato a questo contatto.</string>
@@ -343,4 +377,7 @@
     <string name="characters_help_assignments_message" comment="Character Guide introduction to the two character-assignment modes. Keep the trailing colon or use equivalent punctuation.">Ci sono due modi per usare i personaggi:</string>
     <string name="characters_help_assignments_player" comment="Character Guide bullet explaining Player Character. Preserve the bold label and translate it consistently with the settings title."><b>Personaggio del giocatore:</b> è il tuo avatar. Impostalo nelle opzioni “Personaggio del giocatore” per rappresentarti in ogni chiamata.</string>
     <string name="characters_help_assignments_contact" comment="Character Guide bullet explaining Contact Characters. Preserve the bold label and translate it consistently with the settings title."><b>Personaggi dei contatti:</b> assegna mostri o allenatori a singoli contatti nelle opzioni “Personaggi dei contatti”. Appariranno come avversari quando ti chiamano.</string>
+    <string name="online_profile_qr_action">Codice QR</string>
+    <string name="online_profile_more_options">Altre opzioni del profilo</string>
+    <string name="online_profile_sign_in_google">Accedi con Google</string>
 </resources>
