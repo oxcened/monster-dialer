@@ -191,7 +191,9 @@ class AssignedCharacterEncounterFactory @Inject constructor(
             .getCharactersAssignableTo(CharacterAssignmentTarget.Contact, type)
             .flatMap { character ->
                 character.character.visualVariants
-                    .filterNot(CharacterVisualVariant::isRadiant)
+                    .filter { variant ->
+                        !variant.isRadiant || CharacterReference(character.packId, character.character.id, variant.id) in radiantUnlocks.unlocked.value
+                    }
                     .map { variant -> CharacterReference(character.packId, character.character.id, variant.id) }
             }
             .filter { configuredPool == null || it in configuredPool }

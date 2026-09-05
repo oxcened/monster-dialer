@@ -1,6 +1,5 @@
 package dev.alenajam.monsterdialer.characters.ui
 
-import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -14,9 +13,7 @@ import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateMapOf
 import androidx.compose.runtime.mutableStateOf
@@ -25,6 +22,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import dev.alenajam.monsterdialer.R
 import dev.alenajam.monsterdialer.characters.data.BuiltInCharacters
 import dev.alenajam.monsterdialer.characters.data.ContactCharacterDefaults
@@ -32,8 +30,6 @@ import dev.alenajam.monsterdialer.packs.data.CharacterAssignmentTarget
 import dev.alenajam.monsterdialer.packs.data.CharacterReference
 import dev.alenajam.monsterdialer.packs.data.CharacterType
 import dev.alenajam.monsterdialer.packs.data.InstalledPackCharacter
-import dev.alenajam.opendialer.feature.settings.LocalSettingsBackInterceptor
-import dev.alenajam.opendialer.feature.settings.LocalSettingsSubpageNavigator
 
 /** Edits the global contact-character defaults and randomizer pools. */
 @Composable
@@ -48,10 +44,8 @@ internal fun ContactCharacterDefaultsSection(
 ) {
     var selectedType by remember { mutableStateOf(CharacterType.Trainer) }
     val draftPools = remember { mutableStateMapOf<CharacterType, Set<CharacterReference>>() }
-    var showEmptyPoolExitWarning by remember { mutableStateOf(false) }
-    val navigator = LocalSettingsSubpageNavigator.current
-    val backInterceptor = LocalSettingsBackInterceptor.current
     val selectedDefault = defaults.defaults[selectedType]
+    val unlockedVariants by viewModel.unlockedVariants.collectAsStateWithLifecycle()
     val effectivePoolMode = selectedDefault == null
     val characters = if (selectedType == CharacterType.Trainer) trainers else monsters
     val characterTitle = stringResource(if (selectedType == CharacterType.Trainer) R.string.character_type_trainer else R.string.character_type_monster)
@@ -67,14 +61,7 @@ internal fun ContactCharacterDefaultsSection(
         }
     }
 
-    val requestEmptyPoolExitWarning = { showEmptyPoolExitWarning = true }
-    BackHandler(enabled = hasUnsavedEmptyPool, onBack = requestEmptyPoolExitWarning)
-    SideEffect {
-        backInterceptor?.onNavigateBack = if (hasUnsavedEmptyPool) {
-            { requestEmptyPoolExitWarning(); true }
-        } else null
-    }
-    DisposableEffect(backInterceptor) { onDispose { backInterceptor?.onNavigateBack = null } }
+    RandomPoolEditorBackHandling(hasUnsavedEmptyPool) { draftPools.clear() }
 
     Column(modifier = Modifier.fillMaxSize()) {
         Column(
@@ -100,7 +87,7 @@ internal fun ContactCharacterDefaultsSection(
                     OutlinedButton(
                         modifier = Modifier.weight(1f),
                         onClick = {
-                            updateContactRandomPoolDraft(selectedType, if (selectedPool == allPoolReferences) emptySet() else allPoolReferences, draftPools, onPoolChanged)
+                            updateRandomPoolDraft(selectedType, if (selectedPool == allPoolReferences) emptySet() else allPoolReferences, draftPools) { type, pool -> onPoolChanged(type, pool.toList()) }
                         },
                     ) {
                         Text(stringResource(if (selectedPool == allPoolReferences) R.string.contact_random_pool_deselect_all else R.string.contact_random_pool_select_all))
@@ -128,42 +115,20 @@ internal fun ContactCharacterDefaultsSection(
                 defaultReference = if (selectedType == CharacterType.Trainer) BuiltInCharacters.defaultTrainerReference else BuiltInCharacters.defaultMonsterReference,
                 defaultArtwork = { it.contactArtwork },
                 artworkTarget = CharacterAssignmentTarget.Contact,
+                unlockedVariants = unlockedVariants,
                 onSelect = { reference ->
-                    if (effectivePoolMode) updateContactRandomPoolDraft(selectedType, if (reference == null) selectedPool else selectedPool + reference, draftPools, onPoolChanged)
+                    if (effectivePoolMode) updateRandomPoolDraft(selectedType, if (reference == null) selectedPool else selectedPool + reference, draftPools) { type, pool -> onPoolChanged(type, pool.toList()) }
                     else onDefaultChanged(selectedType, reference)
                 },
                 isRandomSelected = false,
                 onRandomize = null,
                 showRandomize = false,
                 selectedReferences = if (effectivePoolMode) selectedPool else emptySet(),
-                filter = if (selectedType == CharacterType.Monster) MonsterFilter.Regular else MonsterFilter.All,
+                filter = MonsterFilter.All,
                 onSelected = if (effectivePoolMode) { reference ->
-                    updateContactRandomPoolDraft(selectedType, selectedPool - reference, draftPools, onPoolChanged)
+                    updateRandomPoolDraft(selectedType, selectedPool - reference, draftPools) { type, pool -> onPoolChanged(type, pool.toList()) }
                 } else null,
             )
         }
     }
-    if (showEmptyPoolExitWarning) {
-        AlertDialog(
-            onDismissRequest = { showEmptyPoolExitWarning = false },
-            title = { Text(stringResource(R.string.contact_random_pool_empty_title)) },
-            text = { Text(stringResource(R.string.contact_random_pool_empty_exit_message)) },
-            confirmButton = { TextButton(onClick = { showEmptyPoolExitWarning = false }) { Text(stringResource(R.string.contact_random_pool_continue_editing)) } },
-            dismissButton = {
-                TextButton(onClick = { draftPools.clear(); showEmptyPoolExitWarning = false; navigator?.navigateBack() }) {
-                    Text(stringResource(R.string.contact_random_pool_discard_changes))
-                }
-            },
-        )
-    }
-}
-
-private fun updateContactRandomPoolDraft(
-    type: CharacterType,
-    pool: Set<CharacterReference>,
-    draftPools: MutableMap<CharacterType, Set<CharacterReference>>,
-    onPoolChanged: (CharacterType, List<CharacterReference>) -> Unit,
-) {
-    draftPools[type] = pool
-    if (pool.isNotEmpty()) onPoolChanged(type, pool.toList())
 }

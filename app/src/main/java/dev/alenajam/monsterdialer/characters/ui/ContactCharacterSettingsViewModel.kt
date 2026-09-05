@@ -127,7 +127,9 @@ class ContactCharacterSettingsViewModel @Inject constructor(
         return buildSet {
             add(builtInReference)
             addAll(characters.flatMap { installed ->
-                installed.character.visualVariants.filterNot { it.isRadiant }.map { variant ->
+                installed.character.visualVariants.filter { variant ->
+                    !variant.isRadiant || CharacterReference(installed.packId, installed.character.id, variant.id) in unlockedVariants.value
+                }.map { variant ->
                     CharacterReference(installed.packId, installed.character.id, variant.id)
                 }
             })
