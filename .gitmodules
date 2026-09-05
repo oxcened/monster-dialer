@@ -1,0 +1,3 @@
+[submodule "opendialer"]
+	path = opendialer
+	url = https://github.com/oxcened/opendialer.git

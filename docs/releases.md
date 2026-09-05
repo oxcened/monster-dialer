@@ -17,10 +17,10 @@ Before a release, change only `appVersionName`, commit it to `main`, and let CI
 pass. The release tag must be exactly `v` followed by that value; for example,
 `appVersionName=0.4.0` requires tag `v0.4.0`.
 
-`opendialerRef` pins the compatible OpenDialer commit used in CI and releases.
-Update it in a normal compatibility-tested change when intentionally adopting
-upstream code. Do not change it as part of a tag-only release unless that
-change has already passed CI.
+The `opendialer` git submodule pins the compatible OpenDialer commit used in CI
+and releases. Update the submodule in a normal compatibility-tested change
+when intentionally adopting upstream code. Do not change it as part of a
+tag-only release unless that change has already passed CI.
 
 ## One-time GitHub configuration
 
@@ -106,7 +106,7 @@ The script requires a clean, up-to-date `main` branch, validates the semantic
 version, and rejects existing tags.
 
 The `Android Release` workflow validates the tag against `appVersionName`,
-checks out the pinned OpenDialer revision, decodes the keystore only on the
+initializes the pinned OpenDialer submodule, decodes the keystore only on the
 runner, builds the signed release APK, writes its SHA-256 checksum, attests the
 assets, and creates a GitHub Release with generated notes.
 
@@ -125,8 +125,9 @@ sha256sum -c MonsterDialer-v0.4.0.apk.sha256
 * **Firebase configuration failed:** replace `GOOGLE_SERVICES_JSON_BASE64`
   with the one-line Base64 encoding of the latest Firebase-generated
   `google-services.json`.
-* **OpenDialer checkout or build failed:** verify `opendialerRef` identifies an
-  accessible compatible commit in `oxcened/opendialer`.
+* **OpenDialer checkout or build failed:** verify the `opendialer` submodule is
+  initialized and points to an accessible compatible commit in
+  `oxcened/opendialer`.
 * **A release already exists:** GitHub rejects duplicate tag releases. Correct
   the issue in a new version and push a new tag; do not replace published APKs.
 
