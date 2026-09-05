@@ -3,10 +3,12 @@ package dev.alenajam.monsterdialer.characters.ui
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.combinedClickable
+import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.fillMaxSize
@@ -15,6 +17,7 @@ import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.foundation.lazy.itemsIndexed
@@ -23,6 +26,7 @@ import androidx.compose.foundation.lazy.grid.LazyGridScope
 import androidx.compose.foundation.lazy.grid.LazyGridState
 import androidx.compose.foundation.lazy.grid.itemsIndexed as gridItemsIndexed
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -30,21 +34,31 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
+import androidx.compose.material3.FilledIconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
-import androidx.compose.material3.PrimaryTabRow
+import androidx.compose.material3.OutlinedIconButton
+import androidx.compose.material3.SegmentedButton
+import androidx.compose.material3.SegmentedButtonDefaults
+import androidx.compose.material3.SingleChoiceSegmentedButtonRow
 import androidx.compose.material3.SmallFloatingActionButton
 import androidx.compose.material3.Surface
+import androidx.compose.material3.PlainTooltip
+import androidx.compose.material3.TooltipBox
+import androidx.compose.material3.TooltipDefaults
 import androidx.compose.material3.Tab
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.material3.rememberTooltipState
 import androidx.compose.runtime.setValue
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -91,16 +105,6 @@ internal fun CharacterLayoutToggle(
     }
 }
 
-@Composable
-internal fun CharacterTypeTabs(selectedTab: Int, onTabSelected: (Int) -> Unit) {
-    val trainerLabel = stringResource(R.string.character_type_trainer)
-    val monsterLabel = stringResource(R.string.character_type_monster)
-
-    PrimaryTabRow(selectedTabIndex = selectedTab, modifier = Modifier.fillMaxWidth()) {
-        Tab(selected = selectedTab == 0, onClick = { onTabSelected(0) }, text = { Text(trainerLabel) })
-        Tab(selected = selectedTab == 1, onClick = { onTabSelected(1) }, text = { Text(monsterLabel) })
-    }
-}
 
 internal fun LazyListScope.characterTypeItems(
     title: String,
@@ -112,29 +116,29 @@ internal fun LazyListScope.characterTypeItems(
     artworkTarget: CharacterAssignmentTarget,
     onSelect: (CharacterReference?) -> Unit,
     defaultReference: CharacterReference? = null,
-    onAddCharacter: () -> Unit,
-    addLabel: String,
-    isAddEnabled: Boolean = true,
     unlockedVariants: Set<CharacterReference> = emptySet(),
     onDelete: (InstalledPackCharacter) -> Unit = {},
     onEdit: (InstalledPackCharacter) -> Unit = {},
     onShare: (InstalledPackCharacter) -> Unit = {},
     isRandomSelected: Boolean = false,
     onRandomize: (() -> Unit)? = null,
+    showRandomize: Boolean = true,
     selectedReferences: Set<CharacterReference> = emptySet(),
+    onSelected: ((CharacterReference) -> Unit)? = null,
     hideSelected: Boolean = false,
     filter: MonsterFilter = MonsterFilter.All,
 ) {
     val type = if (defaultCharacter == BuiltInCharacters.trainer) CharacterType.Trainer else CharacterType.Monster
-    val availableSelection = selected?.takeIf { reference ->
-        characters.any { it.matches(reference) }
-    }
-    val isDefaultSelected = (selected?.isBuiltInMonsterRosterReference() == true
-        || selectedReferences.any(CharacterReference::isBuiltInMonsterRosterReference)
-        || (selectedReferences.isEmpty() && availableSelection == null))
-        && !isRandomSelected
+    val selectionState = characterSelectionState(
+        characters = characters,
+        selected = selected,
+        selectedReferences = selectedReferences,
+        defaultReference = defaultReference,
+        allowsDeselection = onSelected != null,
+        isRandomSelected = isRandomSelected,
+    )
     fun isReferenceSelected(reference: CharacterReference): Boolean =
-        if (selectedReferences.isEmpty()) availableSelection == reference else reference in selectedReferences
+        selectionState.isReferenceSelected(reference, selectedReferences)
 
     fun CharacterSelection.matchesFilter(): Boolean {
         if (type != CharacterType.Monster) return true
@@ -152,28 +156,14 @@ internal fun LazyListScope.characterTypeItems(
             selection.matchesFilter() && (!hideSelected || !isReferenceSelected(CharacterReference(selection.installed.packId, selection.installed.character.id, selection.variant.id)))
         }
     }
-    val hasNoCharacterOptions = onRandomize == null && hideSelected && isDefaultSelected && !hasSelectableCharacter
-    item(key = "add") {
-        AddCharacterButton(
-            onClick = onAddCharacter,
-            label = addLabel,
-            enabled = isAddEnabled
-        )
-        if (!isAddEnabled) {
-            Text(
-                text = stringResource(R.string.character_limit_reached_hint),
-                style = MaterialTheme.typography.labelSmall,
-                color = MaterialTheme.colorScheme.error,
-                textAlign = TextAlign.Center,
-                modifier = Modifier.fillMaxWidth().padding(bottom = 8.dp)
-            )
-        }
-    }
+    val effectiveRandomize = onRandomize?.takeIf { showRandomize }
+    val hasNoCharacterOptions = effectiveRandomize == null && hideSelected && selectionState.isDefaultSelected && !hasSelectableCharacter
 
-    if (onRandomize != null) {
+    if (effectiveRandomize != null) {
         item(key = "random") {
             CharacterOptionCard(
                 name = stringResource(R.string.randomize),
+                modifier = Modifier.padding(top = 8.dp),
                 type = type,
                 isSelected = isRandomSelected,
                 showTypeSubtitle = false,
@@ -186,7 +176,7 @@ internal fun LazyListScope.characterTypeItems(
                         modifier = Modifier.size(40.dp),
                     )
                 },
-                onSelect = onRandomize,
+                onSelect = effectiveRandomize,
             )
         }
     }
@@ -194,13 +184,13 @@ internal fun LazyListScope.characterTypeItems(
     val userCharacters = characters.filter { it.isEditable }
     val otherPacks = characters.filter { !it.isEditable }.groupBy { it.packId }
 
-    if (filter.allowsBuiltInMonster && (!hideSelected || !isDefaultSelected)) {
+    if (filter.allowsBuiltInMonster && (!hideSelected || !selectionState.isDefaultSelected)) {
         item { SectionHeader(stringResource(R.string.built_in_characters_section, pluralTitle)) }
         item(key = "default") {
             CharacterOptionCard(
                 name = defaultCharacter.name,
                 type = type,
-                isSelected = isDefaultSelected,
+                isSelected = selectionState.isDefaultSelected,
                 roundTop = true,
                 roundBottom = true,
                 artwork = {
@@ -210,7 +200,10 @@ internal fun LazyListScope.characterTypeItems(
                         modifier = Modifier.size(72.dp)
                     )
                 },
-                onSelect = { onSelect(defaultReference) }
+                onSelect = { onSelect(defaultReference) },
+                onSelected = onSelected?.let { callback ->
+                    { defaultReference?.let(callback) }
+                },
             )
         }
     }
@@ -244,6 +237,7 @@ internal fun LazyListScope.characterTypeItems(
                         )
                     },
                     onSelect = { if (isUnlocked) onSelect(reference) },
+                    onSelected = onSelected?.let { callback -> { callback(reference) } },
                     onDelete = if (installed.isDeletable) { { onDelete(installed) } } else null,
                     onEdit = if (installed.isEditable) { { onEdit(installed) } } else null,
                     onShare = if (installed.isEditable) { { onShare(installed) } } else null
@@ -280,7 +274,8 @@ internal fun LazyListScope.characterTypeItems(
                             modifier = Modifier.size(72.dp)
                         )
                     },
-                    onSelect = { if (isUnlocked) onSelect(reference) }
+                    onSelect = { if (isUnlocked) onSelect(reference) },
+                    onSelected = onSelected?.let { callback -> { callback(reference) } }
                 )
             }
         }
@@ -302,29 +297,29 @@ internal fun LazyGridScope.characterTypeGridItems(
     artworkTarget: CharacterAssignmentTarget,
     onSelect: (CharacterReference?) -> Unit,
     defaultReference: CharacterReference? = null,
-    onAddCharacter: () -> Unit,
-    addLabel: String,
-    isAddEnabled: Boolean = true,
     unlockedVariants: Set<CharacterReference> = emptySet(),
     onDelete: (InstalledPackCharacter) -> Unit = {},
     onEdit: (InstalledPackCharacter) -> Unit = {},
     onShare: (InstalledPackCharacter) -> Unit = {},
     isRandomSelected: Boolean = false,
     onRandomize: (() -> Unit)? = null,
+    showRandomize: Boolean = true,
     selectedReferences: Set<CharacterReference> = emptySet(),
+    onSelected: ((CharacterReference) -> Unit)? = null,
     hideSelected: Boolean = false,
     filter: MonsterFilter = MonsterFilter.All,
 ) {
     val type = if (defaultCharacter == BuiltInCharacters.trainer) CharacterType.Trainer else CharacterType.Monster
-    val availableSelection = selected?.takeIf { reference ->
-        characters.any { it.matches(reference) }
-    }
-    val isDefaultSelected = (selected?.isBuiltInMonsterRosterReference() == true
-        || selectedReferences.any(CharacterReference::isBuiltInMonsterRosterReference)
-        || (selectedReferences.isEmpty() && availableSelection == null))
-        && !isRandomSelected
+    val selectionState = characterSelectionState(
+        characters = characters,
+        selected = selected,
+        selectedReferences = selectedReferences,
+        defaultReference = defaultReference,
+        allowsDeselection = onSelected != null,
+        isRandomSelected = isRandomSelected,
+    )
     fun isReferenceSelected(reference: CharacterReference): Boolean =
-        if (selectedReferences.isEmpty()) availableSelection == reference else reference in selectedReferences
+        selectionState.isReferenceSelected(reference, selectedReferences)
 
     fun CharacterSelection.matchesFilter(): Boolean {
         if (type != CharacterType.Monster) return true
@@ -342,30 +337,14 @@ internal fun LazyGridScope.characterTypeGridItems(
             selection.matchesFilter() && (!hideSelected || !isReferenceSelected(CharacterReference(selection.installed.packId, selection.installed.character.id, selection.variant.id)))
         }
     }
-    val hasNoCharacterOptions = onRandomize == null && hideSelected && isDefaultSelected && !hasSelectableCharacter
-    item(key = "add", span = { GridItemSpan(2) }) {
-        Column {
-            AddCharacterButton(
-                onClick = onAddCharacter,
-                label = addLabel,
-                enabled = isAddEnabled
-            )
-            if (!isAddEnabled) {
-                Text(
-                    text = stringResource(R.string.character_limit_reached_hint),
-                    style = MaterialTheme.typography.labelSmall,
-                    color = MaterialTheme.colorScheme.error,
-                    textAlign = TextAlign.Center,
-                    modifier = Modifier.fillMaxWidth().padding(bottom = 8.dp)
-                )
-            }
-        }
-    }
+    val effectiveRandomize = onRandomize?.takeIf { showRandomize }
+    val hasNoCharacterOptions = effectiveRandomize == null && hideSelected && selectionState.isDefaultSelected && !hasSelectableCharacter
 
-    if (onRandomize != null) {
+    if (effectiveRandomize != null) {
         item(key = "random") {
             CharacterGridItem(
                 name = stringResource(R.string.randomize),
+                modifier = Modifier.padding(top = 8.dp),
                 type = type,
                 isSelected = isRandomSelected,
                 showTypeSubtitle = false,
@@ -377,7 +356,7 @@ internal fun LazyGridScope.characterTypeGridItems(
                         modifier = Modifier.size(48.dp),
                     )
                 },
-                onSelect = onRandomize,
+                onSelect = effectiveRandomize,
             )
         }
     }
@@ -385,13 +364,13 @@ internal fun LazyGridScope.characterTypeGridItems(
     val userCharacters = characters.filter { it.isEditable }
     val otherPacks = characters.filter { !it.isEditable }.groupBy { it.packId }
 
-    if (filter.allowsBuiltInMonster && (!hideSelected || !isDefaultSelected)) {
+    if (filter.allowsBuiltInMonster && (!hideSelected || !selectionState.isDefaultSelected)) {
         item(span = { GridItemSpan(2) }) { SectionHeader(stringResource(R.string.built_in_characters_section, pluralTitle)) }
         item(key = "default") {
             CharacterGridItem(
                 name = defaultCharacter.name,
                 type = type,
-                isSelected = isDefaultSelected,
+                isSelected = selectionState.isDefaultSelected,
                 shape = gridItemShape(index = 0, itemCount = 1),
                 artwork = {
                     Image(
@@ -400,7 +379,10 @@ internal fun LazyGridScope.characterTypeGridItems(
                         modifier = Modifier.size(88.dp)
                     )
                 },
-                onSelect = { onSelect(defaultReference) }
+                onSelect = { onSelect(defaultReference) },
+                onSelected = onSelected?.let { callback ->
+                    { defaultReference?.let(callback) }
+                },
             )
         }
     }
@@ -433,6 +415,7 @@ internal fun LazyGridScope.characterTypeGridItems(
                         )
                     },
                     onSelect = { if (isUnlocked) onSelect(reference) },
+                    onSelected = onSelected?.let { callback -> { callback(reference) } },
                     onDelete = if (installed.isDeletable) { { onDelete(installed) } } else null,
                     onEdit = if (installed.isEditable) { { onEdit(installed) } } else null,
                     onShare = if (installed.isEditable) { { onShare(installed) } } else null
@@ -468,7 +451,8 @@ internal fun LazyGridScope.characterTypeGridItems(
                             modifier = Modifier.size(88.dp)
                         )
                     },
-                    onSelect = { if (isUnlocked) onSelect(reference) }
+                    onSelect = { if (isUnlocked) onSelect(reference) },
+                    onSelected = onSelected?.let { callback -> { callback(reference) } },
                 )
             }
         }
@@ -491,7 +475,7 @@ private fun InstalledPackCharacter.selectionVariants(): List<CharacterSelection>
 private val MonsterFilter.allowsBuiltInMonster: Boolean
     get() = this == MonsterFilter.All || this == MonsterFilter.Regular
 
-private fun InstalledPackCharacter.matches(reference: CharacterReference): Boolean =
+internal fun InstalledPackCharacter.matches(reference: CharacterReference): Boolean =
     packId == reference.packId &&
         character.id == reference.characterId &&
         character.variant(reference.variantId) != null
@@ -521,21 +505,22 @@ private fun gridItemShape(index: Int, itemCount: Int): RoundedCornerShape {
 
 internal fun selectedCharacterIndex(
     characters: List<InstalledPackCharacter>,
-    selected: CharacterReference?
+    selected: CharacterReference?,
+    hasRandomize: Boolean = false,
 ): Int {
-    if (selected == null) return 0 // Keep Add button visible for Default selection
+    if (selected == null) return 0 // Keep the first section visible for the default selection.
 
     val userCharacters = characters.filter { it.isEditable }
     val otherPacks = characters.filter { !it.isEditable }.groupBy { it.packId }
 
-    // Logic follows the order in characterTypeItems
-    // 0: Add button
-    // 1: Built-in header
-    // 2: Default character
-    var currentIndex = 3
+    // Logic follows the order in characterTypeItems and characterTypeGridItems:
+    // 0: Built-in header
+    // 1: Default character
+    // 2: Next section header
+    var currentIndex = if (hasRandomize) 3 else 2
 
     if (userCharacters.isNotEmpty()) {
-        currentIndex++ // "Your characters" header
+            currentIndex++ // "Your characters" header
         val userIdx = userCharacters.flatMap(InstalledPackCharacter::selectionVariants).indexOfFirst {
             it.installed.matches(selected) && it.variant.id == selected.variantId
         }
@@ -632,28 +617,206 @@ internal fun JumpToSelectedCharacterButton(
     }
 }
 
+
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-private fun AddCharacterButton(
-    onClick: () -> Unit,
-    label: String,
-    enabled: Boolean = true
+internal fun CharacterAddButton(
+    isAddEnabled: Boolean,
+    onAddCharacter: () -> Unit,
+    modifier: Modifier = Modifier,
 ) {
-    Button(
-        onClick = onClick,
-        enabled = enabled,
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(horizontal = 16.dp, vertical = 8.dp),
+    TooltipBox(
+        positionProvider = TooltipDefaults.rememberTooltipPositionProvider(),
+        tooltip = { PlainTooltip { Text(stringResource(R.string.add)) } },
+        state = rememberTooltipState(),
     ) {
-        AppIcon(
-            LocalMonsterAppIcons.current.addCharacter,
-            contentDescription = null,
-            tint = MaterialTheme.colorScheme.onPrimary
-        )
-        Text(
-            text = label,
-            modifier = Modifier.padding(start = 8.dp),
-        )
+        FilledIconButton(
+            onClick = onAddCharacter,
+            enabled = isAddEnabled,
+            modifier = modifier.size(40.dp),
+            shape = CircleShape,
+        ) {
+            AppIcon(
+                icon = LocalMonsterAppIcons.current.addCharacter,
+                contentDescription = stringResource(R.string.add),
+            )
+        }
+    }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+internal fun CharacterPoolActionButtons(
+    isAllSelected: Boolean,
+    onReset: () -> Unit,
+    onToggleAll: () -> Unit,
+) {
+    Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+        TooltipBox(
+            positionProvider = TooltipDefaults.rememberTooltipPositionProvider(),
+            tooltip = { PlainTooltip { Text(stringResource(R.string.contact_random_pool_reset)) } },
+            state = rememberTooltipState(),
+        ) {
+            OutlinedIconButton(onClick = onReset, modifier = Modifier.size(40.dp)) {
+                AppIcon(
+                    icon = LocalMonsterAppIcons.current.reset,
+                    contentDescription = stringResource(R.string.contact_random_pool_reset),
+                )
+            }
+        }
+        TooltipBox(
+            positionProvider = TooltipDefaults.rememberTooltipPositionProvider(),
+            tooltip = {
+                PlainTooltip {
+                    Text(stringResource(if (isAllSelected) R.string.contact_random_pool_deselect_all else R.string.contact_random_pool_select_all))
+                }
+            },
+            state = rememberTooltipState(),
+        ) {
+            OutlinedIconButton(onClick = onToggleAll, modifier = Modifier.size(40.dp)) {
+                AppIcon(
+                    icon = if (isAllSelected) LocalMonsterAppIcons.current.deselectAll else LocalMonsterAppIcons.current.selectAll,
+                    contentDescription = stringResource(if (isAllSelected) R.string.contact_random_pool_deselect_all else R.string.contact_random_pool_select_all),
+                )
+            }
+        }
+    }
+}
+
+@Composable
+internal fun MonsterFilterButton(
+    filter: MonsterFilter,
+    onFilterSelected: (MonsterFilter) -> Unit,
+) {
+    var filterExpanded by remember { mutableStateOf(false) }
+    Box {
+        TextButton(
+            onClick = { filterExpanded = true },
+            modifier = Modifier.height(48.dp),
+        ) {
+            AppIcon(
+                icon = LocalMonsterAppIcons.current.filter,
+                contentDescription = null,
+            )
+            Text(
+                text = stringResource(
+                    when (filter) {
+                        MonsterFilter.All -> R.string.filter_all
+                        MonsterFilter.Regular -> R.string.filter_regular
+                        MonsterFilter.RadiantUnlocked -> R.string.filter_unlocked_radiant
+                        MonsterFilter.RadiantLocked -> R.string.filter_locked_radiant
+                    },
+                ),
+                modifier = Modifier.padding(start = 8.dp),
+            )
+        }
+        DropdownMenu(
+            expanded = filterExpanded,
+            onDismissRequest = { filterExpanded = false },
+        ) {
+            MonsterFilter.entries.forEach { entry ->
+                DropdownMenuItem(
+                    text = {
+                        Text(
+                            text = stringResource(
+                                when (entry) {
+                                    MonsterFilter.All -> R.string.filter_all
+                                    MonsterFilter.Regular -> R.string.filter_regular
+                                    MonsterFilter.RadiantUnlocked -> R.string.filter_unlocked_radiant
+                                    MonsterFilter.RadiantLocked -> R.string.filter_locked_radiant
+                                },
+                            ),
+                        )
+                    },
+                    onClick = {
+                        onFilterSelected(entry)
+                        filterExpanded = false
+                    },
+                )
+            }
+        }
+    }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+internal fun CharacterSelectionActions(
+    selectedTab: Int,
+    onTabSelected: (Int) -> Unit,
+    isAddEnabled: Boolean,
+    onAddCharacter: () -> Unit,
+    showCharacterTypeTabs: Boolean = true,
+    modifier: Modifier = Modifier,
+    filter: MonsterFilter? = null,
+    onFilterSelected: ((MonsterFilter) -> Unit)? = null,
+    poolActions: (@Composable RowScope.() -> Unit)? = null,
+) {
+    val scrollState = rememberScrollState()
+    val addButton: @Composable () -> Unit = { CharacterAddButton(isAddEnabled, onAddCharacter) }
+    val filterButton: @Composable () -> Unit = {
+        if (filter != null && onFilterSelected != null) {
+            MonsterFilterButton(filter, onFilterSelected)
+        }
+    }
+
+    Column(
+        modifier = modifier.fillMaxWidth(),
+        horizontalAlignment = Alignment.CenterHorizontally,
+    ) {
+        if (showCharacterTypeTabs) {
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .horizontalScroll(scrollState)
+                    .padding(top = 4.dp),
+                horizontalArrangement = Arrangement.Center,
+                verticalAlignment = Alignment.CenterVertically,
+            ) {
+                SingleChoiceSegmentedButtonRow {
+                    SegmentedButton(
+                        selected = selectedTab == 0,
+                        onClick = { onTabSelected(0) },
+                        shape = SegmentedButtonDefaults.itemShape(index = 0, count = 2),
+                        label = { Text(stringResource(R.string.character_type_trainer)) },
+                    )
+                    SegmentedButton(
+                        selected = selectedTab == 1,
+                        onClick = { onTabSelected(1) },
+                        shape = SegmentedButtonDefaults.itemShape(index = 1, count = 2),
+                        label = { Text(stringResource(R.string.character_type_monster)) },
+                    )
+                }
+            }
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically,
+            ) {
+                filterButton()
+                poolActions?.invoke(this)
+                Spacer(modifier = Modifier.weight(1f))
+                addButton()
+            }
+        } else {
+            Row(
+                modifier = Modifier.fillMaxWidth().padding(top = 4.dp),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically,
+            ) {
+                filterButton()
+                poolActions?.invoke(this)
+                Spacer(modifier = Modifier.weight(1f))
+                addButton()
+            }
+        }
+        if (!isAddEnabled) {
+            Text(
+                text = stringResource(R.string.character_limit_reached_hint),
+                style = MaterialTheme.typography.labelSmall,
+                color = MaterialTheme.colorScheme.error,
+                textAlign = TextAlign.Start,
+                modifier = Modifier.fillMaxWidth()
+            )
+        }
     }
 }
 
@@ -735,9 +898,11 @@ private fun CharacterOptionCard(
     roundBottom: Boolean,
     artwork: @Composable () -> Unit,
     onSelect: () -> Unit,
+    onSelected: (() -> Unit)? = null,
     onDelete: (() -> Unit)? = null,
     onEdit: (() -> Unit)? = null,
-    onShare: (() -> Unit)? = null
+    onShare: (() -> Unit)? = null,
+    modifier: Modifier = Modifier
 ) {
     var showMenu by remember { mutableStateOf(false) }
     var showRadiantUnlockDialog by remember { mutableStateOf(false) }
@@ -749,7 +914,8 @@ private fun CharacterOptionCard(
         Card(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(vertical = 1.dp),
+                .padding(vertical = 1.dp)
+                .then(modifier),
             shape = shape,
             colors = CardDefaults.cardColors(containerColor = if (isSelected) MaterialTheme.colorScheme.secondaryContainer else MaterialTheme.colorScheme.surfaceContainerLow),
             elevation = CardDefaults.cardElevation(defaultElevation = 0.5.dp)
@@ -758,17 +924,20 @@ private fun CharacterOptionCard(
                 modifier = Modifier
                     .combinedClickable(
                         onClick = {
-                            if (isSelected) return@combinedClickable
+                            if (isSelected) {
+                                onSelected?.invoke()
+                                return@combinedClickable
+                            }
                             if (isUnlocked) onSelect() else showRadiantUnlockDialog = true
                         },
                         onLongClick = if (!isSelected && (onDelete != null || onEdit != null || onShare != null)) { { showMenu = true } } else null
                     )
-                    .padding(16.dp),
+                    .padding(12.dp),
                 verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.spacedBy(16.dp)
+                horizontalArrangement = Arrangement.spacedBy(12.dp)
             ) {
                 Box(
-                    modifier = Modifier.size(72.dp),
+                    modifier = Modifier.size(60.dp),
                     contentAlignment = Alignment.Center,
                 ) {
                     artwork()
@@ -882,15 +1051,17 @@ private fun CharacterGridItem(
     shape: Shape,
     artwork: @Composable () -> Unit,
     onSelect: () -> Unit,
+    onSelected: (() -> Unit)? = null,
     onDelete: (() -> Unit)? = null,
     onEdit: (() -> Unit)? = null,
-    onShare: (() -> Unit)? = null
+    onShare: (() -> Unit)? = null,
+    modifier: Modifier = Modifier
 ) {
     var showMenu by remember { mutableStateOf(false) }
     var showRadiantUnlockDialog by remember { mutableStateOf(false) }
     Box {
         Card(
-            modifier = Modifier.fillMaxWidth(),
+            modifier = Modifier.fillMaxWidth().then(modifier),
             shape = shape,
             colors = CardDefaults.cardColors(
                 containerColor = if (isSelected) MaterialTheme.colorScheme.secondaryContainer else MaterialTheme.colorScheme.surfaceContainerLow
@@ -901,26 +1072,32 @@ private fun CharacterGridItem(
                 modifier = Modifier
                     .combinedClickable(
                         onClick = {
-                            if (isUnlocked) onSelect() else showRadiantUnlockDialog = true
+                            if (isSelected) {
+                                onSelected?.invoke()
+                            } else if (isUnlocked) {
+                                onSelect()
+                            } else {
+                                showRadiantUnlockDialog = true
+                            }
                         },
                         onLongClick = if (onDelete != null || onEdit != null || onShare != null) { { showMenu = true } } else null
                     )
                     .fillMaxWidth()
-                    .height(200.dp)
-                    .padding(16.dp),
+                    .height(172.dp)
+                    .padding(12.dp),
                 horizontalAlignment = Alignment.Start,
                 verticalArrangement = Arrangement.spacedBy(4.dp)
             ) {
                 Box(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .height(88.dp),
+                        .height(72.dp),
                     contentAlignment = Alignment.Center
                 ) {
                     artwork()
                 }
                 
-                Spacer(modifier = Modifier.height(4.dp))
+                Spacer(modifier = Modifier.height(2.dp))
                 
                 Text(
                     text = name,

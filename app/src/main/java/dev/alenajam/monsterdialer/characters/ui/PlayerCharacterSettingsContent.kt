@@ -1,5 +1,10 @@
 package dev.alenajam.monsterdialer.characters.ui
 
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.expandVertically
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.shrinkVertically
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.lazy.grid.GridCells
@@ -13,9 +18,6 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.LazyRow
-import androidx.compose.foundation.lazy.items
-import androidx.compose.material3.FilterChip
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -26,6 +28,10 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.input.nestedscroll.NestedScrollConnection
+import androidx.compose.ui.input.nestedscroll.NestedScrollSource
+import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -68,15 +74,17 @@ internal fun ColumnScope.PlayerCharacterSettingsContent(
     val selectedTab by viewModel.selectedTab.collectAsStateWithLifecycle()
     val layout by viewModel.layout.collectAsStateWithLifecycle()
     val unlockedVariants by viewModel.unlockedVariants.collectAsStateWithLifecycle()
-    val targetSlotIndex by viewModel.targetSlotIndex.collectAsStateWithLifecycle()
     val filter by viewModel.filter.collectAsStateWithLifecycle()
 
     val currentTabHasCharacters = if (selectedTab == 0) trainers.isNotEmpty() else monsters.isNotEmpty()
     val effectiveLayout = if (currentTabHasCharacters) layout else CharacterLayout.List
 
-    val assignedMonsterForSlot = targetSlotIndex?.let { index ->
-        monsterRoster.getOrNull(index)
-    } ?: assignedMonster
+    val selectedSlotIndex = payload?.split(":")?.getOrNull(1)?.toIntOrNull()
+    val assignedMonsterForSlot = if (route == PlayerCharacterSettingsRoute.AddToRoster) {
+        selectedSlotIndex?.let(monsterRoster::getOrNull)
+    } else {
+        assignedMonster
+    }
 
     val trainerSelectedItemIndex = selectedCharacterIndex(trainers, assignedTrainer)
     val monsterSelectedItemIndex = selectedCharacterIndex(monsters, assignedMonsterForSlot)
@@ -88,12 +96,28 @@ internal fun ColumnScope.PlayerCharacterSettingsContent(
     )
     val trainerGridState = rememberLazyGridState(initialFirstVisibleItemIndex = trainerSelectedItemIndex)
     val monsterGridState = rememberLazyGridState(initialFirstVisibleItemIndex = monsterSelectedItemIndex)
+    val listState = if (selectedTab == 0) trainerListState else monsterListState
+    val gridState = if (selectedTab == 0) trainerGridState else monsterGridState
+    var controlsVisible by remember { mutableStateOf(true) }
+    val controlsScrollConnection = remember {
+        object : NestedScrollConnection {
+            override fun onPostScroll(
+                consumed: Offset,
+                available: Offset,
+                source: NestedScrollSource,
+            ): Offset {
+                when {
+                    consumed.y < 0f -> controlsVisible = false
+                    consumed.y > 0f -> controlsVisible = true
+                }
+                return Offset.Zero
+            }
+        }
+    }
     val trainerTitle = stringResource(R.string.character_type_trainer)
     val monsterTitle = stringResource(R.string.character_type_monster)
     val trainersTitle = stringResource(R.string.character_type_trainers)
     val monstersTitle = stringResource(R.string.character_type_monsters)
-    val addTrainerLabel = stringResource(R.string.add_trainer)
-    val addMonsterLabel = stringResource(R.string.add_monster)
     val navigator = dev.alenajam.opendialer.feature.settings.LocalSettingsSubpageNavigator.current
 
     LaunchedEffect(route, payload) {
@@ -102,27 +126,33 @@ internal fun ColumnScope.PlayerCharacterSettingsContent(
         if (slotIndex != null) viewModel.setFilter(MonsterFilter.All)
         route?.let { viewModel.setSelectedTab(it.selectedTab) }
     }
+    LaunchedEffect(selectedTab, effectiveLayout) {
+        controlsVisible = true
+    }
 
-    CharacterTypeTabs(
-        selectedTab = selectedTab,
-        onTabSelected = { tab ->
-            val selectedItemIndex = if (tab == 0) trainerSelectedItemIndex else monsterSelectedItemIndex
-            val nextTabHasCharacters = if (tab == 0) trainers.isNotEmpty() else monsters.isNotEmpty()
-            val nextTabEffectiveLayout = if (nextTabHasCharacters) layout else CharacterLayout.List
+    AnimatedVisibility(
+        visible = controlsVisible,
+        enter = fadeIn() + expandVertically(),
+        exit = fadeOut() + shrinkVertically(),
+    ) {
+        CharacterSelectionActions(
+            selectedTab = selectedTab,
+            onTabSelected = { tab ->
+                val selectedItemIndex = if (tab == 0) trainerSelectedItemIndex else monsterSelectedItemIndex
+                val nextTabHasCharacters = if (tab == 0) trainers.isNotEmpty() else monsters.isNotEmpty()
+                val nextTabEffectiveLayout = if (nextTabHasCharacters) layout else CharacterLayout.List
 
-            if (nextTabEffectiveLayout == CharacterLayout.List) {
-                (if (tab == 0) trainerListState else monsterListState).requestScrollToItem(selectedItemIndex)
-            } else {
-                (if (tab == 0) trainerGridState else monsterGridState).requestScrollToItem(selectedItemIndex)
-            }
-            viewModel.setSelectedTab(tab)
-        }
-    )
-
-    if (selectedTab == 1) {
-        MonsterFilterChips(
-            selectedFilter = filter,
-            onFilterSelected = viewModel::setFilter
+                if (nextTabEffectiveLayout == CharacterLayout.List) {
+                    (if (tab == 0) trainerListState else monsterListState).requestScrollToItem(selectedItemIndex)
+                } else {
+                    (if (tab == 0) trainerGridState else monsterGridState).requestScrollToItem(selectedItemIndex)
+                }
+                viewModel.setSelectedTab(tab)
+            },
+            isAddEnabled = !isLimitReached,
+            onAddCharacter = { navigator?.navigateTo(if (selectedTab == 0) 0 else 1) },
+            filter = if (selectedTab == 1) filter else null,
+            onFilterSelected = if (selectedTab == 1) viewModel::setFilter else null
         )
     }
 
@@ -130,8 +160,6 @@ internal fun ColumnScope.PlayerCharacterSettingsContent(
         0 -> trainerSelectedItemIndex
         else -> monsterSelectedItemIndex
     }
-    val listState = if (selectedTab == 0) trainerListState else monsterListState
-    val gridState = if (selectedTab == 0) trainerGridState else monsterGridState
     val scope = androidx.compose.runtime.rememberCoroutineScope()
     var pendingDeletion by remember { mutableStateOf<InstalledPackCharacter?>(null) }
     var isPendingDeletionInUse by remember { mutableStateOf(false) }
@@ -174,7 +202,13 @@ internal fun ColumnScope.PlayerCharacterSettingsContent(
 
     Box(modifier = Modifier.fillMaxWidth().weight(1f)) {
         if (effectiveLayout == CharacterLayout.List) {
-            LazyColumn(state = listState, modifier = Modifier.fillMaxSize(), contentPadding = PaddingValues(top = 8.dp, bottom = 72.dp)) {
+            LazyColumn(
+                state = listState,
+                modifier = Modifier
+                    .fillMaxSize()
+                    .nestedScroll(controlsScrollConnection),
+                contentPadding = PaddingValues(top = 0.dp, bottom = 72.dp),
+            ) {
                 when (selectedTab) {
                     0 -> characterTypeItems(
                         title = trainerTitle,
@@ -188,9 +222,6 @@ internal fun ColumnScope.PlayerCharacterSettingsContent(
                             viewModel.assignTrainer(it)
                             navigator?.navigateBack()
                         },
-                        onAddCharacter = { navigator?.navigateTo(0) },
-                        addLabel = addTrainerLabel,
-                        isAddEnabled = !isLimitReached,
                         unlockedVariants = unlockedVariants,
                         onDelete = { character -> scope.launch { isPendingDeletionInUse = viewModel.isCharacterInUse(character.character.id); pendingDeletion = character } },
                         onEdit = { navigator?.navigateTo(0, it.character.id) },
@@ -209,21 +240,26 @@ internal fun ColumnScope.PlayerCharacterSettingsContent(
                             viewModel.assignMonster(requireNotNull(it))
                             navigator?.navigateBack()
                         },
-                        onAddCharacter = { navigator?.navigateTo(1) },
-                        addLabel = addMonsterLabel,
-                        isAddEnabled = !isLimitReached,
                         unlockedVariants = unlockedVariants,
                         onDelete = { character -> scope.launch { isPendingDeletionInUse = viewModel.isCharacterInUse(character.character.id); pendingDeletion = character } },
                         onEdit = { navigator?.navigateTo(1, it.character.id) },
                         onShare = { pendingShare = it },
                         selectedReferences = selectedReferences,
-                        hideSelected = true,
                         filter = filter
                     )
                 }
             }
         } else {
-            LazyVerticalGrid(columns = GridCells.Fixed(2), state = gridState, modifier = Modifier.fillMaxSize(), contentPadding = PaddingValues(top = 8.dp, bottom = 72.dp), horizontalArrangement = Arrangement.spacedBy(2.dp), verticalArrangement = Arrangement.spacedBy(2.dp)) {
+            LazyVerticalGrid(
+                columns = GridCells.Fixed(2),
+                state = gridState,
+                modifier = Modifier
+                    .fillMaxSize()
+                    .nestedScroll(controlsScrollConnection),
+                contentPadding = PaddingValues(top = 0.dp, bottom = 72.dp),
+                horizontalArrangement = Arrangement.spacedBy(2.dp),
+                verticalArrangement = Arrangement.spacedBy(2.dp),
+            ) {
                 when (selectedTab) {
                     0 -> characterTypeGridItems(
                         title = trainerTitle,
@@ -237,9 +273,6 @@ internal fun ColumnScope.PlayerCharacterSettingsContent(
                             viewModel.assignTrainer(it)
                             navigator?.navigateBack()
                         },
-                        onAddCharacter = { navigator?.navigateTo(0) },
-                        addLabel = addTrainerLabel,
-                        isAddEnabled = !isLimitReached,
                         unlockedVariants = unlockedVariants,
                         onDelete = { character -> scope.launch { isPendingDeletionInUse = viewModel.isCharacterInUse(character.character.id); pendingDeletion = character } },
                         onEdit = { navigator?.navigateTo(0, it.character.id) },
@@ -258,15 +291,11 @@ internal fun ColumnScope.PlayerCharacterSettingsContent(
                             viewModel.assignMonster(requireNotNull(it))
                             navigator?.navigateBack()
                         },
-                        onAddCharacter = { navigator?.navigateTo(1) },
-                        addLabel = addMonsterLabel,
-                        isAddEnabled = !isLimitReached,
                         unlockedVariants = unlockedVariants,
                         onDelete = { character -> scope.launch { isPendingDeletionInUse = viewModel.isCharacterInUse(character.character.id); pendingDeletion = character } },
                         onEdit = { navigator?.navigateTo(1, it.character.id) },
                         onShare = { pendingShare = it },
                         selectedReferences = selectedReferences,
-                        hideSelected = true,
                         filter = filter
                     )
                 }
@@ -285,37 +314,6 @@ internal fun ColumnScope.PlayerCharacterSettingsContent(
             )
             if (effectiveLayout == CharacterLayout.List) JumpToSelectedCharacterButton(listState, selectedItemIndex, Modifier.align(Alignment.BottomEnd).padding(16.dp))
             else JumpToSelectedCharacterButton(gridState, selectedItemIndex, Modifier.align(Alignment.BottomEnd).padding(16.dp))
-        }
-    }
-}
-
-@OptIn(androidx.compose.material3.ExperimentalMaterial3Api::class)
-@Composable
-private fun MonsterFilterChips(
-    selectedFilter: MonsterFilter,
-    onFilterSelected: (MonsterFilter) -> Unit
-) {
-    LazyRow(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(horizontal = 16.dp, vertical = 8.dp),
-        horizontalArrangement = Arrangement.spacedBy(8.dp)
-    ) {
-        items(MonsterFilter.entries) { filter ->
-            FilterChip(
-                selected = selectedFilter == filter,
-                onClick = { onFilterSelected(filter) },
-                label = {
-                    Text(
-                        text = when (filter) {
-                            MonsterFilter.All -> stringResource(R.string.filter_all)
-                            MonsterFilter.Regular -> stringResource(R.string.filter_regular)
-                            MonsterFilter.RadiantUnlocked -> stringResource(R.string.filter_unlocked_radiant)
-                            MonsterFilter.RadiantLocked -> stringResource(R.string.filter_locked_radiant)
-                        }
-                    )
-                }
-            )
         }
     }
 }

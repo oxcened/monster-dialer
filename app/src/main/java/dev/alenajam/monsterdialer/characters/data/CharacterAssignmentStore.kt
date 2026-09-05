@@ -25,6 +25,9 @@ private data class CharacterAssignmentsDocument(
     val activePlayerMonster: CharacterReference? = null,
     val contactsByType: Map<String, Map<CharacterType, CharacterReference>> = emptyMap(),
     val contactModes: Map<String, Map<CharacterType, ContactCharacterMode>> = emptyMap(),
+    val contactDefaultsByType: Map<CharacterType, CharacterReference> = emptyMap(),
+    val contactRandomPoolsByType: Map<CharacterType, List<CharacterReference>> = emptyMap(),
+    val contactRandomPoolsByContact: Map<String, Map<CharacterType, List<CharacterReference>>> = emptyMap(),
     val contactLabels: Map<String, String> = emptyMap(),
     val selectedContact: StoredSelectedContact? = null
 )
@@ -38,6 +41,11 @@ enum class ContactCharacterMode {
 data class ContactCharacterSelection(
     val character: CharacterReference?,
     val mode: ContactCharacterMode,
+)
+
+data class ContactCharacterDefaults(
+    val defaults: Map<CharacterType, CharacterReference>,
+    val randomPools: Map<CharacterType, List<CharacterReference>>,
 )
 
 @Serializable
@@ -203,13 +211,104 @@ class CharacterAssignmentStore(
             ?: return ContactCharacterSelection(null, ContactCharacterMode.Default)
         val character = document.contactsByType[normalizedKey]?.get(type)
             ?: document.contacts[normalizedKey].takeIf { type == CharacterType.Monster }
-        return ContactCharacterSelection(
-            character = character,
-            // Missing modes are intentionally random so existing, uncustomized contacts gain
-            // the new default behavior after updating.
-            mode = document.contactModes[normalizedKey]?.get(type)
-                ?: if (character == null) ContactCharacterMode.Random else ContactCharacterMode.Default,
-        )
+        val configuredMode = document.contactModes[normalizedKey]?.get(type)
+        val defaultCharacter = document.contactDefaultsByType[type]
+        return when {
+            character != null -> ContactCharacterSelection(character, ContactCharacterMode.Default)
+            configuredMode == ContactCharacterMode.Random -> ContactCharacterSelection(null, ContactCharacterMode.Random)
+            configuredMode == ContactCharacterMode.Default -> ContactCharacterSelection(null, ContactCharacterMode.Default)
+            defaultCharacter != null -> ContactCharacterSelection(defaultCharacter, ContactCharacterMode.Default)
+            else -> ContactCharacterSelection(null, ContactCharacterMode.Random)
+        }
+    }
+
+    @Synchronized
+    fun hasContactOverride(contactKey: String, type: CharacterType): Boolean {
+        val document = read()
+        val normalizedKey = normalizeContactKeyOrNull(contactKey) ?: return false
+        return document.contactsByType[normalizedKey]?.containsKey(type) == true ||
+            document.contactModes[normalizedKey]?.containsKey(type) == true ||
+            (type == CharacterType.Monster && normalizedKey in document.contacts)
+    }
+
+    @Synchronized
+    fun clearContactOverride(contactKey: String, type: CharacterType) {
+        val normalizedKey = normalizeContactKey(contactKey)
+        val document = read()
+        val assignments = document.contactsByType[normalizedKey].orEmpty().toMutableMap().apply { remove(type) }
+        val updatedAssignments = document.contactsByType.toMutableMap().apply {
+            if (assignments.isEmpty()) remove(normalizedKey) else put(normalizedKey, assignments)
+        }
+        val modes = document.contactModes[normalizedKey].orEmpty().toMutableMap().apply { remove(type) }
+        val updatedModes = document.contactModes.toMutableMap().apply {
+            if (modes.isEmpty()) remove(normalizedKey) else put(normalizedKey, modes)
+        }
+        write(document.copy(
+            contactsByType = updatedAssignments,
+            contactModes = updatedModes,
+            contacts = if (type == CharacterType.Monster) document.contacts - normalizedKey else document.contacts,
+        ))
+    }
+
+    @Synchronized
+    fun contactCharacterDefaults(): ContactCharacterDefaults {
+        val document = read()
+        return ContactCharacterDefaults(document.contactDefaultsByType, document.contactRandomPoolsByType)
+    }
+
+    @Synchronized
+    fun setContactDefault(type: CharacterType, character: CharacterReference?) {
+        character?.validate()
+        val document = read()
+        val defaults = document.contactDefaultsByType.toMutableMap().apply {
+            if (character == null) remove(type) else put(type, character)
+        }
+        write(document.copy(contactDefaultsByType = defaults))
+    }
+
+    @Synchronized
+    fun setContactRandomPool(type: CharacterType, characters: List<CharacterReference>) {
+        characters.forEach { it.validate() }
+        val document = read()
+        val pools = document.contactRandomPoolsByType.toMutableMap().apply {
+            put(type, characters.distinct())
+        }
+        write(document.copy(contactRandomPoolsByType = pools))
+    }
+
+    @Synchronized
+    fun clearContactRandomPool(type: CharacterType) {
+        val document = read()
+        val pools = document.contactRandomPoolsByType.toMutableMap().apply { remove(type) }
+        write(document.copy(contactRandomPoolsByType = pools))
+    }
+
+    @Synchronized
+    fun contactRandomPool(contactKey: String, type: CharacterType): List<CharacterReference>? {
+        val normalizedKey = normalizeContactKeyOrNull(contactKey) ?: return null
+        return read().contactRandomPoolsByContact[normalizedKey]?.get(type)
+    }
+
+    @Synchronized
+    fun setContactRandomPool(contactKey: String, type: CharacterType, references: List<CharacterReference>) {
+        val normalizedKey = normalizeContactKey(contactKey)
+        references.forEach { it.validate() }
+        val document = read()
+        val poolsForContact = document.contactRandomPoolsByContact[normalizedKey].orEmpty().toMutableMap().apply {
+            put(type, references.distinct())
+        }
+        write(document.copy(contactRandomPoolsByContact = document.contactRandomPoolsByContact + (normalizedKey to poolsForContact)))
+    }
+
+    @Synchronized
+    fun clearContactRandomPool(contactKey: String, type: CharacterType) {
+        val normalizedKey = normalizeContactKey(contactKey)
+        val document = read()
+        val poolsForContact = document.contactRandomPoolsByContact[normalizedKey].orEmpty().toMutableMap().apply { remove(type) }
+        val pools = document.contactRandomPoolsByContact.toMutableMap().apply {
+            if (poolsForContact.isEmpty()) remove(normalizedKey) else put(normalizedKey, poolsForContact)
+        }
+        write(document.copy(contactRandomPoolsByContact = pools))
     }
 
     fun characterForContact(contactKey: String): CharacterReference? =
@@ -373,6 +472,13 @@ class CharacterAssignmentStore(
         val updatedLabels = document.contactLabels.filterKeys { key ->
             key in updatedContactsByType || key in legacyContacts || key in cleanedModes
         }
+        val updatedDefaults = document.contactDefaultsByType.filterValues { it.packId != packId }
+        val updatedRandomPools = document.contactRandomPoolsByType.mapValues { (_, pool) ->
+            pool.filter { it.packId != packId }
+        }.filterValues { it.isNotEmpty() }
+        val updatedContactRandomPools = document.contactRandomPoolsByContact.mapValues { (_, pools) ->
+            pools.mapValues { (_, pool) -> pool.filter { it.packId != packId } }.filterValues { it.isNotEmpty() }
+        }.filterValues { it.isNotEmpty() }
 
         write(document.copy(
             player = if (document.player?.packId == packId) null else document.player,
@@ -382,7 +488,10 @@ class CharacterAssignmentStore(
             activePlayerMonster = updatedActiveMonster,
             contactsByType = updatedContactsByType,
             contactModes = cleanedModes,
-            contactLabels = updatedLabels
+            contactLabels = updatedLabels,
+            contactDefaultsByType = updatedDefaults,
+            contactRandomPoolsByType = updatedRandomPools,
+            contactRandomPoolsByContact = updatedContactRandomPools,
         ))
     }
 
@@ -411,6 +520,15 @@ class CharacterAssignmentStore(
         val updatedLabels = document.contactLabels.filterKeys { key ->
             key in updatedContactsByType || key in legacyContacts || key in cleanedModes
         }
+        val updatedDefaults = document.contactDefaultsByType.filterValues {
+            !it.sameCharacterAs(reference)
+        }
+        val updatedRandomPools = document.contactRandomPoolsByType.mapValues { (_, pool) ->
+            pool.filterNot { it.sameCharacterAs(reference) }
+        }.filterValues { it.isNotEmpty() }
+        val updatedContactRandomPools = document.contactRandomPoolsByContact.mapValues { (_, pools) ->
+            pools.mapValues { (_, pool) -> pool.filterNot { it.sameCharacterAs(reference) } }.filterValues { it.isNotEmpty() }
+        }.filterValues { it.isNotEmpty() }
 
         write(document.copy(
             player = if (document.player?.sameCharacterAs(reference) == true) null else document.player,
@@ -420,7 +538,10 @@ class CharacterAssignmentStore(
             activePlayerMonster = updatedActiveMonster,
             contactsByType = updatedContactsByType,
             contactModes = cleanedModes,
-            contactLabels = updatedLabels
+            contactLabels = updatedLabels,
+            contactDefaultsByType = updatedDefaults,
+            contactRandomPoolsByType = updatedRandomPools,
+            contactRandomPoolsByContact = updatedContactRandomPools,
         ))
     }
 

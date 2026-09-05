@@ -5,6 +5,7 @@ import dev.alenajam.monsterdialer.packs.data.CharacterType
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -13,6 +14,16 @@ interface CharacterAssignmentRepository {
     val assignmentVersion: StateFlow<Long>
     suspend fun getAssignedCharacter(contactKey: String, type: CharacterType): CharacterReference?
     suspend fun getContactCharacterSelection(contactKey: String, type: CharacterType): ContactCharacterSelection
+    suspend fun hasContactOverride(contactKey: String, type: CharacterType): Boolean
+    suspend fun clearContactOverride(contactKey: String, type: CharacterType)
+    suspend fun getContactCharacterDefaults(): ContactCharacterDefaults
+    suspend fun setContactDefault(type: CharacterType, reference: CharacterReference?)
+    suspend fun setContactRandomPool(type: CharacterType, references: List<CharacterReference>)
+    suspend fun clearContactRandomPool(type: CharacterType)
+    suspend fun getContactRandomPool(type: CharacterType): List<CharacterReference>?
+    suspend fun getContactRandomPool(contactKey: String, type: CharacterType): List<CharacterReference>?
+    suspend fun setContactRandomPool(contactKey: String, type: CharacterType, references: List<CharacterReference>)
+    suspend fun clearContactRandomPool(contactKey: String, type: CharacterType)
     suspend fun assignCharacter(
         contactKey: String,
         type: CharacterType,
@@ -57,6 +68,52 @@ class CharacterAssignmentRepositoryImpl @Inject constructor(
         assignments.selectionForContact(contactKey, type)
     }
 
+    override suspend fun hasContactOverride(contactKey: String, type: CharacterType): Boolean = withContext(Dispatchers.IO) {
+        assignments.hasContactOverride(contactKey, type)
+    }
+
+    override suspend fun clearContactOverride(contactKey: String, type: CharacterType) = withContext(Dispatchers.IO) {
+        assignments.clearContactOverride(contactKey, type)
+        notifyAssignmentsChanged()
+    }
+
+    override suspend fun getContactCharacterDefaults(): ContactCharacterDefaults = withContext(Dispatchers.IO) {
+        assignments.contactCharacterDefaults()
+    }
+
+    override suspend fun setContactDefault(type: CharacterType, reference: CharacterReference?) = withContext(Dispatchers.IO) {
+        assignments.setContactDefault(type, reference)
+        notifyAssignmentsChanged()
+    }
+
+    override suspend fun setContactRandomPool(type: CharacterType, references: List<CharacterReference>) = withContext(Dispatchers.IO) {
+        assignments.setContactRandomPool(type, references)
+        notifyAssignmentsChanged()
+    }
+
+    override suspend fun clearContactRandomPool(type: CharacterType) = withContext(Dispatchers.IO) {
+        assignments.clearContactRandomPool(type)
+        notifyAssignmentsChanged()
+    }
+
+    override suspend fun getContactRandomPool(type: CharacterType): List<CharacterReference>? = withContext(Dispatchers.IO) {
+        assignments.contactCharacterDefaults().randomPools[type]
+    }
+
+    override suspend fun getContactRandomPool(contactKey: String, type: CharacterType): List<CharacterReference>? = withContext(Dispatchers.IO) {
+        assignments.contactRandomPool(contactKey, type)
+    }
+
+    override suspend fun setContactRandomPool(contactKey: String, type: CharacterType, references: List<CharacterReference>) = withContext(Dispatchers.IO) {
+        assignments.setContactRandomPool(contactKey, type, references)
+        notifyAssignmentsChanged()
+    }
+
+    override suspend fun clearContactRandomPool(contactKey: String, type: CharacterType) = withContext(Dispatchers.IO) {
+        assignments.clearContactRandomPool(contactKey, type)
+        notifyAssignmentsChanged()
+    }
+
     override suspend fun assignCharacter(
         contactKey: String,
         type: CharacterType,
@@ -64,12 +121,12 @@ class CharacterAssignmentRepositoryImpl @Inject constructor(
         label: String?
     ) = withContext(Dispatchers.IO) {
         assignments.assignContact(contactKey, type, reference, label)
-        _assignmentVersion.value += 1
+        notifyAssignmentsChanged()
     }
 
     override suspend fun randomizeCharacter(contactKey: String, type: CharacterType, label: String?) = withContext(Dispatchers.IO) {
         assignments.randomizeContact(contactKey, type, label)
-        _assignmentVersion.value += 1
+        notifyAssignmentsChanged()
     }
 
     override suspend fun getPlayerCharacter(type: CharacterType): CharacterReference? = withContext(Dispatchers.IO) {
@@ -81,7 +138,7 @@ class CharacterAssignmentRepositoryImpl @Inject constructor(
         reference: CharacterReference?
     ) = withContext(Dispatchers.IO) {
         assignments.setPlayer(type, reference)
-        _assignmentVersion.value += 1
+        notifyAssignmentsChanged()
     }
 
     override suspend fun getPlayerMonsterRoster(): List<CharacterReference> = withContext(Dispatchers.IO) {
@@ -90,22 +147,22 @@ class CharacterAssignmentRepositoryImpl @Inject constructor(
 
     override suspend fun setPlayerMonsterRoster(roster: List<CharacterReference>) = withContext(Dispatchers.IO) {
         assignments.setPlayerMonsterRoster(roster)
-        _assignmentVersion.value += 1
+        notifyAssignmentsChanged()
     }
 
     override suspend fun addPlayerMonsterToRoster(reference: CharacterReference) = withContext(Dispatchers.IO) {
         assignments.addPlayerMonsterToRoster(reference)
-        _assignmentVersion.value += 1
+        notifyAssignmentsChanged()
     }
 
     override suspend fun removePlayerMonsterFromRoster(reference: CharacterReference) = withContext(Dispatchers.IO) {
         assignments.removePlayerMonsterFromRoster(reference)
-        _assignmentVersion.value += 1
+        notifyAssignmentsChanged()
     }
 
     override suspend fun replacePlayerMonsterInRoster(index: Int, reference: CharacterReference) = withContext(Dispatchers.IO) {
         assignments.replacePlayerMonsterInRoster(index, reference)
-        _assignmentVersion.value += 1
+        notifyAssignmentsChanged()
     }
 
     override suspend fun assignedContactCount(): Int = withContext(Dispatchers.IO) {
@@ -129,14 +186,14 @@ class CharacterAssignmentRepositoryImpl @Inject constructor(
         packId: String
     ) = withContext(Dispatchers.IO) {
         assignments.clearAssignmentsForPack(packId)
-        _assignmentVersion.value += 1
+        notifyAssignmentsChanged()
     }
 
     override suspend fun clearAssignmentsForCharacter(
         reference: CharacterReference
     ) = withContext(Dispatchers.IO) {
         assignments.clearAssignmentsForCharacter(reference)
-        _assignmentVersion.value += 1
+        notifyAssignmentsChanged()
     }
 
     override suspend fun isPackInUse(
@@ -150,4 +207,8 @@ class CharacterAssignmentRepositoryImpl @Inject constructor(
 
     private fun CharacterReference.sameCharacterAs(other: CharacterReference): Boolean =
         packId == other.packId && characterId == other.characterId
+
+    private fun notifyAssignmentsChanged() {
+        _assignmentVersion.update { it + 1 }
+    }
 }

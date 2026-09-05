@@ -13,6 +13,7 @@
     <string name="github_latest_release_api" comment="GitHub API endpoint used to retrieve the latest MonsterDialer release. Do not translate." translatable="false">https://api.github.com/repos/oxcened/monster-dialer/releases/latest</string>
     <string name="url_feature_requests" comment="URL opened from the feature-request action. Do not translate." translatable="false">https://monsterdialer.fider.io/</string>
     <string name="hang_up" comment="Button to end the current phone call.">Hang up</string>
+    <string name="add" comment="Generic label for adding a new item.">Add</string>
     <string name="settings_character_packs_title" comment="Settings title for managing character packs.">Character Packs</string>
     <string name="characters_navigation_label" comment="Bottom navigation label for the player's profile and character collection.">Profile</string>
     <string name="customize_your_calls" comment="Section heading above contact character customization.">Customize your calls</string>
@@ -111,6 +112,39 @@
     <string name="regular" comment="Adjective for a standard, non-rare character variant.">Regular</string>
     <string name="selected" comment="Status label for the currently chosen option.">Selected</string>
     <string name="randomize" comment="Character selection that chooses a different eligible character for every call.">Randomize</string>
+    <string name="contact_defaults_title">Unassigned contacts</string>
+    <string name="contact_defaults_toolbox_title">Contact defaults</string>
+    <string name="contact_defaults_description">Choose defaults and limit the contact randomizer pool.</string>
+    <string name="contact_default_trainer">Default trainer</string>
+    <string name="contact_default_monster">Default monster</string>
+    <string name="contact_choose_trainer" comment="Dropdown option that opens the trainer picker for the contact default.">Choose trainer</string>
+    <string name="contact_choose_monster" comment="Dropdown option that opens the monster picker for the contact default.">Choose monster</string>
+    <string name="contact_default_random">Random</string>
+    <string name="contact_random_pool_all">All available characters</string>
+    <string name="contact_random_pool_choose">Choose randomizer pool</string>
+    <string name="contact_default_choose">Choose default character</string>
+    <string name="contact_defaults_mode_default">Default character</string>
+    <string name="contact_defaults_mode_pool">Randomizer pool</string>
+    <string name="open_contact_defaults_guide" comment="Accessibility label for the help button on the contact defaults screen.">Open contact defaults guide</string>
+    <string name="contact_defaults_guide_title" comment="Title of the guide explaining contact character defaults.">Contact defaults</string>
+    <string name="contact_defaults_guide_message">These settings apply to contacts that do not have their own character customization.</string>
+    <string name="contact_defaults_guide_default">• Choose a default trainer or monster to use for unassigned contacts.</string>
+    <string name="contact_defaults_guide_randomizer">• Choose Randomize to let the app pick from the selected randomizer pool.</string>
+    <string name="contact_defaults_guide_overrides">• A contact’s Customize contact setting overrides these global defaults. Contacts set to Don’t customize continue to follow them.</string>
+    <string name="contact_random_pool_reset">Reset</string>
+    <string name="contact_random_pool_description" comment="Explains what the selected characters mean when Randomize is enabled.">Selected characters are the ones Randomize can choose from.</string>
+    <string name="contact_random_pool_select_all">Select all</string>
+    <string name="contact_random_pool_deselect_all">Deselect all</string>
+    <string name="contact_character_source_global">Don’t customize</string>
+    <string name="contact_character_source_custom">Customize contact</string>
+    <string name="contact_character_inherited_title">Using global defaults</string>
+    <string name="contact_character_inherited_message">This contact follows the global %1$s settings. Select Choose %1$s or Randomize above to override them.</string>
+    <string name="contact_character_edit_global_defaults" comment="Button that opens the global contact character defaults from an inherited contact setting.">Edit global defaults</string>
+    <string name="contact_random_pool_save">Save pool</string>
+    <string name="contact_random_pool_empty_title">Choose at least one character</string>
+    <string name="contact_random_pool_empty_exit_message">Your randomizer pool is empty, so those changes have not been saved. Select at least one character to save the pool, or discard the unsaved changes to leave.</string>
+    <string name="contact_random_pool_continue_editing">Keep editing</string>
+    <string name="contact_random_pool_discard_changes">Discard changes</string>
     <string name="locked" comment="Status label for a character variant that must be unlocked before selection.">Locked</string>
     <string name="radiant_variant_locked_title" comment="Title of the dialog shown for a locked radiant character variant.">Radiant variant locked</string>
     <string name="radiant_variant_locked_message" comment="Explains how to unlock a radiant character variant; %1$s is the character name.">When you encounter a radiant %1$s in a wild battle, it unlocks automatically as the battle begins. You can then assign it.</string>
@@ -144,7 +178,7 @@
     <string name="online_profile_public_id_message">Anyone you send your sharing link to can find your profile through its randomly generated public ID. The same Google account keeps this ID when you sign in on another device, so existing links continue to work. Tap “Regenerate sharing link” to invalidate the current public ID and create a new one. The previous link will no longer work for anyone you shared it with.</string>
     <string name="online_profile_delete_guide_title">Deleting Your Profile</string>
     <string name="online_profile_delete_guide_message">Tap “Delete Online Profile” to permanently remove your published profile data. Anyone who has your sharing link will no longer be able to view your team through it. If you enable a profile again later, it will have a new sharing link.</string>
-    <string name="online_profile_enable" comment="Button that creates and enables the player's Online Profile.">Enable Online Profile</string>
+    <string name="online_profile_enable" comment="Button that creates and enables the player's Online Profile.">Enable</string>
     <string name="online_profile_enabling" comment="Progress label shown while an Online Profile is being enabled.">Enabling Online Profile</string>
     <string name="online_profile_regenerating" comment="Progress label shown while a new profile sharing link is being created.">Regenerating sharing link</string>
     <string name="online_profile_deleting" comment="Progress label shown while the player's Online Profile is being deleted.">Deleting Online Profile</string>
@@ -171,7 +205,7 @@
     <string name="online_profile_sign_out_google" comment="Button that signs the player out of Google so they can use a different account for Online Profiles.">Sign out of Google</string>
     <string name="online_profile_firebase_not_configured" comment="Technical configuration error shown when the Online Profile backend is unavailable.">Firebase is not configured.</string>
     <string name="online_profile_share_text" comment="%1$s is an HTTPS link to the user's shared MonsterDialer profile.">Check out my MonsterDialer profile:\n%1$s</string>
-    <string name="choose_team" comment="Contact-row overflow action that opens character customization for a contact.">Choose team</string>
+    <string name="contact_characters_action" comment="Contact-row overflow action that opens character customization for a contact.">Characters</string>
     <string name="contact_row_actions" comment="Accessibility label for the contact-row overflow menu trigger.">Contact actions</string>
     <string name="linked_online_profile_title" comment="Heading in a contact's character settings for its associated Online Profile.">Linked Online Profile</string>
     <string name="linked_online_profile_none" comment="Empty-state message when a contact has no associated Online Profile.">No Online Profile is linked to this contact.</string>
@@ -355,4 +389,7 @@
     <string name="characters_help_assignments_message" comment="Character Guide introduction to the two character-assignment modes. Keep the trailing colon or use equivalent punctuation.">There are two ways to use characters:</string>
     <string name="characters_help_assignments_player" comment="Character Guide bullet explaining Player Character. Preserve the bold label and translate it consistently with the settings title."><b>Player Character:</b> This is your avatar. Set it in “Player Character” settings to represent you in every call.</string>
     <string name="characters_help_assignments_contact" comment="Character Guide bullet explaining Contact Characters. Preserve the bold label and translate it consistently with the settings title."><b>Contact Characters:</b> Assign specific monsters or trainers to individual contacts in “Contact Characters.” They will appear as your opponent when they call you.</string>
+    <string name="online_profile_qr_action">QR code</string>
+    <string name="online_profile_more_options">More profile options</string>
+    <string name="online_profile_sign_in_google">Sign in with Google</string>
 </resources>

@@ -3,6 +3,7 @@
     <string name="additional_translation_project_title" comment="Title of the additional translation contribution card.">参与 MonsterDialer 翻译</string>
     <string name="contribute_translations" comment="Title of the OpenDialer translation contribution link on the About screen.">参与 OpenDialer 翻译</string>
     <string name="hang_up" comment="Button to end the current phone call.">挂断</string>
+    <string name="add" comment="Generic label for adding a new item.">添加</string>
     <string name="settings_character_packs_title" comment="Settings title for managing character packs.">角色包</string>
     <string name="characters_navigation_label" comment="Bottom navigation label for character customization.">个人资料</string>
     <string name="settings_character_packs_description" comment="Settings description for character packs.">导入和管理自定义角色插图。</string>
@@ -229,7 +230,7 @@
     <string name="online_profile_title">在线个人资料</string>
     <string name="online_profile_description">让好友看到你每次通话时使用的训练师和怪物。</string>
     <string name="online_profile_privacy_note">只会共享你的角色精灵图和元数据。</string>
-    <string name="online_profile_enable">启用在线个人资料</string>
+    <string name="online_profile_enable">启用</string>
     <string name="online_profile_enabling">正在启用在线个人资料</string>
     <string name="online_profile_regenerating">正在重新生成分享链接</string>
     <string name="online_profile_deleting">正在删除在线个人资料</string>
@@ -256,7 +257,7 @@
     <string name="online_profile_sign_out_google">退出 Google 登录</string>
     <string name="online_profile_firebase_not_configured">尚未配置 Firebase。</string>
     <string name="online_profile_share_text">看看我的 MonsterDialer 个人资料：\n%1$s</string>
-    <string name="choose_team">选择队伍</string>
+    <string name="contact_characters_action">角色</string>
     <string name="contact_row_actions">联系人操作</string>
     <string name="linked_online_profile_title">已关联的在线个人资料</string>
     <string name="linked_online_profile_none">此联系人未关联在线个人资料。</string>
@@ -311,4 +312,40 @@
     <string name="characters_help_sprites_message">请选择可通过设备图片选择器访问的图片文件。MonsterDialer 不会对自定义精灵图设置固定分辨率或文件大小限制。为了获得最清晰的效果，建议使用带透明背景的 PNG 图片，将角色置于画面中央并尽量减少周围的空白区域，同时让正面和背面精灵图保持相近的比例和姿势。</string>
     <string name="characters_help_radiant_title">闪耀变体</string>
     <string name="characters_help_radiant_message">仅限怪物：打开“高级”设置并开启“闪耀”开关，即可添加闪耀变体。之后在角色选择中，同一个怪物将显示普通版和闪耀版。闪耀版初始处于锁定状态，必须先在战斗中发现它才能选择。必须提供正面精灵图，因为“寻找”功能会使用该图片来发现并解锁闪耀变体。</string>
+    <string name="online_profile_qr_action">二维码</string>
+    <string name="online_profile_more_options">更多个人资料选项</string>
+    <string name="online_profile_sign_in_google">使用 Google 登录</string>
+    <string name="contact_defaults_title">未分配的联系人</string>
+    <string name="contact_defaults_toolbox_title">联系人默认设置</string>
+    <string name="contact_defaults_description">选择默认设置并限制联系人的随机选择池。</string>
+    <string name="contact_default_trainer">默认训练师</string>
+    <string name="contact_default_monster">默认怪物</string>
+    <string name="contact_choose_trainer" comment="Dropdown option that opens the trainer picker for the contact default.">选择训练师</string>
+    <string name="contact_choose_monster" comment="Dropdown option that opens the monster picker for the contact default.">选择怪物</string>
+    <string name="contact_default_random">随机</string>
+    <string name="contact_random_pool_all">所有可用角色</string>
+    <string name="contact_random_pool_choose">选择随机选择池</string>
+    <string name="contact_default_choose">选择默认角色</string>
+    <string name="contact_defaults_mode_default">默认角色</string>
+    <string name="contact_defaults_mode_pool">随机选择池</string>
+    <string name="open_contact_defaults_guide" comment="Accessibility label for the help button on the contact defaults screen.">打开联系人默认设置指南</string>
+    <string name="contact_defaults_guide_title" comment="Title of the guide explaining contact character defaults.">联系人默认设置</string>
+    <string name="contact_defaults_guide_message">这些设置适用于没有单独进行角色自定义的联系人。</string>
+    <string name="contact_defaults_guide_default">• 选择一个默认训练师或怪物，用于未分配的联系人。</string>
+    <string name="contact_defaults_guide_randomizer">• 选择“随机”，让应用从所选的随机选择池中挑选角色。</string>
+    <string name="contact_defaults_guide_overrides">• 联系人的“自定义联系人”设置会覆盖这些全局默认设置。选择“不自定义”的联系人将继续遵循这些设置。</string>
+    <string name="contact_random_pool_reset">重置</string>
+    <string name="contact_random_pool_description" comment="Explains what the selected characters mean when Randomize is enabled.">“随机”可以从所选角色中进行选择。</string>
+    <string name="contact_random_pool_select_all">全选</string>
+    <string name="contact_random_pool_deselect_all">取消全选</string>
+    <string name="contact_character_source_global">不自定义</string>
+    <string name="contact_character_source_custom">自定义联系人</string>
+    <string name="contact_character_inherited_title">正在使用全局默认设置</string>
+    <string name="contact_character_inherited_message">此联系人遵循全局 %1$s 设置。选择上方的“选择%1$s”或“随机”可覆盖这些设置。</string>
+    <string name="contact_character_edit_global_defaults" comment="Button that opens the global contact character defaults from an inherited contact setting.">编辑全局默认设置</string>
+    <string name="contact_random_pool_save">保存选择池</string>
+    <string name="contact_random_pool_empty_title">请至少选择一个角色</string>
+    <string name="contact_random_pool_empty_exit_message">随机选择池为空，因此这些更改尚未保存。请选择至少一个角色以保存选择池，或放弃未保存的更改后退出。</string>
+    <string name="contact_random_pool_continue_editing">继续编辑</string>
+    <string name="contact_random_pool_discard_changes">放弃更改</string>
 </resources>

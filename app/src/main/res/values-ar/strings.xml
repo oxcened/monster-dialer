@@ -3,6 +3,7 @@
     <string name="additional_translation_project_title" comment="Title of the additional translation contribution card.">المساهمة في ترجمة MonsterDialer</string>
     <string name="contribute_translations" comment="Title of the OpenDialer translation contribution link on the About screen.">المساهمة في ترجمة OpenDialer</string>
     <string name="hang_up" comment="Button to end the current phone call.">إنهاء</string>
+    <string name="add" comment="Generic label for adding a new item.">إضافة</string>
     <string name="settings_character_packs_title" comment="Settings title for managing character packs.">حزم الشخصيات</string>
     <string name="characters_navigation_label" comment="Bottom navigation label for character customization.">الملف الشخصي</string>
     <string name="settings_character_packs_description" comment="Settings description for character packs.">استورد وأدر رسومات الشخصيات المخصصة.</string>
@@ -259,7 +260,7 @@
     <string name="online_profile_title">الملف الشخصي على الإنترنت</string>
     <string name="online_profile_description">اسمح لأصدقائك برؤية المدرّب والوحش اللذين تصطحبهما في كل مكالمة.</string>
     <string name="online_profile_privacy_note">تتم مشاركة رسوم شخصياتك وبياناتها الوصفية فقط.</string>
-    <string name="online_profile_enable">تفعيل الملف الشخصي على الإنترنت</string>
+    <string name="online_profile_enable">تفعيل</string>
     <string name="online_profile_enabling">جارٍ تفعيل الملف الشخصي على الإنترنت</string>
     <string name="online_profile_regenerating">جارٍ إنشاء رابط مشاركة جديد</string>
     <string name="online_profile_deleting">جارٍ حذف الملف الشخصي على الإنترنت</string>
@@ -286,7 +287,7 @@
     <string name="online_profile_sign_out_google">تسجيل الخروج من Google</string>
     <string name="online_profile_firebase_not_configured">لم يتم إعداد Firebase.</string>
     <string name="online_profile_share_text">اطّلع على ملفي الشخصي في MonsterDialer:\n%1$s</string>
-    <string name="choose_team">اختيار الفريق</string>
+    <string name="contact_characters_action">الشخصيات</string>
     <string name="contact_row_actions">إجراءات جهة الاتصال</string>
     <string name="linked_online_profile_title">ملف شخصي مرتبط على الإنترنت</string>
     <string name="linked_online_profile_none">لا يوجد ملف شخصي على الإنترنت مرتبط بجهة الاتصال هذه.</string>
@@ -341,4 +342,40 @@
     <string name="characters_help_sprites_message">اختر ملف صورة متاحًا من خلال منتقي الصور على جهازك. لا يفرض MonsterDialer دقة ثابتة أو حدًا لحجم الملف للسبرايتات المخصصة. للحصول على أوضح نتيجة، استخدم رسومات PNG بخلفية شفافة، واجعل الشخصية في المنتصف مع أقل قدر ممكن من المساحات الفارغة حولها، واستخدم مقياسًا ووضعية متشابهين للسبرايتين الأمامي والخلفي.</string>
     <string name="characters_help_radiant_title">النسخ المتألقة</string>
     <string name="characters_help_radiant_message">بالنسبة للوحوش فقط، افتح الإعدادات المتقدمة وفعّل مفتاح «متألق» لإضافة نسخة متألقة. سيعرض اختيار الشخصية بعد ذلك النسختين العادية والمتألقة من الوحش نفسه. تبدأ النسخة المتألقة مقفلة، ويجب العثور عليها أثناء المعارك قبل أن يصبح من الممكن اختيارها. يلزم وجود سبرايت أمامي لأن ميزة «العثور» تستخدمه لاكتشاف النسخة المتألقة وفتحها.</string>
+    <string name="online_profile_qr_action">رمز QR</string>
+    <string name="online_profile_more_options">المزيد من خيارات الملف الشخصي</string>
+    <string name="online_profile_sign_in_google">تسجيل الدخول باستخدام Google</string>
+    <string name="contact_defaults_title">جهات الاتصال غير المعيّنة</string>
+    <string name="contact_defaults_toolbox_title">الإعدادات الافتراضية لجهات الاتصال</string>
+    <string name="contact_defaults_description">اختر الإعدادات الافتراضية وحدد مجموعة الاختيار العشوائي لجهات الاتصال.</string>
+    <string name="contact_default_trainer">المدرب الافتراضي</string>
+    <string name="contact_default_monster">الوحش الافتراضي</string>
+    <string name="contact_choose_trainer" comment="Dropdown option that opens the trainer picker for the contact default.">اختر مدربًا</string>
+    <string name="contact_choose_monster" comment="Dropdown option that opens the monster picker for the contact default.">اختر وحشًا</string>
+    <string name="contact_default_random">عشوائي</string>
+    <string name="contact_random_pool_all">جميع الشخصيات المتاحة</string>
+    <string name="contact_random_pool_choose">اختر مجموعة الاختيار العشوائي</string>
+    <string name="contact_default_choose">اختر الشخصية الافتراضية</string>
+    <string name="contact_defaults_mode_default">الشخصية الافتراضية</string>
+    <string name="contact_defaults_mode_pool">مجموعة الاختيار العشوائي</string>
+    <string name="open_contact_defaults_guide" comment="Accessibility label for the help button on the contact defaults screen.">فتح دليل الإعدادات الافتراضية لجهات الاتصال</string>
+    <string name="contact_defaults_guide_title" comment="Title of the guide explaining contact character defaults.">الإعدادات الافتراضية لجهات الاتصال</string>
+    <string name="contact_defaults_guide_message">تنطبق هذه الإعدادات على جهات الاتصال التي ليس لديها تخصيص خاص بها للشخصية.</string>
+    <string name="contact_defaults_guide_default">• اختر مدربًا أو وحشًا افتراضيًا لاستخدامه مع جهات الاتصال غير المعيّنة.</string>
+    <string name="contact_defaults_guide_randomizer">• اختر عشوائي للسماح للتطبيق بالاختيار من مجموعة الاختيار العشوائي المحددة.</string>
+    <string name="contact_defaults_guide_overrides">• يتجاوز إعداد تخصيص جهة الاتصال الخاص بجهة اتصال هذه الإعدادات الافتراضية العامة. تستمر جهات الاتصال التي اختارت عدم التخصيص في اتباعها.</string>
+    <string name="contact_random_pool_reset">إعادة تعيين</string>
+    <string name="contact_random_pool_description" comment="Explains what the selected characters mean when Randomize is enabled.">الشخصيات المحددة هي التي يمكن للاختيار العشوائي الاختيار منها.</string>
+    <string name="contact_random_pool_select_all">تحديد الكل</string>
+    <string name="contact_random_pool_deselect_all">إلغاء تحديد الكل</string>
+    <string name="contact_character_source_global">عدم التخصيص</string>
+    <string name="contact_character_source_custom">تخصيص جهة الاتصال</string>
+    <string name="contact_character_inherited_title">استخدام الإعدادات الافتراضية العامة</string>
+    <string name="contact_character_inherited_message">تتبع جهة الاتصال هذه إعدادات %1$s العامة. اختر %1$s أو اختيار عشوائي أعلاه لتجاوزها.</string>
+    <string name="contact_character_edit_global_defaults" comment="Button that opens the global contact character defaults from an inherited contact setting.">تعديل الإعدادات الافتراضية العامة</string>
+    <string name="contact_random_pool_save">حفظ المجموعة</string>
+    <string name="contact_random_pool_empty_title">اختر شخصية واحدة على الأقل</string>
+    <string name="contact_random_pool_empty_exit_message">مجموعة الاختيار العشوائي فارغة، لذلك لم يتم حفظ هذه التغييرات. حدد شخصية واحدة على الأقل لحفظ المجموعة، أو تجاهل التغييرات غير المحفوظة للمغادرة.</string>
+    <string name="contact_random_pool_continue_editing">متابعة التعديل</string>
+    <string name="contact_random_pool_discard_changes">تجاهل التغييرات</string>
 </resources>

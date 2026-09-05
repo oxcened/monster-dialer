@@ -5,6 +5,7 @@ import dev.alenajam.monsterdialer.characters.data.CharacterAssignmentRepository
 import dev.alenajam.monsterdialer.characters.data.ContactCharacterMode
 import dev.alenajam.monsterdialer.characters.data.CharactersRepository
 import dev.alenajam.monsterdialer.characters.data.DefaultMonsterLevel
+import dev.alenajam.monsterdialer.characters.data.BuiltInCharacters
 import dev.alenajam.monsterdialer.characters.data.PlayerProfileStatsStore
 import dev.alenajam.monsterdialer.characters.data.RadiantVariantUnlockStore
 import dev.alenajam.monsterdialer.packs.data.CharacterAssignmentTarget
@@ -179,17 +180,31 @@ class AssignedCharacterEncounterFactory @Inject constructor(
         val selection = assignmentRepository.getContactCharacterSelection(contactKey, type)
         if (selection.character != null) return selection.character
         if (selection.mode != ContactCharacterMode.Random) return null
-        return randomContactCharacter(type)
+        return randomContactCharacter(contactKey, type)
     }
 
-    private fun randomContactCharacter(type: CharacterType): CharacterReference? {
-        val candidates = charactersRepository
+    private suspend fun randomContactCharacter(contactKey: String, type: CharacterType): CharacterReference? {
+        val configuredPool = (
+            assignmentRepository.getContactRandomPool(contactKey, type)
+                ?: assignmentRepository.getContactRandomPool(type)
+            )?.toSet()
+        val builtInReference = if (type == CharacterType.Trainer) {
+            BuiltInCharacters.defaultTrainerReference
+        } else {
+            BuiltInCharacters.defaultMonsterReference
+        }
+        val packCandidates = charactersRepository
             .getCharactersAssignableTo(CharacterAssignmentTarget.Contact, type)
             .flatMap { character ->
                 character.character.visualVariants
-                    .filterNot(CharacterVisualVariant::isRadiant)
+                    .filter { variant ->
+                        !variant.isRadiant || CharacterReference(character.packId, character.character.id, variant.id) in radiantUnlocks.unlocked.value
+                    }
                     .map { variant -> CharacterReference(character.packId, character.character.id, variant.id) }
             }
+        val candidates = (listOf(builtInReference) + packCandidates + configuredPool.orEmpty())
+            .distinct()
+            .filter { configuredPool == null || it in configuredPool }
         return candidates.randomOrNull(random)
     }
 

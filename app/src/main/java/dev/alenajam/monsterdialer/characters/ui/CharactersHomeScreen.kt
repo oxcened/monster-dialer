@@ -108,19 +108,21 @@ fun CharactersHomeScreen(
         TeamProfileCard(
             playerProfile = playerProfile,
             profileMetrics = profileMetrics,
-            onChangeTrainer = { onOpenSubpage(0, PlayerCharacterSettingsRoute.ChangeTrainer.payload) },
-            onChangeMonster = { onOpenSubpage(0, "${PlayerCharacterSettingsRoute.AddToRoster.payload}:0") }
+            onChangeTrainer = { onOpenSubpage(CharacterSettingsPage.PlayerCharacter.index, PlayerCharacterSettingsRoute.ChangeTrainer.payload) },
+            onChangeMonster = { onOpenSubpage(CharacterSettingsPage.PlayerCharacter.index, "${PlayerCharacterSettingsRoute.AddToRoster.payload}:0") }
         )
         RosterSection(
             roster = playerProfile.roster,
-            onOpenRoster = { onOpenSubpage(0, PlayerCharacterSettingsRoute.AddToRoster.payload) },
+            onOpenRoster = { onOpenSubpage(CharacterSettingsPage.PlayerCharacter.index, PlayerCharacterSettingsRoute.AddToRoster.payload) },
             onOpenRosterSlot = { index ->
-                onOpenSubpage(0, "${PlayerCharacterSettingsRoute.AddToRoster.payload}:$index")
+                onOpenSubpage(CharacterSettingsPage.PlayerCharacter.index, "${PlayerCharacterSettingsRoute.AddToRoster.payload}:$index")
             },
             onReorderRoster = onReorderRoster,
             onRemoveRosterMonster = onRemoveRosterMonster,
         )
-        OnlineProfileSection()
+        Column(modifier = Modifier.padding(vertical = 8.dp)) {
+            OnlineProfileSection()
+        }
         Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
             Text(
                 text = stringResource(R.string.character_tools_title),
@@ -128,8 +130,10 @@ fun CharactersHomeScreen(
                 color = MaterialTheme.colorScheme.onSurface
             )
             CharacterToolsGroup(
-                onOpenJournal = { onOpenSubpage(3, null) },
-                onOpenPacks = { onOpenSubpage(2, null) },
+                onOpenContactCharacters = { onOpenSubpage(CharacterSettingsPage.ContactCharacters.index, ContactCharacterSettingsEntryPoint.Toolbox.payload) },
+                onOpenContactDefaults = { onOpenSubpage(CharacterSettingsPage.ContactDefaults.index, ContactCharacterSettingsEntryPoint.Defaults.payload) },
+                onOpenJournal = { onOpenSubpage(CharacterSettingsPage.BattleJournal.index, null) },
+                onOpenPacks = { onOpenSubpage(CharacterSettingsPage.CharacterPacks.index, null) },
                 onImport = { picker.launch(arrayOf("*/*")) },
             )
         }
@@ -154,7 +158,7 @@ private fun RosterSection(
         hasReordered = true
     }
 
-    Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
+    Column(verticalArrangement = Arrangement.spacedBy(6.dp)) {
         Row(verticalAlignment = Alignment.CenterVertically) {
             Text(
                 text = stringResource(R.string.your_roster),
@@ -564,6 +568,8 @@ private fun TeamArtwork(
 
 @Composable
 private fun CharacterToolsGroup(
+    onOpenContactCharacters: () -> Unit,
+    onOpenContactDefaults: () -> Unit,
     onOpenJournal: () -> Unit,
     onOpenPacks: () -> Unit,
     onImport: () -> Unit,
@@ -578,9 +584,18 @@ private fun CharacterToolsGroup(
             modifier = Modifier.fillMaxWidth(),
         ) {
             CharacterToolRow(
-                title = stringResource(R.string.battle_journal_title),
-                icon = LocalMonsterAppIcons.current.battleJournal,
-                onClick = onOpenJournal,
+                title = stringResource(R.string.contact_defaults_toolbox_title),
+                icon = LocalAppIcons.current.edit,
+                onClick = onOpenContactDefaults,
+            )
+            HorizontalDivider(
+                modifier = Modifier.padding(start = 56.dp),
+                color = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.5f)
+            )
+            CharacterToolRow(
+                title = stringResource(R.string.settings_contact_characters_title),
+                icon = LocalMonsterAppIcons.current.frontSprite,
+                onClick = onOpenContactCharacters,
             )
             HorizontalDivider(
                 modifier = Modifier.padding(start = 56.dp),
@@ -599,6 +614,15 @@ private fun CharacterToolsGroup(
                 title = stringResource(R.string.import_character),
                 icon = LocalMonsterAppIcons.current.importCharacter,
                 onClick = onImport,
+            )
+            HorizontalDivider(
+                modifier = Modifier.padding(start = 56.dp),
+                color = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.5f)
+            )
+            CharacterToolRow(
+                title = stringResource(R.string.battle_journal_title),
+                icon = LocalMonsterAppIcons.current.battleJournal,
+                onClick = onOpenJournal,
             )
         }
     }

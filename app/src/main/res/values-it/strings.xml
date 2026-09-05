@@ -3,6 +3,7 @@
     <string name="additional_translation_project_title" comment="Title of the additional translation contribution card.">Contribuisci alle traduzioni di MonsterDialer</string>
     <string name="contribute_translations" comment="Title of the OpenDialer translation contribution link on the About screen.">Contribuisci alle traduzioni di OpenDialer</string>
     <string name="hang_up" comment="Button to end the current phone call.">Riaggancia</string>
+    <string name="add" comment="Generic label for adding a new item.">Aggiungi</string>
     <string name="settings_character_packs_title" comment="Settings title for managing character packs.">Pacchetti di personaggi</string>
     <string name="characters_navigation_label" comment="Bottom navigation label for character customization.">Profilo</string>
     <string name="settings_character_packs_description" comment="Settings description for character packs.">Importa e gestisci illustrazioni personalizzate dei personaggi.</string>
@@ -128,7 +129,7 @@
     <string name="share_pack_import_diagnostic" comment="Title of Android's share sheet for an import diagnostic.">Condividi la diagnostica dell’importazione</string>
     <string name="battle_scene_description" comment="Accessibility description for the battle scene image.">Scena di battaglia tra mostri</string>
     <string name="shared_profile_import_link_failed">Impossibile trovare un numero di telefono valido per il contatto selezionato.</string>
-    <string name="choose_team" comment="Contact-row overflow action that opens character customization for a contact.">Scegli squadra</string>
+    <string name="contact_characters_action" comment="Contact-row overflow action that opens character customization for a contact.">Personaggi</string>
     <string name="contact_row_actions" comment="Accessibility label for the contact-row overflow menu trigger.">Azioni del contatto</string>
     <string name="linked_online_profile_title">Profilo online collegato</string>
     <string name="linked_online_profile_none">Nessun profilo online è collegato a questo contatto.</string>
@@ -273,7 +274,7 @@
     <string name="online_profile_title">Profilo online</string>
     <string name="online_profile_description">Permetti agli amici di vedere l’allenatore e il mostro che porti in ogni chiamata.</string>
     <string name="online_profile_privacy_note">Vengono condivisi solo gli sprite e i metadati dei tuoi personaggi.</string>
-    <string name="online_profile_enable">Attiva profilo online</string>
+    <string name="online_profile_enable">Attiva</string>
     <string name="online_profile_enabling">Attivazione profilo online</string>
     <string name="online_profile_regenerating">Rigenerazione del link di condivisione</string>
     <string name="online_profile_deleting">Eliminazione profilo online</string>
@@ -340,4 +341,40 @@
     <string name="characters_help_sprites_message">Scegli un file immagine disponibile dal selettore immagini del dispositivo. MonsterDialer non impone una risoluzione fissa né un limite di dimensione dei file per gli sprite personalizzati. Per un risultato più nitido, usa grafica PNG con sfondo trasparente, mantieni il personaggio centrato con poco spazio vuoto attorno e usa scala e posa simili per gli sprite frontale e posteriore.</string>
     <string name="characters_help_radiant_title">Varianti radiose</string>
     <string name="characters_help_radiant_message">Solo per i mostri: apri Avanzate e attiva l’interruttore Radioso per aggiungere una variante radiosa. La selezione dei personaggi mostrerà le versioni normale e radiosa dello stesso mostro. La versione radiosa è inizialmente bloccata e deve essere trovata nelle battaglie prima di poter essere selezionata. È necessario uno sprite frontale perché la funzione Trova lo usa per scoprire e sbloccare la variante radiosa.</string>
+    <string name="online_profile_qr_action">Codice QR</string>
+    <string name="online_profile_more_options">Altre opzioni del profilo</string>
+    <string name="online_profile_sign_in_google">Accedi con Google</string>
+    <string name="contact_defaults_title">Contatti non assegnati</string>
+    <string name="contact_defaults_toolbox_title">Impostazioni predefinite dei contatti</string>
+    <string name="contact_defaults_description">Scegli le impostazioni predefinite e limita il gruppo di selezione casuale dei contatti.</string>
+    <string name="contact_default_trainer">Allenatore predefinito</string>
+    <string name="contact_default_monster">Mostro predefinito</string>
+    <string name="contact_choose_trainer" comment="Dropdown option that opens the trainer picker for the contact default.">Scegli allenatore</string>
+    <string name="contact_choose_monster" comment="Dropdown option that opens the monster picker for the contact default.">Scegli mostro</string>
+    <string name="contact_default_random">Casuale</string>
+    <string name="contact_random_pool_all">Tutti i personaggi disponibili</string>
+    <string name="contact_random_pool_choose">Scegli gruppo di selezione casuale</string>
+    <string name="contact_default_choose">Scegli personaggio predefinito</string>
+    <string name="contact_defaults_mode_default">Personaggio predefinito</string>
+    <string name="contact_defaults_mode_pool">Gruppo di selezione casuale</string>
+    <string name="open_contact_defaults_guide" comment="Accessibility label for the help button on the contact defaults screen.">Apri la guida alle impostazioni predefinite dei contatti</string>
+    <string name="contact_defaults_guide_title" comment="Title of the guide explaining contact character defaults.">Impostazioni predefinite dei contatti</string>
+    <string name="contact_defaults_guide_message">Queste impostazioni si applicano ai contatti che non dispongono di una personalizzazione del personaggio specifica.</string>
+    <string name="contact_defaults_guide_default">• Scegli un allenatore o un mostro predefinito da usare per i contatti non assegnati.</string>
+    <string name="contact_defaults_guide_randomizer">• Scegli Casuale per consentire all’app di selezionare un personaggio dal gruppo di selezione casuale scelto.</string>
+    <string name="contact_defaults_guide_overrides">• L’impostazione Personalizza contatto di un contatto sostituisce queste impostazioni predefinite globali. I contatti che usano Non personalizzare continueranno a seguirle.</string>
+    <string name="contact_random_pool_reset">Reimposta</string>
+    <string name="contact_random_pool_description" comment="Explains what the selected characters mean when Randomize is enabled.">Casuale può scegliere tra i personaggi selezionati.</string>
+    <string name="contact_random_pool_select_all">Seleziona tutto</string>
+    <string name="contact_random_pool_deselect_all">Deseleziona tutto</string>
+    <string name="contact_character_source_global">Non personalizzare</string>
+    <string name="contact_character_source_custom">Personalizza contatto</string>
+    <string name="contact_character_inherited_title">Uso delle impostazioni predefinite globali</string>
+    <string name="contact_character_inherited_message">Questo contatto segue le impostazioni globali di %1$s. Scegli «Scegli %1$s» o «Casuale» qui sopra per sostituirle.</string>
+    <string name="contact_character_edit_global_defaults" comment="Button that opens the global contact character defaults from an inherited contact setting.">Modifica impostazioni predefinite globali</string>
+    <string name="contact_random_pool_save">Salva gruppo</string>
+    <string name="contact_random_pool_empty_title">Scegli almeno un personaggio</string>
+    <string name="contact_random_pool_empty_exit_message">Il gruppo di selezione casuale è vuoto, quindi queste modifiche non sono state salvate. Seleziona almeno un personaggio per salvare il gruppo oppure scarta le modifiche non salvate per uscire.</string>
+    <string name="contact_random_pool_continue_editing">Continua a modificare</string>
+    <string name="contact_random_pool_discard_changes">Scarta modifiche</string>
 </resources>

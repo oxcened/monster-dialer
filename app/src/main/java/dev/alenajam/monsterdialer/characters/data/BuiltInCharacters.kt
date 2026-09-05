@@ -34,6 +34,12 @@ data class BuiltInArtwork(
 
 /** The app's fallback characters, used whenever no character pack assignment applies. */
 object BuiltInCharacters {
+    /** Stable reference for the bundled trainer, which is not part of an installed pack. */
+    val defaultTrainerReference = CharacterReference(
+        packId = "builtin",
+        characterId = "default-trainer",
+    )
+
     /** Stable roster reference for the bundled monster, which is not part of an installed pack. */
     val defaultMonsterReference = CharacterReference(
         packId = "builtin",

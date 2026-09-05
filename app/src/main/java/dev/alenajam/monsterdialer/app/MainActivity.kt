@@ -8,14 +8,19 @@ import android.provider.OpenableColumns
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -27,9 +32,12 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.res.pluralStringResource
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.unit.dp
 import androidx.core.content.IntentCompat
@@ -41,9 +49,11 @@ import dev.alenajam.monsterdialer.app.ui.LocalMonsterAppIcons
 import dev.alenajam.monsterdialer.app.ui.rememberMonsterIcons
 import dev.alenajam.monsterdialer.app.ui.rememberMonsterTypography
 import dev.alenajam.monsterdialer.characters.ui.AddCharacterScreen
+import dev.alenajam.monsterdialer.characters.ui.ContactCharacterSettingsEntryPoint
 import dev.alenajam.monsterdialer.characters.ui.ContactCharacterSettingsContent
 import dev.alenajam.monsterdialer.characters.ui.ContactCharacterSettingsViewModel
 import dev.alenajam.monsterdialer.characters.ui.ContactPickerDestination
+import dev.alenajam.monsterdialer.characters.ui.CharacterSettingsPage
 import dev.alenajam.monsterdialer.characters.ui.ContextualGuideButton
 import dev.alenajam.monsterdialer.characters.ui.GuideContent
 import dev.alenajam.monsterdialer.characters.ui.CharacterSettingsSummaryViewModel
@@ -76,6 +86,7 @@ import dev.alenajam.opendialer.feature.appShell.DialerApp
 import dev.alenajam.opendialer.feature.appShell.HomeNavigationItem
 import dev.alenajam.opendialer.feature.appShell.HomeScreenConfiguration
 import dev.alenajam.opendialer.feature.contacts.ContactRowTrailingContent
+import dev.alenajam.opendialer.feature.settings.LocalSettingsSubpageNavigator
 import kotlinx.coroutines.launch
 import dev.alenajam.opendialer.feature.settings.SettingsSubpage
 import dev.alenajam.opendialer.feature.settings.SettingsSubpageDestination
@@ -149,12 +160,18 @@ class MainActivity : AppCompatActivity() {
                                         onDismissRequest = { expanded = false },
                                     ) {
                                         DropdownMenuItem(
-                                            text = { Text(stringResource(R.string.choose_team)) },
+                                            text = { Text(stringResource(R.string.contact_characters_action)) },
+                                            leadingIcon = {
+                                                dev.alenajam.opendialer.core.common.ui.AppIcon(
+                                                    dev.alenajam.opendialer.core.common.ui.LocalAppIcons.current.edit,
+                                                    contentDescription = null,
+                                                )
+                                            },
                                             onClick = {
                                                 expanded = false
                                                 coroutineScope.launch {
                                                     contactCharacterSettingsViewModel.selectContact(contact)
-                                                    onOpenSettingsSubpage(1, null)
+                                                    onOpenSettingsSubpage(CharacterSettingsPage.ContactCharacters.index, ContactCharacterSettingsEntryPoint.ContactList.payload)
                                                 }
                                             },
                                         )
@@ -164,7 +181,7 @@ class MainActivity : AppCompatActivity() {
                                                 expanded = false
                                                 coroutineScope.launch {
                                                     contactCharacterSettingsViewModel.selectContact(contact)
-                                                    onOpenSettingsSubpage(LinkedOnlineProfileSettingsIndex, null)
+                                                    onOpenSettingsSubpage(CharacterSettingsPage.LinkedOnlineProfile.index, null)
                                                 }
                                             },
                                         )
@@ -176,7 +193,14 @@ class MainActivity : AppCompatActivity() {
                             icon = { _ -> dev.alenajam.opendialer.core.common.ui.AppIcon(dev.alenajam.opendialer.core.common.ui.LocalAppIcons.current.person, null) },
                             content = { onOpenSubpage ->
                                 CharactersHomeScreen(
-                                    onOpenSubpage = onOpenSubpage,
+                                    onOpenSubpage = { index, payload ->
+                                        val destination = if (index == CharacterSettingsPage.ContactCharacters.index) {
+                                            CharacterSettingsPage.ToolboxContactCharacters.index
+                                        } else {
+                                            index
+                                        }
+                                        onOpenSubpage(destination, payload)
+                                    },
                                     sharingViewModel = characterSharingViewModel,
                                     playerProfile = playerProfile,
                                     profileMetrics = profileMetrics,
@@ -233,12 +257,21 @@ class MainActivity : AppCompatActivity() {
                             )
                         ),
                         SettingsSubpage(
-                            title = selectedContact?.name ?: stringResource(R.string.settings_contact_characters_title),
+                            title = stringResource(R.string.settings_contact_characters_title),
                             description = stringResource(R.string.settings_contact_characters_description),
-                            topBarTitle = selectedContact?.let { contact ->
-                                { ContactCharacterTopBarTitle(contact) }
+                            topBarTitle = {
+                                val navigator = LocalSettingsSubpageNavigator.current
+                                ContactCharacterTopBarTitle(
+                                    contact = selectedContact,
+                                    onClick = { navigator?.navigateTo(0) }
+                                )
                             },
-                            content = { _ -> ContactCharacterSettingsContent() },
+                            content = { payload ->
+                                ContactCharacterSettingsContent(
+                                    entryPoint = ContactCharacterSettingsEntryPoint.fromPayload(payload),
+                                    viewModel = contactCharacterSettingsViewModel,
+                                )
+                            },
                             isScrollable = false,
                             topContentPadding = 0.dp,
                             visibleInSettings = false,
@@ -256,7 +289,10 @@ class MainActivity : AppCompatActivity() {
                             },
                             destinations = listOf(
                                 SettingsSubpageDestination(title = stringResource(R.string.choose_contact)) { _, onNavigateBack ->
-                                    ContactPickerDestination(onNavigateBack)
+                                    ContactPickerDestination(
+                                        onNavigateBack = onNavigateBack,
+                                        viewModel = contactCharacterSettingsViewModel,
+                                    )
                                 },
                                 SettingsSubpageDestination(title = stringResource(R.string.add_trainer)) { payload, onNavigateBack ->
                                     AddCharacterScreen(
@@ -337,7 +373,57 @@ class MainActivity : AppCompatActivity() {
                             topContentPadding = 0.dp,
                             visibleInSettings = false,
                         ),
-                        )
+                        SettingsSubpage(
+                            title = stringResource(R.string.contact_defaults_toolbox_title),
+                            description = stringResource(R.string.contact_defaults_description),
+                            content = { _ ->
+                                ContactCharacterSettingsContent(
+                                    entryPoint = ContactCharacterSettingsEntryPoint.Defaults,
+                                    viewModel = contactCharacterSettingsViewModel,
+                                )
+                            },
+                            actions = {
+                                ContextualGuideButton(
+                                    contents = listOf(
+                                        GuideContent(
+                                            R.string.contact_defaults_guide_title,
+                                            R.string.contact_defaults_guide_message,
+                                            listOf(
+                                                R.string.contact_defaults_guide_default,
+                                                R.string.contact_defaults_guide_randomizer,
+                                                R.string.contact_defaults_guide_overrides,
+                                            ),
+                                        ),
+                                    ),
+                                    contentDescription = R.string.open_contact_defaults_guide,
+                                )
+                            },
+                            isScrollable = false,
+                            topContentPadding = 0.dp,
+                            visibleInSettings = false,
+                            destinations = listOf(
+                                SettingsSubpageDestination(title = stringResource(R.string.add_trainer)) { payload, onNavigateBack ->
+                                    AddCharacterScreen(
+                                        onNavigateBack,
+                                        characterType = CharacterType.Trainer,
+                                        characterId = payload,
+                                        preferredAssignmentTarget = CharacterAssignmentTarget.Contact,
+                                    )
+                                },
+                                SettingsSubpageDestination(title = stringResource(R.string.add_monster)) { payload, onNavigateBack ->
+                                    AddCharacterScreen(
+                                        onNavigateBack,
+                                        characterType = CharacterType.Monster,
+                                        characterId = payload,
+                                        preferredAssignmentTarget = CharacterAssignmentTarget.Contact,
+                                    )
+                                },
+                            ),
+                        ),
+                        ).let { subpages ->
+                            // Share the character screen and its destinations.
+                            subpages + subpages[CharacterSettingsPage.ContactCharacters.index]
+                        }
                     )
                     LaunchedEffect(incomingImport) {
                         incomingImport?.let { incoming ->
@@ -369,8 +455,6 @@ class MainActivity : AppCompatActivity() {
         incomingImport = intent.incomingImport(contentResolver)
     }
 }
-
-private const val LinkedOnlineProfileSettingsIndex = 4
 
 private sealed interface IncomingImport {
     val uri: Uri
@@ -408,25 +492,71 @@ private fun Uri.displayName(contentResolver: ContentResolver): String {
 }
 
 @Composable
-private fun ContactCharacterTopBarTitle(contact: MonsterContact) {
+private fun ContactCharacterTopBarTitle(
+    contact: MonsterContact?,
+    onClick: () -> Unit
+) {
     val locale = LocalConfiguration.current.locales[0]
     Row(
-        horizontalArrangement = Arrangement.spacedBy(8.dp),
+        modifier = Modifier
+            .fillMaxWidth()
+            .clip(MaterialTheme.shapes.small)
+            .clickable(onClick = onClick)
+            .padding(vertical = 4.dp, horizontal = 8.dp),
+        horizontalArrangement = Arrangement.spacedBy(12.dp),
         verticalAlignment = Alignment.CenterVertically,
     ) {
-        ContactAvatar(
-            name = contact.name,
-            photoUri = contact.photoUri,
-            modifier = Modifier.size(32.dp),
-            initialTextStyle = MaterialTheme.typography.labelLarge,
-        )
-        Column {
-            Text(contact.name, style = MaterialTheme.typography.titleMedium)
+        if (contact != null) {
+            Box(modifier = Modifier.size(36.dp)) {
+                ContactAvatar(
+                    name = contact.name,
+                    photoUri = contact.photoUri,
+                    modifier = Modifier.size(32.dp),
+                    initialTextStyle = MaterialTheme.typography.labelLarge,
+                )
+                Surface(
+                    modifier = Modifier
+                        .size(18.dp)
+                        .align(Alignment.BottomEnd),
+                    shape = CircleShape,
+                    color = Color.White,
+                    tonalElevation = 1.dp,
+                ) {
+                    Box(contentAlignment = Alignment.Center) {
+                        dev.alenajam.opendialer.core.common.ui.AppIcon(
+                            dev.alenajam.opendialer.core.common.ui.LocalAppIcons.current.edit,
+                            contentDescription = null,
+                            modifier = Modifier.size(11.dp),
+                            tint = MaterialTheme.colorScheme.onSurfaceVariant,
+                        )
+                    }
+                }
+            }
+            Column(modifier = Modifier.weight(1f)) {
+                Text(
+                    text = contact.name,
+                    style = MaterialTheme.typography.titleMedium,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis,
+                )
+                Text(
+                    text = contact.numbers.firstOrNull()?.let { formatPhoneNumber(it, locale) }
+                        ?: stringResource(R.string.unknown),
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                )
+            }
+        } else {
+            dev.alenajam.opendialer.core.common.ui.AppIcon(
+                dev.alenajam.opendialer.core.common.ui.LocalAppIcons.current.person,
+                contentDescription = null,
+                modifier = Modifier.size(24.dp),
+                tint = MaterialTheme.colorScheme.primary
+            )
             Text(
-                text = contact.numbers.firstOrNull()?.let { formatPhoneNumber(it, locale) }
-                    ?: stringResource(R.string.unknown),
-                style = MaterialTheme.typography.bodySmall,
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                text = stringResource(R.string.choose_contact),
+                style = MaterialTheme.typography.titleMedium,
+                color = MaterialTheme.colorScheme.primary
             )
         }
     }

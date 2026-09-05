@@ -4,6 +4,7 @@ import android.content.Intent
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.aspectRatio
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -17,10 +18,16 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.DropdownMenu
+import androidx.compose.material3.DropdownMenuItem
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedButton
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.ModalBottomSheet
+import androidx.compose.material3.OutlinedIconButton
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
+import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -38,13 +45,15 @@ import androidx.compose.ui.platform.LocalResources
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.shape.CircleShape
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import dev.alenajam.monsterdialer.R
+import dev.alenajam.monsterdialer.app.ui.LocalMonsterAppIcons
 import dev.alenajam.monsterdialer.characters.ui.ContextualGuideButton
-import dev.alenajam.monsterdialer.characters.ui.GuideContent
 import dev.alenajam.monsterdialer.onlineprofiles.data.ProfileSharingLink
 import dev.alenajam.monsterdialer.onlineprofiles.data.ProfileSharingQrCode
 import dev.alenajam.monsterdialer.onlineprofiles.data.QrCodeMatrix
@@ -78,6 +87,12 @@ fun OnlineProfileSection(viewModel: OnlineProfileSettingsViewModel = hiltViewMod
     var confirmDelete by remember { mutableStateOf(false) }
     var confirmRegenerate by remember { mutableStateOf(false) }
     var showQrCode by remember { mutableStateOf(false) }
+    val signOut: () -> Unit = {
+        scope.launch {
+            runCatching { GoogleProfileSignIn.clearCredentialState(context) }
+            viewModel.signOut()
+        }
+    }
     androidx.compose.runtime.LaunchedEffect(viewModel, googleServerClientId) {
         viewModel.signInRequests.collectLatest {
             val serverClientId = googleServerClientId
@@ -97,10 +112,12 @@ fun OnlineProfileSection(viewModel: OnlineProfileSettingsViewModel = hiltViewMod
             colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.secondaryContainer),
         ) {
             Column(
-                modifier = Modifier.padding(16.dp),
-                verticalArrangement = Arrangement.spacedBy(12.dp),
+                modifier = Modifier.padding(horizontal = 16.dp, vertical = 12.dp),
+                verticalArrangement = Arrangement.spacedBy(8.dp),
             ) {
-                Row(verticalAlignment = Alignment.CenterVertically) {
+                Row(
+                    verticalAlignment = Alignment.Top,
+                ) {
                     AppIcon(
                         LocalAppIcons.current.person,
                         null,
@@ -108,21 +125,29 @@ fun OnlineProfileSection(viewModel: OnlineProfileSettingsViewModel = hiltViewMod
                         tint = MaterialTheme.colorScheme.primary,
                     )
                     Spacer(Modifier.width(12.dp))
-                    Column(verticalArrangement = Arrangement.spacedBy(2.dp)) {
+                    Column(modifier = Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(2.dp)) {
                         Row(verticalAlignment = Alignment.CenterVertically) {
-                            Text(
-                                stringResource(R.string.online_profile_title),
-                                style = MaterialTheme.typography.titleMedium,
-                                color = MaterialTheme.colorScheme.onSecondaryContainer,
-                            )
-                            ContextualGuideButton(
-                                contents = listOf(
-                                    GuideContent(R.string.online_profile_guide_title, R.string.online_profile_guide_message),
-                                    GuideContent(R.string.online_profile_public_id_title, R.string.online_profile_public_id_message),
-                                    GuideContent(R.string.online_profile_delete_guide_title, R.string.online_profile_delete_guide_message),
-                                ),
-                                modifier = Modifier.size(32.dp),
-                            )
+                            Row(
+                                modifier = Modifier.weight(1f),
+                                verticalAlignment = Alignment.CenterVertically,
+                            ) {
+                                Text(
+                                    stringResource(R.string.online_profile_title),
+                                    modifier = Modifier.weight(1f, fill = false),
+                                    style = MaterialTheme.typography.titleMedium,
+                                    color = MaterialTheme.colorScheme.onSecondaryContainer,
+                                )
+                                ContextualGuideButton(
+                                    contents = ownedOnlineProfileGuideContents(),
+                                    modifier = Modifier.size(32.dp),
+                                )
+                            }
+                            if (isSignedIn) {
+                                OnlineProfileMenu(
+                                    working = working,
+                                    onSignOut = signOut,
+                                )
+                            }
                         }
                         Text(
                             stringResource(R.string.online_profile_description),
@@ -131,11 +156,6 @@ fun OnlineProfileSection(viewModel: OnlineProfileSettingsViewModel = hiltViewMod
                         )
                     }
                 }
-                Text(
-                    stringResource(R.string.online_profile_privacy_note),
-                    style = MaterialTheme.typography.bodySmall,
-                    color = MaterialTheme.colorScheme.onSecondaryContainer.copy(alpha = 0.72f),
-                )
                 Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
                     Button(
                         onClick = viewModel::enable,
@@ -151,23 +171,18 @@ fun OnlineProfileSection(viewModel: OnlineProfileSettingsViewModel = hiltViewMod
                                 strokeWidth = 2.dp,
                             )
                         } else {
-                            Text(stringResource(R.string.online_profile_enable))
+                            Text(stringResource(
+                                if (isSignedIn) R.string.online_profile_enable else R.string.online_profile_sign_in_google,
+                            ))
                         }
                     }
-                    if (isSignedIn) {
-                        OutlinedButton(
-                            onClick = {
-                                scope.launch {
-                                    runCatching { GoogleProfileSignIn.clearCredentialState(context) }
-                                    viewModel.signOut()
-                                }
-                            },
-                            enabled = !working,
-                            modifier = Modifier.fillMaxWidth(),
-                        ) {
-                            Text(stringResource(R.string.online_profile_sign_out_google))
-                        }
-                    }
+                    Text(
+                        stringResource(R.string.online_profile_privacy_note),
+                        modifier = Modifier.fillMaxWidth(),
+                        textAlign = TextAlign.Center,
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.onSecondaryContainer.copy(alpha = 0.72f),
+                    )
                 }
             }
         }
@@ -185,93 +200,85 @@ fun OnlineProfileSection(viewModel: OnlineProfileSettingsViewModel = hiltViewMod
             colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.secondaryContainer),
         ) {
             Column(
-                modifier = Modifier.padding(16.dp),
-                verticalArrangement = Arrangement.spacedBy(12.dp),
+                modifier = Modifier.padding(horizontal = 16.dp, vertical = 12.dp),
+                verticalArrangement = Arrangement.spacedBy(8.dp),
             ) {
-                Row(verticalAlignment = Alignment.CenterVertically) {
+                Row(
+                    verticalAlignment = Alignment.Top,
+                ) {
                     AppIcon(LocalAppIcons.current.person, null, Modifier.size(32.dp), tint = MaterialTheme.colorScheme.primary)
                     Spacer(Modifier.width(12.dp))
-                    Column(verticalArrangement = Arrangement.spacedBy(2.dp)) {
+                    Column(modifier = Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(2.dp)) {
                         Row(verticalAlignment = Alignment.CenterVertically) {
-                            Text(stringResource(R.string.online_profile_title), style = MaterialTheme.typography.titleMedium, color = MaterialTheme.colorScheme.onSecondaryContainer)
-                            ContextualGuideButton(
-                                contents = listOf(
-                                    GuideContent(R.string.online_profile_guide_title, R.string.online_profile_guide_message),
-                                    GuideContent(R.string.online_profile_public_id_title, R.string.online_profile_public_id_message),
-                                    GuideContent(R.string.online_profile_delete_guide_title, R.string.online_profile_delete_guide_message),
-                                ),
-                                modifier = Modifier.size(32.dp),
+                            Row(
+                                modifier = Modifier.weight(1f),
+                                verticalAlignment = Alignment.CenterVertically,
+                            ) {
+                                Text(stringResource(R.string.online_profile_title), modifier = Modifier.weight(1f, fill = false), style = MaterialTheme.typography.titleMedium, color = MaterialTheme.colorScheme.onSecondaryContainer)
+                                ContextualGuideButton(
+                                    contents = ownedOnlineProfileGuideContents(),
+                                    modifier = Modifier.size(32.dp),
+                                )
+                            }
+                            OnlineProfileMenu(
+                                working = working,
+                                onSignOut = signOut.takeIf { isSignedIn },
+                                onRegenerate = { confirmRegenerate = true },
+                                onDelete = { confirmDelete = true },
                             )
                         }
                         Text(stringResource(R.string.online_profile_enabled), style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onSecondaryContainer.copy(alpha = 0.76f))
                     }
                 }
-                Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
+                Row(
+                    horizontalArrangement = Arrangement.spacedBy(8.dp),
+                    verticalAlignment = Alignment.CenterVertically,
+                ) {
                     Button(onClick = {
                         context.startActivity(Intent.createChooser(Intent(Intent.ACTION_SEND).apply {
                             type = "text/plain"; putExtra(Intent.EXTRA_TEXT, shareText)
                         }, shareTitle))
-                    }, enabled = !working, modifier = Modifier.fillMaxWidth()) { Text(stringResource(R.string.online_profile_share)) }
-                    OutlinedButton(
+                    }, enabled = !working, modifier = Modifier.weight(1f)) {
+                        AppIcon(LocalAppIcons.current.share, null, Modifier.size(18.dp))
+                        Spacer(Modifier.width(8.dp))
+                        Text(stringResource(R.string.share))
+                    }
+                    OutlinedIconButton(
                         onClick = { showQrCode = true },
                         enabled = !working,
-                        modifier = Modifier.fillMaxWidth(),
-                    ) { Text(stringResource(R.string.online_profile_show_qr_code)) }
-                    OutlinedButton(
-                        onClick = { confirmRegenerate = true },
-                        enabled = !working,
-                        modifier = Modifier.fillMaxWidth(),
+                        modifier = Modifier.size(40.dp),
+                        shape = CircleShape,
                     ) {
-                        if (operation == OnlineProfileOperation.Regenerate) {
-                            CircularProgressIndicator(
-                                modifier = Modifier.size(20.dp).semantics { contentDescription = regeneratingDescription },
-                                color = MaterialTheme.colorScheme.primary,
-                                strokeWidth = 2.dp,
-                            )
-                        } else {
-                            Text(stringResource(R.string.online_profile_regenerate))
-                        }
+                        AppIcon(
+                            LocalMonsterAppIcons.current.qrCode,
+                            stringResource(R.string.online_profile_qr_action),
+                            Modifier.size(20.dp),
+                        )
                     }
-                    TextButton(
-                        onClick = { confirmDelete = true },
-                        enabled = !working,
-                        modifier = Modifier.fillMaxWidth(),
-                        colors = ButtonDefaults.textButtonColors(contentColor = MaterialTheme.colorScheme.error),
+                }
+                if (operation == OnlineProfileOperation.Regenerate || operation == OnlineProfileOperation.Delete) {
+                    Row(
+                        horizontalArrangement = Arrangement.spacedBy(8.dp),
+                        verticalAlignment = Alignment.CenterVertically,
                     ) {
-                        if (operation == OnlineProfileOperation.Delete) {
-                            CircularProgressIndicator(
-                                modifier = Modifier.size(20.dp).semantics { contentDescription = deletingDescription },
-                                color = MaterialTheme.colorScheme.onSecondaryContainer,
-                                strokeWidth = 2.dp,
-                            )
-                        } else {
-                            Text(stringResource(R.string.online_profile_delete))
-                        }
+                        CircularProgressIndicator(modifier = Modifier.size(20.dp), strokeWidth = 2.dp)
+                        Text(
+                            if (operation == OnlineProfileOperation.Regenerate) regeneratingDescription else deletingDescription,
+                            style = MaterialTheme.typography.bodySmall,
+                        )
                     }
                 }
             }
         }
         if (showQrCode) {
-            AlertDialog(
-                onDismissRequest = { showQrCode = false },
-                title = { Text(stringResource(R.string.online_profile_qr_code_title)) },
-                text = {
-                    Column(
-                        verticalArrangement = Arrangement.spacedBy(16.dp),
-                        horizontalAlignment = Alignment.CenterHorizontally,
-                    ) {
-                        ProfileSharingQrCodeImage(sharingLink)
-                        Text(stringResource(R.string.online_profile_qr_code_description))
-                    }
-                },
-                confirmButton = {
-                    TextButton(onClick = { showQrCode = false }) { Text(stringResource(R.string.close)) }
-                },
+            ProfileSharingQrCodeSheet(
+                sharingLink = sharingLink,
+                onDismiss = { showQrCode = false },
             )
         }
         if (showRetentionCheckIn) {
             Card(
-                modifier = Modifier.fillMaxWidth(),
+                modifier = Modifier.fillMaxWidth().padding(top = 8.dp),
                 shape = RoundedCornerShape(24.dp),
                 colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.tertiaryContainer),
             ) {
@@ -332,12 +339,98 @@ fun OnlineProfileSection(viewModel: OnlineProfileSettingsViewModel = hiltViewMod
     error?.let { AlertDialog(onDismissRequest = viewModel::clearError, title = { Text(stringResource(R.string.online_profile_error_title)) }, text = { Text(it) }, confirmButton = { TextButton(onClick = viewModel::clearError) { Text(stringResource(R.string.close)) } }) }
 }
 
+
 @Composable
-private fun ProfileSharingQrCodeImage(sharingLink: String) {
+@OptIn(ExperimentalMaterial3Api::class)
+private fun ProfileSharingQrCodeSheet(
+    sharingLink: String,
+    onDismiss: () -> Unit,
+) {
+    ModalBottomSheet(
+        onDismissRequest = onDismiss,
+        sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true),
+        containerColor = MaterialTheme.colorScheme.secondaryContainer,
+    ) {
+        Column(
+            modifier = Modifier.padding(start = 24.dp, top = 8.dp, end = 24.dp, bottom = 32.dp),
+            verticalArrangement = Arrangement.spacedBy(16.dp),
+            horizontalAlignment = Alignment.CenterHorizontally,
+        ) {
+            Text(
+                stringResource(R.string.online_profile_qr_code_title),
+                modifier = Modifier.fillMaxWidth(),
+                textAlign = TextAlign.Center,
+                style = MaterialTheme.typography.titleLarge,
+                color = MaterialTheme.colorScheme.onSecondaryContainer,
+            )
+            ProfileSharingQrCodeImage(
+                sharingLink = sharingLink,
+                modifier = Modifier.size(256.dp),
+            )
+            Text(
+                stringResource(R.string.online_profile_qr_code_description),
+                modifier = Modifier.fillMaxWidth(),
+                textAlign = TextAlign.Center,
+                style = MaterialTheme.typography.bodyMedium,
+                color = MaterialTheme.colorScheme.onSecondaryContainer.copy(alpha = 0.76f),
+            )
+        }
+    }
+}
+
+@Composable
+private fun OnlineProfileMenu(
+    working: Boolean,
+    onSignOut: (() -> Unit)?,
+    onRegenerate: (() -> Unit)? = null,
+    onDelete: (() -> Unit)? = null,
+    modifier: Modifier = Modifier,
+) {
+    var expanded by remember { mutableStateOf(false) }
+    Box(modifier = modifier) {
+        IconButton(
+            onClick = { expanded = true },
+            enabled = !working,
+            modifier = Modifier.size(32.dp),
+        ) {
+            AppIcon(
+                LocalAppIcons.current.more,
+                stringResource(R.string.online_profile_more_options),
+                Modifier.size(24.dp),
+            )
+        }
+        DropdownMenu(expanded = expanded && !working, onDismissRequest = { expanded = false }) {
+            onRegenerate?.let { action ->
+                DropdownMenuItem(
+                    text = { Text(stringResource(R.string.online_profile_regenerate)) },
+                    onClick = { expanded = false; action() },
+                )
+            }
+            onSignOut?.let { action ->
+                DropdownMenuItem(
+                    text = { Text(stringResource(R.string.online_profile_sign_out_google)) },
+                    onClick = { expanded = false; action() },
+                )
+            }
+            onDelete?.let { action ->
+                DropdownMenuItem(
+                    text = { Text(stringResource(R.string.online_profile_delete), color = MaterialTheme.colorScheme.error) },
+                    onClick = { expanded = false; action() },
+                )
+            }
+        }
+    }
+}
+
+@Composable
+private fun ProfileSharingQrCodeImage(
+    sharingLink: String,
+    modifier: Modifier = Modifier,
+) {
     val qrCode = remember(sharingLink) { ProfileSharingQrCode.encode(sharingLink) }
     val contentDescription = stringResource(R.string.online_profile_qr_code_content_description)
     Canvas(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
             .aspectRatio(1f)
             .semantics { this.contentDescription = contentDescription },

@@ -3,6 +3,7 @@
     <string name="additional_translation_project_title" comment="Title of the additional translation contribution card.">Bidrag til MonsterDialer-oversættelser</string>
     <string name="contribute_translations" comment="Title of the OpenDialer translation contribution link on the About screen.">Bidrag til OpenDialer-oversættelser</string>
     <string name="hang_up" comment="Button to end the current phone call.">Læg på</string>
+    <string name="add" comment="Generic label for adding a new item.">Tilføj</string>
     <string name="settings_character_packs_title" comment="Settings title for managing character packs.">Figurpakker</string>
     <string name="characters_navigation_label" comment="Bottom navigation label for character customization.">Profil</string>
     <string name="settings_character_packs_description" comment="Settings description for character packs.">Importér og administrér brugerdefinerede figurillustrationer.</string>
@@ -235,7 +236,7 @@
     <string name="online_profile_title">Onlineprofil</string>
     <string name="online_profile_description">Lad venner se træneren og monsteret, du tager med i hvert opkald.</string>
     <string name="online_profile_privacy_note">Kun dine figur-sprites og metadata deles.</string>
-    <string name="online_profile_enable">Aktivér onlineprofil</string>
+    <string name="online_profile_enable">Aktivér</string>
     <string name="online_profile_enabling">Aktiverer onlineprofil</string>
     <string name="online_profile_regenerating">Opretter nyt delingslink</string>
     <string name="online_profile_deleting">Sletter onlineprofil</string>
@@ -262,7 +263,7 @@
     <string name="online_profile_sign_out_google">Log ud af Google</string>
     <string name="online_profile_firebase_not_configured">Firebase er ikke konfigureret.</string>
     <string name="online_profile_share_text">Se min MonsterDialer-profil:\n%1$s</string>
-    <string name="choose_team">Vælg hold</string>
+    <string name="contact_characters_action">Figurer</string>
     <string name="contact_row_actions">Kontakthandlinger</string>
     <string name="linked_online_profile_title">Tilknyttet onlineprofil</string>
     <string name="linked_online_profile_none">Ingen onlineprofil er knyttet til denne kontakt.</string>
@@ -317,4 +318,40 @@
     <string name="characters_help_sprites_message">Vælg en billedfil, der er tilgængelig via enhedens billedvælger. MonsterDialer pålægger ikke brugerdefinerede sprites en fast opløsning eller filstørrelsesgrænse. Brug PNG-grafik med gennemsigtig baggrund for det tydeligste resultat, hold figuren centreret med lidt tom plads, og brug en lignende størrelse og positur for forreste og bageste sprites.</string>
     <string name="characters_help_radiant_title">Strålende varianter</string>
     <string name="characters_help_radiant_message">Kun for monstre: Åbn Avanceret, og slå kontakten Strålende til for at tilføje en strålende variant. Figurvalg viser derefter almindelige og strålende versioner af det samme monster. Den strålende version starter låst og skal findes i kampe, før den kan vælges. Et forreste sprite er påkrævet, fordi funktionen Find bruger det til at opdage og låse den strålende variant op.</string>
+    <string name="online_profile_qr_action">QR-kode</string>
+    <string name="online_profile_more_options">Flere profilindstillinger</string>
+    <string name="online_profile_sign_in_google">Log ind med Google</string>
+    <string name="contact_defaults_title">Ikke-tildelte kontakter</string>
+    <string name="contact_defaults_toolbox_title">Standardindstillinger for kontakter</string>
+    <string name="contact_defaults_description">Vælg standardindstillinger, og begræns puljen til tilfældigt valg af kontakter.</string>
+    <string name="contact_default_trainer">Standardtræner</string>
+    <string name="contact_default_monster">Standardmonster</string>
+    <string name="contact_choose_trainer" comment="Dropdown option that opens the trainer picker for the contact default.">Vælg træner</string>
+    <string name="contact_choose_monster" comment="Dropdown option that opens the monster picker for the contact default.">Vælg monster</string>
+    <string name="contact_default_random">Tilfældig</string>
+    <string name="contact_random_pool_all">Alle tilgængelige figurer</string>
+    <string name="contact_random_pool_choose">Vælg pulje til tilfældigt valg</string>
+    <string name="contact_default_choose">Vælg standardfigur</string>
+    <string name="contact_defaults_mode_default">Standardfigur</string>
+    <string name="contact_defaults_mode_pool">Pulje til tilfældigt valg</string>
+    <string name="open_contact_defaults_guide" comment="Accessibility label for the help button on the contact defaults screen.">Åbn vejledning til standardindstillinger for kontakter</string>
+    <string name="contact_defaults_guide_title" comment="Title of the guide explaining contact character defaults.">Standardindstillinger for kontakter</string>
+    <string name="contact_defaults_guide_message">Disse indstillinger gælder for kontakter, der ikke har deres egen figurtilpasning.</string>
+    <string name="contact_defaults_guide_default">• Vælg en standardtræner eller et standardmonster, der skal bruges til ikke-tildelte kontakter.</string>
+    <string name="contact_defaults_guide_randomizer">• Vælg Tilfældig for at lade appen vælge fra den valgte pulje.</string>
+    <string name="contact_defaults_guide_overrides">• En kontakts indstilling Tilpas kontakt tilsidesætter disse globale standardindstillinger. Kontakter, der vælger Tilpas ikke, fortsætter med at følge dem.</string>
+    <string name="contact_random_pool_reset">Nulstil</string>
+    <string name="contact_random_pool_description" comment="Explains what the selected characters mean when Randomize is enabled.">De valgte figurer er dem, som Tilfældig kan vælge mellem.</string>
+    <string name="contact_random_pool_select_all">Vælg alle</string>
+    <string name="contact_random_pool_deselect_all">Fravælg alle</string>
+    <string name="contact_character_source_global">Tilpas ikke</string>
+    <string name="contact_character_source_custom">Tilpas kontakt</string>
+    <string name="contact_character_inherited_title">Bruger globale standardindstillinger</string>
+    <string name="contact_character_inherited_message">Denne kontakt følger de globale indstillinger for %1$s. Vælg %1$s eller Tilfældig ovenfor for at tilsidesætte dem.</string>
+    <string name="contact_character_edit_global_defaults" comment="Button that opens the global contact character defaults from an inherited contact setting.">Rediger globale standardindstillinger</string>
+    <string name="contact_random_pool_save">Gem pulje</string>
+    <string name="contact_random_pool_empty_title">Vælg mindst én figur</string>
+    <string name="contact_random_pool_empty_exit_message">Din pulje til tilfældigt valg er tom, så ændringerne er ikke blevet gemt. Vælg mindst én figur for at gemme puljen, eller kassér de ikke-gemte ændringer for at forlade siden.</string>
+    <string name="contact_random_pool_continue_editing">Fortsæt redigering</string>
+    <string name="contact_random_pool_discard_changes">Kassér ændringer</string>
 </resources>

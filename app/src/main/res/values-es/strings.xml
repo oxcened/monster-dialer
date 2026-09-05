@@ -3,6 +3,7 @@
     <string name="additional_translation_project_title" comment="Title of the additional translation contribution card.">Contribuye a las traducciones de MonsterDialer</string>
     <string name="contribute_translations" comment="Title of the OpenDialer translation contribution link on the About screen.">Contribuye a las traducciones de OpenDialer</string>
     <string name="hang_up" comment="Button to end the current phone call.">Colgar</string>
+    <string name="add" comment="Generic label for adding a new item.">Añadir</string>
     <string name="settings_character_packs_title" comment="Settings title for managing character packs.">Paquetes de personajes</string>
     <string name="characters_navigation_label" comment="Bottom navigation label for character customization.">Perfil</string>
     <string name="settings_character_packs_description" comment="Settings description for character packs.">Importa y gestiona ilustraciones de personajes personalizadas.</string>
@@ -248,7 +249,7 @@
     <string name="online_profile_title">Perfil en línea</string>
     <string name="online_profile_description">Permite que tus amistades vean el entrenador y el monstruo que llevas a cada llamada.</string>
     <string name="online_profile_privacy_note">Solo se comparten los sprites y metadatos de tus personajes.</string>
-    <string name="online_profile_enable">Activar perfil en línea</string>
+    <string name="online_profile_enable">Activar</string>
     <string name="online_profile_enabling">Activando perfil en línea</string>
     <string name="online_profile_regenerating">Regenerando enlace para compartir</string>
     <string name="online_profile_deleting">Eliminando perfil en línea</string>
@@ -275,7 +276,7 @@
     <string name="online_profile_sign_out_google">Cerrar sesión en Google</string>
     <string name="online_profile_firebase_not_configured">Firebase no está configurado.</string>
     <string name="online_profile_share_text">Mira mi perfil de MonsterDialer:\n%1$s</string>
-    <string name="choose_team">Elegir equipo</string>
+    <string name="contact_characters_action">Personajes</string>
     <string name="contact_row_actions">Acciones del contacto</string>
     <string name="linked_online_profile_title">Perfil en línea vinculado</string>
     <string name="linked_online_profile_none">No hay ningún perfil en línea vinculado a este contacto.</string>
@@ -322,4 +323,40 @@
     <string name="characters_help_sprites_message">Elige un archivo de imagen disponible mediante el selector de imágenes de tu dispositivo. MonsterDialer no impone una resolución ni un límite de tamaño de archivo fijos para los sprites personalizados. Para obtener el resultado más claro, usa ilustraciones PNG con fondo transparente, mantén el personaje centrado y con poco margen vacío, y usa una escala y pose similares para los sprites frontal y trasero.</string>
     <string name="characters_help_radiant_title">Variantes radiantes</string>
     <string name="characters_help_radiant_message">Solo para monstruos: abre Avanzado y activa el interruptor Radiante para añadir una variante radiante. La selección de personajes mostrará versiones normales y radiantes del mismo monstruo. La versión radiante empieza bloqueada y debe encontrarse durante los combates antes de poder seleccionarla. Se requiere un sprite frontal porque la función Encontrar lo usa para descubrir y desbloquear la variante radiante.</string>
+    <string name="online_profile_qr_action">Código QR</string>
+    <string name="online_profile_more_options">Más opciones del perfil</string>
+    <string name="online_profile_sign_in_google">Iniciar sesión con Google</string>
+    <string name="contact_defaults_title">Contactos sin asignar</string>
+    <string name="contact_defaults_toolbox_title">Valores predeterminados de contactos</string>
+    <string name="contact_defaults_description">Elige los valores predeterminados y limita el grupo de selección aleatoria de contactos.</string>
+    <string name="contact_default_trainer">Entrenador predeterminado</string>
+    <string name="contact_default_monster">Monstruo predeterminado</string>
+    <string name="contact_choose_trainer" comment="Dropdown option that opens the trainer picker for the contact default.">Elegir entrenador</string>
+    <string name="contact_choose_monster" comment="Dropdown option that opens the monster picker for the contact default.">Elegir monstruo</string>
+    <string name="contact_default_random">Aleatorio</string>
+    <string name="contact_random_pool_all">Todos los personajes disponibles</string>
+    <string name="contact_random_pool_choose">Elegir grupo de selección aleatoria</string>
+    <string name="contact_default_choose">Elegir personaje predeterminado</string>
+    <string name="contact_defaults_mode_default">Personaje predeterminado</string>
+    <string name="contact_defaults_mode_pool">Grupo de selección aleatoria</string>
+    <string name="open_contact_defaults_guide" comment="Accessibility label for the help button on the contact defaults screen.">Abrir guía de valores predeterminados de contactos</string>
+    <string name="contact_defaults_guide_title" comment="Title of the guide explaining contact character defaults.">Valores predeterminados de contactos</string>
+    <string name="contact_defaults_guide_message">Estos ajustes se aplican a los contactos que no tienen su propia personalización de personaje.</string>
+    <string name="contact_defaults_guide_default">• Elige un entrenador o monstruo predeterminado para los contactos sin asignar.</string>
+    <string name="contact_defaults_guide_randomizer">• Elige Aleatorio para que la aplicación seleccione un personaje del grupo de selección aleatoria elegido.</string>
+    <string name="contact_defaults_guide_overrides">• El ajuste Personalizar contacto de un contacto sustituye estos valores predeterminados globales. Los contactos que usan No personalizar seguirán aplicándolos.</string>
+    <string name="contact_random_pool_reset">Restablecer</string>
+    <string name="contact_random_pool_description" comment="Explains what the selected characters mean when Randomize is enabled.">Aleatorio puede elegir entre los personajes seleccionados.</string>
+    <string name="contact_random_pool_select_all">Seleccionar todo</string>
+    <string name="contact_random_pool_deselect_all">Deseleccionar todo</string>
+    <string name="contact_character_source_global">No personalizar</string>
+    <string name="contact_character_source_custom">Personalizar contacto</string>
+    <string name="contact_character_inherited_title">Usando valores predeterminados globales</string>
+    <string name="contact_character_inherited_message">Este contacto sigue los ajustes globales de %1$s. Elige arriba «Elegir %1$s» o «Aleatorio» para sustituirlos.</string>
+    <string name="contact_character_edit_global_defaults" comment="Button that opens the global contact character defaults from an inherited contact setting.">Editar valores predeterminados globales</string>
+    <string name="contact_random_pool_save">Guardar grupo</string>
+    <string name="contact_random_pool_empty_title">Elige al menos un personaje</string>
+    <string name="contact_random_pool_empty_exit_message">Tu grupo de selección aleatoria está vacío, por lo que estos cambios no se han guardado. Selecciona al menos un personaje para guardar el grupo o descarta los cambios sin guardar para salir.</string>
+    <string name="contact_random_pool_continue_editing">Seguir editando</string>
+    <string name="contact_random_pool_discard_changes">Descartar cambios</string>
 </resources>
