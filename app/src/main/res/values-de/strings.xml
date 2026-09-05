@@ -3,6 +3,7 @@
     <string name="additional_translation_project_title" comment="Title of the additional translation contribution card.">Zu MonsterDialer-Übersetzungen beitragen</string>
     <string name="contribute_translations" comment="Title of the OpenDialer translation contribution link on the About screen.">Zu OpenDialer-Übersetzungen beitragen</string>
     <string name="hang_up" comment="Button to end the current phone call.">Auflegen</string>
+    <string name="add" comment="Generic label for adding a new item.">Hinzufügen</string>
     <string name="settings_character_packs_title" comment="Settings title for managing character packs.">Charakterpakete</string>
     <string name="characters_navigation_label" comment="Bottom navigation label for the player's profile and character collection.">Profil</string>
     <string name="customize_your_calls" comment="Section heading above contact character customization.">Passe deine Anrufe an</string>
@@ -102,6 +103,39 @@
     <string name="regular" comment="Adjective for a standard, non-rare character variant.">Normal</string>
     <string name="selected" comment="Status label for the currently chosen option.">Ausgewählt</string>
     <string name="randomize" comment="Character selection that chooses a different eligible character for every call.">Zufällig</string>
+    <string name="contact_defaults_title">Nicht zugewiesene Kontakte</string>
+    <string name="contact_defaults_toolbox_title">Kontakt-Standardeinstellungen</string>
+    <string name="contact_defaults_description">Wähle Standardeinstellungen und begrenze den Zufallsauswahl-Pool für Kontakte.</string>
+    <string name="contact_default_trainer">Standardtrainer</string>
+    <string name="contact_default_monster">Standardmonster</string>
+    <string name="contact_choose_trainer" comment="Dropdown option that opens the trainer picker for the contact default.">Trainer auswählen</string>
+    <string name="contact_choose_monster" comment="Dropdown option that opens the monster picker for the contact default.">Monster auswählen</string>
+    <string name="contact_default_random">Zufällig</string>
+    <string name="contact_random_pool_all">Alle verfügbaren Charaktere</string>
+    <string name="contact_random_pool_choose">Zufallsauswahl-Pool auswählen</string>
+    <string name="contact_default_choose">Standardcharakter auswählen</string>
+    <string name="contact_defaults_mode_default">Standardcharakter</string>
+    <string name="contact_defaults_mode_pool">Zufallsauswahl-Pool</string>
+    <string name="open_contact_defaults_guide" comment="Accessibility label for the help button on the contact defaults screen.">Anleitung zu Kontakt-Standardeinstellungen öffnen</string>
+    <string name="contact_defaults_guide_title" comment="Title of the guide explaining contact character defaults.">Kontakt-Standardeinstellungen</string>
+    <string name="contact_defaults_guide_message">Diese Einstellungen gelten für Kontakte ohne eigene Charakteranpassung.</string>
+    <string name="contact_defaults_guide_default">• Wähle einen Standardtrainer oder ein Standardmonster für nicht zugewiesene Kontakte.</string>
+    <string name="contact_defaults_guide_randomizer">• Wähle Zufällig, damit die App einen Charakter aus dem ausgewählten Zufallsauswahl-Pool auswählt.</string>
+    <string name="contact_defaults_guide_overrides">• Die Einstellung Kontakt anpassen eines Kontakts überschreibt diese globalen Standardeinstellungen. Kontakte mit Nicht anpassen folgen ihnen weiterhin.</string>
+    <string name="contact_random_pool_reset">Zurücksetzen</string>
+    <string name="contact_random_pool_description" comment="Explains what the selected characters mean when Randomize is enabled.">Zufällig kann aus den ausgewählten Charakteren auswählen.</string>
+    <string name="contact_random_pool_select_all">Alle auswählen</string>
+    <string name="contact_random_pool_deselect_all">Auswahl aufheben</string>
+    <string name="contact_character_source_global">Nicht anpassen</string>
+    <string name="contact_character_source_custom">Kontakt anpassen</string>
+    <string name="contact_character_inherited_title">Globale Standardeinstellungen werden verwendet</string>
+    <string name="contact_character_inherited_message">Dieser Kontakt folgt den globalen %1$s-Einstellungen. Wähle oben „%1$s auswählen“ oder „Zufällig“, um sie zu überschreiben.</string>
+    <string name="contact_character_edit_global_defaults" comment="Button that opens the global contact character defaults from an inherited contact setting.">Globale Standardeinstellungen bearbeiten</string>
+    <string name="contact_random_pool_save">Pool speichern</string>
+    <string name="contact_random_pool_empty_title">Wähle mindestens einen Charakter aus</string>
+    <string name="contact_random_pool_empty_exit_message">Dein Zufallsauswahl-Pool ist leer, daher wurden diese Änderungen nicht gespeichert. Wähle mindestens einen Charakter aus, um den Pool zu speichern, oder verwirf die nicht gespeicherten Änderungen, um die Ansicht zu verlassen.</string>
+    <string name="contact_random_pool_continue_editing">Weiter bearbeiten</string>
+    <string name="contact_random_pool_discard_changes">Änderungen verwerfen</string>
     <string name="locked" comment="Status label for a character variant that must be unlocked before selection.">Gesperrt</string>
     <string name="radiant_variant_locked_title" comment="Title of the dialog shown for a locked radiant character variant.">Strahlende Variante gesperrt</string>
     <string name="radiant_variant_locked_message" comment="Explains how to unlock a radiant character variant; %1$s is the character name.">Wenn du einem strahlenden %1$s in einem wilden Kampf begegnest, wird er zu Kampfbeginn automatisch freigeschaltet. Danach kannst du ihn zuweisen.</string>
@@ -134,7 +168,7 @@
     <string name="online_profile_public_id_message">Jede Person, der du deinen Freigabelink sendest, kann dein Profil über seine zufällig erzeugte öffentliche ID finden. Dasselbe Google-Konto behält diese ID bei einer Anmeldung auf einem anderen Gerät, sodass vorhandene Links weiterhin funktionieren. Tippe auf „Freigabelink neu erstellen“, um die aktuelle öffentliche ID ungültig zu machen und eine neue zu erstellen. Der bisherige Link funktioniert dann für niemanden mehr, mit dem du ihn geteilt hast.</string>
     <string name="online_profile_delete_guide_title">Dein Profil löschen</string>
     <string name="online_profile_delete_guide_message">Tippe auf „Profil löschen“, um deine veröffentlichten Profildaten dauerhaft zu entfernen. Niemand mit deinem Freigabelink kann dein Team dann noch sehen. Wenn du später wieder ein Profil aktivierst, erhält es einen neuen Freigabelink.</string>
-    <string name="online_profile_enable" comment="Button that creates and enables the player's Online Profile.">Online-Profil aktivieren</string>
+    <string name="online_profile_enable" comment="Button that creates and enables the player's Online Profile.">Aktivieren</string>
     <string name="online_profile_enabling" comment="Progress label shown while an Online Profile is being enabled.">Online-Profil wird aktiviert</string>
     <string name="online_profile_regenerating" comment="Progress label shown while a new profile sharing link is being created.">Freigabelink wird neu erstellt</string>
     <string name="online_profile_deleting" comment="Progress label shown while the player's Online Profile is being deleted.">Online-Profil wird gelöscht</string>
@@ -161,7 +195,7 @@
     <string name="online_profile_sign_out_google" comment="Button that signs the player out of Google so they can use a different account for Online Profiles.">Bei Google abmelden</string>
     <string name="online_profile_firebase_not_configured" comment="Technical configuration error shown when the Online Profile backend is unavailable.">Firebase ist nicht konfiguriert.</string>
     <string name="online_profile_share_text" comment="%1$s is an HTTPS link to the user's shared MonsterDialer profile.">Sieh dir mein MonsterDialer-Profil an:\n%1$s</string>
-    <string name="choose_team" comment="Contact-row overflow action that opens character customization for a contact.">Team auswählen</string>
+    <string name="contact_characters_action" comment="Contact-row overflow action that opens character customization for a contact.">Charaktere</string>
     <string name="contact_row_actions" comment="Accessibility label for the contact-row overflow menu trigger.">Kontaktaktionen</string>
     <string name="linked_online_profile_title" comment="Heading in a contact's character settings for its associated Online Profile.">Verknüpftes Online-Profil</string>
     <string name="linked_online_profile_none" comment="Empty-state message when a contact has no associated Online Profile.">Mit diesem Kontakt ist kein Online-Profil verknüpft.</string>
@@ -343,4 +377,7 @@
     <string name="characters_help_assignments_message" comment="Character Guide introduction to the two character-assignment modes. Keep the trailing colon or use equivalent punctuation.">Charaktere lassen sich auf zwei Arten nutzen:</string>
     <string name="characters_help_assignments_player" comment="Character Guide bullet explaining Player Character. Preserve the bold label and translate it consistently with the settings title."><b>Spielercharakter:</b> dein Avatar für jeden Anruf.</string>
     <string name="characters_help_assignments_contact" comment="Character Guide bullet explaining Contact Characters. Preserve the bold label and translate it consistently with the settings title."><b>Kontaktcharaktere:</b> Weise Kontakten Monster oder Trainer zu; sie erscheinen als Gegner, wenn sie anrufen.</string>
+    <string name="online_profile_qr_action">QR-Code</string>
+    <string name="online_profile_more_options">Weitere Profiloptionen</string>
+    <string name="online_profile_sign_in_google">Mit Google anmelden</string>
 </resources>
