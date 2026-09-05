@@ -3,6 +3,7 @@
     <string name="additional_translation_project_title" comment="Title of the additional translation contribution card.">Contribuer aux traductions de MonsterDialer</string>
     <string name="contribute_translations" comment="Title of the OpenDialer translation contribution link on the About screen.">Contribuer aux traductions d’OpenDialer</string>
     <string name="hang_up" comment="Button to end the current phone call.">Raccrocher</string>
+    <string name="add" comment="Generic label for adding a new item.">Ajouter</string>
     <string name="settings_character_packs_title" comment="Settings title for managing character packs.">Packs de personnages</string>
     <string name="characters_navigation_label" comment="Bottom navigation label for the player's profile and character collection.">Profil</string>
     <string name="customize_your_calls" comment="Section heading above contact character customization.">Personnalisez vos appels</string>
@@ -102,6 +103,39 @@
     <string name="regular" comment="Adjective for a standard, non-rare character variant.">Normal</string>
     <string name="selected" comment="Status label for the currently chosen option.">Sélectionné</string>
     <string name="randomize" comment="Character selection that chooses a different eligible character for every call.">Aléatoire</string>
+    <string name="contact_defaults_title">Contacts non attribués</string>
+    <string name="contact_defaults_toolbox_title">Paramètres par défaut des contacts</string>
+    <string name="contact_defaults_description">Choisissez les paramètres par défaut et limitez le groupe de sélection aléatoire des contacts.</string>
+    <string name="contact_default_trainer">Dresseur par défaut</string>
+    <string name="contact_default_monster">Monstre par défaut</string>
+    <string name="contact_choose_trainer" comment="Dropdown option that opens the trainer picker for the contact default.">Choisir un dresseur</string>
+    <string name="contact_choose_monster" comment="Dropdown option that opens the monster picker for the contact default.">Choisir un monstre</string>
+    <string name="contact_default_random">Aléatoire</string>
+    <string name="contact_random_pool_all">Tous les personnages disponibles</string>
+    <string name="contact_random_pool_choose">Choisir le groupe de sélection aléatoire</string>
+    <string name="contact_default_choose">Choisir le personnage par défaut</string>
+    <string name="contact_defaults_mode_default">Personnage par défaut</string>
+    <string name="contact_defaults_mode_pool">Groupe de sélection aléatoire</string>
+    <string name="open_contact_defaults_guide" comment="Accessibility label for the help button on the contact defaults screen.">Ouvrir le guide des paramètres par défaut des contacts</string>
+    <string name="contact_defaults_guide_title" comment="Title of the guide explaining contact character defaults.">Paramètres par défaut des contacts</string>
+    <string name="contact_defaults_guide_message">Ces paramètres s’appliquent aux contacts qui n’ont pas leur propre personnalisation de personnage.</string>
+    <string name="contact_defaults_guide_default">• Choisissez un dresseur ou un monstre par défaut à utiliser pour les contacts non attribués.</string>
+    <string name="contact_defaults_guide_randomizer">• Choisissez Aléatoire pour laisser l’application sélectionner un personnage dans le groupe de sélection aléatoire choisi.</string>
+    <string name="contact_defaults_guide_overrides">• Le paramètre Personnaliser le contact d’un contact remplace ces paramètres globaux par défaut. Les contacts utilisant Ne pas personnaliser continuent de les suivre.</string>
+    <string name="contact_random_pool_reset">Réinitialiser</string>
+    <string name="contact_random_pool_description" comment="Explains what the selected characters mean when Randomize is enabled.">Aléatoire peut choisir parmi les personnages sélectionnés.</string>
+    <string name="contact_random_pool_select_all">Tout sélectionner</string>
+    <string name="contact_random_pool_deselect_all">Tout désélectionner</string>
+    <string name="contact_character_source_global">Ne pas personnaliser</string>
+    <string name="contact_character_source_custom">Personnaliser le contact</string>
+    <string name="contact_character_inherited_title">Utilisation des paramètres globaux par défaut</string>
+    <string name="contact_character_inherited_message">Ce contact suit les paramètres globaux %1$s. Choisissez « Choisir un %1$s » ou « Aléatoire » ci-dessus pour les remplacer.</string>
+    <string name="contact_character_edit_global_defaults" comment="Button that opens the global contact character defaults from an inherited contact setting.">Modifier les paramètres globaux par défaut</string>
+    <string name="contact_random_pool_save">Enregistrer le groupe</string>
+    <string name="contact_random_pool_empty_title">Choisissez au moins un personnage</string>
+    <string name="contact_random_pool_empty_exit_message">Votre groupe de sélection aléatoire est vide. Ces modifications n’ont donc pas été enregistrées. Sélectionnez au moins un personnage pour enregistrer le groupe, ou ignorez les modifications non enregistrées pour quitter.</string>
+    <string name="contact_random_pool_continue_editing">Continuer la modification</string>
+    <string name="contact_random_pool_discard_changes">Ignorer les modifications</string>
     <string name="locked" comment="Status label for a character variant that must be unlocked before selection.">Verrouillé</string>
     <string name="radiant_variant_locked_title" comment="Title of the dialog shown for a locked radiant character variant.">Variante radieuse verrouillée</string>
     <string name="radiant_variant_locked_message" comment="Explains how to unlock a radiant character variant; %1$s is the character name.">Lorsque vous rencontrez un %1$s radieux dans un combat sauvage, il se déverrouille automatiquement dès le début du combat. Vous pouvez ensuite l’assigner.</string>
@@ -134,7 +168,7 @@
     <string name="online_profile_public_id_message">Toute personne à qui vous envoyez votre lien de partage peut trouver votre profil grâce à son identifiant public généré aléatoirement. Le même compte Google conserve cet identifiant lors d’une connexion sur un autre appareil, afin que les liens existants continuent de fonctionner. Touchez « Générer un nouveau lien » pour invalider l’identifiant public actuel et en créer un nouveau. L’ancien lien ne fonctionnera plus pour les personnes avec qui vous l’avez partagé.</string>
     <string name="online_profile_delete_guide_title">Supprimer votre profil</string>
     <string name="online_profile_delete_guide_message">Touchez « Supprimer le profil » pour supprimer définitivement les données publiées de votre profil. Toute personne ayant votre lien de partage ne pourra plus voir votre équipe. Si vous activez à nouveau un profil plus tard, il aura un nouveau lien de partage.</string>
-    <string name="online_profile_enable" comment="Button that creates and enables the player's Online Profile.">Activer le profil en ligne</string>
+    <string name="online_profile_enable" comment="Button that creates and enables the player's Online Profile.">Activer</string>
     <string name="online_profile_enabling" comment="Progress label shown while an Online Profile is being enabled.">Activation du profil en ligne</string>
     <string name="online_profile_regenerating" comment="Progress label shown while a new profile sharing link is being created.">Génération d’un nouveau lien de partage</string>
     <string name="online_profile_deleting" comment="Progress label shown while the player's Online Profile is being deleted.">Suppression du profil en ligne</string>
@@ -161,7 +195,7 @@
     <string name="online_profile_sign_out_google" comment="Button that signs the player out of Google so they can use a different account for Online Profiles.">Se déconnecter de Google</string>
     <string name="online_profile_firebase_not_configured" comment="Technical configuration error shown when the Online Profile backend is unavailable.">Firebase n’est pas configuré.</string>
     <string name="online_profile_share_text" comment="%1$s is an HTTPS link to the user's shared MonsterDialer profile.">Découvrez mon profil MonsterDialer :\n%1$s</string>
-    <string name="choose_team" comment="Contact-row overflow action that opens character customization for a contact.">Choisir l’équipe</string>
+    <string name="contact_characters_action" comment="Contact-row overflow action that opens character customization for a contact.">Personnages</string>
     <string name="contact_row_actions" comment="Accessibility label for the contact-row overflow menu trigger.">Actions du contact</string>
     <string name="linked_online_profile_title" comment="Heading in a contact's character settings for its associated Online Profile.">Profil en ligne associé</string>
     <string name="linked_online_profile_none" comment="Empty-state message when a contact has no associated Online Profile.">Aucun profil en ligne n’est associé à ce contact.</string>
@@ -343,4 +377,7 @@
     <string name="characters_help_assignments_message" comment="Character Guide introduction to the two character-assignment modes. Keep the trailing colon or use equivalent punctuation.">Les personnages s’utilisent de deux façons :</string>
     <string name="characters_help_assignments_player" comment="Character Guide bullet explaining Player Character. Preserve the bold label and translate it consistently with the settings title."><b>Personnage du joueur :</b> votre avatar pour chaque appel.</string>
     <string name="characters_help_assignments_contact" comment="Character Guide bullet explaining Contact Characters. Preserve the bold label and translate it consistently with the settings title."><b>Personnages des contacts :</b> attribuez des monstres ou dresseurs à vos contacts ; ils seront vos adversaires lors de leurs appels.</string>
+    <string name="online_profile_qr_action">Code QR</string>
+    <string name="online_profile_more_options">Autres options du profil</string>
+    <string name="online_profile_sign_in_google">Se connecter avec Google</string>
 </resources>
