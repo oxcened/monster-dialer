@@ -26,22 +26,23 @@ Releases include a SHA-256 checksum and GitHub build attestation. See the [relea
 
 - Android Studio with Android SDK 37 installed
 - JDK 21
-- A checkout of [OpenDialer](https://github.com/oxcened/opendialer) beside this repository
 - A licensed copy of the UI Pixel Font at `app/src/main/res/font/ui_pixel_font.otf`
 
 The Firebase configuration and font are not included in this repository. The font may not be redistributed; see the [release guide](docs/releases.md#licensed-font-for-ci) for its expected location. `app/google-services.json` is optional for local builds: when absent, Firebase Analytics and Crashlytics are inactive. CI and release builds provide it automatically.
 
 ### Checkout and run
 
-Clone both repositories as siblings. MonsterDialer reads OpenDialer from `../opendialer` and pins the compatible revision in `gradle.properties`.
+Clone the repository and initialize its pinned [OpenDialer](https://github.com/oxcened/opendialer) submodule:
 
 ```bash
-git clone https://github.com/oxcened/opendialer.git opendialer
 git clone https://github.com/oxcened/monster-dialer.git monster-dialer
 cd monster-dialer
-git -C ../opendialer checkout "$(sed -n 's/^opendialerRef=//p' gradle.properties)"
+git submodule update --init --recursive
 ./gradlew assembleDebug
 ```
+
+When cloning with another tool that supports submodules, the equivalent one-step
+checkout is `git clone --recurse-submodules https://github.com/oxcened/monster-dialer.git`.
 
 Open `monster-dialer` in Android Studio or install `app/build/outputs/apk/debug/app-debug.apk` on a device. A physical device with phone capability is recommended for testing real calls.
 
