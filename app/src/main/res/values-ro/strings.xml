@@ -3,6 +3,7 @@
     <string name="additional_translation_project_title" comment="Title of the additional translation contribution card.">Contribuie la traducerile MonsterDialer</string>
     <string name="contribute_translations" comment="Title of the OpenDialer translation contribution link on the About screen.">Contribuie la traducerile OpenDialer</string>
     <string name="hang_up" comment="Button to end the current phone call.">Închide</string>
+    <string name="add" comment="Generic label for adding a new item.">Adaugă</string>
     <string name="settings_character_packs_title" comment="Settings title for managing character packs.">Pachete de personaje</string>
     <string name="characters_navigation_label" comment="Bottom navigation label for the player's profile and character collection.">Profil</string>
     <string name="customize_your_calls" comment="Section heading above contact character customization.">Personalizează apelurile</string>
@@ -106,6 +107,39 @@
     <string name="regular" comment="Adjective for a standard, non-rare character variant.">Normal</string>
     <string name="selected" comment="Status label for the currently chosen option.">Selectat</string>
     <string name="randomize" comment="Character selection that chooses a different eligible character for every call.">Aleatoriu</string>
+    <string name="contact_defaults_title">Contacte nealocate</string>
+    <string name="contact_defaults_toolbox_title">Setări implicite pentru contacte</string>
+    <string name="contact_defaults_description">Alege setările implicite și limitează grupul de selecție aleatorie pentru contacte.</string>
+    <string name="contact_default_trainer">Antrenor implicit</string>
+    <string name="contact_default_monster">Monstru implicit</string>
+    <string name="contact_choose_trainer" comment="Dropdown option that opens the trainer picker for the contact default.">Alege antrenorul</string>
+    <string name="contact_choose_monster" comment="Dropdown option that opens the monster picker for the contact default.">Alege monstrul</string>
+    <string name="contact_default_random">Aleatoriu</string>
+    <string name="contact_random_pool_all">Toate personajele disponibile</string>
+    <string name="contact_random_pool_choose">Alege grupul de selecție aleatorie</string>
+    <string name="contact_default_choose">Alege personajul implicit</string>
+    <string name="contact_defaults_mode_default">Personaj implicit</string>
+    <string name="contact_defaults_mode_pool">Grup de selecție aleatorie</string>
+    <string name="open_contact_defaults_guide" comment="Accessibility label for the help button on the contact defaults screen.">Deschide ghidul pentru setările implicite ale contactelor</string>
+    <string name="contact_defaults_guide_title" comment="Title of the guide explaining contact character defaults.">Setări implicite pentru contacte</string>
+    <string name="contact_defaults_guide_message">Aceste setări se aplică persoanelor de contact care nu au propria personalizare a personajului.</string>
+    <string name="contact_defaults_guide_default">• Alege un antrenor sau un monstru implicit pentru contactele nealocate.</string>
+    <string name="contact_defaults_guide_randomizer">• Alege Aleatoriu pentru ca aplicația să selecteze un personaj din grupul de selecție aleatorie ales.</string>
+    <string name="contact_defaults_guide_overrides">• Setarea Personalizează contactul a unui contact înlocuiește aceste setări implicite globale. Contactele care folosesc Nu personaliza continuă să le urmeze.</string>
+    <string name="contact_random_pool_reset">Resetează</string>
+    <string name="contact_random_pool_description" comment="Explains what the selected characters mean when Randomize is enabled.">Opțiunea Aleatoriu poate alege dintre personajele selectate.</string>
+    <string name="contact_random_pool_select_all">Selectează tot</string>
+    <string name="contact_random_pool_deselect_all">Deselectează tot</string>
+    <string name="contact_character_source_global">Nu personaliza</string>
+    <string name="contact_character_source_custom">Personalizează contactul</string>
+    <string name="contact_character_inherited_title">Se folosesc setările implicite globale</string>
+    <string name="contact_character_inherited_message">Acest contact urmează setările globale pentru %1$s. Alege mai sus „Alege %1$s” sau „Aleatoriu” pentru a le înlocui.</string>
+    <string name="contact_character_edit_global_defaults" comment="Button that opens the global contact character defaults from an inherited contact setting.">Editează setările implicite globale</string>
+    <string name="contact_random_pool_save">Salvează grupul</string>
+    <string name="contact_random_pool_empty_title">Alege cel puțin un personaj</string>
+    <string name="contact_random_pool_empty_exit_message">Grupul de selecție aleatorie este gol, așa că aceste modificări nu au fost salvate. Selectează cel puțin un personaj pentru a salva grupul sau renunță la modificările nesalvate pentru a ieși.</string>
+    <string name="contact_random_pool_continue_editing">Continuă editarea</string>
+    <string name="contact_random_pool_discard_changes">Renunță la modificări</string>
     <string name="locked" comment="Status label for a character variant that must be unlocked before selection.">Blocat</string>
     <string name="radiant_variant_locked_title" comment="Title of the dialog shown for a locked radiant character variant.">Variantă radiantă blocată</string>
     <string name="radiant_variant_locked_message" comment="Explains how to unlock a radiant character variant; %1$s is the character name.">Când întâlnești un %1$s radiant într-o luptă sălbatică, se deblochează automat la începutul luptei. Îl poți apoi atribui.</string>
@@ -138,7 +172,7 @@
     <string name="online_profile_public_id_message">Oricine primește linkul tău de partajare îți poate găsi profilul prin ID-ul public generat aleatoriu. Același cont Google păstrează acest ID când te conectezi pe alt dispozitiv, astfel încât linkurile existente continuă să funcționeze. Atinge „Regenerează linkul de partajare” pentru a invalida ID-ul public curent și a crea unul nou. Linkul anterior nu va mai funcționa pentru nimeni cu care l-ai partajat.</string>
     <string name="online_profile_delete_guide_title">Ștergerea profilului tău</string>
     <string name="online_profile_delete_guide_message">Atinge „Șterge profilul” pentru a elimina definitiv datele publicate ale profilului tău. Oricine are linkul tău de partajare nu va mai putea vedea echipa ta. Dacă activezi din nou un profil mai târziu, acesta va avea un link nou.</string>
-    <string name="online_profile_enable" comment="Button that creates and enables the player's Online Profile.">Activează profilul online</string>
+    <string name="online_profile_enable" comment="Button that creates and enables the player's Online Profile.">Activează</string>
     <string name="online_profile_enabling" comment="Progress label shown while an Online Profile is being enabled.">Se activează profilul online</string>
     <string name="online_profile_regenerating" comment="Progress label shown while a new profile sharing link is being created.">Se regenerează linkul de partajare</string>
     <string name="online_profile_deleting" comment="Progress label shown while the player's Online Profile is being deleted.">Se șterge profilul online</string>
@@ -165,7 +199,7 @@
     <string name="online_profile_sign_out_google" comment="Button that signs the player out of Google so they can use a different account for Online Profiles.">Deconectează-te de la Google</string>
     <string name="online_profile_firebase_not_configured" comment="Technical configuration error shown when the Online Profile backend is unavailable.">Firebase nu este configurat.</string>
     <string name="online_profile_share_text" comment="%1$s is an HTTPS link to the user's shared MonsterDialer profile.">Vezi profilul meu MonsterDialer:\n%1$s</string>
-    <string name="choose_team" comment="Contact-row overflow action that opens character customization for a contact.">Alege echipa</string>
+    <string name="contact_characters_action" comment="Contact-row overflow action that opens character customization for a contact.">Personaje</string>
     <string name="contact_row_actions" comment="Accessibility label for the contact-row overflow menu trigger.">Acțiuni contact</string>
     <string name="linked_online_profile_title" comment="Heading in a contact's character settings for its associated Online Profile.">Profil online asociat</string>
     <string name="linked_online_profile_none" comment="Empty-state message when a contact has no associated Online Profile.">Niciun profil online nu este asociat acestui contact.</string>
@@ -350,4 +384,7 @@
     <string name="characters_help_assignments_message" comment="Character Guide introduction to the two character-assignment modes. Keep the trailing colon or use equivalent punctuation.">Personajele pot fi folosite în două moduri:</string>
     <string name="characters_help_assignments_player" comment="Character Guide bullet explaining Player Character. Preserve the bold label and translate it consistently with the settings title."><b>Personajul jucătorului:</b> avatarul tău la fiecare apel.</string>
     <string name="characters_help_assignments_contact" comment="Character Guide bullet explaining Contact Characters. Preserve the bold label and translate it consistently with the settings title."><b>Personajele contactelor:</b> atribuie monștri sau antrenori contactelor; ei vor fi adversarii când te sună.</string>
+    <string name="online_profile_qr_action">Cod QR</string>
+    <string name="online_profile_more_options">Mai multe opțiuni de profil</string>
+    <string name="online_profile_sign_in_google">Conectează-te cu Google</string>
 </resources>
