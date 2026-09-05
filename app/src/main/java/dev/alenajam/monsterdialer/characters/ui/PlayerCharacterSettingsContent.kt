@@ -1,5 +1,10 @@
 package dev.alenajam.monsterdialer.characters.ui
 
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.expandVertically
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.shrinkVertically
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.lazy.grid.GridCells
@@ -65,15 +70,17 @@ internal fun ColumnScope.PlayerCharacterSettingsContent(
     val selectedTab by viewModel.selectedTab.collectAsStateWithLifecycle()
     val layout by viewModel.layout.collectAsStateWithLifecycle()
     val unlockedVariants by viewModel.unlockedVariants.collectAsStateWithLifecycle()
-    val targetSlotIndex by viewModel.targetSlotIndex.collectAsStateWithLifecycle()
     val filter by viewModel.filter.collectAsStateWithLifecycle()
 
     val currentTabHasCharacters = if (selectedTab == 0) trainers.isNotEmpty() else monsters.isNotEmpty()
     val effectiveLayout = if (currentTabHasCharacters) layout else CharacterLayout.List
 
-    val assignedMonsterForSlot = targetSlotIndex?.let { index ->
-        monsterRoster.getOrNull(index)
-    } ?: assignedMonster
+    val selectedSlotIndex = payload?.split(":")?.getOrNull(1)?.toIntOrNull()
+    val assignedMonsterForSlot = if (route == PlayerCharacterSettingsRoute.AddToRoster) {
+        selectedSlotIndex?.let(monsterRoster::getOrNull)
+    } else {
+        assignedMonster
+    }
 
     val trainerSelectedItemIndex = selectedCharacterIndex(trainers, assignedTrainer)
     val monsterSelectedItemIndex = selectedCharacterIndex(monsters, assignedMonsterForSlot)
@@ -85,6 +92,13 @@ internal fun ColumnScope.PlayerCharacterSettingsContent(
     )
     val trainerGridState = rememberLazyGridState(initialFirstVisibleItemIndex = trainerSelectedItemIndex)
     val monsterGridState = rememberLazyGridState(initialFirstVisibleItemIndex = monsterSelectedItemIndex)
+    val listState = if (selectedTab == 0) trainerListState else monsterListState
+    val gridState = if (selectedTab == 0) trainerGridState else monsterGridState
+    val controlsVisible = rememberCharacterSelectionControlsVisibility(
+        listState = listState,
+        gridState = gridState,
+        useGrid = effectiveLayout == CharacterLayout.Grid,
+    )
     val trainerTitle = stringResource(R.string.character_type_trainer)
     val monsterTitle = stringResource(R.string.character_type_monster)
     val trainersTitle = stringResource(R.string.character_type_trainers)
@@ -98,32 +112,36 @@ internal fun ColumnScope.PlayerCharacterSettingsContent(
         route?.let { viewModel.setSelectedTab(it.selectedTab) }
     }
 
-    CharacterSelectionActions(
-        selectedTab = selectedTab,
-        onTabSelected = { tab ->
-            val selectedItemIndex = if (tab == 0) trainerSelectedItemIndex else monsterSelectedItemIndex
-            val nextTabHasCharacters = if (tab == 0) trainers.isNotEmpty() else monsters.isNotEmpty()
-            val nextTabEffectiveLayout = if (nextTabHasCharacters) layout else CharacterLayout.List
+    AnimatedVisibility(
+        visible = controlsVisible,
+        enter = fadeIn() + expandVertically(),
+        exit = fadeOut() + shrinkVertically(),
+    ) {
+        CharacterSelectionActions(
+            selectedTab = selectedTab,
+            onTabSelected = { tab ->
+                val selectedItemIndex = if (tab == 0) trainerSelectedItemIndex else monsterSelectedItemIndex
+                val nextTabHasCharacters = if (tab == 0) trainers.isNotEmpty() else monsters.isNotEmpty()
+                val nextTabEffectiveLayout = if (nextTabHasCharacters) layout else CharacterLayout.List
 
-            if (nextTabEffectiveLayout == CharacterLayout.List) {
-                (if (tab == 0) trainerListState else monsterListState).requestScrollToItem(selectedItemIndex)
-            } else {
-                (if (tab == 0) trainerGridState else monsterGridState).requestScrollToItem(selectedItemIndex)
-            }
-            viewModel.setSelectedTab(tab)
-        },
-        isAddEnabled = !isLimitReached,
-        onAddCharacter = { navigator?.navigateTo(if (selectedTab == 0) 0 else 1) },
-        filter = if (selectedTab == 1) filter else null,
-        onFilterSelected = if (selectedTab == 1) viewModel::setFilter else null
-    )
+                if (nextTabEffectiveLayout == CharacterLayout.List) {
+                    (if (tab == 0) trainerListState else monsterListState).requestScrollToItem(selectedItemIndex)
+                } else {
+                    (if (tab == 0) trainerGridState else monsterGridState).requestScrollToItem(selectedItemIndex)
+                }
+                viewModel.setSelectedTab(tab)
+            },
+            isAddEnabled = !isLimitReached,
+            onAddCharacter = { navigator?.navigateTo(if (selectedTab == 0) 0 else 1) },
+            filter = if (selectedTab == 1) filter else null,
+            onFilterSelected = if (selectedTab == 1) viewModel::setFilter else null
+        )
+    }
 
     val selectedItemIndex = when (selectedTab) {
         0 -> trainerSelectedItemIndex
         else -> monsterSelectedItemIndex
     }
-    val listState = if (selectedTab == 0) trainerListState else monsterListState
-    val gridState = if (selectedTab == 0) trainerGridState else monsterGridState
     val scope = androidx.compose.runtime.rememberCoroutineScope()
     var pendingDeletion by remember { mutableStateOf<InstalledPackCharacter?>(null) }
     var isPendingDeletionInUse by remember { mutableStateOf(false) }
@@ -203,7 +221,6 @@ internal fun ColumnScope.PlayerCharacterSettingsContent(
                         onEdit = { navigator?.navigateTo(1, it.character.id) },
                         onShare = { pendingShare = it },
                         selectedReferences = selectedReferences,
-                        hideSelected = true,
                         filter = filter
                     )
                 }
@@ -246,7 +263,6 @@ internal fun ColumnScope.PlayerCharacterSettingsContent(
                         onEdit = { navigator?.navigateTo(1, it.character.id) },
                         onShare = { pendingShare = it },
                         selectedReferences = selectedReferences,
-                        hideSelected = true,
                         filter = filter
                     )
                 }

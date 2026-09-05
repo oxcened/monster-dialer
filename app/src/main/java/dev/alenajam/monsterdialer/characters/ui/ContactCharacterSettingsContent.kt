@@ -73,8 +73,8 @@ fun ColumnScope.ContactCharacterSettingsContent(
     val layout by viewModel.layout.collectAsStateWithLifecycle()
     val unlockedVariants by viewModel.unlockedVariants.collectAsStateWithLifecycle()
     val pendingOnlineProfileId by viewModel.pendingOnlineProfileId.collectAsStateWithLifecycle()
-    val trainerSelectedItemIndex = selectedCharacterIndex(trainers, assignedTrainer)
-    val monsterSelectedItemIndex = selectedCharacterIndex(monsters, assignedMonster)
+    val trainerSelectedItemIndex = selectedCharacterIndex(trainers, assignedTrainer, hasRandomize = true)
+    val monsterSelectedItemIndex = selectedCharacterIndex(monsters, assignedMonster, hasRandomize = true)
     val trainerListState = rememberLazyListState(
         initialFirstVisibleItemIndex = trainerSelectedItemIndex
     )
@@ -155,13 +155,6 @@ fun ColumnScope.ContactCharacterSettingsContent(
             },
             isAddEnabled = !isLimitReached,
             onAddCharacter = { navigator?.navigateTo(if (selectedTab == 0) 1 else 2) },
-            onRandomize = {
-                if (selectedTab == 0) viewModel.randomizeTrainer() else viewModel.randomizeMonster()
-                if (entryPoint == ContactCharacterSettingsEntryPoint.ContactList) {
-                    navigator?.navigateBack()
-                }
-            },
-            isRandomSelected = if (selectedTab == 0) trainerMode == ContactCharacterMode.Random else monsterMode == ContactCharacterMode.Random,
             filter = if (selectedTab == 1) filter else null,
             onFilterSelected = if (selectedTab == 1) { nextFilter ->
                 monsterListState.requestScrollToItem(0)
@@ -226,7 +219,7 @@ fun ColumnScope.ContactCharacterSettingsContent(
                                     navigator?.navigateBack()
                                 }
                             },
-                            showRandomize = false,
+                            showRandomize = true,
                             onDelete = { character -> scope.launch { isPendingDeletionInUse = viewModel.isCharacterInUse(character.character.id); pendingDeletion = character } },
                             onEdit = { navigator?.navigateTo(1, it.character.id) },
                             onShare = { pendingShare = it }
@@ -254,7 +247,7 @@ fun ColumnScope.ContactCharacterSettingsContent(
                                     navigator?.navigateBack()
                                 }
                             },
-                            showRandomize = false,
+                            showRandomize = true,
                             onDelete = { character -> scope.launch { isPendingDeletionInUse = viewModel.isCharacterInUse(character.character.id); pendingDeletion = character } },
                             onEdit = { navigator?.navigateTo(2, it.character.id) },
                             onShare = { pendingShare = it }
@@ -286,7 +279,7 @@ fun ColumnScope.ContactCharacterSettingsContent(
                                     navigator?.navigateBack()
                                 }
                             },
-                            showRandomize = false,
+                            showRandomize = true,
                             onDelete = { character -> scope.launch { isPendingDeletionInUse = viewModel.isCharacterInUse(character.character.id); pendingDeletion = character } },
                             onEdit = { navigator?.navigateTo(1, it.character.id) },
                             onShare = { pendingShare = it }
@@ -314,7 +307,7 @@ fun ColumnScope.ContactCharacterSettingsContent(
                                     navigator?.navigateBack()
                                 }
                             },
-                            showRandomize = false,
+                            showRandomize = true,
                             onDelete = { character -> scope.launch { isPendingDeletionInUse = viewModel.isCharacterInUse(character.character.id); pendingDeletion = character } },
                             onEdit = { navigator?.navigateTo(2, it.character.id) },
                             onShare = { pendingShare = it }
@@ -341,7 +334,7 @@ fun ColumnScope.ContactCharacterSettingsContent(
 }
 
 @Composable
-private fun rememberCharacterSelectionControlsVisibility(
+internal fun rememberCharacterSelectionControlsVisibility(
     listState: LazyListState,
     gridState: LazyGridState,
     useGrid: Boolean,

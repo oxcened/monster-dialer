@@ -32,7 +32,6 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
-import androidx.compose.material3.FilledTonalButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.SegmentedButton
@@ -154,6 +153,7 @@ internal fun LazyListScope.characterTypeItems(
         item(key = "random") {
             CharacterOptionCard(
                 name = stringResource(R.string.randomize),
+                modifier = Modifier.padding(top = 8.dp),
                 type = type,
                 isSelected = isRandomSelected,
                 showTypeSubtitle = false,
@@ -327,6 +327,7 @@ internal fun LazyGridScope.characterTypeGridItems(
         item(key = "random") {
             CharacterGridItem(
                 name = stringResource(R.string.randomize),
+                modifier = Modifier.padding(top = 8.dp),
                 type = type,
                 isSelected = isRandomSelected,
                 showTypeSubtitle = false,
@@ -482,21 +483,22 @@ private fun gridItemShape(index: Int, itemCount: Int): RoundedCornerShape {
 
 internal fun selectedCharacterIndex(
     characters: List<InstalledPackCharacter>,
-    selected: CharacterReference?
+    selected: CharacterReference?,
+    hasRandomize: Boolean = false,
 ): Int {
-    if (selected == null) return 0 // Keep Add button visible for Default selection
+    if (selected == null) return 0 // Keep the first section visible for the default selection.
 
     val userCharacters = characters.filter { it.isEditable }
     val otherPacks = characters.filter { !it.isEditable }.groupBy { it.packId }
 
-    // Logic follows the order in characterTypeItems
-    // 0: Add button
-    // 1: Built-in header
-    // 2: Default character
-    var currentIndex = 3
+    // Logic follows the order in characterTypeItems and characterTypeGridItems:
+    // 0: Built-in header
+    // 1: Default character
+    // 2: Next section header
+    var currentIndex = if (hasRandomize) 3 else 2
 
     if (userCharacters.isNotEmpty()) {
-        currentIndex++ // "Your characters" header
+            currentIndex++ // "Your characters" header
         val userIdx = userCharacters.flatMap(InstalledPackCharacter::selectionVariants).indexOfFirst {
             it.installed.matches(selected) && it.variant.id == selected.variantId
         }
@@ -602,8 +604,6 @@ internal fun CharacterSelectionActions(
     isAddEnabled: Boolean,
     onAddCharacter: () -> Unit,
     modifier: Modifier = Modifier,
-    onRandomize: (() -> Unit)? = null,
-    isRandomSelected: Boolean = false,
     filter: MonsterFilter? = null,
     onFilterSelected: ((MonsterFilter) -> Unit)? = null,
 ) {
@@ -654,21 +654,6 @@ internal fun CharacterSelectionActions(
                     maxLines = 1,
                 )
             }
-            if (onRandomize != null) {
-                val content = @Composable {
-                    AppIcon(
-                        icon = LocalMonsterAppIcons.current.randomize,
-                        contentDescription = null,
-                    )
-                    Text(text = stringResource(R.string.randomize), modifier = Modifier.padding(start = 8.dp))
-                }
-                if (isRandomSelected) {
-                    FilledTonalButton(onClick = onRandomize) { content() }
-                } else {
-                    TextButton(onClick = onRandomize) { content() }
-                }
-            }
-
             if (filter != null && onFilterSelected != null) {
                 Box {
                     TextButton(onClick = { filterExpanded = true }) {
@@ -804,7 +789,8 @@ private fun CharacterOptionCard(
     onSelect: () -> Unit,
     onDelete: (() -> Unit)? = null,
     onEdit: (() -> Unit)? = null,
-    onShare: (() -> Unit)? = null
+    onShare: (() -> Unit)? = null,
+    modifier: Modifier = Modifier
 ) {
     var showMenu by remember { mutableStateOf(false) }
     var showRadiantUnlockDialog by remember { mutableStateOf(false) }
@@ -816,7 +802,8 @@ private fun CharacterOptionCard(
         Card(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(vertical = 1.dp),
+                .padding(vertical = 1.dp)
+                .then(modifier),
             shape = shape,
             colors = CardDefaults.cardColors(containerColor = if (isSelected) MaterialTheme.colorScheme.secondaryContainer else MaterialTheme.colorScheme.surfaceContainerLow),
             elevation = CardDefaults.cardElevation(defaultElevation = 0.5.dp)
@@ -830,12 +817,12 @@ private fun CharacterOptionCard(
                         },
                         onLongClick = if (!isSelected && (onDelete != null || onEdit != null || onShare != null)) { { showMenu = true } } else null
                     )
-                    .padding(16.dp),
+                    .padding(12.dp),
                 verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.spacedBy(16.dp)
+                horizontalArrangement = Arrangement.spacedBy(12.dp)
             ) {
                 Box(
-                    modifier = Modifier.size(72.dp),
+                    modifier = Modifier.size(60.dp),
                     contentAlignment = Alignment.Center,
                 ) {
                     artwork()
@@ -951,13 +938,14 @@ private fun CharacterGridItem(
     onSelect: () -> Unit,
     onDelete: (() -> Unit)? = null,
     onEdit: (() -> Unit)? = null,
-    onShare: (() -> Unit)? = null
+    onShare: (() -> Unit)? = null,
+    modifier: Modifier = Modifier
 ) {
     var showMenu by remember { mutableStateOf(false) }
     var showRadiantUnlockDialog by remember { mutableStateOf(false) }
     Box {
         Card(
-            modifier = Modifier.fillMaxWidth(),
+            modifier = Modifier.fillMaxWidth().then(modifier),
             shape = shape,
             colors = CardDefaults.cardColors(
                 containerColor = if (isSelected) MaterialTheme.colorScheme.secondaryContainer else MaterialTheme.colorScheme.surfaceContainerLow
@@ -973,21 +961,21 @@ private fun CharacterGridItem(
                         onLongClick = if (onDelete != null || onEdit != null || onShare != null) { { showMenu = true } } else null
                     )
                     .fillMaxWidth()
-                    .height(200.dp)
-                    .padding(16.dp),
+                    .height(172.dp)
+                    .padding(12.dp),
                 horizontalAlignment = Alignment.Start,
                 verticalArrangement = Arrangement.spacedBy(4.dp)
             ) {
                 Box(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .height(88.dp),
+                        .height(72.dp),
                     contentAlignment = Alignment.Center
                 ) {
                     artwork()
                 }
                 
-                Spacer(modifier = Modifier.height(4.dp))
+                Spacer(modifier = Modifier.height(2.dp))
                 
                 Text(
                     text = name,
