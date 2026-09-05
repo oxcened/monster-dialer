@@ -5,6 +5,7 @@ import dev.alenajam.monsterdialer.characters.data.CharacterAssignmentRepository
 import dev.alenajam.monsterdialer.characters.data.ContactCharacterMode
 import dev.alenajam.monsterdialer.characters.data.CharactersRepository
 import dev.alenajam.monsterdialer.characters.data.DefaultMonsterLevel
+import dev.alenajam.monsterdialer.characters.data.BuiltInCharacters
 import dev.alenajam.monsterdialer.characters.data.PlayerProfileStatsStore
 import dev.alenajam.monsterdialer.characters.data.RadiantVariantUnlockStore
 import dev.alenajam.monsterdialer.packs.data.CharacterAssignmentTarget
@@ -187,7 +188,12 @@ class AssignedCharacterEncounterFactory @Inject constructor(
             assignmentRepository.getContactRandomPool(contactKey, type)
                 ?: assignmentRepository.getContactRandomPool(type)
             )?.toSet()
-        val candidates = charactersRepository
+        val builtInReference = if (type == CharacterType.Trainer) {
+            BuiltInCharacters.defaultTrainerReference
+        } else {
+            BuiltInCharacters.defaultMonsterReference
+        }
+        val candidates = listOf(builtInReference) + charactersRepository
             .getCharactersAssignableTo(CharacterAssignmentTarget.Contact, type)
             .flatMap { character ->
                 character.character.visualVariants

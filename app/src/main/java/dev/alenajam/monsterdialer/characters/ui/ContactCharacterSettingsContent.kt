@@ -269,7 +269,7 @@ fun ColumnScope.ContactCharacterSettingsContent(
                                 modifier = Modifier.weight(1f),
                                 onClick = {
                                     val type = if (selectedTab == 0) CharacterType.Trainer else CharacterType.Monster
-                                    updateContactPool(type, viewModel.selectedContactPool(type, allReferences))
+                                    viewModel.clearContactSpecificRandomPool(type)
                                     contactRandomPoolDrafts.remove(type)
                                 },
                             ) {
@@ -334,6 +334,7 @@ fun ColumnScope.ContactCharacterSettingsContent(
                             title = trainerTitle,
                             pluralTitle = trainersTitle,
                             defaultCharacter = BuiltInCharacters.trainer,
+                            defaultReference = BuiltInCharacters.defaultTrainerReference,
                             characters = trainers,
                             selected = assignedTrainer,
                             defaultArtwork = { it.contactArtwork },
@@ -369,6 +370,7 @@ fun ColumnScope.ContactCharacterSettingsContent(
                             title = monsterTitle,
                             pluralTitle = monstersTitle,
                             defaultCharacter = BuiltInCharacters.monster.character,
+                            defaultReference = BuiltInCharacters.defaultMonsterReference,
                             characters = monsters,
                             selected = assignedMonster,
                             filter = filter,
@@ -410,6 +412,7 @@ fun ColumnScope.ContactCharacterSettingsContent(
                             title = trainerTitle,
                             pluralTitle = trainersTitle,
                             defaultCharacter = BuiltInCharacters.trainer,
+                            defaultReference = BuiltInCharacters.defaultTrainerReference,
                             characters = trainers,
                             selected = assignedTrainer,
                             defaultArtwork = { it.contactArtwork },
@@ -445,6 +448,7 @@ fun ColumnScope.ContactCharacterSettingsContent(
                             title = monsterTitle,
                             pluralTitle = monstersTitle,
                             defaultCharacter = BuiltInCharacters.monster.character,
+                            defaultReference = BuiltInCharacters.defaultMonsterReference,
                             characters = monsters,
                             selected = assignedMonster,
                             filter = filter,

@@ -26,6 +26,6 @@ internal fun characterSelectionState(
             selectedReferences.any(CharacterReference::isBuiltInMonsterRosterReference) ||
             defaultReference in selectedReferences ||
             (selectedReferences.isEmpty() && availableSelection == null && !allowsDeselection)
-        ) && !isRandomSelected
+        ) && (!isRandomSelected || selectedReferences.isNotEmpty())
     return CharacterSelectionState(availableSelection, isDefaultSelected)
 }

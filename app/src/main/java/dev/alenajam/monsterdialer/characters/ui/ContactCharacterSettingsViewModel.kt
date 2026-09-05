@@ -154,6 +154,14 @@ class ContactCharacterSettingsViewModel @Inject constructor(
         }
     }
 
+    fun clearContactSpecificRandomPool(type: CharacterType) {
+        val selected = _contact.value ?: return
+        viewModelScope.launch {
+            selected.numbers.forEach { assignmentRepository.clearContactRandomPool(it, type) }
+            _contactRandomPools.value = _contactRandomPools.value - type
+        }
+    }
+
     init {
         restoreSelectedContact()
     }
