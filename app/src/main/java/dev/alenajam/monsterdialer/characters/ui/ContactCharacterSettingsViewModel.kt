@@ -85,6 +85,9 @@ class ContactCharacterSettingsViewModel @Inject constructor(
     private val _monsterUsesGlobalDefaults = MutableStateFlow(true)
     val monsterUsesGlobalDefaults: StateFlow<Boolean> = _monsterUsesGlobalDefaults.asStateFlow()
 
+    private val _contactRandomPools = MutableStateFlow<Map<CharacterType, Set<CharacterReference>>>(emptyMap())
+    val contactRandomPools: StateFlow<Map<CharacterType, Set<CharacterReference>>> = _contactRandomPools.asStateFlow()
+
     private val _layout = MutableStateFlow(
         if (layoutPreferences.isGridLayout()) {
             CharacterLayout.Grid
@@ -135,6 +138,19 @@ class ContactCharacterSettingsViewModel @Inject constructor(
         type: CharacterType,
         allReferences: Set<CharacterReference>,
     ): Set<CharacterReference> = contactDefaults.value.randomPools[type]?.toSet() ?: allReferences
+
+    fun selectedContactSpecificPool(
+        type: CharacterType,
+        allReferences: Set<CharacterReference>,
+    ): Set<CharacterReference> = _contactRandomPools.value[type] ?: selectedContactPool(type, allReferences)
+
+    fun setContactSpecificRandomPool(type: CharacterType, references: Set<CharacterReference>) {
+        val selected = _contact.value ?: return
+        viewModelScope.launch {
+            selected.numbers.forEach { assignmentRepository.setContactRandomPool(it, type, references.toList()) }
+            _contactRandomPools.value = _contactRandomPools.value + (type to references)
+        }
+    }
 
     init {
         restoreSelectedContact()
@@ -256,10 +272,24 @@ class ContactCharacterSettingsViewModel @Inject constructor(
             selected.numbers.forEach { number ->
                 if (usesGlobalDefaults) {
                     assignmentRepository.clearContactOverride(number, type)
-                } else if (!assignmentRepository.hasContactOverride(number, type)) {
-                    assignmentRepository.randomizeCharacter(number, type, selected.name)
+                } else if (
+                    !assignmentRepository.hasContactOverride(number, type) ||
+                    assignmentRepository.getContactCharacterSelection(number, type).mode == ContactCharacterMode.Random
+                ) {
+                    assignmentRepository.assignCharacter(
+                        number,
+                        type,
+                        if (type == CharacterType.Trainer) {
+                            BuiltInCharacters.defaultTrainerReference
+                        } else {
+                            BuiltInCharacters.defaultMonsterReference
+                        },
+                        selected.name,
+                    )
                 }
             }
+            selected.numbers.forEach { assignmentRepository.clearContactRandomPool(it, type) }
+            _contactRandomPools.value = _contactRandomPools.value - type
             restoreSelectedContactState()
         }
     }
@@ -267,9 +297,13 @@ class ContactCharacterSettingsViewModel @Inject constructor(
     private fun setRandomMode(type: CharacterType) {
         val selected = _contact.value ?: return
         viewModelScope.launch {
+            val initialPool = assignmentRepository.getContactRandomPool(type)?.toSet()
+                ?: allContactPoolReferences(type)
             selected.numbers.forEach {
+                assignmentRepository.setContactRandomPool(it, type, initialPool.toList())
                 assignmentRepository.randomizeCharacter(it, type, selected.name)
             }
+            _contactRandomPools.value = _contactRandomPools.value + (type to initialPool)
             if (type == CharacterType.Trainer) {
                 _assignedTrainer.value = null
                 _trainerMode.value = ContactCharacterMode.Random
@@ -323,6 +357,10 @@ class ContactCharacterSettingsViewModel @Inject constructor(
         _monsterUsesGlobalDefaults.value = contactKeys.none {
             assignmentRepository.hasContactOverride(it, CharacterType.Monster)
         }
+        _contactRandomPools.value = CharacterType.entries.mapNotNull { type ->
+            val pool = contactKeys.map { assignmentRepository.getContactRandomPool(it, type) }.distinct().singleOrNull()
+            pool?.let { type to it.toSet() }
+        }.toMap()
         _contactSelectionVersion.value += 1
     }
 

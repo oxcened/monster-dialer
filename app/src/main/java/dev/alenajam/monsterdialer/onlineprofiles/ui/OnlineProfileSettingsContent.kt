@@ -54,7 +54,6 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import dev.alenajam.monsterdialer.R
 import dev.alenajam.monsterdialer.app.ui.LocalMonsterAppIcons
 import dev.alenajam.monsterdialer.characters.ui.ContextualGuideButton
-import dev.alenajam.monsterdialer.characters.ui.GuideContent
 import dev.alenajam.monsterdialer.onlineprofiles.data.ProfileSharingLink
 import dev.alenajam.monsterdialer.onlineprofiles.data.ProfileSharingQrCode
 import dev.alenajam.monsterdialer.onlineprofiles.data.QrCodeMatrix
@@ -139,11 +138,7 @@ fun OnlineProfileSection(viewModel: OnlineProfileSettingsViewModel = hiltViewMod
                                     color = MaterialTheme.colorScheme.onSecondaryContainer,
                                 )
                                 ContextualGuideButton(
-                                    contents = listOf(
-                                        GuideContent(R.string.online_profile_guide_title, R.string.online_profile_guide_message),
-                                        GuideContent(R.string.online_profile_public_id_title, R.string.online_profile_public_id_message),
-                                        GuideContent(R.string.online_profile_delete_guide_title, R.string.online_profile_delete_guide_message),
-                                    ),
+                                    contents = ownedOnlineProfileGuideContents(),
                                     modifier = Modifier.size(32.dp),
                                 )
                             }
@@ -221,11 +216,7 @@ fun OnlineProfileSection(viewModel: OnlineProfileSettingsViewModel = hiltViewMod
                             ) {
                                 Text(stringResource(R.string.online_profile_title), modifier = Modifier.weight(1f, fill = false), style = MaterialTheme.typography.titleMedium, color = MaterialTheme.colorScheme.onSecondaryContainer)
                                 ContextualGuideButton(
-                                    contents = listOf(
-                                        GuideContent(R.string.online_profile_guide_title, R.string.online_profile_guide_message),
-                                        GuideContent(R.string.online_profile_public_id_title, R.string.online_profile_public_id_message),
-                                        GuideContent(R.string.online_profile_delete_guide_title, R.string.online_profile_delete_guide_message),
-                                    ),
+                                    contents = ownedOnlineProfileGuideContents(),
                                     modifier = Modifier.size(32.dp),
                                 )
                             }
@@ -347,6 +338,7 @@ fun OnlineProfileSection(viewModel: OnlineProfileSettingsViewModel = hiltViewMod
     )
     error?.let { AlertDialog(onDismissRequest = viewModel::clearError, title = { Text(stringResource(R.string.online_profile_error_title)) }, text = { Text(it) }, confirmButton = { TextButton(onClick = viewModel::clearError) { Text(stringResource(R.string.close)) } }) }
 }
+
 
 @Composable
 @OptIn(ExperimentalMaterial3Api::class)

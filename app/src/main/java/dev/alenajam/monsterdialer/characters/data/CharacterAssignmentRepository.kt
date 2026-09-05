@@ -21,6 +21,9 @@ interface CharacterAssignmentRepository {
     suspend fun setContactRandomPool(type: CharacterType, references: List<CharacterReference>)
     suspend fun clearContactRandomPool(type: CharacterType)
     suspend fun getContactRandomPool(type: CharacterType): List<CharacterReference>?
+    suspend fun getContactRandomPool(contactKey: String, type: CharacterType): List<CharacterReference>?
+    suspend fun setContactRandomPool(contactKey: String, type: CharacterType, references: List<CharacterReference>)
+    suspend fun clearContactRandomPool(contactKey: String, type: CharacterType)
     suspend fun assignCharacter(
         contactKey: String,
         type: CharacterType,
@@ -95,6 +98,20 @@ class CharacterAssignmentRepositoryImpl @Inject constructor(
 
     override suspend fun getContactRandomPool(type: CharacterType): List<CharacterReference>? = withContext(Dispatchers.IO) {
         assignments.contactCharacterDefaults().randomPools[type]
+    }
+
+    override suspend fun getContactRandomPool(contactKey: String, type: CharacterType): List<CharacterReference>? = withContext(Dispatchers.IO) {
+        assignments.contactRandomPool(contactKey, type)
+    }
+
+    override suspend fun setContactRandomPool(contactKey: String, type: CharacterType, references: List<CharacterReference>) = withContext(Dispatchers.IO) {
+        assignments.setContactRandomPool(contactKey, type, references)
+        notifyAssignmentsChanged()
+    }
+
+    override suspend fun clearContactRandomPool(contactKey: String, type: CharacterType) = withContext(Dispatchers.IO) {
+        assignments.clearContactRandomPool(contactKey, type)
+        notifyAssignmentsChanged()
     }
 
     override suspend fun assignCharacter(

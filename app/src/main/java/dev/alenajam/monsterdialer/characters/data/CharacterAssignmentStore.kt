@@ -27,6 +27,7 @@ private data class CharacterAssignmentsDocument(
     val contactModes: Map<String, Map<CharacterType, ContactCharacterMode>> = emptyMap(),
     val contactDefaultsByType: Map<CharacterType, CharacterReference> = emptyMap(),
     val contactRandomPoolsByType: Map<CharacterType, List<CharacterReference>> = emptyMap(),
+    val contactRandomPoolsByContact: Map<String, Map<CharacterType, List<CharacterReference>>> = emptyMap(),
     val contactLabels: Map<String, String> = emptyMap(),
     val selectedContact: StoredSelectedContact? = null
 )
@@ -282,6 +283,34 @@ class CharacterAssignmentStore(
         write(document.copy(contactRandomPoolsByType = pools))
     }
 
+    @Synchronized
+    fun contactRandomPool(contactKey: String, type: CharacterType): List<CharacterReference>? {
+        val normalizedKey = normalizeContactKeyOrNull(contactKey) ?: return null
+        return read().contactRandomPoolsByContact[normalizedKey]?.get(type)
+    }
+
+    @Synchronized
+    fun setContactRandomPool(contactKey: String, type: CharacterType, references: List<CharacterReference>) {
+        val normalizedKey = normalizeContactKey(contactKey)
+        references.forEach { it.validate() }
+        val document = read()
+        val poolsForContact = document.contactRandomPoolsByContact[normalizedKey].orEmpty().toMutableMap().apply {
+            put(type, references.distinct())
+        }
+        write(document.copy(contactRandomPoolsByContact = document.contactRandomPoolsByContact + (normalizedKey to poolsForContact)))
+    }
+
+    @Synchronized
+    fun clearContactRandomPool(contactKey: String, type: CharacterType) {
+        val normalizedKey = normalizeContactKey(contactKey)
+        val document = read()
+        val poolsForContact = document.contactRandomPoolsByContact[normalizedKey].orEmpty().toMutableMap().apply { remove(type) }
+        val pools = document.contactRandomPoolsByContact.toMutableMap().apply {
+            if (poolsForContact.isEmpty()) remove(normalizedKey) else put(normalizedKey, poolsForContact)
+        }
+        write(document.copy(contactRandomPoolsByContact = pools))
+    }
+
     fun characterForContact(contactKey: String): CharacterReference? =
         characterForContact(contactKey, CharacterType.Monster)
 
@@ -447,6 +476,9 @@ class CharacterAssignmentStore(
         val updatedRandomPools = document.contactRandomPoolsByType.mapValues { (_, pool) ->
             pool.filter { it.packId != packId }
         }.filterValues { it.isNotEmpty() }
+        val updatedContactRandomPools = document.contactRandomPoolsByContact.mapValues { (_, pools) ->
+            pools.mapValues { (_, pool) -> pool.filter { it.packId != packId } }.filterValues { it.isNotEmpty() }
+        }.filterValues { it.isNotEmpty() }
 
         write(document.copy(
             player = if (document.player?.packId == packId) null else document.player,
@@ -459,6 +491,7 @@ class CharacterAssignmentStore(
             contactLabels = updatedLabels,
             contactDefaultsByType = updatedDefaults,
             contactRandomPoolsByType = updatedRandomPools,
+            contactRandomPoolsByContact = updatedContactRandomPools,
         ))
     }
 
@@ -493,6 +526,9 @@ class CharacterAssignmentStore(
         val updatedRandomPools = document.contactRandomPoolsByType.mapValues { (_, pool) ->
             pool.filterNot { it.sameCharacterAs(reference) }
         }.filterValues { it.isNotEmpty() }
+        val updatedContactRandomPools = document.contactRandomPoolsByContact.mapValues { (_, pools) ->
+            pools.mapValues { (_, pool) -> pool.filterNot { it.sameCharacterAs(reference) } }.filterValues { it.isNotEmpty() }
+        }.filterValues { it.isNotEmpty() }
 
         write(document.copy(
             player = if (document.player?.sameCharacterAs(reference) == true) null else document.player,
@@ -505,6 +541,7 @@ class CharacterAssignmentStore(
             contactLabels = updatedLabels,
             contactDefaultsByType = updatedDefaults,
             contactRandomPoolsByType = updatedRandomPools,
+            contactRandomPoolsByContact = updatedContactRandomPools,
         ))
     }
 

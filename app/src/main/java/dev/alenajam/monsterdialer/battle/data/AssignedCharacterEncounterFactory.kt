@@ -179,11 +179,14 @@ class AssignedCharacterEncounterFactory @Inject constructor(
         val selection = assignmentRepository.getContactCharacterSelection(contactKey, type)
         if (selection.character != null) return selection.character
         if (selection.mode != ContactCharacterMode.Random) return null
-        return randomContactCharacter(type)
+        return randomContactCharacter(contactKey, type)
     }
 
-    private suspend fun randomContactCharacter(type: CharacterType): CharacterReference? {
-        val configuredPool = assignmentRepository.getContactRandomPool(type)?.toSet()
+    private suspend fun randomContactCharacter(contactKey: String, type: CharacterType): CharacterReference? {
+        val configuredPool = (
+            assignmentRepository.getContactRandomPool(contactKey, type)
+                ?: assignmentRepository.getContactRandomPool(type)
+            )?.toSet()
         val candidates = charactersRepository
             .getCharactersAssignableTo(CharacterAssignmentTarget.Contact, type)
             .flatMap { character ->

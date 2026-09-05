@@ -252,4 +252,33 @@ class CharacterAssignmentStoreTest {
             store.contactCharacterDefaults().randomPools[CharacterType.Monster],
         )
     }
+
+    @Test
+    fun `contact specific random pool overrides global pool and is cleaned with its character`() {
+        val store = CharacterAssignmentStore(temporaryFolder.newFolder("contact-specific-pool"))
+        val forestMonster = CharacterReference("com.example.forest", "mossling")
+        val coastMonster = CharacterReference("com.example.coast", "tidescale")
+
+        store.setContactRandomPool(CharacterType.Monster, listOf(coastMonster))
+        store.setContactRandomPool("123", CharacterType.Monster, listOf(forestMonster, coastMonster))
+
+        assertEquals(listOf(forestMonster, coastMonster), store.contactRandomPool("123", CharacterType.Monster))
+
+        store.clearAssignmentsForCharacter(forestMonster)
+
+        assertEquals(listOf(coastMonster), store.contactRandomPool("123", CharacterType.Monster))
+    }
+
+    @Test
+    fun `disabling a pack removes entries from contact specific random pools`() {
+        val store = CharacterAssignmentStore(temporaryFolder.newFolder("contact-specific-pack-cleanup"))
+        val forestMonster = CharacterReference("com.example.forest", "mossling")
+        val coastMonster = CharacterReference("com.example.coast", "tidescale")
+
+        store.setContactRandomPool("123", CharacterType.Monster, listOf(forestMonster, coastMonster))
+
+        store.clearAssignmentsForPack(forestMonster.packId)
+
+        assertEquals(listOf(coastMonster), store.contactRandomPool("123", CharacterType.Monster))
+    }
 }
