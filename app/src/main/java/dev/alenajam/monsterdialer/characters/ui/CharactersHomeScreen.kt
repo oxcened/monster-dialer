@@ -584,15 +584,6 @@ private fun CharacterToolsGroup(
             modifier = Modifier.fillMaxWidth(),
         ) {
             CharacterToolRow(
-                title = stringResource(R.string.settings_contact_characters_title),
-                icon = LocalMonsterAppIcons.current.frontSprite,
-                onClick = onOpenContactCharacters,
-            )
-            HorizontalDivider(
-                modifier = Modifier.padding(start = 56.dp),
-                color = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.5f)
-            )
-            CharacterToolRow(
                 title = stringResource(R.string.contact_defaults_toolbox_title),
                 icon = LocalAppIcons.current.edit,
                 onClick = onOpenContactDefaults,
@@ -602,9 +593,9 @@ private fun CharacterToolsGroup(
                 color = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.5f)
             )
             CharacterToolRow(
-                title = stringResource(R.string.battle_journal_title),
-                icon = LocalMonsterAppIcons.current.battleJournal,
-                onClick = onOpenJournal,
+                title = stringResource(R.string.settings_contact_characters_title),
+                icon = LocalMonsterAppIcons.current.frontSprite,
+                onClick = onOpenContactCharacters,
             )
             HorizontalDivider(
                 modifier = Modifier.padding(start = 56.dp),
@@ -623,6 +614,15 @@ private fun CharacterToolsGroup(
                 title = stringResource(R.string.import_character),
                 icon = LocalMonsterAppIcons.current.importCharacter,
                 onClick = onImport,
+            )
+            HorizontalDivider(
+                modifier = Modifier.padding(start = 56.dp),
+                color = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.5f)
+            )
+            CharacterToolRow(
+                title = stringResource(R.string.battle_journal_title),
+                icon = LocalMonsterAppIcons.current.battleJournal,
+                onClick = onOpenJournal,
             )
         }
     }
