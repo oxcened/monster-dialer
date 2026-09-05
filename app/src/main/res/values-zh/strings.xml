@@ -60,6 +60,7 @@
     <string name="show_grid_view" comment="Accessibility label for the control that switches the character selector to a grid.">显示网格视图</string>
     <string name="show_list_view" comment="Accessibility label for the control that switches the character selector to a list.">显示列表视图</string>
     <string name="jump_to_selected_character" comment="Accessibility label for a button that scrolls to the selected character.">跳转到已选角色</string>
+    <string name="character_fast_scroller" comment="Accessibility label for the draggable fast-scrolling control in the character selector.">快速滚动角色</string>
     <string name="select" comment="Button label to choose an option.">选择</string>
     <string name="change" comment="Button label to change the current selection.">更改</string>
     <string name="contact_chooser_prompt" comment="Prompt above the contact picker.">选择要分配角色的联系人。</string>

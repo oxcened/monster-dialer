@@ -6,14 +6,17 @@ import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -27,6 +30,8 @@ import androidx.compose.foundation.lazy.grid.LazyGridState
 import androidx.compose.foundation.lazy.grid.itemsIndexed as gridItemsIndexed
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.background
+import androidx.compose.foundation.gestures.detectDragGestures
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -63,10 +68,13 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Shape
+import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import dev.alenajam.monsterdialer.R
@@ -85,6 +93,7 @@ import dev.alenajam.monsterdialer.packs.data.PackCharacter
 import dev.alenajam.monsterdialer.packs.data.InstalledPackCharacter
 import java.io.File
 import kotlinx.coroutines.launch
+import kotlin.math.roundToInt
 
 enum class CharacterLayout { List, Grid }
 
@@ -580,6 +589,90 @@ internal fun JumpToSelectedCharacterButton(
                 contentDescription = stringResource(R.string.jump_to_selected_character)
             )
         }
+    }
+}
+
+@Composable
+internal fun CharacterFastScroller(
+    listState: LazyListState,
+    modifier: Modifier = Modifier,
+) {
+    val layoutInfo = listState.layoutInfo
+    val visibleItemCount = layoutInfo.visibleItemsInfo.size
+    val totalItemCount = layoutInfo.totalItemsCount
+    if (totalItemCount <= 12 || totalItemCount <= visibleItemCount * 2) return
+
+    val position = (listState.firstVisibleItemIndex.toFloat() /
+        (totalItemCount - visibleItemCount).coerceAtLeast(1)).coerceIn(0f, 1f)
+    FastScrollerTrack(
+        position = position,
+        visibleFraction = (visibleItemCount.toFloat() / totalItemCount).coerceIn(0f, 1f),
+        onPositionChanged = { fraction ->
+            listState.requestScrollToItem((fraction * (totalItemCount - visibleItemCount).coerceAtLeast(0)).roundToInt())
+        },
+        modifier = modifier,
+    )
+}
+
+@Composable
+internal fun CharacterFastScroller(
+    gridState: LazyGridState,
+    modifier: Modifier = Modifier,
+) {
+    val layoutInfo = gridState.layoutInfo
+    val visibleItemCount = layoutInfo.visibleItemsInfo.size
+    val totalItemCount = layoutInfo.totalItemsCount
+    if (totalItemCount <= 12 || totalItemCount <= visibleItemCount * 2) return
+
+    val position = (gridState.firstVisibleItemIndex.toFloat() /
+        (totalItemCount - visibleItemCount).coerceAtLeast(1)).coerceIn(0f, 1f)
+    FastScrollerTrack(
+        position = position,
+        visibleFraction = (visibleItemCount.toFloat() / totalItemCount).coerceIn(0f, 1f),
+        onPositionChanged = { fraction ->
+            gridState.requestScrollToItem((fraction * (totalItemCount - visibleItemCount).coerceAtLeast(0)).roundToInt())
+        },
+        modifier = modifier,
+    )
+}
+
+@Composable
+private fun FastScrollerTrack(
+    position: Float,
+    visibleFraction: Float,
+    onPositionChanged: suspend (Float) -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    val contentDescription = stringResource(R.string.character_fast_scroller)
+    val coroutineScope = rememberCoroutineScope()
+    BoxWithConstraints(
+        modifier = modifier
+            .width(32.dp)
+            .fillMaxHeight()
+            .semantics { this.contentDescription = contentDescription }
+            .pointerInput(Unit) {
+                detectDragGestures(
+                    onDragStart = { offset ->
+                        coroutineScope.launch { onPositionChanged((offset.y / size.height).coerceIn(0f, 1f)) }
+                    },
+                    onDrag = { change, _ ->
+                        coroutineScope.launch { onPositionChanged((change.position.y / size.height).coerceIn(0f, 1f)) }
+                    },
+                )
+            },
+    ) {
+        val thumbHeight = (maxHeight * visibleFraction).coerceIn(48.dp, maxHeight)
+        val travel = (maxHeight - thumbHeight).coerceAtLeast(0.dp)
+        Box(
+            modifier = Modifier
+                .align(Alignment.TopEnd)
+                .padding(vertical = 8.dp)
+                .width(6.dp)
+                .height(thumbHeight)
+                .offset(y = travel * position)
+                .clip(RoundedCornerShape(4.dp))
+                .background(MaterialTheme.colorScheme.primary.copy(alpha = 0.7f)),
+        )
     }
 }
 

@@ -249,6 +249,10 @@ internal fun ColumnScope.PlayerCharacterSettingsContent(
                     )
                 }
             }
+            CharacterFastScroller(
+                listState = listState,
+                modifier = Modifier.align(Alignment.CenterEnd).padding(vertical = 8.dp),
+            )
         } else {
             LazyVerticalGrid(
                 columns = GridCells.Fixed(2),
@@ -300,6 +304,10 @@ internal fun ColumnScope.PlayerCharacterSettingsContent(
                     )
                 }
             }
+            CharacterFastScroller(
+                gridState = gridState,
+                modifier = Modifier.align(Alignment.CenterEnd).padding(vertical = 8.dp),
+            )
         }
         if (currentTabHasCharacters) {
             CharacterLayoutToggle(
