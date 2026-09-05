@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.fillMaxSize
@@ -42,6 +43,9 @@ import androidx.compose.material3.SegmentedButtonDefaults
 import androidx.compose.material3.SingleChoiceSegmentedButtonRow
 import androidx.compose.material3.SmallFloatingActionButton
 import androidx.compose.material3.Surface
+import androidx.compose.material3.PlainTooltip
+import androidx.compose.material3.TooltipBox
+import androidx.compose.material3.TooltipDefaults
 import androidx.compose.material3.Tab
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
@@ -52,6 +56,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.material3.rememberTooltipState
 import androidx.compose.runtime.setValue
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.ui.Alignment
@@ -615,6 +620,126 @@ internal fun JumpToSelectedCharacterButton(
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
+internal fun CharacterAddButton(
+    isAddEnabled: Boolean,
+    onAddCharacter: () -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    TooltipBox(
+        positionProvider = TooltipDefaults.rememberTooltipPositionProvider(),
+        tooltip = { PlainTooltip { Text(stringResource(R.string.add)) } },
+        state = rememberTooltipState(),
+    ) {
+        FilledIconButton(
+            onClick = onAddCharacter,
+            enabled = isAddEnabled,
+            modifier = modifier.size(40.dp),
+            shape = CircleShape,
+        ) {
+            AppIcon(
+                icon = LocalMonsterAppIcons.current.addCharacter,
+                contentDescription = stringResource(R.string.add),
+            )
+        }
+    }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+internal fun CharacterPoolActionButtons(
+    isAllSelected: Boolean,
+    onReset: () -> Unit,
+    onToggleAll: () -> Unit,
+) {
+    Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+        TooltipBox(
+            positionProvider = TooltipDefaults.rememberTooltipPositionProvider(),
+            tooltip = { PlainTooltip { Text(stringResource(R.string.contact_random_pool_reset)) } },
+            state = rememberTooltipState(),
+        ) {
+            OutlinedIconButton(onClick = onReset, modifier = Modifier.size(40.dp)) {
+                AppIcon(
+                    icon = LocalMonsterAppIcons.current.reset,
+                    contentDescription = stringResource(R.string.contact_random_pool_reset),
+                )
+            }
+        }
+        TooltipBox(
+            positionProvider = TooltipDefaults.rememberTooltipPositionProvider(),
+            tooltip = {
+                PlainTooltip {
+                    Text(stringResource(if (isAllSelected) R.string.contact_random_pool_deselect_all else R.string.contact_random_pool_select_all))
+                }
+            },
+            state = rememberTooltipState(),
+        ) {
+            OutlinedIconButton(onClick = onToggleAll, modifier = Modifier.size(40.dp)) {
+                AppIcon(
+                    icon = if (isAllSelected) LocalMonsterAppIcons.current.deselectAll else LocalMonsterAppIcons.current.selectAll,
+                    contentDescription = stringResource(if (isAllSelected) R.string.contact_random_pool_deselect_all else R.string.contact_random_pool_select_all),
+                )
+            }
+        }
+    }
+}
+
+@Composable
+internal fun MonsterFilterButton(
+    filter: MonsterFilter,
+    onFilterSelected: (MonsterFilter) -> Unit,
+) {
+    var filterExpanded by remember { mutableStateOf(false) }
+    Box {
+        TextButton(
+            onClick = { filterExpanded = true },
+            modifier = Modifier.height(48.dp),
+        ) {
+            AppIcon(
+                icon = LocalMonsterAppIcons.current.filter,
+                contentDescription = null,
+            )
+            Text(
+                text = stringResource(
+                    when (filter) {
+                        MonsterFilter.All -> R.string.filter_all
+                        MonsterFilter.Regular -> R.string.filter_regular
+                        MonsterFilter.RadiantUnlocked -> R.string.filter_unlocked_radiant
+                        MonsterFilter.RadiantLocked -> R.string.filter_locked_radiant
+                    },
+                ),
+                modifier = Modifier.padding(start = 8.dp),
+            )
+        }
+        DropdownMenu(
+            expanded = filterExpanded,
+            onDismissRequest = { filterExpanded = false },
+        ) {
+            MonsterFilter.entries.forEach { entry ->
+                DropdownMenuItem(
+                    text = {
+                        Text(
+                            text = stringResource(
+                                when (entry) {
+                                    MonsterFilter.All -> R.string.filter_all
+                                    MonsterFilter.Regular -> R.string.filter_regular
+                                    MonsterFilter.RadiantUnlocked -> R.string.filter_unlocked_radiant
+                                    MonsterFilter.RadiantLocked -> R.string.filter_locked_radiant
+                                },
+                            ),
+                        )
+                    },
+                    onClick = {
+                        onFilterSelected(entry)
+                        filterExpanded = false
+                    },
+                )
+            }
+        }
+    }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
 internal fun CharacterSelectionActions(
     selectedTab: Int,
     onTabSelected: (Int) -> Unit,
@@ -624,64 +749,13 @@ internal fun CharacterSelectionActions(
     modifier: Modifier = Modifier,
     filter: MonsterFilter? = null,
     onFilterSelected: ((MonsterFilter) -> Unit)? = null,
+    poolActions: (@Composable RowScope.() -> Unit)? = null,
 ) {
-    var filterExpanded by remember { mutableStateOf(false) }
     val scrollState = rememberScrollState()
-    val addButton: @Composable () -> Unit = {
-        FilledIconButton(
-            onClick = onAddCharacter,
-            enabled = isAddEnabled,
-            modifier = Modifier.size(48.dp),
-            shape = CircleShape,
-        ) {
-            AppIcon(
-                icon = LocalMonsterAppIcons.current.addCharacter,
-                contentDescription = stringResource(R.string.add),
-            )
-        }
-    }
+    val addButton: @Composable () -> Unit = { CharacterAddButton(isAddEnabled, onAddCharacter) }
     val filterButton: @Composable () -> Unit = {
         if (filter != null && onFilterSelected != null) {
-            Box {
-                TextButton(onClick = { filterExpanded = true }) {
-                    AppIcon(
-                        icon = LocalMonsterAppIcons.current.filter,
-                        contentDescription = null,
-                    )
-                    Text(
-                        text = when (filter) {
-                            MonsterFilter.All -> stringResource(R.string.filter_all)
-                            MonsterFilter.Regular -> stringResource(R.string.filter_regular)
-                            MonsterFilter.RadiantUnlocked -> stringResource(R.string.filter_unlocked_radiant)
-                            MonsterFilter.RadiantLocked -> stringResource(R.string.filter_locked_radiant)
-                        },
-                        modifier = Modifier.padding(start = 8.dp),
-                    )
-                }
-                DropdownMenu(
-                    expanded = filterExpanded,
-                    onDismissRequest = { filterExpanded = false },
-                ) {
-                    MonsterFilter.entries.forEach { entry ->
-                        DropdownMenuItem(
-                            text = {
-                                Text(
-                                    text = when (entry) {
-                                        MonsterFilter.All -> stringResource(R.string.filter_all)
-                                        MonsterFilter.Regular -> stringResource(R.string.filter_regular)
-                                        MonsterFilter.RadiantUnlocked -> stringResource(R.string.filter_unlocked_radiant)
-                                        MonsterFilter.RadiantLocked -> stringResource(R.string.filter_locked_radiant)
-                                    },
-                                )
-                            },
-                            onClick = {
-                                onFilterSelected(entry)
-                                filterExpanded = false
-                            },
-                        )
-                    }
-                }
-            }
+            MonsterFilterButton(filter, onFilterSelected)
         }
     }
 
@@ -718,6 +792,7 @@ internal fun CharacterSelectionActions(
                 verticalAlignment = Alignment.CenterVertically,
             ) {
                 filterButton()
+                poolActions?.invoke(this)
                 Spacer(modifier = Modifier.weight(1f))
                 addButton()
             }
@@ -728,6 +803,7 @@ internal fun CharacterSelectionActions(
                 verticalAlignment = Alignment.CenterVertically,
             ) {
                 filterButton()
+                poolActions?.invoke(this)
                 Spacer(modifier = Modifier.weight(1f))
                 addButton()
             }

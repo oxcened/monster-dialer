@@ -28,6 +28,10 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.input.nestedscroll.NestedScrollConnection
+import androidx.compose.ui.input.nestedscroll.NestedScrollSource
+import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -94,11 +98,22 @@ internal fun ColumnScope.PlayerCharacterSettingsContent(
     val monsterGridState = rememberLazyGridState(initialFirstVisibleItemIndex = monsterSelectedItemIndex)
     val listState = if (selectedTab == 0) trainerListState else monsterListState
     val gridState = if (selectedTab == 0) trainerGridState else monsterGridState
-    val controlsVisible = rememberCharacterSelectionControlsVisibility(
-        listState = listState,
-        gridState = gridState,
-        useGrid = effectiveLayout == CharacterLayout.Grid,
-    )
+    var controlsVisible by remember { mutableStateOf(true) }
+    val controlsScrollConnection = remember {
+        object : NestedScrollConnection {
+            override fun onPostScroll(
+                consumed: Offset,
+                available: Offset,
+                source: NestedScrollSource,
+            ): Offset {
+                when {
+                    consumed.y < 0f -> controlsVisible = false
+                    consumed.y > 0f -> controlsVisible = true
+                }
+                return Offset.Zero
+            }
+        }
+    }
     val trainerTitle = stringResource(R.string.character_type_trainer)
     val monsterTitle = stringResource(R.string.character_type_monster)
     val trainersTitle = stringResource(R.string.character_type_trainers)
@@ -110,6 +125,9 @@ internal fun ColumnScope.PlayerCharacterSettingsContent(
         viewModel.setTargetSlotIndex(slotIndex)
         if (slotIndex != null) viewModel.setFilter(MonsterFilter.All)
         route?.let { viewModel.setSelectedTab(it.selectedTab) }
+    }
+    LaunchedEffect(selectedTab, effectiveLayout) {
+        controlsVisible = true
     }
 
     AnimatedVisibility(
@@ -184,7 +202,13 @@ internal fun ColumnScope.PlayerCharacterSettingsContent(
 
     Box(modifier = Modifier.fillMaxWidth().weight(1f)) {
         if (effectiveLayout == CharacterLayout.List) {
-            LazyColumn(state = listState, modifier = Modifier.fillMaxSize(), contentPadding = PaddingValues(top = 0.dp, bottom = 72.dp)) {
+            LazyColumn(
+                state = listState,
+                modifier = Modifier
+                    .fillMaxSize()
+                    .nestedScroll(controlsScrollConnection),
+                contentPadding = PaddingValues(top = 0.dp, bottom = 72.dp),
+            ) {
                 when (selectedTab) {
                     0 -> characterTypeItems(
                         title = trainerTitle,
@@ -226,7 +250,16 @@ internal fun ColumnScope.PlayerCharacterSettingsContent(
                 }
             }
         } else {
-            LazyVerticalGrid(columns = GridCells.Fixed(2), state = gridState, modifier = Modifier.fillMaxSize(), contentPadding = PaddingValues(top = 0.dp, bottom = 72.dp), horizontalArrangement = Arrangement.spacedBy(2.dp), verticalArrangement = Arrangement.spacedBy(2.dp)) {
+            LazyVerticalGrid(
+                columns = GridCells.Fixed(2),
+                state = gridState,
+                modifier = Modifier
+                    .fillMaxSize()
+                    .nestedScroll(controlsScrollConnection),
+                contentPadding = PaddingValues(top = 0.dp, bottom = 72.dp),
+                horizontalArrangement = Arrangement.spacedBy(2.dp),
+                verticalArrangement = Arrangement.spacedBy(2.dp),
+            ) {
                 when (selectedTab) {
                     0 -> characterTypeGridItems(
                         title = trainerTitle,

@@ -8,10 +8,9 @@ import androidx.compose.animation.fadeOut
 import androidx.compose.animation.expandVertically
 import androidx.compose.animation.shrinkVertically
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.lazy.grid.GridCells
-import androidx.compose.foundation.lazy.grid.LazyGridState
+import androidx.compose.foundation.lazy.grid.GridItemSpan
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.rememberLazyGridState
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -53,12 +52,15 @@ import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.mutableStateMapOf
-import androidx.compose.runtime.snapshotFlow
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.input.nestedscroll.NestedScrollConnection
+import androidx.compose.ui.input.nestedscroll.NestedScrollSource
+import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.res.stringResource
@@ -162,6 +164,8 @@ fun ColumnScope.ContactCharacterSettingsContent(
             onDefaultChanged = viewModel::setContactDefault,
             onPoolChanged = viewModel::setContactRandomPool,
             onPoolReset = viewModel::resetContactRandomPool,
+            onAddCharacter = { type -> navigator?.navigateTo(if (type == CharacterType.Trainer) 0 else 1) },
+            isAddEnabled = !isLimitReached,
         )
         return
     }
@@ -196,14 +200,30 @@ fun ColumnScope.ContactCharacterSettingsContent(
         }
         val currentTabHasCharacters = if (selectedTab == 0) trainers.isNotEmpty() else monsters.isNotEmpty()
         val effectiveLayout = if (currentTabHasCharacters) layout else CharacterLayout.List
+        val isRandomMode = (if (selectedTab == 0) trainerMode else monsterMode) == ContactCharacterMode.Random
         val listState = if (selectedTab == 0) trainerListState else monsterListState
         val gridState = if (selectedTab == 0) trainerGridState else monsterGridState
         val usesGlobalDefaults = if (selectedTab == 0) trainerUsesGlobalDefaults else monsterUsesGlobalDefaults
-        val controlsVisible = rememberCharacterSelectionControlsVisibility(
-            listState = listState,
-            gridState = gridState,
-            useGrid = effectiveLayout == CharacterLayout.Grid,
-        )
+        var controlsVisible by remember { mutableStateOf(true) }
+        val controlsScrollConnection = remember {
+            object : NestedScrollConnection {
+                override fun onPostScroll(
+                    consumed: Offset,
+                    available: Offset,
+                    source: NestedScrollSource,
+                ): Offset {
+                    when {
+                        consumed.y < 0f -> controlsVisible = false
+                        consumed.y > 0f -> controlsVisible = true
+                    }
+                    return Offset.Zero
+                }
+            }
+        }
+
+        LaunchedEffect(selectedTab, effectiveLayout) {
+            controlsVisible = true
+        }
 
         AnimatedVisibility(
             visible = controlsVisible || usesGlobalDefaults,
@@ -241,6 +261,12 @@ fun ColumnScope.ContactCharacterSettingsContent(
                     },
                 )
                 if (!usesGlobalDefaults) {
+                    val randomPool = if (selectedTab == 0) effectiveTrainerRandomPool else effectiveMonsterRandomPool
+                    val allReferences = if (selectedTab == 0) {
+                        viewModel.allContactPoolReferences(CharacterType.Trainer)
+                    } else {
+                        viewModel.allContactPoolReferences(CharacterType.Monster)
+                    }
                     CharacterSelectionActions(
                         selectedTab = selectedTab,
                         onTabSelected = {},
@@ -253,39 +279,23 @@ fun ColumnScope.ContactCharacterSettingsContent(
                             monsterGridState.requestScrollToItem(0)
                             viewModel.setFilter(nextFilter)
                         } else null,
+                        poolActions = if (isRandomMode) {
+                            {
+                                CharacterPoolActionButtons(
+                                    isAllSelected = randomPool == allReferences,
+                                    onReset = {
+                                        val type = if (selectedTab == 0) CharacterType.Trainer else CharacterType.Monster
+                                        viewModel.clearContactSpecificRandomPool(type)
+                                        contactRandomPoolDrafts.remove(type)
+                                    },
+                                    onToggleAll = {
+                                        val type = if (selectedTab == 0) CharacterType.Trainer else CharacterType.Monster
+                                        updateContactPool(type, if (randomPool == allReferences) emptySet() else allReferences)
+                                    },
+                                )
+                            }
+                        } else null,
                     )
-                    if ((if (selectedTab == 0) trainerMode else monsterMode) == ContactCharacterMode.Random) {
-                        val randomPool = if (selectedTab == 0) effectiveTrainerRandomPool else effectiveMonsterRandomPool
-                        val allReferences = if (selectedTab == 0) {
-                            viewModel.allContactPoolReferences(CharacterType.Trainer)
-                        } else {
-                            viewModel.allContactPoolReferences(CharacterType.Monster)
-                        }
-                        Row(
-                            modifier = Modifier.fillMaxWidth().padding(bottom = 4.dp),
-                            horizontalArrangement = Arrangement.spacedBy(8.dp),
-                        ) {
-                            OutlinedButton(
-                                modifier = Modifier.weight(1f),
-                                onClick = {
-                                    val type = if (selectedTab == 0) CharacterType.Trainer else CharacterType.Monster
-                                    viewModel.clearContactSpecificRandomPool(type)
-                                    contactRandomPoolDrafts.remove(type)
-                                },
-                            ) {
-                                Text(stringResource(R.string.contact_random_pool_reset))
-                            }
-                            OutlinedButton(
-                                modifier = Modifier.weight(1f),
-                                onClick = {
-                                    val type = if (selectedTab == 0) CharacterType.Trainer else CharacterType.Monster
-                                    updateContactPool(type, if (randomPool == allReferences) emptySet() else allReferences)
-                                },
-                            ) {
-                                Text(stringResource(if (randomPool == allReferences) R.string.contact_random_pool_deselect_all else R.string.contact_random_pool_select_all))
-                            }
-                        }
-                }
                 }
             }
         }
@@ -328,7 +338,23 @@ fun ColumnScope.ContactCharacterSettingsContent(
                     },
                 )
             } else if (effectiveLayout == CharacterLayout.List) {
-                LazyColumn(state = listState, modifier = Modifier.fillMaxSize(), contentPadding = PaddingValues(top = 0.dp, bottom = 72.dp)) {
+                LazyColumn(
+                    state = listState,
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .nestedScroll(controlsScrollConnection),
+                    contentPadding = PaddingValues(top = 0.dp, bottom = 72.dp),
+                ) {
+                    if (isRandomMode) {
+                        item(key = "randomizer-description") {
+                            Text(
+                                text = stringResource(R.string.contact_random_pool_description),
+                                modifier = Modifier.fillMaxWidth().padding(top = 8.dp, bottom = 8.dp),
+                                style = MaterialTheme.typography.bodySmall,
+                                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                            )
+                        }
+                    }
                     when (selectedTab) {
                         0 -> characterTypeItems(
                             title = trainerTitle,
@@ -406,7 +432,26 @@ fun ColumnScope.ContactCharacterSettingsContent(
                     }
                 }
             } else {
-                LazyVerticalGrid(columns = GridCells.Fixed(2), state = gridState, modifier = Modifier.fillMaxSize(), contentPadding = PaddingValues(top = 0.dp, bottom = 72.dp), horizontalArrangement = Arrangement.spacedBy(2.dp), verticalArrangement = Arrangement.spacedBy(2.dp)) {
+                LazyVerticalGrid(
+                    columns = GridCells.Fixed(2),
+                    state = gridState,
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .nestedScroll(controlsScrollConnection),
+                    contentPadding = PaddingValues(top = 0.dp, bottom = 72.dp),
+                    horizontalArrangement = Arrangement.spacedBy(2.dp),
+                    verticalArrangement = Arrangement.spacedBy(2.dp),
+                ) {
+                    if (isRandomMode) {
+                        item(key = "randomizer-description", span = { GridItemSpan(maxLineSpan) }) {
+                            Text(
+                                text = stringResource(R.string.contact_random_pool_description),
+                                modifier = Modifier.fillMaxWidth().padding(top = 8.dp, bottom = 8.dp),
+                                style = MaterialTheme.typography.bodySmall,
+                                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                            )
+                        }
+                    }
                     when (selectedTab) {
                         0 -> characterTypeGridItems(
                             title = trainerTitle,
@@ -743,39 +788,6 @@ private fun CompactDropdown(
             content = content,
         )
     }
-}
-
-@Composable
-internal fun rememberCharacterSelectionControlsVisibility(
-    listState: LazyListState,
-    gridState: LazyGridState,
-    useGrid: Boolean,
-): Boolean {
-    var visible by remember { mutableStateOf(true) }
-
-    LaunchedEffect(listState, gridState, useGrid) {
-        visible = true
-        var previousPosition: Pair<Int, Int>? = null
-        snapshotFlow {
-            if (useGrid) {
-                gridState.firstVisibleItemIndex to gridState.firstVisibleItemScrollOffset
-            } else {
-                listState.firstVisibleItemIndex to listState.firstVisibleItemScrollOffset
-            }
-        }.collect { position ->
-            previousPosition?.let { previous ->
-                when {
-                    position.first < previous.first ||
-                        (position.first == previous.first && position.second < previous.second) -> visible = true
-                    position.first > previous.first ||
-                        (position.first == previous.first && position.second > previous.second) -> visible = false
-                }
-            }
-            previousPosition = position
-        }
-    }
-
-    return visible
 }
 
 @Composable

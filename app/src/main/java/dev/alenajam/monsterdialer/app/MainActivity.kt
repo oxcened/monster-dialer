@@ -401,6 +401,24 @@ class MainActivity : AppCompatActivity() {
                             isScrollable = false,
                             topContentPadding = 0.dp,
                             visibleInSettings = false,
+                            destinations = listOf(
+                                SettingsSubpageDestination(title = stringResource(R.string.add_trainer)) { payload, onNavigateBack ->
+                                    AddCharacterScreen(
+                                        onNavigateBack,
+                                        characterType = CharacterType.Trainer,
+                                        characterId = payload,
+                                        preferredAssignmentTarget = CharacterAssignmentTarget.Contact,
+                                    )
+                                },
+                                SettingsSubpageDestination(title = stringResource(R.string.add_monster)) { payload, onNavigateBack ->
+                                    AddCharacterScreen(
+                                        onNavigateBack,
+                                        characterType = CharacterType.Monster,
+                                        characterId = payload,
+                                        preferredAssignmentTarget = CharacterAssignmentTarget.Contact,
+                                    )
+                                },
+                            ),
                         ),
                         ).let { subpages ->
                             // Share the character screen and its destinations.

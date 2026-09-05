@@ -5,6 +5,9 @@ import androidx.compose.material.icons.outlined.Add
 import androidx.compose.material.icons.outlined.FilterList
 import androidx.compose.material.icons.outlined.QrCode2
 import androidx.compose.material.icons.outlined.Reorder
+import androidx.compose.material.icons.outlined.RestartAlt
+import androidx.compose.material.icons.outlined.Deselect
+import androidx.compose.material.icons.outlined.SelectAll
 import androidx.compose.material.icons.outlined.Shuffle
 import androidx.compose.runtime.Immutable
 import androidx.compose.runtime.staticCompositionLocalOf
@@ -26,6 +29,9 @@ data class MonsterAppIcons(
     val guide: IconSource,
     val battleJournal: IconSource,
     val reorder: IconSource,
+    val reset: IconSource,
+    val selectAll: IconSource,
+    val deselectAll: IconSource,
     val randomize: IconSource,
     val qrCode: IconSource,
     val filter: IconSource,
@@ -45,6 +51,9 @@ val DefaultMonsterAppIcons = MonsterAppIcons(
     guide = IconSource.Resource(R.drawable.guide, tintable = false),
     battleJournal = IconSource.Resource(R.drawable.book, tintable = false),
     reorder = IconSource.Vector(Icons.Outlined.Reorder),
+    reset = IconSource.Vector(Icons.Outlined.RestartAlt),
+    selectAll = IconSource.Vector(Icons.Outlined.SelectAll),
+    deselectAll = IconSource.Vector(Icons.Outlined.Deselect),
     randomize = IconSource.Vector(Icons.Outlined.Shuffle),
     qrCode = IconSource.Vector(Icons.Outlined.QrCode2),
     filter = IconSource.Vector(Icons.Outlined.FilterList),
