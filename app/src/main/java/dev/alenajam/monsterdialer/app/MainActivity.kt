@@ -53,6 +53,7 @@ import dev.alenajam.monsterdialer.characters.ui.ContactCharacterSettingsEntryPoi
 import dev.alenajam.monsterdialer.characters.ui.ContactCharacterSettingsContent
 import dev.alenajam.monsterdialer.characters.ui.ContactCharacterSettingsViewModel
 import dev.alenajam.monsterdialer.characters.ui.ContactPickerDestination
+import dev.alenajam.monsterdialer.characters.ui.CharacterSettingsPage
 import dev.alenajam.monsterdialer.characters.ui.ContextualGuideButton
 import dev.alenajam.monsterdialer.characters.ui.GuideContent
 import dev.alenajam.monsterdialer.characters.ui.CharacterSettingsSummaryViewModel
@@ -170,7 +171,7 @@ class MainActivity : AppCompatActivity() {
                                                 expanded = false
                                                 coroutineScope.launch {
                                                     contactCharacterSettingsViewModel.selectContact(contact)
-                                                    onOpenSettingsSubpage(1, ContactCharacterSettingsEntryPoint.ContactList.payload)
+                                                    onOpenSettingsSubpage(CharacterSettingsPage.ContactCharacters.index, ContactCharacterSettingsEntryPoint.ContactList.payload)
                                                 }
                                             },
                                         )
@@ -180,7 +181,7 @@ class MainActivity : AppCompatActivity() {
                                                 expanded = false
                                                 coroutineScope.launch {
                                                     contactCharacterSettingsViewModel.selectContact(contact)
-                                                    onOpenSettingsSubpage(LinkedOnlineProfileSettingsIndex, null)
+                                                    onOpenSettingsSubpage(CharacterSettingsPage.LinkedOnlineProfile.index, null)
                                                 }
                                             },
                                         )
@@ -193,7 +194,11 @@ class MainActivity : AppCompatActivity() {
                             content = { onOpenSubpage ->
                                 CharactersHomeScreen(
                                     onOpenSubpage = { index, payload ->
-                                        val destination = if (index == 1) ToolboxContactCharactersSettingsIndex else index
+                                        val destination = if (index == CharacterSettingsPage.ContactCharacters.index) {
+                                            CharacterSettingsPage.ToolboxContactCharacters.index
+                                        } else {
+                                            index
+                                        }
                                         onOpenSubpage(destination, payload)
                                     },
                                     sharingViewModel = characterSharingViewModel,
@@ -368,9 +373,38 @@ class MainActivity : AppCompatActivity() {
                             topContentPadding = 0.dp,
                             visibleInSettings = false,
                         ),
+                        SettingsSubpage(
+                            title = stringResource(R.string.contact_defaults_toolbox_title),
+                            description = stringResource(R.string.contact_defaults_description),
+                            content = { _ ->
+                                ContactCharacterSettingsContent(
+                                    entryPoint = ContactCharacterSettingsEntryPoint.Defaults,
+                                    viewModel = contactCharacterSettingsViewModel,
+                                )
+                            },
+                            actions = {
+                                ContextualGuideButton(
+                                    contents = listOf(
+                                        GuideContent(
+                                            R.string.contact_defaults_guide_title,
+                                            R.string.contact_defaults_guide_message,
+                                            listOf(
+                                                R.string.contact_defaults_guide_default,
+                                                R.string.contact_defaults_guide_randomizer,
+                                                R.string.contact_defaults_guide_overrides,
+                                            ),
+                                        ),
+                                    ),
+                                    contentDescription = R.string.open_contact_defaults_guide,
+                                )
+                            },
+                            isScrollable = false,
+                            topContentPadding = 0.dp,
+                            visibleInSettings = false,
+                        ),
                         ).let { subpages ->
                             // Share the character screen and its destinations.
-                            subpages + subpages[1]
+                            subpages + subpages[CharacterSettingsPage.ContactCharacters.index]
                         }
                     )
                     LaunchedEffect(incomingImport) {
@@ -403,9 +437,6 @@ class MainActivity : AppCompatActivity() {
         incomingImport = intent.incomingImport(contentResolver)
     }
 }
-
-private const val LinkedOnlineProfileSettingsIndex = 4
-private const val ToolboxContactCharactersSettingsIndex = 5
 
 private sealed interface IncomingImport {
     val uri: Uri

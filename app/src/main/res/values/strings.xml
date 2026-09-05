@@ -112,6 +112,35 @@
     <string name="regular" comment="Adjective for a standard, non-rare character variant.">Regular</string>
     <string name="selected" comment="Status label for the currently chosen option.">Selected</string>
     <string name="randomize" comment="Character selection that chooses a different eligible character for every call.">Randomize</string>
+    <string name="contact_defaults_title">Unassigned contacts</string>
+    <string name="contact_defaults_toolbox_title">Contact defaults</string>
+    <string name="contact_defaults_description">Choose defaults and limit the contact randomizer pool.</string>
+    <string name="contact_default_trainer">Default trainer</string>
+    <string name="contact_default_monster">Default monster</string>
+    <string name="contact_choose_trainer" comment="Dropdown option that opens the trainer picker for the contact default.">Choose trainer</string>
+    <string name="contact_choose_monster" comment="Dropdown option that opens the monster picker for the contact default.">Choose monster</string>
+    <string name="contact_default_random">Random</string>
+    <string name="contact_random_pool_all">All available characters</string>
+    <string name="contact_random_pool_choose">Choose randomizer pool</string>
+    <string name="contact_default_choose">Choose default character</string>
+    <string name="contact_defaults_mode_default">Default character</string>
+    <string name="contact_defaults_mode_pool">Randomizer pool</string>
+    <string name="open_contact_defaults_guide" comment="Accessibility label for the help button on the contact defaults screen.">Open contact defaults guide</string>
+    <string name="contact_defaults_guide_title" comment="Title of the guide explaining contact character defaults.">Contact defaults</string>
+    <string name="contact_defaults_guide_message">These settings apply to contacts that do not have their own character customization.</string>
+    <string name="contact_defaults_guide_default">• Choose a default trainer or monster to use for unassigned contacts.</string>
+    <string name="contact_defaults_guide_randomizer">• Choose Randomize to let the app pick from the selected randomizer pool.</string>
+    <string name="contact_defaults_guide_overrides">• A contact’s Customize contact setting overrides these global defaults. Contacts using Use global defaults continue to follow them.</string>
+    <string name="contact_random_pool_reset">Reset</string>
+    <string name="contact_random_pool_description" comment="Explains what the selected characters mean when Randomize is enabled.">Selected characters are the ones Randomize can choose from.</string>
+    <string name="contact_random_pool_select_all">Select all</string>
+    <string name="contact_random_pool_deselect_all">Deselect all</string>
+    <string name="contact_character_source_global">Use global defaults</string>
+    <string name="contact_character_source_custom">Customize contact</string>
+    <string name="contact_character_inherited_title">Using global defaults</string>
+    <string name="contact_character_inherited_message">This contact follows the global %1$s settings. Choose Customize contact above to override them.</string>
+    <string name="contact_character_edit_global_defaults" comment="Button that opens the global contact character defaults from an inherited contact setting.">Edit global defaults</string>
+    <string name="contact_random_pool_save">Save pool</string>
     <string name="locked" comment="Status label for a character variant that must be unlocked before selection.">Locked</string>
     <string name="radiant_variant_locked_title" comment="Title of the dialog shown for a locked radiant character variant.">Radiant variant locked</string>
     <string name="radiant_variant_locked_message" comment="Explains how to unlock a radiant character variant; %1$s is the character name.">When you encounter a radiant %1$s in a wild battle, it unlocks automatically as the battle begins. You can then assign it.</string>

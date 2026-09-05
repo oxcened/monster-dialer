@@ -13,6 +13,13 @@ interface CharacterAssignmentRepository {
     val assignmentVersion: StateFlow<Long>
     suspend fun getAssignedCharacter(contactKey: String, type: CharacterType): CharacterReference?
     suspend fun getContactCharacterSelection(contactKey: String, type: CharacterType): ContactCharacterSelection
+    suspend fun hasContactOverride(contactKey: String, type: CharacterType): Boolean
+    suspend fun clearContactOverride(contactKey: String, type: CharacterType)
+    suspend fun getContactCharacterDefaults(): ContactCharacterDefaults
+    suspend fun setContactDefault(type: CharacterType, reference: CharacterReference?)
+    suspend fun setContactRandomPool(type: CharacterType, references: List<CharacterReference>)
+    suspend fun clearContactRandomPool(type: CharacterType)
+    suspend fun getContactRandomPool(type: CharacterType): List<CharacterReference>?
     suspend fun assignCharacter(
         contactKey: String,
         type: CharacterType,
@@ -55,6 +62,38 @@ class CharacterAssignmentRepositoryImpl @Inject constructor(
         type: CharacterType,
     ): ContactCharacterSelection = withContext(Dispatchers.IO) {
         assignments.selectionForContact(contactKey, type)
+    }
+
+    override suspend fun hasContactOverride(contactKey: String, type: CharacterType): Boolean = withContext(Dispatchers.IO) {
+        assignments.hasContactOverride(contactKey, type)
+    }
+
+    override suspend fun clearContactOverride(contactKey: String, type: CharacterType) = withContext(Dispatchers.IO) {
+        assignments.clearContactOverride(contactKey, type)
+        _assignmentVersion.value += 1
+    }
+
+    override suspend fun getContactCharacterDefaults(): ContactCharacterDefaults = withContext(Dispatchers.IO) {
+        assignments.contactCharacterDefaults()
+    }
+
+    override suspend fun setContactDefault(type: CharacterType, reference: CharacterReference?) = withContext(Dispatchers.IO) {
+        assignments.setContactDefault(type, reference)
+        _assignmentVersion.value += 1
+    }
+
+    override suspend fun setContactRandomPool(type: CharacterType, references: List<CharacterReference>) = withContext(Dispatchers.IO) {
+        assignments.setContactRandomPool(type, references)
+        _assignmentVersion.value += 1
+    }
+
+    override suspend fun clearContactRandomPool(type: CharacterType) = withContext(Dispatchers.IO) {
+        assignments.clearContactRandomPool(type)
+        _assignmentVersion.value += 1
+    }
+
+    override suspend fun getContactRandomPool(type: CharacterType): List<CharacterReference>? = withContext(Dispatchers.IO) {
+        assignments.contactCharacterDefaults().randomPools[type]
     }
 
     override suspend fun assignCharacter(

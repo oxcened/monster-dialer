@@ -147,4 +147,65 @@ class CharacterAssignmentStoreTest {
         assertFalse(selected)
         assertEquals(null, store.selectedContact())
     }
+
+    @Test
+    fun `unassigned contacts use the configured contact default`() {
+        val store = CharacterAssignmentStore(temporaryFolder.newFolder("contact-defaults"))
+        val trainer = CharacterReference("builtin", "trainer")
+
+        store.setContactDefault(CharacterType.Trainer, trainer)
+
+        assertEquals(
+            ContactCharacterSelection(trainer, ContactCharacterMode.Default),
+            store.selectionForContact("123", CharacterType.Trainer),
+        )
+
+        store.randomizeContact("123", CharacterType.Trainer)
+
+        assertEquals(
+            ContactCharacterSelection(null, ContactCharacterMode.Random),
+            store.selectionForContact("123", CharacterType.Trainer),
+        )
+    }
+
+    @Test
+    fun `contact customization can inherit global defaults again`() {
+        val store = CharacterAssignmentStore(temporaryFolder.newFolder("contact-inheritance"))
+        val globalTrainer = CharacterReference("builtin", "trainer")
+        val customTrainer = CharacterReference("com.example.forest", "mossling")
+
+        store.setContactDefault(CharacterType.Trainer, globalTrainer)
+        store.assignContact("123", CharacterType.Trainer, customTrainer)
+
+        assertTrue(store.hasContactOverride("123", CharacterType.Trainer))
+        assertEquals(
+            ContactCharacterSelection(customTrainer, ContactCharacterMode.Default),
+            store.selectionForContact("123", CharacterType.Trainer),
+        )
+
+        store.clearContactOverride("123", CharacterType.Trainer)
+
+        assertFalse(store.hasContactOverride("123", CharacterType.Trainer))
+        assertEquals(
+            ContactCharacterSelection(globalTrainer, ContactCharacterMode.Default),
+            store.selectionForContact("123", CharacterType.Trainer),
+        )
+    }
+
+    @Test
+    fun `contact randomizer pools are stored separately from player assignments`() {
+        val store = CharacterAssignmentStore(temporaryFolder.newFolder("contact-pools"))
+        val monster = CharacterReference("com.example.forest", "mossling")
+
+        store.setContactRandomPool(CharacterType.Monster, listOf(monster))
+
+        assertEquals(listOf(monster), store.contactCharacterDefaults().randomPools[CharacterType.Monster])
+        assertEquals(BuiltInCharacters.defaultMonsterReference, store.player(CharacterType.Monster))
+
+        store.setContactRandomPool(CharacterType.Monster, emptyList())
+        assertEquals(emptyList<CharacterReference>(), store.contactCharacterDefaults().randomPools[CharacterType.Monster])
+
+        store.clearContactRandomPool(CharacterType.Monster)
+        assertFalse(store.contactCharacterDefaults().randomPools.containsKey(CharacterType.Monster))
+    }
 }

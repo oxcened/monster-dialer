@@ -108,14 +108,14 @@ fun CharactersHomeScreen(
         TeamProfileCard(
             playerProfile = playerProfile,
             profileMetrics = profileMetrics,
-            onChangeTrainer = { onOpenSubpage(0, PlayerCharacterSettingsRoute.ChangeTrainer.payload) },
-            onChangeMonster = { onOpenSubpage(0, "${PlayerCharacterSettingsRoute.AddToRoster.payload}:0") }
+            onChangeTrainer = { onOpenSubpage(CharacterSettingsPage.PlayerCharacter.index, PlayerCharacterSettingsRoute.ChangeTrainer.payload) },
+            onChangeMonster = { onOpenSubpage(CharacterSettingsPage.PlayerCharacter.index, "${PlayerCharacterSettingsRoute.AddToRoster.payload}:0") }
         )
         RosterSection(
             roster = playerProfile.roster,
-            onOpenRoster = { onOpenSubpage(0, PlayerCharacterSettingsRoute.AddToRoster.payload) },
+            onOpenRoster = { onOpenSubpage(CharacterSettingsPage.PlayerCharacter.index, PlayerCharacterSettingsRoute.AddToRoster.payload) },
             onOpenRosterSlot = { index ->
-                onOpenSubpage(0, "${PlayerCharacterSettingsRoute.AddToRoster.payload}:$index")
+                onOpenSubpage(CharacterSettingsPage.PlayerCharacter.index, "${PlayerCharacterSettingsRoute.AddToRoster.payload}:$index")
             },
             onReorderRoster = onReorderRoster,
             onRemoveRosterMonster = onRemoveRosterMonster,
@@ -130,9 +130,10 @@ fun CharactersHomeScreen(
                 color = MaterialTheme.colorScheme.onSurface
             )
             CharacterToolsGroup(
-                onOpenContactCharacters = { onOpenSubpage(1, ContactCharacterSettingsEntryPoint.Toolbox.payload) },
-                onOpenJournal = { onOpenSubpage(3, null) },
-                onOpenPacks = { onOpenSubpage(2, null) },
+                onOpenContactCharacters = { onOpenSubpage(CharacterSettingsPage.ContactCharacters.index, ContactCharacterSettingsEntryPoint.Toolbox.payload) },
+                onOpenContactDefaults = { onOpenSubpage(CharacterSettingsPage.ContactDefaults.index, ContactCharacterSettingsEntryPoint.Defaults.payload) },
+                onOpenJournal = { onOpenSubpage(CharacterSettingsPage.BattleJournal.index, null) },
+                onOpenPacks = { onOpenSubpage(CharacterSettingsPage.CharacterPacks.index, null) },
                 onImport = { picker.launch(arrayOf("*/*")) },
             )
         }
@@ -568,6 +569,7 @@ private fun TeamArtwork(
 @Composable
 private fun CharacterToolsGroup(
     onOpenContactCharacters: () -> Unit,
+    onOpenContactDefaults: () -> Unit,
     onOpenJournal: () -> Unit,
     onOpenPacks: () -> Unit,
     onImport: () -> Unit,
@@ -585,6 +587,15 @@ private fun CharacterToolsGroup(
                 title = stringResource(R.string.settings_contact_characters_title),
                 icon = LocalMonsterAppIcons.current.frontSprite,
                 onClick = onOpenContactCharacters,
+            )
+            HorizontalDivider(
+                modifier = Modifier.padding(start = 56.dp),
+                color = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.5f)
+            )
+            CharacterToolRow(
+                title = stringResource(R.string.contact_defaults_toolbox_title),
+                icon = LocalAppIcons.current.edit,
+                onClick = onOpenContactDefaults,
             )
             HorizontalDivider(
                 modifier = Modifier.padding(start = 56.dp),

@@ -1,7 +1,7 @@
 package dev.alenajam.monsterdialer.app.ui
 
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.AddCircleOutline
+import androidx.compose.material.icons.outlined.Add
 import androidx.compose.material.icons.outlined.FilterList
 import androidx.compose.material.icons.outlined.QrCode2
 import androidx.compose.material.icons.outlined.Reorder
@@ -32,7 +32,7 @@ data class MonsterAppIcons(
 )
 
 val DefaultMonsterAppIcons = MonsterAppIcons(
-    addCharacter = IconSource.Vector(Icons.Outlined.AddCircleOutline),
+    addCharacter = IconSource.Vector(Icons.Outlined.Add),
     frontSprite = IconSource.Resource(R.drawable.front_sprite, tintable = false),
     backSprite = IconSource.Resource(R.drawable.back_sprite, tintable = false),
     personalizeContact = IconSource.Resource(R.drawable.more, tintable = false),

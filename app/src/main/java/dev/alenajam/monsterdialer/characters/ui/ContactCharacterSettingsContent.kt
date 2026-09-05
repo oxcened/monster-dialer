@@ -13,17 +13,37 @@ import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyGridState
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.rememberLazyGridState
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.background
+import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.material3.TextButton
+import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.Button
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.Checkbox
+import androidx.compose.material3.DropdownMenu
+import androidx.compose.material3.DropdownMenuItem
+import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.SegmentedButton
+import androidx.compose.material3.SegmentedButtonDefaults
+import androidx.compose.material3.SingleChoiceSegmentedButtonRow
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
@@ -35,6 +55,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.res.stringResource
@@ -46,11 +67,17 @@ import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import dev.alenajam.monsterdialer.R
+import dev.alenajam.opendialer.core.common.ui.AppIcon
+import dev.alenajam.opendialer.core.common.ui.LocalAppIcons
 import dev.alenajam.monsterdialer.characters.data.BuiltInCharacters
 import dev.alenajam.monsterdialer.characters.data.ContactCharacterMode
+import dev.alenajam.monsterdialer.characters.data.ContactCharacterDefaults
 import dev.alenajam.monsterdialer.packs.data.CharacterAssignmentTarget
 import dev.alenajam.monsterdialer.packs.data.InstalledPackCharacter
+import dev.alenajam.monsterdialer.packs.data.CharacterReference
+import dev.alenajam.monsterdialer.packs.data.CharacterType
 import dev.alenajam.opendialer.feature.contacts.ContactPickerScreen
+import dev.alenajam.opendialer.feature.settings.LocalSettingsRootNavigator
 import dev.alenajam.opendialer.feature.settings.LocalSettingsSubpageNavigator
 import kotlinx.coroutines.launch
 
@@ -63,7 +90,9 @@ fun ColumnScope.ContactCharacterSettingsContent(
     val assignedTrainer by viewModel.assignedTrainer.collectAsStateWithLifecycle()
     val assignedMonster by viewModel.assignedMonster.collectAsStateWithLifecycle()
     val trainerMode by viewModel.trainerMode.collectAsStateWithLifecycle()
+    val trainerUsesGlobalDefaults by viewModel.trainerUsesGlobalDefaults.collectAsStateWithLifecycle()
     val monsterMode by viewModel.monsterMode.collectAsStateWithLifecycle()
+    val monsterUsesGlobalDefaults by viewModel.monsterUsesGlobalDefaults.collectAsStateWithLifecycle()
     val contactSelectionVersion by viewModel.contactSelectionVersion.collectAsStateWithLifecycle()
     val trainers by viewModel.trainers.collectAsStateWithLifecycle()
     val monsters by viewModel.monsters.collectAsStateWithLifecycle()
@@ -73,6 +102,7 @@ fun ColumnScope.ContactCharacterSettingsContent(
     val layout by viewModel.layout.collectAsStateWithLifecycle()
     val unlockedVariants by viewModel.unlockedVariants.collectAsStateWithLifecycle()
     val pendingOnlineProfileId by viewModel.pendingOnlineProfileId.collectAsStateWithLifecycle()
+    val contactDefaults by viewModel.contactDefaults.collectAsStateWithLifecycle()
     val trainerSelectedItemIndex = selectedCharacterIndex(trainers, assignedTrainer, hasRandomize = true)
     val monsterSelectedItemIndex = selectedCharacterIndex(monsters, assignedMonster, hasRandomize = true)
     val trainerListState = rememberLazyListState(
@@ -90,6 +120,7 @@ fun ColumnScope.ContactCharacterSettingsContent(
 
     val lifecycleOwner = LocalLifecycleOwner.current
     val navigator = LocalSettingsSubpageNavigator.current
+    val rootNavigator = LocalSettingsRootNavigator.current
 
     DisposableEffect(lifecycleOwner, viewModel) {
         val observer = LifecycleEventObserver { _, event ->
@@ -102,8 +133,24 @@ fun ColumnScope.ContactCharacterSettingsContent(
     }
 
     val currentContact = contact
+    if (entryPoint == ContactCharacterSettingsEntryPoint.Defaults) {
+        ContactCharacterDefaultsSection(
+            viewModel = viewModel,
+            trainers = trainers,
+            monsters = monsters,
+            defaults = contactDefaults,
+            onDefaultChanged = viewModel::setContactDefault,
+            onPoolChanged = viewModel::setContactRandomPool,
+            onPoolReset = viewModel::resetContactRandomPool,
+        )
+        return
+    }
     if (currentContact == null) {
-        Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+        Column(
+            modifier = Modifier.fillMaxSize().verticalScroll(rememberScrollState()),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.spacedBy(8.dp),
+        ) {
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.spacedBy(8.dp),
@@ -131,6 +178,7 @@ fun ColumnScope.ContactCharacterSettingsContent(
         val effectiveLayout = if (currentTabHasCharacters) layout else CharacterLayout.List
         val listState = if (selectedTab == 0) trainerListState else monsterListState
         val gridState = if (selectedTab == 0) trainerGridState else monsterGridState
+        val usesGlobalDefaults = if (selectedTab == 0) trainerUsesGlobalDefaults else monsterUsesGlobalDefaults
         val controlsVisible = rememberCharacterSelectionControlsVisibility(
             listState = listState,
             gridState = gridState,
@@ -138,30 +186,49 @@ fun ColumnScope.ContactCharacterSettingsContent(
         )
 
         AnimatedVisibility(
-            visible = controlsVisible,
+            visible = controlsVisible || usesGlobalDefaults,
             enter = fadeIn() + expandVertically(),
             exit = fadeOut() + shrinkVertically(),
         ) {
-            CharacterSelectionActions(
-            selectedTab = selectedTab,
-            onTabSelected = { tab ->
-                val selectedItemIndex = if (tab == 0) trainerSelectedItemIndex else monsterSelectedItemIndex
-                val nextTabHasCharacters = if (tab == 0) trainers.isNotEmpty() else monsters.isNotEmpty()
-                val nextTabEffectiveLayout = if (nextTabHasCharacters) layout else CharacterLayout.List
+            Column(modifier = Modifier.fillMaxWidth()) {
+                CharacterSettingsDropdowns(
+                    selectedTab = selectedTab,
+                    onTabSelected = { tab ->
+                        val selectedItemIndex = if (tab == 0) trainerSelectedItemIndex else monsterSelectedItemIndex
+                        val nextTabHasCharacters = if (tab == 0) trainers.isNotEmpty() else monsters.isNotEmpty()
+                        val nextTabEffectiveLayout = if (nextTabHasCharacters) layout else CharacterLayout.List
 
-                if (nextTabEffectiveLayout == CharacterLayout.List) (if (tab == 0) trainerListState else monsterListState).requestScrollToItem(selectedItemIndex)
-                else (if (tab == 0) trainerGridState else monsterGridState).requestScrollToItem(selectedItemIndex)
-                viewModel.setSelectedTab(tab)
-            },
-            isAddEnabled = !isLimitReached,
-            onAddCharacter = { navigator?.navigateTo(if (selectedTab == 0) 1 else 2) },
-            filter = if (selectedTab == 1) filter else null,
-            onFilterSelected = if (selectedTab == 1) { nextFilter ->
-                monsterListState.requestScrollToItem(0)
-                monsterGridState.requestScrollToItem(0)
-                viewModel.setFilter(nextFilter)
-            } else null
-            )
+                        if (nextTabEffectiveLayout == CharacterLayout.List) {
+                            (if (tab == 0) trainerListState else monsterListState).requestScrollToItem(selectedItemIndex)
+                        } else {
+                            (if (tab == 0) trainerGridState else monsterGridState).requestScrollToItem(selectedItemIndex)
+                        }
+                        viewModel.setSelectedTab(tab)
+                    },
+                    usesGlobalDefaults = usesGlobalDefaults,
+                    onUsesGlobalDefaultsChanged = { nextUsesGlobalDefaults ->
+                        viewModel.setUsesGlobalDefaults(
+                            if (selectedTab == 0) CharacterType.Trainer else CharacterType.Monster,
+                            nextUsesGlobalDefaults,
+                        )
+                    },
+                )
+                if (!usesGlobalDefaults) {
+                    CharacterSelectionActions(
+                        selectedTab = selectedTab,
+                        onTabSelected = {},
+                        isAddEnabled = !isLimitReached,
+                        onAddCharacter = { navigator?.navigateTo(if (selectedTab == 0) 1 else 2) },
+                        showCharacterTypeTabs = false,
+                        filter = if (selectedTab == 1) filter else null,
+                        onFilterSelected = if (selectedTab == 1) { nextFilter ->
+                            monsterListState.requestScrollToItem(0)
+                            monsterGridState.requestScrollToItem(0)
+                            viewModel.setFilter(nextFilter)
+                        } else null,
+                    )
+                }
+            }
         }
         val scope = androidx.compose.runtime.rememberCoroutineScope()
         var pendingDeletion by remember { mutableStateOf<InstalledPackCharacter?>(null) }
@@ -194,7 +261,12 @@ fun ColumnScope.ContactCharacterSettingsContent(
             else gridState.requestScrollToItem(selectedItemIndex)
         }
         Box(modifier = Modifier.fillMaxWidth().weight(1f)) {
-            if (effectiveLayout == CharacterLayout.List) {
+            if (usesGlobalDefaults) {
+                ContactCharacterInheritedSummary(
+                    selectedType = if (selectedTab == 0) CharacterType.Trainer else CharacterType.Monster,
+                    onOpenGlobalDefaults = { rootNavigator?.invoke(5, null) },
+                )
+            } else if (effectiveLayout == CharacterLayout.List) {
                 LazyColumn(state = listState, modifier = Modifier.fillMaxSize(), contentPadding = PaddingValues(top = 0.dp, bottom = 72.dp)) {
                     when (selectedTab) {
                         0 -> characterTypeItems(
@@ -315,7 +387,7 @@ fun ColumnScope.ContactCharacterSettingsContent(
                     }
                 }
             }
-            if (currentTabHasCharacters) {
+            if (!usesGlobalDefaults && currentTabHasCharacters) {
                 CharacterLayoutToggle(
                     layout,
                     onLayoutChanged = { nextLayout ->
@@ -334,6 +406,361 @@ fun ColumnScope.ContactCharacterSettingsContent(
 }
 
 @Composable
+private fun ContactCharacterInheritedSummary(
+    selectedType: CharacterType,
+    onOpenGlobalDefaults: () -> Unit,
+) {
+    val typeLabel = stringResource(
+        if (selectedType == CharacterType.Trainer) R.string.character_type_trainer else R.string.character_type_monster,
+    )
+    Card(
+        modifier = Modifier.fillMaxWidth().padding(top = 8.dp),
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainerLow),
+    ) {
+        Column(
+            modifier = Modifier.padding(16.dp),
+            verticalArrangement = Arrangement.spacedBy(4.dp),
+        ) {
+            Text(
+                text = stringResource(R.string.contact_character_inherited_title),
+                style = MaterialTheme.typography.titleMedium,
+            )
+            Text(
+                text = stringResource(R.string.contact_character_inherited_message, typeLabel),
+                style = MaterialTheme.typography.bodyMedium,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+            )
+            TextButton(
+                onClick = onOpenGlobalDefaults,
+                modifier = Modifier.align(Alignment.End),
+            ) {
+                Text(stringResource(R.string.contact_character_edit_global_defaults))
+            }
+        }
+    }
+}
+
+@Composable
+private fun CharacterSettingsDropdowns(
+    selectedTab: Int,
+    onTabSelected: (Int) -> Unit,
+    usesGlobalDefaults: Boolean,
+    onUsesGlobalDefaultsChanged: (Boolean) -> Unit,
+) {
+    var sourceMenuExpanded by remember { mutableStateOf(false) }
+    val sourceLabel = stringResource(
+        if (usesGlobalDefaults) R.string.contact_character_source_global else R.string.contact_character_source_custom,
+    )
+    val buttonShape = RoundedCornerShape(18.dp)
+
+    Row(
+        modifier = Modifier.fillMaxWidth().padding(vertical = 4.dp),
+        horizontalArrangement = Arrangement.spacedBy(8.dp),
+    ) {
+        CharacterTypeSwitch(
+            selectedType = if (selectedTab == 0) CharacterType.Trainer else CharacterType.Monster,
+            onTypeSelected = { onTabSelected(if (it == CharacterType.Trainer) 0 else 1) },
+            modifier = Modifier.weight(1f),
+        )
+        CompactDropdown(
+            label = sourceLabel,
+            expanded = sourceMenuExpanded,
+            onExpandedChange = { sourceMenuExpanded = it },
+            modifier = Modifier.weight(1f),
+            shape = buttonShape,
+        ) {
+            DropdownMenuItem(
+                text = { Text(stringResource(R.string.contact_character_source_global)) },
+                onClick = {
+                    onUsesGlobalDefaultsChanged(true)
+                    sourceMenuExpanded = false
+                },
+            )
+            DropdownMenuItem(
+                text = { Text(stringResource(R.string.contact_character_source_custom)) },
+                onClick = {
+                    onUsesGlobalDefaultsChanged(false)
+                    sourceMenuExpanded = false
+                },
+            )
+        }
+    }
+}
+
+@Composable
+private fun ContactCharacterDefaultsSection(
+    viewModel: ContactCharacterSettingsViewModel,
+    trainers: List<InstalledPackCharacter>,
+    monsters: List<InstalledPackCharacter>,
+    defaults: ContactCharacterDefaults,
+    onDefaultChanged: (CharacterType, CharacterReference?) -> Unit,
+    onPoolChanged: (CharacterType, List<CharacterReference>) -> Unit,
+    onPoolReset: (CharacterType) -> Unit,
+) {
+    var selectedType by remember { mutableStateOf(CharacterType.Trainer) }
+    val selectedDefault = defaults.defaults[selectedType]
+    val effectivePoolMode = selectedDefault == null
+    val characters = if (selectedType == CharacterType.Trainer) trainers else monsters
+    val characterTitle = stringResource(
+        if (selectedType == CharacterType.Trainer) R.string.character_type_trainer else R.string.character_type_monster,
+    )
+    val pluralCharacterTitle = stringResource(
+        if (selectedType == CharacterType.Trainer) R.string.character_type_trainers else R.string.character_type_monsters,
+    )
+    val allPoolReferences = viewModel.allContactPoolReferences(selectedType)
+    val selectedPool = viewModel.selectedContactPool(selectedType, allPoolReferences)
+
+    Column(modifier = Modifier.fillMaxSize()) {
+        Column(
+            modifier = Modifier.fillMaxWidth().padding(top = 12.dp, bottom = 8.dp),
+            verticalArrangement = Arrangement.spacedBy(8.dp),
+        ) {
+            ContactDefaultsDropdowns(
+                selectedType = selectedType,
+                onTypeSelected = {
+                    selectedType = it
+                },
+                isPoolMode = effectivePoolMode,
+                onPoolModeChanged = { isRandomizer ->
+                    onDefaultChanged(
+                        selectedType,
+                        if (isRandomizer) {
+                            null
+                        } else if (selectedType == CharacterType.Trainer) {
+                            BuiltInCharacters.defaultTrainerReference
+                        } else {
+                            BuiltInCharacters.defaultMonsterReference
+                        },
+                    )
+                },
+            )
+        }
+
+        if (effectivePoolMode) {
+            Column(
+                modifier = Modifier.fillMaxWidth().padding(bottom = 8.dp),
+                verticalArrangement = Arrangement.spacedBy(8.dp),
+            ) {
+                Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                    OutlinedButton(
+                        modifier = Modifier.weight(1f),
+                        onClick = { onPoolReset(selectedType) },
+                    ) {
+                        Text(stringResource(R.string.contact_random_pool_reset))
+                    }
+                    OutlinedButton(
+                        modifier = Modifier.weight(1f),
+                        onClick = {
+                            onPoolChanged(
+                                selectedType,
+                                if (selectedPool == allPoolReferences) emptyList() else allPoolReferences.toList(),
+                            )
+                        },
+                    ) {
+                        Text(
+                            stringResource(
+                                if (selectedPool == allPoolReferences) {
+                                    R.string.contact_random_pool_deselect_all
+                                } else {
+                                    R.string.contact_random_pool_select_all
+                                },
+                            ),
+                        )
+                    }
+                }
+            }
+        }
+
+        LazyColumn(
+            modifier = Modifier.fillMaxWidth().weight(1f),
+            contentPadding = PaddingValues(0.dp),
+        ) {
+            if (effectivePoolMode) {
+                item(key = "randomizer-description") {
+                    Text(
+                        text = stringResource(R.string.contact_random_pool_description),
+                        modifier = Modifier.padding(bottom = 8.dp),
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    )
+                }
+            }
+            characterTypeItems(
+                title = characterTitle,
+                pluralTitle = pluralCharacterTitle,
+                defaultCharacter = if (selectedType == CharacterType.Trainer) BuiltInCharacters.trainer else BuiltInCharacters.monster.character,
+                characters = characters,
+                selected = if (effectivePoolMode) null else selectedDefault,
+                defaultReference = if (selectedType == CharacterType.Trainer) BuiltInCharacters.defaultTrainerReference else BuiltInCharacters.defaultMonsterReference,
+                defaultArtwork = { it.contactArtwork },
+                artworkTarget = CharacterAssignmentTarget.Contact,
+                onSelect = { reference ->
+                    if (effectivePoolMode) {
+                        val nextPool = if (reference == null) selectedPool else selectedPool + reference
+                        onPoolChanged(selectedType, nextPool.toList())
+                    } else {
+                        onDefaultChanged(selectedType, reference)
+                    }
+                },
+                isRandomSelected = false,
+                onRandomize = null,
+                showRandomize = false,
+                selectedReferences = if (effectivePoolMode) selectedPool else emptySet(),
+                filter = if (selectedType == CharacterType.Monster) MonsterFilter.Regular else MonsterFilter.All,
+                onSelected = if (effectivePoolMode) { reference ->
+                    onPoolChanged(selectedType, (selectedPool - reference).toList())
+                } else null,
+            )
+        }
+    }
+}
+
+@Composable
+private fun CharacterTypeSwitch(
+    selectedType: CharacterType,
+    onTypeSelected: (CharacterType) -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    SingleChoiceSegmentedButtonRow(
+        modifier = modifier.height(36.dp),
+    ) {
+        SegmentedButton(
+            selected = selectedType == CharacterType.Trainer,
+            onClick = { onTypeSelected(CharacterType.Trainer) },
+            shape = SegmentedButtonDefaults.itemShape(index = 0, count = 2),
+            contentPadding = PaddingValues(horizontal = 8.dp),
+        ) {
+            Text(
+                text = stringResource(R.string.character_type_trainer),
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis,
+            )
+        }
+        SegmentedButton(
+            selected = selectedType == CharacterType.Monster,
+            onClick = { onTypeSelected(CharacterType.Monster) },
+            shape = SegmentedButtonDefaults.itemShape(index = 1, count = 2),
+            contentPadding = PaddingValues(horizontal = 8.dp),
+        ) {
+            Text(
+                text = stringResource(R.string.character_type_monster),
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis,
+            )
+        }
+    }
+}
+
+@Composable
+private fun ContactDefaultsDropdowns(
+    selectedType: CharacterType,
+    onTypeSelected: (CharacterType) -> Unit,
+    isPoolMode: Boolean,
+    onPoolModeChanged: (Boolean) -> Unit,
+) {
+    var modeMenuExpanded by remember { mutableStateOf(false) }
+    val buttonShape = RoundedCornerShape(18.dp)
+    val modeLabel = stringResource(
+        if (isPoolMode) {
+            R.string.randomize
+        } else if (selectedType == CharacterType.Trainer) {
+            R.string.contact_choose_trainer
+        } else {
+            R.string.contact_choose_monster
+        },
+    )
+
+    Row(
+        modifier = Modifier.fillMaxWidth(),
+        horizontalArrangement = Arrangement.spacedBy(8.dp),
+    ) {
+        CharacterTypeSwitch(
+            selectedType = selectedType,
+            onTypeSelected = onTypeSelected,
+            modifier = Modifier.weight(1f),
+        )
+        CompactDropdown(
+            label = modeLabel,
+            expanded = modeMenuExpanded,
+            onExpandedChange = { modeMenuExpanded = it },
+            modifier = Modifier.weight(1f),
+            shape = buttonShape,
+        ) {
+            DropdownMenuItem(
+                text = {
+                    Text(
+                            stringResource(
+                                if (selectedType == CharacterType.Trainer) {
+                                    R.string.contact_choose_trainer
+                                } else {
+                                    R.string.contact_choose_monster
+                                },
+                        ),
+                    )
+                },
+                onClick = {
+                    onPoolModeChanged(false)
+                    modeMenuExpanded = false
+                },
+            )
+            DropdownMenuItem(
+                text = { Text(stringResource(R.string.randomize)) },
+                onClick = {
+                    onPoolModeChanged(true)
+                    modeMenuExpanded = false
+                },
+            )
+        }
+    }
+}
+
+@Composable
+private fun CompactDropdown(
+    label: String,
+    expanded: Boolean,
+    onExpandedChange: (Boolean) -> Unit,
+    modifier: Modifier = Modifier,
+    shape: RoundedCornerShape = RoundedCornerShape(18.dp),
+    content: @Composable ColumnScope.() -> Unit,
+) {
+    Box(
+        modifier = modifier
+            .fillMaxWidth()
+            .height(36.dp)
+            .clip(shape)
+            .background(MaterialTheme.colorScheme.surfaceContainerLow)
+            .border(1.dp, MaterialTheme.colorScheme.outline, shape)
+            .clickable { onExpandedChange(true) }
+            .padding(horizontal = 10.dp),
+        contentAlignment = Alignment.Center,
+    ) {
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.SpaceBetween,
+        ) {
+            Text(
+                text = label,
+                modifier = Modifier.weight(1f).padding(end = 8.dp),
+                style = MaterialTheme.typography.labelLarge,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis,
+            )
+            AppIcon(
+                icon = LocalAppIcons.current.arrowDown,
+                contentDescription = null,
+                modifier = Modifier.size(18.dp),
+            )
+        }
+        DropdownMenu(
+            expanded = expanded,
+            onDismissRequest = { onExpandedChange(false) },
+            content = content,
+        )
+    }
+}
+
+@Composable
 internal fun rememberCharacterSelectionControlsVisibility(
     listState: LazyListState,
     gridState: LazyGridState,
@@ -342,6 +769,7 @@ internal fun rememberCharacterSelectionControlsVisibility(
     var visible by remember { mutableStateOf(true) }
 
     LaunchedEffect(listState, gridState, useGrid) {
+        visible = true
         var previousPosition: Pair<Int, Int>? = null
         snapshotFlow {
             if (useGrid) {

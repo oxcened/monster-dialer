@@ -42,8 +42,7 @@ fun ColumnScope.LinkedOnlineProfileContent(
 
     Column(
         modifier = Modifier
-            .fillMaxSize()
-            .padding(16.dp),
+            .fillMaxSize(),
         verticalArrangement = Arrangement.spacedBy(16.dp),
     ) {
         if (profileId == null) {

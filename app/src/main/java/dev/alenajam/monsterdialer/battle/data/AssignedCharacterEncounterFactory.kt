@@ -182,7 +182,8 @@ class AssignedCharacterEncounterFactory @Inject constructor(
         return randomContactCharacter(type)
     }
 
-    private fun randomContactCharacter(type: CharacterType): CharacterReference? {
+    private suspend fun randomContactCharacter(type: CharacterType): CharacterReference? {
+        val configuredPool = assignmentRepository.getContactRandomPool(type)?.toSet()
         val candidates = charactersRepository
             .getCharactersAssignableTo(CharacterAssignmentTarget.Contact, type)
             .flatMap { character ->
@@ -190,6 +191,7 @@ class AssignedCharacterEncounterFactory @Inject constructor(
                     .filterNot(CharacterVisualVariant::isRadiant)
                     .map { variant -> CharacterReference(character.packId, character.character.id, variant.id) }
             }
+            .filter { configuredPool == null || it in configuredPool }
         return candidates.randomOrNull(random)
     }
 
