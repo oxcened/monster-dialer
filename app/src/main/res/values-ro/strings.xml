@@ -60,6 +60,7 @@
     <string name="show_grid_view" comment="Accessibility label for the control that switches the character selector to a grid.">Afișează grila</string>
     <string name="show_list_view" comment="Accessibility label for the control that switches the character selector to a list.">Afișează lista</string>
     <string name="jump_to_selected_character" comment="Accessibility label for a button that scrolls to the selected character.">Salt la personajul selectat</string>
+    <string name="character_fast_scroller" comment="Accessibility label for the draggable fast-scrolling control in the character selector.">Derulare rapidă prin personaje</string>
     <string name="select" comment="Button label to choose an option.">Selectează</string>
     <string name="change" comment="Button label to change the current selection.">Schimbă</string>
     <string name="contact_chooser_prompt" comment="Prompt above the contact picker.">Alege un contact căruia să îi atribui un personaj.</string>

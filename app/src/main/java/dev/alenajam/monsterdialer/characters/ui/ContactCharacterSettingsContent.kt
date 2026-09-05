@@ -431,6 +431,10 @@ fun ColumnScope.ContactCharacterSettingsContent(
                         )
                     }
                 }
+            CharacterFastScroller(
+                    listState = listState,
+                    modifier = Modifier.align(Alignment.CenterEnd).padding(vertical = 8.dp),
+                )
             } else {
                 LazyVerticalGrid(
                     columns = GridCells.Fixed(2),
@@ -528,6 +532,10 @@ fun ColumnScope.ContactCharacterSettingsContent(
                         )
                     }
                 }
+                CharacterFastScroller(
+                    gridState = gridState,
+                    modifier = Modifier.align(Alignment.CenterEnd).padding(vertical = 8.dp),
+                )
             }
             if (!usesGlobalDefaults && currentTabHasCharacters) {
                 CharacterLayoutToggle(

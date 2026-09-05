@@ -60,6 +60,7 @@
     <string name="show_grid_view" comment="Accessibility label for the control that switches the character selector to a grid.">Rasteransicht anzeigen</string>
     <string name="show_list_view" comment="Accessibility label for the control that switches the character selector to a list.">Listenansicht anzeigen</string>
     <string name="jump_to_selected_character" comment="Accessibility label for a button that scrolls to the selected character.">Zur ausgewählten Figur</string>
+    <string name="character_fast_scroller" comment="Accessibility label for the draggable fast-scrolling control in the character selector.">Figuren schnell scrollen</string>
     <string name="select" comment="Button label to choose an option.">Auswählen</string>
     <string name="change" comment="Button label to change the current selection.">Ändern</string>
     <string name="contact_chooser_prompt" comment="Prompt above the contact picker.">Wähle einen Kontakt, dem ein Charakter zugewiesen werden soll.</string>

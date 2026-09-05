@@ -29,6 +29,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.draw.clipToBounds
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.input.nestedscroll.NestedScrollConnection
@@ -199,6 +200,10 @@ internal fun ContactCharacterDefaultsSection(
                     } else null,
                 )
             }
+            CharacterFastScroller(
+                listState = listState,
+                modifier = Modifier.align(Alignment.CenterEnd).padding(vertical = 8.dp),
+            )
         }
     }
 }
