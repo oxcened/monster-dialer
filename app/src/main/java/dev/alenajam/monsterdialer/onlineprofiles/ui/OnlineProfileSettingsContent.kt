@@ -22,9 +22,12 @@ import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
+import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -274,21 +277,9 @@ fun OnlineProfileSection(viewModel: OnlineProfileSettingsViewModel = hiltViewMod
             }
         }
         if (showQrCode) {
-            AlertDialog(
-                onDismissRequest = { showQrCode = false },
-                title = { Text(stringResource(R.string.online_profile_qr_code_title)) },
-                text = {
-                    Column(
-                        verticalArrangement = Arrangement.spacedBy(16.dp),
-                        horizontalAlignment = Alignment.CenterHorizontally,
-                    ) {
-                        ProfileSharingQrCodeImage(sharingLink)
-                        Text(stringResource(R.string.online_profile_qr_code_description))
-                    }
-                },
-                confirmButton = {
-                    TextButton(onClick = { showQrCode = false }) { Text(stringResource(R.string.close)) }
-                },
+            ProfileSharingQrCodeSheet(
+                sharingLink = sharingLink,
+                onDismiss = { showQrCode = false },
             )
         }
         if (showRetentionCheckIn) {
@@ -355,6 +346,44 @@ fun OnlineProfileSection(viewModel: OnlineProfileSettingsViewModel = hiltViewMod
 }
 
 @Composable
+@OptIn(ExperimentalMaterial3Api::class)
+private fun ProfileSharingQrCodeSheet(
+    sharingLink: String,
+    onDismiss: () -> Unit,
+) {
+    ModalBottomSheet(
+        onDismissRequest = onDismiss,
+        sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true),
+        containerColor = MaterialTheme.colorScheme.secondaryContainer,
+    ) {
+        Column(
+            modifier = Modifier.padding(start = 24.dp, top = 8.dp, end = 24.dp, bottom = 32.dp),
+            verticalArrangement = Arrangement.spacedBy(16.dp),
+            horizontalAlignment = Alignment.CenterHorizontally,
+        ) {
+            Text(
+                stringResource(R.string.online_profile_qr_code_title),
+                modifier = Modifier.fillMaxWidth(),
+                textAlign = TextAlign.Center,
+                style = MaterialTheme.typography.titleLarge,
+                color = MaterialTheme.colorScheme.onSecondaryContainer,
+            )
+            ProfileSharingQrCodeImage(
+                sharingLink = sharingLink,
+                modifier = Modifier.size(256.dp),
+            )
+            Text(
+                stringResource(R.string.online_profile_qr_code_description),
+                modifier = Modifier.fillMaxWidth(),
+                textAlign = TextAlign.Center,
+                style = MaterialTheme.typography.bodyMedium,
+                color = MaterialTheme.colorScheme.onSecondaryContainer.copy(alpha = 0.76f),
+            )
+        }
+    }
+}
+
+@Composable
 private fun OnlineProfileMenu(
     working: Boolean,
     onSignOut: (() -> Unit)?,
@@ -399,11 +428,14 @@ private fun OnlineProfileMenu(
 }
 
 @Composable
-private fun ProfileSharingQrCodeImage(sharingLink: String) {
+private fun ProfileSharingQrCodeImage(
+    sharingLink: String,
+    modifier: Modifier = Modifier,
+) {
     val qrCode = remember(sharingLink) { ProfileSharingQrCode.encode(sharingLink) }
     val contentDescription = stringResource(R.string.online_profile_qr_code_content_description)
     Canvas(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
             .aspectRatio(1f)
             .semantics { this.contentDescription = contentDescription },
