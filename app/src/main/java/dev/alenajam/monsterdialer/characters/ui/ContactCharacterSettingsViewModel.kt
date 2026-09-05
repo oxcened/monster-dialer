@@ -38,6 +38,13 @@ class ContactCharacterSettingsViewModel @Inject constructor(
     private val onlineOpponentResolver: OnlineOpponentResolver,
 ) : ViewModel() {
 
+    private val _filter = MutableStateFlow(MonsterFilter.All)
+    val filter: StateFlow<MonsterFilter> = _filter.asStateFlow()
+
+    fun setFilter(filter: MonsterFilter) {
+        _filter.value = filter
+    }
+
     val unlockedVariants = radiantUnlocks.unlocked
 
     val trainers: StateFlow<List<InstalledPackCharacter>> = charactersRepository.observeCharactersAssignableTo(

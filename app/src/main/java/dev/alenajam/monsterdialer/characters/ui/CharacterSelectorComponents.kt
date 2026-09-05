@@ -115,12 +115,14 @@ internal fun LazyListScope.characterTypeItems(
     onAddCharacter: () -> Unit,
     addLabel: String,
     isAddEnabled: Boolean = true,
+    showAddCharacter: Boolean = true,
     unlockedVariants: Set<CharacterReference> = emptySet(),
     onDelete: (InstalledPackCharacter) -> Unit = {},
     onEdit: (InstalledPackCharacter) -> Unit = {},
     onShare: (InstalledPackCharacter) -> Unit = {},
     isRandomSelected: Boolean = false,
     onRandomize: (() -> Unit)? = null,
+    showRandomize: Boolean = true,
     selectedReferences: Set<CharacterReference> = emptySet(),
     hideSelected: Boolean = false,
     filter: MonsterFilter = MonsterFilter.All,
@@ -152,25 +154,28 @@ internal fun LazyListScope.characterTypeItems(
             selection.matchesFilter() && (!hideSelected || !isReferenceSelected(CharacterReference(selection.installed.packId, selection.installed.character.id, selection.variant.id)))
         }
     }
-    val hasNoCharacterOptions = onRandomize == null && hideSelected && isDefaultSelected && !hasSelectableCharacter
-    item(key = "add") {
-        AddCharacterButton(
-            onClick = onAddCharacter,
-            label = addLabel,
-            enabled = isAddEnabled
-        )
-        if (!isAddEnabled) {
-            Text(
-                text = stringResource(R.string.character_limit_reached_hint),
-                style = MaterialTheme.typography.labelSmall,
-                color = MaterialTheme.colorScheme.error,
-                textAlign = TextAlign.Center,
-                modifier = Modifier.fillMaxWidth().padding(bottom = 8.dp)
+    val effectiveRandomize = onRandomize?.takeIf { showRandomize }
+    val hasNoCharacterOptions = effectiveRandomize == null && hideSelected && isDefaultSelected && !hasSelectableCharacter
+    if (showAddCharacter) {
+        item(key = "add") {
+            AddCharacterButton(
+                onClick = onAddCharacter,
+                label = addLabel,
+                enabled = isAddEnabled
             )
+            if (!isAddEnabled) {
+                Text(
+                    text = stringResource(R.string.character_limit_reached_hint),
+                    style = MaterialTheme.typography.labelSmall,
+                    color = MaterialTheme.colorScheme.error,
+                    textAlign = TextAlign.Center,
+                    modifier = Modifier.fillMaxWidth().padding(bottom = 8.dp)
+                )
+            }
         }
     }
 
-    if (onRandomize != null) {
+    if (effectiveRandomize != null) {
         item(key = "random") {
             CharacterOptionCard(
                 name = stringResource(R.string.randomize),
@@ -186,7 +191,7 @@ internal fun LazyListScope.characterTypeItems(
                         modifier = Modifier.size(40.dp),
                     )
                 },
-                onSelect = onRandomize,
+                onSelect = effectiveRandomize,
             )
         }
     }
@@ -305,12 +310,14 @@ internal fun LazyGridScope.characterTypeGridItems(
     onAddCharacter: () -> Unit,
     addLabel: String,
     isAddEnabled: Boolean = true,
+    showAddCharacter: Boolean = true,
     unlockedVariants: Set<CharacterReference> = emptySet(),
     onDelete: (InstalledPackCharacter) -> Unit = {},
     onEdit: (InstalledPackCharacter) -> Unit = {},
     onShare: (InstalledPackCharacter) -> Unit = {},
     isRandomSelected: Boolean = false,
     onRandomize: (() -> Unit)? = null,
+    showRandomize: Boolean = true,
     selectedReferences: Set<CharacterReference> = emptySet(),
     hideSelected: Boolean = false,
     filter: MonsterFilter = MonsterFilter.All,
@@ -342,27 +349,30 @@ internal fun LazyGridScope.characterTypeGridItems(
             selection.matchesFilter() && (!hideSelected || !isReferenceSelected(CharacterReference(selection.installed.packId, selection.installed.character.id, selection.variant.id)))
         }
     }
-    val hasNoCharacterOptions = onRandomize == null && hideSelected && isDefaultSelected && !hasSelectableCharacter
-    item(key = "add", span = { GridItemSpan(2) }) {
-        Column {
-            AddCharacterButton(
-                onClick = onAddCharacter,
-                label = addLabel,
-                enabled = isAddEnabled
-            )
-            if (!isAddEnabled) {
-                Text(
-                    text = stringResource(R.string.character_limit_reached_hint),
-                    style = MaterialTheme.typography.labelSmall,
-                    color = MaterialTheme.colorScheme.error,
-                    textAlign = TextAlign.Center,
-                    modifier = Modifier.fillMaxWidth().padding(bottom = 8.dp)
+    val effectiveRandomize = onRandomize?.takeIf { showRandomize }
+    val hasNoCharacterOptions = effectiveRandomize == null && hideSelected && isDefaultSelected && !hasSelectableCharacter
+    if (showAddCharacter) {
+        item(key = "add", span = { GridItemSpan(2) }) {
+            Column {
+                AddCharacterButton(
+                    onClick = onAddCharacter,
+                    label = addLabel,
+                    enabled = isAddEnabled
                 )
+                if (!isAddEnabled) {
+                    Text(
+                        text = stringResource(R.string.character_limit_reached_hint),
+                        style = MaterialTheme.typography.labelSmall,
+                        color = MaterialTheme.colorScheme.error,
+                        textAlign = TextAlign.Center,
+                        modifier = Modifier.fillMaxWidth().padding(bottom = 8.dp)
+                    )
+                }
             }
         }
     }
 
-    if (onRandomize != null) {
+    if (effectiveRandomize != null) {
         item(key = "random") {
             CharacterGridItem(
                 name = stringResource(R.string.randomize),
@@ -377,7 +387,7 @@ internal fun LazyGridScope.characterTypeGridItems(
                         modifier = Modifier.size(48.dp),
                     )
                 },
-                onSelect = onRandomize,
+                onSelect = effectiveRandomize,
             )
         }
     }
