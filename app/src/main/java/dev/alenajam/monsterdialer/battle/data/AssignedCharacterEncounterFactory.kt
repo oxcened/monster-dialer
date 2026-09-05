@@ -193,7 +193,7 @@ class AssignedCharacterEncounterFactory @Inject constructor(
         } else {
             BuiltInCharacters.defaultMonsterReference
         }
-        val candidates = listOf(builtInReference) + charactersRepository
+        val packCandidates = charactersRepository
             .getCharactersAssignableTo(CharacterAssignmentTarget.Contact, type)
             .flatMap { character ->
                 character.character.visualVariants
@@ -202,6 +202,8 @@ class AssignedCharacterEncounterFactory @Inject constructor(
                     }
                     .map { variant -> CharacterReference(character.packId, character.character.id, variant.id) }
             }
+        val candidates = (listOf(builtInReference) + packCandidates + configuredPool.orEmpty())
+            .distinct()
             .filter { configuredPool == null || it in configuredPool }
         return candidates.randomOrNull(random)
     }
