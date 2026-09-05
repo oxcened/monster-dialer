@@ -1,6 +1,7 @@
 package dev.alenajam.monsterdialer.characters.ui
 
 import android.widget.Toast
+import androidx.activity.compose.BackHandler
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
@@ -48,8 +49,10 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.mutableStateMapOf
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -78,6 +81,7 @@ import dev.alenajam.monsterdialer.packs.data.CharacterReference
 import dev.alenajam.monsterdialer.packs.data.CharacterType
 import dev.alenajam.opendialer.feature.contacts.ContactPickerScreen
 import dev.alenajam.opendialer.feature.settings.LocalSettingsRootNavigator
+import dev.alenajam.opendialer.feature.settings.LocalSettingsBackInterceptor
 import dev.alenajam.opendialer.feature.settings.LocalSettingsSubpageNavigator
 import kotlinx.coroutines.launch
 
@@ -264,7 +268,9 @@ fun ColumnScope.ContactCharacterSettingsContent(
             if (usesGlobalDefaults) {
                 ContactCharacterInheritedSummary(
                     selectedType = if (selectedTab == 0) CharacterType.Trainer else CharacterType.Monster,
-                    onOpenGlobalDefaults = { rootNavigator?.invoke(5, null) },
+                    onOpenGlobalDefaults = {
+                        rootNavigator?.invoke(CharacterSettingsPage.ContactDefaults.index, null)
+                    },
                 )
             } else if (effectiveLayout == CharacterLayout.List) {
                 LazyColumn(state = listState, modifier = Modifier.fillMaxSize(), contentPadding = PaddingValues(top = 0.dp, bottom = 72.dp)) {
@@ -498,6 +504,10 @@ private fun ContactCharacterDefaultsSection(
     onPoolReset: (CharacterType) -> Unit,
 ) {
     var selectedType by remember { mutableStateOf(CharacterType.Trainer) }
+    val draftPools = remember { mutableStateMapOf<CharacterType, Set<CharacterReference>>() }
+    var showEmptyPoolExitWarning by remember { mutableStateOf(false) }
+    val navigator = LocalSettingsSubpageNavigator.current
+    val backInterceptor = LocalSettingsBackInterceptor.current
     val selectedDefault = defaults.defaults[selectedType]
     val effectivePoolMode = selectedDefault == null
     val characters = if (selectedType == CharacterType.Trainer) trainers else monsters
@@ -508,7 +518,36 @@ private fun ContactCharacterDefaultsSection(
         if (selectedType == CharacterType.Trainer) R.string.character_type_trainers else R.string.character_type_monsters,
     )
     val allPoolReferences = viewModel.allContactPoolReferences(selectedType)
-    val selectedPool = viewModel.selectedContactPool(selectedType, allPoolReferences)
+    val savedPool = viewModel.selectedContactPool(selectedType, allPoolReferences)
+    val selectedPool = draftPools[selectedType] ?: savedPool
+    val hasUnsavedEmptyPool = draftPools.values.any(Set<CharacterReference>::isEmpty)
+
+    LaunchedEffect(defaults.randomPools) {
+        draftPools.entries.toList().forEach { (type, draftPool) ->
+            if (draftPool.isNotEmpty() && defaults.randomPools[type]?.toSet() == draftPool) {
+                draftPools.remove(type)
+            }
+        }
+    }
+
+    val requestEmptyPoolExitWarning = {
+        showEmptyPoolExitWarning = true
+    }
+    BackHandler(enabled = hasUnsavedEmptyPool, onBack = requestEmptyPoolExitWarning)
+
+    SideEffect {
+        backInterceptor?.onNavigateBack = if (hasUnsavedEmptyPool) {
+            {
+                requestEmptyPoolExitWarning()
+                true
+            }
+        } else {
+            null
+        }
+    }
+    DisposableEffect(backInterceptor) {
+        onDispose { backInterceptor?.onNavigateBack = null }
+    }
 
     Column(modifier = Modifier.fillMaxSize()) {
         Column(
@@ -522,6 +561,7 @@ private fun ContactCharacterDefaultsSection(
                 },
                 isPoolMode = effectivePoolMode,
                 onPoolModeChanged = { isRandomizer ->
+                    if (!isRandomizer) draftPools.remove(selectedType)
                     onDefaultChanged(
                         selectedType,
                         if (isRandomizer) {
@@ -544,16 +584,21 @@ private fun ContactCharacterDefaultsSection(
                 Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                     OutlinedButton(
                         modifier = Modifier.weight(1f),
-                        onClick = { onPoolReset(selectedType) },
+                        onClick = {
+                            draftPools.remove(selectedType)
+                            onPoolReset(selectedType)
+                        },
                     ) {
                         Text(stringResource(R.string.contact_random_pool_reset))
                     }
                     OutlinedButton(
                         modifier = Modifier.weight(1f),
                         onClick = {
-                            onPoolChanged(
-                                selectedType,
-                                if (selectedPool == allPoolReferences) emptyList() else allPoolReferences.toList(),
+                            updateContactRandomPoolDraft(
+                                type = selectedType,
+                                pool = if (selectedPool == allPoolReferences) emptySet() else allPoolReferences,
+                                draftPools = draftPools,
+                                onPoolChanged = onPoolChanged,
                             )
                         },
                     ) {
@@ -597,7 +642,12 @@ private fun ContactCharacterDefaultsSection(
                 onSelect = { reference ->
                     if (effectivePoolMode) {
                         val nextPool = if (reference == null) selectedPool else selectedPool + reference
-                        onPoolChanged(selectedType, nextPool.toList())
+                        updateContactRandomPoolDraft(
+                            type = selectedType,
+                            pool = nextPool,
+                            draftPools = draftPools,
+                            onPoolChanged = onPoolChanged,
+                        )
                     } else {
                         onDefaultChanged(selectedType, reference)
                     }
@@ -608,11 +658,48 @@ private fun ContactCharacterDefaultsSection(
                 selectedReferences = if (effectivePoolMode) selectedPool else emptySet(),
                 filter = if (selectedType == CharacterType.Monster) MonsterFilter.Regular else MonsterFilter.All,
                 onSelected = if (effectivePoolMode) { reference ->
-                    onPoolChanged(selectedType, (selectedPool - reference).toList())
+                    updateContactRandomPoolDraft(
+                        type = selectedType,
+                        pool = selectedPool - reference,
+                        draftPools = draftPools,
+                        onPoolChanged = onPoolChanged,
+                    )
                 } else null,
             )
         }
     }
+
+    if (showEmptyPoolExitWarning) {
+        AlertDialog(
+            onDismissRequest = { showEmptyPoolExitWarning = false },
+            title = { Text(stringResource(R.string.contact_random_pool_empty_title)) },
+            text = { Text(stringResource(R.string.contact_random_pool_empty_exit_message)) },
+            confirmButton = {
+                TextButton(onClick = { showEmptyPoolExitWarning = false }) {
+                    Text(stringResource(R.string.contact_random_pool_continue_editing))
+                }
+            },
+            dismissButton = {
+                TextButton(onClick = {
+                    draftPools.clear()
+                    showEmptyPoolExitWarning = false
+                    navigator?.navigateBack()
+                }) {
+                    Text(stringResource(R.string.contact_random_pool_discard_changes))
+                }
+            },
+        )
+    }
+}
+
+private fun updateContactRandomPoolDraft(
+    type: CharacterType,
+    pool: Set<CharacterReference>,
+    draftPools: MutableMap<CharacterType, Set<CharacterReference>>,
+    onPoolChanged: (CharacterType, List<CharacterReference>) -> Unit,
+) {
+    draftPools[type] = pool
+    if (pool.isNotEmpty()) onPoolChanged(type, pool.toList())
 }
 
 @Composable

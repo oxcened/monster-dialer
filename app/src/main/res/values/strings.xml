@@ -141,6 +141,10 @@
     <string name="contact_character_inherited_message">This contact follows the global %1$s settings. Choose Customize contact above to override them.</string>
     <string name="contact_character_edit_global_defaults" comment="Button that opens the global contact character defaults from an inherited contact setting.">Edit global defaults</string>
     <string name="contact_random_pool_save">Save pool</string>
+    <string name="contact_random_pool_empty_title">Choose at least one character</string>
+    <string name="contact_random_pool_empty_exit_message">Your randomizer pool is empty, so those changes have not been saved. Select at least one character to save the pool, or discard the unsaved changes to leave.</string>
+    <string name="contact_random_pool_continue_editing">Keep editing</string>
+    <string name="contact_random_pool_discard_changes">Discard changes</string>
     <string name="locked" comment="Status label for a character variant that must be unlocked before selection.">Locked</string>
     <string name="radiant_variant_locked_title" comment="Title of the dialog shown for a locked radiant character variant.">Radiant variant locked</string>
     <string name="radiant_variant_locked_message" comment="Explains how to unlock a radiant character variant; %1$s is the character name.">When you encounter a radiant %1$s in a wild battle, it unlocks automatically as the battle begins. You can then assign it.</string>

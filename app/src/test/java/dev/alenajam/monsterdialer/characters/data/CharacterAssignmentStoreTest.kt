@@ -193,6 +193,18 @@ class CharacterAssignmentStoreTest {
     }
 
     @Test
+    fun `recognizes legacy monster assignments as contact overrides`() {
+        val assignmentsDirectory = temporaryFolder.newFolder("legacy-contact-override")
+        File(assignmentsDirectory, "character-assignments.json").writeText(
+            """{"contacts":{"123":{"packId":"com.example.forest","characterId":"mossling"}}}"""
+        )
+
+        val store = CharacterAssignmentStore(assignmentsDirectory)
+
+        assertTrue(store.hasContactOverride("123", CharacterType.Monster))
+    }
+
+    @Test
     fun `contact randomizer pools are stored separately from player assignments`() {
         val store = CharacterAssignmentStore(temporaryFolder.newFolder("contact-pools"))
         val monster = CharacterReference("com.example.forest", "mossling")
@@ -207,5 +219,37 @@ class CharacterAssignmentStoreTest {
 
         store.clearContactRandomPool(CharacterType.Monster)
         assertFalse(store.contactCharacterDefaults().randomPools.containsKey(CharacterType.Monster))
+    }
+
+    @Test
+    fun `clearing a character removes it from contact defaults and random pools`() {
+        val store = CharacterAssignmentStore(temporaryFolder.newFolder("character-default-cleanup"))
+        val monster = CharacterReference("com.example.forest", "mossling")
+
+        store.setContactDefault(CharacterType.Monster, monster)
+        store.setContactRandomPool(CharacterType.Monster, listOf(monster))
+
+        store.clearAssignmentsForCharacter(monster)
+
+        assertFalse(store.contactCharacterDefaults().defaults.containsKey(CharacterType.Monster))
+        assertFalse(store.contactCharacterDefaults().randomPools.containsKey(CharacterType.Monster))
+    }
+
+    @Test
+    fun `clearing a pack removes its contact defaults and preserves other pool entries`() {
+        val store = CharacterAssignmentStore(temporaryFolder.newFolder("pack-default-cleanup"))
+        val forestMonster = CharacterReference("com.example.forest", "mossling")
+        val coastMonster = CharacterReference("com.example.coast", "tidescale")
+
+        store.setContactDefault(CharacterType.Monster, forestMonster)
+        store.setContactRandomPool(CharacterType.Monster, listOf(forestMonster, coastMonster))
+
+        store.clearAssignmentsForPack(forestMonster.packId)
+
+        assertFalse(store.contactCharacterDefaults().defaults.containsKey(CharacterType.Monster))
+        assertEquals(
+            listOf(coastMonster),
+            store.contactCharacterDefaults().randomPools[CharacterType.Monster],
+        )
     }
 }

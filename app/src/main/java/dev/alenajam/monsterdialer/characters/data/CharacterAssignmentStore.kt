@@ -226,7 +226,8 @@ class CharacterAssignmentStore(
         val document = read()
         val normalizedKey = normalizeContactKeyOrNull(contactKey) ?: return false
         return document.contactsByType[normalizedKey]?.containsKey(type) == true ||
-            document.contactModes[normalizedKey]?.containsKey(type) == true
+            document.contactModes[normalizedKey]?.containsKey(type) == true ||
+            (type == CharacterType.Monster && normalizedKey in document.contacts)
     }
 
     @Synchronized
@@ -442,6 +443,10 @@ class CharacterAssignmentStore(
         val updatedLabels = document.contactLabels.filterKeys { key ->
             key in updatedContactsByType || key in legacyContacts || key in cleanedModes
         }
+        val updatedDefaults = document.contactDefaultsByType.filterValues { it.packId != packId }
+        val updatedRandomPools = document.contactRandomPoolsByType.mapValues { (_, pool) ->
+            pool.filter { it.packId != packId }
+        }.filterValues { it.isNotEmpty() }
 
         write(document.copy(
             player = if (document.player?.packId == packId) null else document.player,
@@ -451,7 +456,9 @@ class CharacterAssignmentStore(
             activePlayerMonster = updatedActiveMonster,
             contactsByType = updatedContactsByType,
             contactModes = cleanedModes,
-            contactLabels = updatedLabels
+            contactLabels = updatedLabels,
+            contactDefaultsByType = updatedDefaults,
+            contactRandomPoolsByType = updatedRandomPools,
         ))
     }
 
@@ -480,6 +487,12 @@ class CharacterAssignmentStore(
         val updatedLabels = document.contactLabels.filterKeys { key ->
             key in updatedContactsByType || key in legacyContacts || key in cleanedModes
         }
+        val updatedDefaults = document.contactDefaultsByType.filterValues {
+            !it.sameCharacterAs(reference)
+        }
+        val updatedRandomPools = document.contactRandomPoolsByType.mapValues { (_, pool) ->
+            pool.filterNot { it.sameCharacterAs(reference) }
+        }.filterValues { it.isNotEmpty() }
 
         write(document.copy(
             player = if (document.player?.sameCharacterAs(reference) == true) null else document.player,
@@ -489,7 +502,9 @@ class CharacterAssignmentStore(
             activePlayerMonster = updatedActiveMonster,
             contactsByType = updatedContactsByType,
             contactModes = cleanedModes,
-            contactLabels = updatedLabels
+            contactLabels = updatedLabels,
+            contactDefaultsByType = updatedDefaults,
+            contactRandomPoolsByType = updatedRandomPools,
         ))
     }
 

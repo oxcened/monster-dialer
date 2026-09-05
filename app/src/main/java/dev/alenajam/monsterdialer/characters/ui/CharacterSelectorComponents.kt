@@ -124,16 +124,16 @@ internal fun LazyListScope.characterTypeItems(
     filter: MonsterFilter = MonsterFilter.All,
 ) {
     val type = if (defaultCharacter == BuiltInCharacters.trainer) CharacterType.Trainer else CharacterType.Monster
-    val availableSelection = selected?.takeIf { reference ->
-        characters.any { it.matches(reference) }
-    }
-    val isDefaultSelected = (selected?.isBuiltInMonsterRosterReference() == true
-        || selectedReferences.any(CharacterReference::isBuiltInMonsterRosterReference)
-        || defaultReference in selectedReferences
-        || (selectedReferences.isEmpty() && availableSelection == null && onSelected == null))
-        && !isRandomSelected
+    val selectionState = characterSelectionState(
+        characters = characters,
+        selected = selected,
+        selectedReferences = selectedReferences,
+        defaultReference = defaultReference,
+        allowsDeselection = onSelected != null,
+        isRandomSelected = isRandomSelected,
+    )
     fun isReferenceSelected(reference: CharacterReference): Boolean =
-        if (selectedReferences.isEmpty()) availableSelection == reference else reference in selectedReferences
+        selectionState.isReferenceSelected(reference, selectedReferences)
 
     fun CharacterSelection.matchesFilter(): Boolean {
         if (type != CharacterType.Monster) return true
@@ -152,7 +152,7 @@ internal fun LazyListScope.characterTypeItems(
         }
     }
     val effectiveRandomize = onRandomize?.takeIf { showRandomize }
-    val hasNoCharacterOptions = effectiveRandomize == null && hideSelected && isDefaultSelected && !hasSelectableCharacter
+    val hasNoCharacterOptions = effectiveRandomize == null && hideSelected && selectionState.isDefaultSelected && !hasSelectableCharacter
 
     if (effectiveRandomize != null) {
         item(key = "random") {
@@ -179,13 +179,13 @@ internal fun LazyListScope.characterTypeItems(
     val userCharacters = characters.filter { it.isEditable }
     val otherPacks = characters.filter { !it.isEditable }.groupBy { it.packId }
 
-    if (filter.allowsBuiltInMonster && (!hideSelected || !isDefaultSelected)) {
+    if (filter.allowsBuiltInMonster && (!hideSelected || !selectionState.isDefaultSelected)) {
         item { SectionHeader(stringResource(R.string.built_in_characters_section, pluralTitle)) }
         item(key = "default") {
             CharacterOptionCard(
                 name = defaultCharacter.name,
                 type = type,
-                isSelected = isDefaultSelected,
+                isSelected = selectionState.isDefaultSelected,
                 roundTop = true,
                 roundBottom = true,
                 artwork = {
@@ -300,20 +300,21 @@ internal fun LazyGridScope.characterTypeGridItems(
     onRandomize: (() -> Unit)? = null,
     showRandomize: Boolean = true,
     selectedReferences: Set<CharacterReference> = emptySet(),
+    onSelected: ((CharacterReference) -> Unit)? = null,
     hideSelected: Boolean = false,
     filter: MonsterFilter = MonsterFilter.All,
 ) {
     val type = if (defaultCharacter == BuiltInCharacters.trainer) CharacterType.Trainer else CharacterType.Monster
-    val availableSelection = selected?.takeIf { reference ->
-        characters.any { it.matches(reference) }
-    }
-    val isDefaultSelected = (selected?.isBuiltInMonsterRosterReference() == true
-        || selectedReferences.any(CharacterReference::isBuiltInMonsterRosterReference)
-        || defaultReference in selectedReferences
-        || (selectedReferences.isEmpty() && availableSelection == null))
-        && !isRandomSelected
+    val selectionState = characterSelectionState(
+        characters = characters,
+        selected = selected,
+        selectedReferences = selectedReferences,
+        defaultReference = defaultReference,
+        allowsDeselection = onSelected != null,
+        isRandomSelected = isRandomSelected,
+    )
     fun isReferenceSelected(reference: CharacterReference): Boolean =
-        if (selectedReferences.isEmpty()) availableSelection == reference else reference in selectedReferences
+        selectionState.isReferenceSelected(reference, selectedReferences)
 
     fun CharacterSelection.matchesFilter(): Boolean {
         if (type != CharacterType.Monster) return true
@@ -332,7 +333,7 @@ internal fun LazyGridScope.characterTypeGridItems(
         }
     }
     val effectiveRandomize = onRandomize?.takeIf { showRandomize }
-    val hasNoCharacterOptions = effectiveRandomize == null && hideSelected && isDefaultSelected && !hasSelectableCharacter
+    val hasNoCharacterOptions = effectiveRandomize == null && hideSelected && selectionState.isDefaultSelected && !hasSelectableCharacter
 
     if (effectiveRandomize != null) {
         item(key = "random") {
@@ -358,13 +359,13 @@ internal fun LazyGridScope.characterTypeGridItems(
     val userCharacters = characters.filter { it.isEditable }
     val otherPacks = characters.filter { !it.isEditable }.groupBy { it.packId }
 
-    if (filter.allowsBuiltInMonster && (!hideSelected || !isDefaultSelected)) {
+    if (filter.allowsBuiltInMonster && (!hideSelected || !selectionState.isDefaultSelected)) {
         item(span = { GridItemSpan(2) }) { SectionHeader(stringResource(R.string.built_in_characters_section, pluralTitle)) }
         item(key = "default") {
             CharacterGridItem(
                 name = defaultCharacter.name,
                 type = type,
-                isSelected = isDefaultSelected,
+                isSelected = selectionState.isDefaultSelected,
                 shape = gridItemShape(index = 0, itemCount = 1),
                 artwork = {
                     Image(
@@ -373,7 +374,10 @@ internal fun LazyGridScope.characterTypeGridItems(
                         modifier = Modifier.size(88.dp)
                     )
                 },
-                onSelect = { onSelect(defaultReference) }
+                onSelect = { onSelect(defaultReference) },
+                onSelected = onSelected?.let { callback ->
+                    { defaultReference?.let(callback) }
+                },
             )
         }
     }
@@ -406,6 +410,7 @@ internal fun LazyGridScope.characterTypeGridItems(
                         )
                     },
                     onSelect = { if (isUnlocked) onSelect(reference) },
+                    onSelected = onSelected?.let { callback -> { callback(reference) } },
                     onDelete = if (installed.isDeletable) { { onDelete(installed) } } else null,
                     onEdit = if (installed.isEditable) { { onEdit(installed) } } else null,
                     onShare = if (installed.isEditable) { { onShare(installed) } } else null
@@ -441,7 +446,8 @@ internal fun LazyGridScope.characterTypeGridItems(
                             modifier = Modifier.size(88.dp)
                         )
                     },
-                    onSelect = { if (isUnlocked) onSelect(reference) }
+                    onSelect = { if (isUnlocked) onSelect(reference) },
+                    onSelected = onSelected?.let { callback -> { callback(reference) } },
                 )
             }
         }
@@ -464,7 +470,7 @@ private fun InstalledPackCharacter.selectionVariants(): List<CharacterSelection>
 private val MonsterFilter.allowsBuiltInMonster: Boolean
     get() = this == MonsterFilter.All || this == MonsterFilter.Regular
 
-private fun InstalledPackCharacter.matches(reference: CharacterReference): Boolean =
+internal fun InstalledPackCharacter.matches(reference: CharacterReference): Boolean =
     packId == reference.packId &&
         character.id == reference.characterId &&
         character.variant(reference.variantId) != null
@@ -625,7 +631,7 @@ internal fun CharacterSelectionActions(
         FilledIconButton(
             onClick = onAddCharacter,
             enabled = isAddEnabled,
-            modifier = Modifier.size(36.dp),
+            modifier = Modifier.size(48.dp),
             shape = CircleShape,
         ) {
             AppIcon(
@@ -959,6 +965,7 @@ private fun CharacterGridItem(
     shape: Shape,
     artwork: @Composable () -> Unit,
     onSelect: () -> Unit,
+    onSelected: (() -> Unit)? = null,
     onDelete: (() -> Unit)? = null,
     onEdit: (() -> Unit)? = null,
     onShare: (() -> Unit)? = null,
@@ -979,7 +986,13 @@ private fun CharacterGridItem(
                 modifier = Modifier
                     .combinedClickable(
                         onClick = {
-                            if (isUnlocked) onSelect() else showRadiantUnlockDialog = true
+                            if (isSelected) {
+                                onSelected?.invoke()
+                            } else if (isUnlocked) {
+                                onSelect()
+                            } else {
+                                showRadiantUnlockDialog = true
+                            }
                         },
                         onLongClick = if (onDelete != null || onEdit != null || onShare != null) { { showMenu = true } } else null
                     )
