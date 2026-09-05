@@ -87,6 +87,13 @@ class AssignedCharacterEncounterFactoryTest {
     fun randomContactMonsterChangesForEachCall() {
         setupPack("com.example.first", "first", CharacterType.Monster, CharacterAssignmentTarget.Contact, name = "First Monster")
         setupPack("com.example.second", "second", CharacterType.Monster, CharacterAssignmentTarget.Contact, name = "Second Monster")
+        store.setContactRandomPool(
+            CharacterType.Monster,
+            listOf(
+                CharacterReference("com.example.first", "first"),
+                CharacterReference("com.example.second", "second"),
+            ),
+        )
         store.randomizeContact("123", CharacterType.Monster)
 
         val first = AssignedCharacterEncounterFactory(
@@ -308,6 +315,8 @@ class AssignedCharacterEncounterFactoryTest {
             Int.SIZE_BITS -> -1
             else -> (1 shl bitCount) - 1
         }
+
+        override fun nextInt(until: Int): Int = until - 1
     }
 
     private object FirstRandom : Random() {
@@ -320,5 +329,7 @@ class AssignedCharacterEncounterFactoryTest {
             Int.SIZE_BITS -> -1
             else -> (1 shl bitCount) - 1
         }
+
+        override fun nextInt(until: Int): Int = until - 1
     }
 }
