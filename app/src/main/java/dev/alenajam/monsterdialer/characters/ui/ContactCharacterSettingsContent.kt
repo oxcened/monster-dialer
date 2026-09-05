@@ -110,8 +110,8 @@ fun ColumnScope.ContactCharacterSettingsContent(
     val pendingOnlineProfileId by viewModel.pendingOnlineProfileId.collectAsStateWithLifecycle()
     val contactDefaults by viewModel.contactDefaults.collectAsStateWithLifecycle()
     val contactRandomPools by viewModel.contactRandomPools.collectAsStateWithLifecycle()
-    val trainerSelectedItemIndex = selectedCharacterIndex(trainers, assignedTrainer, hasRandomize = true)
-    val monsterSelectedItemIndex = selectedCharacterIndex(monsters, assignedMonster, hasRandomize = true)
+    val trainerSelectedItemIndex = selectedCharacterIndex(trainers, assignedTrainer)
+    val monsterSelectedItemIndex = selectedCharacterIndex(monsters, assignedMonster)
     val trainerRandomPool = contactRandomPools[CharacterType.Trainer]
         ?: viewModel.selectedContactPool(CharacterType.Trainer, viewModel.allContactPoolReferences(CharacterType.Trainer))
     val monsterRandomPool = contactRandomPools[CharacterType.Monster]
