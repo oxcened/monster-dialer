@@ -331,4 +331,37 @@
     <string name="online_profile_qr_action">Cod QR</string>
     <string name="online_profile_more_options">Mai multe opțiuni de profil</string>
     <string name="online_profile_sign_in_google">Conectează-te cu Google</string>
+    <string name="contact_defaults_title">Contacte nealocate</string>
+    <string name="contact_defaults_toolbox_title">Setări implicite pentru contacte</string>
+    <string name="contact_defaults_description">Alege setările implicite și limitează grupul de selecție aleatorie pentru contacte.</string>
+    <string name="contact_default_trainer">Antrenor implicit</string>
+    <string name="contact_default_monster">Monstru implicit</string>
+    <string name="contact_choose_trainer" comment="Dropdown option that opens the trainer picker for the contact default.">Alege antrenorul</string>
+    <string name="contact_choose_monster" comment="Dropdown option that opens the monster picker for the contact default.">Alege monstrul</string>
+    <string name="contact_default_random">Aleatoriu</string>
+    <string name="contact_random_pool_all">Toate personajele disponibile</string>
+    <string name="contact_random_pool_choose">Alege grupul de selecție aleatorie</string>
+    <string name="contact_default_choose">Alege personajul implicit</string>
+    <string name="contact_defaults_mode_default">Personaj implicit</string>
+    <string name="contact_defaults_mode_pool">Grup de selecție aleatorie</string>
+    <string name="open_contact_defaults_guide" comment="Accessibility label for the help button on the contact defaults screen.">Deschide ghidul pentru setările implicite ale contactelor</string>
+    <string name="contact_defaults_guide_title" comment="Title of the guide explaining contact character defaults.">Setări implicite pentru contacte</string>
+    <string name="contact_defaults_guide_message">Aceste setări se aplică persoanelor de contact care nu au propria personalizare a personajului.</string>
+    <string name="contact_defaults_guide_default">• Alege un antrenor sau un monstru implicit pentru contactele nealocate.</string>
+    <string name="contact_defaults_guide_randomizer">• Alege Aleatoriu pentru ca aplicația să selecteze un personaj din grupul de selecție aleatorie ales.</string>
+    <string name="contact_defaults_guide_overrides">• Setarea Personalizează contactul a unui contact înlocuiește aceste setări implicite globale. Contactele care folosesc Folosește setările implicite globale continuă să le urmeze.</string>
+    <string name="contact_random_pool_reset">Resetează</string>
+    <string name="contact_random_pool_description" comment="Explains what the selected characters mean when Randomize is enabled.">Opțiunea Aleatoriu poate alege dintre personajele selectate.</string>
+    <string name="contact_random_pool_select_all">Selectează tot</string>
+    <string name="contact_random_pool_deselect_all">Deselectează tot</string>
+    <string name="contact_character_source_global">Folosește setările implicite globale</string>
+    <string name="contact_character_source_custom">Personalizează contactul</string>
+    <string name="contact_character_inherited_title">Se folosesc setările implicite globale</string>
+    <string name="contact_character_inherited_message">Acest contact urmează setările globale %1$s. Alege Personalizează contactul mai sus pentru a le înlocui.</string>
+    <string name="contact_character_edit_global_defaults" comment="Button that opens the global contact character defaults from an inherited contact setting.">Editează setările implicite globale</string>
+    <string name="contact_random_pool_save">Salvează grupul</string>
+    <string name="contact_random_pool_empty_title">Alege cel puțin un personaj</string>
+    <string name="contact_random_pool_empty_exit_message">Grupul de selecție aleatorie este gol, așa că aceste modificări nu au fost salvate. Selectează cel puțin un personaj pentru a salva grupul sau renunță la modificările nesalvate pentru a ieși.</string>
+    <string name="contact_random_pool_continue_editing">Continuă editarea</string>
+    <string name="contact_random_pool_discard_changes">Renunță la modificări</string>
 </resources>

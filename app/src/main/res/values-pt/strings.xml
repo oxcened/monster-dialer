@@ -326,4 +326,37 @@
     <string name="online_profile_qr_action">Código QR</string>
     <string name="online_profile_more_options">Mais opções do perfil</string>
     <string name="online_profile_sign_in_google">Iniciar sessão com Google</string>
+    <string name="contact_defaults_title">Contactos não atribuídos</string>
+    <string name="contact_defaults_toolbox_title">Predefinições dos contactos</string>
+    <string name="contact_defaults_description">Escolha as predefinições e limite o grupo de seleção aleatória dos contactos.</string>
+    <string name="contact_default_trainer">Treinador predefinido</string>
+    <string name="contact_default_monster">Monstro predefinido</string>
+    <string name="contact_choose_trainer" comment="Dropdown option that opens the trainer picker for the contact default.">Escolher treinador</string>
+    <string name="contact_choose_monster" comment="Dropdown option that opens the monster picker for the contact default.">Escolher monstro</string>
+    <string name="contact_default_random">Aleatório</string>
+    <string name="contact_random_pool_all">Todas as personagens disponíveis</string>
+    <string name="contact_random_pool_choose">Escolher grupo de seleção aleatória</string>
+    <string name="contact_default_choose">Escolher personagem predefinida</string>
+    <string name="contact_defaults_mode_default">Personagem predefinida</string>
+    <string name="contact_defaults_mode_pool">Grupo de seleção aleatória</string>
+    <string name="open_contact_defaults_guide" comment="Accessibility label for the help button on the contact defaults screen.">Abrir guia das predefinições dos contactos</string>
+    <string name="contact_defaults_guide_title" comment="Title of the guide explaining contact character defaults.">Predefinições dos contactos</string>
+    <string name="contact_defaults_guide_message">Estas definições aplicam-se aos contactos que não têm uma personalização própria da personagem.</string>
+    <string name="contact_defaults_guide_default">• Escolha um treinador ou monstro predefinido para utilizar nos contactos não atribuídos.</string>
+    <string name="contact_defaults_guide_randomizer">• Escolha Aleatório para permitir que a aplicação selecione uma personagem do grupo de seleção aleatória escolhido.</string>
+    <string name="contact_defaults_guide_overrides">• A definição Personalizar contacto de um contacto substitui estas predefinições globais. Os contactos que utilizam Usar predefinições globais continuam a segui-las.</string>
+    <string name="contact_random_pool_reset">Repor</string>
+    <string name="contact_random_pool_description" comment="Explains what the selected characters mean when Randomize is enabled.">Aleatório pode escolher entre as personagens selecionadas.</string>
+    <string name="contact_random_pool_select_all">Selecionar tudo</string>
+    <string name="contact_random_pool_deselect_all">Desmarcar tudo</string>
+    <string name="contact_character_source_global">Usar predefinições globais</string>
+    <string name="contact_character_source_custom">Personalizar contacto</string>
+    <string name="contact_character_inherited_title">A usar predefinições globais</string>
+    <string name="contact_character_inherited_message">Este contacto segue as definições globais de %1$s. Escolha Personalizar contacto acima para as substituir.</string>
+    <string name="contact_character_edit_global_defaults" comment="Button that opens the global contact character defaults from an inherited contact setting.">Editar predefinições globais</string>
+    <string name="contact_random_pool_save">Guardar grupo</string>
+    <string name="contact_random_pool_empty_title">Escolha pelo menos uma personagem</string>
+    <string name="contact_random_pool_empty_exit_message">O grupo de seleção aleatória está vazio, por isso estas alterações não foram guardadas. Selecione pelo menos uma personagem para guardar o grupo ou descarte as alterações não guardadas para sair.</string>
+    <string name="contact_random_pool_continue_editing">Continuar a editar</string>
+    <string name="contact_random_pool_discard_changes">Descartar alterações</string>
 </resources>

@@ -315,4 +315,37 @@
     <string name="online_profile_qr_action">二维码</string>
     <string name="online_profile_more_options">更多个人资料选项</string>
     <string name="online_profile_sign_in_google">使用 Google 登录</string>
+    <string name="contact_defaults_title">未分配的联系人</string>
+    <string name="contact_defaults_toolbox_title">联系人默认设置</string>
+    <string name="contact_defaults_description">选择默认设置并限制联系人的随机选择池。</string>
+    <string name="contact_default_trainer">默认训练师</string>
+    <string name="contact_default_monster">默认怪物</string>
+    <string name="contact_choose_trainer" comment="Dropdown option that opens the trainer picker for the contact default.">选择训练师</string>
+    <string name="contact_choose_monster" comment="Dropdown option that opens the monster picker for the contact default.">选择怪物</string>
+    <string name="contact_default_random">随机</string>
+    <string name="contact_random_pool_all">所有可用角色</string>
+    <string name="contact_random_pool_choose">选择随机选择池</string>
+    <string name="contact_default_choose">选择默认角色</string>
+    <string name="contact_defaults_mode_default">默认角色</string>
+    <string name="contact_defaults_mode_pool">随机选择池</string>
+    <string name="open_contact_defaults_guide" comment="Accessibility label for the help button on the contact defaults screen.">打开联系人默认设置指南</string>
+    <string name="contact_defaults_guide_title" comment="Title of the guide explaining contact character defaults.">联系人默认设置</string>
+    <string name="contact_defaults_guide_message">这些设置适用于没有单独进行角色自定义的联系人。</string>
+    <string name="contact_defaults_guide_default">• 选择一个默认训练师或怪物，用于未分配的联系人。</string>
+    <string name="contact_defaults_guide_randomizer">• 选择“随机”，让应用从所选的随机选择池中挑选角色。</string>
+    <string name="contact_defaults_guide_overrides">• 联系人的“自定义联系人”设置会覆盖这些全局默认设置。使用“使用全局默认设置”的联系人将继续遵循这些设置。</string>
+    <string name="contact_random_pool_reset">重置</string>
+    <string name="contact_random_pool_description" comment="Explains what the selected characters mean when Randomize is enabled.">“随机”可以从所选角色中进行选择。</string>
+    <string name="contact_random_pool_select_all">全选</string>
+    <string name="contact_random_pool_deselect_all">取消全选</string>
+    <string name="contact_character_source_global">使用全局默认设置</string>
+    <string name="contact_character_source_custom">自定义联系人</string>
+    <string name="contact_character_inherited_title">正在使用全局默认设置</string>
+    <string name="contact_character_inherited_message">此联系人遵循全局 %1$s 设置。选择上方的“自定义联系人”可覆盖这些设置。</string>
+    <string name="contact_character_edit_global_defaults" comment="Button that opens the global contact character defaults from an inherited contact setting.">编辑全局默认设置</string>
+    <string name="contact_random_pool_save">保存选择池</string>
+    <string name="contact_random_pool_empty_title">请至少选择一个角色</string>
+    <string name="contact_random_pool_empty_exit_message">随机选择池为空，因此这些更改尚未保存。请选择至少一个角色以保存选择池，或放弃未保存的更改后退出。</string>
+    <string name="contact_random_pool_continue_editing">继续编辑</string>
+    <string name="contact_random_pool_discard_changes">放弃更改</string>
 </resources>

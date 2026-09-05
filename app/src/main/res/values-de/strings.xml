@@ -326,4 +326,37 @@
     <string name="online_profile_qr_action">QR-Code</string>
     <string name="online_profile_more_options">Weitere Profiloptionen</string>
     <string name="online_profile_sign_in_google">Mit Google anmelden</string>
+    <string name="contact_defaults_title">Nicht zugewiesene Kontakte</string>
+    <string name="contact_defaults_toolbox_title">Kontakt-Standardeinstellungen</string>
+    <string name="contact_defaults_description">Wähle Standardeinstellungen und begrenze den Zufallsauswahl-Pool für Kontakte.</string>
+    <string name="contact_default_trainer">Standardtrainer</string>
+    <string name="contact_default_monster">Standardmonster</string>
+    <string name="contact_choose_trainer" comment="Dropdown option that opens the trainer picker for the contact default.">Trainer auswählen</string>
+    <string name="contact_choose_monster" comment="Dropdown option that opens the monster picker for the contact default.">Monster auswählen</string>
+    <string name="contact_default_random">Zufällig</string>
+    <string name="contact_random_pool_all">Alle verfügbaren Charaktere</string>
+    <string name="contact_random_pool_choose">Zufallsauswahl-Pool auswählen</string>
+    <string name="contact_default_choose">Standardcharakter auswählen</string>
+    <string name="contact_defaults_mode_default">Standardcharakter</string>
+    <string name="contact_defaults_mode_pool">Zufallsauswahl-Pool</string>
+    <string name="open_contact_defaults_guide" comment="Accessibility label for the help button on the contact defaults screen.">Anleitung zu Kontakt-Standardeinstellungen öffnen</string>
+    <string name="contact_defaults_guide_title" comment="Title of the guide explaining contact character defaults.">Kontakt-Standardeinstellungen</string>
+    <string name="contact_defaults_guide_message">Diese Einstellungen gelten für Kontakte ohne eigene Charakteranpassung.</string>
+    <string name="contact_defaults_guide_default">• Wähle einen Standardtrainer oder ein Standardmonster für nicht zugewiesene Kontakte.</string>
+    <string name="contact_defaults_guide_randomizer">• Wähle Zufällig, damit die App einen Charakter aus dem ausgewählten Zufallsauswahl-Pool auswählt.</string>
+    <string name="contact_defaults_guide_overrides">• Die Einstellung Kontakt anpassen eines Kontakts überschreibt diese globalen Standardeinstellungen. Kontakte mit Globale Standardeinstellungen verwenden folgen ihnen weiterhin.</string>
+    <string name="contact_random_pool_reset">Zurücksetzen</string>
+    <string name="contact_random_pool_description" comment="Explains what the selected characters mean when Randomize is enabled.">Zufällig kann aus den ausgewählten Charakteren auswählen.</string>
+    <string name="contact_random_pool_select_all">Alle auswählen</string>
+    <string name="contact_random_pool_deselect_all">Auswahl aufheben</string>
+    <string name="contact_character_source_global">Globale Standardeinstellungen verwenden</string>
+    <string name="contact_character_source_custom">Kontakt anpassen</string>
+    <string name="contact_character_inherited_title">Globale Standardeinstellungen werden verwendet</string>
+    <string name="contact_character_inherited_message">Dieser Kontakt folgt den globalen %1$s-Einstellungen. Wähle oben Kontakt anpassen, um sie zu überschreiben.</string>
+    <string name="contact_character_edit_global_defaults" comment="Button that opens the global contact character defaults from an inherited contact setting.">Globale Standardeinstellungen bearbeiten</string>
+    <string name="contact_random_pool_save">Pool speichern</string>
+    <string name="contact_random_pool_empty_title">Wähle mindestens einen Charakter aus</string>
+    <string name="contact_random_pool_empty_exit_message">Dein Zufallsauswahl-Pool ist leer, daher wurden diese Änderungen nicht gespeichert. Wähle mindestens einen Charakter aus, um den Pool zu speichern, oder verwirf die nicht gespeicherten Änderungen, um die Ansicht zu verlassen.</string>
+    <string name="contact_random_pool_continue_editing">Weiter bearbeiten</string>
+    <string name="contact_random_pool_discard_changes">Änderungen verwerfen</string>
 </resources>

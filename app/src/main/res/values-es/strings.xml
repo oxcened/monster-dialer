@@ -326,4 +326,37 @@
     <string name="online_profile_qr_action">Código QR</string>
     <string name="online_profile_more_options">Más opciones del perfil</string>
     <string name="online_profile_sign_in_google">Iniciar sesión con Google</string>
+    <string name="contact_defaults_title">Contactos sin asignar</string>
+    <string name="contact_defaults_toolbox_title">Valores predeterminados de contactos</string>
+    <string name="contact_defaults_description">Elige los valores predeterminados y limita el grupo de selección aleatoria de contactos.</string>
+    <string name="contact_default_trainer">Entrenador predeterminado</string>
+    <string name="contact_default_monster">Monstruo predeterminado</string>
+    <string name="contact_choose_trainer" comment="Dropdown option that opens the trainer picker for the contact default.">Elegir entrenador</string>
+    <string name="contact_choose_monster" comment="Dropdown option that opens the monster picker for the contact default.">Elegir monstruo</string>
+    <string name="contact_default_random">Aleatorio</string>
+    <string name="contact_random_pool_all">Todos los personajes disponibles</string>
+    <string name="contact_random_pool_choose">Elegir grupo de selección aleatoria</string>
+    <string name="contact_default_choose">Elegir personaje predeterminado</string>
+    <string name="contact_defaults_mode_default">Personaje predeterminado</string>
+    <string name="contact_defaults_mode_pool">Grupo de selección aleatoria</string>
+    <string name="open_contact_defaults_guide" comment="Accessibility label for the help button on the contact defaults screen.">Abrir guía de valores predeterminados de contactos</string>
+    <string name="contact_defaults_guide_title" comment="Title of the guide explaining contact character defaults.">Valores predeterminados de contactos</string>
+    <string name="contact_defaults_guide_message">Estos ajustes se aplican a los contactos que no tienen su propia personalización de personaje.</string>
+    <string name="contact_defaults_guide_default">• Elige un entrenador o monstruo predeterminado para los contactos sin asignar.</string>
+    <string name="contact_defaults_guide_randomizer">• Elige Aleatorio para que la aplicación seleccione un personaje del grupo de selección aleatoria elegido.</string>
+    <string name="contact_defaults_guide_overrides">• El ajuste Personalizar contacto de un contacto sustituye estos valores predeterminados globales. Los contactos que usan Usar valores predeterminados globales seguirán aplicándolos.</string>
+    <string name="contact_random_pool_reset">Restablecer</string>
+    <string name="contact_random_pool_description" comment="Explains what the selected characters mean when Randomize is enabled.">Aleatorio puede elegir entre los personajes seleccionados.</string>
+    <string name="contact_random_pool_select_all">Seleccionar todo</string>
+    <string name="contact_random_pool_deselect_all">Deseleccionar todo</string>
+    <string name="contact_character_source_global">Usar valores predeterminados globales</string>
+    <string name="contact_character_source_custom">Personalizar contacto</string>
+    <string name="contact_character_inherited_title">Usando valores predeterminados globales</string>
+    <string name="contact_character_inherited_message">Este contacto sigue los ajustes globales de %1$s. Elige Personalizar contacto arriba para sustituirlos.</string>
+    <string name="contact_character_edit_global_defaults" comment="Button that opens the global contact character defaults from an inherited contact setting.">Editar valores predeterminados globales</string>
+    <string name="contact_random_pool_save">Guardar grupo</string>
+    <string name="contact_random_pool_empty_title">Elige al menos un personaje</string>
+    <string name="contact_random_pool_empty_exit_message">Tu grupo de selección aleatoria está vacío, por lo que estos cambios no se han guardado. Selecciona al menos un personaje para guardar el grupo o descarta los cambios sin guardar para salir.</string>
+    <string name="contact_random_pool_continue_editing">Seguir editando</string>
+    <string name="contact_random_pool_discard_changes">Descartar cambios</string>
 </resources>
