@@ -240,7 +240,7 @@
     <string name="online_profile_title">Profil en ligne</string>
     <string name="online_profile_description">Permettez à vos amis de voir le dresseur et le monstre que vous utilisez à chaque appel.</string>
     <string name="online_profile_privacy_note">Seuls les sprites et métadonnées de vos personnages sont partagés.</string>
-    <string name="online_profile_enable">Activer le profil en ligne</string>
+    <string name="online_profile_enable">Activer</string>
     <string name="online_profile_enabling">Activation du profil en ligne</string>
     <string name="online_profile_regenerating">Génération d’un nouveau lien de partage</string>
     <string name="online_profile_deleting">Suppression du profil en ligne</string>
@@ -322,4 +322,7 @@
     <string name="characters_help_sprites_message">Choisissez un fichier image accessible via le sélecteur d’images de votre appareil. MonsterDialer n’impose ni résolution fixe ni limite de taille de fichier pour les sprites personnalisés. Pour un résultat plus net, utilisez une illustration PNG avec un arrière-plan transparent, gardez le personnage centré avec peu de marge vide et utilisez une échelle et une pose similaires pour les sprites de face et de dos.</string>
     <string name="characters_help_radiant_title">Variantes radiantes</string>
     <string name="characters_help_radiant_message">Pour les monstres uniquement : ouvrez Avancé et activez l’interrupteur Radiante pour ajouter une variante radiante. La sélection de personnages affichera alors les versions normale et radiante du même monstre. La version radiante est initialement verrouillée et doit être trouvée pendant les combats avant de pouvoir être sélectionnée. Un sprite de face est requis, car la fonction Trouver l’utilise pour découvrir et déverrouiller la variante radiante.</string>
+    <string name="online_profile_qr_action">Code QR</string>
+    <string name="online_profile_more_options">Autres options du profil</string>
+    <string name="online_profile_sign_in_google">Se connecter avec Google</string>
 </resources>

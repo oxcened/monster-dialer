@@ -144,7 +144,7 @@
     <string name="online_profile_public_id_message">Anyone you send your sharing link to can find your profile through its randomly generated public ID. The same Google account keeps this ID when you sign in on another device, so existing links continue to work. Tap “Regenerate sharing link” to invalidate the current public ID and create a new one. The previous link will no longer work for anyone you shared it with.</string>
     <string name="online_profile_delete_guide_title">Deleting Your Profile</string>
     <string name="online_profile_delete_guide_message">Tap “Delete Online Profile” to permanently remove your published profile data. Anyone who has your sharing link will no longer be able to view your team through it. If you enable a profile again later, it will have a new sharing link.</string>
-    <string name="online_profile_enable" comment="Button that creates and enables the player's Online Profile.">Enable Online Profile</string>
+    <string name="online_profile_enable" comment="Button that creates and enables the player's Online Profile.">Enable</string>
     <string name="online_profile_enabling" comment="Progress label shown while an Online Profile is being enabled.">Enabling Online Profile</string>
     <string name="online_profile_regenerating" comment="Progress label shown while a new profile sharing link is being created.">Regenerating sharing link</string>
     <string name="online_profile_deleting" comment="Progress label shown while the player's Online Profile is being deleted.">Deleting Online Profile</string>
@@ -355,4 +355,7 @@
     <string name="characters_help_assignments_message" comment="Character Guide introduction to the two character-assignment modes. Keep the trailing colon or use equivalent punctuation.">There are two ways to use characters:</string>
     <string name="characters_help_assignments_player" comment="Character Guide bullet explaining Player Character. Preserve the bold label and translate it consistently with the settings title."><b>Player Character:</b> This is your avatar. Set it in “Player Character” settings to represent you in every call.</string>
     <string name="characters_help_assignments_contact" comment="Character Guide bullet explaining Contact Characters. Preserve the bold label and translate it consistently with the settings title."><b>Contact Characters:</b> Assign specific monsters or trainers to individual contacts in “Contact Characters.” They will appear as your opponent when they call you.</string>
+    <string name="online_profile_qr_action">QR code</string>
+    <string name="online_profile_more_options">More profile options</string>
+    <string name="online_profile_sign_in_google">Sign in with Google</string>
 </resources>

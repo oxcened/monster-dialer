@@ -235,7 +235,7 @@
     <string name="online_profile_title">Onlineprofil</string>
     <string name="online_profile_description">Lad venner se træneren og monsteret, du tager med i hvert opkald.</string>
     <string name="online_profile_privacy_note">Kun dine figur-sprites og metadata deles.</string>
-    <string name="online_profile_enable">Aktivér onlineprofil</string>
+    <string name="online_profile_enable">Aktivér</string>
     <string name="online_profile_enabling">Aktiverer onlineprofil</string>
     <string name="online_profile_regenerating">Opretter nyt delingslink</string>
     <string name="online_profile_deleting">Sletter onlineprofil</string>
@@ -317,4 +317,7 @@
     <string name="characters_help_sprites_message">Vælg en billedfil, der er tilgængelig via enhedens billedvælger. MonsterDialer pålægger ikke brugerdefinerede sprites en fast opløsning eller filstørrelsesgrænse. Brug PNG-grafik med gennemsigtig baggrund for det tydeligste resultat, hold figuren centreret med lidt tom plads, og brug en lignende størrelse og positur for forreste og bageste sprites.</string>
     <string name="characters_help_radiant_title">Strålende varianter</string>
     <string name="characters_help_radiant_message">Kun for monstre: Åbn Avanceret, og slå kontakten Strålende til for at tilføje en strålende variant. Figurvalg viser derefter almindelige og strålende versioner af det samme monster. Den strålende version starter låst og skal findes i kampe, før den kan vælges. Et forreste sprite er påkrævet, fordi funktionen Find bruger det til at opdage og låse den strålende variant op.</string>
+    <string name="online_profile_qr_action">QR-kode</string>
+    <string name="online_profile_more_options">Flere profilindstillinger</string>
+    <string name="online_profile_sign_in_google">Log ind med Google</string>
 </resources>

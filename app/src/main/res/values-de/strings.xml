@@ -240,7 +240,7 @@
     <string name="online_profile_title">Online-Profil</string>
     <string name="online_profile_description">Lass Freunde den Trainer und das Monster sehen, die du zu jedem Anruf mitbringst.</string>
     <string name="online_profile_privacy_note">Nur deine Figuren-Sprites und Metadaten werden geteilt.</string>
-    <string name="online_profile_enable">Online-Profil aktivieren</string>
+    <string name="online_profile_enable">Aktivieren</string>
     <string name="online_profile_enabling">Online-Profil wird aktiviert</string>
     <string name="online_profile_regenerating">Freigabelink wird neu erstellt</string>
     <string name="online_profile_deleting">Online-Profil wird gelöscht</string>
@@ -322,4 +322,7 @@
     <string name="characters_help_sprites_message">Wähle eine Bilddatei aus, die über die Bildauswahl deines Geräts verfügbar ist. MonsterDialer legt für eigene Sprites keine feste Auflösung oder Dateigröße fest. Verwende für ein klares Ergebnis PNG-Grafiken mit transparentem Hintergrund, halte den Charakter mit wenig Leerraum zentriert und nutze eine ähnliche Größe und Pose für Vorder- und Rückseiten-Sprites.</string>
     <string name="characters_help_radiant_title">Radianten-Varianten</string>
     <string name="characters_help_radiant_message">Nur für Monster: Öffne Erweitert und aktiviere den Radianten-Schalter, um eine Radianten-Variante hinzuzufügen. In der Charakterauswahl werden dann normale und Radianten-Versionen desselben Monsters angezeigt. Die Radianten-Version ist zunächst gesperrt und muss in Kämpfen gefunden werden, bevor sie ausgewählt werden kann. Ein Vorderseiten-Sprite ist erforderlich, weil die Funktion Finden es verwendet, um die Radianten-Variante zu entdecken und freizuschalten.</string>
+    <string name="online_profile_qr_action">QR-Code</string>
+    <string name="online_profile_more_options">Weitere Profiloptionen</string>
+    <string name="online_profile_sign_in_google">Mit Google anmelden</string>
 </resources>

@@ -248,7 +248,7 @@
     <string name="online_profile_title">Perfil en línea</string>
     <string name="online_profile_description">Permite que tus amistades vean el entrenador y el monstruo que llevas a cada llamada.</string>
     <string name="online_profile_privacy_note">Solo se comparten los sprites y metadatos de tus personajes.</string>
-    <string name="online_profile_enable">Activar perfil en línea</string>
+    <string name="online_profile_enable">Activar</string>
     <string name="online_profile_enabling">Activando perfil en línea</string>
     <string name="online_profile_regenerating">Regenerando enlace para compartir</string>
     <string name="online_profile_deleting">Eliminando perfil en línea</string>
@@ -322,4 +322,7 @@
     <string name="characters_help_sprites_message">Elige un archivo de imagen disponible mediante el selector de imágenes de tu dispositivo. MonsterDialer no impone una resolución ni un límite de tamaño de archivo fijos para los sprites personalizados. Para obtener el resultado más claro, usa ilustraciones PNG con fondo transparente, mantén el personaje centrado y con poco margen vacío, y usa una escala y pose similares para los sprites frontal y trasero.</string>
     <string name="characters_help_radiant_title">Variantes radiantes</string>
     <string name="characters_help_radiant_message">Solo para monstruos: abre Avanzado y activa el interruptor Radiante para añadir una variante radiante. La selección de personajes mostrará versiones normales y radiantes del mismo monstruo. La versión radiante empieza bloqueada y debe encontrarse durante los combates antes de poder seleccionarla. Se requiere un sprite frontal porque la función Encontrar lo usa para descubrir y desbloquear la variante radiante.</string>
+    <string name="online_profile_qr_action">Código QR</string>
+    <string name="online_profile_more_options">Más opciones del perfil</string>
+    <string name="online_profile_sign_in_google">Iniciar sesión con Google</string>
 </resources>

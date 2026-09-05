@@ -245,7 +245,7 @@
     <string name="online_profile_title">Profil online</string>
     <string name="online_profile_description">Permite-le prietenilor să vadă antrenorul și monstrul pe care le aduci în fiecare apel.</string>
     <string name="online_profile_privacy_note">Sunt partajate doar sprite-urile și metadatele personajelor tale.</string>
-    <string name="online_profile_enable">Activează profilul online</string>
+    <string name="online_profile_enable">Activează</string>
     <string name="online_profile_enabling">Se activează profilul online</string>
     <string name="online_profile_regenerating">Se regenerează linkul de partajare</string>
     <string name="online_profile_deleting">Se șterge profilul online</string>
@@ -327,4 +327,7 @@
     <string name="characters_help_sprites_message">Alege un fișier imagine disponibil prin selectorul de imagini al dispozitivului. MonsterDialer nu impune o rezoluție fixă sau o limită de dimensiune a fișierului pentru sprite-urile personalizate. Pentru cel mai clar rezultat, folosește imagini PNG cu fundal transparent, menține personajul centrat cu cât mai puțin spațiu liber în jur și folosește o scară și o poziție similare pentru sprite-urile frontal și din spate.</string>
     <string name="characters_help_radiant_title">Variante radiante</string>
     <string name="characters_help_radiant_message">Doar pentru monștri, deschide secțiunea Avansat și activează opțiunea Radiant pentru a adăuga o variantă radiantă. La selectarea personajului vor fi afișate apoi versiunile normală și radiantă ale aceluiași monstru. Versiunea radiantă este inițial blocată și trebuie găsită în timpul luptelor înainte de a putea fi selectată. Este necesar un sprite frontal, deoarece funcția Găsește îl folosește pentru a descoperi și debloca varianta radiantă.</string>
+    <string name="online_profile_qr_action">Cod QR</string>
+    <string name="online_profile_more_options">Mai multe opțiuni de profil</string>
+    <string name="online_profile_sign_in_google">Conectează-te cu Google</string>
 </resources>
