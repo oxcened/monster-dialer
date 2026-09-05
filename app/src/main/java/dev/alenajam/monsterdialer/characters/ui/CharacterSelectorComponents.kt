@@ -785,7 +785,7 @@ internal fun MonsterFilterButton(
     Box {
         TextButton(
             onClick = { filterExpanded = true },
-            modifier = Modifier.height(48.dp),
+            modifier = Modifier.height(40.dp),
         ) {
             AppIcon(
                 icon = LocalMonsterAppIcons.current.filter,
@@ -882,6 +882,7 @@ internal fun CharacterSelectionActions(
             }
             Row(
                 modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.spacedBy(8.dp),
                 verticalAlignment = Alignment.CenterVertically,
             ) {
                 filterButton()
@@ -892,7 +893,7 @@ internal fun CharacterSelectionActions(
         } else {
             Row(
                 modifier = Modifier.fillMaxWidth().padding(top = 4.dp),
-                horizontalArrangement = Arrangement.SpaceBetween,
+                horizontalArrangement = Arrangement.spacedBy(8.dp),
                 verticalAlignment = Alignment.CenterVertically,
             ) {
                 filterButton()
