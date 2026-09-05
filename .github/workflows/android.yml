@@ -22,21 +22,7 @@ jobs:
         uses: actions/checkout@v4
         with:
           path: monster-dialer
-
-      - name: Read the pinned OpenDialer revision
-        id: opendialer
-        working-directory: monster-dialer
-        run: |
-          ref="$(sed -n 's/^opendialerRef=//p' gradle.properties)"
-          test -n "$ref"
-          echo "ref=$ref" >> "$GITHUB_OUTPUT"
-
-      - name: Check out OpenDialer
-        uses: actions/checkout@v4
-        with:
-          repository: oxcened/opendialer
-          ref: ${{ steps.opendialer.outputs.ref }}
-          path: opendialer
+          submodules: recursive
 
       - name: Set up JDK 21
         uses: actions/setup-java@v4

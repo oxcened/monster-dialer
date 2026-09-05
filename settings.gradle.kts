@@ -14,7 +14,7 @@ dependencyResolutionManagement {
     }
     versionCatalogs {
         create("libs") {
-            from(files("../opendialer/gradle/libs.versions.toml"))
+            from(files("opendialer/gradle/libs.versions.toml"))
         }
         create("monster") {
             from(files("gradle/monster.versions.toml"))
@@ -26,8 +26,8 @@ rootProject.name = "MonsterDialer"
 
 include(":app")
 
-// Map OpenDialer modules to the other repo
-val opendialerDir = "../opendialer"
+// Map OpenDialer modules to the pinned git submodule.
+val opendialerDir = "opendialer"
 
 // Gradle creates parent projects for nested paths. Point those parents at the
 // OpenDialer repository too, otherwise Gradle 9 looks for ./core, ./data, and
