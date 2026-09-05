@@ -130,15 +130,15 @@
     <string name="contact_defaults_guide_message">These settings apply to contacts that do not have their own character customization.</string>
     <string name="contact_defaults_guide_default">• Choose a default trainer or monster to use for unassigned contacts.</string>
     <string name="contact_defaults_guide_randomizer">• Choose Randomize to let the app pick from the selected randomizer pool.</string>
-    <string name="contact_defaults_guide_overrides">• A contact’s Customize contact setting overrides these global defaults. Contacts using Use global defaults continue to follow them.</string>
+    <string name="contact_defaults_guide_overrides">• A contact’s Customize contact setting overrides these global defaults. Contacts set to Don’t customize continue to follow them.</string>
     <string name="contact_random_pool_reset">Reset</string>
     <string name="contact_random_pool_description" comment="Explains what the selected characters mean when Randomize is enabled.">Selected characters are the ones Randomize can choose from.</string>
     <string name="contact_random_pool_select_all">Select all</string>
     <string name="contact_random_pool_deselect_all">Deselect all</string>
-    <string name="contact_character_source_global">Use global defaults</string>
+    <string name="contact_character_source_global">Don’t customize</string>
     <string name="contact_character_source_custom">Customize contact</string>
     <string name="contact_character_inherited_title">Using global defaults</string>
-    <string name="contact_character_inherited_message">This contact follows the global %1$s settings. Choose Customize contact above to override them.</string>
+    <string name="contact_character_inherited_message">This contact follows the global %1$s settings. Select Choose %1$s or Randomize above to override them.</string>
     <string name="contact_character_edit_global_defaults" comment="Button that opens the global contact character defaults from an inherited contact setting.">Edit global defaults</string>
     <string name="contact_random_pool_save">Save pool</string>
     <string name="contact_random_pool_empty_title">Choose at least one character</string>

@@ -689,15 +689,15 @@ internal fun CharacterSelectionActions(
         modifier = modifier.fillMaxWidth(),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .then(if (showCharacterTypeTabs) Modifier.horizontalScroll(scrollState) else Modifier)
-                .padding(top = 4.dp),
-            horizontalArrangement = if (showCharacterTypeTabs) Arrangement.spacedBy(8.dp) else Arrangement.SpaceBetween,
-            verticalAlignment = Alignment.CenterVertically,
-        ) {
-            if (showCharacterTypeTabs) {
+        if (showCharacterTypeTabs) {
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .horizontalScroll(scrollState)
+                    .padding(top = 4.dp),
+                horizontalArrangement = Arrangement.Center,
+                verticalAlignment = Alignment.CenterVertically,
+            ) {
                 SingleChoiceSegmentedButtonRow {
                     SegmentedButton(
                         selected = selectedTab == 0,
@@ -713,10 +713,20 @@ internal fun CharacterSelectionActions(
                     )
                 }
             }
-            if (showCharacterTypeTabs) {
-                addButton()
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically,
+            ) {
                 filterButton()
-            } else {
+                Spacer(modifier = Modifier.weight(1f))
+                addButton()
+            }
+        } else {
+            Row(
+                modifier = Modifier.fillMaxWidth().padding(top = 4.dp),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically,
+            ) {
                 filterButton()
                 Spacer(modifier = Modifier.weight(1f))
                 addButton()

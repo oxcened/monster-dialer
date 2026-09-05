@@ -344,15 +344,15 @@
     <string name="contact_defaults_guide_message">Ces paramètres s’appliquent aux contacts qui n’ont pas leur propre personnalisation de personnage.</string>
     <string name="contact_defaults_guide_default">• Choisissez un dresseur ou un monstre par défaut à utiliser pour les contacts non attribués.</string>
     <string name="contact_defaults_guide_randomizer">• Choisissez Aléatoire pour laisser l’application sélectionner un personnage dans le groupe de sélection aléatoire choisi.</string>
-    <string name="contact_defaults_guide_overrides">• Le paramètre Personnaliser le contact d’un contact remplace ces paramètres globaux par défaut. Les contacts utilisant Utiliser les paramètres globaux par défaut continuent de les suivre.</string>
+    <string name="contact_defaults_guide_overrides">• Le paramètre Personnaliser le contact d’un contact remplace ces paramètres globaux par défaut. Les contacts utilisant Ne pas personnaliser continuent de les suivre.</string>
     <string name="contact_random_pool_reset">Réinitialiser</string>
     <string name="contact_random_pool_description" comment="Explains what the selected characters mean when Randomize is enabled.">Aléatoire peut choisir parmi les personnages sélectionnés.</string>
     <string name="contact_random_pool_select_all">Tout sélectionner</string>
     <string name="contact_random_pool_deselect_all">Tout désélectionner</string>
-    <string name="contact_character_source_global">Utiliser les paramètres globaux par défaut</string>
+    <string name="contact_character_source_global">Ne pas personnaliser</string>
     <string name="contact_character_source_custom">Personnaliser le contact</string>
     <string name="contact_character_inherited_title">Utilisation des paramètres globaux par défaut</string>
-    <string name="contact_character_inherited_message">Ce contact suit les paramètres globaux %1$s. Choisissez Personnaliser le contact ci-dessus pour les remplacer.</string>
+    <string name="contact_character_inherited_message">Ce contact suit les paramètres globaux %1$s. Choisissez « Choisir un %1$s » ou « Aléatoire » ci-dessus pour les remplacer.</string>
     <string name="contact_character_edit_global_defaults" comment="Button that opens the global contact character defaults from an inherited contact setting.">Modifier les paramètres globaux par défaut</string>
     <string name="contact_random_pool_save">Enregistrer le groupe</string>
     <string name="contact_random_pool_empty_title">Choisissez au moins un personnage</string>

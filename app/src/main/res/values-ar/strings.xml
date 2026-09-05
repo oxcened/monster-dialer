@@ -363,15 +363,15 @@
     <string name="contact_defaults_guide_message">تنطبق هذه الإعدادات على جهات الاتصال التي ليس لديها تخصيص خاص بها للشخصية.</string>
     <string name="contact_defaults_guide_default">• اختر مدربًا أو وحشًا افتراضيًا لاستخدامه مع جهات الاتصال غير المعيّنة.</string>
     <string name="contact_defaults_guide_randomizer">• اختر عشوائي للسماح للتطبيق بالاختيار من مجموعة الاختيار العشوائي المحددة.</string>
-    <string name="contact_defaults_guide_overrides">• يتجاوز إعداد تخصيص جهة الاتصال الخاص بجهة اتصال هذه الإعدادات الافتراضية العامة. تستمر جهات الاتصال التي تستخدم استخدام الإعدادات الافتراضية العامة في اتباعها.</string>
+    <string name="contact_defaults_guide_overrides">• يتجاوز إعداد تخصيص جهة الاتصال الخاص بجهة اتصال هذه الإعدادات الافتراضية العامة. تستمر جهات الاتصال التي اختارت عدم التخصيص في اتباعها.</string>
     <string name="contact_random_pool_reset">إعادة تعيين</string>
     <string name="contact_random_pool_description" comment="Explains what the selected characters mean when Randomize is enabled.">الشخصيات المحددة هي التي يمكن للاختيار العشوائي الاختيار منها.</string>
     <string name="contact_random_pool_select_all">تحديد الكل</string>
     <string name="contact_random_pool_deselect_all">إلغاء تحديد الكل</string>
-    <string name="contact_character_source_global">استخدام الإعدادات الافتراضية العامة</string>
+    <string name="contact_character_source_global">عدم التخصيص</string>
     <string name="contact_character_source_custom">تخصيص جهة الاتصال</string>
     <string name="contact_character_inherited_title">استخدام الإعدادات الافتراضية العامة</string>
-    <string name="contact_character_inherited_message">تتبع جهة الاتصال هذه إعدادات %1$s العامة. اختر تخصيص جهة الاتصال أعلاه لتجاوزها.</string>
+    <string name="contact_character_inherited_message">تتبع جهة الاتصال هذه إعدادات %1$s العامة. اختر %1$s أو اختيار عشوائي أعلاه لتجاوزها.</string>
     <string name="contact_character_edit_global_defaults" comment="Button that opens the global contact character defaults from an inherited contact setting.">تعديل الإعدادات الافتراضية العامة</string>
     <string name="contact_random_pool_save">حفظ المجموعة</string>
     <string name="contact_random_pool_empty_title">اختر شخصية واحدة على الأقل</string>

@@ -344,15 +344,15 @@
     <string name="contact_defaults_guide_message">Diese Einstellungen gelten für Kontakte ohne eigene Charakteranpassung.</string>
     <string name="contact_defaults_guide_default">• Wähle einen Standardtrainer oder ein Standardmonster für nicht zugewiesene Kontakte.</string>
     <string name="contact_defaults_guide_randomizer">• Wähle Zufällig, damit die App einen Charakter aus dem ausgewählten Zufallsauswahl-Pool auswählt.</string>
-    <string name="contact_defaults_guide_overrides">• Die Einstellung Kontakt anpassen eines Kontakts überschreibt diese globalen Standardeinstellungen. Kontakte mit Globale Standardeinstellungen verwenden folgen ihnen weiterhin.</string>
+    <string name="contact_defaults_guide_overrides">• Die Einstellung Kontakt anpassen eines Kontakts überschreibt diese globalen Standardeinstellungen. Kontakte mit Nicht anpassen folgen ihnen weiterhin.</string>
     <string name="contact_random_pool_reset">Zurücksetzen</string>
     <string name="contact_random_pool_description" comment="Explains what the selected characters mean when Randomize is enabled.">Zufällig kann aus den ausgewählten Charakteren auswählen.</string>
     <string name="contact_random_pool_select_all">Alle auswählen</string>
     <string name="contact_random_pool_deselect_all">Auswahl aufheben</string>
-    <string name="contact_character_source_global">Globale Standardeinstellungen verwenden</string>
+    <string name="contact_character_source_global">Nicht anpassen</string>
     <string name="contact_character_source_custom">Kontakt anpassen</string>
     <string name="contact_character_inherited_title">Globale Standardeinstellungen werden verwendet</string>
-    <string name="contact_character_inherited_message">Dieser Kontakt folgt den globalen %1$s-Einstellungen. Wähle oben Kontakt anpassen, um sie zu überschreiben.</string>
+    <string name="contact_character_inherited_message">Dieser Kontakt folgt den globalen %1$s-Einstellungen. Wähle oben „%1$s auswählen“ oder „Zufällig“, um sie zu überschreiben.</string>
     <string name="contact_character_edit_global_defaults" comment="Button that opens the global contact character defaults from an inherited contact setting.">Globale Standardeinstellungen bearbeiten</string>
     <string name="contact_random_pool_save">Pool speichern</string>
     <string name="contact_random_pool_empty_title">Wähle mindestens einen Charakter aus</string>
