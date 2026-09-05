@@ -643,7 +643,7 @@ private fun AddCharacterButton(
         enabled = enabled,
         modifier = Modifier
             .fillMaxWidth()
-            .padding(horizontal = 16.dp, vertical = 8.dp),
+            .padding(vertical = 8.dp),
     ) {
         AppIcon(
             LocalMonsterAppIcons.current.addCharacter,

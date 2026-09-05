@@ -128,6 +128,7 @@ fun CharactersHomeScreen(
                 color = MaterialTheme.colorScheme.onSurface
             )
             CharacterToolsGroup(
+                onOpenContactCharacters = { onOpenSubpage(1, ContactCharacterSettingsEntryPoint.Toolbox.payload) },
                 onOpenJournal = { onOpenSubpage(3, null) },
                 onOpenPacks = { onOpenSubpage(2, null) },
                 onImport = { picker.launch(arrayOf("*/*")) },
@@ -564,6 +565,7 @@ private fun TeamArtwork(
 
 @Composable
 private fun CharacterToolsGroup(
+    onOpenContactCharacters: () -> Unit,
     onOpenJournal: () -> Unit,
     onOpenPacks: () -> Unit,
     onImport: () -> Unit,
@@ -577,6 +579,15 @@ private fun CharacterToolsGroup(
         Column(
             modifier = Modifier.fillMaxWidth(),
         ) {
+            CharacterToolRow(
+                title = stringResource(R.string.settings_contact_characters_title),
+                icon = LocalMonsterAppIcons.current.frontSprite,
+                onClick = onOpenContactCharacters,
+            )
+            HorizontalDivider(
+                modifier = Modifier.padding(start = 56.dp),
+                color = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.5f)
+            )
             CharacterToolRow(
                 title = stringResource(R.string.battle_journal_title),
                 icon = LocalMonsterAppIcons.current.battleJournal,

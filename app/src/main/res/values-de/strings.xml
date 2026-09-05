@@ -267,7 +267,7 @@
     <string name="online_profile_sign_out_google">Bei Google abmelden</string>
     <string name="online_profile_firebase_not_configured">Firebase ist nicht konfiguriert.</string>
     <string name="online_profile_share_text">Sieh dir mein MonsterDialer-Profil an:\n%1$s</string>
-    <string name="choose_team">Team auswählen</string>
+    <string name="contact_characters_action">Charaktere</string>
     <string name="contact_row_actions">Kontaktaktionen</string>
     <string name="linked_online_profile_title">Verknüpftes Online-Profil</string>
     <string name="linked_online_profile_none">Mit diesem Kontakt ist kein Online-Profil verknüpft.</string>

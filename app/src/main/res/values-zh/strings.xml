@@ -256,7 +256,7 @@
     <string name="online_profile_sign_out_google">退出 Google 登录</string>
     <string name="online_profile_firebase_not_configured">尚未配置 Firebase。</string>
     <string name="online_profile_share_text">看看我的 MonsterDialer 个人资料：\n%1$s</string>
-    <string name="choose_team">选择队伍</string>
+    <string name="contact_characters_action">角色</string>
     <string name="contact_row_actions">联系人操作</string>
     <string name="linked_online_profile_title">已关联的在线个人资料</string>
     <string name="linked_online_profile_none">此联系人未关联在线个人资料。</string>

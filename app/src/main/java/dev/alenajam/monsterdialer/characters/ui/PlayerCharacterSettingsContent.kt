@@ -174,7 +174,7 @@ internal fun ColumnScope.PlayerCharacterSettingsContent(
 
     Box(modifier = Modifier.fillMaxWidth().weight(1f)) {
         if (effectiveLayout == CharacterLayout.List) {
-            LazyColumn(state = listState, modifier = Modifier.fillMaxSize(), contentPadding = PaddingValues(top = 8.dp, bottom = 72.dp)) {
+            LazyColumn(state = listState, modifier = Modifier.fillMaxSize(), contentPadding = PaddingValues(top = if (selectedTab == 1) 0.dp else 8.dp, bottom = 72.dp)) {
                 when (selectedTab) {
                     0 -> characterTypeItems(
                         title = trainerTitle,
@@ -223,7 +223,7 @@ internal fun ColumnScope.PlayerCharacterSettingsContent(
                 }
             }
         } else {
-            LazyVerticalGrid(columns = GridCells.Fixed(2), state = gridState, modifier = Modifier.fillMaxSize(), contentPadding = PaddingValues(top = 8.dp, bottom = 72.dp), horizontalArrangement = Arrangement.spacedBy(2.dp), verticalArrangement = Arrangement.spacedBy(2.dp)) {
+            LazyVerticalGrid(columns = GridCells.Fixed(2), state = gridState, modifier = Modifier.fillMaxSize(), contentPadding = PaddingValues(top = if (selectedTab == 1) 0.dp else 8.dp, bottom = 72.dp), horizontalArrangement = Arrangement.spacedBy(2.dp), verticalArrangement = Arrangement.spacedBy(2.dp)) {
                 when (selectedTab) {
                     0 -> characterTypeGridItems(
                         title = trainerTitle,
@@ -298,7 +298,7 @@ private fun MonsterFilterChips(
     LazyRow(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(horizontal = 16.dp, vertical = 8.dp),
+            .padding(top = 8.dp),
         horizontalArrangement = Arrangement.spacedBy(8.dp)
     ) {
         items(MonsterFilter.entries) { filter ->

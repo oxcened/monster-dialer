@@ -27,6 +27,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.res.pluralStringResource
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -41,6 +42,7 @@ import dev.alenajam.monsterdialer.app.ui.LocalMonsterAppIcons
 import dev.alenajam.monsterdialer.app.ui.rememberMonsterIcons
 import dev.alenajam.monsterdialer.app.ui.rememberMonsterTypography
 import dev.alenajam.monsterdialer.characters.ui.AddCharacterScreen
+import dev.alenajam.monsterdialer.characters.ui.ContactCharacterSettingsEntryPoint
 import dev.alenajam.monsterdialer.characters.ui.ContactCharacterSettingsContent
 import dev.alenajam.monsterdialer.characters.ui.ContactCharacterSettingsViewModel
 import dev.alenajam.monsterdialer.characters.ui.ContactPickerDestination
@@ -149,12 +151,18 @@ class MainActivity : AppCompatActivity() {
                                         onDismissRequest = { expanded = false },
                                     ) {
                                         DropdownMenuItem(
-                                            text = { Text(stringResource(R.string.choose_team)) },
+                                            text = { Text(stringResource(R.string.contact_characters_action)) },
+                                            leadingIcon = {
+                                                dev.alenajam.opendialer.core.common.ui.AppIcon(
+                                                    dev.alenajam.opendialer.core.common.ui.LocalAppIcons.current.edit,
+                                                    contentDescription = null,
+                                                )
+                                            },
                                             onClick = {
                                                 expanded = false
                                                 coroutineScope.launch {
                                                     contactCharacterSettingsViewModel.selectContact(contact)
-                                                    onOpenSettingsSubpage(1, null)
+                                                    onOpenSettingsSubpage(1, ContactCharacterSettingsEntryPoint.ContactList.payload)
                                                 }
                                             },
                                         )
@@ -176,7 +184,10 @@ class MainActivity : AppCompatActivity() {
                             icon = { _ -> dev.alenajam.opendialer.core.common.ui.AppIcon(dev.alenajam.opendialer.core.common.ui.LocalAppIcons.current.person, null) },
                             content = { onOpenSubpage ->
                                 CharactersHomeScreen(
-                                    onOpenSubpage = onOpenSubpage,
+                                    onOpenSubpage = { index, payload ->
+                                        val destination = if (index == 1) ToolboxContactCharactersSettingsIndex else index
+                                        onOpenSubpage(destination, payload)
+                                    },
                                     sharingViewModel = characterSharingViewModel,
                                     playerProfile = playerProfile,
                                     profileMetrics = profileMetrics,
@@ -233,12 +244,16 @@ class MainActivity : AppCompatActivity() {
                             )
                         ),
                         SettingsSubpage(
-                            title = selectedContact?.name ?: stringResource(R.string.settings_contact_characters_title),
+                            title = stringResource(R.string.settings_contact_characters_title),
                             description = stringResource(R.string.settings_contact_characters_description),
                             topBarTitle = selectedContact?.let { contact ->
                                 { ContactCharacterTopBarTitle(contact) }
                             },
-                            content = { _ -> ContactCharacterSettingsContent() },
+                            content = { payload ->
+                                ContactCharacterSettingsContent(
+                                    entryPoint = ContactCharacterSettingsEntryPoint.fromPayload(payload),
+                                )
+                            },
                             isScrollable = false,
                             topContentPadding = 0.dp,
                             visibleInSettings = false,
@@ -337,7 +352,11 @@ class MainActivity : AppCompatActivity() {
                             topContentPadding = 0.dp,
                             visibleInSettings = false,
                         ),
-                        )
+                        ).let { subpages ->
+                            // Share the character screen and its destinations, but keep the
+                            // toolbox title separate from the contact-row title.
+                            subpages + subpages[1].copy(topBarTitle = null)
+                        }
                     )
                     LaunchedEffect(incomingImport) {
                         incomingImport?.let { incoming ->
@@ -371,6 +390,7 @@ class MainActivity : AppCompatActivity() {
 }
 
 private const val LinkedOnlineProfileSettingsIndex = 4
+private const val ToolboxContactCharactersSettingsIndex = 5
 
 private sealed interface IncomingImport {
     val uri: Uri
@@ -420,8 +440,13 @@ private fun ContactCharacterTopBarTitle(contact: MonsterContact) {
             modifier = Modifier.size(32.dp),
             initialTextStyle = MaterialTheme.typography.labelLarge,
         )
-        Column {
-            Text(contact.name, style = MaterialTheme.typography.titleMedium)
+        Column(modifier = Modifier.weight(1f)) {
+            Text(
+                text = contact.name,
+                style = MaterialTheme.typography.titleMedium,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis,
+            )
             Text(
                 text = contact.numbers.firstOrNull()?.let { formatPhoneNumber(it, locale) }
                     ?: stringResource(R.string.unknown),

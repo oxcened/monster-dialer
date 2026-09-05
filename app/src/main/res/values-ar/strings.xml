@@ -286,7 +286,7 @@
     <string name="online_profile_sign_out_google">تسجيل الخروج من Google</string>
     <string name="online_profile_firebase_not_configured">لم يتم إعداد Firebase.</string>
     <string name="online_profile_share_text">اطّلع على ملفي الشخصي في MonsterDialer:\n%1$s</string>
-    <string name="choose_team">اختيار الفريق</string>
+    <string name="contact_characters_action">الشخصيات</string>
     <string name="contact_row_actions">إجراءات جهة الاتصال</string>
     <string name="linked_online_profile_title">ملف شخصي مرتبط على الإنترنت</string>
     <string name="linked_online_profile_none">لا يوجد ملف شخصي على الإنترنت مرتبط بجهة الاتصال هذه.</string>

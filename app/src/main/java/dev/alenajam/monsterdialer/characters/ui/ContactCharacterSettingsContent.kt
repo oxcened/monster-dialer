@@ -10,11 +10,15 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.TextButton
 import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -27,7 +31,9 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -41,6 +47,8 @@ import dev.alenajam.monsterdialer.characters.data.BuiltInCharacters
 import dev.alenajam.monsterdialer.characters.data.ContactCharacterMode
 import dev.alenajam.monsterdialer.packs.data.CharacterAssignmentTarget
 import dev.alenajam.monsterdialer.packs.data.InstalledPackCharacter
+import dev.alenajam.monsterdialer.contacts.ui.formatPhoneNumber
+import dev.alenajam.opendialer.core.common.ui.ContactAvatar
 import dev.alenajam.opendialer.core.common.ui.AppIcon
 import dev.alenajam.opendialer.core.common.ui.LocalAppIcons
 import dev.alenajam.opendialer.feature.contacts.ContactPickerScreen
@@ -49,6 +57,7 @@ import kotlinx.coroutines.launch
 
 @Composable
 fun ColumnScope.ContactCharacterSettingsContent(
+    entryPoint: ContactCharacterSettingsEntryPoint = ContactCharacterSettingsEntryPoint.Toolbox,
     viewModel: ContactCharacterSettingsViewModel = hiltViewModel()
 ) {
     val contact by viewModel.contact.collectAsStateWithLifecycle()
@@ -80,6 +89,8 @@ fun ColumnScope.ContactCharacterSettingsContent(
     val monstersTitle = stringResource(R.string.character_type_monsters)
     val addTrainerLabel = stringResource(R.string.add_trainer)
     val addMonsterLabel = stringResource(R.string.add_monster)
+
+    val locale = LocalConfiguration.current.locales[0]
 
     val lifecycleOwner = LocalLifecycleOwner.current
     val navigator = LocalSettingsSubpageNavigator.current
@@ -113,6 +124,41 @@ fun ColumnScope.ContactCharacterSettingsContent(
     Column(
         modifier = Modifier.fillMaxSize()
     ) {
+        if (entryPoint == ContactCharacterSettingsEntryPoint.Toolbox) {
+            Card(
+                modifier = Modifier.fillMaxWidth().padding(bottom = 8.dp),
+                colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainerLow)
+            ) {
+                Row(
+                    modifier = Modifier.padding(horizontal = 12.dp, vertical = 8.dp),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.spacedBy(8.dp)
+                ) {
+                    ContactAvatar(
+                        name = currentContact.name,
+                        photoUri = currentContact.photoUri,
+                        modifier = Modifier.size(24.dp),
+                        initialTextStyle = MaterialTheme.typography.labelLarge
+                    )
+                    Column(modifier = Modifier.weight(1f)) {
+                        Text(
+                            text = currentContact.name,
+                            style = MaterialTheme.typography.titleMedium,
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis,
+                        )
+                        Text(
+                            currentContact.numbers.firstOrNull()?.let { formatPhoneNumber(it, locale) }
+                                ?: stringResource(R.string.unknown),
+                            style = MaterialTheme.typography.bodySmall,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant
+                        )
+                    }
+                    TextButton(onClick = { navigator?.navigateTo(0) }) { Text(stringResource(R.string.change)) }
+                }
+            }
+        }
+
         CharacterTypeTabs(
             selectedTab = selectedTab,
             onTabSelected = { tab ->
@@ -178,7 +224,9 @@ fun ColumnScope.ContactCharacterSettingsContent(
                             artworkTarget = CharacterAssignmentTarget.Contact,
                             onSelect = {
                                 viewModel.assignTrainer(it)
-                                navigator?.navigateBack()
+                                if (entryPoint == ContactCharacterSettingsEntryPoint.ContactList) {
+                                    navigator?.navigateBack()
+                                }
                             },
                             onAddCharacter = { navigator?.navigateTo(1) },
                             addLabel = addTrainerLabel,
@@ -187,7 +235,9 @@ fun ColumnScope.ContactCharacterSettingsContent(
                             isRandomSelected = trainerMode == ContactCharacterMode.Random,
                             onRandomize = {
                                 viewModel.randomizeTrainer()
-                                navigator?.navigateBack()
+                                if (entryPoint == ContactCharacterSettingsEntryPoint.ContactList) {
+                                    navigator?.navigateBack()
+                                }
                             },
                             onDelete = { character -> scope.launch { isPendingDeletionInUse = viewModel.isCharacterInUse(character.character.id); pendingDeletion = character } },
                             onEdit = { navigator?.navigateTo(1, it.character.id) },
@@ -203,7 +253,9 @@ fun ColumnScope.ContactCharacterSettingsContent(
                             artworkTarget = CharacterAssignmentTarget.Contact,
                             onSelect = {
                                 viewModel.assignMonster(it)
-                                navigator?.navigateBack()
+                                if (entryPoint == ContactCharacterSettingsEntryPoint.ContactList) {
+                                    navigator?.navigateBack()
+                                }
                             },
                             onAddCharacter = { navigator?.navigateTo(2) },
                             addLabel = addMonsterLabel,
@@ -212,7 +264,9 @@ fun ColumnScope.ContactCharacterSettingsContent(
                             isRandomSelected = monsterMode == ContactCharacterMode.Random,
                             onRandomize = {
                                 viewModel.randomizeMonster()
-                                navigator?.navigateBack()
+                                if (entryPoint == ContactCharacterSettingsEntryPoint.ContactList) {
+                                    navigator?.navigateBack()
+                                }
                             },
                             onDelete = { character -> scope.launch { isPendingDeletionInUse = viewModel.isCharacterInUse(character.character.id); pendingDeletion = character } },
                             onEdit = { navigator?.navigateTo(2, it.character.id) },
@@ -233,7 +287,9 @@ fun ColumnScope.ContactCharacterSettingsContent(
                             artworkTarget = CharacterAssignmentTarget.Contact,
                             onSelect = {
                                 viewModel.assignTrainer(it)
-                                navigator?.navigateBack()
+                                if (entryPoint == ContactCharacterSettingsEntryPoint.ContactList) {
+                                    navigator?.navigateBack()
+                                }
                             },
                             onAddCharacter = { navigator?.navigateTo(1) },
                             addLabel = addTrainerLabel,
@@ -242,7 +298,9 @@ fun ColumnScope.ContactCharacterSettingsContent(
                             isRandomSelected = trainerMode == ContactCharacterMode.Random,
                             onRandomize = {
                                 viewModel.randomizeTrainer()
-                                navigator?.navigateBack()
+                                if (entryPoint == ContactCharacterSettingsEntryPoint.ContactList) {
+                                    navigator?.navigateBack()
+                                }
                             },
                             onDelete = { character -> scope.launch { isPendingDeletionInUse = viewModel.isCharacterInUse(character.character.id); pendingDeletion = character } },
                             onEdit = { navigator?.navigateTo(1, it.character.id) },
@@ -258,7 +316,9 @@ fun ColumnScope.ContactCharacterSettingsContent(
                             artworkTarget = CharacterAssignmentTarget.Contact,
                             onSelect = {
                                 viewModel.assignMonster(it)
-                                navigator?.navigateBack()
+                                if (entryPoint == ContactCharacterSettingsEntryPoint.ContactList) {
+                                    navigator?.navigateBack()
+                                }
                             },
                             onAddCharacter = { navigator?.navigateTo(2) },
                             addLabel = addMonsterLabel,
@@ -267,7 +327,9 @@ fun ColumnScope.ContactCharacterSettingsContent(
                             isRandomSelected = monsterMode == ContactCharacterMode.Random,
                             onRandomize = {
                                 viewModel.randomizeMonster()
-                                navigator?.navigateBack()
+                                if (entryPoint == ContactCharacterSettingsEntryPoint.ContactList) {
+                                    navigator?.navigateBack()
+                                }
                             },
                             onDelete = { character -> scope.launch { isPendingDeletionInUse = viewModel.isCharacterInUse(character.character.id); pendingDeletion = character } },
                             onEdit = { navigator?.navigateTo(2, it.character.id) },
