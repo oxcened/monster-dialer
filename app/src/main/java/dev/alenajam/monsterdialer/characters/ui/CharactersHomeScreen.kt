@@ -120,7 +120,9 @@ fun CharactersHomeScreen(
             onReorderRoster = onReorderRoster,
             onRemoveRosterMonster = onRemoveRosterMonster,
         )
-        OnlineProfileSection()
+        Column(modifier = Modifier.padding(vertical = 8.dp)) {
+            OnlineProfileSection()
+        }
         Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
             Text(
                 text = stringResource(R.string.character_tools_title),
@@ -155,7 +157,7 @@ private fun RosterSection(
         hasReordered = true
     }
 
-    Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
+    Column(verticalArrangement = Arrangement.spacedBy(6.dp)) {
         Row(verticalAlignment = Alignment.CenterVertically) {
             Text(
                 text = stringResource(R.string.your_roster),

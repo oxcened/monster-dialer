@@ -2,6 +2,7 @@ package dev.alenajam.monsterdialer.app.ui
 
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.AddCircleOutline
+import androidx.compose.material.icons.outlined.FilterList
 import androidx.compose.material.icons.outlined.QrCode2
 import androidx.compose.material.icons.outlined.Reorder
 import androidx.compose.material.icons.outlined.Shuffle
@@ -27,6 +28,7 @@ data class MonsterAppIcons(
     val reorder: IconSource,
     val randomize: IconSource,
     val qrCode: IconSource,
+    val filter: IconSource,
 )
 
 val DefaultMonsterAppIcons = MonsterAppIcons(
@@ -45,6 +47,7 @@ val DefaultMonsterAppIcons = MonsterAppIcons(
     reorder = IconSource.Vector(Icons.Outlined.Reorder),
     randomize = IconSource.Vector(Icons.Outlined.Shuffle),
     qrCode = IconSource.Vector(Icons.Outlined.QrCode2),
+    filter = IconSource.Vector(Icons.Outlined.FilterList),
 )
 
 val LocalMonsterAppIcons = staticCompositionLocalOf { DefaultMonsterAppIcons }

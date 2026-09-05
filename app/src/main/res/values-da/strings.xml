@@ -3,6 +3,7 @@
     <string name="additional_translation_project_title" comment="Title of the additional translation contribution card.">Bidrag til MonsterDialer-oversættelser</string>
     <string name="contribute_translations" comment="Title of the OpenDialer translation contribution link on the About screen.">Bidrag til OpenDialer-oversættelser</string>
     <string name="hang_up" comment="Button to end the current phone call.">Læg på</string>
+    <string name="add" comment="Generic label for adding a new item.">Tilføj</string>
     <string name="settings_character_packs_title" comment="Settings title for managing character packs.">Figurpakker</string>
     <string name="characters_navigation_label" comment="Bottom navigation label for character customization.">Profil</string>
     <string name="settings_character_packs_description" comment="Settings description for character packs.">Importér og administrér brugerdefinerede figurillustrationer.</string>

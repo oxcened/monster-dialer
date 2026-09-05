@@ -13,6 +13,7 @@
     <string name="github_latest_release_api" comment="GitHub API endpoint used to retrieve the latest MonsterDialer release. Do not translate." translatable="false">https://api.github.com/repos/oxcened/monster-dialer/releases/latest</string>
     <string name="url_feature_requests" comment="URL opened from the feature-request action. Do not translate." translatable="false">https://monsterdialer.fider.io/</string>
     <string name="hang_up" comment="Button to end the current phone call.">Hang up</string>
+    <string name="add" comment="Generic label for adding a new item.">Add</string>
     <string name="settings_character_packs_title" comment="Settings title for managing character packs.">Character Packs</string>
     <string name="characters_navigation_label" comment="Bottom navigation label for the player's profile and character collection.">Profile</string>
     <string name="customize_your_calls" comment="Section heading above contact character customization.">Customize your calls</string>

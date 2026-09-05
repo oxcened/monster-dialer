@@ -89,8 +89,6 @@ internal fun ColumnScope.PlayerCharacterSettingsContent(
     val monsterTitle = stringResource(R.string.character_type_monster)
     val trainersTitle = stringResource(R.string.character_type_trainers)
     val monstersTitle = stringResource(R.string.character_type_monsters)
-    val addTrainerLabel = stringResource(R.string.add_trainer)
-    val addMonsterLabel = stringResource(R.string.add_monster)
     val navigator = dev.alenajam.opendialer.feature.settings.LocalSettingsSubpageNavigator.current
 
     LaunchedEffect(route, payload) {
@@ -100,7 +98,7 @@ internal fun ColumnScope.PlayerCharacterSettingsContent(
         route?.let { viewModel.setSelectedTab(it.selectedTab) }
     }
 
-    CharacterTypeTabs(
+    CharacterSelectionActions(
         selectedTab = selectedTab,
         onTabSelected = { tab ->
             val selectedItemIndex = if (tab == 0) trainerSelectedItemIndex else monsterSelectedItemIndex
@@ -113,15 +111,12 @@ internal fun ColumnScope.PlayerCharacterSettingsContent(
                 (if (tab == 0) trainerGridState else monsterGridState).requestScrollToItem(selectedItemIndex)
             }
             viewModel.setSelectedTab(tab)
-        }
+        },
+        isAddEnabled = !isLimitReached,
+        onAddCharacter = { navigator?.navigateTo(if (selectedTab == 0) 0 else 1) },
+        filter = if (selectedTab == 1) filter else null,
+        onFilterSelected = if (selectedTab == 1) viewModel::setFilter else null
     )
-
-    if (selectedTab == 1) {
-        MonsterFilterChips(
-            selectedFilter = filter,
-            onFilterSelected = viewModel::setFilter
-        )
-    }
 
     val selectedItemIndex = when (selectedTab) {
         0 -> trainerSelectedItemIndex
@@ -171,7 +166,7 @@ internal fun ColumnScope.PlayerCharacterSettingsContent(
 
     Box(modifier = Modifier.fillMaxWidth().weight(1f)) {
         if (effectiveLayout == CharacterLayout.List) {
-            LazyColumn(state = listState, modifier = Modifier.fillMaxSize(), contentPadding = PaddingValues(top = if (selectedTab == 1) 0.dp else 8.dp, bottom = 72.dp)) {
+            LazyColumn(state = listState, modifier = Modifier.fillMaxSize(), contentPadding = PaddingValues(top = 0.dp, bottom = 72.dp)) {
                 when (selectedTab) {
                     0 -> characterTypeItems(
                         title = trainerTitle,
@@ -185,9 +180,6 @@ internal fun ColumnScope.PlayerCharacterSettingsContent(
                             viewModel.assignTrainer(it)
                             navigator?.navigateBack()
                         },
-                        onAddCharacter = { navigator?.navigateTo(0) },
-                        addLabel = addTrainerLabel,
-                        isAddEnabled = !isLimitReached,
                         unlockedVariants = unlockedVariants,
                         onDelete = { character -> scope.launch { isPendingDeletionInUse = viewModel.isCharacterInUse(character.character.id); pendingDeletion = character } },
                         onEdit = { navigator?.navigateTo(0, it.character.id) },
@@ -206,9 +198,6 @@ internal fun ColumnScope.PlayerCharacterSettingsContent(
                             viewModel.assignMonster(requireNotNull(it))
                             navigator?.navigateBack()
                         },
-                        onAddCharacter = { navigator?.navigateTo(1) },
-                        addLabel = addMonsterLabel,
-                        isAddEnabled = !isLimitReached,
                         unlockedVariants = unlockedVariants,
                         onDelete = { character -> scope.launch { isPendingDeletionInUse = viewModel.isCharacterInUse(character.character.id); pendingDeletion = character } },
                         onEdit = { navigator?.navigateTo(1, it.character.id) },
@@ -220,7 +209,7 @@ internal fun ColumnScope.PlayerCharacterSettingsContent(
                 }
             }
         } else {
-            LazyVerticalGrid(columns = GridCells.Fixed(2), state = gridState, modifier = Modifier.fillMaxSize(), contentPadding = PaddingValues(top = if (selectedTab == 1) 0.dp else 8.dp, bottom = 72.dp), horizontalArrangement = Arrangement.spacedBy(2.dp), verticalArrangement = Arrangement.spacedBy(2.dp)) {
+            LazyVerticalGrid(columns = GridCells.Fixed(2), state = gridState, modifier = Modifier.fillMaxSize(), contentPadding = PaddingValues(top = 0.dp, bottom = 72.dp), horizontalArrangement = Arrangement.spacedBy(2.dp), verticalArrangement = Arrangement.spacedBy(2.dp)) {
                 when (selectedTab) {
                     0 -> characterTypeGridItems(
                         title = trainerTitle,
@@ -234,9 +223,6 @@ internal fun ColumnScope.PlayerCharacterSettingsContent(
                             viewModel.assignTrainer(it)
                             navigator?.navigateBack()
                         },
-                        onAddCharacter = { navigator?.navigateTo(0) },
-                        addLabel = addTrainerLabel,
-                        isAddEnabled = !isLimitReached,
                         unlockedVariants = unlockedVariants,
                         onDelete = { character -> scope.launch { isPendingDeletionInUse = viewModel.isCharacterInUse(character.character.id); pendingDeletion = character } },
                         onEdit = { navigator?.navigateTo(0, it.character.id) },
@@ -255,9 +241,6 @@ internal fun ColumnScope.PlayerCharacterSettingsContent(
                             viewModel.assignMonster(requireNotNull(it))
                             navigator?.navigateBack()
                         },
-                        onAddCharacter = { navigator?.navigateTo(1) },
-                        addLabel = addMonsterLabel,
-                        isAddEnabled = !isLimitReached,
                         unlockedVariants = unlockedVariants,
                         onDelete = { character -> scope.launch { isPendingDeletionInUse = viewModel.isCharacterInUse(character.character.id); pendingDeletion = character } },
                         onEdit = { navigator?.navigateTo(1, it.character.id) },

@@ -3,6 +3,7 @@ package dev.alenajam.monsterdialer.characters.ui
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.combinedClickable
+import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -15,6 +16,7 @@ import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.foundation.lazy.itemsIndexed
@@ -30,14 +32,18 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
+import androidx.compose.material3.FilledTonalButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
-import androidx.compose.material3.PrimaryTabRow
+import androidx.compose.material3.SegmentedButton
+import androidx.compose.material3.SegmentedButtonDefaults
+import androidx.compose.material3.SingleChoiceSegmentedButtonRow
 import androidx.compose.material3.SmallFloatingActionButton
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Tab
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
@@ -45,6 +51,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -91,16 +98,6 @@ internal fun CharacterLayoutToggle(
     }
 }
 
-@Composable
-internal fun CharacterTypeTabs(selectedTab: Int, onTabSelected: (Int) -> Unit) {
-    val trainerLabel = stringResource(R.string.character_type_trainer)
-    val monsterLabel = stringResource(R.string.character_type_monster)
-
-    PrimaryTabRow(selectedTabIndex = selectedTab, modifier = Modifier.fillMaxWidth()) {
-        Tab(selected = selectedTab == 0, onClick = { onTabSelected(0) }, text = { Text(trainerLabel) })
-        Tab(selected = selectedTab == 1, onClick = { onTabSelected(1) }, text = { Text(monsterLabel) })
-    }
-}
 
 internal fun LazyListScope.characterTypeItems(
     title: String,
@@ -112,10 +109,6 @@ internal fun LazyListScope.characterTypeItems(
     artworkTarget: CharacterAssignmentTarget,
     onSelect: (CharacterReference?) -> Unit,
     defaultReference: CharacterReference? = null,
-    onAddCharacter: () -> Unit,
-    addLabel: String,
-    isAddEnabled: Boolean = true,
-    showAddCharacter: Boolean = true,
     unlockedVariants: Set<CharacterReference> = emptySet(),
     onDelete: (InstalledPackCharacter) -> Unit = {},
     onEdit: (InstalledPackCharacter) -> Unit = {},
@@ -156,24 +149,6 @@ internal fun LazyListScope.characterTypeItems(
     }
     val effectiveRandomize = onRandomize?.takeIf { showRandomize }
     val hasNoCharacterOptions = effectiveRandomize == null && hideSelected && isDefaultSelected && !hasSelectableCharacter
-    if (showAddCharacter) {
-        item(key = "add") {
-            AddCharacterButton(
-                onClick = onAddCharacter,
-                label = addLabel,
-                enabled = isAddEnabled
-            )
-            if (!isAddEnabled) {
-                Text(
-                    text = stringResource(R.string.character_limit_reached_hint),
-                    style = MaterialTheme.typography.labelSmall,
-                    color = MaterialTheme.colorScheme.error,
-                    textAlign = TextAlign.Center,
-                    modifier = Modifier.fillMaxWidth().padding(bottom = 8.dp)
-                )
-            }
-        }
-    }
 
     if (effectiveRandomize != null) {
         item(key = "random") {
@@ -307,10 +282,6 @@ internal fun LazyGridScope.characterTypeGridItems(
     artworkTarget: CharacterAssignmentTarget,
     onSelect: (CharacterReference?) -> Unit,
     defaultReference: CharacterReference? = null,
-    onAddCharacter: () -> Unit,
-    addLabel: String,
-    isAddEnabled: Boolean = true,
-    showAddCharacter: Boolean = true,
     unlockedVariants: Set<CharacterReference> = emptySet(),
     onDelete: (InstalledPackCharacter) -> Unit = {},
     onEdit: (InstalledPackCharacter) -> Unit = {},
@@ -351,26 +322,6 @@ internal fun LazyGridScope.characterTypeGridItems(
     }
     val effectiveRandomize = onRandomize?.takeIf { showRandomize }
     val hasNoCharacterOptions = effectiveRandomize == null && hideSelected && isDefaultSelected && !hasSelectableCharacter
-    if (showAddCharacter) {
-        item(key = "add", span = { GridItemSpan(2) }) {
-            Column {
-                AddCharacterButton(
-                    onClick = onAddCharacter,
-                    label = addLabel,
-                    enabled = isAddEnabled
-                )
-                if (!isAddEnabled) {
-                    Text(
-                        text = stringResource(R.string.character_limit_reached_hint),
-                        style = MaterialTheme.typography.labelSmall,
-                        color = MaterialTheme.colorScheme.error,
-                        textAlign = TextAlign.Center,
-                        modifier = Modifier.fillMaxWidth().padding(bottom = 8.dp)
-                    )
-                }
-            }
-        }
-    }
 
     if (effectiveRandomize != null) {
         item(key = "random") {
@@ -642,28 +593,134 @@ internal fun JumpToSelectedCharacterButton(
     }
 }
 
+
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-private fun AddCharacterButton(
-    onClick: () -> Unit,
-    label: String,
-    enabled: Boolean = true
+internal fun CharacterSelectionActions(
+    selectedTab: Int,
+    onTabSelected: (Int) -> Unit,
+    isAddEnabled: Boolean,
+    onAddCharacter: () -> Unit,
+    modifier: Modifier = Modifier,
+    onRandomize: (() -> Unit)? = null,
+    isRandomSelected: Boolean = false,
+    filter: MonsterFilter? = null,
+    onFilterSelected: ((MonsterFilter) -> Unit)? = null,
 ) {
-    Button(
-        onClick = onClick,
-        enabled = enabled,
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(vertical = 8.dp),
+    var filterExpanded by remember { mutableStateOf(false) }
+    val scrollState = rememberScrollState()
+
+    val trainerLabel = stringResource(R.string.character_type_trainer)
+    val monsterLabel = stringResource(R.string.character_type_monster)
+
+    Column(
+        modifier = modifier.fillMaxWidth(),
+        horizontalAlignment = Alignment.CenterHorizontally,
     ) {
-        AppIcon(
-            LocalMonsterAppIcons.current.addCharacter,
-            contentDescription = null,
-            tint = MaterialTheme.colorScheme.onPrimary
-        )
-        Text(
-            text = label,
-            modifier = Modifier.padding(start = 8.dp),
-        )
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .horizontalScroll(scrollState)
+                .padding(top = 4.dp),
+            horizontalArrangement = Arrangement.spacedBy(8.dp),
+            verticalAlignment = Alignment.CenterVertically,
+        ) {
+            SingleChoiceSegmentedButtonRow {
+                SegmentedButton(
+                    selected = selectedTab == 0,
+                    onClick = { onTabSelected(0) },
+                    shape = SegmentedButtonDefaults.itemShape(index = 0, count = 2),
+                    label = { Text(trainerLabel) }
+                )
+                SegmentedButton(
+                    selected = selectedTab == 1,
+                    onClick = { onTabSelected(1) },
+                    shape = SegmentedButtonDefaults.itemShape(index = 1, count = 2),
+                    label = { Text(monsterLabel) }
+                )
+            }
+
+            OutlinedButton(
+                onClick = onAddCharacter,
+                enabled = isAddEnabled,
+            ) {
+                AppIcon(
+                    icon = LocalMonsterAppIcons.current.addCharacter,
+                    contentDescription = null,
+                )
+                Text(
+                    text = stringResource(R.string.add),
+                    modifier = Modifier.padding(start = 8.dp),
+                    maxLines = 1,
+                )
+            }
+            if (onRandomize != null) {
+                val content = @Composable {
+                    AppIcon(
+                        icon = LocalMonsterAppIcons.current.randomize,
+                        contentDescription = null,
+                    )
+                    Text(text = stringResource(R.string.randomize), modifier = Modifier.padding(start = 8.dp))
+                }
+                if (isRandomSelected) {
+                    FilledTonalButton(onClick = onRandomize) { content() }
+                } else {
+                    TextButton(onClick = onRandomize) { content() }
+                }
+            }
+
+            if (filter != null && onFilterSelected != null) {
+                Box {
+                    TextButton(onClick = { filterExpanded = true }) {
+                        AppIcon(
+                            icon = LocalMonsterAppIcons.current.filter,
+                            contentDescription = null,
+                        )
+                        Text(
+                            text = when (filter) {
+                                MonsterFilter.All -> stringResource(R.string.filter_all)
+                                MonsterFilter.Regular -> stringResource(R.string.filter_regular)
+                                MonsterFilter.RadiantUnlocked -> stringResource(R.string.filter_unlocked_radiant)
+                                MonsterFilter.RadiantLocked -> stringResource(R.string.filter_locked_radiant)
+                            },
+                            modifier = Modifier.padding(start = 8.dp)
+                        )
+                    }
+                    DropdownMenu(
+                        expanded = filterExpanded,
+                        onDismissRequest = { filterExpanded = false }
+                    ) {
+                        MonsterFilter.entries.forEach { entry ->
+                            DropdownMenuItem(
+                                text = {
+                                    Text(
+                                        text = when (entry) {
+                                            MonsterFilter.All -> stringResource(R.string.filter_all)
+                                            MonsterFilter.Regular -> stringResource(R.string.filter_regular)
+                                            MonsterFilter.RadiantUnlocked -> stringResource(R.string.filter_unlocked_radiant)
+                                            MonsterFilter.RadiantLocked -> stringResource(R.string.filter_locked_radiant)
+                                        }
+                                    )
+                                },
+                                onClick = {
+                                    onFilterSelected(entry)
+                                    filterExpanded = false
+                                }
+                            )
+                        }
+                    }
+                }
+            }
+        }
+        if (!isAddEnabled) {
+            Text(
+                text = stringResource(R.string.character_limit_reached_hint),
+                style = MaterialTheme.typography.labelSmall,
+                color = MaterialTheme.colorScheme.error,
+                textAlign = TextAlign.Start,
+                modifier = Modifier.fillMaxWidth()
+            )
+        }
     }
 }
 

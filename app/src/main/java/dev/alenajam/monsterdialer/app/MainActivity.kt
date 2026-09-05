@@ -8,14 +8,19 @@ import android.provider.OpenableColumns
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -31,6 +36,8 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.unit.dp
 import androidx.core.content.IntentCompat
@@ -78,6 +85,7 @@ import dev.alenajam.opendialer.feature.appShell.DialerApp
 import dev.alenajam.opendialer.feature.appShell.HomeNavigationItem
 import dev.alenajam.opendialer.feature.appShell.HomeScreenConfiguration
 import dev.alenajam.opendialer.feature.contacts.ContactRowTrailingContent
+import dev.alenajam.opendialer.feature.settings.LocalSettingsSubpageNavigator
 import kotlinx.coroutines.launch
 import dev.alenajam.opendialer.feature.settings.SettingsSubpage
 import dev.alenajam.opendialer.feature.settings.SettingsSubpageDestination
@@ -246,12 +254,17 @@ class MainActivity : AppCompatActivity() {
                         SettingsSubpage(
                             title = stringResource(R.string.settings_contact_characters_title),
                             description = stringResource(R.string.settings_contact_characters_description),
-                            topBarTitle = selectedContact?.let { contact ->
-                                { ContactCharacterTopBarTitle(contact) }
+                            topBarTitle = {
+                                val navigator = LocalSettingsSubpageNavigator.current
+                                ContactCharacterTopBarTitle(
+                                    contact = selectedContact,
+                                    onClick = { navigator?.navigateTo(0) }
+                                )
                             },
                             content = { payload ->
                                 ContactCharacterSettingsContent(
                                     entryPoint = ContactCharacterSettingsEntryPoint.fromPayload(payload),
+                                    viewModel = contactCharacterSettingsViewModel,
                                 )
                             },
                             isScrollable = false,
@@ -271,7 +284,10 @@ class MainActivity : AppCompatActivity() {
                             },
                             destinations = listOf(
                                 SettingsSubpageDestination(title = stringResource(R.string.choose_contact)) { _, onNavigateBack ->
-                                    ContactPickerDestination(onNavigateBack)
+                                    ContactPickerDestination(
+                                        onNavigateBack = onNavigateBack,
+                                        viewModel = contactCharacterSettingsViewModel,
+                                    )
                                 },
                                 SettingsSubpageDestination(title = stringResource(R.string.add_trainer)) { payload, onNavigateBack ->
                                     AddCharacterScreen(
@@ -353,9 +369,8 @@ class MainActivity : AppCompatActivity() {
                             visibleInSettings = false,
                         ),
                         ).let { subpages ->
-                            // Share the character screen and its destinations, but keep the
-                            // toolbox title separate from the contact-row title.
-                            subpages + subpages[1].copy(topBarTitle = null)
+                            // Share the character screen and its destinations.
+                            subpages + subpages[1]
                         }
                     )
                     LaunchedEffect(incomingImport) {
@@ -428,30 +443,71 @@ private fun Uri.displayName(contentResolver: ContentResolver): String {
 }
 
 @Composable
-private fun ContactCharacterTopBarTitle(contact: MonsterContact) {
+private fun ContactCharacterTopBarTitle(
+    contact: MonsterContact?,
+    onClick: () -> Unit
+) {
     val locale = LocalConfiguration.current.locales[0]
     Row(
-        horizontalArrangement = Arrangement.spacedBy(8.dp),
+        modifier = Modifier
+            .fillMaxWidth()
+            .clip(MaterialTheme.shapes.small)
+            .clickable(onClick = onClick)
+            .padding(vertical = 4.dp, horizontal = 8.dp),
+        horizontalArrangement = Arrangement.spacedBy(12.dp),
         verticalAlignment = Alignment.CenterVertically,
     ) {
-        ContactAvatar(
-            name = contact.name,
-            photoUri = contact.photoUri,
-            modifier = Modifier.size(32.dp),
-            initialTextStyle = MaterialTheme.typography.labelLarge,
-        )
-        Column(modifier = Modifier.weight(1f)) {
-            Text(
-                text = contact.name,
-                style = MaterialTheme.typography.titleMedium,
-                maxLines = 1,
-                overflow = TextOverflow.Ellipsis,
+        if (contact != null) {
+            Box(modifier = Modifier.size(36.dp)) {
+                ContactAvatar(
+                    name = contact.name,
+                    photoUri = contact.photoUri,
+                    modifier = Modifier.size(32.dp),
+                    initialTextStyle = MaterialTheme.typography.labelLarge,
+                )
+                Surface(
+                    modifier = Modifier
+                        .size(18.dp)
+                        .align(Alignment.BottomEnd),
+                    shape = CircleShape,
+                    color = Color.White,
+                    tonalElevation = 1.dp,
+                ) {
+                    Box(contentAlignment = Alignment.Center) {
+                        dev.alenajam.opendialer.core.common.ui.AppIcon(
+                            dev.alenajam.opendialer.core.common.ui.LocalAppIcons.current.edit,
+                            contentDescription = null,
+                            modifier = Modifier.size(11.dp),
+                            tint = MaterialTheme.colorScheme.onSurfaceVariant,
+                        )
+                    }
+                }
+            }
+            Column(modifier = Modifier.weight(1f)) {
+                Text(
+                    text = contact.name,
+                    style = MaterialTheme.typography.titleMedium,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis,
+                )
+                Text(
+                    text = contact.numbers.firstOrNull()?.let { formatPhoneNumber(it, locale) }
+                        ?: stringResource(R.string.unknown),
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                )
+            }
+        } else {
+            dev.alenajam.opendialer.core.common.ui.AppIcon(
+                dev.alenajam.opendialer.core.common.ui.LocalAppIcons.current.person,
+                contentDescription = null,
+                modifier = Modifier.size(24.dp),
+                tint = MaterialTheme.colorScheme.primary
             )
             Text(
-                text = contact.numbers.firstOrNull()?.let { formatPhoneNumber(it, locale) }
-                    ?: stringResource(R.string.unknown),
-                style = MaterialTheme.typography.bodySmall,
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                text = stringResource(R.string.choose_contact),
+                style = MaterialTheme.typography.titleMedium,
+                color = MaterialTheme.colorScheme.primary
             )
         }
     }

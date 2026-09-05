@@ -3,6 +3,7 @@
     <string name="additional_translation_project_title" comment="Title of the additional translation contribution card.">参与 MonsterDialer 翻译</string>
     <string name="contribute_translations" comment="Title of the OpenDialer translation contribution link on the About screen.">参与 OpenDialer 翻译</string>
     <string name="hang_up" comment="Button to end the current phone call.">挂断</string>
+    <string name="add" comment="Generic label for adding a new item.">添加</string>
     <string name="settings_character_packs_title" comment="Settings title for managing character packs.">角色包</string>
     <string name="characters_navigation_label" comment="Bottom navigation label for character customization.">个人资料</string>
     <string name="settings_character_packs_description" comment="Settings description for character packs.">导入和管理自定义角色插图。</string>

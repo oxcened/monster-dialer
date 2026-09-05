@@ -1,33 +1,36 @@
 package dev.alenajam.monsterdialer.characters.ui
 
 import android.widget.Toast
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.expandVertically
+import androidx.compose.animation.shrinkVertically
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyGridState
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.rememberLazyGridState
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.TextButton
-import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.snapshotFlow
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -47,9 +50,6 @@ import dev.alenajam.monsterdialer.characters.data.BuiltInCharacters
 import dev.alenajam.monsterdialer.characters.data.ContactCharacterMode
 import dev.alenajam.monsterdialer.packs.data.CharacterAssignmentTarget
 import dev.alenajam.monsterdialer.packs.data.InstalledPackCharacter
-import dev.alenajam.opendialer.core.common.ui.ContactAvatar
-import dev.alenajam.opendialer.core.common.ui.AppIcon
-import dev.alenajam.opendialer.core.common.ui.LocalAppIcons
 import dev.alenajam.opendialer.feature.contacts.ContactPickerScreen
 import dev.alenajam.opendialer.feature.settings.LocalSettingsSubpageNavigator
 import kotlinx.coroutines.launch
@@ -87,8 +87,6 @@ fun ColumnScope.ContactCharacterSettingsContent(
     val monsterTitle = stringResource(R.string.character_type_monster)
     val trainersTitle = stringResource(R.string.character_type_trainers)
     val monstersTitle = stringResource(R.string.character_type_monsters)
-    val addTrainerLabel = stringResource(R.string.add_trainer)
-    val addMonsterLabel = stringResource(R.string.add_monster)
 
     val lifecycleOwner = LocalLifecycleOwner.current
     val navigator = LocalSettingsSubpageNavigator.current
@@ -105,53 +103,46 @@ fun ColumnScope.ContactCharacterSettingsContent(
 
     val currentContact = contact
     if (currentContact == null) {
-        if (pendingOnlineProfileId != null) {
-            Text(
-                text = stringResource(R.string.online_profile_choose_contact_prompt),
-                modifier = Modifier.padding(16.dp),
-                style = MaterialTheme.typography.bodyMedium,
-            )
+        Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+            Column(
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.spacedBy(8.dp),
+                modifier = Modifier.padding(24.dp)
+            ) {
+                Text(
+                    text = stringResource(if (pendingOnlineProfileId != null) R.string.online_profile_choose_contact_prompt else R.string.contact_chooser_prompt),
+                    style = MaterialTheme.typography.bodyLarge,
+                    textAlign = TextAlign.Center,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                )
+            }
         }
-        ContactChooser(
-            hasCharacters = true,
-            onChooseContact = { navigator?.navigateTo(0) }
-        )
         return
     }
 
     Column(
         modifier = Modifier.fillMaxSize()
     ) {
-        if (entryPoint == ContactCharacterSettingsEntryPoint.Toolbox) {
-            Card(
-                modifier = Modifier.fillMaxWidth().padding(bottom = 8.dp),
-                colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainerLow)
-            ) {
-                Row(
-                    modifier = Modifier.padding(horizontal = 12.dp, vertical = 4.dp),
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.spacedBy(8.dp)
-                ) {
-                    ContactAvatar(
-                        name = currentContact.name,
-                        photoUri = currentContact.photoUri,
-                        modifier = Modifier.size(24.dp),
-                        initialTextStyle = MaterialTheme.typography.labelLarge
-                    )
-                    Column(modifier = Modifier.weight(1f)) {
-                        Text(
-                            text = currentContact.name,
-                            style = MaterialTheme.typography.titleMedium,
-                            maxLines = 1,
-                            overflow = TextOverflow.Ellipsis,
-                        )
-                    }
-                    TextButton(onClick = { navigator?.navigateTo(0) }) { Text(stringResource(R.string.change)) }
-                }
-            }
+        val selectedItemIndex = when (selectedTab) {
+            0 -> trainerSelectedItemIndex
+            else -> monsterSelectedItemIndex
         }
+        val currentTabHasCharacters = if (selectedTab == 0) trainers.isNotEmpty() else monsters.isNotEmpty()
+        val effectiveLayout = if (currentTabHasCharacters) layout else CharacterLayout.List
+        val listState = if (selectedTab == 0) trainerListState else monsterListState
+        val gridState = if (selectedTab == 0) trainerGridState else monsterGridState
+        val controlsVisible = rememberCharacterSelectionControlsVisibility(
+            listState = listState,
+            gridState = gridState,
+            useGrid = effectiveLayout == CharacterLayout.Grid,
+        )
 
-        CharacterTypeTabs(
+        AnimatedVisibility(
+            visible = controlsVisible,
+            enter = fadeIn() + expandVertically(),
+            exit = fadeOut() + shrinkVertically(),
+        ) {
+            CharacterSelectionActions(
             selectedTab = selectedTab,
             onTabSelected = { tab ->
                 val selectedItemIndex = if (tab == 0) trainerSelectedItemIndex else monsterSelectedItemIndex
@@ -161,20 +152,7 @@ fun ColumnScope.ContactCharacterSettingsContent(
                 if (nextTabEffectiveLayout == CharacterLayout.List) (if (tab == 0) trainerListState else monsterListState).requestScrollToItem(selectedItemIndex)
                 else (if (tab == 0) trainerGridState else monsterGridState).requestScrollToItem(selectedItemIndex)
                 viewModel.setSelectedTab(tab)
-            }
-        )
-        if (selectedTab == 1) {
-            MonsterFilterChips(
-                selectedFilter = filter,
-                onFilterSelected = { nextFilter ->
-                    monsterListState.requestScrollToItem(0)
-                    monsterGridState.requestScrollToItem(0)
-                    viewModel.setFilter(nextFilter)
-                },
-            )
-        }
-        CharacterSelectionActions(
-            addLabel = if (selectedTab == 0) addTrainerLabel else addMonsterLabel,
+            },
             isAddEnabled = !isLimitReached,
             onAddCharacter = { navigator?.navigateTo(if (selectedTab == 0) 1 else 2) },
             onRandomize = {
@@ -182,17 +160,16 @@ fun ColumnScope.ContactCharacterSettingsContent(
                 if (entryPoint == ContactCharacterSettingsEntryPoint.ContactList) {
                     navigator?.navigateBack()
                 }
-            }
-        )
-        val selectedItemIndex = when (selectedTab) {
-            0 -> trainerSelectedItemIndex
-            else -> monsterSelectedItemIndex
+            },
+            isRandomSelected = if (selectedTab == 0) trainerMode == ContactCharacterMode.Random else monsterMode == ContactCharacterMode.Random,
+            filter = if (selectedTab == 1) filter else null,
+            onFilterSelected = if (selectedTab == 1) { nextFilter ->
+                monsterListState.requestScrollToItem(0)
+                monsterGridState.requestScrollToItem(0)
+                viewModel.setFilter(nextFilter)
+            } else null
+            )
         }
-        val currentTabHasCharacters = if (selectedTab == 0) trainers.isNotEmpty() else monsters.isNotEmpty()
-        val effectiveLayout = if (currentTabHasCharacters) layout else CharacterLayout.List
-
-        val listState = if (selectedTab == 0) trainerListState else monsterListState
-        val gridState = if (selectedTab == 0) trainerGridState else monsterGridState
         val scope = androidx.compose.runtime.rememberCoroutineScope()
         var pendingDeletion by remember { mutableStateOf<InstalledPackCharacter?>(null) }
         var isPendingDeletionInUse by remember { mutableStateOf(false) }
@@ -225,7 +202,7 @@ fun ColumnScope.ContactCharacterSettingsContent(
         }
         Box(modifier = Modifier.fillMaxWidth().weight(1f)) {
             if (effectiveLayout == CharacterLayout.List) {
-                LazyColumn(state = listState, modifier = Modifier.fillMaxSize(), contentPadding = PaddingValues(top = if (selectedTab == 1) 0.dp else 8.dp, bottom = 72.dp)) {
+                LazyColumn(state = listState, modifier = Modifier.fillMaxSize(), contentPadding = PaddingValues(top = 0.dp, bottom = 72.dp)) {
                     when (selectedTab) {
                         0 -> characterTypeItems(
                             title = trainerTitle,
@@ -241,10 +218,6 @@ fun ColumnScope.ContactCharacterSettingsContent(
                                     navigator?.navigateBack()
                                 }
                             },
-                            onAddCharacter = { navigator?.navigateTo(1) },
-                            addLabel = addTrainerLabel,
-                            isAddEnabled = !isLimitReached,
-                            showAddCharacter = false,
                             unlockedVariants = unlockedVariants,
                             isRandomSelected = trainerMode == ContactCharacterMode.Random,
                             onRandomize = {
@@ -273,10 +246,6 @@ fun ColumnScope.ContactCharacterSettingsContent(
                                     navigator?.navigateBack()
                                 }
                             },
-                            onAddCharacter = { navigator?.navigateTo(2) },
-                            addLabel = addMonsterLabel,
-                            isAddEnabled = !isLimitReached,
-                            showAddCharacter = false,
                             unlockedVariants = unlockedVariants,
                             isRandomSelected = monsterMode == ContactCharacterMode.Random,
                             onRandomize = {
@@ -293,7 +262,7 @@ fun ColumnScope.ContactCharacterSettingsContent(
                     }
                 }
             } else {
-                LazyVerticalGrid(columns = GridCells.Fixed(2), state = gridState, modifier = Modifier.fillMaxSize(), contentPadding = PaddingValues(top = if (selectedTab == 1) 0.dp else 8.dp, bottom = 72.dp), horizontalArrangement = Arrangement.spacedBy(2.dp), verticalArrangement = Arrangement.spacedBy(2.dp)) {
+                LazyVerticalGrid(columns = GridCells.Fixed(2), state = gridState, modifier = Modifier.fillMaxSize(), contentPadding = PaddingValues(top = 0.dp, bottom = 72.dp), horizontalArrangement = Arrangement.spacedBy(2.dp), verticalArrangement = Arrangement.spacedBy(2.dp)) {
                     when (selectedTab) {
                         0 -> characterTypeGridItems(
                             title = trainerTitle,
@@ -309,10 +278,6 @@ fun ColumnScope.ContactCharacterSettingsContent(
                                     navigator?.navigateBack()
                                 }
                             },
-                            onAddCharacter = { navigator?.navigateTo(1) },
-                            addLabel = addTrainerLabel,
-                            isAddEnabled = !isLimitReached,
-                            showAddCharacter = false,
                             unlockedVariants = unlockedVariants,
                             isRandomSelected = trainerMode == ContactCharacterMode.Random,
                             onRandomize = {
@@ -341,10 +306,6 @@ fun ColumnScope.ContactCharacterSettingsContent(
                                     navigator?.navigateBack()
                                 }
                             },
-                            onAddCharacter = { navigator?.navigateTo(2) },
-                            addLabel = addMonsterLabel,
-                            isAddEnabled = !isLimitReached,
-                            showAddCharacter = false,
                             unlockedVariants = unlockedVariants,
                             isRandomSelected = monsterMode == ContactCharacterMode.Random,
                             onRandomize = {
@@ -380,82 +341,35 @@ fun ColumnScope.ContactCharacterSettingsContent(
 }
 
 @Composable
-private fun CharacterSelectionActions(
-    addLabel: String,
-    isAddEnabled: Boolean,
-    onAddCharacter: () -> Unit,
-    onRandomize: () -> Unit,
-) {
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(vertical = 4.dp),
-        horizontalArrangement = Arrangement.spacedBy(8.dp),
-        verticalAlignment = Alignment.CenterVertically,
-    ) {
-        OutlinedButton(
-            onClick = onAddCharacter,
-            enabled = isAddEnabled,
-        ) {
-            AppIcon(
-                icon = dev.alenajam.monsterdialer.app.ui.LocalMonsterAppIcons.current.addCharacter,
-                contentDescription = null,
-            )
-            Text(text = addLabel, modifier = Modifier.padding(start = 8.dp))
-        }
-        TextButton(onClick = onRandomize) {
-            AppIcon(
-                icon = dev.alenajam.monsterdialer.app.ui.LocalMonsterAppIcons.current.randomize,
-                contentDescription = null,
-            )
-            Text(text = stringResource(R.string.randomize), modifier = Modifier.padding(start = 8.dp))
-        }
-    }
-}
+private fun rememberCharacterSelectionControlsVisibility(
+    listState: LazyListState,
+    gridState: LazyGridState,
+    useGrid: Boolean,
+): Boolean {
+    var visible by remember { mutableStateOf(true) }
 
-@Composable
-private fun ContactChooser(hasCharacters: Boolean, onChooseContact: () -> Unit) {
-    Box(
-        modifier = Modifier.fillMaxSize(),
-        contentAlignment = Alignment.Center
-    ) {
-        Column(
-            modifier = Modifier.fillMaxWidth().padding(horizontal = 24.dp),
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.spacedBy(16.dp)
-        ) {
-            AppIcon(
-                LocalAppIcons.current.person,
-                contentDescription = null,
-                modifier = Modifier.size(56.dp)
-            )
-            Column(
-                horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.spacedBy(8.dp)
-            ) {
-                Text(
-                    stringResource(R.string.contact_chooser_title),
-                    style = MaterialTheme.typography.headlineSmall,
-                    textAlign = TextAlign.Center
-                )
-                Text(
-                    if (hasCharacters) {
-                        stringResource(R.string.contact_chooser_prompt)
-                    } else {
-                        stringResource(R.string.contact_chooser_empty_prompt)
-                    },
-                    style = MaterialTheme.typography.bodyLarge,
-                    textAlign = TextAlign.Center,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant
-                )
+    LaunchedEffect(listState, gridState, useGrid) {
+        var previousPosition: Pair<Int, Int>? = null
+        snapshotFlow {
+            if (useGrid) {
+                gridState.firstVisibleItemIndex to gridState.firstVisibleItemScrollOffset
+            } else {
+                listState.firstVisibleItemIndex to listState.firstVisibleItemScrollOffset
             }
-            if (hasCharacters) {
-                Button(onClick = onChooseContact) {
-                    Text(stringResource(R.string.choose_contact))
+        }.collect { position ->
+            previousPosition?.let { previous ->
+                when {
+                    position.first < previous.first ||
+                        (position.first == previous.first && position.second < previous.second) -> visible = true
+                    position.first > previous.first ||
+                        (position.first == previous.first && position.second > previous.second) -> visible = false
                 }
             }
+            previousPosition = position
         }
     }
+
+    return visible
 }
 
 @Composable
