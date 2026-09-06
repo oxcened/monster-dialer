@@ -93,6 +93,7 @@ internal fun RetroCharacterPicker(
     var poolDraft by remember(type, randomPool, selectionVersion) { mutableStateOf(randomPool) }
     var assignmentCleared by remember(type, selectionVersion) { mutableStateOf(false) }
     var assignmentRandomized by remember(type, selectionVersion) { mutableStateOf(false) }
+    var hasMadeSelection by remember(type, selectionVersion) { mutableStateOf(false) }
     val selectedEntry = entries.firstOrNull { it.reference == pendingSelection }
     val hasPendingSelection = pendingSelection != selected && pendingSelection != null
     val prompt = if (randomPoolOpen) {
@@ -112,7 +113,10 @@ internal fun RetroCharacterPicker(
         )
     }
 
-    LaunchedEffect(selected, entries, selectionVersion) { pendingSelection = selected ?: entries.firstOrNull()?.reference }
+    LaunchedEffect(selected, entries, selectionVersion) {
+        pendingSelection = selected ?: entries.firstOrNull()?.reference
+        hasMadeSelection = false
+    }
     BackHandler(enabled = optionsOpen) { optionsOpen = false }
 
     Column(modifier = Modifier.fillMaxSize()) {
@@ -147,6 +151,7 @@ internal fun RetroCharacterPicker(
                         }
                     } else {
                         pendingSelection = entry.reference
+                        hasMadeSelection = true
                         assignmentCleared = false
                         assignmentRandomized = false
                     }
@@ -186,10 +191,7 @@ internal fun RetroCharacterPicker(
             )
             RetroActionButton(
                 key = stringResource(R.string.retro_key_b),
-                label = stringResource(
-                    if (randomPoolOpen || hasPendingSelection) R.string.customized_contacts_cancel_action
-                    else R.string.customized_contacts_back_action,
-                ),
+                label = stringResource(R.string.customized_contacts_back_action),
                 onClick = {
                     if (randomPoolOpen) {
                         if (enteredFromRandomMode) {
@@ -199,10 +201,12 @@ internal fun RetroCharacterPicker(
                             poolDraft = randomPool
                             poolCursor = randomPool.firstOrNull()
                         }
-                    } else if (hasPendingSelection) {
+                    } else if (hasMadeSelection) {
                         pendingSelection = selected
+                        hasMadeSelection = false
                         assignmentCleared = false
                         assignmentRandomized = false
+                        onBack()
                     } else {
                         onBack()
                     }
