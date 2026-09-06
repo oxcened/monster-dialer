@@ -143,6 +143,7 @@
     <string name="contact_picker_pool_trainers">Choose trainers for the pool.</string>
     <string name="contact_picker_pool_monsters">Choose monsters for the pool.</string>
     <string name="contact_picker_pool_done">DONE</string>
+    <string name="contact_picker_choose">CHOOSE</string>
     <string name="contact_picker_next">NEXT</string>
     <string name="contact_picker_pool_included">●</string>
     <string name="contact_picker_pool_excluded">○</string>

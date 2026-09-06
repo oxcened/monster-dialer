@@ -22,7 +22,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 internal data class RetroContextMenuItem(
     val label: String,
-    val showCursor: Boolean = false,
+    /** Null uses the menu's default cursor position; true/false explicitly overrides it. */
+    val showCursor: Boolean? = null,
     val onClick: () -> Unit,
 )
 
@@ -48,8 +49,12 @@ internal fun RetroContextMenu(
                     overflow = TextOverflow.Ellipsis,
                 )
             }
-            items.forEach { item ->
-                RetroContextMenuItemRow(item = item, fontFamily = fontFamily)
+            items.forEachIndexed { index, item ->
+                RetroContextMenuItemRow(
+                    item = item,
+                    showCursor = item.showCursor ?: (index == 0),
+                    fontFamily = fontFamily,
+                )
             }
         }
     }
@@ -114,6 +119,7 @@ private fun ConfirmationActionRow(
 @Composable
 private fun RetroContextMenuItemRow(
     item: RetroContextMenuItem,
+    showCursor: Boolean,
     fontFamily: FontFamily,
 ) {
     Row(
@@ -125,7 +131,7 @@ private fun RetroContextMenuItemRow(
         horizontalArrangement = Arrangement.spacedBy(5.dp),
         verticalAlignment = Alignment.CenterVertically,
     ) {
-        if (item.showCursor) {
+        if (showCursor) {
             RetroSelectionArrow(
                 modifier = Modifier.padding(start = 4.dp),
                 tint = Color(0xFF202020),

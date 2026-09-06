@@ -95,10 +95,10 @@ internal fun RetroCharacterPicker(
     var assignmentRandomized by remember(type, selectionVersion) { mutableStateOf(false) }
     var hasMadeSelection by remember(type, selectionVersion) { mutableStateOf(false) }
     val selectedEntry = entries.firstOrNull { it.reference == pendingSelection }
-    val hasPendingSelection = pendingSelection != selected && pendingSelection != null
+    val hasConfirmedSelection = selected != null || hasMadeSelection
     val prompt = if (randomPoolOpen) {
         stringResource(if (type == CharacterType.Trainer) R.string.contact_picker_pool_trainers else R.string.contact_picker_pool_monsters)
-    } else if (hasPendingSelection) {
+    } else if (hasConfirmedSelection && pendingSelection != null) {
         stringResource(R.string.contact_picker_ready, selectedEntry?.name?.uppercase().orEmpty())
     } else {
         stringResource(
@@ -179,7 +179,7 @@ internal fun RetroCharacterPicker(
                         else -> R.string.customized_contacts_assign_action
                     },
                 ),
-                enabled = if (randomPoolOpen) poolDraft.isNotEmpty() else selectedEntry != null,
+                enabled = if (randomPoolOpen) poolDraft.isNotEmpty() else hasConfirmedSelection && selectedEntry != null,
                 onClick = {
                     if (randomPoolOpen) {
                         randomPoolOpen = false
@@ -224,7 +224,13 @@ internal fun RetroCharacterPicker(
                 fontFamily = RetroPickerFont,
                 items = if (randomPoolOpen) {
                     listOf(
-                        RetroContextMenuItem(label = stringResource(R.string.contact_random_pool_select_all), showCursor = true) {
+                        RetroContextMenuItem(label = stringResource(R.string.contact_picker_choose)) {
+                            randomPoolOpen = false
+                            poolDraft = randomPool
+                            poolCursor = randomPool.firstOrNull()
+                            optionsOpen = false
+                        },
+                        RetroContextMenuItem(label = stringResource(R.string.contact_random_pool_select_all)) {
                             poolDraft = entries.mapNotNull { it.reference }.toSet()
                             poolCursor = poolDraft.firstOrNull()
                             optionsOpen = false
