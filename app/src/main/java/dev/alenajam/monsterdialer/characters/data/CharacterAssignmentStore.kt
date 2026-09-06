@@ -29,6 +29,7 @@ private data class CharacterAssignmentsDocument(
     val contactRandomPoolsByType: Map<CharacterType, List<CharacterReference>> = emptyMap(),
     val contactRandomPoolsByContact: Map<String, Map<CharacterType, List<CharacterReference>>> = emptyMap(),
     val contactLabels: Map<String, String> = emptyMap(),
+    val contactGroups: Map<String, String> = emptyMap(),
     val selectedContact: StoredSelectedContact? = null
 )
 
@@ -41,6 +42,12 @@ enum class ContactCharacterMode {
 data class ContactCharacterSelection(
     val character: CharacterReference?,
     val mode: ContactCharacterMode,
+)
+
+/** A complete per-type contact assignment. A non-null pool represents Random mode. */
+data class ContactCharacterAssignmentUpdate(
+    val character: CharacterReference? = null,
+    val randomPool: List<CharacterReference>? = null,
 )
 
 data class ContactCharacterOverview(
@@ -254,19 +261,30 @@ class CharacterAssignmentStore(
 
         return contactKeys
             .filter { key ->
-                hasContactOverride(key, CharacterType.Trainer) || hasContactOverride(key, CharacterType.Monster)
+                hasRosterOverride(key, CharacterType.Trainer) || hasRosterOverride(key, CharacterType.Monster)
             }
-            .groupBy { key -> document.contactLabels[key] ?: key }
-            .map { (label, keys) ->
+            .groupBy { key ->
+                document.contactGroups[key]
+                    ?: "legacy:${(document.contactLabels[key] ?: key).trim().lowercase()}"
+            }
+            .map { (_, keys) ->
                 val representativeKey = keys.first()
                 ContactCharacterOverview(
                     contactKeys = keys,
-                    label = label,
+                    label = document.contactLabels[representativeKey] ?: representativeKey,
                     trainer = selectionForContact(representativeKey, CharacterType.Trainer),
                     monster = selectionForContact(representativeKey, CharacterType.Monster),
                 )
             }
             .sortedBy { it.label.lowercase() }
+    }
+
+    private fun hasRosterOverride(contactKey: String, type: CharacterType): Boolean {
+        val normalizedKey = normalizeContactKeyOrNull(contactKey) ?: return false
+        val document = read()
+        return document.contactsByType[normalizedKey]?.containsKey(type) == true ||
+            document.contactModes[normalizedKey]?.get(type) == ContactCharacterMode.Random ||
+            (type == CharacterType.Monster && normalizedKey in document.contacts)
     }
 
     @Synchronized
@@ -281,11 +299,116 @@ class CharacterAssignmentStore(
         val updatedModes = document.contactModes.toMutableMap().apply {
             if (modes.isEmpty()) remove(normalizedKey) else put(normalizedKey, modes)
         }
+        val updatedLabels = document.contactLabels.toMutableMap().apply {
+            if (assignments.isEmpty() && modes.isEmpty() && normalizedKey !in document.contacts) {
+                remove(normalizedKey)
+            }
+        }
+        val updatedGroups = document.contactGroups.toMutableMap().apply {
+            if (assignments.isEmpty() && modes.isEmpty() && normalizedKey !in document.contacts) {
+                remove(normalizedKey)
+            }
+        }
         write(document.copy(
             contactsByType = updatedAssignments,
             contactModes = updatedModes,
+            contactLabels = updatedLabels,
+            contactGroups = updatedGroups,
             contacts = if (type == CharacterType.Monster) document.contacts - normalizedKey else document.contacts,
         ))
+    }
+
+    @Synchronized
+    fun updateContactAssignments(
+        contactKeys: List<String>,
+        label: String,
+        trainer: ContactCharacterAssignmentUpdate,
+        monster: ContactCharacterAssignmentUpdate,
+    ) {
+        val keys = contactKeys.mapNotNull(::normalizeContactKeyOrNull).distinct()
+        if (keys.isEmpty()) return
+
+        trainer.character?.validate()
+        monster.character?.validate()
+        trainer.randomPool.orEmpty().forEach { it.validate() }
+        monster.randomPool.orEmpty().forEach { it.validate() }
+
+        val document = read()
+        val typedAssignments = document.contactsByType.toMutableMap()
+        val modesByContact = document.contactModes.toMutableMap()
+        val poolsByContact = document.contactRandomPoolsByContact.toMutableMap()
+        val labels = document.contactLabels.toMutableMap()
+        val groups = document.contactGroups.toMutableMap()
+        val legacyContacts = document.contacts.toMutableMap()
+        val groupId = keys.sorted().joinToString(separator = "|")
+
+        keys.forEach { key ->
+            val assignments = typedAssignments[key].orEmpty().toMutableMap()
+            val modes = modesByContact[key].orEmpty().toMutableMap()
+            val pools = poolsByContact[key].orEmpty().toMutableMap()
+
+            fun apply(type: CharacterType, update: ContactCharacterAssignmentUpdate) {
+                if (update.randomPool != null) {
+                    assignments.remove(type)
+                    modes[type] = ContactCharacterMode.Random
+                    pools[type] = update.randomPool
+                } else {
+                    if (update.character == null) {
+                        assignments.remove(type)
+                        modes[type] = ContactCharacterMode.Default
+                    } else {
+                        assignments[type] = update.character
+                        modes.remove(type)
+                    }
+                    pools.remove(type)
+                }
+                if (type == CharacterType.Monster) legacyContacts.remove(key)
+            }
+
+            apply(CharacterType.Trainer, trainer)
+            apply(CharacterType.Monster, monster)
+
+            if (assignments.isEmpty()) typedAssignments.remove(key) else typedAssignments[key] = assignments
+            if (modes.isEmpty()) modesByContact.remove(key) else modesByContact[key] = modes
+            if (pools.isEmpty()) poolsByContact.remove(key) else poolsByContact[key] = pools
+
+            val hasRosterAssignment = assignments.isNotEmpty() || modes.values.any { it == ContactCharacterMode.Random }
+            if (hasRosterAssignment) {
+                labels[key] = label.trim().take(MaxContactLabelLength)
+                groups[key] = groupId
+            } else {
+                labels.remove(key)
+                groups.remove(key)
+            }
+        }
+
+        write(
+            document.copy(
+                contacts = legacyContacts,
+                contactsByType = typedAssignments,
+                contactModes = modesByContact,
+                contactRandomPoolsByContact = poolsByContact,
+                contactLabels = labels,
+                contactGroups = groups,
+            ),
+        )
+    }
+
+    @Synchronized
+    fun clearContactAssignments(contactKeys: List<String>) {
+        val keys = contactKeys.mapNotNull(::normalizeContactKeyOrNull).toSet()
+        if (keys.isEmpty()) return
+        val document = read()
+        write(
+            document.copy(
+                contacts = document.contacts - keys,
+                contactsByType = document.contactsByType - keys,
+                contactModes = document.contactModes - keys,
+                contactRandomPoolsByContact = document.contactRandomPoolsByContact - keys,
+                contactLabels = document.contactLabels - keys,
+                contactGroups = document.contactGroups - keys,
+            ),
+        )
     }
 
     @Synchronized
@@ -436,11 +559,18 @@ class CharacterAssignmentStore(
         val legacyContacts = document.contacts.toMutableMap().apply {
             if (type == CharacterType.Monster) remove(normalizedKey)
         }
+        val remainingModes = document.contactModes[normalizedKey].orEmpty()
+            .filterKeys { it != type }
         val updatedLabels = document.contactLabels.toMutableMap().apply {
-            if (character == null && assignmentsForContact.isEmpty() && normalizedKey !in legacyContacts) {
+            if (character == null && assignmentsForContact.isEmpty() && remainingModes.isEmpty() && normalizedKey !in legacyContacts) {
                 remove(normalizedKey)
             } else if (!label.isNullOrBlank()) {
                 put(normalizedKey, label.trim().take(MaxContactLabelLength))
+            }
+        }
+        val updatedGroups = document.contactGroups.toMutableMap().apply {
+            if (character == null && assignmentsForContact.isEmpty() && remainingModes.isEmpty() && normalizedKey !in legacyContacts) {
+                remove(normalizedKey)
             }
         }
         val updatedModes = document.contactModes.toMutableMap().apply {
@@ -453,7 +583,8 @@ class CharacterAssignmentStore(
             contacts = legacyContacts,
             contactsByType = updated,
             contactModes = updatedModes,
-            contactLabels = updatedLabels
+            contactLabels = updatedLabels,
+            contactGroups = updatedGroups,
         ))
     }
 
@@ -474,11 +605,15 @@ class CharacterAssignmentStore(
         val updatedLabels = document.contactLabels.toMutableMap().apply {
             if (!label.isNullOrBlank()) put(normalizedKey, label.trim().take(MaxContactLabelLength))
         }
+        val updatedGroups = document.contactGroups.toMutableMap().apply {
+            if (!label.isNullOrBlank()) putIfAbsent(normalizedKey, normalizedKey)
+        }
         write(document.copy(
             contacts = if (type == CharacterType.Monster) document.contacts - normalizedKey else document.contacts,
             contactsByType = updatedAssignments,
             contactModes = updatedModes,
             contactLabels = updatedLabels,
+            contactGroups = updatedGroups,
         ))
     }
 

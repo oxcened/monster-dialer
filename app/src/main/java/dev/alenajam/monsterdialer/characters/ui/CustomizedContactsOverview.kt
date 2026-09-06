@@ -39,6 +39,7 @@ import dev.alenajam.monsterdialer.R
 import dev.alenajam.monsterdialer.app.ui.LocalMonsterAppIcons
 import dev.alenajam.monsterdialer.app.ui.RetroContextMenu
 import dev.alenajam.monsterdialer.app.ui.RetroContextMenuItem
+import dev.alenajam.monsterdialer.app.ui.RetroConfirmationMenu
 import dev.alenajam.monsterdialer.app.ui.RetroActionButton
 import dev.alenajam.monsterdialer.app.ui.RetroSelectionArrow
 import dev.alenajam.monsterdialer.app.ui.RetroSelectionArrowSize
@@ -61,13 +62,19 @@ internal fun CustomizedContactsOverview(
     trainers: List<InstalledPackCharacter>,
     monsters: List<InstalledPackCharacter>,
     highlightedContactKey: String?,
+    addedContactLabel: String?,
     isAddEnabled: Boolean,
     onAddContact: () -> Unit,
     onBack: () -> Unit,
     onContactMenuOpened: (ContactCharacterOverview) -> Unit,
+    onContactMenuClosed: () -> Unit,
+    onContactRemoved: (ContactCharacterOverview) -> Unit,
+    onRosterStatusMessageCleared: () -> Unit,
     onContactSelected: (ContactCharacterOverview, CharacterType) -> Unit,
 ) {
     var menuContact by remember { mutableStateOf<ContactCharacterOverview?>(null) }
+    var confirmationContact by remember { mutableStateOf<ContactCharacterOverview?>(null) }
+    var statusMessage by remember { mutableStateOf<String?>(null) }
     Box(
         modifier = Modifier.fillMaxSize().background(MaterialTheme.colorScheme.background),
     ) {
@@ -91,6 +98,8 @@ internal fun CustomizedContactsOverview(
                         showCursor = contact.contactKey == cursorContactKey,
                         onClick = {
                             onContactMenuOpened(contact)
+                            onRosterStatusMessageCleared()
+                            statusMessage = null
                             menuContact = contact
                         },
                     )
@@ -99,7 +108,9 @@ internal fun CustomizedContactsOverview(
         }
 
         BattleDialogue(
-            message = stringResource(R.string.customized_contacts_prompt),
+            message = statusMessage
+                ?: addedContactLabel?.let { stringResource(R.string.contact_added_message, it.uppercase()) }
+                ?: stringResource(R.string.customized_contacts_prompt),
             dialogueId = 0,
             isTyping = false,
             timing = BattleTiming.Instant,
@@ -118,14 +129,12 @@ internal fun CustomizedContactsOverview(
                 key = stringResource(R.string.retro_key_a),
                 label = stringResource(R.string.customized_contacts_assign_action),
                 enabled = isAddEnabled,
-                onClick = onAddContact,
-                arrowSize = 14.dp,
+                onClick = onAddContact
             )
             RetroActionButton(
                 key = stringResource(R.string.retro_key_b),
                 label = stringResource(R.string.customized_contacts_back_action),
                 onClick = onBack,
-                arrowSize = 14.dp,
             )
         }
         }
@@ -133,7 +142,10 @@ internal fun CustomizedContactsOverview(
             Box(
                 modifier = Modifier
                     .fillMaxSize()
-                    .clickable { menuContact = null },
+                    .clickable {
+                        menuContact = null
+                        onContactMenuClosed()
+                    },
                 contentAlignment = Alignment.Center,
             ) {
                 RetroContextMenu(
@@ -141,20 +153,59 @@ internal fun CustomizedContactsOverview(
                     fontFamily = ContactRosterPixelFont,
                     items = listOf(
                         RetroContextMenuItem(
-                            label = stringResource(R.string.contact_choose_trainer),
+                            label = stringResource(R.string.contact_context_menu_trainer),
                             showCursor = true,
                         ) {
                         menuContact = null
                         onContactSelected(contact, CharacterType.Trainer)
                         },
                         RetroContextMenuItem(
-                            label = stringResource(R.string.contact_choose_monster),
+                            label = stringResource(R.string.contact_context_menu_monster),
                         ) {
                         menuContact = null
                         onContactSelected(contact, CharacterType.Monster)
                         },
-                        RetroContextMenuItem(label = stringResource(R.string.cancel)) { menuContact = null },
+                        RetroContextMenuItem(
+                            label = stringResource(R.string.contact_context_menu_remove),
+                        ) {
+                            menuContact = null
+                            confirmationContact = contact
+                        },
+                        RetroContextMenuItem(label = stringResource(R.string.cancel)) {
+                            menuContact = null
+                            onContactMenuClosed()
+                        },
                     ),
+                )
+            }
+        }
+        confirmationContact?.let { contact ->
+            val removedMessage = stringResource(R.string.contact_removed_message, contact.label.uppercase())
+            Box(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .clickable {
+                        confirmationContact = null
+                        onContactMenuClosed()
+                    },
+                contentAlignment = Alignment.Center,
+            ) {
+                RetroConfirmationMenu(
+                    title = stringResource(R.string.contact_remove_prompt),
+                    noLabel = stringResource(R.string.contact_remove_no),
+                    yesLabel = stringResource(R.string.contact_remove_yes),
+                    fontFamily = ContactRosterPixelFont,
+                    modifier = Modifier.fillMaxWidth(0.82f),
+                    onCancel = {
+                        confirmationContact = null
+                        onContactMenuClosed()
+                    },
+                    onConfirm = {
+                        confirmationContact = null
+                        onContactMenuClosed()
+                        onContactRemoved(contact)
+                        statusMessage = removedMessage
+                    },
                 )
             }
         }
@@ -276,7 +327,7 @@ private fun AssignmentName(
         characters.firstOrNull { it.packId == reference.packId && it.character.id == reference.characterId }
     }
     val name = when {
-        selection.mode == ContactCharacterMode.Random -> stringResource(R.string.randomize)
+        selection.mode == ContactCharacterMode.Random -> stringResource(R.string.contact_default_random)
         character == BuiltInCharacters.defaultTrainerReference -> BuiltInCharacters.trainer.name
         character == BuiltInCharacters.defaultMonsterReference -> BuiltInCharacters.monster.character.name
         installed != null -> installed.character.name

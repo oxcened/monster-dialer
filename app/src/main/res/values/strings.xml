@@ -64,6 +64,7 @@
     <string name="battle_journal_clear_confirmation_title" comment="Title for the confirmation dialog before clearing the Battle Journal.">Clear Battle Journal?</string>
     <string name="battle_journal_clear_confirmation_message" comment="Explanation of what clearing the Battle Journal removes.">This permanently removes all battle history and saved journal sprites.</string>
     <string name="monster_variant_and_level" translatable="false" comment="Language-neutral formatter for a monster variant and an already-localized level. %1$s is the variant (e.g., Regular) and %2$s is the level (e.g., Lv. 12).">%1$s · %2$s</string>
+    <string name="retro_picker_variant_and_level" translatable="false" comment="Language-neutral formatter for the retro assignment picker. %1$s is the variant and %2$s is the level.">%1$s   %2$s</string>
     <string name="filter_all" comment="Filter option to show all monster variants.">All</string>
     <string name="filter_regular" comment="Filter option to show only regular monster variants.">Regular</string>
     <string name="filter_unlocked_radiant" comment="Filter option to show only unlocked radiant monster variants.">Unlocked Radiant</string>
@@ -127,6 +128,29 @@
     <string name="contact_default_monster">Default monster</string>
     <string name="contact_choose_trainer" comment="Dropdown option that opens the trainer picker for the contact default.">Choose trainer</string>
     <string name="contact_choose_monster" comment="Dropdown option that opens the monster picker for the contact default.">Choose monster</string>
+    <string name="contact_context_menu_trainer">Trainer</string>
+    <string name="contact_context_menu_monster">Monster</string>
+    <string name="contact_context_menu_remove">Remove</string>
+    <string name="contact_picker_options">Options</string>
+    <string name="contact_picker_none">None</string>
+    <string name="contact_picker_no_trainer_assigned">No trainer assigned.</string>
+    <string name="contact_picker_no_monster_assigned">No monster assigned.</string>
+    <string name="contact_picker_random_trainer">Random trainer.</string>
+    <string name="contact_picker_random_monster">Random monster.</string>
+    <string name="contact_picker_choose_monster">Choose monster.</string>
+    <string name="contact_picker_choose_trainer">Choose trainer.</string>
+    <string name="contact_picker_ready">%1$s is ready!</string>
+    <string name="contact_picker_pool_trainers">Choose trainers for the pool.</string>
+    <string name="contact_picker_pool_monsters">Choose monsters for the pool.</string>
+    <string name="contact_picker_pool_done">DONE</string>
+    <string name="contact_picker_next">NEXT</string>
+    <string name="contact_picker_pool_included">●</string>
+    <string name="contact_picker_pool_excluded">○</string>
+    <string name="contact_remove_prompt">Remove from roster?</string>
+    <string name="contact_remove_no">No</string>
+    <string name="contact_remove_yes">Yes</string>
+    <string name="contact_removed_message">%1$s was removed.</string>
+    <string name="contact_added_message">%1$s was added to the roster!</string>
     <string name="contact_default_random">Random</string>
     <string name="contact_random_pool_all">All available characters</string>
     <string name="contact_random_pool_choose">Choose randomizer pool</string>
@@ -219,10 +243,11 @@
     <string name="customized_contacts_title">Customized contacts</string>
     <string name="customized_contacts_empty_title">No customized contacts</string>
     <string name="customized_contacts_empty_description">Choose a contact to assign a trainer and monster.</string>
-    <string name="contact_assignment_unavailable">Not assigned</string>
+    <string name="contact_assignment_unavailable">---</string>
     <string name="customized_contacts_add">New contact</string>
     <string name="customized_contacts_new_action">NEW</string>
     <string name="customized_contacts_back_action">BACK</string>
+    <string name="customized_contacts_cancel_action">CANCEL</string>
     <string name="customized_contacts_prompt">Choose a contact.</string>
     <string name="customized_contacts_assign_action">ASSIGN</string>
     <string name="retro_key_a" comment="Game Boy-style action key label.">A</string>

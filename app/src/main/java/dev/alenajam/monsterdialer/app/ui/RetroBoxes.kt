@@ -14,12 +14,12 @@ import androidx.compose.ui.unit.dp
 @Composable
 internal fun RetroBoxFrame(
     modifier: Modifier = Modifier,
-    height: Dp,
+    height: Dp? = null,
     content: @Composable androidx.compose.foundation.layout.BoxWithConstraintsScope.() -> Unit,
 ) {
     BoxWithConstraints(
         modifier = modifier
-            .height(height)
+            .then(if (height != null) Modifier.height(height) else Modifier)
             .background(Color.Black)
             .padding(2.dp)
             .background(Color.White)

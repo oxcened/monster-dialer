@@ -1,7 +1,7 @@
 package dev.alenajam.monsterdialer.characters.ui
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -25,7 +25,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.Font
@@ -37,6 +36,9 @@ import coil.compose.AsyncImage
 import dev.alenajam.monsterdialer.R
 import dev.alenajam.monsterdialer.app.ui.RetroSelectionArrow
 import dev.alenajam.monsterdialer.app.ui.RetroSelectionArrowSize
+import dev.alenajam.monsterdialer.app.ui.RetroContextMenu
+import dev.alenajam.monsterdialer.app.ui.RetroContextMenuItem
+import dev.alenajam.monsterdialer.app.ui.RetroActionButton
 import dev.alenajam.monsterdialer.battle.ui.BattleDialogue
 import dev.alenajam.monsterdialer.characters.data.BuiltInCharacter
 import dev.alenajam.monsterdialer.characters.data.BuiltInCharacters
@@ -55,7 +57,6 @@ private data class RetroCharacterEntry(
     val name: String,
     val level: Int? = null,
     val isRadiant: Boolean = false,
-    val isUnlocked: Boolean = true,
     val artwork: File? = null,
     val builtInArtwork: Int? = null,
     val section: String,
@@ -64,6 +65,7 @@ private data class RetroCharacterEntry(
 @Composable
 internal fun RetroCharacterPicker(
     type: CharacterType,
+    selectionVersion: Int = 0,
     selected: CharacterReference?,
     characters: List<InstalledPackCharacter>,
     unlockedVariants: Set<CharacterReference>,
@@ -72,19 +74,49 @@ internal fun RetroCharacterPicker(
     defaultArtwork: BuiltInCharacter.() -> Int,
     onAssign: (CharacterReference?) -> Unit,
     onBack: () -> Unit,
+    isRandomMode: Boolean = false,
+    isGuidedFirstStep: Boolean = false,
+    randomPool: Set<CharacterReference> = emptySet(),
+    defaultRandomPool: Set<CharacterReference> = randomPool,
+    onRandomPoolDone: ((Set<CharacterReference>) -> Unit)? = null,
+    onClear: (() -> Unit)? = null,
 ) {
     val entries = remember(type, characters, unlockedVariants, filter, defaultCharacter) {
         retroCharacterEntries(type, characters, unlockedVariants, filter, defaultCharacter, defaultArtwork)
     }
-    var pendingSelection by remember(selected, entries) { mutableStateOf(selected) }
+    val defaultSelection = selected ?: entries.firstOrNull()?.reference
+    var pendingSelection by remember(selected, entries, selectionVersion) { mutableStateOf(defaultSelection) }
+    var optionsOpen by remember(type, selectionVersion) { mutableStateOf(false) }
+    var randomPoolOpen by remember(type, selectionVersion) { mutableStateOf(isRandomMode) }
+    val enteredFromRandomMode = remember(type, selectionVersion) { isRandomMode }
+    var poolCursor by remember(type, randomPool, selectionVersion) { mutableStateOf(randomPool.firstOrNull()) }
+    var poolDraft by remember(type, randomPool, selectionVersion) { mutableStateOf(randomPool) }
+    var assignmentCleared by remember(type, selectionVersion) { mutableStateOf(false) }
+    var assignmentRandomized by remember(type, selectionVersion) { mutableStateOf(false) }
     val selectedEntry = entries.firstOrNull { it.reference == pendingSelection }
-    val prompt = stringResource(
-        if (type == CharacterType.Trainer) R.string.contact_choose_trainer else R.string.contact_choose_monster,
-    )
+    val hasPendingSelection = pendingSelection != selected && pendingSelection != null
+    val prompt = if (randomPoolOpen) {
+        stringResource(if (type == CharacterType.Trainer) R.string.contact_picker_pool_trainers else R.string.contact_picker_pool_monsters)
+    } else if (hasPendingSelection) {
+        stringResource(R.string.contact_picker_ready, selectedEntry?.name?.uppercase().orEmpty())
+    } else {
+        stringResource(
+            when {
+                type == CharacterType.Trainer && assignmentCleared -> R.string.contact_picker_no_trainer_assigned
+                type == CharacterType.Monster && assignmentCleared -> R.string.contact_picker_no_monster_assigned
+                type == CharacterType.Trainer && assignmentRandomized -> R.string.contact_picker_random_trainer
+                type == CharacterType.Monster && assignmentRandomized -> R.string.contact_picker_random_monster
+                type == CharacterType.Trainer -> R.string.contact_picker_choose_trainer
+                else -> R.string.contact_picker_choose_monster
+            },
+        )
+    }
 
-    LaunchedEffect(selected) { pendingSelection = selected }
+    LaunchedEffect(selected, entries, selectionVersion) { pendingSelection = selected ?: entries.firstOrNull()?.reference }
+    BackHandler(enabled = optionsOpen) { optionsOpen = false }
 
     Column(modifier = Modifier.fillMaxSize()) {
+        RetroAssignmentPickerHeader(onOptions = { optionsOpen = true })
         LazyColumn(
             modifier = Modifier.weight(1f).fillMaxWidth(),
             contentPadding = PaddingValues(top = 2.dp, bottom = 2.dp),
@@ -99,8 +131,25 @@ internal fun RetroCharacterPicker(
                         color = RetroInk,
                     )
                 }
-                RetroCharacterRow(entry, entry.reference == pendingSelection) {
-                    if (entry.isUnlocked) pendingSelection = entry.reference
+                RetroCharacterRow(
+                    entry = entry,
+                    isSelected = if (randomPoolOpen) {
+                        entry.reference == poolCursor
+                    } else {
+                        entry.reference == (pendingSelection ?: entries.firstOrNull()?.reference)
+                    },
+                    poolIncluded = if (randomPoolOpen) entry.reference in poolDraft else null,
+                ) {
+                    if (randomPoolOpen) {
+                        entry.reference?.let { reference ->
+                            poolCursor = reference
+                            poolDraft = if (reference in poolDraft) poolDraft - reference else poolDraft + reference
+                        }
+                    } else {
+                        pendingSelection = entry.reference
+                        assignmentCleared = false
+                        assignmentRandomized = false
+                    }
                 }
             }
         }
@@ -116,18 +165,126 @@ internal fun RetroCharacterPicker(
             modifier = Modifier.fillMaxWidth().padding(horizontal = 8.dp, vertical = 2.dp),
             horizontalArrangement = Arrangement.SpaceBetween,
         ) {
-            RetroPickerAction(
+            RetroActionButton(
                 key = stringResource(R.string.retro_key_a),
-                label = stringResource(R.string.customized_contacts_assign_action),
-                enabled = selectedEntry != null,
-                onClick = { onAssign(pendingSelection) },
+                label = stringResource(
+                    when {
+                        randomPoolOpen -> R.string.contact_picker_pool_done
+                        isGuidedFirstStep -> R.string.contact_picker_next
+                        else -> R.string.customized_contacts_assign_action
+                    },
+                ),
+                enabled = if (randomPoolOpen) poolDraft.isNotEmpty() else selectedEntry != null,
+                onClick = {
+                    if (randomPoolOpen) {
+                        randomPoolOpen = false
+                        onRandomPoolDone?.invoke(poolDraft)
+                    } else {
+                        onAssign(pendingSelection)
+                    }
+                },
             )
-            RetroPickerAction(
+            RetroActionButton(
                 key = stringResource(R.string.retro_key_b),
-                label = stringResource(R.string.customized_contacts_back_action),
-                onClick = onBack,
+                label = stringResource(
+                    if (randomPoolOpen || hasPendingSelection) R.string.customized_contacts_cancel_action
+                    else R.string.customized_contacts_back_action,
+                ),
+                onClick = {
+                    if (randomPoolOpen) {
+                        if (enteredFromRandomMode) {
+                            onBack()
+                        } else {
+                            randomPoolOpen = false
+                            poolDraft = randomPool
+                            poolCursor = randomPool.firstOrNull()
+                        }
+                    } else if (hasPendingSelection) {
+                        pendingSelection = selected
+                        assignmentCleared = false
+                        assignmentRandomized = false
+                    } else {
+                        onBack()
+                    }
+                },
             )
         }
+    }
+    if (optionsOpen) {
+        Box(
+            modifier = Modifier.fillMaxSize().clickable { optionsOpen = false },
+            contentAlignment = Alignment.Center,
+        ) {
+            RetroContextMenu(
+                modifier = Modifier.fillMaxWidth(0.68f),
+                fontFamily = RetroPickerFont,
+                items = if (randomPoolOpen) {
+                    listOf(
+                        RetroContextMenuItem(label = stringResource(R.string.contact_random_pool_select_all), showCursor = true) {
+                            poolDraft = entries.mapNotNull { it.reference }.toSet()
+                            poolCursor = poolDraft.firstOrNull()
+                            optionsOpen = false
+                        },
+                        RetroContextMenuItem(label = stringResource(R.string.contact_random_pool_deselect_all)) {
+                            poolDraft = emptySet()
+                            poolCursor = null
+                            optionsOpen = false
+                        },
+                        RetroContextMenuItem(label = stringResource(R.string.contact_random_pool_reset)) {
+                            poolDraft = defaultRandomPool
+                            poolCursor = poolDraft.firstOrNull()
+                            optionsOpen = false
+                        },
+                        RetroContextMenuItem(label = stringResource(R.string.cancel)) {
+                            optionsOpen = false
+                        },
+                    )
+                } else {
+                    listOf(
+                        RetroContextMenuItem(
+                            label = stringResource(R.string.contact_default_random),
+                            showCursor = true,
+                        ) {
+                            optionsOpen = false
+                            randomPoolOpen = true
+                            poolDraft = randomPool
+                            poolCursor = randomPool.firstOrNull()
+                        },
+                        RetroContextMenuItem(label = stringResource(R.string.contact_picker_none)) {
+                            optionsOpen = false
+                            pendingSelection = null
+                            assignmentCleared = true
+                            assignmentRandomized = false
+                            onClear?.invoke()
+                        },
+                        RetroContextMenuItem(label = stringResource(R.string.cancel)) {
+                            optionsOpen = false
+                        },
+                    )
+                },
+            )
+        }
+    }
+}
+
+@Composable
+private fun RetroAssignmentPickerHeader(
+    onOptions: () -> Unit,
+) {
+    Row(
+        modifier = Modifier.fillMaxWidth().padding(start = 8.dp, end = 8.dp, top = 2.dp),
+        horizontalArrangement = Arrangement.End,
+        verticalAlignment = Alignment.CenterVertically,
+    ) {
+        Text(
+            text = stringResource(R.string.contact_picker_options).uppercase(),
+            modifier = Modifier
+                .clickable(onClick = onOptions)
+                .padding(start = 16.dp, top = 14.dp, end = 16.dp, bottom = 6.dp),
+            fontFamily = RetroPickerFont,
+            fontSize = 18.sp,
+            color = RetroInk,
+        )
     }
 }
 
@@ -190,10 +347,14 @@ private fun RetroPickerChoice(
 private fun RetroCharacterRow(
     entry: RetroCharacterEntry,
     isSelected: Boolean,
+    poolIncluded: Boolean? = null,
     onClick: () -> Unit,
 ) {
     Row(
-        modifier = Modifier.fillMaxWidth().clickable(onClick = onClick).padding(vertical = 1.dp),
+        modifier = Modifier
+            .fillMaxWidth()
+            .clickable(onClick = onClick)
+            .padding(vertical = 4.dp),
         verticalAlignment = Alignment.CenterVertically,
     ) {
         if (isSelected) {
@@ -203,7 +364,16 @@ private fun RetroCharacterRow(
         } else {
             Spacer(modifier = Modifier.size(RetroSelectionArrowSize))
         }
-        Box(modifier = Modifier.size(52.dp), contentAlignment = Alignment.Center) {
+        poolIncluded?.let {
+            Text(
+                text = stringResource(if (it) R.string.contact_picker_pool_included else R.string.contact_picker_pool_excluded),
+                fontFamily = RetroPickerFont,
+                fontSize = 16.sp,
+                color = RetroInk,
+                modifier = Modifier.padding(end = 2.dp),
+            )
+        }
+        Box(modifier = Modifier.size(48.dp), contentAlignment = Alignment.Center) {
             when {
                 entry.builtInArtwork != null -> Image(
                     painter = painterResource(entry.builtInArtwork),
@@ -225,48 +395,21 @@ private fun RetroCharacterRow(
                 },
                 fontFamily = RetroPickerFont,
                 fontSize = 16.sp,
-                color = if (entry.isUnlocked) RetroInk else RetroInk.copy(alpha = 0.65f),
+                color = RetroInk,
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis,
             )
             if (entry.level != null) {
-                val variant = stringResource(if (entry.isRadiant) R.string.radiant else R.string.regular)
                 val level = stringResource(R.string.roster_monster_level, entry.level)
-                Text(
-                    text = stringResource(R.string.monster_variant_and_level, variant, level),
-                    fontFamily = RetroPickerFont,
-                    fontSize = 13.sp,
-                    color = RetroInk.copy(alpha = 0.75f),
-                )
-            }
-            if (!entry.isUnlocked) {
-                Text(
-                    text = stringResource(R.string.locked).uppercase(),
-                    fontFamily = RetroPickerFont,
-                    fontSize = 13.sp,
-                    color = RetroInk.copy(alpha = 0.7f),
-                )
+                val metadata = if (entry.isRadiant) {
+                    val variant = stringResource(R.string.radiant)
+                    stringResource(R.string.retro_picker_variant_and_level, variant, level)
+                } else {
+                    level
+                }
+                Text(text = metadata, fontFamily = RetroPickerFont, fontSize = 13.sp, color = RetroInk.copy(alpha = 0.75f))
             }
         }
-    }
-}
-
-@Composable
-private fun RetroPickerAction(
-    key: String,
-    label: String,
-    enabled: Boolean = true,
-    onClick: () -> Unit,
-) {
-    Row(
-        modifier = Modifier.clickable(enabled = enabled, onClick = onClick).padding(horizontal = 8.dp, vertical = 8.dp),
-        verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.spacedBy(8.dp),
-    ) {
-        Box(modifier = Modifier.background(if (enabled) RetroInk else RetroInk.copy(alpha = 0.35f)).padding(horizontal = 8.dp, vertical = 3.dp)) {
-            Text(key, fontFamily = RetroPickerFont, fontSize = 14.sp, color = Color.White)
-        }
-        Text(label, fontFamily = RetroPickerFont, fontSize = 18.sp, color = if (enabled) RetroInk else RetroInk.copy(alpha = 0.35f))
     }
 }
 
@@ -292,7 +435,11 @@ private fun retroCharacterEntries(
     characters.forEach { installed ->
         installed.character.visualVariants.forEach { variant ->
             val reference = CharacterReference(installed.packId, installed.character.id, variant.id)
-            if (type == CharacterType.Monster && !filter.matches(variant, reference, unlockedVariants)) return@forEach
+            if (
+                type == CharacterType.Monster &&
+                (!filter.matches(variant, reference, unlockedVariants) ||
+                    (variant.isRadiant && reference !in unlockedVariants))
+            ) return@forEach
             val image = if (type == CharacterType.Trainer) variant.frontImage ?: variant.backImage else variant.frontImage ?: variant.backImage
             result += RetroCharacterEntry(
                 key = "${installed.packId}:${installed.character.id}:${variant.id}",
@@ -300,7 +447,6 @@ private fun retroCharacterEntries(
                 name = installed.character.name,
                 level = installed.character.level,
                 isRadiant = variant.isRadiant,
-                isUnlocked = !variant.isRadiant || reference in unlockedVariants,
                 artwork = image?.let(installed::imageFile),
                 section = if (installed.isEditable) "YOUR ${if (type == CharacterType.Trainer) "TRAINERS" else "MONSTERS"}"
                 else installed.packName.uppercase(),

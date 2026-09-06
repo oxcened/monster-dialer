@@ -25,6 +25,13 @@ interface CharacterAssignmentRepository {
     suspend fun getContactRandomPool(contactKey: String, type: CharacterType): List<CharacterReference>?
     suspend fun setContactRandomPool(contactKey: String, type: CharacterType, references: List<CharacterReference>)
     suspend fun clearContactRandomPool(contactKey: String, type: CharacterType)
+    suspend fun updateContactAssignments(
+        contactKeys: List<String>,
+        label: String,
+        trainer: ContactCharacterAssignmentUpdate,
+        monster: ContactCharacterAssignmentUpdate,
+    )
+    suspend fun clearContactAssignments(contactKeys: List<String>)
     suspend fun assignCharacter(
         contactKey: String,
         type: CharacterType,
@@ -116,6 +123,21 @@ class CharacterAssignmentRepositoryImpl @Inject constructor(
 
     override suspend fun clearContactRandomPool(contactKey: String, type: CharacterType) = withContext(Dispatchers.IO) {
         assignments.clearContactRandomPool(contactKey, type)
+        notifyAssignmentsChanged()
+    }
+
+    override suspend fun updateContactAssignments(
+        contactKeys: List<String>,
+        label: String,
+        trainer: ContactCharacterAssignmentUpdate,
+        monster: ContactCharacterAssignmentUpdate,
+    ) = withContext(Dispatchers.IO) {
+        assignments.updateContactAssignments(contactKeys, label, trainer, monster)
+        notifyAssignmentsChanged()
+    }
+
+    override suspend fun clearContactAssignments(contactKeys: List<String>) = withContext(Dispatchers.IO) {
+        assignments.clearContactAssignments(contactKeys)
         notifyAssignmentsChanged()
     }
 

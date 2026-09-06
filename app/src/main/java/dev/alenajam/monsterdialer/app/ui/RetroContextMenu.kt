@@ -32,9 +32,8 @@ internal fun RetroContextMenu(
     fontFamily: FontFamily,
     modifier: Modifier = Modifier,
     title: String? = null,
-    height: androidx.compose.ui.unit.Dp = 132.dp,
 ) {
-    RetroBoxFrame(modifier = modifier, height = height) {
+    RetroBoxFrame(modifier = modifier) {
         Column(
             modifier = Modifier.padding(8.dp),
             verticalArrangement = Arrangement.spacedBy(2.dp),
@@ -57,6 +56,62 @@ internal fun RetroContextMenu(
 }
 
 @Composable
+internal fun RetroConfirmationMenu(
+    title: String,
+    message: String? = null,
+    noLabel: String,
+    yesLabel: String,
+    fontFamily: FontFamily,
+    modifier: Modifier = Modifier,
+    onCancel: () -> Unit,
+    onConfirm: () -> Unit,
+) {
+    RetroBoxFrame(modifier = modifier, height = 156.dp) {
+        Column(
+            modifier = Modifier.padding(8.dp),
+            verticalArrangement = Arrangement.spacedBy(2.dp),
+        ) {
+            Text(title.uppercase(), fontFamily = fontFamily, fontSize = 18.sp, color = Color(0xFF202020))
+            message?.takeIf { it.isNotBlank() }?.let {
+                Text(it.uppercase(), fontFamily = fontFamily, fontSize = 18.sp, color = Color(0xFF202020))
+            }
+            Spacer(modifier = Modifier.height(4.dp))
+            ConfirmationActionRow(noLabel, true, fontFamily, onCancel)
+            ConfirmationActionRow(yesLabel, false, fontFamily, onConfirm)
+        }
+    }
+}
+
+@Composable
+private fun ConfirmationActionRow(
+    label: String,
+    showCursor: Boolean,
+    fontFamily: FontFamily,
+    onClick: () -> Unit,
+) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(30.dp)
+            .clickable(onClick = onClick)
+            .semantics { contentDescription = label },
+        horizontalArrangement = Arrangement.spacedBy(5.dp),
+        verticalAlignment = Alignment.CenterVertically,
+    ) {
+        if (showCursor) {
+            RetroSelectionArrow(
+                modifier = Modifier.padding(start = 4.dp),
+                tint = Color(0xFF202020),
+                size = 14.dp,
+            )
+        } else {
+            Spacer(modifier = Modifier.size(RetroSelectionArrowSize))
+        }
+        Text(label.uppercase(), fontFamily = fontFamily, fontSize = 18.sp, color = Color(0xFF202020))
+    }
+}
+
+@Composable
 private fun RetroContextMenuItemRow(
     item: RetroContextMenuItem,
     fontFamily: FontFamily,
@@ -74,9 +129,10 @@ private fun RetroContextMenuItemRow(
             RetroSelectionArrow(
                 modifier = Modifier.padding(start = 4.dp),
                 tint = Color(0xFF202020),
+                size = 14.dp
             )
         } else {
-            Spacer(modifier = Modifier.size(RetroSelectionArrowSize + 4.dp))
+            Spacer(modifier = Modifier.size(RetroSelectionArrowSize))
         }
         Text(
             text = item.label.uppercase(),

@@ -30,7 +30,6 @@ internal fun RetroActionButton(
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
     fontFamily: FontFamily = RetroActionPixelFont,
-    arrowSize: Dp = RetroSelectionArrowSize,
 ) {
     Row(
         modifier = modifier
@@ -51,7 +50,7 @@ internal fun RetroActionButton(
             horizontalArrangement = Arrangement.spacedBy(6.dp),
         ) {
             Text(text = key, fontFamily = fontFamily, fontSize = 18.sp, color = Color.White)
-            RetroSelectionArrow(tint = Color.White, size = arrowSize)
+            RetroSelectionArrow(tint = Color.White, size = 14.dp)
             Text(text = label, fontFamily = fontFamily, fontSize = 18.sp, color = Color.White)
         }
     }
