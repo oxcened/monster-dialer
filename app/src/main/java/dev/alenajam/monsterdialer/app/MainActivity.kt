@@ -45,6 +45,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import dagger.hilt.android.AndroidEntryPoint
 import dev.alenajam.monsterdialer.R
+import dev.alenajam.monsterdialer.analytics.MonsterAnalytics
 import dev.alenajam.monsterdialer.app.ui.LocalMonsterAppIcons
 import dev.alenajam.monsterdialer.app.ui.rememberMonsterIcons
 import dev.alenajam.monsterdialer.app.ui.rememberMonsterTypography
@@ -97,6 +98,9 @@ class MainActivity : AppCompatActivity() {
     @Inject
     lateinit var defaultPhoneManager: DefaultPhoneManager
 
+    @Inject
+    lateinit var analytics: MonsterAnalytics
+
     private var incomingImport by mutableStateOf<IncomingImport?>(null)
     private var sharedProfileImportId by mutableStateOf<String?>(null)
 
@@ -138,7 +142,7 @@ class MainActivity : AppCompatActivity() {
                         )
                     } else DialerApp(
                         defaultPhoneManager = remember(defaultPhoneManager) {
-                            SafeDefaultPhoneManager(defaultPhoneManager, packageManager)
+                            SafeDefaultPhoneManager(defaultPhoneManager, packageManager, analytics)
                         },
                         icons = appIcons,
                         themeExtension = appThemeExtension,

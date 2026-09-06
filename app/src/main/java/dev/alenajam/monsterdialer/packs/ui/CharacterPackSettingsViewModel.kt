@@ -6,6 +6,7 @@ import android.provider.OpenableColumns
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dev.alenajam.monsterdialer.R
+import dev.alenajam.monsterdialer.analytics.MonsterAnalytics
 import dev.alenajam.monsterdialer.characters.data.CharactersRepository
 import dev.alenajam.monsterdialer.packs.data.MonsterPack
 import dev.alenajam.monsterdialer.packs.data.PacksRepository
@@ -28,7 +29,8 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 @HiltViewModel
 class CharacterPackSettingsViewModel @Inject constructor(
     private val packsRepository: PacksRepository,
-    private val charactersRepository: CharactersRepository
+    private val charactersRepository: CharactersRepository,
+    private val analytics: MonsterAnalytics,
 ) : ViewModel() {
 
     data class ImportPreview(
@@ -76,6 +78,7 @@ class CharacterPackSettingsViewModel @Inject constructor(
         viewModelScope.launch {
             val result = (packsRepository as PacksRepositoryImpl).importPackFromUri(preview.uri)
             result.onSuccess {
+                analytics.characterPackImported()
                 _message.value = null
                 _importPreview.value = null
             }.onFailure { error ->

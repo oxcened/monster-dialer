@@ -2,6 +2,7 @@ package dev.alenajam.monsterdialer.characters.ui
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import dev.alenajam.monsterdialer.analytics.MonsterAnalytics
 import dev.alenajam.monsterdialer.characters.data.CharacterAssignmentRepository
 import dev.alenajam.monsterdialer.characters.data.CharacterLayoutPreferences
 import dev.alenajam.monsterdialer.characters.data.CharactersRepository
@@ -31,6 +32,7 @@ class PlayerCharacterSettingsViewModel @Inject constructor(
     private val layoutPreferences: CharacterLayoutPreferences,
     private val packsRepository: dev.alenajam.monsterdialer.packs.data.PacksRepository,
     radiantUnlocks: RadiantVariantUnlockStore,
+    private val analytics: MonsterAnalytics,
 ) : ViewModel() {
 
     private val _filter = MutableStateFlow(MonsterFilter.All)
@@ -112,6 +114,7 @@ class PlayerCharacterSettingsViewModel @Inject constructor(
         viewModelScope.launch {
             assignmentRepository.setPlayerCharacter(CharacterType.Trainer, reference)
             _assignedTrainer.value = reference
+            analytics.playerCharacterAssigned(CharacterType.Trainer.name.lowercase())
         }
     }
 
@@ -125,6 +128,7 @@ class PlayerCharacterSettingsViewModel @Inject constructor(
             }
             _assignedMonster.value = assignmentRepository.getPlayerCharacter(CharacterType.Monster)
             _monsterRoster.value = assignmentRepository.getPlayerMonsterRoster()
+            analytics.playerCharacterAssigned(CharacterType.Monster.name.lowercase())
         }
     }
 

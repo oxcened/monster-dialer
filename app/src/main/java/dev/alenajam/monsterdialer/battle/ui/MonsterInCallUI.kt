@@ -32,6 +32,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import dev.alenajam.monsterdialer.battle.data.AssignedCharacterEncounterFactory
+import dev.alenajam.monsterdialer.analytics.MonsterAnalytics
 import dev.alenajam.monsterdialer.characters.data.RadiantVariantUnlockNotifier
 import dev.alenajam.monsterdialer.R
 import dev.alenajam.monsterdialer.battle.data.BattleEncounter
@@ -57,6 +58,7 @@ class MonsterInCallUI @Inject constructor(
     private val encounterFactory: AssignedCharacterEncounterFactory,
     private val radiantUnlockNotifier: RadiantVariantUnlockNotifier,
     private val onlineOpponentResolver: OnlineOpponentResolver,
+    private val analytics: MonsterAnalytics,
 ) : InCallUI {
     @OptIn(ExperimentalMaterial3Api::class)
     @Composable
@@ -110,6 +112,16 @@ class MonsterInCallUI @Inject constructor(
                 },
                 isAnonymous = uiState.callerName.isBlank() && uiState.callerNumber.isBlank(),
             )
+        }
+
+        LaunchedEffect(encounter?.id) {
+            encounter?.let { preparedEncounter ->
+                analytics.callEncounterShown(
+                    encounterType = preparedEncounter.type.name.lowercase(),
+                    hasCustomContent = preparedEncounter.player.frontSprite is dev.alenajam.monsterdialer.battle.data.BattleVisualAsset.LocalFile ||
+                        preparedEncounter.enemy?.frontSprite is dev.alenajam.monsterdialer.battle.data.BattleVisualAsset.LocalFile,
+                )
+            }
         }
 
         LaunchedEffect(canManageConference) {
