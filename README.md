@@ -7,6 +7,7 @@
 [![Android API](https://img.shields.io/badge/Android_API-24%2B-3DDC84?logo=android&logoColor=white)](https://developer.android.com/about/versions/nougat)
 [![Discord](https://img.shields.io/badge/Discord-Join_community-5865F2?logo=discord&logoColor=white)](https://discord.gg/hKXzFFMTFN)
 [![Crowdin](https://badges.crowdin.net/monsterdialer/localized.svg)](https://crowdin.com/project/monsterdialer)
+[![PRs welcome](https://img.shields.io/badge/PRs-welcome-brightgreen)](CONTRIBUTING.md)
 [![Conventional Commits](https://img.shields.io/badge/Conventional%20Commits-1.0.0-%23FE5196?logo=conventionalcommits&logoColor=white)](https://conventionalcommits.org)
 
 MonsterDialer is an open-source Android phone app that turns calls into a retro monster-battle experience. Choose player characters, assign characters to contacts, and import custom character packs for personalised call screens.
