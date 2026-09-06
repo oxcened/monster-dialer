@@ -72,6 +72,7 @@ import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import dev.alenajam.monsterdialer.R
+import dev.alenajam.monsterdialer.app.ui.LocalMonsterAppIcons
 import dev.alenajam.opendialer.core.common.ui.AppIcon
 import dev.alenajam.opendialer.core.common.ui.LocalAppIcons
 import dev.alenajam.monsterdialer.characters.data.BuiltInCharacters
@@ -280,17 +281,39 @@ fun ColumnScope.ContactCharacterSettingsContent(
                             viewModel.setFilter(nextFilter)
                         } else null,
                         poolActions = if (isRandomMode) {
-                            {
-                                CharacterPoolActionButtons(
-                                    isAllSelected = randomPool == allReferences,
-                                    onReset = {
+                            { dismissMenu ->
+                                DropdownMenuItem(
+                                    text = { Text(stringResource(R.string.contact_random_pool_select_all)) },
+                                    onClick = {
+                                        val type = if (selectedTab == 0) CharacterType.Trainer else CharacterType.Monster
+                                        updateContactPool(type, allReferences)
+                                        dismissMenu()
+                                    },
+                                    leadingIcon = {
+                                        AppIcon(LocalMonsterAppIcons.current.selectAll, contentDescription = null)
+                                    },
+                                )
+                                DropdownMenuItem(
+                                    text = { Text(stringResource(R.string.contact_random_pool_deselect_all)) },
+                                    onClick = {
+                                        val type = if (selectedTab == 0) CharacterType.Trainer else CharacterType.Monster
+                                        updateContactPool(type, emptySet())
+                                        dismissMenu()
+                                    },
+                                    leadingIcon = {
+                                        AppIcon(LocalMonsterAppIcons.current.deselectAll, contentDescription = null)
+                                    },
+                                )
+                                DropdownMenuItem(
+                                    text = { Text(stringResource(R.string.contact_random_pool_reset)) },
+                                    onClick = {
                                         val type = if (selectedTab == 0) CharacterType.Trainer else CharacterType.Monster
                                         viewModel.clearContactSpecificRandomPool(type)
                                         contactRandomPoolDrafts.remove(type)
+                                        dismissMenu()
                                     },
-                                    onToggleAll = {
-                                        val type = if (selectedTab == 0) CharacterType.Trainer else CharacterType.Monster
-                                        updateContactPool(type, if (randomPool == allReferences) emptySet() else allReferences)
+                                    leadingIcon = {
+                                        AppIcon(LocalMonsterAppIcons.current.reset, contentDescription = null)
                                     },
                                 )
                             }

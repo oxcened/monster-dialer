@@ -18,6 +18,9 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.DropdownMenu
+import androidx.compose.material3.DropdownMenuItem
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
@@ -39,12 +42,15 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import dev.alenajam.monsterdialer.R
+import dev.alenajam.monsterdialer.app.ui.LocalMonsterAppIcons
 import dev.alenajam.monsterdialer.characters.data.BuiltInCharacters
 import dev.alenajam.monsterdialer.characters.data.ContactCharacterDefaults
 import dev.alenajam.monsterdialer.packs.data.CharacterAssignmentTarget
 import dev.alenajam.monsterdialer.packs.data.CharacterReference
 import dev.alenajam.monsterdialer.packs.data.CharacterType
 import dev.alenajam.monsterdialer.packs.data.InstalledPackCharacter
+import dev.alenajam.opendialer.core.common.ui.AppIcon
+import dev.alenajam.opendialer.core.common.ui.LocalAppIcons
 
 /** Edits the global contact-character defaults and randomizer pools. */
 @Composable
@@ -62,6 +68,7 @@ internal fun ContactCharacterDefaultsSection(
     var selectedType by remember { mutableStateOf(CharacterType.Trainer) }
     val draftPools = remember { mutableStateMapOf<CharacterType, Set<CharacterReference>>() }
     var resetPools by remember { mutableStateOf(emptySet<CharacterType>()) }
+    var moreMenuExpanded by remember { mutableStateOf(false) }
     val selectedDefault = defaults.defaults[selectedType]
     val unlockedVariants by viewModel.unlockedVariants.collectAsStateWithLifecycle()
     val filter by viewModel.filter.collectAsStateWithLifecycle()
@@ -133,18 +140,56 @@ internal fun ContactCharacterDefaultsSection(
                         )
                     }
                     if (effectivePoolMode) {
-                        CharacterPoolActionButtons(
-                            isAllSelected = selectedPool == allPoolReferences,
-                            onReset = {
-                                draftPools.remove(selectedType)
-                                resetPools = resetPools + selectedType
-                                onPoolReset(selectedType)
-                            },
-                            onToggleAll = {
-                                resetPools = resetPools - selectedType
-                                updateRandomPoolDraft(selectedType, if (selectedPool == allPoolReferences) emptySet() else allPoolReferences, draftPools) { type, pool -> onPoolChanged(type, pool.toList()) }
-                            },
-                        )
+                        Box {
+                            IconButton(
+                                onClick = { moreMenuExpanded = true },
+                                modifier = Modifier.size(40.dp),
+                            ) {
+                                AppIcon(
+                                    icon = LocalAppIcons.current.more,
+                                    contentDescription = stringResource(R.string.character_selection_more_options),
+                                )
+                            }
+                            DropdownMenu(
+                                expanded = moreMenuExpanded,
+                                onDismissRequest = { moreMenuExpanded = false },
+                            ) {
+                                DropdownMenuItem(
+                                    text = { Text(stringResource(R.string.contact_random_pool_select_all)) },
+                                    onClick = {
+                                        resetPools = resetPools - selectedType
+                                        updateRandomPoolDraft(selectedType, allPoolReferences, draftPools) { type, pool -> onPoolChanged(type, pool.toList()) }
+                                        moreMenuExpanded = false
+                                    },
+                                    leadingIcon = {
+                                        AppIcon(LocalMonsterAppIcons.current.selectAll, contentDescription = null)
+                                    },
+                                )
+                                DropdownMenuItem(
+                                    text = { Text(stringResource(R.string.contact_random_pool_deselect_all)) },
+                                    onClick = {
+                                        resetPools = resetPools - selectedType
+                                        updateRandomPoolDraft(selectedType, emptySet(), draftPools) { type, pool -> onPoolChanged(type, pool.toList()) }
+                                        moreMenuExpanded = false
+                                    },
+                                    leadingIcon = {
+                                        AppIcon(LocalMonsterAppIcons.current.deselectAll, contentDescription = null)
+                                    },
+                                )
+                                DropdownMenuItem(
+                                    text = { Text(stringResource(R.string.contact_random_pool_reset)) },
+                                    onClick = {
+                                        draftPools.remove(selectedType)
+                                        resetPools = resetPools + selectedType
+                                        onPoolReset(selectedType)
+                                        moreMenuExpanded = false
+                                    },
+                                    leadingIcon = {
+                                        AppIcon(LocalMonsterAppIcons.current.reset, contentDescription = null)
+                                    },
+                                )
+                            }
+                        }
                     }
                     Spacer(modifier = Modifier.weight(1f))
                     CharacterAddButton(

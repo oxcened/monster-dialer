@@ -143,6 +143,7 @@
     <string name="contact_random_pool_description" comment="Explains what the selected characters mean when Randomize is enabled.">Selected characters are the ones Randomize can choose from.</string>
     <string name="contact_random_pool_select_all">Select all</string>
     <string name="contact_random_pool_deselect_all">Deselect all</string>
+    <string name="character_selection_more_options" comment="Accessibility label for the character selector menu containing secondary pool actions.">More character selection options</string>
     <string name="contact_character_source_global">Don’t customize</string>
     <string name="contact_character_source_custom">Customize contact</string>
     <string name="contact_character_inherited_title">Using global defaults</string>

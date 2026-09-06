@@ -9,7 +9,6 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.fillMaxSize
@@ -32,6 +31,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.detectDragGestures
+import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -55,6 +55,7 @@ import androidx.compose.material3.Tab
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.IconButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
@@ -842,13 +843,35 @@ internal fun CharacterSelectionActions(
     modifier: Modifier = Modifier,
     filter: MonsterFilter? = null,
     onFilterSelected: ((MonsterFilter) -> Unit)? = null,
-    poolActions: (@Composable RowScope.() -> Unit)? = null,
+    poolActions: (@Composable ColumnScope.(onDismiss: () -> Unit) -> Unit)? = null,
 ) {
     val scrollState = rememberScrollState()
     val addButton: @Composable () -> Unit = { CharacterAddButton(isAddEnabled, onAddCharacter) }
+    var moreMenuExpanded by remember { mutableStateOf(false) }
     val filterButton: @Composable () -> Unit = {
         if (filter != null && onFilterSelected != null) {
             MonsterFilterButton(filter, onFilterSelected)
+        }
+    }
+    val poolActionsButton: @Composable () -> Unit = {
+        if (poolActions != null) {
+            Box {
+                IconButton(
+                    onClick = { moreMenuExpanded = true },
+                    modifier = Modifier.size(40.dp),
+                ) {
+                    AppIcon(
+                        icon = LocalAppIcons.current.more,
+                        contentDescription = stringResource(R.string.character_selection_more_options),
+                    )
+                }
+                DropdownMenu(
+                    expanded = moreMenuExpanded,
+                    onDismissRequest = { moreMenuExpanded = false },
+                ) {
+                    poolActions { moreMenuExpanded = false }
+                }
+            }
         }
     }
 
@@ -886,7 +909,7 @@ internal fun CharacterSelectionActions(
                 verticalAlignment = Alignment.CenterVertically,
             ) {
                 filterButton()
-                poolActions?.invoke(this)
+                poolActionsButton()
                 Spacer(modifier = Modifier.weight(1f))
                 addButton()
             }
@@ -897,7 +920,7 @@ internal fun CharacterSelectionActions(
                 verticalAlignment = Alignment.CenterVertically,
             ) {
                 filterButton()
-                poolActions?.invoke(this)
+                poolActionsButton()
                 Spacer(modifier = Modifier.weight(1f))
                 addButton()
             }
