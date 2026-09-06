@@ -1,5 +1,12 @@
 # MonsterDialer
 
+[![Android CI](https://github.com/oxcened/monster-dialer/actions/workflows/android.yml/badge.svg?branch=main)](https://github.com/oxcened/monster-dialer/actions/workflows/android.yml)
+[![Latest release](https://img.shields.io/github/v/release/oxcened/monster-dialer?display_name=tag&sort=semver)](https://github.com/oxcened/monster-dialer/releases/latest)
+[![Downloads](https://img.shields.io/github/downloads/oxcened/monster-dialer/total)](https://github.com/oxcened/monster-dialer/releases)
+[![License](https://img.shields.io/github/license/oxcened/monster-dialer)](LICENSE)
+[![Android API](https://img.shields.io/badge/Android_API-24%2B-3DDC84?logo=android&logoColor=white)](https://developer.android.com/about/versions/nougat)
+[![Discord](https://img.shields.io/badge/Discord-Join_community-5865F2?logo=discord&logoColor=white)](https://discord.gg/hKXzFFMTFN)
+
 MonsterDialer is an open-source Android phone app that turns calls into a retro monster-battle experience. Choose player characters, assign characters to contacts, and import custom character packs for personalised call screens.
 
 MonsterDialer is built on [OpenDialer](https://github.com/oxcened/opendialer) and must be selected as the device's default phone app to make and receive calls.
