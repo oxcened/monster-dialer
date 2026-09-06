@@ -17,6 +17,8 @@ class ActiveBattleEncounterStore @Inject constructor(
     private val file = File(storageRoot, "active-battle-encounter.json")
     private val json = Json { ignoreUnknownKeys = false; explicitNulls = false }
 
+    fun hasStoredData(): Boolean = file.isFile
+
     @Synchronized
     internal fun restore(call: ActiveCallKey): ActiveBattleEncounter? =
         read().encounters.firstOrNull { it.call == call }

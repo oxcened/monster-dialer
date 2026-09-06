@@ -1,5 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="first_run_welcome_title">Turn calls into monster encounters</string>
+    <string name="first_run_welcome_description">MonsterDialer adds an original battle moment to your calls. Your first encounter works immediately with the built-in characters.</string>
+    <string name="first_run_setup_description">Next, Android will ask you to make MonsterDialer your phone app and allow full-screen call notifications. These are needed to show incoming calls correctly.</string>
+    <string name="first_run_continue">Set up MonsterDialer</string>
+    <string name="first_encounter_prompt_title">Ready for your first encounter?</string>
+    <string name="first_encounter_prompt_description">Make or receive a call to see MonsterDialer in action. You can customize your trainer, monster, and contacts later.</string>
+    <string name="first_encounter_prompt_action">Open dialpad</string>
+    <string name="first_encounter_prompt_later">Maybe later</string>
     <string name="app_name" comment="Application name shown by Android and in the About screen." translatable="false">MonsterDialer</string>
     <string name="font_name" comment="Name of the typeface credited in the About screen." translatable="false">Pixel Operator</string>
     <string name="font_author" comment="Author of the typeface credited in the About screen." translatable="false">Jayvee Enaguas</string>

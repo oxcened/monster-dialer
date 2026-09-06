@@ -17,6 +17,8 @@ class OnlineProfileLinkStore(
     private val root: File,
     private val json: Json = Json { ignoreUnknownKeys = false; explicitNulls = false },
 ) {
+    fun hasStoredData(): Boolean = File(root, FileName).isFile
+
     @Synchronized fun profileIdFor(e164: String): String? = read().links[e164]
 
     @Synchronized fun link(e164Numbers: Collection<String>, publicProfileId: String) {

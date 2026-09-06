@@ -28,6 +28,8 @@ class MonsterAnalytics @Inject constructor(
 
     fun defaultDialerReady() = logOnce(KEY_DEFAULT_DIALER_READY, EVENT_DEFAULT_DIALER_READY)
 
+    fun welcomeCompleted() = log(EVENT_WELCOME_COMPLETED)
+
     fun callEncounterShown(encounterType: String, hasCustomContent: Boolean) {
         log(EVENT_CALL_ENCOUNTER_SHOWN) {
             param(PARAM_ENCOUNTER_TYPE, encounterType)
@@ -75,6 +77,7 @@ class MonsterAnalytics @Inject constructor(
 
         const val EVENT_DEFAULT_DIALER_REQUESTED = "default_dialer_requested"
         const val EVENT_DEFAULT_DIALER_READY = "default_dialer_ready"
+        const val EVENT_WELCOME_COMPLETED = "welcome_completed"
         const val EVENT_CALL_ENCOUNTER_SHOWN = "call_encounter_shown"
         const val EVENT_FIRST_CALL_ENCOUNTER_SHOWN = "first_call_encounter_shown"
         const val EVENT_PLAYER_CHARACTER_ASSIGNED = "player_character_assigned"

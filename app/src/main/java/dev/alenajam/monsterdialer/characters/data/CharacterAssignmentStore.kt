@@ -75,6 +75,8 @@ class CharacterAssignmentStore(
     private val storageRoot: File,
     private val json: Json = Json { ignoreUnknownKeys = false; explicitNulls = false }
 ) {
+    fun hasStoredData(): Boolean = File(storageRoot, FileName).isFile
+
     @Synchronized
     fun player(type: CharacterType): CharacterReference? {
         val document = read()

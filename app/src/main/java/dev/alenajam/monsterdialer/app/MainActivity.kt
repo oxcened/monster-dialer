@@ -2,6 +2,8 @@ package dev.alenajam.monsterdialer.app
 
 import android.content.Intent
 import android.content.ContentResolver
+import android.app.NotificationManager
+import android.os.Build
 import android.net.Uri
 import android.os.Bundle
 import android.provider.OpenableColumns
@@ -23,6 +25,7 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
@@ -43,9 +46,12 @@ import androidx.compose.ui.unit.dp
 import androidx.core.content.IntentCompat
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.compose.LocalLifecycleOwner
 import dagger.hilt.android.AndroidEntryPoint
 import dev.alenajam.monsterdialer.R
 import dev.alenajam.monsterdialer.analytics.MonsterAnalytics
+import dev.alenajam.monsterdialer.app.data.OnboardingStore
 import dev.alenajam.monsterdialer.app.ui.LocalMonsterAppIcons
 import dev.alenajam.monsterdialer.app.ui.rememberMonsterIcons
 import dev.alenajam.monsterdialer.app.ui.rememberMonsterTypography
@@ -101,12 +107,17 @@ class MainActivity : AppCompatActivity() {
     @Inject
     lateinit var analytics: MonsterAnalytics
 
+    @Inject
+    lateinit var onboardingStore: OnboardingStore
+
     private var incomingImport by mutableStateOf<IncomingImport?>(null)
     private var sharedProfileImportId by mutableStateOf<String?>(null)
+    private var showFirstRunWelcome by mutableStateOf(false)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         incomingImport = intent.incomingImport(contentResolver)
+        showFirstRunWelcome = onboardingStore.shouldShowWelcome()
         enableEdgeToEdge()
 
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.Q) {
@@ -114,6 +125,23 @@ class MainActivity : AppCompatActivity() {
         }
 
         setContent {
+            var showFirstEncounterPrompt by remember { mutableStateOf(false) }
+            val lifecycleOwner = LocalLifecycleOwner.current
+
+            DisposableEffect(lifecycleOwner) {
+                val observer = androidx.lifecycle.LifecycleEventObserver { _, event ->
+                    if (event == Lifecycle.Event.ON_RESUME &&
+                        !showFirstRunWelcome &&
+                        isReadyForCalls() &&
+                        onboardingStore.shouldShowFirstEncounterPrompt()
+                    ) {
+                        showFirstEncounterPrompt = true
+                    }
+                }
+                lifecycleOwner.lifecycle.addObserver(observer)
+                onDispose { lifecycleOwner.lifecycle.removeObserver(observer) }
+            }
+
             val characterPackSettingsViewModel: CharacterPackSettingsViewModel = hiltViewModel()
             val characterSharingViewModel: CharacterSharingViewModel = hiltViewModel()
             val contactCharacterSettingsViewModel: ContactCharacterSettingsViewModel = hiltViewModel()
@@ -131,7 +159,20 @@ class MainActivity : AppCompatActivity() {
                     typography = rememberMonsterTypography(MaterialTheme.typography)
                 )
                 AppProviders(icons = appIcons, themeExtension = appThemeExtension) {
-                    if (sharedProfileImportId != null) {
+                    if (showFirstRunWelcome) {
+                        FirstRunWelcomeScreen(
+                            onContinue = {
+                                onboardingStore.markWelcomeCompleted()
+                                analytics.welcomeCompleted()
+                                showFirstRunWelcome = false
+                                if (isReadyForCalls() &&
+                                    onboardingStore.shouldShowFirstEncounterPrompt()
+                                ) {
+                                    showFirstEncounterPrompt = true
+                                }
+                            },
+                        )
+                    } else if (sharedProfileImportId != null) {
                         SharedProfileImportScreen(
                             viewModel = contactCharacterSettingsViewModel,
                             onNavigateBack = {
@@ -140,7 +181,8 @@ class MainActivity : AppCompatActivity() {
                             },
                             onProfileLinked = { sharedProfileImportId = null },
                         )
-                    } else DialerApp(
+                    } else {
+                        DialerApp(
                         defaultPhoneManager = remember(defaultPhoneManager) {
                             SafeDefaultPhoneManager(defaultPhoneManager, packageManager, analytics)
                         },
@@ -428,7 +470,21 @@ class MainActivity : AppCompatActivity() {
                             // Share the character screen and its destinations.
                             subpages + subpages[CharacterSettingsPage.ContactCharacters.index]
                         }
-                    )
+                        )
+                        if (showFirstEncounterPrompt) {
+                            FirstEncounterPrompt(
+                                onMakeFirstCall = {
+                                    onboardingStore.markFirstEncounterPromptShown()
+                                    showFirstEncounterPrompt = false
+                                    startActivity(Intent(Intent.ACTION_DIAL, Uri.parse("tel:")))
+                                },
+                                onDismiss = {
+                                    onboardingStore.markFirstEncounterPromptShown()
+                                    showFirstEncounterPrompt = false
+                                },
+                            )
+                        }
+                    }
                     LaunchedEffect(incomingImport) {
                         incomingImport?.let { incoming ->
                             incomingImport = null
@@ -458,6 +514,12 @@ class MainActivity : AppCompatActivity() {
         setIntent(intent)
         incomingImport = intent.incomingImport(contentResolver)
     }
+
+    private fun isReadyForCalls(): Boolean =
+        defaultPhoneManager.isDefaultDialer() &&
+            (Build.VERSION.SDK_INT < Build.VERSION_CODES.Q ||
+                getSystemService(NotificationManager::class.java)?.canUseFullScreenIntent() == true)
+
 }
 
 private sealed interface IncomingImport {

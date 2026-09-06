@@ -87,7 +87,8 @@ import kotlin.math.roundToInt
 fun BattleScreen(
     encounter: BattleEncounter,
     modifier: Modifier = Modifier,
-    timing: BattleTiming = BattleTiming()
+    timing: BattleTiming = BattleTiming(),
+    staticPreview: Boolean = false,
 ) {
     val scope = rememberCoroutineScope()
     val resources = LocalResources.current
@@ -96,9 +97,28 @@ fun BattleScreen(
             resources.getString(resource, *arguments)
         })
     }
-    val state by coordinator.state.collectAsState()
+    val animatedState by coordinator.state.collectAsState()
+    val state = if (staticPreview) {
+        remember(encounter.id, encounter.type, resources) {
+            BattleUiState(
+                runId = 1,
+                phase = BattlePhase.Ready,
+                encounter = encounter,
+                message = resources.getString(R.string.battle_prompt),
+                dialogueId = 1,
+                playerPanel = BattlePanel.Monster,
+                enemyPanel = BattlePanel.Monster,
+                enemyRevealFrame = 4,
+                playerRevealFrame = 4,
+            )
+        }
+    } else {
+        animatedState
+    }
 
-    LaunchedEffect(encounter.id, encounter.type) { coordinator.start(encounter) }
+    LaunchedEffect(encounter.id, encounter.type, staticPreview) {
+        if (!staticPreview) coordinator.start(encounter)
+    }
     DisposableEffect(coordinator) { onDispose(coordinator::stop) }
 
     Surface(
@@ -110,6 +130,7 @@ fun BattleScreen(
         BattleScene(
             state = state,
             timing = timing,
+            staticPreview = staticPreview,
             onAnimationCompleted = coordinator::animationCompleted,
             onDialogueCompleted = coordinator::dialogueCompleted,
             modifier = Modifier
@@ -125,6 +146,7 @@ fun BattleScene(
     state: BattleUiState,
     modifier: Modifier = Modifier,
     timing: BattleTiming = BattleTiming(),
+    staticPreview: Boolean = false,
     onAnimationCompleted: (Long, BattlePhase) -> Unit = { _, _ -> },
     onDialogueCompleted: (Long, Long) -> Unit = { _, _ -> }
 ) {
@@ -132,8 +154,12 @@ fun BattleScene(
     val configuration = LocalConfiguration.current
     val density = LocalDensity.current
     val entranceDistancePx = with(density) { configuration.screenWidthDp.dp.toPx() }
-    val playerOffset = remember(state.runId, entranceDistancePx) { Animatable(entranceDistancePx) }
-    val enemyOffset = remember(state.runId, entranceDistancePx) { Animatable(-entranceDistancePx) }
+    val playerOffset = remember(state.runId, entranceDistancePx, staticPreview) {
+        Animatable(if (staticPreview) 0f else entranceDistancePx)
+    }
+    val enemyOffset = remember(state.runId, entranceDistancePx, staticPreview) {
+        Animatable(if (staticPreview) 0f else -entranceDistancePx)
+    }
     val saturation = remember(state.runId) { Animatable(0f) }
 
     LaunchedEffect(state.runId, state.phase) {

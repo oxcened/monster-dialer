@@ -28,6 +28,8 @@ class BattleJournalStore @Inject constructor(
 
     val entries: StateFlow<List<BattleJournalEntry>> = mutableEntries.asStateFlow()
 
+    fun hasStoredData(): Boolean = file.isFile
+
     @Synchronized
     fun record(encounter: BattleEncounter, isRadiantDiscovery: Boolean) {
         val entry = BattleJournalEntry(
