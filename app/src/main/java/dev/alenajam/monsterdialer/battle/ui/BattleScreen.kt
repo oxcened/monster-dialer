@@ -69,6 +69,7 @@ import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import dev.alenajam.monsterdialer.R
+import dev.alenajam.monsterdialer.app.ui.RetroBoxFrame
 import dev.alenajam.monsterdialer.battle.data.BattleEncounter
 import dev.alenajam.monsterdialer.battle.data.BattleMonster
 import dev.alenajam.monsterdialer.battle.data.BattlePanel
@@ -426,7 +427,7 @@ internal fun BattlePanelView(
 }
 
 @Composable
-private fun BattleDialogue(
+internal fun BattleDialogue(
     message: String,
     dialogueId: Long,
     isTyping: Boolean,
@@ -444,18 +445,11 @@ private fun BattleDialogue(
         color = Color.Black,
     )
     val textMeasurer = rememberTextMeasurer()
-    BoxWithConstraints(
+    RetroBoxFrame(
             modifier = modifier
                 .fillMaxWidth(0.95f)
-            .height(height)
-            .background(Color.Black)
-            .padding(2.dp)
-            .background(Color.White)
-            .padding(3.dp)
-            .background(Color.Black)
-            .padding(4.dp)
-            .background(Color.White)
-            .semantics { if (!isTyping) liveRegion = LiveRegionMode.Polite }
+                .semantics { if (!isTyping) liveRegion = LiveRegionMode.Polite },
+            height = height,
     ) {
         val textWidth = with(LocalDensity.current) {
             (maxWidth - 10.dp).roundToPx().coerceAtLeast(0)

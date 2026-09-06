@@ -43,6 +43,15 @@ data class ContactCharacterSelection(
     val mode: ContactCharacterMode,
 )
 
+data class ContactCharacterOverview(
+    val contactKeys: List<String>,
+    val label: String,
+    val trainer: ContactCharacterSelection,
+    val monster: ContactCharacterSelection,
+) {
+    val contactKey: String get() = contactKeys.first()
+}
+
 data class ContactCharacterDefaults(
     val defaults: Map<CharacterType, CharacterReference>,
     val randomPools: Map<CharacterType, List<CharacterReference>>,
@@ -231,6 +240,33 @@ class CharacterAssignmentStore(
         return document.contactsByType[normalizedKey]?.containsKey(type) == true ||
             document.contactModes[normalizedKey]?.containsKey(type) == true ||
             (type == CharacterType.Monster && normalizedKey in document.contacts)
+    }
+
+    @Synchronized
+    fun contactCharacterOverviews(): List<ContactCharacterOverview> {
+        val document = read()
+        val contactKeys = (
+            document.contacts.keys +
+                document.contactsByType.keys +
+                document.contactModes.keys +
+                document.contactLabels.keys
+            ).distinct()
+
+        return contactKeys
+            .filter { key ->
+                hasContactOverride(key, CharacterType.Trainer) || hasContactOverride(key, CharacterType.Monster)
+            }
+            .groupBy { key -> document.contactLabels[key] ?: key }
+            .map { (label, keys) ->
+                val representativeKey = keys.first()
+                ContactCharacterOverview(
+                    contactKeys = keys,
+                    label = label,
+                    trainer = selectionForContact(representativeKey, CharacterType.Trainer),
+                    monster = selectionForContact(representativeKey, CharacterType.Monster),
+                )
+            }
+            .sortedBy { it.label.lowercase() }
     }
 
     @Synchronized

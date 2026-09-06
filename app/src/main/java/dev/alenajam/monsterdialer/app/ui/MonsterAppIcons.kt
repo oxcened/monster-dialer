@@ -35,6 +35,7 @@ data class MonsterAppIcons(
     val randomize: IconSource,
     val qrCode: IconSource,
     val filter: IconSource,
+    val selectionCursor: IconSource,
 )
 
 val DefaultMonsterAppIcons = MonsterAppIcons(
@@ -57,6 +58,7 @@ val DefaultMonsterAppIcons = MonsterAppIcons(
     randomize = IconSource.Vector(Icons.Outlined.Shuffle),
     qrCode = IconSource.Vector(Icons.Outlined.QrCode2),
     filter = IconSource.Vector(Icons.Outlined.FilterList),
+    selectionCursor = IconSource.Resource(R.drawable.selection_arrow, tintable = true),
 )
 
 val LocalMonsterAppIcons = staticCompositionLocalOf { DefaultMonsterAppIcons }

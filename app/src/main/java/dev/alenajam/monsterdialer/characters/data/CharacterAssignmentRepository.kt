@@ -14,6 +14,7 @@ interface CharacterAssignmentRepository {
     val assignmentVersion: StateFlow<Long>
     suspend fun getAssignedCharacter(contactKey: String, type: CharacterType): CharacterReference?
     suspend fun getContactCharacterSelection(contactKey: String, type: CharacterType): ContactCharacterSelection
+    suspend fun getContactCharacterOverviews(): List<ContactCharacterOverview>
     suspend fun hasContactOverride(contactKey: String, type: CharacterType): Boolean
     suspend fun clearContactOverride(contactKey: String, type: CharacterType)
     suspend fun getContactCharacterDefaults(): ContactCharacterDefaults
@@ -66,6 +67,10 @@ class CharacterAssignmentRepositoryImpl @Inject constructor(
         type: CharacterType,
     ): ContactCharacterSelection = withContext(Dispatchers.IO) {
         assignments.selectionForContact(contactKey, type)
+    }
+
+    override suspend fun getContactCharacterOverviews(): List<ContactCharacterOverview> = withContext(Dispatchers.IO) {
+        assignments.contactCharacterOverviews()
     }
 
     override suspend fun hasContactOverride(contactKey: String, type: CharacterType): Boolean = withContext(Dispatchers.IO) {

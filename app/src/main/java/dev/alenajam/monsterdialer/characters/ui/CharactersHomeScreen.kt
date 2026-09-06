@@ -130,7 +130,7 @@ fun CharactersHomeScreen(
                 color = MaterialTheme.colorScheme.onSurface
             )
             CharacterToolsGroup(
-                onOpenContactCharacters = { onOpenSubpage(CharacterSettingsPage.ContactCharacters.index, ContactCharacterSettingsEntryPoint.Toolbox.payload) },
+                onOpenContactCharacters = { onOpenSubpage(CharacterSettingsPage.ContactCharacters.index, ContactCharacterSettingsEntryPoint.Overview.payload) },
                 onOpenContactDefaults = { onOpenSubpage(CharacterSettingsPage.ContactDefaults.index, ContactCharacterSettingsEntryPoint.Defaults.payload) },
                 onOpenJournal = { onOpenSubpage(CharacterSettingsPage.BattleJournal.index, null) },
                 onOpenPacks = { onOpenSubpage(CharacterSettingsPage.CharacterPacks.index, null) },

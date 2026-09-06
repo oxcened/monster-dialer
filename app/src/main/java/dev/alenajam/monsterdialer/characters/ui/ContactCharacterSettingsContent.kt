@@ -88,7 +88,7 @@ import dev.alenajam.opendialer.feature.settings.LocalSettingsBackInterceptor
 import dev.alenajam.opendialer.feature.settings.LocalSettingsSubpageNavigator
 import kotlinx.coroutines.launch
 
-private enum class ContactAssignmentMode { Global, Custom, Random }
+internal enum class ContactAssignmentMode { Global, Custom, Random }
 
 @Composable
 fun ColumnScope.ContactCharacterSettingsContent(
@@ -96,6 +96,7 @@ fun ColumnScope.ContactCharacterSettingsContent(
     viewModel: ContactCharacterSettingsViewModel = hiltViewModel()
 ) {
     val contact by viewModel.contact.collectAsStateWithLifecycle()
+    val rosterCursorContactKey by viewModel.rosterCursorContactKey.collectAsStateWithLifecycle()
     val assignedTrainer by viewModel.assignedTrainer.collectAsStateWithLifecycle()
     val assignedMonster by viewModel.assignedMonster.collectAsStateWithLifecycle()
     val trainerMode by viewModel.trainerMode.collectAsStateWithLifecycle()
@@ -112,6 +113,7 @@ fun ColumnScope.ContactCharacterSettingsContent(
     val unlockedVariants by viewModel.unlockedVariants.collectAsStateWithLifecycle()
     val pendingOnlineProfileId by viewModel.pendingOnlineProfileId.collectAsStateWithLifecycle()
     val contactDefaults by viewModel.contactDefaults.collectAsStateWithLifecycle()
+    val customizedContacts by viewModel.customizedContacts.collectAsStateWithLifecycle()
     val contactRandomPools by viewModel.contactRandomPools.collectAsStateWithLifecycle()
     val trainerSelectedItemIndex = selectedCharacterIndex(trainers, assignedTrainer)
     val monsterSelectedItemIndex = selectedCharacterIndex(monsters, assignedMonster)
@@ -170,6 +172,25 @@ fun ColumnScope.ContactCharacterSettingsContent(
         )
         return
     }
+    val isOverviewFlow = entryPoint == ContactCharacterSettingsEntryPoint.Toolbox ||
+        entryPoint == ContactCharacterSettingsEntryPoint.Overview
+    LaunchedEffect(entryPoint) {
+        if (isOverviewFlow) viewModel.enterOverview()
+    }
+    if (isOverviewFlow && currentContact == null) {
+        CustomizedContactsOverview(
+            contacts = customizedContacts,
+            trainers = trainers,
+            monsters = monsters,
+            highlightedContactKey = rosterCursorContactKey,
+            isAddEnabled = !isLimitReached,
+            onAddContact = { navigator?.navigateTo(0) },
+            onBack = { navigator?.navigateBack() },
+            onContactMenuOpened = { overview -> viewModel.setRosterCursor(overview.contactKey) },
+            onContactSelected = { overview, type -> viewModel.selectCustomizedContact(overview, type) },
+        )
+        return
+    }
     if (currentContact == null) {
         Column(
             modifier = Modifier.fillMaxSize().verticalScroll(rememberScrollState()),
@@ -190,6 +211,18 @@ fun ColumnScope.ContactCharacterSettingsContent(
             }
         }
         return
+    }
+
+    BackHandler(enabled = isOverviewFlow) {
+        viewModel.clearSelectedContact()
+    }
+
+    val finishContactEdit = {
+        if (isOverviewFlow) {
+            viewModel.clearSelectedContact()
+        } else {
+            navigator?.navigateBack()
+        }
     }
 
     Column(
@@ -227,7 +260,7 @@ fun ColumnScope.ContactCharacterSettingsContent(
         }
 
         AnimatedVisibility(
-            visible = controlsVisible || usesGlobalDefaults,
+            visible = false,
             enter = fadeIn() + expandVertically(),
             exit = fadeOut() + shrinkVertically(),
         ) {
@@ -352,6 +385,22 @@ fun ColumnScope.ContactCharacterSettingsContent(
             if (effectiveLayout == CharacterLayout.List) listState.requestScrollToItem(selectedItemIndex)
             else gridState.requestScrollToItem(selectedItemIndex)
         }
+        RetroPickerModeBar(
+            selectedType = if (selectedTab == 0) CharacterType.Trainer else CharacterType.Monster,
+            mode = when {
+                usesGlobalDefaults -> ContactAssignmentMode.Global
+                (if (selectedTab == 0) trainerMode else monsterMode) == ContactCharacterMode.Random -> ContactAssignmentMode.Random
+                else -> ContactAssignmentMode.Custom
+            },
+            onModeChanged = { nextMode ->
+                val type = if (selectedTab == 0) CharacterType.Trainer else CharacterType.Monster
+                when (nextMode) {
+                    ContactAssignmentMode.Global -> viewModel.setUsesGlobalDefaults(type, true)
+                    ContactAssignmentMode.Custom -> viewModel.setUsesGlobalDefaults(type, false)
+                    ContactAssignmentMode.Random -> if (type == CharacterType.Trainer) viewModel.randomizeTrainer() else viewModel.randomizeMonster()
+                }
+            },
+        )
         Box(modifier = Modifier.fillMaxWidth().weight(1f)) {
             if (usesGlobalDefaults) {
                 ContactCharacterInheritedSummary(
@@ -359,6 +408,21 @@ fun ColumnScope.ContactCharacterSettingsContent(
                     onOpenGlobalDefaults = {
                         rootNavigator?.invoke(CharacterSettingsPage.ContactDefaults.index, null)
                     },
+                )
+            } else if (!usesGlobalDefaults) {
+                RetroCharacterPicker(
+                    type = if (selectedTab == 0) CharacterType.Trainer else CharacterType.Monster,
+                    selected = if (selectedTab == 0) assignedTrainer else assignedMonster,
+                    characters = if (selectedTab == 0) trainers else monsters,
+                    unlockedVariants = unlockedVariants,
+                    filter = if (selectedTab == 1) filter else MonsterFilter.All,
+                    defaultCharacter = if (selectedTab == 0) BuiltInCharacters.trainer else BuiltInCharacters.monster.character,
+                    defaultArtwork = { contactArtwork.resource },
+                    onAssign = { reference ->
+                        if (selectedTab == 0) viewModel.assignTrainer(reference) else viewModel.assignMonster(reference)
+                        finishContactEdit()
+                    },
+                    onBack = { finishContactEdit() },
                 )
             } else if (effectiveLayout == CharacterLayout.List) {
                 LazyColumn(
@@ -394,17 +458,13 @@ fun ColumnScope.ContactCharacterSettingsContent(
                                 } else {
                                     viewModel.assignTrainer(it)
                                 }
-                                if (entryPoint == ContactCharacterSettingsEntryPoint.ContactList) {
-                                    navigator?.navigateBack()
-                                }
+                                finishContactEdit()
                             },
                             unlockedVariants = unlockedVariants,
                             isRandomSelected = trainerMode == ContactCharacterMode.Random,
                             onRandomize = {
                                 viewModel.randomizeTrainer()
-                                if (entryPoint == ContactCharacterSettingsEntryPoint.ContactList) {
-                                    navigator?.navigateBack()
-                                }
+                                finishContactEdit()
                             },
                             showRandomize = false,
                             selectedReferences = if (trainerMode == ContactCharacterMode.Random) effectiveTrainerRandomPool else emptySet(),
@@ -431,17 +491,13 @@ fun ColumnScope.ContactCharacterSettingsContent(
                                 } else {
                                     viewModel.assignMonster(it)
                                 }
-                                if (entryPoint == ContactCharacterSettingsEntryPoint.ContactList) {
-                                    navigator?.navigateBack()
-                                }
+                                finishContactEdit()
                             },
                             unlockedVariants = unlockedVariants,
                             isRandomSelected = monsterMode == ContactCharacterMode.Random,
                             onRandomize = {
                                 viewModel.randomizeMonster()
-                                if (entryPoint == ContactCharacterSettingsEntryPoint.ContactList) {
-                                    navigator?.navigateBack()
-                                }
+                                finishContactEdit()
                             },
                             showRandomize = false,
                             selectedReferences = if (monsterMode == ContactCharacterMode.Random) effectiveMonsterRandomPool else emptySet(),
@@ -495,17 +551,13 @@ fun ColumnScope.ContactCharacterSettingsContent(
                                 } else {
                                     viewModel.assignTrainer(it)
                                 }
-                                if (entryPoint == ContactCharacterSettingsEntryPoint.ContactList) {
-                                    navigator?.navigateBack()
-                                }
+                                finishContactEdit()
                             },
                             unlockedVariants = unlockedVariants,
                             isRandomSelected = trainerMode == ContactCharacterMode.Random,
                             onRandomize = {
                                 viewModel.randomizeTrainer()
-                                if (entryPoint == ContactCharacterSettingsEntryPoint.ContactList) {
-                                    navigator?.navigateBack()
-                                }
+                                finishContactEdit()
                             },
                             showRandomize = false,
                             selectedReferences = if (trainerMode == ContactCharacterMode.Random) effectiveTrainerRandomPool else emptySet(),
@@ -532,17 +584,13 @@ fun ColumnScope.ContactCharacterSettingsContent(
                                 } else {
                                     viewModel.assignMonster(it)
                                 }
-                                if (entryPoint == ContactCharacterSettingsEntryPoint.ContactList) {
-                                    navigator?.navigateBack()
-                                }
+                                finishContactEdit()
                             },
                             unlockedVariants = unlockedVariants,
                             isRandomSelected = monsterMode == ContactCharacterMode.Random,
                             onRandomize = {
                                 viewModel.randomizeMonster()
-                                if (entryPoint == ContactCharacterSettingsEntryPoint.ContactList) {
-                                    navigator?.navigateBack()
-                                }
+                                finishContactEdit()
                             },
                             showRandomize = false,
                             selectedReferences = if (monsterMode == ContactCharacterMode.Random) effectiveMonsterRandomPool else emptySet(),

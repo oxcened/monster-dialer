@@ -30,13 +30,12 @@ import androidx.compose.foundation.lazy.grid.itemsIndexed as gridItemsIndexed
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.gestures.detectDragGestures
 import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.FilledIconButton
@@ -69,6 +68,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Shape
+import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -1023,19 +1023,14 @@ private fun CharacterOptionCard(
 ) {
     var showMenu by remember { mutableStateOf(false) }
     var showRadiantUnlockDialog by remember { mutableStateOf(false) }
-    val shape = RoundedCornerShape(
-        topStart = if (roundTop) 20.dp else 2.dp, topEnd = if (roundTop) 20.dp else 2.dp,
-        bottomStart = if (roundBottom) 20.dp else 2.dp, bottomEnd = if (roundBottom) 20.dp else 2.dp
-    )
     Box {
-        Card(
+        Box(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(vertical = 1.dp)
+                .border(2.dp, if (isSelected) RetroInk else RetroInk.copy(alpha = 0.45f), RectangleShape)
+                .background(if (isSelected) RetroLavender else RetroPaper, RectangleShape)
                 .then(modifier),
-            shape = shape,
-            colors = CardDefaults.cardColors(containerColor = if (isSelected) MaterialTheme.colorScheme.secondaryContainer else MaterialTheme.colorScheme.surfaceContainerLow),
-            elevation = CardDefaults.cardElevation(defaultElevation = 0.5.dp)
         ) {
             Row(
                 modifier = Modifier
@@ -1177,13 +1172,12 @@ private fun CharacterGridItem(
     var showMenu by remember { mutableStateOf(false) }
     var showRadiantUnlockDialog by remember { mutableStateOf(false) }
     Box {
-        Card(
-            modifier = Modifier.fillMaxWidth().then(modifier),
-            shape = shape,
-            colors = CardDefaults.cardColors(
-                containerColor = if (isSelected) MaterialTheme.colorScheme.secondaryContainer else MaterialTheme.colorScheme.surfaceContainerLow
-            ),
-            elevation = CardDefaults.cardElevation(defaultElevation = 0.5.dp)
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .border(2.dp, if (isSelected) RetroInk else RetroInk.copy(alpha = 0.45f), RectangleShape)
+                .background(if (isSelected) RetroLavender else RetroPaper, RectangleShape)
+                .then(modifier),
         ) {
             Column(
                 modifier = Modifier

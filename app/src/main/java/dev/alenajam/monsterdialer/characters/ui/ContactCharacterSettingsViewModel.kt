@@ -6,6 +6,7 @@ import dev.alenajam.monsterdialer.characters.data.CharacterAssignmentRepository
 import dev.alenajam.monsterdialer.characters.data.BuiltInCharacters
 import dev.alenajam.monsterdialer.characters.data.ContactCharacterMode
 import dev.alenajam.monsterdialer.characters.data.ContactCharacterSelection
+import dev.alenajam.monsterdialer.characters.data.ContactCharacterOverview
 import dev.alenajam.monsterdialer.characters.data.CharacterLayoutPreferences
 import dev.alenajam.monsterdialer.characters.data.CharactersRepository
 import dev.alenajam.monsterdialer.characters.data.RadiantVariantUnlockStore
@@ -26,6 +27,8 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.sync.Mutex
+import kotlinx.coroutines.sync.withLock
 import javax.inject.Inject
 import dagger.hilt.android.lifecycle.HiltViewModel
 
@@ -39,6 +42,8 @@ class ContactCharacterSettingsViewModel @Inject constructor(
     radiantUnlocks: RadiantVariantUnlockStore,
     private val onlineOpponentResolver: OnlineOpponentResolver,
 ) : ViewModel() {
+    private val selectedContactMutex = Mutex()
+    private var overviewEntered = false
 
     private val _filter = MutableStateFlow(MonsterFilter.All)
     val filter: StateFlow<MonsterFilter> = _filter.asStateFlow()
@@ -66,6 +71,9 @@ class ContactCharacterSettingsViewModel @Inject constructor(
 
     private val _contact = MutableStateFlow<MonsterContact?>(null)
     val contact: StateFlow<MonsterContact?> = _contact.asStateFlow()
+
+    private val _rosterCursorContactKey = MutableStateFlow<String?>(null)
+    val rosterCursorContactKey: StateFlow<String?> = _rosterCursorContactKey.asStateFlow()
 
     private val _assignedTrainer = MutableStateFlow<CharacterReference?>(null)
     val assignedTrainer: StateFlow<CharacterReference?> = _assignedTrainer.asStateFlow()
@@ -117,6 +125,10 @@ class ContactCharacterSettingsViewModel @Inject constructor(
             dev.alenajam.monsterdialer.characters.data.ContactCharacterDefaults(emptyMap(), emptyMap()),
         )
 
+    val customizedContacts: StateFlow<List<ContactCharacterOverview>> = assignmentRepository.assignmentVersion
+        .map { assignmentRepository.getContactCharacterOverviews() }
+        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), emptyList())
+
     fun allContactPoolReferences(type: CharacterType): Set<CharacterReference> {
         val builtInReference = if (type == CharacterType.Trainer) {
             BuiltInCharacters.defaultTrainerReference
@@ -166,6 +178,17 @@ class ContactCharacterSettingsViewModel @Inject constructor(
         restoreSelectedContact()
     }
 
+    fun enterOverview() {
+        if (overviewEntered) return
+        overviewEntered = true
+        viewModelScope.launch {
+            selectedContactMutex.withLock {
+                selectionRepository.clearSelectedContact()
+                restoreSelectedContactState()
+            }
+        }
+    }
+
     fun setContactDefault(type: CharacterType, reference: CharacterReference?) {
         viewModelScope.launch {
             assignmentRepository.setContactDefault(type, reference)
@@ -187,7 +210,9 @@ class ContactCharacterSettingsViewModel @Inject constructor(
 
     fun restoreSelectedContact() {
         viewModelScope.launch {
-            restoreSelectedContactState()
+            selectedContactMutex.withLock {
+                restoreSelectedContactState()
+            }
         }
     }
 
@@ -201,13 +226,40 @@ class ContactCharacterSettingsViewModel @Inject constructor(
         }
     }
 
+    fun selectCustomizedContact(overview: ContactCharacterOverview, type: CharacterType) {
+        viewModelScope.launch {
+            selectedContactMutex.withLock {
+                if (selectionRepository.setSelectedContact(overview.label, overview.contactKeys)) {
+                    _selectedTab.value = if (type == CharacterType.Trainer) 0 else 1
+                    layoutPreferences.setSelectedTab(_selectedTab.value)
+                    restoreSelectedContactState()
+                }
+            }
+        }
+    }
+
+    fun setRosterCursor(contactKey: String) {
+        _rosterCursorContactKey.value = contactKey
+    }
+
+    fun clearSelectedContact() {
+        viewModelScope.launch {
+            selectedContactMutex.withLock {
+                selectionRepository.clearSelectedContact()
+                restoreSelectedContactState()
+            }
+        }
+    }
+
     suspend fun selectContact(selectedContact: DialerContactSummary): Boolean {
-        if (!selectionRepository.setSelectedContact(selectedContact)) return false
-        restoreSelectedContactState()
-        val profileId = _pendingOnlineProfileId.value ?: return true
-        val contact = _contact.value ?: return false
-        return onlineOpponentResolver.link(contact.numbers, profileId).also { linked ->
-            if (linked) _pendingOnlineProfileId.value = null
+        return selectedContactMutex.withLock {
+            if (!selectionRepository.setSelectedContact(selectedContact)) return@withLock false
+            restoreSelectedContactState()
+            val profileId = _pendingOnlineProfileId.value ?: return@withLock true
+            val contact = _contact.value ?: return@withLock false
+            onlineOpponentResolver.link(contact.numbers, profileId).also { linked ->
+                if (linked) _pendingOnlineProfileId.value = null
+            }
         }
     }
 

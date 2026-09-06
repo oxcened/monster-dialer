@@ -3,6 +3,7 @@ package dev.alenajam.monsterdialer.characters.ui
 enum class ContactCharacterSettingsEntryPoint(val payload: String?) {
     Toolbox(null),
     Defaults("contact-defaults"),
+    Overview("contact-overview"),
     ContactList("contact-list");
 
     companion object {

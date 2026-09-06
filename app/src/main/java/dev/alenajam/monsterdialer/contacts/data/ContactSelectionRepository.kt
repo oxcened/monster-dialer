@@ -11,6 +11,7 @@ import javax.inject.Singleton
 interface ContactSelectionRepository {
     suspend fun getSelectedContact(): MonsterContact?
     suspend fun setSelectedContact(selectedContact: DialerContactSummary): Boolean
+    suspend fun setSelectedContact(label: String, contactKeys: List<String>): Boolean
     suspend fun clearSelectedContact()
 }
 
@@ -39,6 +40,10 @@ class ContactSelectionRepositoryImpl @Inject constructor(
             contactId = selectedContact.id,
             photoUri = selectedContact.image
         )
+    }
+
+    override suspend fun setSelectedContact(label: String, contactKeys: List<String>): Boolean = withContext(Dispatchers.IO) {
+        assignments.setSelectedContact(label = label, contactKeys = contactKeys)
     }
 
     override suspend fun clearSelectedContact() = withContext(Dispatchers.IO) {

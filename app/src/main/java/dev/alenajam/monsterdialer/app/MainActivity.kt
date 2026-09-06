@@ -44,6 +44,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.unit.dp
 import androidx.core.content.IntentCompat
+import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.WindowInsetsControllerCompat
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.Lifecycle
@@ -119,6 +121,7 @@ class MainActivity : AppCompatActivity() {
         incomingImport = intent.incomingImport(contentResolver)
         showFirstRunWelcome = onboardingStore.shouldShowWelcome()
         enableEdgeToEdge()
+        hideStatusBar()
 
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.Q) {
             window.isNavigationBarContrastEnforced = false
@@ -320,6 +323,8 @@ class MainActivity : AppCompatActivity() {
                             },
                             isScrollable = false,
                             topContentPadding = 0.dp,
+                            showTopBar = false,
+                            horizontalContentPadding = 2.dp,
                             visibleInSettings = false,
                             actions = {
                                 ContextualGuideButton(
@@ -509,6 +514,18 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    override fun onWindowFocusChanged(hasFocus: Boolean) {
+        super.onWindowFocusChanged(hasFocus)
+        if (hasFocus) hideStatusBar()
+    }
+
+    private fun hideStatusBar() {
+        WindowInsetsControllerCompat(window, window.decorView).apply {
+            hide(WindowInsetsCompat.Type.statusBars())
+            systemBarsBehavior = WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
+        }
+    }
+
     override fun onNewIntent(intent: Intent) {
         super.onNewIntent(intent)
         setIntent(intent)
@@ -620,7 +637,7 @@ private fun ContactCharacterTopBarTitle(
                 tint = MaterialTheme.colorScheme.primary
             )
             Text(
-                text = stringResource(R.string.choose_contact),
+                text = stringResource(R.string.settings_contact_characters_title),
                 style = MaterialTheme.typography.titleMedium,
                 color = MaterialTheme.colorScheme.primary
             )
