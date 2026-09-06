@@ -15,6 +15,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.size
@@ -43,6 +44,8 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.text.font.Font
+import androidx.compose.ui.text.font.FontFamily
 import androidx.core.content.IntentCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.WindowInsetsControllerCompat
@@ -55,6 +58,9 @@ import dev.alenajam.monsterdialer.R
 import dev.alenajam.monsterdialer.analytics.MonsterAnalytics
 import dev.alenajam.monsterdialer.app.data.OnboardingStore
 import dev.alenajam.monsterdialer.app.ui.LocalMonsterAppIcons
+import dev.alenajam.monsterdialer.app.ui.RetroActionButton
+import dev.alenajam.monsterdialer.app.ui.RetroContextMenu
+import dev.alenajam.monsterdialer.app.ui.RetroContextMenuItem
 import dev.alenajam.monsterdialer.app.ui.rememberMonsterIcons
 import dev.alenajam.monsterdialer.app.ui.rememberMonsterTypography
 import dev.alenajam.monsterdialer.characters.ui.AddCharacterScreen
@@ -94,6 +100,7 @@ import dev.alenajam.opendialer.core.common.ui.ContactAvatar
 import dev.alenajam.opendialer.feature.appShell.DialerApp
 import dev.alenajam.opendialer.feature.appShell.HomeNavigationItem
 import dev.alenajam.opendialer.feature.appShell.HomeScreenConfiguration
+import dev.alenajam.opendialer.feature.appShell.HomeTab
 import dev.alenajam.opendialer.feature.contacts.ContactRowTrailingContent
 import dev.alenajam.opendialer.feature.settings.LocalSettingsSubpageNavigator
 import kotlinx.coroutines.launch
@@ -194,6 +201,55 @@ class MainActivity : AppCompatActivity() {
                         homeScreenConfiguration = HomeScreenConfiguration(
                             showVoicemailInNavigation = false,
                             showVoicemailInOverflow = true,
+                            hideSearchAndDialpadOnCustomTab = true,
+                            customActionBar = { onSelect, onMenu, onBack, backEnabled ->
+                                Row(
+                                    modifier = Modifier.fillMaxWidth(),
+                                    horizontalArrangement = Arrangement.SpaceBetween,
+                                ) {
+                                    RetroActionButton(
+                                        key = stringResource(R.string.retro_key_a),
+                                        label = stringResource(R.string.retro_action_dial_label),
+                                        onClick = onSelect,
+                                    )
+                                    RetroActionButton(
+                                        key = stringResource(R.string.retro_key_b),
+                                        label = stringResource(
+                                            if (backEnabled) R.string.retro_action_back_label else R.string.retro_action_menu_label,
+                                        ),
+                                        onClick = if (backEnabled) onBack else onMenu,
+                                    )
+                                }
+                            },
+                            customContextMenu = { currentTab, onCalls, onContacts, onProfile, onDismiss ->
+                                Box(
+                                    modifier = Modifier.fillMaxSize().clickable(onClick = onDismiss),
+                                    contentAlignment = Alignment.Center,
+                                ) {
+                                    RetroContextMenu(
+                                        modifier = Modifier.fillMaxWidth(0.78f),
+                                        fontFamily = FontFamily(Font(R.font.ui_pixel_font)),
+                                        items = listOf(
+                                            RetroContextMenuItem(
+                                                stringResource(R.string.recents),
+                                                showCursor = currentTab == HomeTab.CALLS,
+                                                onClick = onCalls,
+                                            ),
+                                            RetroContextMenuItem(
+                                                stringResource(R.string.contacts),
+                                                showCursor = currentTab == HomeTab.CONTACTS,
+                                                onClick = onContacts,
+                                            ),
+                                            RetroContextMenuItem(
+                                                stringResource(R.string.characters_navigation_label),
+                                                showCursor = currentTab == HomeTab.CUSTOM,
+                                                onClick = onProfile,
+                                            ),
+                                            RetroContextMenuItem(stringResource(R.string.cancel), showCursor = false, onClick = onDismiss),
+                                        ),
+                                    )
+                                }
+                            },
                             contactRowTrailingContent = ContactRowTrailingContent { contact, onOpenSettingsSubpage ->
                                 val coroutineScope = rememberCoroutineScope()
                                 var expanded by remember(contact.id) { mutableStateOf(false) }
@@ -240,8 +296,9 @@ class MainActivity : AppCompatActivity() {
                             customNavigationItem = HomeNavigationItem(
                             label = { androidx.compose.material3.Text(stringResource(R.string.characters_navigation_label)) },
                             icon = { _ -> dev.alenajam.opendialer.core.common.ui.AppIcon(dev.alenajam.opendialer.core.common.ui.LocalAppIcons.current.person, null) },
-                            content = { onOpenSubpage ->
+                            content = { onOpenSettings, onOpenSubpage, onSetBackAction ->
                                 CharactersHomeScreen(
+                                    onOpenSettings = onOpenSettings,
                                     onOpenSubpage = { index, payload ->
                                         val destination = if (index == CharacterSettingsPage.ContactCharacters.index) {
                                             CharacterSettingsPage.ToolboxContactCharacters.index
@@ -256,6 +313,7 @@ class MainActivity : AppCompatActivity() {
                                     onReorderRoster = characterSettingsSummaryViewModel::reorderPlayerMonsterRoster,
                                     onRemoveRosterMonster = characterSettingsSummaryViewModel::removePlayerMonsterFromRoster,
                                     showImportUi = false,
+                                    onSetBackAction = onSetBackAction,
                                 )
                             }
                         )

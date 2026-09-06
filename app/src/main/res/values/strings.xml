@@ -42,6 +42,31 @@
     </plurals>
     <string name="profile_calls_battled" comment="Profile activity summary. %1$d is the number of calls with battle presentations.">%1$d calls battled</string>
     <string name="profile_collection_summary" comment="Profile collection summary. %1$d is the number of collected characters and %2$d is the number of radiant variants found.">%1$d collected · %2$d radiants found</string>
+    <string name="profile_status_title">STATUS</string>
+    <string name="profile_player_label">PLAYER</string>
+    <string name="profile_name_label">NAME</string>
+    <string name="profile_trainer_field">TRAINER/%1$s</string>
+    <string name="profile_back">BACK</string>
+    <string name="profile_calls_label">CALLS</string>
+    <string name="profile_collection_label">COLLECTION</string>
+    <string name="profile_roster_title">MONSTER ROSTER</string>
+    <string name="profile_toolbox_title">TOOLBOX</string>
+    <string name="profile_add_roster">+</string>
+    <string name="profile_screen_title">PROFILE</string>
+    <string name="profile_monster_title">MONSTER</string>
+    <string name="profile_level_label">LV.</string>
+    <string name="profile_monster_field">MONSTER/%1$s</string>
+    <string name="profile_level_field">LEVEL %1$d</string>
+    <string name="profile_variant_label">TYPE</string>
+    <string name="profile_radiants_label">RADIANTS</string>
+    <string name="profile_menu_roster">ROSTER</string>
+    <string name="profile_menu_online">ONLINE PROFILE</string>
+    <string name="profile_menu_toolbox">TOOLBOX</string>
+    <string name="profile_menu_options">OPTIONS</string>
+    <string name="profile_menu_exit">EXIT</string>
+    <string name="profile_menu_cursor">▶ %1$s</string>
+    <string name="profile_roster_description">Manage your roster.</string>
+    <string name="profile_footer_prompt">Your profile!</string>
     <string name="character_tools_title" comment="Heading above character management actions.">Toolbox</string>
     <string name="battle_journal_title" comment="Title for the local history of battle encounters.">Battle Journal</string>
     <string name="battle_journal_description" comment="Description for the local history of battle encounters.">Review radiant discoveries and recent battles.</string>
@@ -132,7 +157,7 @@
     <string name="contact_context_menu_monster">Monster</string>
     <string name="contact_context_menu_remove">Remove</string>
     <string name="contact_picker_options">Options</string>
-    <string name="contact_picker_none">None</string>
+    <string name="contact_picker_default">DEFAULT</string>
     <string name="contact_picker_no_trainer_assigned">No trainer assigned.</string>
     <string name="contact_picker_no_monster_assigned">No monster assigned.</string>
     <string name="contact_picker_random_trainer">Random trainer.</string>
@@ -244,7 +269,7 @@
     <string name="customized_contacts_title">Customized contacts</string>
     <string name="customized_contacts_empty_title">No customized contacts</string>
     <string name="customized_contacts_empty_description">Choose a contact to assign a trainer and monster.</string>
-    <string name="contact_assignment_unavailable">---</string>
+    <string name="contact_assignment_unavailable">DEFAULT</string>
     <string name="customized_contacts_add">New contact</string>
     <string name="customized_contacts_new_action">NEW</string>
     <string name="customized_contacts_back_action">BACK</string>
@@ -255,6 +280,11 @@
     <string name="retro_key_b" comment="Game Boy-style action key label.">B</string>
     <string name="retro_action_select">A Select</string>
     <string name="retro_action_back">B Back</string>
+    <string name="retro_action_menu">B Menu</string>
+    <string name="retro_action_select_label">Select</string>
+    <string name="retro_action_menu_label">MENU</string>
+    <string name="retro_action_back_label">BACK</string>
+    <string name="retro_action_dial_label">DIAL</string>
     <string name="contact_row_actions" comment="Accessibility label for the contact-row overflow menu trigger.">Contact actions</string>
     <string name="linked_online_profile_title" comment="Heading in a contact's character settings for its associated Online Profile.">Linked Online Profile</string>
     <string name="linked_online_profile_none" comment="Empty-state message when a contact has no associated Online Profile.">No Online Profile is linked to this contact.</string>

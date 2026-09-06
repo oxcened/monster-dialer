@@ -43,8 +43,7 @@ import dev.alenajam.monsterdialer.app.ui.RetroConfirmationMenu
 import dev.alenajam.monsterdialer.app.ui.RetroActionButton
 import dev.alenajam.monsterdialer.app.ui.RetroSelectionArrow
 import dev.alenajam.monsterdialer.app.ui.RetroSelectionArrowSize
-import dev.alenajam.monsterdialer.battle.data.BattleTiming
-import dev.alenajam.monsterdialer.battle.ui.BattleDialogue
+import dev.alenajam.monsterdialer.app.ui.RetroTextBox
 import dev.alenajam.monsterdialer.characters.data.BuiltInCharacters
 import dev.alenajam.monsterdialer.characters.data.ContactCharacterMode
 import dev.alenajam.monsterdialer.characters.data.ContactCharacterOverview
@@ -107,14 +106,11 @@ internal fun CustomizedContactsOverview(
             }
         }
 
-        BattleDialogue(
+        RetroTextBox(
             message = statusMessage
                 ?: addedContactLabel?.let { stringResource(R.string.contact_added_message, it.uppercase()) }
                 ?: stringResource(R.string.customized_contacts_prompt),
-            dialogueId = 0,
-            isTyping = false,
-            timing = BattleTiming.Instant,
-            onCompleted = {},
+            animationKey = statusMessage ?: addedContactLabel ?: "prompt",
             modifier = Modifier
                 .align(Alignment.CenterHorizontally)
                 .padding(vertical = 2.dp),

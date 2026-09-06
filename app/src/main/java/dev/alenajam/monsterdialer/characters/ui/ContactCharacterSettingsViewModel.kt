@@ -21,11 +21,14 @@ import dev.alenajam.monsterdialer.packs.data.InstalledPackCharacter
 import dev.alenajam.monsterdialer.onlineprofiles.data.OnlineOpponentResolver
 import dev.alenajam.monsterdialer.onlineprofiles.data.PublicProfileId
 import dev.alenajam.opendialer.data.contacts.DialerContactSummary
+import dev.alenajam.opendialer.data.contacts.ContactsRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.mapLatest
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.sync.Mutex
@@ -42,6 +45,7 @@ class ContactCharacterSettingsViewModel @Inject constructor(
     private val packsRepository: dev.alenajam.monsterdialer.packs.data.PacksRepository,
     radiantUnlocks: RadiantVariantUnlockStore,
     private val onlineOpponentResolver: OnlineOpponentResolver,
+    private val contactsRepository: ContactsRepository,
 ) : ViewModel() {
     private val selectedContactMutex = Mutex()
     private var overviewEntered = false
@@ -135,6 +139,21 @@ class ContactCharacterSettingsViewModel @Inject constructor(
     val customizedContacts: StateFlow<List<ContactCharacterOverview>> = assignmentRepository.assignmentVersion
         .map { assignmentRepository.getContactCharacterOverviews() }
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), emptyList())
+
+    val customizedContactIds: StateFlow<Set<Int>> = combine(
+        contactsRepository.getContacts(),
+        assignmentRepository.assignmentVersion,
+    ) { contacts, _ -> contacts }
+        .mapLatest { contacts ->
+            buildSet {
+                contacts.forEach { contact ->
+                    if (assignmentRepository.hasContactOverride(contactsRepository.getContactNumbers(contact.id))) {
+                        add(contact.id)
+                    }
+                }
+            }
+        }
+        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), emptySet())
 
     fun allContactPoolReferences(type: CharacterType): Set<CharacterReference> {
         val builtInReference = if (type == CharacterType.Trainer) {

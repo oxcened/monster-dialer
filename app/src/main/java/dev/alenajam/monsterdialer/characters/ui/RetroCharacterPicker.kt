@@ -39,7 +39,7 @@ import dev.alenajam.monsterdialer.app.ui.RetroSelectionArrowSize
 import dev.alenajam.monsterdialer.app.ui.RetroContextMenu
 import dev.alenajam.monsterdialer.app.ui.RetroContextMenuItem
 import dev.alenajam.monsterdialer.app.ui.RetroActionButton
-import dev.alenajam.monsterdialer.battle.ui.BattleDialogue
+import dev.alenajam.monsterdialer.app.ui.RetroTextBox
 import dev.alenajam.monsterdialer.characters.data.BuiltInCharacter
 import dev.alenajam.monsterdialer.characters.data.BuiltInCharacters
 import dev.alenajam.monsterdialer.packs.data.CharacterAssignmentTarget
@@ -158,12 +158,9 @@ internal fun RetroCharacterPicker(
                 }
             }
         }
-        BattleDialogue(
+        RetroTextBox(
             message = prompt,
-            dialogueId = 0,
-            isTyping = false,
-            timing = dev.alenajam.monsterdialer.battle.data.BattleTiming.Instant,
-            onCompleted = {},
+            animationKey = "$type:$selectionVersion:$prompt",
             modifier = Modifier.align(Alignment.CenterHorizontally).padding(vertical = 2.dp),
         )
         Row(
@@ -260,7 +257,7 @@ internal fun RetroCharacterPicker(
                             poolDraft = randomPool
                             poolCursor = randomPool.firstOrNull()
                         },
-                        RetroContextMenuItem(label = stringResource(R.string.contact_picker_none)) {
+                        RetroContextMenuItem(label = stringResource(R.string.contact_picker_default)) {
                             optionsOpen = false
                             pendingSelection = null
                             assignmentCleared = true

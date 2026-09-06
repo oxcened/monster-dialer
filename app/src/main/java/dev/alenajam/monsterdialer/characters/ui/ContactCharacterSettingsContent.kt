@@ -67,9 +67,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.LifecycleEventObserver
-import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import dev.alenajam.monsterdialer.R
 import dev.alenajam.monsterdialer.app.ui.LocalMonsterAppIcons
@@ -135,7 +132,6 @@ fun ColumnScope.ContactCharacterSettingsContent(
     val trainersTitle = stringResource(R.string.character_type_trainers)
     val monstersTitle = stringResource(R.string.character_type_monsters)
 
-    val lifecycleOwner = LocalLifecycleOwner.current
     val navigator = LocalSettingsSubpageNavigator.current
     val rootNavigator = LocalSettingsRootNavigator.current
     val contactRandomPoolDrafts = remember { mutableStateMapOf<CharacterType, Set<CharacterReference>>() }
@@ -147,16 +143,6 @@ fun ColumnScope.ContactCharacterSettingsContent(
         if (pool.isNotEmpty()) viewModel.setContactSpecificRandomPool(type, pool)
     }
     RandomPoolEditorBackHandling(hasUnsavedEmptyContactPool) { contactRandomPoolDrafts.clear() }
-
-    DisposableEffect(lifecycleOwner, viewModel) {
-        val observer = LifecycleEventObserver { _, event ->
-            if (event == Lifecycle.Event.ON_RESUME) {
-                viewModel.restoreSelectedContact()
-            }
-        }
-        lifecycleOwner.lifecycle.addObserver(observer)
-        onDispose { lifecycleOwner.lifecycle.removeObserver(observer) }
-    }
 
     val currentContact = contact
     if (entryPoint == ContactCharacterSettingsEntryPoint.Defaults) {
@@ -175,6 +161,11 @@ fun ColumnScope.ContactCharacterSettingsContent(
     }
     val isOverviewFlow = entryPoint == ContactCharacterSettingsEntryPoint.Toolbox ||
         entryPoint == ContactCharacterSettingsEntryPoint.Overview
+    DisposableEffect(isOverviewFlow) {
+        onDispose {
+            if (isOverviewFlow) viewModel.clearRosterStatusMessage()
+        }
+    }
     LaunchedEffect(entryPoint) {
         if (isOverviewFlow) viewModel.enterOverview()
     }
@@ -966,9 +957,11 @@ fun ContactPickerDestination(
     viewModel: ContactCharacterSettingsViewModel = hiltViewModel()
 ) {
     val context = LocalContext.current
+    val customizedContactIds by viewModel.customizedContactIds.collectAsStateWithLifecycle()
     val contactPhoneNumberRequiredMessage = stringResource(R.string.contact_phone_number_required)
     ContactPickerScreen(
         onNavigateBack = onNavigateBack,
+        excludedContactIds = customizedContactIds,
         onContactSelected = { selectedContact ->
             viewModel.onContactSelected(
                 selectedContact = selectedContact,

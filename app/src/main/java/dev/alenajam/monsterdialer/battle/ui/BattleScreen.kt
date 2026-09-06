@@ -70,6 +70,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import dev.alenajam.monsterdialer.R
 import dev.alenajam.monsterdialer.app.ui.RetroBoxFrame
+import dev.alenajam.monsterdialer.app.ui.RetroTextBox
 import dev.alenajam.monsterdialer.battle.data.BattleEncounter
 import dev.alenajam.monsterdialer.battle.data.BattleMonster
 import dev.alenajam.monsterdialer.battle.data.BattlePanel
@@ -437,81 +438,16 @@ internal fun BattleDialogue(
     textScale: Float = 1f,
     modifier: Modifier = Modifier
 ) {
-    val font = battleFontFamily()
-    val style = TextStyle(
-        fontFamily = font,
-        fontSize = 18.sp * textScale,
-        lineHeight = 21.sp * textScale,
-        color = Color.Black,
+    RetroTextBox(
+        message = message,
+        animationKey = dialogueId,
+        modifier = modifier,
+        height = height,
+        characterDelayMillis = timing.characterMillis,
+        pageHoldMillis = timing.dialoguePageHoldMillis,
+        textScale = textScale,
+        onCompleted = onCompleted,
     )
-    val textMeasurer = rememberTextMeasurer()
-    RetroBoxFrame(
-            modifier = modifier
-                .fillMaxWidth(0.95f)
-                .semantics { if (!isTyping) liveRegion = LiveRegionMode.Polite },
-            height = height,
-    ) {
-        val textWidth = with(LocalDensity.current) {
-            (maxWidth - 10.dp).roundToPx().coerceAtLeast(0)
-        }
-        val pages = remember(message, textWidth) {
-            measuredDialoguePages(message, textMeasurer, style, textWidth)
-        }
-        var displayedMessage by remember(dialogueId) { mutableStateOf("") }
-        LaunchedEffect(dialogueId, pages) {
-            if (message.isBlank()) {
-                displayedMessage = ""
-                return@LaunchedEffect
-            }
-            pages.forEachIndexed { pageIndex, page ->
-                page.indices.forEach { index ->
-                    displayedMessage = page.take(index + 1)
-                    delay(timing.characterMillis)
-                }
-                if (pageIndex < pages.lastIndex) delay(timing.dialoguePageHoldMillis)
-            }
-            onCompleted()
-        }
-        androidx.compose.material3.Text(
-            text = displayedMessage,
-            style = style,
-            maxLines = 3,
-            overflow = TextOverflow.Clip,
-            modifier = Modifier.padding(5.dp)
-        )
-    }
-}
-
-private fun measuredDialoguePages(
-    text: String,
-    textMeasurer: androidx.compose.ui.text.TextMeasurer,
-    style: TextStyle,
-    maxWidth: Int
-): List<String> {
-    if (text.isBlank()) return emptyList()
-    fun fits(page: String) = !textMeasurer.measure(
-        text = AnnotatedString(page),
-        style = style,
-        overflow = TextOverflow.Clip,
-        maxLines = 3,
-        constraints = Constraints(maxWidth = maxWidth)
-    ).hasVisualOverflow
-
-    val pages = mutableListOf<String>()
-    var remaining = text.trim()
-    while (remaining.isNotEmpty()) {
-        if (fits(remaining)) {
-            pages += remaining
-            break
-        }
-        var end = remaining.length
-        while (end > 1 && !fits(remaining.substring(0, end))) end--
-        val wordBoundary = remaining.lastIndexOfAny(charArrayOf(' ', '\n', '\t'), end - 1)
-        val pageEnd = if (wordBoundary > 0) wordBoundary else end
-        pages += remaining.substring(0, pageEnd).trimEnd()
-        remaining = remaining.substring(if (wordBoundary > 0) wordBoundary + 1 else pageEnd).trimStart()
-    }
-    return pages
 }
 
 private fun enemySprite(state: BattleUiState): BattleVisualAsset {

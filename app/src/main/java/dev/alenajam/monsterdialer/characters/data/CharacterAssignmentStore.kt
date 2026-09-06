@@ -242,11 +242,12 @@ class CharacterAssignmentStore(
 
     @Synchronized
     fun hasContactOverride(contactKey: String, type: CharacterType): Boolean {
-        val document = read()
-        val normalizedKey = normalizeContactKeyOrNull(contactKey) ?: return false
-        return document.contactsByType[normalizedKey]?.containsKey(type) == true ||
-            document.contactModes[normalizedKey]?.containsKey(type) == true ||
-            (type == CharacterType.Monster && normalizedKey in document.contacts)
+        return hasRosterOverride(contactKey, type)
+    }
+
+    @Synchronized
+    fun hasContactOverride(contactKeys: List<String>): Boolean = contactKeys.any { key ->
+        hasRosterOverride(key, CharacterType.Trainer) || hasRosterOverride(key, CharacterType.Monster)
     }
 
     @Synchronized
@@ -283,7 +284,7 @@ class CharacterAssignmentStore(
         val normalizedKey = normalizeContactKeyOrNull(contactKey) ?: return false
         val document = read()
         return document.contactsByType[normalizedKey]?.containsKey(type) == true ||
-            document.contactModes[normalizedKey]?.get(type) == ContactCharacterMode.Random ||
+            document.contactModes[normalizedKey]?.containsKey(type) == true ||
             (type == CharacterType.Monster && normalizedKey in document.contacts)
     }
 
@@ -372,13 +373,14 @@ class CharacterAssignmentStore(
             if (modes.isEmpty()) modesByContact.remove(key) else modesByContact[key] = modes
             if (pools.isEmpty()) poolsByContact.remove(key) else poolsByContact[key] = pools
 
-            val hasRosterAssignment = assignments.isNotEmpty() || modes.values.any { it == ContactCharacterMode.Random }
+            val hasRosterAssignment = assignments.isNotEmpty() || modes.isNotEmpty()
             if (hasRosterAssignment) {
                 labels[key] = label.trim().take(MaxContactLabelLength)
                 groups[key] = groupId
             } else {
                 labels.remove(key)
                 groups.remove(key)
+                legacyContacts.remove(key)
             }
         }
 

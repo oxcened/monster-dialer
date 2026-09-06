@@ -2,6 +2,8 @@ package dev.alenajam.monsterdialer.onlineprofiles.ui
 
 import android.content.Intent
 import androidx.compose.foundation.Canvas
+import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.Box
@@ -39,6 +41,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalResources
@@ -47,6 +50,9 @@ import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.text.font.Font
+import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.unit.sp
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.shape.CircleShape
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -61,6 +67,11 @@ import dev.alenajam.opendialer.core.common.ui.AppIcon
 import dev.alenajam.opendialer.core.common.ui.LocalAppIcons
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
+
+private val ProfilePixelFont = FontFamily(Font(R.font.ui_pixel_font))
+private val ProfileInk = Color(0xFF202020)
+private val ProfilePaper = Color(0xFFF7F7F2)
+private val ProfileLavender = Color(0xFFE5E5DA)
 
 @Composable
 fun OnlineProfileSection(viewModel: OnlineProfileSettingsViewModel = hiltViewModel()) {
@@ -106,11 +117,7 @@ fun OnlineProfileSection(viewModel: OnlineProfileSettingsViewModel = hiltViewMod
         }
     }
     if (profile == null) {
-        Card(
-            modifier = Modifier.fillMaxWidth(),
-            shape = RoundedCornerShape(24.dp),
-            colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.secondaryContainer),
-        ) {
+        RetroOnlinePanel {
             Column(
                 modifier = Modifier.padding(horizontal = 16.dp, vertical = 12.dp),
                 verticalArrangement = Arrangement.spacedBy(8.dp),
@@ -135,7 +142,8 @@ fun OnlineProfileSection(viewModel: OnlineProfileSettingsViewModel = hiltViewMod
                                     stringResource(R.string.online_profile_title),
                                     modifier = Modifier.weight(1f, fill = false),
                                     style = MaterialTheme.typography.titleMedium,
-                                    color = MaterialTheme.colorScheme.onSecondaryContainer,
+                                    color = ProfileInk,
+                                    fontFamily = ProfilePixelFont,
                                 )
                                 ContextualGuideButton(
                                     contents = ownedOnlineProfileGuideContents(),
@@ -152,7 +160,8 @@ fun OnlineProfileSection(viewModel: OnlineProfileSettingsViewModel = hiltViewMod
                         Text(
                             stringResource(R.string.online_profile_description),
                             style = MaterialTheme.typography.bodyMedium,
-                            color = MaterialTheme.colorScheme.onSecondaryContainer.copy(alpha = 0.76f),
+                            color = ProfileInk.copy(alpha = 0.76f),
+                            fontFamily = ProfilePixelFont,
                         )
                     }
                 }
@@ -161,6 +170,11 @@ fun OnlineProfileSection(viewModel: OnlineProfileSettingsViewModel = hiltViewMod
                         onClick = viewModel::enable,
                         enabled = !working,
                         modifier = Modifier.fillMaxWidth(),
+                        shape = RectangleShape,
+                        colors = ButtonDefaults.buttonColors(
+                            containerColor = ProfileLavender,
+                            contentColor = ProfileInk,
+                        ),
                     ) {
                         if (working) {
                             CircularProgressIndicator(
@@ -181,7 +195,8 @@ fun OnlineProfileSection(viewModel: OnlineProfileSettingsViewModel = hiltViewMod
                         modifier = Modifier.fillMaxWidth(),
                         textAlign = TextAlign.Center,
                         style = MaterialTheme.typography.bodySmall,
-                        color = MaterialTheme.colorScheme.onSecondaryContainer.copy(alpha = 0.72f),
+                        color = ProfileInk.copy(alpha = 0.72f),
+                        fontFamily = ProfilePixelFont,
                     )
                 }
             }
@@ -194,11 +209,7 @@ fun OnlineProfileSection(viewModel: OnlineProfileSettingsViewModel = hiltViewMod
             sharingLink,
         )
         val shareTitle = stringResource(R.string.online_profile_share)
-        Card(
-            modifier = Modifier.fillMaxWidth(),
-            shape = RoundedCornerShape(24.dp),
-            colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.secondaryContainer),
-        ) {
+        RetroOnlinePanel {
             Column(
                 modifier = Modifier.padding(horizontal = 16.dp, vertical = 12.dp),
                 verticalArrangement = Arrangement.spacedBy(8.dp),
@@ -214,7 +225,7 @@ fun OnlineProfileSection(viewModel: OnlineProfileSettingsViewModel = hiltViewMod
                                 modifier = Modifier.weight(1f),
                                 verticalAlignment = Alignment.CenterVertically,
                             ) {
-                                Text(stringResource(R.string.online_profile_title), modifier = Modifier.weight(1f, fill = false), style = MaterialTheme.typography.titleMedium, color = MaterialTheme.colorScheme.onSecondaryContainer)
+                    Text(stringResource(R.string.online_profile_title), modifier = Modifier.weight(1f, fill = false), style = MaterialTheme.typography.titleMedium, color = ProfileInk, fontFamily = ProfilePixelFont)
                                 ContextualGuideButton(
                                     contents = ownedOnlineProfileGuideContents(),
                                     modifier = Modifier.size(32.dp),
@@ -227,7 +238,7 @@ fun OnlineProfileSection(viewModel: OnlineProfileSettingsViewModel = hiltViewMod
                                 onDelete = { confirmDelete = true },
                             )
                         }
-                        Text(stringResource(R.string.online_profile_enabled), style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onSecondaryContainer.copy(alpha = 0.76f))
+                        Text(stringResource(R.string.online_profile_enabled), style = MaterialTheme.typography.bodyMedium, color = ProfileInk.copy(alpha = 0.76f), fontFamily = ProfilePixelFont)
                     }
                 }
                 Row(
@@ -238,7 +249,7 @@ fun OnlineProfileSection(viewModel: OnlineProfileSettingsViewModel = hiltViewMod
                         context.startActivity(Intent.createChooser(Intent(Intent.ACTION_SEND).apply {
                             type = "text/plain"; putExtra(Intent.EXTRA_TEXT, shareText)
                         }, shareTitle))
-                    }, enabled = !working, modifier = Modifier.weight(1f)) {
+                    }, enabled = !working, modifier = Modifier.weight(1f), shape = RectangleShape) {
                         AppIcon(LocalAppIcons.current.share, null, Modifier.size(18.dp))
                         Spacer(Modifier.width(8.dp))
                         Text(stringResource(R.string.share))
@@ -247,7 +258,7 @@ fun OnlineProfileSection(viewModel: OnlineProfileSettingsViewModel = hiltViewMod
                         onClick = { showQrCode = true },
                         enabled = !working,
                         modifier = Modifier.size(40.dp),
-                        shape = CircleShape,
+                        shape = RectangleShape,
                     ) {
                         AppIcon(
                             LocalMonsterAppIcons.current.qrCode,
@@ -375,6 +386,20 @@ private fun ProfileSharingQrCodeSheet(
                 color = MaterialTheme.colorScheme.onSecondaryContainer.copy(alpha = 0.76f),
             )
         }
+    }
+}
+
+/** The profile screen uses the same hard-edged frame language as the roster and player card. */
+@Composable
+private fun RetroOnlinePanel(content: @Composable () -> Unit) {
+    androidx.compose.foundation.layout.Box(
+        modifier = Modifier
+            .fillMaxWidth()
+            .border(1.dp, ProfileInk, RectangleShape)
+            .background(ProfilePaper, RectangleShape)
+            .padding(10.dp),
+    ) {
+        content()
     }
 }
 
