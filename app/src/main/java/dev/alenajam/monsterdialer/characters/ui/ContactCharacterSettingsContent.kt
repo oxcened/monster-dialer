@@ -959,7 +959,7 @@ fun ContactPickerDestination(
     val context = LocalContext.current
     val customizedContactIds by viewModel.customizedContactIds.collectAsStateWithLifecycle()
     val contactPhoneNumberRequiredMessage = stringResource(R.string.contact_phone_number_required)
-    ContactPickerScreen(
+    RetroContactPickerScreen(
         onNavigateBack = onNavigateBack,
         excludedContactIds = customizedContactIds,
         onContactSelected = { selectedContact ->

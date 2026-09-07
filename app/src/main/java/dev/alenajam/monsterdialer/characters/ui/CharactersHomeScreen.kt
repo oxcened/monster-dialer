@@ -77,6 +77,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil.compose.AsyncImage
 import dev.alenajam.monsterdialer.R
 import dev.alenajam.monsterdialer.app.ui.LocalMonsterAppIcons
+import dev.alenajam.monsterdialer.app.ui.RetroScreenHorizontalPadding
 import dev.alenajam.monsterdialer.characters.data.DefaultMonsterLevel
 import dev.alenajam.monsterdialer.characters.data.MaxPlayerMonsterTeamSize
 import dev.alenajam.monsterdialer.characters.data.SharedCharacterImport
@@ -84,8 +85,9 @@ import dev.alenajam.monsterdialer.onlineprofiles.ui.OnlineProfileSection
 import dev.alenajam.monsterdialer.packs.data.CharacterReference
 import dev.alenajam.monsterdialer.packs.data.CharacterType
 import dev.alenajam.opendialer.core.common.ui.AppIcon
-import dev.alenajam.opendialer.core.common.ui.IconSource
 import dev.alenajam.opendialer.core.common.ui.LocalAppIcons
+import dev.alenajam.monsterdialer.app.ui.RetroSelectableRow
+import dev.alenajam.monsterdialer.app.ui.RetroTextBox
 import sh.calvin.reorderable.ReorderableItem
 import sh.calvin.reorderable.rememberReorderableLazyListState
 
@@ -95,6 +97,7 @@ private val ProfilePixelTextStyle = androidx.compose.ui.text.TextStyle(
 )
 
 private enum class ProfileMenuDestination { Roster, Online, Toolbox, Options }
+private enum class ProfileCharacterSection { Trainer, Monster }
 
 @Composable
 fun CharactersHomeScreen(
@@ -132,12 +135,25 @@ fun CharactersHomeScreen(
         onDispose { onSetBackAction(false) {} }
     }
 
+    val pageModifier = Modifier
+        .fillMaxSize()
+        .background(MaterialTheme.colorScheme.background)
+        .then(
+            if (menuDestination == ProfileMenuDestination.Toolbox) {
+                Modifier
+            } else {
+                Modifier.verticalScroll(rememberScrollState())
+            },
+        )
+        .padding(
+            start = RetroScreenHorizontalPadding,
+            top = 10.dp,
+            end = RetroScreenHorizontalPadding,
+            bottom = if (menuDestination == ProfileMenuDestination.Toolbox) 8.dp else 96.dp,
+        )
+
     Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(MaterialTheme.colorScheme.background)
-            .verticalScroll(rememberScrollState())
-            .padding(start = 10.dp, top = 10.dp, end = 10.dp, bottom = 96.dp),
+        modifier = pageModifier,
         verticalArrangement = Arrangement.spacedBy(20.dp)
     ) {
         when (menuDestination) {
@@ -152,7 +168,10 @@ fun CharactersHomeScreen(
                 },
                 onOpenOnlineProfile = { menuDestination = ProfileMenuDestination.Online },
                 onOpenToolbox = { menuDestination = ProfileMenuDestination.Toolbox },
-                onOpenOptions = onOpenSettings,
+                onOpenOptions = {
+                    menuDestination = ProfileMenuDestination.Options
+                    onOpenSettings()
+                },
                 selectedDestination = menuDestination,
             )
             ProfileMenuDestination.Online -> ProfileDestination {
@@ -194,6 +213,7 @@ private fun GameBoyProfileLayout(
     val monster = playerProfile.monster
     val trainerTitle = stringResource(R.string.character_type_trainer)
     val monsterTitle = stringResource(R.string.character_type_monster)
+    var selectedSection by remember { mutableStateOf(ProfileCharacterSection.Trainer) }
     Box(
         modifier = Modifier
             .fillMaxWidth()
@@ -203,11 +223,21 @@ private fun GameBoyProfileLayout(
             modifier = Modifier.fillMaxWidth(),
             verticalArrangement = Arrangement.spacedBy(10.dp),
         ) {
-            GameBoyPanel(onClick = onChangeTrainer) {
+            GameBoyPanel {
                 Column(verticalArrangement = Arrangement.spacedBy(3.dp)) {
-                    Row(verticalAlignment = Alignment.CenterVertically) {
+                    Row(
+                        modifier = Modifier.fillMaxWidth().clickable {
+                            selectedSection = ProfileCharacterSection.Trainer
+                            onChangeTrainer()
+                        },
+                        verticalAlignment = Alignment.CenterVertically,
+                    ) {
                         Column(modifier = Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(3.dp)) {
-                            GameBoyText(stringResource(R.string.profile_trainer_field, trainer.name), 16.sp)
+                            GameBoyText(
+                                text = stringResource(R.string.profile_trainer_field, trainer.name)
+                                    .withProfileCursor(selectedSection == ProfileCharacterSection.Trainer),
+                                16.sp,
+                            )
                             GameBoyStat(stringResource(R.string.profile_calls_label), profileMetrics.callsBattled.toString())
                             GameBoyStat(stringResource(R.string.profile_collection_label), profileMetrics.charactersCollected.toString())
                             GameBoyStat(stringResource(R.string.profile_radiants_label), profileMetrics.radiantsFound.toString())
@@ -219,9 +249,19 @@ private fun GameBoyProfileLayout(
                             Modifier.size(96.dp),
                         )
                     }
-                    Row(verticalAlignment = Alignment.CenterVertically) {
+                    Row(
+                        modifier = Modifier.fillMaxWidth().clickable {
+                            selectedSection = ProfileCharacterSection.Monster
+                            onChangeMonster()
+                        },
+                        verticalAlignment = Alignment.CenterVertically,
+                    ) {
                         Column(modifier = Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(3.dp)) {
-                            GameBoyText(stringResource(R.string.profile_monster_field, monster.name), 16.sp)
+                            GameBoyText(
+                                text = stringResource(R.string.profile_monster_field, monster.name)
+                                    .withProfileCursor(selectedSection == ProfileCharacterSection.Monster),
+                                16.sp,
+                            )
                             GameBoyText(stringResource(R.string.profile_level_field, monster.level ?: DefaultMonsterLevel), 16.sp)
                         }
                         TeamArtwork(
@@ -255,6 +295,10 @@ private fun GameBoyProfileLayout(
         }
     }
 }
+
+@Composable
+private fun String.withProfileCursor(selected: Boolean): String =
+    takeIf { selected }?.let { stringResource(R.string.profile_menu_cursor, it) } ?: this
 
 @Composable
 private fun GameBoyPanel(
@@ -693,74 +737,54 @@ private fun CharacterToolsGroup(
     onOpenPacks: () -> Unit,
     onImport: () -> Unit,
 ) {
-    RetroPanel(modifier = Modifier.fillMaxWidth()) {
-        Column(
-            modifier = Modifier.fillMaxWidth(),
-        ) {
-            CharacterToolRow(
-                title = stringResource(R.string.contact_defaults_toolbox_title),
-                icon = LocalAppIcons.current.edit,
-                onClick = onOpenContactDefaults,
-            )
-            HorizontalDivider(
-                modifier = Modifier.padding(start = 56.dp),
-                color = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.5f)
-            )
-            CharacterToolRow(
-                title = stringResource(R.string.settings_contact_characters_title),
-                icon = LocalMonsterAppIcons.current.frontSprite,
-                onClick = onOpenContactCharacters,
-            )
-            HorizontalDivider(
-                modifier = Modifier.padding(start = 56.dp),
-                color = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.5f)
-            )
-            CharacterToolRow(
-                title = stringResource(R.string.settings_character_packs_title),
-                icon = LocalMonsterAppIcons.current.characterPacks,
-                onClick = onOpenPacks,
-            )
-            HorizontalDivider(
-                modifier = Modifier.padding(start = 56.dp),
-                color = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.5f)
-            )
-            CharacterToolRow(
-                title = stringResource(R.string.import_character),
-                icon = LocalMonsterAppIcons.current.importCharacter,
-                onClick = onImport,
-            )
-            HorizontalDivider(
-                modifier = Modifier.padding(start = 56.dp),
-                color = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.5f)
-            )
-            CharacterToolRow(
-                title = stringResource(R.string.battle_journal_title),
-                icon = LocalMonsterAppIcons.current.battleJournal,
-                onClick = onOpenJournal,
-            )
+    val actions = listOf(
+        CharacterToolAction(stringResource(R.string.contact_defaults_toolbox_title), onOpenContactDefaults),
+        CharacterToolAction(stringResource(R.string.settings_contact_characters_title), onOpenContactCharacters),
+        CharacterToolAction(stringResource(R.string.settings_character_packs_title), onOpenPacks),
+        CharacterToolAction(stringResource(R.string.import_character), onImport),
+        CharacterToolAction(stringResource(R.string.battle_journal_title), onOpenJournal),
+    )
+    var selectedIndex by remember { mutableStateOf(0) }
+
+    Box(modifier = Modifier.fillMaxSize()) {
+        Column(modifier = Modifier.fillMaxWidth()) {
+            actions.forEachIndexed { index, action ->
+                CharacterToolRow(
+                    title = action.title,
+                    selected = index == selectedIndex,
+                    onClick = {
+                        selectedIndex = index
+                        action.onClick()
+                    },
+                )
+            }
         }
+        RetroTextBox(
+            message = stringResource(R.string.character_tools_prompt),
+            animationKey = selectedIndex,
+            modifier = Modifier.align(Alignment.BottomCenter),
+        )
     }
 }
+
+private data class CharacterToolAction(
+    val title: String,
+    val onClick: () -> Unit,
+)
 
 @Composable
 private fun CharacterToolRow(
     title: String,
-    icon: IconSource,
+    selected: Boolean,
     onClick: () -> Unit,
 ) {
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .clickable(onClick = onClick)
-            .padding(horizontal = 16.dp, vertical = 12.dp),
-        verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.spacedBy(16.dp),
-    ) {
-        AppIcon(icon, contentDescription = null, modifier = Modifier.size(24.dp))
-        Column(modifier = Modifier.weight(1f)) {
-            Text(title, style = MaterialTheme.typography.titleSmall, fontFamily = ProfilePixelFont)
-        }
-        AppIcon(LocalAppIcons.current.arrowRight, contentDescription = null, modifier = Modifier.size(18.dp))
+    RetroSelectableRow(selected = selected, onClick = onClick) {
+        Text(
+            text = title.uppercase(),
+            fontFamily = ProfilePixelFont,
+            fontSize = 16.sp,
+            color = RetroInk,
+        )
     }
 }
 

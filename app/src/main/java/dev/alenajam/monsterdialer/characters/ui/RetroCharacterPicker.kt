@@ -34,11 +34,11 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import dev.alenajam.monsterdialer.R
-import dev.alenajam.monsterdialer.app.ui.RetroSelectionArrow
-import dev.alenajam.monsterdialer.app.ui.RetroSelectionArrowSize
+import dev.alenajam.monsterdialer.app.ui.RetroSelectableRow
 import dev.alenajam.monsterdialer.app.ui.RetroContextMenu
 import dev.alenajam.monsterdialer.app.ui.RetroContextMenuItem
 import dev.alenajam.monsterdialer.app.ui.RetroActionButton
+import dev.alenajam.monsterdialer.app.ui.RetroSearchButton
 import dev.alenajam.monsterdialer.app.ui.RetroTextBox
 import dev.alenajam.monsterdialer.characters.data.BuiltInCharacter
 import dev.alenajam.monsterdialer.characters.data.BuiltInCharacters
@@ -64,6 +64,7 @@ private data class RetroCharacterEntry(
 
 @Composable
 internal fun RetroCharacterPicker(
+    modifier: Modifier = Modifier,
     type: CharacterType,
     selectionVersion: Int = 0,
     selected: CharacterReference?,
@@ -80,6 +81,11 @@ internal fun RetroCharacterPicker(
     defaultRandomPool: Set<CharacterReference> = randomPool,
     onRandomPoolDone: ((Set<CharacterReference>) -> Unit)? = null,
     onClear: (() -> Unit)? = null,
+    showOptions: Boolean = true,
+    onAddCharacter: (() -> Unit)? = null,
+    addCharacterLabel: String? = null,
+    onFilterSelected: ((MonsterFilter) -> Unit)? = null,
+    guideContents: List<GuideContent>? = null,
 ) {
     val entries = remember(type, characters, unlockedVariants, filter, defaultCharacter) {
         retroCharacterEntries(type, characters, unlockedVariants, filter, defaultCharacter, defaultArtwork)
@@ -94,6 +100,7 @@ internal fun RetroCharacterPicker(
     var assignmentCleared by remember(type, selectionVersion) { mutableStateOf(false) }
     var assignmentRandomized by remember(type, selectionVersion) { mutableStateOf(false) }
     var hasMadeSelection by remember(type, selectionVersion) { mutableStateOf(false) }
+    var guideOpen by remember(type, selectionVersion) { mutableStateOf(false) }
     val selectedEntry = entries.firstOrNull { it.reference == pendingSelection }
     val hasConfirmedSelection = selected != null || hasMadeSelection
     val prompt = if (randomPoolOpen) {
@@ -119,8 +126,30 @@ internal fun RetroCharacterPicker(
     }
     BackHandler(enabled = optionsOpen) { optionsOpen = false }
 
-    Column(modifier = Modifier.fillMaxSize()) {
-        RetroAssignmentPickerHeader(onOptions = { optionsOpen = true })
+    Box(modifier = modifier.fillMaxSize()) {
+        Column(modifier = Modifier.fillMaxSize()) {
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceBetween,
+        ) {
+            if (onAddCharacter != null && addCharacterLabel != null) {
+                RetroSearchButton(
+                    label = addCharacterLabel,
+                    onClick = onAddCharacter,
+                    modifier = Modifier.weight(1f),
+                    horizontalArrangement = Arrangement.Start,
+                    edgeAligned = true,
+                )
+            }
+            if (showOptions) {
+                RetroSearchButton(
+                    label = stringResource(R.string.contact_picker_options),
+                    onClick = { optionsOpen = true },
+                    modifier = Modifier.weight(1f),
+                    horizontalArrangement = Arrangement.End,
+                )
+            }
+        }
         LazyColumn(
             modifier = Modifier.weight(1f).fillMaxWidth(),
             contentPadding = PaddingValues(top = 2.dp, bottom = 2.dp),
@@ -210,8 +239,8 @@ internal fun RetroCharacterPicker(
                 },
             )
         }
-    }
-    if (optionsOpen) {
+        }
+        if (optionsOpen) {
         Box(
             modifier = Modifier.fillMaxSize().clickable { optionsOpen = false },
             contentAlignment = Alignment.Center,
@@ -219,7 +248,7 @@ internal fun RetroCharacterPicker(
             RetroContextMenu(
                 modifier = Modifier.fillMaxWidth(0.68f),
                 fontFamily = RetroPickerFont,
-                items = if (randomPoolOpen) {
+                items = (if (randomPoolOpen) {
                     listOf(
                         RetroContextMenuItem(label = stringResource(R.string.contact_picker_choose)) {
                             randomPoolOpen = false
@@ -246,6 +275,23 @@ internal fun RetroCharacterPicker(
                             optionsOpen = false
                         },
                     )
+                } else if (onFilterSelected != null) {
+                    listOf(
+                        MonsterFilter.All to R.string.filter_all,
+                        MonsterFilter.Regular to R.string.filter_regular,
+                        MonsterFilter.RadiantUnlocked to R.string.filter_unlocked_radiant,
+                        MonsterFilter.RadiantLocked to R.string.filter_locked_radiant,
+                    ).map { (filterOption, labelRes) ->
+                        RetroContextMenuItem(
+                            label = stringResource(labelRes),
+                            showCursor = filter == filterOption,
+                        ) {
+                            onFilterSelected(filterOption)
+                            optionsOpen = false
+                        }
+                    } + RetroContextMenuItem(label = stringResource(R.string.cancel)) {
+                        optionsOpen = false
+                    }
                 } else {
                     listOf(
                         RetroContextMenuItem(
@@ -268,31 +314,23 @@ internal fun RetroCharacterPicker(
                             optionsOpen = false
                         },
                     )
+                }).let { items ->
+                    if (guideContents == null || randomPoolOpen) {
+                        items
+                    } else {
+                        items.dropLast(1) + RetroContextMenuItem(label = stringResource(R.string.retro_picker_guide)) {
+                            optionsOpen = false
+                            guideOpen = true
+                        } + items.last()
+                    }
                 },
             )
         }
+        if (guideOpen && guideContents != null) {
+            ContextualGuideDialog(contents = guideContents, onDismiss = { guideOpen = false })
+        }
     }
 }
-
-@Composable
-private fun RetroAssignmentPickerHeader(
-    onOptions: () -> Unit,
-) {
-    Row(
-        modifier = Modifier.fillMaxWidth().padding(start = 8.dp, end = 8.dp, top = 2.dp),
-        horizontalArrangement = Arrangement.End,
-        verticalAlignment = Alignment.CenterVertically,
-    ) {
-        Text(
-            text = stringResource(R.string.contact_picker_options).uppercase(),
-            modifier = Modifier
-                .clickable(onClick = onOptions)
-                .padding(start = 16.dp, top = 14.dp, end = 16.dp, bottom = 6.dp),
-            fontFamily = RetroPickerFont,
-            fontSize = 18.sp,
-            color = RetroInk,
-        )
-    }
 }
 
 @Composable
@@ -334,18 +372,7 @@ private fun RetroPickerChoice(
     selected: Boolean,
     onClick: () -> Unit,
 ) {
-    Row(
-        modifier = Modifier.clickable(onClick = onClick),
-        verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.spacedBy(3.dp),
-    ) {
-        if (selected) {
-            RetroSelectionArrow(
-                tint = RetroInk,
-            )
-        } else {
-            Spacer(modifier = Modifier.size(RetroSelectionArrowSize))
-        }
+    RetroSelectableRow(selected = selected, onClick = onClick) {
         Text(label.uppercase(), fontFamily = RetroPickerFont, fontSize = 12.sp, color = RetroInk)
     }
 }
@@ -357,20 +384,7 @@ private fun RetroCharacterRow(
     poolIncluded: Boolean? = null,
     onClick: () -> Unit,
 ) {
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .clickable(onClick = onClick)
-            .padding(vertical = 4.dp),
-        verticalAlignment = Alignment.CenterVertically,
-    ) {
-        if (isSelected) {
-            RetroSelectionArrow(
-                tint = RetroInk,
-            )
-        } else {
-            Spacer(modifier = Modifier.size(RetroSelectionArrowSize))
-        }
+    RetroSelectableRow(selected = isSelected, onClick = onClick) {
         poolIncluded?.let {
             Text(
                 text = stringResource(if (it) R.string.contact_picker_pool_included else R.string.contact_picker_pool_excluded),

@@ -41,8 +41,7 @@ import dev.alenajam.monsterdialer.app.ui.RetroContextMenu
 import dev.alenajam.monsterdialer.app.ui.RetroContextMenuItem
 import dev.alenajam.monsterdialer.app.ui.RetroConfirmationMenu
 import dev.alenajam.monsterdialer.app.ui.RetroActionButton
-import dev.alenajam.monsterdialer.app.ui.RetroSelectionArrow
-import dev.alenajam.monsterdialer.app.ui.RetroSelectionArrowSize
+import dev.alenajam.monsterdialer.app.ui.RetroSelectableRow
 import dev.alenajam.monsterdialer.app.ui.RetroTextBox
 import dev.alenajam.monsterdialer.characters.data.BuiltInCharacters
 import dev.alenajam.monsterdialer.characters.data.ContactCharacterMode
@@ -216,29 +215,18 @@ private fun ContactRosterRow(
     showCursor: Boolean,
     onClick: () -> Unit,
 ) {
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .height(66.dp)
-            .clickable(onClick = onClick)
-            .padding(horizontal = 2.dp),
-        verticalAlignment = Alignment.CenterVertically,
+    RetroSelectableRow(
+        selected = showCursor,
+        onClick = onClick,
+        modifier = Modifier.height(66.dp),
     ) {
-        if (showCursor) {
-            RetroSelectionArrow(
-                tint = RetroInk,
-            )
-        } else {
-            Spacer(modifier = Modifier.size(RetroSelectionArrowSize))
-        }
-        Spacer(modifier = Modifier.size(2.dp))
         AssignmentSprite(
             selection = contact.trainer,
             characters = trainers,
             modifier = Modifier.size(42.dp),
         )
         Column(
-            modifier = Modifier.weight(1f).padding(horizontal = 5.dp),
+            modifier = Modifier.weight(1f),
             verticalArrangement = Arrangement.spacedBy(1.dp),
         ) {
             Text(

@@ -50,7 +50,7 @@
     <string name="profile_calls_label">CALLS</string>
     <string name="profile_collection_label">COLLECTION</string>
     <string name="profile_roster_title">MONSTER ROSTER</string>
-    <string name="profile_toolbox_title">TOOLBOX</string>
+    <string name="profile_toolbox_title">TOOLS</string>
     <string name="profile_add_roster">+</string>
     <string name="profile_screen_title">PROFILE</string>
     <string name="profile_monster_title">MONSTER</string>
@@ -60,14 +60,15 @@
     <string name="profile_variant_label">TYPE</string>
     <string name="profile_radiants_label">RADIANTS</string>
     <string name="profile_menu_roster">ROSTER</string>
-    <string name="profile_menu_online">ONLINE PROFILE</string>
-    <string name="profile_menu_toolbox">TOOLBOX</string>
+    <string name="profile_menu_online">LINK</string>
+    <string name="profile_menu_toolbox">TOOLS</string>
     <string name="profile_menu_options">OPTIONS</string>
     <string name="profile_menu_exit">EXIT</string>
-    <string name="profile_menu_cursor">▶ %1$s</string>
+    <string name="profile_menu_cursor">▶%1$s</string>
     <string name="profile_roster_description">Manage your roster.</string>
     <string name="profile_footer_prompt">Your profile!</string>
-    <string name="character_tools_title" comment="Heading above character management actions.">Toolbox</string>
+    <string name="character_tools_title" comment="Heading above character management actions.">Tools</string>
+    <string name="character_tools_prompt" comment="Retro prompt shown below the character toolbox list. Asking the player to choose a contact assignment.">Choose a contact to assign.</string>
     <string name="battle_journal_title" comment="Title for the local history of battle encounters.">Battle Journal</string>
     <string name="battle_journal_description" comment="Description for the local history of battle encounters.">Review radiant discoveries and recent battles.</string>
     <string name="battle_journal_empty_title" comment="Empty-state title for the battle journal.">No battles yet</string>
@@ -131,6 +132,15 @@
     <string name="contact_characters_not_set" comment="Settings subtitle when no contacts have a character assignment.">No contacts customized</string>
     <plurals name="contact_character_assignment_count" comment="Settings subtitle showing how many contacts have a character assignment."><item quantity="one">%d contact customized</item><item quantity="other">%d contacts customized</item></plurals>
     <string name="choose_contact" comment="Button that opens the contact picker.">Choose contact</string>
+    <string name="contact_picker_search" comment="Retro contact-picker command that opens name search.">Search</string>
+    <string name="contact_picker_search_name_prefix" comment="Prefix before the typed name in the retro contact search field.">Name/</string>
+    <string name="contact_picker_search_empty_prompt" comment="Retro contact-picker prompt shown before a name is typed.">Enter a name.</string>
+    <string name="contact_picker_prompt" comment="Retro contact-picker prompt that explains the next action.">Choose a contact to assign.</string>
+    <string name="contact_picker_open_action" comment="Retro contact-picker action that opens the selected contact.">Open</string>
+    <plurals name="contact_picker_found_count" comment="Retro contact-picker search result count.">
+        <item quantity="one">%d contact found.</item>
+        <item quantity="other">%d contacts found.</item>
+    </plurals>
     <string name="contact_phone_number_required" comment="Toast shown when the selected contact has no usable phone number.">This contact can’t be selected because it has no phone number.</string>
     <string name="character_type_trainer" comment="Character category for a human battle character.">Trainer</string>
     <string name="character_type_monster" comment="Character category for a creature battle character.">Monster</string>
@@ -229,7 +239,7 @@
     <string name="change" comment="Button label to change the current selection.">Change</string>
     <string name="contact_chooser_prompt" comment="Prompt above the contact picker.">Choose a contact to assign a character.</string>
     <string name="online_profile_choose_contact_prompt" comment="Prompt shown after opening a shared Online Profile link.">Choose a contact to link with this Online Profile. This association stays on your device.</string>
-    <string name="online_profile_title" comment="Title of the settings screen for sharing the player's battle identity with friends.">Online Profile</string>
+    <string name="online_profile_title" comment="Title of the profile LINK screen for sharing the player's battle identity with friends.">LINK</string>
     <string name="online_profile_description" comment="Description below the Online Profile settings title. The trainer and monster are the player's battle characters.">Let friends see the trainer and monster you bring into every call.</string>
     <string name="online_profile_privacy_note" comment="Privacy note on the Online Profile settings screen. Sprites are character images; metadata is their non-image information.">Only your character sprites and metadata are shared.</string>
     <string name="online_profile_guide_title">Sharing Your Online Profile</string>
@@ -285,6 +295,8 @@
     <string name="retro_action_menu_label">MENU</string>
     <string name="retro_action_back_label">BACK</string>
     <string name="retro_action_dial_label">DIAL</string>
+    <string name="retro_picker_add" comment="Compact action to add a character in the retro picker.">ADD</string>
+    <string name="retro_picker_guide" comment="Compact menu action to open the character guide.">GUIDE</string>
     <string name="contact_row_actions" comment="Accessibility label for the contact-row overflow menu trigger.">Contact actions</string>
     <string name="linked_online_profile_title" comment="Heading in a contact's character settings for its associated Online Profile.">Linked Online Profile</string>
     <string name="linked_online_profile_none" comment="Empty-state message when a contact has no associated Online Profile.">No Online Profile is linked to this contact.</string>

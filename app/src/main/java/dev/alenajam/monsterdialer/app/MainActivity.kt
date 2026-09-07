@@ -58,6 +58,8 @@ import dev.alenajam.monsterdialer.R
 import dev.alenajam.monsterdialer.analytics.MonsterAnalytics
 import dev.alenajam.monsterdialer.app.data.OnboardingStore
 import dev.alenajam.monsterdialer.app.ui.LocalMonsterAppIcons
+import dev.alenajam.monsterdialer.app.ui.RetroScreenHorizontalPadding
+import dev.alenajam.monsterdialer.app.ui.RetroScreenTopContentPadding
 import dev.alenajam.monsterdialer.app.ui.RetroActionButton
 import dev.alenajam.monsterdialer.app.ui.RetroContextMenu
 import dev.alenajam.monsterdialer.app.ui.RetroContextMenuItem
@@ -334,16 +336,10 @@ class MainActivity : AppCompatActivity() {
                                 )
                             },
                             isScrollable = false,
-                            topContentPadding = 0.dp,
+                            topContentPadding = RetroScreenTopContentPadding,
+                            horizontalContentPadding = RetroScreenHorizontalPadding,
+                            showTopBar = false,
                             visibleInSettings = false,
-                            actions = {
-                                ContextualGuideButton(
-                                    contents = listOf(
-                                        GuideContent(R.string.characters_help_character_list_title, R.string.characters_help_player_character_list_message),
-                                        *radiantGuideContents().toTypedArray(),
-                                    ),
-                                )
-                            },
                             destinations = listOf(
                                 SettingsSubpageDestination(title = stringResource(R.string.add_trainer)) { payload, onNavigateBack ->
                                     AddCharacterScreen(
@@ -380,9 +376,9 @@ class MainActivity : AppCompatActivity() {
                                 )
                             },
                             isScrollable = false,
-                            topContentPadding = 0.dp,
+                            topContentPadding = RetroScreenTopContentPadding,
                             showTopBar = false,
-                            horizontalContentPadding = 2.dp,
+                            horizontalContentPadding = RetroScreenHorizontalPadding,
                             visibleInSettings = false,
                             actions = {
                                 ContextualGuideButton(

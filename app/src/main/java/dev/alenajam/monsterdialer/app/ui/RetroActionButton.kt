@@ -1,5 +1,7 @@
 package dev.alenajam.monsterdialer.app.ui
 
+import java.util.Locale
+
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -31,6 +33,8 @@ internal fun RetroActionButton(
     modifier: Modifier = Modifier,
     fontFamily: FontFamily = RetroActionPixelFont,
 ) {
+    val displayedLabel = label.uppercase(Locale.ROOT)
+
     Row(
         modifier = modifier
             .clickable(enabled = enabled, onClick = onClick)
@@ -51,7 +55,7 @@ internal fun RetroActionButton(
         ) {
             Text(text = key, fontFamily = fontFamily, fontSize = 18.sp, color = Color.White)
             RetroSelectionArrow(tint = Color.White, size = 14.dp)
-            Text(text = label, fontFamily = fontFamily, fontSize = 18.sp, color = Color.White)
+            Text(text = displayedLabel, fontFamily = fontFamily, fontSize = 18.sp, color = Color.White)
         }
     }
 }
