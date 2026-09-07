@@ -260,7 +260,6 @@ class ContactCharacterSettingsViewModel @Inject constructor(
                     pendingGuidedTrainer = null
                     pendingGuidedTrainerRandom = false
                     pendingGuidedTrainerPool = emptySet()
-                    clearRosterCursor()
                     _selectedTab.value = if (type == CharacterType.Trainer) 0 else 1
                     layoutPreferences.setSelectedTab(_selectedTab.value)
                     restoreSelectedContactState()

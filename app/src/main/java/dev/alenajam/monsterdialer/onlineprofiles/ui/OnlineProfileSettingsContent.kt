@@ -3,13 +3,12 @@ package dev.alenajam.monsterdialer.onlineprofiles.ui
 import android.content.Intent
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.size
@@ -56,12 +55,20 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import dev.alenajam.monsterdialer.R
 import dev.alenajam.monsterdialer.app.ui.LocalMonsterAppIcons
+import dev.alenajam.monsterdialer.app.ui.RetroSelectableRow
+import dev.alenajam.monsterdialer.app.ui.RetroProfilePanel
+import dev.alenajam.monsterdialer.app.ui.RetroTextBox
+import dev.alenajam.monsterdialer.app.ui.RetroActionButton
+import dev.alenajam.monsterdialer.app.ui.RetroFooter
+import dev.alenajam.monsterdialer.app.ui.RetroScreenPanelMargin
+import dev.alenajam.monsterdialer.characters.ui.ContextualGuideDialog
 import dev.alenajam.monsterdialer.characters.ui.ContextualGuideButton
 import dev.alenajam.monsterdialer.onlineprofiles.data.ProfileSharingLink
 import dev.alenajam.monsterdialer.onlineprofiles.data.ProfileSharingQrCode
 import dev.alenajam.monsterdialer.onlineprofiles.data.QrCodeMatrix
 import dev.alenajam.opendialer.core.common.ui.AppIcon
 import dev.alenajam.opendialer.core.common.ui.LocalAppIcons
+import dev.alenajam.opendialer.feature.settings.LocalSettingsSubpageNavigator
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
@@ -80,12 +87,11 @@ fun OnlineProfileSection(viewModel: OnlineProfileSettingsViewModel = hiltViewMod
     val context = LocalContext.current
     val scope = rememberCoroutineScope()
     val resources = LocalResources.current
-    val enablingDescription = stringResource(R.string.online_profile_enabling)
     val regeneratingDescription = stringResource(R.string.online_profile_regenerating)
     val deletingDescription = stringResource(R.string.online_profile_deleting)
     val keepingOnlineDescription = stringResource(R.string.online_profile_keeping_online)
-    val signingInDescription = stringResource(R.string.online_profile_signing_in)
     val googleSignInNotConfigured = stringResource(R.string.online_profile_google_sign_in_not_configured)
+    val navigator = LocalSettingsSubpageNavigator.current
     val googleServerClientId = remember(resources) {
         resources.getIdentifier("default_web_client_id", "string", context.packageName)
             .takeIf { it != 0 }
@@ -110,21 +116,98 @@ fun OnlineProfileSection(viewModel: OnlineProfileSettingsViewModel = hiltViewMod
                     .onSuccess(viewModel::completeGoogleSignIn)
                     .onFailure { exception -> viewModel.failGoogleSignIn(exception.message) }
             }
-        }
     }
+    }
+    val linkIsOn = profile != null
+    var guideOpen by remember { mutableStateOf(false) }
+    var selectedMenuIndex by remember { mutableStateOf(0) }
+    Box(modifier = Modifier.fillMaxSize()) {
+        Box(modifier = Modifier.fillMaxWidth().padding(RetroScreenPanelMargin)) {
+            RetroProfilePanel {
+                Column(verticalArrangement = Arrangement.spacedBy(3.dp)) {
+                    Text(
+                        text = stringResource(
+                            if (linkIsOn) R.string.online_profile_link_on
+                            else R.string.online_profile_link_off,
+                        ),
+                        fontFamily = ProfilePixelFont,
+                        fontSize = 16.sp,
+                        lineHeight = 18.sp,
+                        color = ProfileInk,
+                    )
+                    RetroSelectableRow(
+                        selected = selectedMenuIndex == 0,
+                        onClick = {
+                            selectedMenuIndex = 0
+                            if (linkIsOn) viewModel.delete()
+                            else if (!working) viewModel.enable()
+                        },
+                    ) {
+                        Text(
+                            text = stringResource(
+                                if (linkIsOn) R.string.online_profile_unlink_action
+                                else R.string.online_profile_sign_in_action,
+                            ),
+                            fontFamily = ProfilePixelFont,
+                            fontSize = 16.sp,
+                            lineHeight = 18.sp,
+                            color = ProfileInk,
+                        )
+                    }
+                    RetroSelectableRow(
+                        selected = selectedMenuIndex == 1,
+                        onClick = {
+                            selectedMenuIndex = 1
+                            guideOpen = true
+                        },
+                    ) {
+                        Text(
+                            text = stringResource(R.string.retro_picker_guide),
+                            fontFamily = ProfilePixelFont,
+                            fontSize = 16.sp,
+                            lineHeight = 18.sp,
+                            color = ProfileInk,
+                        )
+                    }
+                }
+            }
+        }
+        RetroFooter(
+            message = stringResource(
+                if (linkIsOn) R.string.online_profile_linked_message
+                else R.string.online_profile_not_linked_message,
+            ),
+            animationKey = linkIsOn,
+            backKey = stringResource(R.string.retro_key_b),
+            backLabel = stringResource(R.string.customized_contacts_back_action),
+            onBack = { navigator?.navigateBack() },
+            modifier = Modifier.align(Alignment.BottomCenter),
+        )
+    }
+    if (guideOpen) {
+        ContextualGuideDialog(
+            contents = ownedOnlineProfileGuideContents(),
+            onDismiss = {
+                guideOpen = false
+                selectedMenuIndex = 1
+            },
+        )
+    }
+    return
+
     if (profile == null) {
-        RetroOnlinePanel {
+        Box(modifier = Modifier.fillMaxWidth().padding(8.dp)) {
+            RetroProfilePanel {
             Column(
-                modifier = Modifier.padding(horizontal = 16.dp, vertical = 12.dp),
                 verticalArrangement = Arrangement.spacedBy(8.dp),
             ) {
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     Text(
                         stringResource(R.string.online_profile_title),
                         modifier = Modifier.weight(1f),
-                        style = MaterialTheme.typography.titleLarge,
-                        color = ProfileInk,
                         fontFamily = ProfilePixelFont,
+                        fontSize = 16.sp,
+                        color = ProfileInk,
                     )
                     ContextualGuideButton(
                         contents = ownedOnlineProfileGuideContents(),
@@ -139,29 +222,34 @@ fun OnlineProfileSection(viewModel: OnlineProfileSettingsViewModel = hiltViewMod
                 }
                 Text(
                     stringResource(R.string.online_profile_description),
-                    style = MaterialTheme.typography.bodyLarge,
-                    color = ProfileInk.copy(alpha = 0.76f),
                     fontFamily = ProfilePixelFont,
+                    fontSize = 16.sp,
+                    color = ProfileInk.copy(alpha = 0.76f),
                 )
-                RetroLinkAction(
-                    label = stringResource(
-                        if (isSignedIn) R.string.online_profile_enable else R.string.online_profile_sign_in_google,
-                    ),
-                    enabled = !working,
-                    onClick = viewModel::enable,
-                    loading = working,
-                    loadingDescription = if (operation == OnlineProfileOperation.SignIn) signingInDescription else enablingDescription,
-                )
+                RetroSelectableRow(
+                    selected = true,
+                    onClick = { if (!working) viewModel.enable() },
+                ) {
+                    Text(
+                        text = stringResource(
+                            if (isSignedIn) R.string.online_profile_enable else R.string.online_profile_sign_in_google,
+                        ).uppercase(),
+                        fontFamily = ProfilePixelFont,
+                        fontSize = 16.sp,
+                        color = ProfileInk,
+                    )
+                }
                 Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
                     Text(
                         stringResource(R.string.online_profile_privacy_note),
                         modifier = Modifier.fillMaxWidth(),
                         textAlign = TextAlign.Center,
-                        style = MaterialTheme.typography.bodyMedium,
-                        color = ProfileInk.copy(alpha = 0.72f),
                         fontFamily = ProfilePixelFont,
+                        fontSize = 16.sp,
+                        color = ProfileInk.copy(alpha = 0.72f),
                     )
                 }
+            }
             }
         }
     } else {
@@ -172,18 +260,18 @@ fun OnlineProfileSection(viewModel: OnlineProfileSettingsViewModel = hiltViewMod
             sharingLink,
         )
         val shareTitle = stringResource(R.string.online_profile_share)
-        RetroOnlinePanel {
+        Box(modifier = Modifier.fillMaxWidth().padding(8.dp)) {
+            RetroProfilePanel {
             Column(
-                modifier = Modifier.padding(horizontal = 16.dp, vertical = 12.dp),
                 verticalArrangement = Arrangement.spacedBy(8.dp),
             ) {
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     Text(
                         stringResource(R.string.online_profile_title),
                         modifier = Modifier.weight(1f),
-                        style = MaterialTheme.typography.titleLarge,
-                        color = ProfileInk,
                         fontFamily = ProfilePixelFont,
+                        fontSize = 16.sp,
+                        color = ProfileInk,
                     )
                     ContextualGuideButton(
                         contents = ownedOnlineProfileGuideContents(),
@@ -198,35 +286,35 @@ fun OnlineProfileSection(viewModel: OnlineProfileSettingsViewModel = hiltViewMod
                 }
                 Text(
                     stringResource(R.string.online_profile_enabled),
-                    style = MaterialTheme.typography.bodyLarge,
-                    color = ProfileInk.copy(alpha = 0.76f),
                     fontFamily = ProfilePixelFont,
+                    fontSize = 16.sp,
+                    color = ProfileInk.copy(alpha = 0.76f),
                 )
-                Row(
-                    horizontalArrangement = Arrangement.spacedBy(8.dp),
-                    verticalAlignment = Alignment.CenterVertically,
-                ) {
-                    Button(onClick = {
+                RetroSelectableRow(
+                    selected = true,
+                    onClick = {
                         context.startActivity(Intent.createChooser(Intent(Intent.ACTION_SEND).apply {
                             type = "text/plain"; putExtra(Intent.EXTRA_TEXT, shareText)
                         }, shareTitle))
-                    }, enabled = !working, modifier = Modifier.weight(1f), shape = RectangleShape, colors = ButtonDefaults.buttonColors(containerColor = Color.White, contentColor = ProfileInk)) {
-                        AppIcon(LocalAppIcons.current.share, null, Modifier.size(18.dp))
-                        Spacer(Modifier.width(8.dp))
-                        Text(stringResource(R.string.share))
-                    }
-                    OutlinedIconButton(
-                        onClick = { showQrCode = true },
-                        enabled = !working,
-                        modifier = Modifier.size(40.dp),
-                        shape = RectangleShape,
-                    ) {
-                        AppIcon(
-                            LocalMonsterAppIcons.current.qrCode,
-                            stringResource(R.string.online_profile_qr_action),
-                            Modifier.size(20.dp),
-                        )
-                    }
+                    },
+                ) {
+                    Text(
+                        text = stringResource(R.string.share).uppercase(),
+                        fontFamily = ProfilePixelFont,
+                        fontSize = 16.sp,
+                        color = ProfileInk,
+                    )
+                }
+                RetroSelectableRow(
+                    selected = false,
+                    onClick = { showQrCode = true },
+                ) {
+                    Text(
+                        text = stringResource(R.string.online_profile_qr_action).uppercase(),
+                        fontFamily = ProfilePixelFont,
+                        fontSize = 16.sp,
+                        color = ProfileInk,
+                    )
                 }
                 if (operation == OnlineProfileOperation.Regenerate || operation == OnlineProfileOperation.Delete) {
                     Row(
@@ -241,6 +329,7 @@ fun OnlineProfileSection(viewModel: OnlineProfileSettingsViewModel = hiltViewMod
                     }
                 }
             }
+            }
         }
         if (showQrCode) {
             ProfileSharingQrCodeSheet(
@@ -249,9 +338,8 @@ fun OnlineProfileSection(viewModel: OnlineProfileSettingsViewModel = hiltViewMod
             )
         }
         if (showRetentionCheckIn) {
-            RetroOnlinePanel(modifier = Modifier.padding(top = 8.dp)) {
-                Column(
-                    modifier = Modifier.padding(16.dp),
+            Column(
+                    modifier = Modifier.fillMaxWidth().padding(top = 8.dp, start = 8.dp, end = 8.dp),
                     verticalArrangement = Arrangement.spacedBy(8.dp),
                 ) {
                     Text(
@@ -266,27 +354,17 @@ fun OnlineProfileSection(viewModel: OnlineProfileSettingsViewModel = hiltViewMod
                         color = ProfileInk.copy(alpha = 0.8f),
                         fontFamily = ProfilePixelFont,
                     )
-                    Button(
+                    RetroSelectableRow(
+                        selected = true,
                         onClick = viewModel::keepOnline,
-                        enabled = !working,
-                        modifier = Modifier.fillMaxWidth(),
-                        shape = RectangleShape,
-                        colors = ButtonDefaults.buttonColors(
-                            containerColor = ProfileLavender,
-                            contentColor = ProfileInk,
-                        ),
                     ) {
-                        if (operation == OnlineProfileOperation.KeepOnline) {
-                            CircularProgressIndicator(
-                                modifier = Modifier.size(20.dp).semantics { contentDescription = keepingOnlineDescription },
-                                color = MaterialTheme.colorScheme.onPrimary,
-                                strokeWidth = 2.dp,
-                            )
-                        } else {
-                            Text(stringResource(R.string.online_profile_keep_online))
-                        }
+                        Text(
+                            text = stringResource(R.string.online_profile_keep_online).uppercase(),
+                            fontFamily = ProfilePixelFont,
+                            fontSize = 18.sp,
+                            color = ProfileInk,
+                        )
                     }
-                }
             }
         }
     }
@@ -348,58 +426,6 @@ private fun ProfileSharingQrCodeSheet(
                 textAlign = TextAlign.Center,
                 style = MaterialTheme.typography.bodyMedium,
                 color = MaterialTheme.colorScheme.onSecondaryContainer.copy(alpha = 0.76f),
-            )
-        }
-    }
-}
-
-/** The profile screen uses the same hard-edged frame language as the roster and player card. */
-@Composable
-private fun RetroOnlinePanel(
-    modifier: Modifier = Modifier,
-    content: @Composable () -> Unit,
-) {
-    androidx.compose.foundation.layout.Box(
-        modifier = modifier
-            .fillMaxWidth()
-            .border(2.dp, ProfileInk, RectangleShape)
-            .background(Color.White, RectangleShape)
-            .padding(8.dp),
-    ) {
-        content()
-    }
-}
-
-@Composable
-private fun RetroLinkAction(
-    label: String,
-    enabled: Boolean,
-    onClick: () -> Unit,
-    loading: Boolean,
-    loadingDescription: String,
-) {
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .border(2.dp, ProfileInk, RectangleShape)
-            .background(Color.White, RectangleShape)
-            .clickable(enabled = enabled, onClick = onClick)
-            .padding(horizontal = 12.dp, vertical = 10.dp),
-        horizontalArrangement = Arrangement.Center,
-        verticalAlignment = Alignment.CenterVertically,
-    ) {
-        if (loading) {
-            CircularProgressIndicator(
-                modifier = Modifier.size(20.dp).semantics { contentDescription = loadingDescription },
-                color = ProfileInk,
-                strokeWidth = 2.dp,
-            )
-        } else {
-            Text(
-                label,
-                style = MaterialTheme.typography.bodyLarge,
-                color = ProfileInk,
-                fontFamily = ProfilePixelFont,
             )
         }
     }

@@ -50,6 +50,8 @@ import dev.alenajam.monsterdialer.app.ui.RetroSearchButton
 import dev.alenajam.monsterdialer.app.ui.RetroSelectableRow
 import dev.alenajam.monsterdialer.app.ui.RetroScreenHorizontalPadding
 import dev.alenajam.monsterdialer.app.ui.RetroTextBox
+import dev.alenajam.monsterdialer.app.ui.RetroFooter
+import dev.alenajam.monsterdialer.app.ui.RetroFooterAction
 import dev.alenajam.opendialer.core.common.PermissionUtils
 import dev.alenajam.opendialer.data.contacts.DialerContactSummary
 import dev.alenajam.opendialer.feature.contacts.ContactsViewModel
@@ -68,6 +70,7 @@ internal fun RetroContactPickerScreen(
     var isSearching by remember { mutableStateOf(false) }
     var searchQuery by remember { mutableStateOf("") }
     var searchSelectionId by remember { mutableStateOf<Int?>(null) }
+    var selectedContactId by remember { mutableStateOf<Int?>(null) }
     val searchFocusRequester = remember { FocusRequester() }
     val focusManager = LocalFocusManager.current
     val keyboardController = LocalSoftwareKeyboardController.current
@@ -114,6 +117,11 @@ internal fun RetroContactPickerScreen(
             searchSelectionId = availableContacts.firstOrNull()?.id
         }
     }
+    LaunchedEffect(availableContacts) {
+        if (selectedContactId !in availableContacts.map { it.id }) {
+            selectedContactId = availableContacts.firstOrNull()?.id
+        }
+    }
     LaunchedEffect(isSearching) {
         if (isSearching) {
             searchFocusRequester.requestFocus()
@@ -123,7 +131,7 @@ internal fun RetroContactPickerScreen(
             keyboardController?.hide()
         }
     }
-    val cursorId = if (isSearching) searchSelectionId else availableContacts.firstOrNull()?.id
+    val cursorId = if (isSearching) searchSelectionId else selectedContactId
     val cursorIndex = listItems.indexOfFirst { item ->
         item is RetroContactPickerItem.Contact && item.contact.id == cursorId
     }
@@ -170,13 +178,15 @@ internal fun RetroContactPickerScreen(
                                     contact = item.contact,
                                     showCursor = index == cursorIndex,
                                     onClick = {
+                                        selectedContactId = item.contact.id
+                                        if (isSearching) searchSelectionId = item.contact.id
                                         onContactSelected(item.contact)
                                     },
                                 )
                             }
                         }
                     }
-                    RetroTextBox(
+                    RetroFooter(
                         message = when {
                             !isSearching -> stringResource(R.string.contact_picker_prompt)
                             searchQuery.isBlank() -> stringResource(R.string.contact_picker_search_empty_prompt)
@@ -187,38 +197,24 @@ internal fun RetroContactPickerScreen(
                             )
                         },
                         animationKey = "contact-picker:$isSearching:$searchQuery:${availableContacts.size}",
-                        modifier = Modifier
-                            .align(Alignment.CenterHorizontally)
-                            .padding(vertical = 2.dp),
+                        backKey = stringResource(R.string.retro_key_b),
+                        backLabel = stringResource(R.string.customized_contacts_back_action),
+                        onBack = {
+                            if (isSearching) {
+                                isSearching = false
+                                searchQuery = ""
+                                searchSelectionId = null
+                            } else {
+                                onNavigateBack()
+                            }
+                        },
+                        leftAction = if (isSearching) RetroFooterAction(
+                            key = stringResource(R.string.retro_key_a),
+                            label = stringResource(R.string.contact_picker_open_action),
+                            enabled = selectedSearchContact != null,
+                            onClick = { selectedSearchContact?.let(onContactSelected) },
+                        ) else null,
                     )
-                    Row(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(horizontal = 8.dp, vertical = 2.dp),
-                        horizontalArrangement = if (isSearching) Arrangement.SpaceBetween else Arrangement.End,
-                    ) {
-                        if (isSearching) {
-                            RetroActionButton(
-                                key = stringResource(R.string.retro_key_a),
-                                label = stringResource(R.string.contact_picker_open_action),
-                                enabled = selectedSearchContact != null,
-                                onClick = { selectedSearchContact?.let(onContactSelected) },
-                            )
-                        }
-                        RetroActionButton(
-                            key = stringResource(R.string.retro_key_b),
-                            label = stringResource(R.string.customized_contacts_back_action),
-                            onClick = {
-                                if (isSearching) {
-                                    isSearching = false
-                                    searchQuery = ""
-                                    searchSelectionId = null
-                                } else {
-                                    onNavigateBack()
-                                }
-                            },
-                        )
-                    }
                 }
             }
         }

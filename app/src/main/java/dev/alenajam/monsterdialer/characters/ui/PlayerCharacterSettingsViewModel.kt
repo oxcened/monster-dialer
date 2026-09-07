@@ -23,7 +23,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 import dagger.hilt.android.lifecycle.HiltViewModel
 
-enum class MonsterFilter { All, Regular, RadiantUnlocked, RadiantLocked }
+enum class MonsterFilter { All, Regular, RadiantUnlocked }
 
 @HiltViewModel
 class PlayerCharacterSettingsViewModel @Inject constructor(
@@ -44,8 +44,13 @@ class PlayerCharacterSettingsViewModel @Inject constructor(
         CharacterAssignmentTarget.Player, CharacterType.Trainer
     ).stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), emptyList())
 
+    val allMonsters: StateFlow<List<InstalledPackCharacter>> = charactersRepository.observeCharactersAssignableTo(
+        CharacterAssignmentTarget.Player,
+        CharacterType.Monster,
+    ).stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), emptyList())
+
     val monsters: StateFlow<List<InstalledPackCharacter>> = combine(
-        charactersRepository.observeCharactersAssignableTo(CharacterAssignmentTarget.Player, CharacterType.Monster),
+        allMonsters,
         filter,
         unlockedVariants
     ) { monsters, filter, unlocked ->
@@ -57,11 +62,6 @@ class PlayerCharacterSettingsViewModel @Inject constructor(
             MonsterFilter.RadiantUnlocked -> monsters.filter { character ->
                 character.character.visualVariants.any { variant ->
                     variant.isRadiant && CharacterReference(character.packId, character.character.id, variant.id) in unlocked
-                }
-            }
-            MonsterFilter.RadiantLocked -> monsters.filter { character ->
-                character.character.visualVariants.any { variant ->
-                    variant.isRadiant && CharacterReference(character.packId, character.character.id, variant.id) !in unlocked
                 }
             }
         }

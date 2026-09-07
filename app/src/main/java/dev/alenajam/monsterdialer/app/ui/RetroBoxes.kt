@@ -1,12 +1,15 @@
 package dev.alenajam.monsterdialer.app.ui
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.BoxWithConstraints
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 
@@ -30,4 +33,21 @@ internal fun RetroBoxFrame(
             .padding(2.dp),
         content = content,
     )
+}
+
+/** Shared profile-style panel with the standard GSC outer margin and inner padding. */
+@Composable
+internal fun RetroProfilePanel(
+    modifier: Modifier = Modifier,
+    content: @Composable () -> Unit,
+) {
+    androidx.compose.foundation.layout.Box(
+        modifier = modifier
+            .fillMaxWidth()
+            .border(2.dp, Color(0xFF202020), RectangleShape)
+            .background(Color.White, RectangleShape)
+            .padding(12.dp),
+    ) {
+        content()
+    }
 }

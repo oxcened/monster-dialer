@@ -41,6 +41,8 @@ import dev.alenajam.monsterdialer.app.ui.RetroContextMenu
 import dev.alenajam.monsterdialer.app.ui.RetroContextMenuItem
 import dev.alenajam.monsterdialer.app.ui.RetroConfirmationMenu
 import dev.alenajam.monsterdialer.app.ui.RetroActionButton
+import dev.alenajam.monsterdialer.app.ui.RetroFooter
+import dev.alenajam.monsterdialer.app.ui.RetroFooterAction
 import dev.alenajam.monsterdialer.app.ui.RetroSelectableRow
 import dev.alenajam.monsterdialer.app.ui.RetroTextBox
 import dev.alenajam.monsterdialer.characters.data.BuiltInCharacters
@@ -65,7 +67,6 @@ internal fun CustomizedContactsOverview(
     onAddContact: () -> Unit,
     onBack: () -> Unit,
     onContactMenuOpened: (ContactCharacterOverview) -> Unit,
-    onContactMenuClosed: () -> Unit,
     onContactRemoved: (ContactCharacterOverview) -> Unit,
     onRosterStatusMessageCleared: () -> Unit,
     onContactSelected: (ContactCharacterOverview, CharacterType) -> Unit,
@@ -105,33 +106,21 @@ internal fun CustomizedContactsOverview(
             }
         }
 
-        RetroTextBox(
+        RetroFooter(
             message = statusMessage
                 ?: addedContactLabel?.let { stringResource(R.string.contact_added_message, it.uppercase()) }
                 ?: stringResource(R.string.customized_contacts_prompt),
             animationKey = statusMessage ?: addedContactLabel ?: "prompt",
-            modifier = Modifier
-                .align(Alignment.CenterHorizontally)
-                .padding(vertical = 2.dp),
-        )
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 8.dp, vertical = 2.dp),
-            horizontalArrangement = Arrangement.SpaceBetween,
-        ) {
-            RetroActionButton(
+            backKey = stringResource(R.string.retro_key_b),
+            backLabel = stringResource(R.string.customized_contacts_back_action),
+            onBack = onBack,
+            leftAction = RetroFooterAction(
                 key = stringResource(R.string.retro_key_a),
                 label = stringResource(R.string.customized_contacts_assign_action),
                 enabled = isAddEnabled,
-                onClick = onAddContact
-            )
-            RetroActionButton(
-                key = stringResource(R.string.retro_key_b),
-                label = stringResource(R.string.customized_contacts_back_action),
-                onClick = onBack,
-            )
-        }
+                onClick = onAddContact,
+            ),
+        )
         }
         menuContact?.let { contact ->
             Box(
@@ -139,7 +128,6 @@ internal fun CustomizedContactsOverview(
                     .fillMaxSize()
                     .clickable {
                         menuContact = null
-                        onContactMenuClosed()
                     },
                 contentAlignment = Alignment.Center,
             ) {
@@ -168,7 +156,6 @@ internal fun CustomizedContactsOverview(
                         },
                         RetroContextMenuItem(label = stringResource(R.string.cancel)) {
                             menuContact = null
-                            onContactMenuClosed()
                         },
                     ),
                 )
@@ -181,7 +168,6 @@ internal fun CustomizedContactsOverview(
                     .fillMaxSize()
                     .clickable {
                         confirmationContact = null
-                        onContactMenuClosed()
                     },
                 contentAlignment = Alignment.Center,
             ) {
@@ -193,11 +179,9 @@ internal fun CustomizedContactsOverview(
                     modifier = Modifier.fillMaxWidth(0.82f),
                     onCancel = {
                         confirmationContact = null
-                        onContactMenuClosed()
                     },
                     onConfirm = {
                         confirmationContact = null
-                        onContactMenuClosed()
                         onContactRemoved(contact)
                         statusMessage = removedMessage
                     },

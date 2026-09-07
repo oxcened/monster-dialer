@@ -186,7 +186,6 @@ fun ColumnScope.ContactCharacterSettingsContent(
                 navigator?.navigateBack()
             },
             onContactMenuOpened = { overview -> viewModel.setRosterCursor(overview.contactKey) },
-            onContactMenuClosed = { viewModel.clearRosterCursor() },
             onContactRemoved = viewModel::removeContactFromRoster,
             onRosterStatusMessageCleared = viewModel::clearRosterStatusMessage,
             onContactSelected = { overview, type -> viewModel.selectCustomizedContact(overview, type) },
@@ -473,6 +472,13 @@ fun ColumnScope.ContactCharacterSettingsContent(
                             viewModel.allContactPoolReferences(CharacterType.Monster),
                         )
                     },
+                    guideContents = listOf(
+                        GuideContent(
+                            R.string.characters_help_character_list_title,
+                            R.string.characters_help_player_character_list_message,
+                        ),
+                        *radiantGuideContents().toTypedArray(),
+                    ),
                     onRandomPoolDone = { pool ->
                         val type = if (selectedTab == 0) CharacterType.Trainer else CharacterType.Monster
                         if (viewModel.isGuidedAssignmentActive) {

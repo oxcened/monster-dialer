@@ -40,6 +40,8 @@ import dev.alenajam.monsterdialer.app.ui.RetroContextMenuItem
 import dev.alenajam.monsterdialer.app.ui.RetroActionButton
 import dev.alenajam.monsterdialer.app.ui.RetroSearchButton
 import dev.alenajam.monsterdialer.app.ui.RetroTextBox
+import dev.alenajam.monsterdialer.app.ui.RetroFooter
+import dev.alenajam.monsterdialer.app.ui.RetroFooterAction
 import dev.alenajam.monsterdialer.characters.data.BuiltInCharacter
 import dev.alenajam.monsterdialer.characters.data.BuiltInCharacters
 import dev.alenajam.monsterdialer.packs.data.CharacterAssignmentTarget
@@ -85,6 +87,7 @@ internal fun RetroCharacterPicker(
     onAddCharacter: (() -> Unit)? = null,
     addCharacterLabel: String? = null,
     onFilterSelected: ((MonsterFilter) -> Unit)? = null,
+    showFilterOptions: Boolean = true,
     guideContents: List<GuideContent>? = null,
 ) {
     val entries = remember(type, characters, unlockedVariants, filter, defaultCharacter) {
@@ -138,7 +141,6 @@ internal fun RetroCharacterPicker(
                     onClick = onAddCharacter,
                     modifier = Modifier.weight(1f),
                     horizontalArrangement = Arrangement.Start,
-                    edgeAligned = true,
                 )
             }
             if (showOptions) {
@@ -187,16 +189,32 @@ internal fun RetroCharacterPicker(
                 }
             }
         }
-        RetroTextBox(
+        RetroFooter(
             message = prompt,
             animationKey = "$type:$selectionVersion:$prompt",
-            modifier = Modifier.align(Alignment.CenterHorizontally).padding(vertical = 2.dp),
-        )
-        Row(
-            modifier = Modifier.fillMaxWidth().padding(horizontal = 8.dp, vertical = 2.dp),
-            horizontalArrangement = Arrangement.SpaceBetween,
-        ) {
-            RetroActionButton(
+            backKey = stringResource(R.string.retro_key_b),
+            backLabel = stringResource(R.string.customized_contacts_back_action),
+            onBack = {
+                if (randomPoolOpen) {
+                    if (enteredFromRandomMode) {
+                        onBack()
+                    } else {
+                        randomPoolOpen = false
+                        poolDraft = randomPool
+                        poolCursor = randomPool.firstOrNull()
+                    }
+                } else if (hasMadeSelection) {
+                    pendingSelection = selected
+                    hasMadeSelection = false
+                    assignmentCleared = false
+                    assignmentRandomized = false
+                    onBack()
+                } else {
+                    onBack()
+                }
+            },
+            modifier = Modifier.align(Alignment.CenterHorizontally),
+            leftAction = RetroFooterAction(
                 key = stringResource(R.string.retro_key_a),
                 label = stringResource(
                     when {
@@ -215,31 +233,7 @@ internal fun RetroCharacterPicker(
                     }
                 },
             )
-            RetroActionButton(
-                key = stringResource(R.string.retro_key_b),
-                label = stringResource(R.string.customized_contacts_back_action),
-                onClick = {
-                    if (randomPoolOpen) {
-                        if (enteredFromRandomMode) {
-                            onBack()
-                        } else {
-                            randomPoolOpen = false
-                            poolDraft = randomPool
-                            poolCursor = randomPool.firstOrNull()
-                        }
-                    } else if (hasMadeSelection) {
-                        pendingSelection = selected
-                        hasMadeSelection = false
-                        assignmentCleared = false
-                        assignmentRandomized = false
-                        onBack()
-                    } else {
-                        onBack()
-                    }
-                },
-            )
-        }
-        }
+        )
         if (optionsOpen) {
         Box(
             modifier = Modifier.fillMaxSize().clickable { optionsOpen = false },
@@ -275,12 +269,11 @@ internal fun RetroCharacterPicker(
                             optionsOpen = false
                         },
                     )
-                } else if (onFilterSelected != null) {
+                } else if (onFilterSelected != null && showFilterOptions) {
                     listOf(
                         MonsterFilter.All to R.string.filter_all,
                         MonsterFilter.Regular to R.string.filter_regular,
                         MonsterFilter.RadiantUnlocked to R.string.filter_unlocked_radiant,
-                        MonsterFilter.RadiantLocked to R.string.filter_locked_radiant,
                     ).map { (filterOption, labelRes) ->
                         RetroContextMenuItem(
                             label = stringResource(labelRes),
@@ -292,11 +285,10 @@ internal fun RetroCharacterPicker(
                     } + RetroContextMenuItem(label = stringResource(R.string.cancel)) {
                         optionsOpen = false
                     }
-                } else {
+                } else if (onClear != null) {
                     listOf(
                         RetroContextMenuItem(
                             label = stringResource(R.string.contact_default_random),
-                            showCursor = true,
                         ) {
                             optionsOpen = false
                             randomPoolOpen = true
@@ -314,17 +306,27 @@ internal fun RetroCharacterPicker(
                             optionsOpen = false
                         },
                     )
+                } else {
+                    listOf(
+                        RetroContextMenuItem(label = stringResource(R.string.cancel)) {
+                            optionsOpen = false
+                        },
+                    )
                 }).let { items ->
-                    if (guideContents == null || randomPoolOpen) {
+                    if (guideContents == null) {
                         items
                     } else {
-                        items.dropLast(1) + RetroContextMenuItem(label = stringResource(R.string.retro_picker_guide)) {
+                        items.dropLast(1) + RetroContextMenuItem(
+                            label = stringResource(R.string.retro_picker_guide),
+                            dividerBefore = true,
+                        ) {
                             optionsOpen = false
                             guideOpen = true
                         } + items.last()
                     }
                 },
             )
+        }
         }
         if (guideOpen && guideContents != null) {
             ContextualGuideDialog(contents = guideContents, onDismiss = { guideOpen = false })
@@ -485,5 +487,4 @@ private fun MonsterFilter.matches(
     MonsterFilter.All -> true
     MonsterFilter.Regular -> !variant.isRadiant
     MonsterFilter.RadiantUnlocked -> variant.isRadiant && reference in unlockedVariants
-    MonsterFilter.RadiantLocked -> variant.isRadiant && reference !in unlockedVariants
 }

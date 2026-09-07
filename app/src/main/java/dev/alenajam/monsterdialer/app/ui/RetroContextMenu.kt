@@ -11,6 +11,10 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -24,6 +28,8 @@ internal data class RetroContextMenuItem(
     val label: String,
     /** Null uses the menu's default cursor position; true/false explicitly overrides it. */
     val showCursor: Boolean? = null,
+    /** Adds a blank GSC-style separator before this item. */
+    val dividerBefore: Boolean = false,
     val onClick: () -> Unit,
 )
 
@@ -34,6 +40,9 @@ internal fun RetroContextMenu(
     modifier: Modifier = Modifier,
     title: String? = null,
 ) {
+    var selectedIndex by remember(items) {
+        mutableIntStateOf(items.indexOfFirst { it.showCursor == true }.takeIf { it >= 0 } ?: 0)
+    }
     RetroBoxFrame(modifier = modifier) {
         Column(
             modifier = Modifier.padding(8.dp),
@@ -50,10 +59,17 @@ internal fun RetroContextMenu(
                 )
             }
             items.forEachIndexed { index, item ->
+                if (item.dividerBefore) {
+                    Spacer(modifier = Modifier.height(4.dp))
+                }
                 RetroContextMenuItemRow(
                     item = item,
-                    showCursor = item.showCursor ?: (index == 0),
+                    showCursor = index == selectedIndex,
                     fontFamily = fontFamily,
+                    onClick = {
+                        selectedIndex = index
+                        item.onClick()
+                    },
                 )
             }
         }
@@ -121,12 +137,13 @@ private fun RetroContextMenuItemRow(
     item: RetroContextMenuItem,
     showCursor: Boolean,
     fontFamily: FontFamily,
+    onClick: () -> Unit,
 ) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
             .height(30.dp)
-            .clickable(onClick = item.onClick)
+            .clickable(onClick = onClick)
             .semantics { contentDescription = item.label },
         horizontalArrangement = Arrangement.spacedBy(5.dp),
         verticalAlignment = Alignment.CenterVertically,

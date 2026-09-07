@@ -9,4 +9,6 @@ internal enum class CharacterSettingsPage(val index: Int) {
     LinkedOnlineProfile(4),
     ContactDefaults(5),
     ToolboxContactCharacters(6),
+    ProfileLink(7),
+    Toolbox(8),
 }

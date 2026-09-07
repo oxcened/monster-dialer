@@ -157,7 +157,6 @@ internal fun LazyListScope.characterTypeItems(
             MonsterFilter.All -> true
             MonsterFilter.Regular -> !variant.isRadiant
             MonsterFilter.RadiantUnlocked -> variant.isRadiant && reference in unlockedVariants
-            MonsterFilter.RadiantLocked -> variant.isRadiant && reference !in unlockedVariants
         }
     }
 
@@ -338,7 +337,6 @@ internal fun LazyGridScope.characterTypeGridItems(
             MonsterFilter.All -> true
             MonsterFilter.Regular -> !variant.isRadiant
             MonsterFilter.RadiantUnlocked -> variant.isRadiant && reference in unlockedVariants
-            MonsterFilter.RadiantLocked -> variant.isRadiant && reference !in unlockedVariants
         }
     }
 
@@ -798,7 +796,6 @@ internal fun MonsterFilterButton(
                         MonsterFilter.All -> R.string.filter_all
                         MonsterFilter.Regular -> R.string.filter_regular
                         MonsterFilter.RadiantUnlocked -> R.string.filter_unlocked_radiant
-                        MonsterFilter.RadiantLocked -> R.string.filter_locked_radiant
                     },
                 ),
                 modifier = Modifier.padding(start = 8.dp),
@@ -817,7 +814,6 @@ internal fun MonsterFilterButton(
                                     MonsterFilter.All -> R.string.filter_all
                                     MonsterFilter.Regular -> R.string.filter_regular
                                     MonsterFilter.RadiantUnlocked -> R.string.filter_unlocked_radiant
-                                    MonsterFilter.RadiantLocked -> R.string.filter_locked_radiant
                                 },
                             ),
                         )

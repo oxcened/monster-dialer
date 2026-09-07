@@ -35,19 +35,18 @@ import dev.alenajam.monsterdialer.R
 private val RetroSearchPixelFont = FontFamily(Font(R.font.ui_pixel_font))
 private val RetroSearchInk = Color(0xFF202020)
 
-/** A right-aligned Game Boy-style command, aligned with the character picker Options control. */
+/** A Game Boy-style command with consistent horizontal insets. */
 @Composable
 internal fun RetroSearchButton(
     label: String,
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
     horizontalArrangement: Arrangement.Horizontal = Arrangement.End,
-    edgeAligned: Boolean = false,
 ) {
     Row(
         modifier = modifier
             .fillMaxWidth()
-            .padding(start = if (edgeAligned) 0.dp else 8.dp, end = 8.dp, top = 2.dp),
+            .padding(horizontal = 8.dp, vertical = 2.dp),
         horizontalArrangement = horizontalArrangement,
         verticalAlignment = Alignment.CenterVertically,
     ) {

@@ -1,9 +1,6 @@
 package dev.alenajam.monsterdialer.characters.ui
 
 import android.graphics.BitmapFactory
-import androidx.activity.compose.BackHandler
-import androidx.activity.compose.rememberLauncherForActivityResult
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -42,8 +39,6 @@ import androidx.compose.material3.TextButton
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.DisposableEffect
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -59,7 +54,6 @@ import androidx.compose.ui.graphics.PathEffect
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
@@ -81,13 +75,17 @@ import dev.alenajam.monsterdialer.app.ui.RetroScreenHorizontalPadding
 import dev.alenajam.monsterdialer.characters.data.DefaultMonsterLevel
 import dev.alenajam.monsterdialer.characters.data.MaxPlayerMonsterTeamSize
 import dev.alenajam.monsterdialer.characters.data.SharedCharacterImport
-import dev.alenajam.monsterdialer.onlineprofiles.ui.OnlineProfileSection
 import dev.alenajam.monsterdialer.packs.data.CharacterReference
 import dev.alenajam.monsterdialer.packs.data.CharacterType
 import dev.alenajam.opendialer.core.common.ui.AppIcon
 import dev.alenajam.opendialer.core.common.ui.LocalAppIcons
 import dev.alenajam.monsterdialer.app.ui.RetroSelectableRow
 import dev.alenajam.monsterdialer.app.ui.RetroTextBox
+import dev.alenajam.monsterdialer.app.ui.RetroActionButton
+import dev.alenajam.monsterdialer.app.ui.RetroFooter
+import dev.alenajam.monsterdialer.app.ui.RetroScreenBottomContentPadding
+import dev.alenajam.monsterdialer.app.ui.RetroScreenTopContentPadding
+import dev.alenajam.monsterdialer.app.ui.RetroProfilePanel
 import sh.calvin.reorderable.ReorderableItem
 import sh.calvin.reorderable.rememberReorderableLazyListState
 
@@ -96,7 +94,6 @@ private val ProfilePixelTextStyle = androidx.compose.ui.text.TextStyle(
     fontFamily = ProfilePixelFont,
 )
 
-private enum class ProfileMenuDestination { Roster, Online, Toolbox, Options }
 private enum class ProfileCharacterSection { Trainer, Monster }
 
 @Composable
@@ -111,54 +108,28 @@ fun CharactersHomeScreen(
     showImportUi: Boolean = true,
     onSetBackAction: (Boolean, () -> Unit) -> Unit = { _, _ -> },
 ) {
-    val context = LocalContext.current
-    val picker = rememberLauncherForActivityResult(ActivityResultContracts.OpenDocument()) { uri ->
-        if (uri != null) sharingViewModel.preview(context, uri)
-    }
-
     if (showImportUi) {
         SharedCharacterImportHandler(sharingViewModel)
-    }
-
-    var menuDestination by remember { mutableStateOf(ProfileMenuDestination.Roster) }
-
-    BackHandler(enabled = menuDestination != ProfileMenuDestination.Roster) {
-        menuDestination = ProfileMenuDestination.Roster
-    }
-
-    LaunchedEffect(menuDestination) {
-        onSetBackAction(menuDestination != ProfileMenuDestination.Roster) {
-            menuDestination = ProfileMenuDestination.Roster
-        }
-    }
-    DisposableEffect(Unit) {
-        onDispose { onSetBackAction(false) {} }
     }
 
     val pageModifier = Modifier
         .fillMaxSize()
         .background(MaterialTheme.colorScheme.background)
         .then(
-            if (menuDestination == ProfileMenuDestination.Toolbox) {
-                Modifier
-            } else {
-                Modifier.verticalScroll(rememberScrollState())
-            },
+            Modifier.verticalScroll(rememberScrollState()),
         )
         .padding(
             start = RetroScreenHorizontalPadding,
-            top = 10.dp,
+            top = RetroScreenTopContentPadding,
             end = RetroScreenHorizontalPadding,
-            bottom = if (menuDestination == ProfileMenuDestination.Toolbox) 8.dp else 96.dp,
+            bottom = RetroScreenBottomContentPadding,
         )
 
     Column(
         modifier = pageModifier,
         verticalArrangement = Arrangement.spacedBy(20.dp)
     ) {
-        when (menuDestination) {
-            ProfileMenuDestination.Roster,
-            ProfileMenuDestination.Options -> GameBoyProfileLayout(
+        GameBoyProfileLayout(
                 playerProfile = playerProfile,
                 profileMetrics = profileMetrics,
                 onChangeTrainer = { onOpenSubpage(CharacterSettingsPage.PlayerCharacter.index, PlayerCharacterSettingsRoute.ChangeTrainer.payload) },
@@ -166,35 +137,11 @@ fun CharactersHomeScreen(
                 onOpenRoster = {
                     onOpenSubpage(CharacterSettingsPage.PlayerCharacter.index, PlayerCharacterSettingsRoute.AddToRoster.payload)
                 },
-                onOpenOnlineProfile = { menuDestination = ProfileMenuDestination.Online },
-                onOpenToolbox = { menuDestination = ProfileMenuDestination.Toolbox },
-                onOpenOptions = {
-                    menuDestination = ProfileMenuDestination.Options
-                    onOpenSettings()
-                },
-                selectedDestination = menuDestination,
-            )
-            ProfileMenuDestination.Online -> ProfileDestination {
-                OnlineProfileSection()
-            }
-            ProfileMenuDestination.Toolbox -> ProfileDestination {
-                CharacterToolsGroup(
-                    onOpenContactCharacters = { onOpenSubpage(CharacterSettingsPage.ContactCharacters.index, ContactCharacterSettingsEntryPoint.Overview.payload) },
-                    onOpenContactDefaults = { onOpenSubpage(CharacterSettingsPage.ContactDefaults.index, ContactCharacterSettingsEntryPoint.Defaults.payload) },
-                    onOpenJournal = { onOpenSubpage(CharacterSettingsPage.BattleJournal.index, null) },
-                    onOpenPacks = { onOpenSubpage(CharacterSettingsPage.CharacterPacks.index, null) },
-                    onImport = { picker.launch(arrayOf("*/*")) },
-                )
-            }
-        }
+                onOpenOnlineProfile = { onOpenSubpage(CharacterSettingsPage.ProfileLink.index, null) },
+                onOpenToolbox = { onOpenSubpage(CharacterSettingsPage.Toolbox.index, null) },
+                onOpenOptions = onOpenSettings,
+        )
     }
-}
-
-@Composable
-private fun ProfileDestination(
-    content: @Composable () -> Unit,
-) {
-    content()
 }
 
 @Composable
@@ -207,7 +154,6 @@ private fun GameBoyProfileLayout(
     onOpenOnlineProfile: () -> Unit,
     onOpenToolbox: () -> Unit,
     onOpenOptions: () -> Unit,
-    selectedDestination: ProfileMenuDestination,
 ) {
     val trainer = playerProfile.trainer
     val monster = playerProfile.monster
@@ -215,9 +161,7 @@ private fun GameBoyProfileLayout(
     val monsterTitle = stringResource(R.string.character_type_monster)
     var selectedSection by remember { mutableStateOf(ProfileCharacterSection.Trainer) }
     Box(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(8.dp),
+        modifier = Modifier.fillMaxWidth(),
     ) {
         Column(
             modifier = Modifier.fillMaxWidth(),
@@ -285,10 +229,10 @@ private fun GameBoyProfileLayout(
                 }
                 GameBoyPanel(modifier = Modifier.width(220.dp).fillMaxHeight(), fillWidth = false) {
                     Column(verticalArrangement = Arrangement.spacedBy(1.dp)) {
-                        GameBoyMenuItem(stringResource(R.string.profile_menu_roster), selectedDestination == ProfileMenuDestination.Roster, onOpenRoster)
-                        GameBoyMenuItem(stringResource(R.string.profile_menu_online), selectedDestination == ProfileMenuDestination.Online, onOpenOnlineProfile)
-                        GameBoyMenuItem(stringResource(R.string.profile_menu_toolbox), selectedDestination == ProfileMenuDestination.Toolbox, onOpenToolbox)
-                        GameBoyMenuItem(stringResource(R.string.profile_menu_options), selectedDestination == ProfileMenuDestination.Options, onOpenOptions)
+                        GameBoyMenuItem(stringResource(R.string.profile_menu_roster), true, onOpenRoster)
+                        GameBoyMenuItem(stringResource(R.string.profile_menu_online), false, onOpenOnlineProfile)
+                        GameBoyMenuItem(stringResource(R.string.profile_menu_toolbox), false, onOpenToolbox)
+                        GameBoyMenuItem(stringResource(R.string.profile_menu_options), false, onOpenOptions)
                     }
                 }
             }
@@ -307,14 +251,12 @@ private fun GameBoyPanel(
     onClick: (() -> Unit)? = null,
     content: @Composable () -> Unit,
 ) {
-    Box(
+    RetroProfilePanel(
         modifier = modifier
             .then(if (fillWidth) Modifier.fillMaxWidth() else Modifier)
-            .border(2.dp, RetroInk, androidx.compose.ui.graphics.RectangleShape)
-            .background(Color.White, androidx.compose.ui.graphics.RectangleShape)
-            .then(if (onClick == null) Modifier else Modifier.clickable(onClick = onClick))
-            .padding(12.dp),
-    ) { content() }
+            .then(if (onClick == null) Modifier else Modifier.clickable(onClick = onClick)),
+        content = content,
+    )
 }
 
 @Composable
@@ -730,12 +672,13 @@ private fun TeamArtwork(
 }
 
 @Composable
-private fun CharacterToolsGroup(
+internal fun CharacterToolsContent(
     onOpenContactCharacters: () -> Unit,
     onOpenContactDefaults: () -> Unit,
     onOpenJournal: () -> Unit,
     onOpenPacks: () -> Unit,
     onImport: () -> Unit,
+    onBack: () -> Unit,
 ) {
     val actions = listOf(
         CharacterToolAction(stringResource(R.string.contact_defaults_toolbox_title), onOpenContactDefaults),
@@ -759,9 +702,12 @@ private fun CharacterToolsGroup(
                 )
             }
         }
-        RetroTextBox(
+        RetroFooter(
             message = stringResource(R.string.character_tools_prompt),
             animationKey = selectedIndex,
+            backKey = stringResource(R.string.retro_key_b),
+            backLabel = stringResource(R.string.customized_contacts_back_action),
+            onBack = onBack,
             modifier = Modifier.align(Alignment.BottomCenter),
         )
     }

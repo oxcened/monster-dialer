@@ -9,6 +9,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import dev.alenajam.monsterdialer.R
 import dev.alenajam.monsterdialer.characters.data.BuiltInCharacters
+import dev.alenajam.monsterdialer.packs.data.CharacterReference
 import dev.alenajam.monsterdialer.packs.data.CharacterType
 
 internal enum class PlayerCharacterSettingsRoute(
@@ -37,10 +38,19 @@ internal fun ColumnScope.PlayerCharacterSettingsContent(
     val monsterRoster = viewModel.monsterRoster.collectAsStateWithLifecycle().value
     val trainers = viewModel.trainers.collectAsStateWithLifecycle().value
     val monsters = viewModel.monsters.collectAsStateWithLifecycle().value
+    val allMonsters = viewModel.allMonsters.collectAsStateWithLifecycle().value
     val isLimitReached = viewModel.isLimitReached.collectAsStateWithLifecycle().value
     val selectedTab = viewModel.selectedTab.collectAsStateWithLifecycle().value
     val filter = viewModel.filter.collectAsStateWithLifecycle().value
     val unlockedVariants = viewModel.unlockedVariants.collectAsStateWithLifecycle().value
+    val hasRegularMonsters = allMonsters.any { character ->
+        character.character.visualVariants.any { !it.isRadiant }
+    }
+    val hasRadiantMonsters = allMonsters.any { character ->
+        character.character.visualVariants.any { variant ->
+            variant.isRadiant && CharacterReference(character.packId, character.character.id, variant.id) in unlockedVariants
+        }
+    }
     val navigator = dev.alenajam.opendialer.feature.settings.LocalSettingsSubpageNavigator.current
     val targetSlotIndex = payload?.split(":")?.getOrNull(1)?.toIntOrNull()
     val selectedMonster = if (route == PlayerCharacterSettingsRoute.AddToRoster) {
@@ -84,6 +94,7 @@ internal fun ColumnScope.PlayerCharacterSettingsContent(
         },
         addCharacterLabel = stringResource(R.string.retro_picker_add),
         onFilterSelected = if (selectedType == CharacterType.Monster) viewModel::setFilter else null,
+        showFilterOptions = selectedType == CharacterType.Monster && hasRegularMonsters && hasRadiantMonsters,
         guideContents = listOf(
             GuideContent(
                 R.string.characters_help_character_list_title,

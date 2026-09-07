@@ -8,6 +8,8 @@ import android.net.Uri
 import android.os.Bundle
 import android.provider.OpenableColumns
 import androidx.activity.compose.setContent
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.foundation.clickable
@@ -60,6 +62,7 @@ import dev.alenajam.monsterdialer.app.data.OnboardingStore
 import dev.alenajam.monsterdialer.app.ui.LocalMonsterAppIcons
 import dev.alenajam.monsterdialer.app.ui.RetroScreenHorizontalPadding
 import dev.alenajam.monsterdialer.app.ui.RetroScreenTopContentPadding
+import dev.alenajam.monsterdialer.app.ui.RetroScreenFooterVerticalPadding
 import dev.alenajam.monsterdialer.app.ui.RetroActionButton
 import dev.alenajam.monsterdialer.app.ui.RetroContextMenu
 import dev.alenajam.monsterdialer.app.ui.RetroContextMenuItem
@@ -75,6 +78,7 @@ import dev.alenajam.monsterdialer.characters.ui.ContextualGuideButton
 import dev.alenajam.monsterdialer.characters.ui.GuideContent
 import dev.alenajam.monsterdialer.characters.ui.CharacterSettingsSummaryViewModel
 import dev.alenajam.monsterdialer.characters.ui.CharactersHomeScreen
+import dev.alenajam.monsterdialer.characters.ui.CharacterToolsContent
 import dev.alenajam.monsterdialer.characters.ui.PlayerCharacterSettingsContent
 import dev.alenajam.monsterdialer.characters.ui.CharacterSharingViewModel
 import dev.alenajam.monsterdialer.characters.ui.PlayerCharacterSettingsRoute
@@ -89,6 +93,7 @@ import dev.alenajam.monsterdialer.packs.data.CharacterPackArchive
 import dev.alenajam.monsterdialer.packs.data.CharacterType
 import dev.alenajam.monsterdialer.onlineprofiles.data.ProfileSharingLink
 import dev.alenajam.monsterdialer.onlineprofiles.ui.LinkedOnlineProfileContent
+import dev.alenajam.monsterdialer.onlineprofiles.ui.OnlineProfileSection
 import dev.alenajam.monsterdialer.onlineprofiles.ui.SharedProfileImportScreen
 import dev.alenajam.monsterdialer.onlineprofiles.ui.sharedOnlineProfileGuideContents
 import dev.alenajam.monsterdialer.packs.ui.CharacterPackSettingsContent
@@ -105,6 +110,7 @@ import dev.alenajam.opendialer.feature.appShell.HomeScreenConfiguration
 import dev.alenajam.opendialer.feature.appShell.HomeTab
 import dev.alenajam.opendialer.feature.contacts.ContactRowTrailingContent
 import dev.alenajam.opendialer.feature.settings.LocalSettingsSubpageNavigator
+import dev.alenajam.opendialer.feature.settings.LocalSettingsRootNavigator
 import kotlinx.coroutines.launch
 import dev.alenajam.opendialer.feature.settings.SettingsSubpage
 import dev.alenajam.opendialer.feature.settings.SettingsSubpageDestination
@@ -156,6 +162,9 @@ class MainActivity : AppCompatActivity() {
 
             val characterPackSettingsViewModel: CharacterPackSettingsViewModel = hiltViewModel()
             val characterSharingViewModel: CharacterSharingViewModel = hiltViewModel()
+            val characterImportLauncher = rememberLauncherForActivityResult(ActivityResultContracts.OpenDocument()) { uri ->
+                if (uri != null) characterSharingViewModel.preview(this@MainActivity, uri)
+            }
             val contactCharacterSettingsViewModel: ContactCharacterSettingsViewModel = hiltViewModel()
             val visiblePacks by characterPackSettingsViewModel.packs.collectAsStateWithLifecycle()
             val characterSettingsSummaryViewModel: CharacterSettingsSummaryViewModel = hiltViewModel()
@@ -204,6 +213,8 @@ class MainActivity : AppCompatActivity() {
                             showVoicemailInNavigation = false,
                             showVoicemailInOverflow = true,
                             hideSearchAndDialpadOnCustomTab = true,
+                            customActionBarHorizontalPadding = RetroScreenHorizontalPadding,
+                            customActionBarVerticalPadding = RetroScreenFooterVerticalPadding,
                             customActionBar = { onSelect, onMenu, onBack, backEnabled ->
                                 Row(
                                     modifier = Modifier.fillMaxWidth(),
@@ -526,8 +537,37 @@ class MainActivity : AppCompatActivity() {
                             ),
                         ),
                         ).let { subpages ->
-                            // Share the character screen and its destinations.
-                            subpages + subpages[CharacterSettingsPage.ContactCharacters.index]
+                            subpages + subpages[CharacterSettingsPage.ContactCharacters.index] + listOf(
+                                SettingsSubpage(
+                                    title = stringResource(R.string.profile_menu_online),
+                                    content = { _ -> OnlineProfileSection() },
+                                    isScrollable = false,
+                                    topContentPadding = 0.dp,
+                                    horizontalContentPadding = RetroScreenHorizontalPadding,
+                                    showTopBar = false,
+                                    visibleInSettings = false,
+                                ),
+                                SettingsSubpage(
+                                    title = stringResource(R.string.character_tools_title),
+                                    content = { _ ->
+                                        val navigator = LocalSettingsRootNavigator.current
+                                        val subpageNavigator = LocalSettingsSubpageNavigator.current
+                                        CharacterToolsContent(
+                                            onOpenContactCharacters = { navigator?.invoke(CharacterSettingsPage.ToolboxContactCharacters.index, ContactCharacterSettingsEntryPoint.Overview.payload) },
+                                            onOpenContactDefaults = { navigator?.invoke(CharacterSettingsPage.ContactDefaults.index, ContactCharacterSettingsEntryPoint.Defaults.payload) },
+                                            onOpenJournal = { navigator?.invoke(CharacterSettingsPage.BattleJournal.index, null) },
+                                            onOpenPacks = { navigator?.invoke(CharacterSettingsPage.CharacterPacks.index, null) },
+                                            onImport = { characterImportLauncher.launch(arrayOf("*/*")) },
+                                            onBack = { subpageNavigator?.navigateBack() },
+                                        )
+                                    },
+                                    isScrollable = false,
+                                    topContentPadding = RetroScreenTopContentPadding,
+                                    showTopBar = false,
+                                    horizontalContentPadding = RetroScreenHorizontalPadding,
+                                    visibleInSettings = false,
+                                ),
+                            )
                         }
                         )
                         if (showFirstEncounterPrompt) {
