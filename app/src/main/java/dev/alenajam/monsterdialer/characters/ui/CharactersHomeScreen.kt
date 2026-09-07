@@ -84,6 +84,7 @@ import dev.alenajam.monsterdialer.app.ui.RetroTextBox
 import dev.alenajam.monsterdialer.app.ui.RetroActionButton
 import dev.alenajam.monsterdialer.app.ui.RetroFooter
 import dev.alenajam.monsterdialer.app.ui.RetroScreenBottomContentPadding
+import dev.alenajam.monsterdialer.app.ui.RetroScreenPanelMargin
 import dev.alenajam.monsterdialer.app.ui.RetroScreenTopContentPadding
 import dev.alenajam.monsterdialer.app.ui.RetroProfilePanel
 import sh.calvin.reorderable.ReorderableItem
@@ -161,7 +162,9 @@ private fun GameBoyProfileLayout(
     val monsterTitle = stringResource(R.string.character_type_monster)
     var selectedSection by remember { mutableStateOf(ProfileCharacterSection.Trainer) }
     Box(
-        modifier = Modifier.fillMaxWidth(),
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(RetroScreenPanelMargin),
     ) {
         Column(
             modifier = Modifier.fillMaxWidth(),
