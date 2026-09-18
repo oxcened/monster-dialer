@@ -80,6 +80,7 @@ import dev.alenajam.opendialer.feature.settings.LocalSettingsSubpageNavigator
 fun ColumnScope.CharacterPackSettingsContent(
     viewModel: CharacterPackSettingsViewModel = hiltViewModel(),
     showImportUi: Boolean = true,
+    onImportCharacter: (() -> Unit)? = null,
 ) {
     val context = LocalContext.current
     val packs by viewModel.packs.collectAsStateWithLifecycle()
@@ -169,6 +170,9 @@ fun ColumnScope.CharacterPackSettingsContent(
                         verticalArrangement = Arrangement.spacedBy(4.dp)
                     ) {
                         Button(onClick = importPack) { Text(stringResource(R.string.import_character_pack)) }
+                        onImportCharacter?.let { importCharacter ->
+                            OutlinedButton(onClick = importCharacter) { Text(stringResource(R.string.import_character)) }
+                        }
                         OutlinedButton(onClick = createPack) {
                             AppIcon(LocalMonsterAppIcons.current.createPack, contentDescription = null, modifier = Modifier.size(18.dp))
                             Text(stringResource(R.string.create_character_pack), modifier = Modifier.padding(start = 8.dp))
@@ -176,6 +180,9 @@ fun ColumnScope.CharacterPackSettingsContent(
                     }
                 } else {
                     Button(onClick = importPack) { Text(stringResource(R.string.import_character_pack)) }
+                    onImportCharacter?.let { importCharacter ->
+                        OutlinedButton(onClick = importCharacter) { Text(stringResource(R.string.import_character)) }
+                    }
                 }
                 Text(
                     stringResource(R.string.pack_import_license_notice),
@@ -193,6 +200,14 @@ fun ColumnScope.CharacterPackSettingsContent(
             ) {
                 AppIcon(LocalMonsterAppIcons.current.importCharacter, contentDescription = null, modifier = Modifier.size(18.dp))
                 Text(stringResource(R.string.import_pack), modifier = Modifier.padding(start = 8.dp))
+            }
+            onImportCharacter?.let { importCharacter ->
+                OutlinedButton(
+                    onClick = importCharacter,
+                    modifier = Modifier.fillMaxWidth(),
+                ) {
+                    Text(stringResource(R.string.import_character))
+                }
             }
             if (canCreatePack) {
                 OutlinedButton(

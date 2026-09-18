@@ -68,6 +68,9 @@
     <string name="profile_variant_label">TYPE</string>
     <string name="profile_radiants_label">RADIANTS</string>
     <string name="profile_menu_roster">ROSTER</string>
+    <string name="profile_menu_contacts">CONTACTS</string>
+    <string name="profile_menu_collection">COLLECTION</string>
+    <string name="profile_menu_journal">JOURNAL</string>
     <string name="profile_menu_online">SHARE</string>
     <string name="profile_menu_toolbox">TOOLS</string>
     <string name="profile_menu_options">OPTIONS</string>

@@ -82,7 +82,6 @@ import dev.alenajam.monsterdialer.characters.ui.ContextualGuideButton
 import dev.alenajam.monsterdialer.characters.ui.GuideContent
 import dev.alenajam.monsterdialer.characters.ui.CharacterSettingsSummaryViewModel
 import dev.alenajam.monsterdialer.characters.ui.CharactersHomeScreen
-import dev.alenajam.monsterdialer.characters.ui.CharacterToolsContent
 import dev.alenajam.monsterdialer.characters.ui.PlayerCharacterSettingsContent
 import dev.alenajam.monsterdialer.characters.ui.CharacterSharingViewModel
 import dev.alenajam.monsterdialer.characters.ui.PlayerCharacterSettingsRoute
@@ -491,6 +490,7 @@ class MainActivity : AppCompatActivity() {
                                 CharacterPackSettingsContent(
                                     viewModel = characterPackSettingsViewModel,
                                     showImportUi = false,
+                                    onImportCharacter = { characterImportLauncher.launch(arrayOf("*/*")) },
                                 )
                             },
                             isScrollable = visiblePacks.isNotEmpty(),
@@ -589,26 +589,6 @@ class MainActivity : AppCompatActivity() {
                                     topContentPadding = 0.dp,
                                     horizontalContentPadding = RetroScreenHorizontalPadding,
                                     showTopBar = false,
-                                    visibleInSettings = false,
-                                ),
-                                SettingsSubpage(
-                                    title = stringResource(R.string.character_tools_title),
-                                    content = { _ ->
-                                        val navigator = LocalSettingsRootNavigator.current
-                                        val subpageNavigator = LocalSettingsSubpageNavigator.current
-                                        CharacterToolsContent(
-                                            onOpenContactCharacters = { navigator?.invoke(CharacterSettingsPage.ToolboxContactCharacters.index, ContactCharacterSettingsEntryPoint.Overview.payload) },
-                                            onOpenContactDefaults = { navigator?.invoke(CharacterSettingsPage.ContactDefaults.index, ContactCharacterSettingsEntryPoint.Defaults.payload) },
-                                            onOpenJournal = { navigator?.invoke(CharacterSettingsPage.BattleJournal.index, null) },
-                                            onOpenPacks = { navigator?.invoke(CharacterSettingsPage.CharacterPacks.index, null) },
-                                            onImport = { characterImportLauncher.launch(arrayOf("*/*")) },
-                                            onBack = { subpageNavigator?.navigateBack() },
-                                        )
-                                    },
-                                    isScrollable = false,
-                                    topContentPadding = RetroScreenTopContentPadding,
-                                    showTopBar = false,
-                                    horizontalContentPadding = RetroScreenHorizontalPadding,
                                     visibleInSettings = false,
                                 ),
                             )
