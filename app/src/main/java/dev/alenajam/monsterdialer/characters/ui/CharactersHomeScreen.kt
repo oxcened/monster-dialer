@@ -271,9 +271,13 @@ private fun GameBoyStat(label: String, value: String) {
 @Composable
 private fun GameBoyMenuItem(text: String, selected: Boolean = false, onClick: () -> Unit) {
     Box(
-        modifier = Modifier.fillMaxWidth().clickable(onClick = onClick).padding(vertical = 1.dp),
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(30.dp)
+            .clickable(onClick = onClick),
+        contentAlignment = Alignment.CenterStart,
     ) {
-        GameBoyText(stringResource(R.string.profile_menu_cursor, text).takeIf { selected } ?: text, 15.sp)
+        GameBoyText(stringResource(R.string.profile_menu_cursor, text).takeIf { selected } ?: text, 18.sp)
     }
 }
 

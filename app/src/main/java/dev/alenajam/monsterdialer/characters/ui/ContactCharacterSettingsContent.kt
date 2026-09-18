@@ -238,7 +238,11 @@ fun ColumnScope.ContactCharacterSettingsContent(
         val isRandomMode = (if (selectedTab == 0) trainerMode else monsterMode) == ContactCharacterMode.Random
         val listState = if (selectedTab == 0) trainerListState else monsterListState
         val gridState = if (selectedTab == 0) trainerGridState else monsterGridState
-        val usesGlobalDefaults = false
+        val usesGlobalDefaults = if (selectedTab == 0) {
+            trainerUsesGlobalDefaults
+        } else {
+            monsterUsesGlobalDefaults
+        }
         var controlsVisible by remember { mutableStateOf(true) }
         val controlsScrollConnection = remember {
             object : NestedScrollConnection {

@@ -234,7 +234,6 @@ class CharacterAssignmentStore(
         return when {
             character != null -> ContactCharacterSelection(character, ContactCharacterMode.Default)
             configuredMode == ContactCharacterMode.Random -> ContactCharacterSelection(null, ContactCharacterMode.Random)
-            configuredMode == ContactCharacterMode.Default -> ContactCharacterSelection(null, ContactCharacterMode.Default)
             defaultCharacter != null -> ContactCharacterSelection(defaultCharacter, ContactCharacterMode.Default)
             else -> ContactCharacterSelection(null, ContactCharacterMode.Random)
         }
@@ -284,7 +283,7 @@ class CharacterAssignmentStore(
         val normalizedKey = normalizeContactKeyOrNull(contactKey) ?: return false
         val document = read()
         return document.contactsByType[normalizedKey]?.containsKey(type) == true ||
-            document.contactModes[normalizedKey]?.containsKey(type) == true ||
+            document.contactModes[normalizedKey]?.get(type)?.let { it != ContactCharacterMode.Default } == true ||
             (type == CharacterType.Monster && normalizedKey in document.contacts)
     }
 

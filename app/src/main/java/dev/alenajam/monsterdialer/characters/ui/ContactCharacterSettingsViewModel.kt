@@ -349,6 +349,12 @@ class ContactCharacterSettingsViewModel @Inject constructor(
                     randomPool = monsterPool.takeIf { monsterRandom }?.toList(),
                 ),
             )
+            if (!pendingGuidedTrainerRandom && trainer == null) {
+                selected.numbers.forEach { assignmentRepository.clearContactOverride(it, CharacterType.Trainer) }
+            }
+            if (!monsterRandom && monster == null) {
+                selected.numbers.forEach { assignmentRepository.clearContactOverride(it, CharacterType.Monster) }
+            }
             _assignedTrainer.value = trainer
             _assignedMonster.value = monster
             _trainerMode.value = if (trainerRandom) ContactCharacterMode.Random else ContactCharacterMode.Default
@@ -409,19 +415,29 @@ class ContactCharacterSettingsViewModel @Inject constructor(
         }
     }
 
-    fun assignTrainer(reference: CharacterReference?, onCompleted: () -> Unit = {}) =
-        updateExistingContactAssignment(
-            type = CharacterType.Trainer,
-            update = ContactCharacterAssignmentUpdate(character = reference),
-            onCompleted = onCompleted,
-        )
+    fun assignTrainer(reference: CharacterReference?, onCompleted: () -> Unit = {}) {
+        if (reference == null) {
+            setUsesGlobalDefaults(CharacterType.Trainer, true, onCompleted)
+        } else {
+            updateExistingContactAssignment(
+                type = CharacterType.Trainer,
+                update = ContactCharacterAssignmentUpdate(character = reference),
+                onCompleted = onCompleted,
+            )
+        }
+    }
 
-    fun assignMonster(reference: CharacterReference?, onCompleted: () -> Unit = {}) =
-        updateExistingContactAssignment(
-            type = CharacterType.Monster,
-            update = ContactCharacterAssignmentUpdate(character = reference),
-            onCompleted = onCompleted,
-        )
+    fun assignMonster(reference: CharacterReference?, onCompleted: () -> Unit = {}) {
+        if (reference == null) {
+            setUsesGlobalDefaults(CharacterType.Monster, true, onCompleted)
+        } else {
+            updateExistingContactAssignment(
+                type = CharacterType.Monster,
+                update = ContactCharacterAssignmentUpdate(character = reference),
+                onCompleted = onCompleted,
+            )
+        }
+    }
 
     fun randomizeTrainer() = setRandomMode(CharacterType.Trainer)
 
@@ -437,7 +453,11 @@ class ContactCharacterSettingsViewModel @Inject constructor(
         onCompleted = onCompleted,
     )
 
-    fun setUsesGlobalDefaults(type: CharacterType, usesGlobalDefaults: Boolean) {
+    fun setUsesGlobalDefaults(
+        type: CharacterType,
+        usesGlobalDefaults: Boolean,
+        onCompleted: () -> Unit = {},
+    ) {
         val selected = _contact.value ?: return
         viewModelScope.launch {
             selected.numbers.forEach { number ->
@@ -462,6 +482,7 @@ class ContactCharacterSettingsViewModel @Inject constructor(
             selected.numbers.forEach { assignmentRepository.clearContactRandomPool(it, type) }
             _contactRandomPools.value = _contactRandomPools.value - type
             restoreSelectedContactState()
+            onCompleted()
         }
     }
 
