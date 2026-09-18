@@ -95,6 +95,7 @@ private val ProfilePixelFont = FontFamily(Font(R.font.ui_pixel_font))
 private val ProfilePixelTextStyle = androidx.compose.ui.text.TextStyle(
     fontFamily = ProfilePixelFont,
 )
+private val ProfileBackground = Color(0xFF171122)
 
 private enum class ProfileCharacterSection { Trainer, Monster }
 
@@ -118,7 +119,7 @@ fun CharactersHomeScreen(
 
     val pageModifier = Modifier
         .fillMaxSize()
-        .background(Color.Black)
+        .background(ProfileBackground)
         .then(
             Modifier.verticalScroll(rememberScrollState()),
         )
