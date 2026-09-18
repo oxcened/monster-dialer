@@ -128,7 +128,7 @@ fun RetroCallsScreen(
                 .background(Color(0xFFF9F7FC)),
             contentPadding = androidx.compose.foundation.layout.PaddingValues(
                 start = RetroScreenHorizontalPadding,
-                top = 12.dp,
+                top = 0.dp,
                 end = RetroScreenHorizontalPadding,
                 bottom = RetroScreenBottomContentPadding,
             ),

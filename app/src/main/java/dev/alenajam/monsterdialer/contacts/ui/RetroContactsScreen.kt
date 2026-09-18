@@ -139,7 +139,7 @@ fun RetroContactsScreen(
         Box(modifier = Modifier.fillMaxSize()) {
             LazyColumn(
                 state = listState,
-                contentPadding = PaddingValues(start = 2.dp, top = 12.dp, end = 2.dp, bottom = 96.dp),
+                contentPadding = PaddingValues(start = 2.dp, top = 0.dp, end = 2.dp, bottom = 96.dp),
                 verticalArrangement = Arrangement.spacedBy(0.dp),
             ) {
                 if (searchQuery.isBlank()) {
