@@ -98,6 +98,8 @@ private val ProfilePixelTextStyle = androidx.compose.ui.text.TextStyle(
 
 private enum class ProfileCharacterSection { Trainer, Monster }
 
+private enum class ProfileMenuAction { Roster, OnlineProfile, Toolbox, Options }
+
 @Composable
 fun CharactersHomeScreen(
     onOpenSettings: () -> Unit,
@@ -162,6 +164,7 @@ private fun GameBoyProfileLayout(
     val trainerTitle = stringResource(R.string.character_type_trainer)
     val monsterTitle = stringResource(R.string.character_type_monster)
     var selectedSection by remember { mutableStateOf(ProfileCharacterSection.Trainer) }
+    var selectedMenuAction by remember { mutableStateOf(ProfileMenuAction.Roster) }
     Box(
         modifier = Modifier
             .fillMaxWidth()
@@ -236,10 +239,34 @@ private fun GameBoyProfileLayout(
                 }
                 RetroMenuWindow(modifier = Modifier.width(220.dp).fillMaxHeight()) {
                     Column(verticalArrangement = Arrangement.spacedBy(1.dp)) {
-                        GameBoyMenuItem(stringResource(R.string.profile_menu_roster), true, onOpenRoster)
-                        GameBoyMenuItem(stringResource(R.string.profile_menu_online), false, onOpenOnlineProfile)
-                        GameBoyMenuItem(stringResource(R.string.profile_menu_toolbox), false, onOpenToolbox)
-                        GameBoyMenuItem(stringResource(R.string.profile_menu_options), false, onOpenOptions)
+                        GameBoyMenuItem(
+                            stringResource(R.string.profile_menu_roster),
+                            selectedMenuAction == ProfileMenuAction.Roster,
+                        ) {
+                            selectedMenuAction = ProfileMenuAction.Roster
+                            onOpenRoster()
+                        }
+                        GameBoyMenuItem(
+                            stringResource(R.string.profile_menu_online),
+                            selectedMenuAction == ProfileMenuAction.OnlineProfile,
+                        ) {
+                            selectedMenuAction = ProfileMenuAction.OnlineProfile
+                            onOpenOnlineProfile()
+                        }
+                        GameBoyMenuItem(
+                            stringResource(R.string.profile_menu_toolbox),
+                            selectedMenuAction == ProfileMenuAction.Toolbox,
+                        ) {
+                            selectedMenuAction = ProfileMenuAction.Toolbox
+                            onOpenToolbox()
+                        }
+                        GameBoyMenuItem(
+                            stringResource(R.string.profile_menu_options),
+                            selectedMenuAction == ProfileMenuAction.Options,
+                        ) {
+                            selectedMenuAction = ProfileMenuAction.Options
+                            onOpenOptions()
+                        }
                     }
                 }
             }
