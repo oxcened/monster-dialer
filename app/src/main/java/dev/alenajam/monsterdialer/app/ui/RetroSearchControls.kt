@@ -17,6 +17,10 @@ import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
@@ -26,8 +30,10 @@ import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import dev.alenajam.monsterdialer.R
@@ -92,6 +98,7 @@ private fun RetroSearchInput(
     onQueryChanged: (String) -> Unit,
 ) {
     val keyboardController = LocalSoftwareKeyboardController.current
+    var textFieldValue by remember { mutableStateOf(TextFieldValue(query, TextRange(query.length))) }
     val cursorTransition = rememberInfiniteTransition(label = "retro-search-cursor")
     val cursorAlpha by cursorTransition.animateFloat(
         initialValue = 1f,
@@ -99,6 +106,11 @@ private fun RetroSearchInput(
         animationSpec = infiniteRepeatable(tween(450), RepeatMode.Reverse),
         label = "retro-search-cursor-alpha",
     )
+    LaunchedEffect(query) {
+        if (textFieldValue.text != query) {
+            textFieldValue = TextFieldValue(query, TextRange(query.length))
+        }
+    }
     Box(
         modifier = Modifier
             .fillMaxWidth()
@@ -110,8 +122,11 @@ private fun RetroSearchInput(
         contentAlignment = Alignment.CenterStart,
     ) {
         BasicTextField(
-            value = query,
-            onValueChange = onQueryChanged,
+            value = textFieldValue,
+            onValueChange = {
+                textFieldValue = it
+                onQueryChanged(it.text)
+            },
             textStyle = TextStyle(color = Color.Transparent),
             cursorBrush = SolidColor(Color.Transparent),
             singleLine = true,

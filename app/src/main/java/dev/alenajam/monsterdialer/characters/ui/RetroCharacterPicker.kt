@@ -243,6 +243,7 @@ internal fun RetroCharacterPicker(
             RetroContextMenu(
                 modifier = Modifier.fillMaxWidth(0.68f),
                 fontFamily = RetroPickerFont,
+                onDismissRequest = { optionsOpen = false },
                 items = (if (randomPoolOpen) {
                     listOf(
                         RetroContextMenuItem(label = stringResource(R.string.contact_picker_choose)) {

@@ -112,6 +112,7 @@ internal fun PlayerRosterScreen(
             ) {
                 RetroContextMenu(
                     modifier = Modifier.fillMaxWidth(0.72f),
+                    onDismissRequest = { menuSlot = null },
                     items = if (monster == null) {
                         listOf(
                             RetroContextMenuItem(label = stringResource(R.string.retro_picker_add)) {

@@ -1,5 +1,6 @@
 package dev.alenajam.monsterdialer.app.ui
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Arrangement
@@ -40,9 +41,11 @@ internal data class RetroContextMenuItem(
 internal fun RetroContextMenu(
     items: List<RetroContextMenuItem>,
     fontFamily: FontFamily,
+    onDismissRequest: () -> Unit,
     modifier: Modifier = Modifier,
     title: String? = null,
 ) {
+    BackHandler(onBack = onDismissRequest)
     var selectedIndex by remember(items) {
         mutableIntStateOf(items.indexOfFirst { it.showCursor == true }.takeIf { it >= 0 } ?: 0)
     }

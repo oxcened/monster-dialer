@@ -179,6 +179,7 @@ fun RetroCallsScreen(
                 RetroContextMenu(
                     modifier = Modifier.fillMaxWidth(0.68f),
                     fontFamily = CallLogPixelFont,
+                    onDismissRequest = { filterDialogOpen = false },
                     items = RetroCallFilter.entries.map { item ->
                         RetroContextMenuItem(
                             label = stringResource(item.labelRes),
@@ -353,6 +354,7 @@ private fun RetroFavoriteActionMenu(
         RetroContextMenu(
             modifier = Modifier.fillMaxWidth(0.68f),
             fontFamily = CallLogPixelFont,
+            onDismissRequest = onDismiss,
             items = listOf(
                 RetroContextMenuItem(stringResource(CallsR.string.call), onClick = onCall),
                 RetroContextMenuItem(stringResource(CallsR.string.remove), onClick = onRemove),
@@ -495,6 +497,7 @@ private fun RetroCallActionMenu(
             RetroContextMenu(
                 modifier = Modifier.fillMaxWidth(0.82f),
                 fontFamily = CallLogPixelFont,
+                onDismissRequest = onDismiss,
                 items = menuItems,
             )
         }

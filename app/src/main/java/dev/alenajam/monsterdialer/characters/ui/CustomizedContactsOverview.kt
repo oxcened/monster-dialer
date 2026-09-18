@@ -134,6 +134,7 @@ internal fun CustomizedContactsOverview(
                 RetroContextMenu(
                     modifier = Modifier.fillMaxWidth(0.72f),
                     fontFamily = ContactRosterPixelFont,
+                    onDismissRequest = { menuContact = null },
                     items = listOf(
                         RetroContextMenuItem(
                             label = stringResource(R.string.contact_context_menu_trainer),

@@ -319,6 +319,7 @@ class MainActivity : AppCompatActivity() {
                                     RetroContextMenu(
                                         modifier = Modifier.fillMaxWidth(0.78f),
                                         fontFamily = FontFamily(Font(R.font.ui_pixel_font)),
+                                        onDismissRequest = onDismiss,
                                         items = listOf(
                                             RetroContextMenuItem(
                                                 stringResource(R.string.favorites),
