@@ -363,12 +363,23 @@ private fun RetroContactFastScroller(
     val totalItems = layoutInfo.totalItemsCount
     if (totalItems <= 12 || totalItems <= visibleItems * 2) return
     val position = (listState.firstVisibleItemIndex.toFloat() / (totalItems - visibleItems).coerceAtLeast(1)).coerceIn(0f, 1f)
-    val scope = rememberCoroutineScope()
     BoxWithConstraints(
         modifier = modifier.width(40.dp).fillMaxHeight().semantics { this.contentDescription = contentDescription }.pointerInput(Unit) {
             detectDragGestures(
-                onDragStart = { offset -> scope.launch { listState.requestScrollToItem((offset.y / size.height * (totalItems - visibleItems).coerceAtLeast(0)).roundToInt()) } },
-                onDrag = { change, _ -> scope.launch { listState.requestScrollToItem((change.position.y / size.height * (totalItems - visibleItems).coerceAtLeast(0)).roundToInt()) } },
+                onDragStart = { offset ->
+                    val maxFirstVisibleItem = (totalItems - visibleItems).coerceAtLeast(0)
+                    val targetIndex = (offset.y / size.height * maxFirstVisibleItem)
+                        .roundToInt()
+                        .coerceIn(0, maxFirstVisibleItem)
+                    listState.requestScrollToItem(targetIndex)
+                },
+                onDrag = { change, _ ->
+                    val maxFirstVisibleItem = (totalItems - visibleItems).coerceAtLeast(0)
+                    val targetIndex = (change.position.y / size.height * maxFirstVisibleItem)
+                        .roundToInt()
+                        .coerceIn(0, maxFirstVisibleItem)
+                    listState.requestScrollToItem(targetIndex)
+                },
             )
         },
     ) {
