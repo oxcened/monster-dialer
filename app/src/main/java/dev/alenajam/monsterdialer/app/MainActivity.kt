@@ -22,9 +22,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material3.DropdownMenu
-import androidx.compose.material3.DropdownMenuItem
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -75,6 +72,7 @@ import dev.alenajam.monsterdialer.app.ui.rememberMonsterIcons
 import dev.alenajam.monsterdialer.app.ui.rememberMonsterTypography
 import dev.alenajam.monsterdialer.characters.ui.AddCharacterScreen
 import dev.alenajam.monsterdialer.calls.ui.RetroCallsScreen
+import dev.alenajam.monsterdialer.contacts.ui.RetroContactsScreen
 import dev.alenajam.monsterdialer.characters.ui.ContactCharacterSettingsEntryPoint
 import dev.alenajam.monsterdialer.characters.ui.ContactCharacterSettingsContent
 import dev.alenajam.monsterdialer.characters.ui.ContactCharacterSettingsViewModel
@@ -114,7 +112,6 @@ import dev.alenajam.opendialer.feature.appShell.DialerApp
 import dev.alenajam.opendialer.feature.appShell.HomeNavigationItem
 import dev.alenajam.opendialer.feature.appShell.HomeScreenConfiguration
 import dev.alenajam.opendialer.feature.appShell.HomeTab
-import dev.alenajam.opendialer.feature.contacts.ContactRowTrailingContent
 import dev.alenajam.opendialer.feature.settings.LocalSettingsSubpageNavigator
 import dev.alenajam.opendialer.feature.settings.LocalSettingsRootNavigator
 import kotlinx.coroutines.launch
@@ -237,6 +234,13 @@ class MainActivity : AppCompatActivity() {
                                     favoritesOnly = true,
                                 )
                             },
+                            customContactsContent = { searchQuery, onOpenSettingsSubpage ->
+                                RetroContactsScreen(
+                                    searchQuery = searchQuery,
+                                    onOpenSettingsSubpage = onOpenSettingsSubpage,
+                                    characterSettingsViewModel = contactCharacterSettingsViewModel,
+                                )
+                            },
                             customActionBarHorizontalPadding = RetroScreenHorizontalPadding,
                             customActionBarVerticalPadding = RetroScreenFooterVerticalPadding,
                             customSearchBar = { isActive, query, onQueryChanged, onActivate ->
@@ -272,7 +276,7 @@ class MainActivity : AppCompatActivity() {
                                     modifier = Modifier.fillMaxWidth(),
                                     verticalAlignment = Alignment.CenterVertically,
                                 ) {
-                                    if (currentTab == HomeTab.CALLS || currentTab == HomeTab.FAVORITES) {
+                                    if (currentTab == HomeTab.CALLS || currentTab == HomeTab.FAVORITES || currentTab == HomeTab.CONTACTS) {
                                         Box(modifier = Modifier.weight(1f)) {
                                             if (!searchActive) {
                                                 RetroActionButton(
@@ -344,49 +348,6 @@ class MainActivity : AppCompatActivity() {
                                             RetroContextMenuItem(stringResource(R.string.cancel), showCursor = false, onClick = onDismiss),
                                         ),
                                     )
-                                }
-                            },
-                            contactRowTrailingContent = ContactRowTrailingContent { contact, onOpenSettingsSubpage ->
-                                val coroutineScope = rememberCoroutineScope()
-                                var expanded by remember(contact.id) { mutableStateOf(false) }
-                                Box {
-                                    IconButton(onClick = { expanded = true }) {
-                                        dev.alenajam.opendialer.core.common.ui.AppIcon(
-                                            LocalMonsterAppIcons.current.personalizeContact,
-                                            contentDescription = stringResource(R.string.contact_row_actions),
-                                        )
-                                    }
-                                    DropdownMenu(
-                                        expanded = expanded,
-                                        onDismissRequest = { expanded = false },
-                                    ) {
-                                        DropdownMenuItem(
-                                            text = { Text(stringResource(R.string.contact_characters_action)) },
-                                            leadingIcon = {
-                                                dev.alenajam.opendialer.core.common.ui.AppIcon(
-                                                    dev.alenajam.opendialer.core.common.ui.LocalAppIcons.current.edit,
-                                                    contentDescription = null,
-                                                )
-                                            },
-                                            onClick = {
-                                                expanded = false
-                                                coroutineScope.launch {
-                                                    contactCharacterSettingsViewModel.selectContact(contact)
-                                                    onOpenSettingsSubpage(CharacterSettingsPage.ContactCharacters.index, ContactCharacterSettingsEntryPoint.ContactList.payload)
-                                                }
-                                            },
-                                        )
-                                        DropdownMenuItem(
-                                            text = { Text(stringResource(R.string.linked_online_profile_title)) },
-                                            onClick = {
-                                                expanded = false
-                                                coroutineScope.launch {
-                                                    contactCharacterSettingsViewModel.selectContact(contact)
-                                                    onOpenSettingsSubpage(CharacterSettingsPage.LinkedOnlineProfile.index, null)
-                                                }
-                                            },
-                                        )
-                                    }
                                 }
                             },
                             customNavigationItem = HomeNavigationItem(

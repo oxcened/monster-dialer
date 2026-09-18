@@ -13,6 +13,8 @@ import dev.alenajam.monsterdialer.packs.data.CharacterAssignmentTarget
 import dev.alenajam.monsterdialer.packs.data.CharacterReference
 import dev.alenajam.monsterdialer.packs.data.CharacterType
 import dev.alenajam.opendialer.data.calls.DialerCall
+import dev.alenajam.opendialer.data.contacts.ContactsRepository
+import dev.alenajam.opendialer.data.contacts.DialerContactSummary
 import java.io.File
 import javax.inject.Inject
 import kotlinx.coroutines.Dispatchers
@@ -30,13 +32,37 @@ class MonsterCallLogViewModel @Inject constructor(
     private val assignments: CharacterAssignmentRepository,
     private val characters: CharactersRepository,
     private val journal: BattleJournalStore,
+    private val contactsRepository: ContactsRepository,
 ) : ViewModel() {
     private val _artworkByCallId = MutableStateFlow<Map<Int, MonsterCallLogArtwork>>(emptyMap())
     val artworkByCallId: StateFlow<Map<Int, MonsterCallLogArtwork>> = _artworkByCallId
     private val _artworkByContactNumber = MutableStateFlow<Map<String, MonsterCallLogArtwork>>(emptyMap())
     val artworkByContactNumber: StateFlow<Map<String, MonsterCallLogArtwork>> = _artworkByContactNumber
+    private val _artworkByContactId = MutableStateFlow<Map<Int, MonsterCallLogArtwork>>(emptyMap())
+    val artworkByContactId: StateFlow<Map<Int, MonsterCallLogArtwork>> = _artworkByContactId
     val journalEntries: StateFlow<List<BattleJournalEntry>> = journal.entries
     val assignmentVersion: StateFlow<Long> = assignments.assignmentVersion
+
+    suspend fun refreshContacts(contacts: List<DialerContactSummary>) {
+        _artworkByContactId.value = withContext(Dispatchers.IO) {
+            buildMap {
+                for (contact in contacts) {
+                var artwork: MonsterCallLogArtwork? = null
+                for (number in contactsRepository.getContactNumbers(contact.id)) {
+                    val reference = assignments
+                        .getContactCharacterSelection(number, CharacterType.Monster)
+                        .character
+                    artwork = reference?.let(::artworkFor)
+                    if (artwork != null) break
+                }
+                val resolvedArtwork = artwork ?: MonsterCallLogArtwork(
+                    builtInResource = BuiltInCharacters.anonymousMonster.enemyArtwork.resource,
+                )
+                    put(contact.id, resolvedArtwork)
+                }
+            }
+        }
+    }
 
     suspend fun refresh(calls: List<DialerCall>, favoriteNumbers: Set<String> = emptySet()) {
         val artwork = withContext(Dispatchers.IO) {

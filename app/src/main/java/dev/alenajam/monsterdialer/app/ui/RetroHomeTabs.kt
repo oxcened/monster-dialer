@@ -82,7 +82,7 @@ internal fun RetroHomeTabs(
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .background(Color(0xFFFFF7E7))
+            .background(RetroTabFace)
             .windowInsetsPadding(WindowInsets.statusBarsIgnoringVisibility)
             .padding(start = 8.dp, end = 8.dp),
     ) {

@@ -337,50 +337,6 @@ internal fun RetroCharacterPicker(
 }
 
 @Composable
-internal fun RetroPickerModeBar(
-    selectedType: CharacterType,
-    mode: ContactAssignmentMode,
-    onModeChanged: (ContactAssignmentMode) -> Unit,
-) {
-    val chooseLabel = stringResource(
-        if (selectedType == CharacterType.Trainer) R.string.contact_choose_trainer else R.string.contact_choose_monster,
-    )
-    Column(modifier = Modifier.fillMaxWidth().padding(horizontal = 12.dp, vertical = 2.dp)) {
-        Row(
-            modifier = Modifier.padding(top = 2.dp),
-            horizontalArrangement = Arrangement.spacedBy(16.dp),
-        ) {
-            RetroPickerChoice(
-                label = stringResource(R.string.contact_character_source_global),
-                selected = mode == ContactAssignmentMode.Global,
-                onClick = { onModeChanged(ContactAssignmentMode.Global) },
-            )
-            RetroPickerChoice(
-                label = chooseLabel,
-                selected = mode == ContactAssignmentMode.Custom,
-                onClick = { onModeChanged(ContactAssignmentMode.Custom) },
-            )
-            RetroPickerChoice(
-                label = stringResource(R.string.randomize),
-                selected = mode == ContactAssignmentMode.Random,
-                onClick = { onModeChanged(ContactAssignmentMode.Random) },
-            )
-        }
-    }
-}
-
-@Composable
-private fun RetroPickerChoice(
-    label: String,
-    selected: Boolean,
-    onClick: () -> Unit,
-) {
-    RetroSelectableRow(selected = selected, onClick = onClick) {
-        Text(label.uppercase(), fontFamily = RetroPickerFont, fontSize = 12.sp, color = RetroInk)
-    }
-}
-
-@Composable
 private fun RetroCharacterRow(
     entry: RetroCharacterEntry,
     isSelected: Boolean,

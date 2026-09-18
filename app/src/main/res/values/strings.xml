@@ -289,6 +289,7 @@
     <string name="online_profile_firebase_not_configured" comment="Technical configuration error shown when the Online Profile backend is unavailable.">Firebase is not configured.</string>
     <string name="online_profile_share_text" comment="%1$s is an HTTPS link to the user's shared MonsterDialer profile.">Check out my MonsterDialer profile:\n%1$s</string>
     <string name="contact_characters_action" comment="Contact-row overflow action that opens character customization for a contact.">Characters</string>
+    <string name="contact_details_action" comment="Contact-row action that opens the system contact details.">Details</string>
     <string name="customized_contacts_title">Customized contacts</string>
     <string name="customized_contacts_empty_title">No customized contacts</string>
     <string name="customized_contacts_empty_description">Choose a contact to assign a trainer and monster.</string>

@@ -116,7 +116,7 @@ fun CharactersHomeScreen(
 
     val pageModifier = Modifier
         .fillMaxSize()
-        .background(MaterialTheme.colorScheme.background)
+        .background(Color.Black)
         .then(
             Modifier.verticalScroll(rememberScrollState()),
         )
