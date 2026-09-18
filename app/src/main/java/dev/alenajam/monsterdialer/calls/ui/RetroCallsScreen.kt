@@ -3,7 +3,6 @@ package dev.alenajam.monsterdialer.calls.ui
 import android.text.format.DateUtils
 import android.provider.ContactsContract
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -26,10 +25,8 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalResources
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
@@ -40,7 +37,6 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.compose.LifecycleEventEffect
-import coil.compose.AsyncImage
 import dev.alenajam.monsterdialer.R
 import dev.alenajam.monsterdialer.app.ui.RetroContextMenu
 import dev.alenajam.monsterdialer.app.ui.RetroContextMenuItem
@@ -499,32 +495,6 @@ private fun RetroCallActionMenu(
                 fontFamily = CallLogPixelFont,
                 onDismissRequest = onDismiss,
                 items = menuItems,
-            )
-        }
-    }
-}
-
-@Composable
-private fun MonsterCallLogAvatar(artwork: MonsterCallLogArtwork) {
-    Box(
-        modifier = Modifier
-            .size(42.dp),
-        contentAlignment = Alignment.Center,
-    ) {
-        artwork.builtInResource?.let { resource ->
-            Image(
-                painter = painterResource(resource),
-                contentDescription = null,
-                contentScale = ContentScale.Fit,
-                modifier = Modifier.fillMaxSize(),
-            )
-        }
-        artwork.file?.let { file ->
-            AsyncImage(
-                model = file,
-                contentDescription = null,
-                contentScale = ContentScale.Fit,
-                modifier = Modifier.fillMaxSize(),
             )
         }
     }

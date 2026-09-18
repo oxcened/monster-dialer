@@ -22,11 +22,6 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.withContext
 
-data class MonsterCallLogArtwork(
-    val file: File? = null,
-    val builtInResource: Int? = null,
-)
-
 @HiltViewModel
 class MonsterCallLogViewModel @Inject constructor(
     private val assignments: CharacterAssignmentRepository,
@@ -55,9 +50,7 @@ class MonsterCallLogViewModel @Inject constructor(
                     artwork = reference?.let(::artworkFor)
                     if (artwork != null) break
                 }
-                val resolvedArtwork = artwork ?: MonsterCallLogArtwork(
-                    builtInResource = BuiltInCharacters.anonymousMonster.enemyArtwork.resource,
-                )
+                val resolvedArtwork = artwork ?: MonsterCallLogArtwork.plumguard()
                     put(contact.id, resolvedArtwork)
                 }
             }
@@ -70,13 +63,21 @@ class MonsterCallLogViewModel @Inject constructor(
             calls.mapNotNull { call ->
                 val number = call.contactInfo.number?.takeIf(String::isNotBlank)
                 val journalArtwork = journalArtworkFor(call, number, journalIndex)
-                val fallbackArtwork = number?.let {
+                val fallbackArtwork = if (call.isAnonymous()) {
+                    MonsterCallLogArtwork.anonymous()
+                } else {
+                    number?.let {
                     val reference = assignments
                         .getContactCharacterSelection(it, CharacterType.Monster)
                         .character
                     reference?.let(::artworkFor)
-                } ?: MonsterCallLogArtwork(builtInResource = BuiltInCharacters.anonymousMonster.enemyArtwork.resource)
-                call.id to (journalArtwork ?: fallbackArtwork)
+                    } ?: MonsterCallLogArtwork.plumguard()
+                }
+                call.id to if (call.isAnonymous()) {
+                    MonsterCallLogArtwork.anonymous()
+                } else {
+                    journalArtwork ?: fallbackArtwork
+                }
             }.toMap()
         }
         _artworkByCallId.value = artwork
@@ -94,7 +95,7 @@ class MonsterCallLogViewModel @Inject constructor(
                     ?.let(::artworkFor)
                 val resolvedArtwork = callArtwork
                     ?: assignedArtwork
-                    ?: MonsterCallLogArtwork(builtInResource = BuiltInCharacters.anonymousMonster.enemyArtwork.resource)
+                    ?: MonsterCallLogArtwork.plumguard()
                 number to resolvedArtwork
             }.toMap()
         }

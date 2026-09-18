@@ -5,7 +5,6 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.detectDragGestures
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxWithConstraints
@@ -37,10 +36,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.input.pointer.pointerInput
-import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.font.Font
@@ -54,6 +51,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import dev.alenajam.monsterdialer.R
 import dev.alenajam.monsterdialer.calls.ui.MonsterCallLogArtwork
+import dev.alenajam.monsterdialer.calls.ui.MonsterCallLogAvatar
 import dev.alenajam.monsterdialer.calls.ui.MonsterCallLogViewModel
 import dev.alenajam.monsterdialer.characters.ui.ContactCharacterSettingsEntryPoint
 import dev.alenajam.monsterdialer.characters.ui.ContactCharacterSettingsViewModel
@@ -61,7 +59,6 @@ import dev.alenajam.monsterdialer.characters.ui.CharacterSettingsPage
 import dev.alenajam.monsterdialer.app.ui.RetroContextMenu
 import dev.alenajam.monsterdialer.app.ui.RetroContextMenuItem
 import dev.alenajam.monsterdialer.app.ui.RetroSelectionArrow
-import coil.compose.AsyncImage
 import dev.alenajam.opendialer.core.common.CommonUtils
 import dev.alenajam.opendialer.core.common.PermissionUtils
 import dev.alenajam.opendialer.core.common.ui.AppIcon
@@ -277,33 +274,11 @@ private fun RetroContactRow(
             androidx.compose.foundation.layout.Spacer(Modifier.size(20.dp))
         }
         if (artwork != null) {
-            RetroContactArtwork(artwork)
+            MonsterCallLogAvatar(artwork)
         } else {
             ContactAvatar(contact.name, contact.image, colorKey = contactAvatarColorKey(contact.name), modifier = Modifier.size(42.dp))
         }
         RetroContactsText(contact.name, 16.sp, modifier = Modifier.weight(1f).padding(horizontal = 10.dp), maxLines = 1)
-    }
-}
-
-@Composable
-private fun RetroContactArtwork(artwork: MonsterCallLogArtwork) {
-    Box(modifier = Modifier.size(42.dp), contentAlignment = Alignment.Center) {
-        artwork.builtInResource?.let { resource ->
-            Image(
-                painter = painterResource(resource),
-                contentDescription = null,
-                contentScale = ContentScale.Fit,
-                modifier = Modifier.fillMaxSize(),
-            )
-        }
-        artwork.file?.let { file ->
-            AsyncImage(
-                model = file,
-                contentDescription = null,
-                contentScale = ContentScale.Fit,
-                modifier = Modifier.fillMaxSize(),
-            )
-        }
     }
 }
 
