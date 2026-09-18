@@ -29,10 +29,10 @@ import dev.alenajam.opendialer.core.common.ui.AppIcon
 import dev.alenajam.opendialer.core.common.ui.LocalAppIcons
 import dev.alenajam.opendialer.feature.appShell.HomeTab
 
-private val RetroTabOrange = Color(0xFFF58000)
-private val RetroTabFace = Color(0xFFFFA23A)
-private val RetroTabHighlight = Color(0xFFFFF4D4)
-private val RetroTabShadow = Color(0xFFB8B8B0)
+private val RetroTabViolet = Color(0xFF7355A5)
+private val RetroTabFace = Color(0xFF9A7BC4)
+private val RetroTabHighlight = Color(0xFFEDE5F7)
+private val RetroTabShadow = Color(0xFFB8B0C2)
 private val RetroTabInk = Color(0xFF202020)
 
 @Composable
@@ -91,7 +91,7 @@ internal fun RetroHomeTabs(
                 modifier = Modifier
                     .padding(top = 2.dp)
                     .height(54.dp)
-                    .background(RetroTabOrange)
+                    .background(RetroTabViolet)
                     .padding(3.dp),
                 horizontalArrangement = Arrangement.spacedBy(3.dp),
             ) {
@@ -106,7 +106,7 @@ internal fun RetroHomeTabs(
                         contentAlignment = Alignment.Center,
                     ) {
                         // The original control uses only a white top/left keyline and a gray
-                        // lower/right drop edge; keep the face otherwise flat and orange.
+                        // lower/right drop edge; keep the face otherwise flat and violet.
                         Box(
                             modifier = Modifier
                                 .fillMaxWidth()
@@ -115,7 +115,7 @@ internal fun RetroHomeTabs(
                                 .padding(start = 3.dp, top = 3.dp)
                                 .background(RetroTabShadow)
                                 .padding(end = 3.dp, bottom = 3.dp)
-                                .background(if (selected) RetroTabFace else RetroTabOrange),
+                                .background(if (selected) RetroTabFace else RetroTabViolet),
                             contentAlignment = Alignment.Center,
                         ) {
                             tab.icon(selected)
