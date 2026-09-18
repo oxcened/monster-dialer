@@ -41,10 +41,12 @@ import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
@@ -64,11 +66,15 @@ import dev.alenajam.monsterdialer.app.ui.RetroScreenHorizontalPadding
 import dev.alenajam.monsterdialer.app.ui.RetroScreenTopContentPadding
 import dev.alenajam.monsterdialer.app.ui.RetroScreenFooterVerticalPadding
 import dev.alenajam.monsterdialer.app.ui.RetroActionButton
+import dev.alenajam.monsterdialer.app.ui.RetroSearchBar
+import dev.alenajam.monsterdialer.app.ui.RetroSearchButton
 import dev.alenajam.monsterdialer.app.ui.RetroContextMenu
 import dev.alenajam.monsterdialer.app.ui.RetroContextMenuItem
+import dev.alenajam.monsterdialer.app.ui.RetroHomeTabs
 import dev.alenajam.monsterdialer.app.ui.rememberMonsterIcons
 import dev.alenajam.monsterdialer.app.ui.rememberMonsterTypography
 import dev.alenajam.monsterdialer.characters.ui.AddCharacterScreen
+import dev.alenajam.monsterdialer.calls.ui.RetroCallsScreen
 import dev.alenajam.monsterdialer.characters.ui.ContactCharacterSettingsEntryPoint
 import dev.alenajam.monsterdialer.characters.ui.ContactCharacterSettingsContent
 import dev.alenajam.monsterdialer.characters.ui.ContactCharacterSettingsViewModel
@@ -213,28 +219,99 @@ class MainActivity : AppCompatActivity() {
                             showVoicemailInNavigation = false,
                             showVoicemailInOverflow = true,
                             hideSearchAndDialpadOnCustomTab = true,
+                            showDialpadFab = false,
+                            customCallsContent = { onOpenHistory, onOpenContacts, onAddFavorite, onEditNumberBeforeCall ->
+                                RetroCallsScreen(
+                                    onOpenHistory = onOpenHistory,
+                                    onOpenContacts = onOpenContacts,
+                                    onAddFavorite = onAddFavorite,
+                                    onEditNumberBeforeCall = onEditNumberBeforeCall,
+                                )
+                            },
+                            customFavoritesContent = { onOpenContacts, onAddFavorite, onEditNumberBeforeCall ->
+                                RetroCallsScreen(
+                                    onOpenHistory = {},
+                                    onOpenContacts = onOpenContacts,
+                                    onAddFavorite = onAddFavorite,
+                                    onEditNumberBeforeCall = onEditNumberBeforeCall,
+                                    favoritesOnly = true,
+                                )
+                            },
                             customActionBarHorizontalPadding = RetroScreenHorizontalPadding,
                             customActionBarVerticalPadding = RetroScreenFooterVerticalPadding,
-                            customActionBar = { onSelect, onMenu, onBack, backEnabled ->
-                                Row(
-                                    modifier = Modifier.fillMaxWidth(),
-                                    horizontalArrangement = Arrangement.SpaceBetween,
-                                ) {
-                                    RetroActionButton(
-                                        key = stringResource(R.string.retro_key_a),
-                                        label = stringResource(R.string.retro_action_dial_label),
-                                        onClick = onSelect,
+                            customSearchBar = { isActive, query, onQueryChanged, onActivate ->
+                                val searchFocusRequester = remember { FocusRequester() }
+                                val keyboardController = LocalSoftwareKeyboardController.current
+                                LaunchedEffect(isActive) {
+                                    if (isActive) {
+                                        searchFocusRequester.requestFocus()
+                                        keyboardController?.show()
+                                    } else {
+                                        keyboardController?.hide()
+                                    }
+                                }
+                                if (isActive) {
+                                    RetroSearchBar(
+                                        label = stringResource(R.string.contact_picker_search_name_prefix),
+                                        query = query,
+                                        focusRequester = searchFocusRequester,
+                                        onQueryChanged = onQueryChanged,
+                                        modifier = Modifier.padding(horizontal = 16.dp, vertical = 4.dp),
                                     )
-                                    RetroActionButton(
-                                        key = stringResource(R.string.retro_key_b),
-                                        label = stringResource(
-                                            if (backEnabled) R.string.retro_action_back_label else R.string.retro_action_menu_label,
-                                        ),
-                                        onClick = if (backEnabled) onBack else onMenu,
+                                } else {
+                                    RetroSearchButton(
+                                        label = stringResource(R.string.contact_picker_search),
+                                        onClick = onActivate,
+                                        modifier = Modifier.fillMaxWidth(),
+                                        horizontalArrangement = Arrangement.Start,
                                     )
                                 }
                             },
-                            customContextMenu = { currentTab, onCalls, onContacts, onProfile, onDismiss ->
+                            customActionBar = { onSelect, _, onBack, onSearch, backEnabled, currentTab, searchActive, searchContent ->
+                                Row(
+                                    modifier = Modifier.fillMaxWidth(),
+                                    verticalAlignment = Alignment.CenterVertically,
+                                ) {
+                                    if (currentTab == HomeTab.CALLS || currentTab == HomeTab.FAVORITES) {
+                                        Box(modifier = Modifier.weight(1f)) {
+                                            if (!searchActive) {
+                                                RetroActionButton(
+                                                    key = stringResource(R.string.retro_key_a),
+                                                    label = stringResource(R.string.contact_picker_search),
+                                                    onClick = onSearch,
+                                                )
+                                            }
+                                        }
+                                        RetroActionButton(
+                                            key = stringResource(if (searchActive) R.string.retro_key_b else R.string.retro_key_a),
+                                            label = stringResource(if (searchActive) R.string.customized_contacts_back_action else R.string.retro_action_dial_label),
+                                            onClick = if (searchActive) onBack else onSelect,
+                                        )
+                                    } else if (backEnabled) {
+                                        RetroActionButton(
+                                            key = stringResource(R.string.retro_key_b),
+                                            label = stringResource(R.string.customized_contacts_back_action),
+                                            onClick = onBack,
+                                        )
+                                    } else {
+                                        RetroActionButton(
+                                            key = stringResource(R.string.retro_key_a),
+                                            label = stringResource(R.string.retro_action_dial_label),
+                                            onClick = onSelect,
+                                        )
+                                    }
+                                }
+                            },
+                            customTopBar = { currentTab, onFavorites, onCalls, onContacts, onProfile ->
+                                RetroHomeTabs(
+                                    currentTab = currentTab,
+                                    onFavorites = onFavorites,
+                                    onCalls = onCalls,
+                                    onContacts = onContacts,
+                                    onProfile = onProfile,
+                                )
+                            },
+                            customContextMenu = { currentTab, onFavorites, onCalls, onContacts, onProfile, onDismiss ->
                                 Box(
                                     modifier = Modifier.fillMaxSize().clickable(onClick = onDismiss),
                                     contentAlignment = Alignment.Center,
@@ -243,6 +320,11 @@ class MainActivity : AppCompatActivity() {
                                         modifier = Modifier.fillMaxWidth(0.78f),
                                         fontFamily = FontFamily(Font(R.font.ui_pixel_font)),
                                         items = listOf(
+                                            RetroContextMenuItem(
+                                                stringResource(R.string.favorites),
+                                                showCursor = currentTab == HomeTab.FAVORITES,
+                                                onClick = onFavorites,
+                                            ),
                                             RetroContextMenuItem(
                                                 stringResource(R.string.recents),
                                                 showCursor = currentTab == HomeTab.CALLS,

@@ -15,6 +15,17 @@ import kotlinx.coroutines.tasks.await
 class OnlineProfileAuthentication @Inject constructor(
     @ApplicationContext private val context: Context,
 ) {
+    fun observeAuthState(onChanged: (Boolean) -> Unit): () -> Unit {
+        val auth = FirebaseApp.initializeApp(context)?.let(FirebaseAuth::getInstance)
+        if (auth == null) {
+            onChanged(false)
+            return {}
+        }
+        val listener = FirebaseAuth.AuthStateListener { onChanged(it.currentUser != null) }
+        auth.addAuthStateListener(listener)
+        return { auth.removeAuthStateListener(listener) }
+    }
+
     fun currentUserId(): String? = FirebaseApp.initializeApp(context)
         ?.let(FirebaseAuth::getInstance)
         ?.currentUser

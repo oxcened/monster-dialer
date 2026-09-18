@@ -18,6 +18,7 @@
 ## Code organization
 
 - Keep screen files focused on UI composition and event wiring. Move reusable or non-UI helpers—such as matching, formatting, and data transformation—into appropriately named files.
+- Reuse existing GSC components for equivalent interactions. In particular, context menus and modal action lists must use the shared `RetroContextMenu`/`RetroContextMenuItem` styling instead of introducing one-off `Dialog`, `AlertDialog`, or `RetroMenuWindow` variants. Preserve the same cursor, spacing, typography, and interaction behavior across screens.
 
 ## Git workflow
 

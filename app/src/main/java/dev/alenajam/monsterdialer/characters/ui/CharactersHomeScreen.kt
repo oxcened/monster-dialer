@@ -80,13 +80,14 @@ import dev.alenajam.monsterdialer.packs.data.CharacterType
 import dev.alenajam.opendialer.core.common.ui.AppIcon
 import dev.alenajam.opendialer.core.common.ui.LocalAppIcons
 import dev.alenajam.monsterdialer.app.ui.RetroSelectableRow
-import dev.alenajam.monsterdialer.app.ui.RetroTextBox
+import dev.alenajam.monsterdialer.app.ui.RetroDoubleBorderTextBox
+import dev.alenajam.monsterdialer.app.ui.RetroTypewriterText
 import dev.alenajam.monsterdialer.app.ui.RetroActionButton
 import dev.alenajam.monsterdialer.app.ui.RetroFooter
+import dev.alenajam.monsterdialer.app.ui.RetroMenuWindow
 import dev.alenajam.monsterdialer.app.ui.RetroScreenBottomContentPadding
 import dev.alenajam.monsterdialer.app.ui.RetroScreenPanelMargin
 import dev.alenajam.monsterdialer.app.ui.RetroScreenTopContentPadding
-import dev.alenajam.monsterdialer.app.ui.RetroProfilePanel
 import sh.calvin.reorderable.ReorderableItem
 import sh.calvin.reorderable.rememberReorderableLazyListState
 
@@ -136,7 +137,7 @@ fun CharactersHomeScreen(
                 onChangeTrainer = { onOpenSubpage(CharacterSettingsPage.PlayerCharacter.index, PlayerCharacterSettingsRoute.ChangeTrainer.payload) },
                 onChangeMonster = { onOpenSubpage(CharacterSettingsPage.PlayerCharacter.index, "${PlayerCharacterSettingsRoute.AddToRoster.payload}:0") },
                 onOpenRoster = {
-                    onOpenSubpage(CharacterSettingsPage.PlayerCharacter.index, PlayerCharacterSettingsRoute.AddToRoster.payload)
+                    onOpenSubpage(CharacterSettingsPage.PlayerCharacter.index, PlayerCharacterSettingsRoute.Roster.payload)
                 },
                 onOpenOnlineProfile = { onOpenSubpage(CharacterSettingsPage.ProfileLink.index, null) },
                 onOpenToolbox = { onOpenSubpage(CharacterSettingsPage.Toolbox.index, null) },
@@ -170,7 +171,7 @@ private fun GameBoyProfileLayout(
             modifier = Modifier.fillMaxWidth(),
             verticalArrangement = Arrangement.spacedBy(10.dp),
         ) {
-            GameBoyPanel {
+            RetroMenuWindow {
                 Column(verticalArrangement = Arrangement.spacedBy(3.dp)) {
                     Row(
                         modifier = Modifier.fillMaxWidth().clickable {
@@ -227,10 +228,13 @@ private fun GameBoyProfileLayout(
                 horizontalArrangement = Arrangement.spacedBy(8.dp),
                 verticalAlignment = Alignment.Top,
             ) {
-                GameBoyPanel(modifier = Modifier.weight(1f).fillMaxHeight()) {
-                    GameBoyText(stringResource(R.string.profile_roster_description), 16.sp)
+                RetroMenuWindow(modifier = Modifier.weight(1f).fillMaxHeight()) {
+                    RetroTypewriterText(
+                        text = stringResource(R.string.profile_roster_description),
+                        style = ProfilePixelTextStyle.copy(fontSize = 16.sp, lineHeight = 18.sp),
+                    )
                 }
-                GameBoyPanel(modifier = Modifier.width(220.dp).fillMaxHeight(), fillWidth = false) {
+                RetroMenuWindow(modifier = Modifier.width(220.dp).fillMaxHeight()) {
                     Column(verticalArrangement = Arrangement.spacedBy(1.dp)) {
                         GameBoyMenuItem(stringResource(R.string.profile_menu_roster), true, onOpenRoster)
                         GameBoyMenuItem(stringResource(R.string.profile_menu_online), false, onOpenOnlineProfile)
@@ -246,21 +250,6 @@ private fun GameBoyProfileLayout(
 @Composable
 private fun String.withProfileCursor(selected: Boolean): String =
     takeIf { selected }?.let { stringResource(R.string.profile_menu_cursor, it) } ?: this
-
-@Composable
-private fun GameBoyPanel(
-    modifier: Modifier = Modifier,
-    fillWidth: Boolean = true,
-    onClick: (() -> Unit)? = null,
-    content: @Composable () -> Unit,
-) {
-    RetroProfilePanel(
-        modifier = modifier
-            .then(if (fillWidth) Modifier.fillMaxWidth() else Modifier)
-            .then(if (onClick == null) Modifier else Modifier.clickable(onClick = onClick)),
-        content = content,
-    )
-}
 
 @Composable
 private fun GameBoyText(

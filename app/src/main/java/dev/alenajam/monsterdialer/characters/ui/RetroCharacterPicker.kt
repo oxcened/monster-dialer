@@ -39,7 +39,7 @@ import dev.alenajam.monsterdialer.app.ui.RetroContextMenu
 import dev.alenajam.monsterdialer.app.ui.RetroContextMenuItem
 import dev.alenajam.monsterdialer.app.ui.RetroActionButton
 import dev.alenajam.monsterdialer.app.ui.RetroSearchButton
-import dev.alenajam.monsterdialer.app.ui.RetroTextBox
+import dev.alenajam.monsterdialer.app.ui.RetroDoubleBorderTextBox
 import dev.alenajam.monsterdialer.app.ui.RetroFooter
 import dev.alenajam.monsterdialer.app.ui.RetroFooterAction
 import dev.alenajam.monsterdialer.characters.data.BuiltInCharacter
@@ -234,7 +234,8 @@ internal fun RetroCharacterPicker(
                 },
             )
         )
-        if (optionsOpen) {
+    }
+    if (optionsOpen) {
         Box(
             modifier = Modifier.fillMaxSize().clickable { optionsOpen = false },
             contentAlignment = Alignment.Center,
@@ -327,10 +328,9 @@ internal fun RetroCharacterPicker(
                 },
             )
         }
-        }
-        if (guideOpen && guideContents != null) {
-            ContextualGuideDialog(contents = guideContents, onDismiss = { guideOpen = false })
-        }
+    }
+    if (guideOpen && guideContents != null) {
+        ContextualGuideDialog(contents = guideContents, onDismiss = { guideOpen = false })
     }
 }
 }

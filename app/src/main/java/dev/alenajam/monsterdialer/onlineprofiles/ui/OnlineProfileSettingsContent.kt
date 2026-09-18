@@ -1,6 +1,7 @@
 package dev.alenajam.monsterdialer.onlineprofiles.ui
 
 import android.content.Intent
+import android.widget.Toast
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -55,10 +56,9 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import dev.alenajam.monsterdialer.R
 import dev.alenajam.monsterdialer.app.ui.LocalMonsterAppIcons
-import dev.alenajam.monsterdialer.app.ui.RetroProfilePanel
 import dev.alenajam.monsterdialer.app.ui.RetroSelectableRow
 import dev.alenajam.monsterdialer.app.ui.RetroMenuWindow
-import dev.alenajam.monsterdialer.app.ui.RetroTextBox
+import dev.alenajam.monsterdialer.app.ui.RetroDoubleBorderTextBox
 import dev.alenajam.monsterdialer.app.ui.RetroActionButton
 import dev.alenajam.monsterdialer.app.ui.RetroFooter
 import dev.alenajam.monsterdialer.app.ui.RetroScreenPanelMargin
@@ -119,6 +119,12 @@ fun OnlineProfileSection(viewModel: OnlineProfileSettingsViewModel = hiltViewMod
             }
     }
     }
+    androidx.compose.runtime.LaunchedEffect(error) {
+        error?.let { message ->
+            Toast.makeText(context, message, Toast.LENGTH_LONG).show()
+            viewModel.clearError()
+        }
+    }
     val linkIsOn = profile != null
     var guideOpen by remember { mutableStateOf(false) }
     var selectedMenuIndex by remember { mutableStateOf(0) }
@@ -146,8 +152,11 @@ fun OnlineProfileSection(viewModel: OnlineProfileSettingsViewModel = hiltViewMod
                     ) {
                         Text(
                             text = stringResource(
-                                if (linkIsOn) R.string.online_profile_unlink_action
-                                else R.string.online_profile_sign_in_action,
+                                when {
+                                    linkIsOn -> R.string.online_profile_unlink_action
+                                    isSignedIn -> R.string.online_profile_enable
+                                    else -> R.string.online_profile_sign_in_action
+                                },
                             ),
                             fontFamily = ProfilePixelFont,
                             fontSize = 16.sp,
@@ -198,7 +207,7 @@ fun OnlineProfileSection(viewModel: OnlineProfileSettingsViewModel = hiltViewMod
 
     if (profile == null) {
         Box(modifier = Modifier.fillMaxWidth().padding(8.dp)) {
-            RetroProfilePanel {
+            RetroMenuWindow {
             Column(
                 verticalArrangement = Arrangement.spacedBy(8.dp),
             ) {
@@ -262,7 +271,7 @@ fun OnlineProfileSection(viewModel: OnlineProfileSettingsViewModel = hiltViewMod
         )
         val shareTitle = stringResource(R.string.online_profile_share)
         Box(modifier = Modifier.fillMaxWidth().padding(8.dp)) {
-            RetroProfilePanel {
+            RetroMenuWindow {
             Column(
                 verticalArrangement = Arrangement.spacedBy(8.dp),
             ) {

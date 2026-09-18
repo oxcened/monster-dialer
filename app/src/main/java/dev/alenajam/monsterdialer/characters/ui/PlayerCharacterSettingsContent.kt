@@ -11,12 +11,14 @@ import dev.alenajam.monsterdialer.R
 import dev.alenajam.monsterdialer.characters.data.BuiltInCharacters
 import dev.alenajam.monsterdialer.packs.data.CharacterReference
 import dev.alenajam.monsterdialer.packs.data.CharacterType
+import dev.alenajam.opendialer.feature.settings.LocalSettingsRootNavigator
 
 internal enum class PlayerCharacterSettingsRoute(
     val payload: String,
     val selectedTab: Int,
 ) {
     ChangeTrainer(payload = "change_trainer", selectedTab = 0),
+    Roster(payload = "roster", selectedTab = 1),
     AddToRoster(payload = "add_to_roster", selectedTab = 1);
 
     companion object {
@@ -52,6 +54,7 @@ internal fun ColumnScope.PlayerCharacterSettingsContent(
         }
     }
     val navigator = dev.alenajam.opendialer.feature.settings.LocalSettingsSubpageNavigator.current
+    val rootNavigator = LocalSettingsRootNavigator.current
     val targetSlotIndex = payload?.split(":")?.getOrNull(1)?.toIntOrNull()
     val selectedMonster = if (route == PlayerCharacterSettingsRoute.AddToRoster) {
         targetSlotIndex?.let(monsterRoster::getOrNull)
@@ -66,11 +69,48 @@ internal fun ColumnScope.PlayerCharacterSettingsContent(
         route?.let { viewModel.setSelectedTab(it.selectedTab) }
     }
 
+    if (route == PlayerCharacterSettingsRoute.Roster) {
+        val profileViewModel = hiltViewModel<CharacterSettingsSummaryViewModel>()
+        val profile = profileViewModel
+            .playerProfile
+            .collectAsStateWithLifecycle()
+            .value
+        PlayerRosterScreen(
+            roster = profile.roster,
+            onSelectSlot = { slotIndex ->
+                val targetPayload = if (slotIndex < profile.roster.size) {
+                    "${PlayerCharacterSettingsRoute.AddToRoster.payload}:$slotIndex"
+                } else {
+                    PlayerCharacterSettingsRoute.AddToRoster.payload
+                }
+                rootNavigator?.invoke(CharacterSettingsPage.PlayerCharacter.index, targetPayload)
+            },
+            onRemoveMonster = { monster ->
+                monster.reference?.let(profileViewModel::removePlayerMonsterFromRoster)
+            },
+            onSwitchSlots = { sourceSlot, targetSlot ->
+                val references = profile.roster.map(PlayerRosterMonster::reference).toMutableList()
+                if (references.all { it != null }) {
+                    val source = references[sourceSlot]
+                    references[sourceSlot] = references[targetSlot]
+                    references[targetSlot] = source
+                    profileViewModel.reorderPlayerMonsterRoster(references.filterNotNull())
+                }
+            },
+            onBack = { navigator?.navigateBack() },
+        )
+        return
+    }
+
     RetroCharacterPicker(
         modifier = Modifier.weight(1f),
         type = selectedType,
         selected = if (selectedType == CharacterType.Trainer) assignedTrainer else selectedMonster,
-        characters = if (selectedType == CharacterType.Trainer) trainers else monsters,
+        characters = if (selectedType == CharacterType.Trainer) {
+            trainers
+        } else {
+            monsters.availableForPlayerRoster(monsterRoster, targetSlotIndex)
+        },
         unlockedVariants = unlockedVariants,
         filter = if (selectedType == CharacterType.Monster) filter else MonsterFilter.All,
         defaultCharacter = if (selectedType == CharacterType.Trainer) {

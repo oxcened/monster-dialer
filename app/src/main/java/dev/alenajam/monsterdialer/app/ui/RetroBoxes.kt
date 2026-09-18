@@ -17,7 +17,7 @@ import androidx.compose.ui.unit.dp
 
 /** Shared four-layer Game Boy box frame. */
 @Composable
-internal fun RetroBoxFrame(
+internal fun RetroDoubleBorderBox(
     modifier: Modifier = Modifier,
     height: Dp? = null,
     content: @Composable androidx.compose.foundation.layout.BoxWithConstraintsScope.() -> Unit,
@@ -93,9 +93,9 @@ internal fun RetroProfilePanel(
     }
 }
 
-/** Compact single-window frame for the small menus used on GSC-style screens. */
+/** Reusable gray GSC menu-window border with a single outer missing-pixel notch. */
 @Composable
-internal fun RetroMenuWindow(
+internal fun RetroMenuBorder(
     modifier: Modifier = Modifier,
     content: @Composable () -> Unit,
 ) {
@@ -104,7 +104,7 @@ internal fun RetroMenuWindow(
             .drawBehind {
                 // Keep the complete chrome close to the dialogue frame's depth, but use
                 // the much tighter gray/black proportions of a GSC menu window.
-                val step = 2.dp.toPx()
+                val step = 3.dp.toPx()
 
                 fun pixelPath(offset: Float): Path = Path().apply {
                     // One square missing-pixel notch per corner, matching the dialogue frame.
@@ -124,34 +124,48 @@ internal fun RetroMenuWindow(
                 }
 
                 // GSC menu chrome: pale outer casing, darker inset edge, then a crisp black keyline.
-                drawPath(pixelPath(0f), Color(0xFFB8B8B0))
+                drawPath(pixelPath(0f), Color(0xFFC8C8C0))
                 drawRect(
                     color = Color(0xFF686860),
-                    topLeft = androidx.compose.ui.geometry.Offset(3.dp.toPx(), 3.dp.toPx()),
+                    topLeft = androidx.compose.ui.geometry.Offset(4.dp.toPx(), 4.dp.toPx()),
                     size = androidx.compose.ui.geometry.Size(
-                        size.width - 6.dp.toPx(),
-                        size.height - 6.dp.toPx(),
+                        size.width - 8.dp.toPx(),
+                        size.height - 8.dp.toPx(),
                     ),
                 )
                 drawRect(
                     color = Color(0xFF202020),
-                    topLeft = androidx.compose.ui.geometry.Offset(5.dp.toPx(), 5.dp.toPx()),
-                    size = androidx.compose.ui.geometry.Size(
-                        size.width - 10.dp.toPx(),
-                        size.height - 10.dp.toPx(),
-                    ),
-                )
-                drawRect(
-                    color = Color.White,
                     topLeft = androidx.compose.ui.geometry.Offset(7.dp.toPx(), 7.dp.toPx()),
                     size = androidx.compose.ui.geometry.Size(
                         size.width - 14.dp.toPx(),
                         size.height - 14.dp.toPx(),
                     ),
                 )
+                drawRect(
+                    color = Color.White,
+                    topLeft = androidx.compose.ui.geometry.Offset(10.dp.toPx(), 10.dp.toPx()),
+                    size = androidx.compose.ui.geometry.Size(
+                        size.width - 20.dp.toPx(),
+                        size.height - 20.dp.toPx(),
+                    ),
+                )
             }
-            .padding(horizontal = 12.dp, vertical = 8.dp),
     ) {
         content()
+    }
+}
+
+/** Compact padded box that uses the reusable gray GSC menu-window border. */
+@Composable
+internal fun RetroMenuWindow(
+    modifier: Modifier = Modifier,
+    content: @Composable () -> Unit,
+) {
+    RetroMenuBorder(modifier = modifier) {
+        androidx.compose.foundation.layout.Box(
+            modifier = Modifier.padding(horizontal = 20.dp, vertical = 16.dp),
+        ) {
+            content()
+        }
     }
 }

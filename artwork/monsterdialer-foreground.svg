@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="108" height="108" viewBox="0 0 108 108">
+  <!-- Transparent foreground layer for an Android adaptive icon. -->
+  <g fill="none">
+    <!-- Dark inset display bezel -->
+    <rect x="19" y="22" width="70" height="30" rx="4" fill="#373832"/>
+    <rect x="22" y="25" width="64" height="24" rx="2" fill="#20231e"/>
+    <!-- Blank muted olive LCD -->
+    <rect x="24.5" y="27.5" width="59" height="19" rx="0.7" fill="#858c60"/>
+    <path d="M26.5 29.3h55" stroke="#aeb57d" stroke-width="0.7" opacity="0.42"/>
+
+    <!-- Unmarked answer and hang-up controls -->
+    <circle cx="35" cy="72" r="13" fill="#6f8b6b" stroke="#373832" stroke-width="1.7"/>
+    <circle cx="73" cy="72" r="13" fill="#8d5358" stroke="#373832" stroke-width="1.7"/>
+  </g>
+</svg>

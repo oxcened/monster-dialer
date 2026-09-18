@@ -1,11 +1,13 @@
 package dev.alenajam.monsterdialer.app.ui
 
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -23,6 +25,7 @@ import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.unit.sp
 internal data class RetroContextMenuItem(
     val label: String,
@@ -43,7 +46,7 @@ internal fun RetroContextMenu(
     var selectedIndex by remember(items) {
         mutableIntStateOf(items.indexOfFirst { it.showCursor == true }.takeIf { it >= 0 } ?: 0)
     }
-    RetroBoxFrame(modifier = modifier) {
+    RetroDoubleBorderBox(modifier = modifier) {
         Column(
             modifier = Modifier.padding(8.dp),
             verticalArrangement = Arrangement.spacedBy(2.dp),
@@ -87,19 +90,70 @@ internal fun RetroConfirmationMenu(
     onCancel: () -> Unit,
     onConfirm: () -> Unit,
 ) {
-    RetroBoxFrame(modifier = modifier, height = 156.dp) {
-        Column(
-            modifier = Modifier.padding(8.dp),
-            verticalArrangement = Arrangement.spacedBy(2.dp),
-        ) {
-            Text(title.uppercase(), fontFamily = fontFamily, fontSize = 18.sp, color = Color(0xFF202020))
-            message?.takeIf { it.isNotBlank() }?.let {
-                Text(it.uppercase(), fontFamily = fontFamily, fontSize = 18.sp, color = Color(0xFF202020))
-            }
-            Spacer(modifier = Modifier.height(4.dp))
-            ConfirmationActionRow(noLabel, true, fontFamily, onCancel)
-            ConfirmationActionRow(yesLabel, false, fontFamily, onConfirm)
+    RetroDoubleBorderBox(modifier = modifier, height = 156.dp) {
+        RetroConfirmationContent(title, message, noLabel, yesLabel, fontFamily, onCancel, onConfirm)
+    }
+}
+
+/** Base modal shell for retro dialogs. */
+@Composable
+internal fun RetroDialog(
+    onDismissRequest: () -> Unit,
+    modifier: Modifier = Modifier,
+    content: @Composable () -> Unit,
+) {
+    Dialog(onDismissRequest = onDismissRequest) {
+        RetroDoubleBorderBox(modifier = modifier) {
+            content()
         }
+    }
+}
+
+/** Prompt-style confirmation dialog built on the reusable retro dialog shell. */
+@Composable
+internal fun RetroConfirmationDialog(
+    title: String,
+    message: String? = null,
+    noLabel: String,
+    yesLabel: String,
+    fontFamily: FontFamily,
+    modifier: Modifier = Modifier.fillMaxWidth(0.82f),
+    onDismissRequest: () -> Unit,
+    onConfirm: () -> Unit,
+) {
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .clickable(onClick = onDismissRequest),
+        contentAlignment = Alignment.Center,
+    ) {
+        RetroDoubleBorderBox(modifier = modifier.height(156.dp)) {
+            RetroConfirmationContent(title, message, noLabel, yesLabel, fontFamily, onDismissRequest, onConfirm)
+        }
+    }
+}
+
+@Composable
+private fun RetroConfirmationContent(
+    title: String,
+    message: String?,
+    noLabel: String,
+    yesLabel: String,
+    fontFamily: FontFamily,
+    onCancel: () -> Unit,
+    onConfirm: () -> Unit,
+) {
+    Column(
+        modifier = Modifier.padding(8.dp),
+        verticalArrangement = Arrangement.spacedBy(2.dp),
+    ) {
+        Text(title.uppercase(), fontFamily = fontFamily, fontSize = 18.sp, color = Color(0xFF202020))
+        message?.takeIf { it.isNotBlank() }?.let {
+            Text(it.uppercase(), fontFamily = fontFamily, fontSize = 18.sp, color = Color(0xFF202020))
+        }
+        Spacer(modifier = Modifier.height(4.dp))
+        ConfirmationActionRow(noLabel, true, fontFamily, onCancel)
+        ConfirmationActionRow(yesLabel, false, fontFamily, onConfirm)
     }
 }
 

@@ -17,6 +17,7 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.rememberTextMeasurer
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.compose.runtime.withFrameNanos
 import androidx.compose.ui.unit.Constraints
@@ -26,11 +27,11 @@ import kotlinx.coroutines.delay
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.repeatOnLifecycle
 
-private val RetroTextBoxFont = FontFamily(Font(dev.alenajam.monsterdialer.R.font.ui_pixel_font))
+private val RetroDoubleBorderTextBoxFont = FontFamily(Font(dev.alenajam.monsterdialer.R.font.ui_pixel_font))
 
 /** Reusable Game Boy-style text box for menus and other non-battle screens. */
 @Composable
-internal fun RetroTextBox(
+internal fun RetroDoubleBorderTextBox(
     message: String,
     animationKey: Any? = message,
     modifier: Modifier = Modifier,
@@ -41,14 +42,14 @@ internal fun RetroTextBox(
     onCompleted: () -> Unit = {},
 ) {
     val style = TextStyle(
-        fontFamily = RetroTextBoxFont,
+        fontFamily = RetroDoubleBorderTextBoxFont,
         fontSize = 18.sp * textScale,
         lineHeight = 21.sp * textScale,
         color = androidx.compose.ui.graphics.Color.Black,
     )
     val textMeasurer = rememberTextMeasurer()
     val lifecycleOwner = LocalLifecycleOwner.current
-    RetroBoxFrame(modifier = modifier.fillMaxWidth(0.95f), height = height) {
+    RetroDoubleBorderBox(modifier = modifier.fillMaxWidth(0.95f), height = height) {
         val textWidth = with(LocalDensity.current) {
             (maxWidth - 10.dp).roundToPx().coerceAtLeast(0)
         }
@@ -78,6 +79,38 @@ internal fun RetroTextBox(
             modifier = Modifier.padding(5.dp),
         )
     }
+}
+
+/** Reusable GSC typewriter text without adding a dialogue-box frame. */
+@Composable
+internal fun RetroTypewriterText(
+    text: String,
+    style: TextStyle,
+    modifier: Modifier = Modifier,
+    animationKey: Any? = text,
+    characterDelayMillis: Long = 8,
+) {
+    val lifecycleOwner = LocalLifecycleOwner.current
+    var isPlaced by remember(animationKey, text) { mutableStateOf(false) }
+    var displayedText by remember(animationKey, text) { mutableStateOf("") }
+
+    LaunchedEffect(animationKey, text, lifecycleOwner, isPlaced) {
+        if (!isPlaced) return@LaunchedEffect
+        lifecycleOwner.lifecycle.repeatOnLifecycle(Lifecycle.State.RESUMED) {
+            withFrameNanos { }
+            displayedText = ""
+            text.indices.forEach { index ->
+                displayedText = text.take(index + 1)
+                delay(characterDelayMillis)
+            }
+        }
+    }
+
+    Text(
+        text = displayedText,
+        style = style,
+        modifier = modifier.onGloballyPositioned { isPlaced = true },
+    )
 }
 
 private fun retroTextPages(

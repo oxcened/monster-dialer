@@ -35,7 +35,7 @@ internal fun RetroFooter(
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         message?.let {
-            RetroTextBox(message = it, animationKey = animationKey)
+            RetroDoubleBorderTextBox(message = it, animationKey = animationKey)
         }
         Row(
             modifier = Modifier.fillMaxWidth(),

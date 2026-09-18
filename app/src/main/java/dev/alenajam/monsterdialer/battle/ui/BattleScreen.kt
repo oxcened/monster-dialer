@@ -69,8 +69,8 @@ import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import dev.alenajam.monsterdialer.R
-import dev.alenajam.monsterdialer.app.ui.RetroBoxFrame
-import dev.alenajam.monsterdialer.app.ui.RetroTextBox
+import dev.alenajam.monsterdialer.app.ui.RetroDoubleBorderBox
+import dev.alenajam.monsterdialer.app.ui.RetroDoubleBorderTextBox
 import dev.alenajam.monsterdialer.battle.data.BattleEncounter
 import dev.alenajam.monsterdialer.battle.data.BattleMonster
 import dev.alenajam.monsterdialer.battle.data.BattlePanel
@@ -438,7 +438,7 @@ internal fun BattleDialogue(
     textScale: Float = 1f,
     modifier: Modifier = Modifier
 ) {
-    RetroTextBox(
+    RetroDoubleBorderTextBox(
         message = message,
         animationKey = dialogueId,
         modifier = modifier,

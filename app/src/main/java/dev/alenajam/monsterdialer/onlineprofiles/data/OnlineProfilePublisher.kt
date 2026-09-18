@@ -52,6 +52,9 @@ class OnlineProfilePublisher @Inject constructor(
 
     fun isSignedIn(): Boolean = authentication.currentUserId() != null
 
+    fun observeAuthState(onChanged: (Boolean) -> Unit): () -> Unit =
+        authentication.observeAuthState(onChanged)
+
     suspend fun signInWithGoogle(idToken: String): String = authentication.signInWithGoogle(idToken)
 
     fun signOut() = authentication.signOut()

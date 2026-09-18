@@ -49,7 +49,7 @@ import dev.alenajam.monsterdialer.app.ui.RetroSearchBar
 import dev.alenajam.monsterdialer.app.ui.RetroSearchButton
 import dev.alenajam.monsterdialer.app.ui.RetroSelectableRow
 import dev.alenajam.monsterdialer.app.ui.RetroScreenHorizontalPadding
-import dev.alenajam.monsterdialer.app.ui.RetroTextBox
+import dev.alenajam.monsterdialer.app.ui.RetroDoubleBorderTextBox
 import dev.alenajam.monsterdialer.app.ui.RetroFooter
 import dev.alenajam.monsterdialer.app.ui.RetroFooterAction
 import dev.alenajam.opendialer.core.common.PermissionUtils

@@ -71,7 +71,7 @@ internal fun RetroSearchBar(
     onQueryChanged: (String) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    RetroBoxFrame(
+    RetroDoubleBorderBox(
         modifier = modifier.fillMaxWidth(),
         height = 56.dp,
     ) {

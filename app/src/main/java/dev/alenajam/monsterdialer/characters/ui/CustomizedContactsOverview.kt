@@ -39,12 +39,12 @@ import dev.alenajam.monsterdialer.R
 import dev.alenajam.monsterdialer.app.ui.LocalMonsterAppIcons
 import dev.alenajam.monsterdialer.app.ui.RetroContextMenu
 import dev.alenajam.monsterdialer.app.ui.RetroContextMenuItem
-import dev.alenajam.monsterdialer.app.ui.RetroConfirmationMenu
+import dev.alenajam.monsterdialer.app.ui.RetroConfirmationDialog
 import dev.alenajam.monsterdialer.app.ui.RetroActionButton
 import dev.alenajam.monsterdialer.app.ui.RetroFooter
 import dev.alenajam.monsterdialer.app.ui.RetroFooterAction
 import dev.alenajam.monsterdialer.app.ui.RetroSelectableRow
-import dev.alenajam.monsterdialer.app.ui.RetroTextBox
+import dev.alenajam.monsterdialer.app.ui.RetroDoubleBorderTextBox
 import dev.alenajam.monsterdialer.characters.data.BuiltInCharacters
 import dev.alenajam.monsterdialer.characters.data.ContactCharacterMode
 import dev.alenajam.monsterdialer.characters.data.ContactCharacterOverview
@@ -163,30 +163,18 @@ internal fun CustomizedContactsOverview(
         }
         confirmationContact?.let { contact ->
             val removedMessage = stringResource(R.string.contact_removed_message, contact.label.uppercase())
-            Box(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .clickable {
-                        confirmationContact = null
-                    },
-                contentAlignment = Alignment.Center,
-            ) {
-                RetroConfirmationMenu(
-                    title = stringResource(R.string.contact_remove_prompt),
-                    noLabel = stringResource(R.string.contact_remove_no),
-                    yesLabel = stringResource(R.string.contact_remove_yes),
-                    fontFamily = ContactRosterPixelFont,
-                    modifier = Modifier.fillMaxWidth(0.82f),
-                    onCancel = {
-                        confirmationContact = null
-                    },
-                    onConfirm = {
-                        confirmationContact = null
-                        onContactRemoved(contact)
-                        statusMessage = removedMessage
-                    },
-                )
-            }
+            RetroConfirmationDialog(
+                title = stringResource(R.string.contact_remove_prompt),
+                noLabel = stringResource(R.string.contact_remove_no),
+                yesLabel = stringResource(R.string.contact_remove_yes),
+                fontFamily = ContactRosterPixelFont,
+                onDismissRequest = { confirmationContact = null },
+                onConfirm = {
+                    confirmationContact = null
+                    onContactRemoved(contact)
+                    statusMessage = removedMessage
+                },
+            )
         }
     }
 }

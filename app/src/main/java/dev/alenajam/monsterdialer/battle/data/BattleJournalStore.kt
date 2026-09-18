@@ -31,10 +31,16 @@ class BattleJournalStore @Inject constructor(
     fun hasStoredData(): Boolean = file.isFile
 
     @Synchronized
-    fun record(encounter: BattleEncounter, isRadiantDiscovery: Boolean) {
+    fun record(
+        encounter: BattleEncounter,
+        isRadiantDiscovery: Boolean,
+        call: ActiveCallKey? = null,
+    ) {
         val entry = BattleJournalEntry(
             id = UUID.randomUUID().toString(),
             timestampMillis = System.currentTimeMillis(),
+            callId = call?.callId,
+            callerNumber = call?.contactKey?.takeIf(String::isNotBlank),
             encounterType = encounter.type,
             playerMonsterName = encounter.player.name,
             playerSprite = (encounter.player.backSprite ?: encounter.player.frontSprite).toJournalSprite(),
@@ -160,6 +166,10 @@ class BattleJournalStore @Inject constructor(
 data class BattleJournalEntry(
     val id: String,
     val timestampMillis: Long,
+    /** The in-call stable ID, when the entry was created by a live call. */
+    val callId: String? = null,
+    /** The caller number used to resolve this encounter. */
+    val callerNumber: String? = null,
     val encounterType: EncounterType,
     val playerMonsterName: String,
     val playerSprite: BattleJournalSprite? = null,

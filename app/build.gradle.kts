@@ -146,6 +146,7 @@ dependencies {
     implementation(project(":feature:calls"))
     implementation(project(":feature:contacts"))
     implementation(project(":feature:inCall"))
+    implementation(project(":data:calls"))
     implementation(project(":data:contacts"))
 
     implementation(libs.androidx.core.ktx)
