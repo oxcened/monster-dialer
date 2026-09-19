@@ -359,7 +359,7 @@ class CharacterAssignmentStore(
                 } else {
                     if (update.character == null) {
                         assignments.remove(type)
-                        modes[type] = ContactCharacterMode.Default
+                        modes.remove(type)
                     } else {
                         assignments[type] = update.character
                         modes.remove(type)
