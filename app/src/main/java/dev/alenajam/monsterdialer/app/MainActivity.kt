@@ -558,7 +558,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun isReadyForCalls(): Boolean =
         defaultPhoneManager.isDefaultDialer() &&
-            (Build.VERSION.SDK_INT < Build.VERSION_CODES.Q ||
+            (Build.VERSION.SDK_INT < Build.VERSION_CODES.UPSIDE_DOWN_CAKE ||
                 getSystemService(NotificationManager::class.java)?.canUseFullScreenIntent() == true)
 
 }
