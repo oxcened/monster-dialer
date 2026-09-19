@@ -370,7 +370,8 @@
     <string name="contact_character_source_global">Non personalizzare</string>
     <string name="contact_character_source_custom">Personalizza contatto</string>
     <string name="contact_character_inherited_title">Uso delle impostazioni predefinite globali</string>
-    <string name="contact_character_inherited_message">Questo contatto segue le impostazioni globali di %1$s. Scegli «Scegli %1$s» o «Casuale» qui sopra per sostituirle.</string>
+    <string name="contact_character_inherited_message">Questo contatto segue le impostazioni globali di %1$s. Scegli un personaggio diverso per sostituirle oppure modifica le impostazioni predefinite globali qui sotto.</string>
+    <string name="contact_character_customize">Scegli un altro personaggio</string>
     <string name="contact_character_edit_global_defaults" comment="Button that opens the global contact character defaults from an inherited contact setting.">Modifica impostazioni predefinite globali</string>
     <string name="contact_random_pool_save">Salva gruppo</string>
     <string name="contact_random_pool_empty_title">Scegli almeno un personaggio</string>

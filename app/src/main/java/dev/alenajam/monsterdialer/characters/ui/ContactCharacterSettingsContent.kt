@@ -285,6 +285,12 @@ fun ColumnScope.ContactCharacterSettingsContent(
             if (usesGlobalDefaults && entryPoint != ContactCharacterSettingsEntryPoint.ContactList) {
                 ContactCharacterInheritedSummary(
                     selectedType = if (selectedTab == 0) CharacterType.Trainer else CharacterType.Monster,
+                    onCustomizeContact = {
+                        viewModel.setUsesGlobalDefaults(
+                            type = if (selectedTab == 0) CharacterType.Trainer else CharacterType.Monster,
+                            usesGlobalDefaults = false,
+                        )
+                    },
                     onOpenGlobalDefaults = {
                         rootNavigator?.invoke(CharacterSettingsPage.ContactDefaults.index, null)
                     },
@@ -501,6 +507,7 @@ fun ColumnScope.ContactCharacterSettingsContent(
 @Composable
 private fun ContactCharacterInheritedSummary(
     selectedType: CharacterType,
+    onCustomizeContact: () -> Unit,
     onOpenGlobalDefaults: () -> Unit,
 ) {
     val typeLabel = stringResource(
@@ -523,6 +530,12 @@ private fun ContactCharacterInheritedSummary(
                 style = MaterialTheme.typography.bodyMedium,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
             )
+            TextButton(
+                onClick = onCustomizeContact,
+                modifier = Modifier.align(Alignment.End),
+            ) {
+                Text(stringResource(R.string.contact_character_customize))
+            }
             TextButton(
                 onClick = onOpenGlobalDefaults,
                 modifier = Modifier.align(Alignment.End),

@@ -347,7 +347,8 @@
     <string name="contact_character_source_global">Tilpas ikke</string>
     <string name="contact_character_source_custom">Tilpas kontakt</string>
     <string name="contact_character_inherited_title">Bruger globale standardindstillinger</string>
-    <string name="contact_character_inherited_message">Denne kontakt følger de globale indstillinger for %1$s. Vælg %1$s eller Tilfældig ovenfor for at tilsidesætte dem.</string>
+    <string name="contact_character_inherited_message">Denne kontakt følger de globale indstillinger for %1$s. Vælg en anden karakter for at tilsidesætte dem, eller rediger de globale standardindstillinger nedenfor.</string>
+    <string name="contact_character_customize">Vælg en anden karakter</string>
     <string name="contact_character_edit_global_defaults" comment="Button that opens the global contact character defaults from an inherited contact setting.">Rediger globale standardindstillinger</string>
     <string name="contact_random_pool_save">Gem pulje</string>
     <string name="contact_random_pool_empty_title">Vælg mindst én figur</string>

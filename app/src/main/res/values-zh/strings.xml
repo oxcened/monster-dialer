@@ -341,7 +341,8 @@
     <string name="contact_character_source_global">不自定义</string>
     <string name="contact_character_source_custom">自定义联系人</string>
     <string name="contact_character_inherited_title">正在使用全局默认设置</string>
-    <string name="contact_character_inherited_message">此联系人遵循全局 %1$s 设置。选择上方的“选择%1$s”或“随机”可覆盖这些设置。</string>
+    <string name="contact_character_inherited_message">此联系人遵循全局 %1$s 设置。选择其他角色即可覆盖这些设置，或在下方编辑全局默认设置。</string>
+    <string name="contact_character_customize">选择其他角色</string>
     <string name="contact_character_edit_global_defaults" comment="Button that opens the global contact character defaults from an inherited contact setting.">编辑全局默认设置</string>
     <string name="contact_random_pool_save">保存选择池</string>
     <string name="contact_random_pool_empty_title">请至少选择一个角色</string>

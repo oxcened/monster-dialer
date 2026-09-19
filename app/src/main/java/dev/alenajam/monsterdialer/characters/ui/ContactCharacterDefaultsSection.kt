@@ -1,10 +1,5 @@
 package dev.alenajam.monsterdialer.characters.ui
 
-import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.expandVertically
-import androidx.compose.animation.fadeIn
-import androidx.compose.animation.fadeOut
-import androidx.compose.animation.shrinkVertically
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -29,10 +24,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.draw.clipToBounds
-import androidx.compose.ui.geometry.Offset
-import androidx.compose.ui.input.nestedscroll.NestedScrollConnection
-import androidx.compose.ui.input.nestedscroll.NestedScrollSource
-import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -89,23 +80,6 @@ internal fun ContactCharacterDefaultsSection(
     val selectedPool = if (selectedType in resetPools) allPoolReferences else draftPools[selectedType] ?: savedPool
     val hasUnsavedEmptyPool = draftPools.values.any(Set<CharacterReference>::isEmpty)
     val listState = rememberLazyListState()
-    var controlsVisible by remember { mutableStateOf(true) }
-    val controlsScrollConnection = remember {
-        object : NestedScrollConnection {
-            override fun onPostScroll(
-                consumed: Offset,
-                available: Offset,
-                source: NestedScrollSource,
-            ): Offset {
-                when {
-                    consumed.y < 0f -> controlsVisible = false
-                    consumed.y > 0f -> controlsVisible = true
-                }
-                return Offset.Zero
-            }
-        }
-    }
-
     LaunchedEffect(defaults.randomPools) {
         draftPools.entries.toList().forEach { (type, draftPool) ->
             if (draftPool.isNotEmpty() && defaults.randomPools[type]?.toSet() == draftPool) draftPools.remove(type)
@@ -121,22 +95,16 @@ internal fun ContactCharacterDefaultsSection(
     ) {
     Box(modifier = Modifier.fillMaxSize()) {
     Column(modifier = Modifier.fillMaxSize()) {
-        AnimatedVisibility(
-            visible = controlsVisible,
-            enter = fadeIn() + expandVertically(),
-            exit = fadeOut() + shrinkVertically(),
-        ) {
-            Column(modifier = Modifier.fillMaxWidth()) {
-                Column(
-                    modifier = Modifier.fillMaxWidth().padding(bottom = 8.dp),
-                    verticalArrangement = Arrangement.spacedBy(8.dp),
-                ) {
-                    ContactDefaultsDropdowns(
-                        selectedType = selectedType,
-                        onTypeSelected = { selectedType = it },
-                        onOpenOptions = { optionsMenu = DefaultsOptionsMenu.Root },
-                    )
-                }
+        Column(modifier = Modifier.fillMaxWidth()) {
+            Column(
+                modifier = Modifier.fillMaxWidth().padding(bottom = 8.dp),
+                verticalArrangement = Arrangement.spacedBy(8.dp),
+            ) {
+                ContactDefaultsDropdowns(
+                    selectedType = selectedType,
+                    onTypeSelected = { selectedType = it },
+                    onOpenOptions = { optionsMenu = DefaultsOptionsMenu.Root },
+                )
             }
         }
         Box(
@@ -148,8 +116,7 @@ internal fun ContactCharacterDefaultsSection(
             LazyColumn(
                 state = listState,
                 modifier = Modifier
-                    .fillMaxSize()
-                    .nestedScroll(controlsScrollConnection),
+                    .fillMaxSize(),
                 contentPadding = PaddingValues(bottom = 72.dp),
             ) {
                 if (effectivePoolMode) {

@@ -352,7 +352,8 @@
     <string name="contact_character_source_global">Nicht anpassen</string>
     <string name="contact_character_source_custom">Kontakt anpassen</string>
     <string name="contact_character_inherited_title">Globale Standardeinstellungen werden verwendet</string>
-    <string name="contact_character_inherited_message">Dieser Kontakt folgt den globalen %1$s-Einstellungen. Wähle oben „%1$s auswählen“ oder „Zufällig“, um sie zu überschreiben.</string>
+    <string name="contact_character_inherited_message">Dieser Kontakt folgt den globalen %1$s-Einstellungen. Wähle einen anderen Charakter, um sie zu überschreiben, oder bearbeite unten die globalen Standardeinstellungen.</string>
+    <string name="contact_character_customize">Anderen Charakter auswählen</string>
     <string name="contact_character_edit_global_defaults" comment="Button that opens the global contact character defaults from an inherited contact setting.">Globale Standardeinstellungen bearbeiten</string>
     <string name="contact_random_pool_save">Pool speichern</string>
     <string name="contact_random_pool_empty_title">Wähle mindestens einen Charakter aus</string>
