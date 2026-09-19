@@ -48,6 +48,13 @@ import dev.alenajam.monsterdialer.packs.data.CharacterReference
 import dev.alenajam.monsterdialer.packs.data.CharacterType
 import dev.alenajam.monsterdialer.packs.data.InstalledPackCharacter
 
+private enum class DefaultsOptionsMenu {
+    Root,
+    Mode,
+    Characters,
+    RandomizerPool,
+}
+
 /** Edits the global contact-character defaults and randomizer pools. */
 @Composable
 internal fun ContactCharacterDefaultsSection(
@@ -64,7 +71,7 @@ internal fun ContactCharacterDefaultsSection(
     var selectedType by remember { mutableStateOf(CharacterType.Trainer) }
     val draftPools = remember { mutableStateMapOf<CharacterType, Set<CharacterReference>>() }
     var resetPools by remember { mutableStateOf(emptySet<CharacterType>()) }
-    var optionsOpen by remember { mutableStateOf(false) }
+    var optionsMenu by remember { mutableStateOf<DefaultsOptionsMenu?>(null) }
     val selectedDefault = defaults.defaults[selectedType]
     val unlockedVariants by viewModel.unlockedVariants.collectAsStateWithLifecycle()
     val filter by viewModel.filter.collectAsStateWithLifecycle()
@@ -122,7 +129,7 @@ internal fun ContactCharacterDefaultsSection(
                     ContactDefaultsDropdowns(
                         selectedType = selectedType,
                         onTypeSelected = { selectedType = it },
-                        onOpenOptions = { optionsOpen = true },
+                        onOpenOptions = { optionsMenu = DefaultsOptionsMenu.Root },
                     )
                 }
             }
@@ -182,7 +189,7 @@ internal fun ContactCharacterDefaultsSection(
             )
         }
     }
-    if (optionsOpen) {
+    optionsMenu?.let { menu ->
         val modeItems = listOf(
             RetroContextMenuItem(
                 label = stringResource(
@@ -203,14 +210,14 @@ internal fun ContactCharacterDefaultsSection(
                         BuiltInCharacters.defaultMonsterReference
                     },
                 )
-                optionsOpen = false
+                optionsMenu = null
             },
             RetroContextMenuItem(
                 label = stringResource(R.string.randomize),
                 showCursor = effectivePoolMode,
             ) {
                 onDefaultChanged(selectedType, null)
-                optionsOpen = false
+                optionsMenu = null
             },
         )
         val filterItems = if (selectedType == CharacterType.Monster) {
@@ -221,21 +228,21 @@ internal fun ContactCharacterDefaultsSection(
                     dividerBefore = true,
                 ) {
                     viewModel.setFilter(MonsterFilter.All)
-                    optionsOpen = false
+                    optionsMenu = null
                 },
                 RetroContextMenuItem(
                     label = stringResource(R.string.filter_regular),
                     showCursor = filter == MonsterFilter.Regular,
                 ) {
                     viewModel.setFilter(MonsterFilter.Regular)
-                    optionsOpen = false
+                    optionsMenu = null
                 },
                 RetroContextMenuItem(
                     label = stringResource(R.string.filter_unlocked_radiant),
                     showCursor = filter == MonsterFilter.RadiantUnlocked,
                 ) {
                     viewModel.setFilter(MonsterFilter.RadiantUnlocked)
-                    optionsOpen = false
+                    optionsMenu = null
                 },
             )
         } else {
@@ -246,7 +253,7 @@ internal fun ContactCharacterDefaultsSection(
                 label = stringResource(R.string.add),
                 dividerBefore = true,
             ) {
-                optionsOpen = false
+                optionsMenu = null
                 onAddCharacter(selectedType)
             }
         } else {
@@ -260,32 +267,47 @@ internal fun ContactCharacterDefaultsSection(
                 ) {
                     resetPools = resetPools - selectedType
                     updateRandomPoolDraft(selectedType, allPoolReferences, draftPools) { type, pool -> onPoolChanged(type, pool.toList()) }
-                    optionsOpen = false
+                    optionsMenu = null
                 },
                 RetroContextMenuItem(stringResource(R.string.contact_random_pool_deselect_all)) {
                     resetPools = resetPools - selectedType
                     updateRandomPoolDraft(selectedType, emptySet(), draftPools) { type, pool -> onPoolChanged(type, pool.toList()) }
-                    optionsOpen = false
+                    optionsMenu = null
                 },
                 RetroContextMenuItem(stringResource(R.string.contact_random_pool_reset)) {
                     draftPools.remove(selectedType)
                     resetPools = resetPools + selectedType
                     onPoolReset(selectedType)
-                    optionsOpen = false
+                    optionsMenu = null
                 },
             )
         } else {
             emptyList()
         }
-        if (optionsOpen) {
         RetroContextMenuOverlay(
             modifier = Modifier.fillMaxWidth(0.82f),
             fontFamily = RetroPickerFont,
-            onDismissRequest = { optionsOpen = false },
-            items = modeItems + filterItems + listOfNotNull(addItem) + poolItems +
-                RetroContextMenuItem.cancel(stringResource(R.string.cancel), onClick = { optionsOpen = false }),
+            onDismissRequest = { optionsMenu = null },
+            title = when (menu) {
+                DefaultsOptionsMenu.Root -> null
+                DefaultsOptionsMenu.Mode -> stringResource(R.string.contact_defaults_menu_mode)
+                DefaultsOptionsMenu.Characters -> stringResource(R.string.contact_defaults_menu_characters)
+                DefaultsOptionsMenu.RandomizerPool -> stringResource(R.string.contact_defaults_menu_pool)
+            },
+            items = when (menu) {
+                DefaultsOptionsMenu.Root -> buildList {
+                    add(RetroContextMenuItem(stringResource(R.string.contact_defaults_menu_mode)) { optionsMenu = DefaultsOptionsMenu.Mode })
+                    add(RetroContextMenuItem(stringResource(R.string.contact_defaults_menu_characters)) { optionsMenu = DefaultsOptionsMenu.Characters })
+                    if (effectivePoolMode) {
+                        add(RetroContextMenuItem(stringResource(R.string.contact_defaults_menu_pool)) { optionsMenu = DefaultsOptionsMenu.RandomizerPool })
+                    }
+                    add(RetroContextMenuItem.cancel(stringResource(R.string.cancel)) { optionsMenu = null })
+                }
+                DefaultsOptionsMenu.Mode -> modeItems + RetroContextMenuItem.cancel(stringResource(R.string.back)) { optionsMenu = DefaultsOptionsMenu.Root }
+                DefaultsOptionsMenu.Characters -> filterItems + listOfNotNull(addItem) + RetroContextMenuItem.cancel(stringResource(R.string.back)) { optionsMenu = DefaultsOptionsMenu.Root }
+                DefaultsOptionsMenu.RandomizerPool -> poolItems + RetroContextMenuItem.cancel(stringResource(R.string.back)) { optionsMenu = DefaultsOptionsMenu.Root }
+            },
         )
-        }
     }
     }
     }

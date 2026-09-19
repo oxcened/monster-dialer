@@ -178,6 +178,10 @@
     <string name="contact_context_menu_monster">Monster</string>
     <string name="contact_context_menu_remove">Remove</string>
     <string name="contact_picker_options">Options</string>
+    <string name="back">Back</string>
+    <string name="contact_defaults_menu_mode">Default character</string>
+    <string name="contact_defaults_menu_characters">Character list</string>
+    <string name="contact_defaults_menu_pool">Randomizer pool</string>
     <string name="contact_picker_default">DEFAULT</string>
     <string name="contact_picker_no_trainer_assigned">No trainer assigned.</string>
     <string name="contact_picker_no_monster_assigned">No monster assigned.</string>
