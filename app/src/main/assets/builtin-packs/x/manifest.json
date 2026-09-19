@@ -1,0 +1,194 @@
+{
+  "formatVersion": 2,
+  "id": "dev.alenajam.builtin-zapup",
+  "name": "Built-in Friends",
+  "version": "1.2.2",
+  "license": "Artwork provided by the MonsterDialer project",
+  "creator": "MonsterDialer",
+  "characters": [
+    {
+      "id": "zapup",
+      "name": "Zapup",
+      "type": "monster",
+      "assignableTo": ["contact", "player"],
+      "variants": [
+        {
+          "id": "default",
+          "name": "Default",
+          "frontImage": "art/zapup-front.png",
+          "backImage": "art/zapup-back.png"
+        },
+        {
+          "id": "radiant",
+          "name": "Radiant",
+          "frontImage": "art/zapup-radiant-front.png",
+          "backImage": "art/zapup-radiant-back.png",
+          "isRadiant": true
+        }
+      ],
+      "level": 3,
+      "maxHp": 18
+    },
+    {
+      "id": "oilygeist",
+      "name": "Oilygeist",
+      "type": "monster",
+      "assignableTo": ["contact", "player"],
+      "variants": [
+        {
+          "id": "default",
+          "name": "Default",
+          "frontImage": "art/oilygeist-front.png",
+          "backImage": "art/oilygeist-back.png"
+        },
+        {
+          "id": "radiant",
+          "name": "Radiant",
+          "frontImage": "art/oilygeist-radiant-front.png",
+          "backImage": "art/oilygeist-radiant-back.png",
+          "isRadiant": true
+        }
+      ],
+      "level": 6,
+      "maxHp": 26
+    },
+    {
+      "id": "lunapup",
+      "name": "Lunapup",
+      "type": "monster",
+      "assignableTo": ["contact", "player"],
+      "variants": [
+        {
+          "id": "default",
+          "name": "Default",
+          "frontImage": "art/lunapup-front.png",
+          "backImage": "art/lunapup-back.png"
+        },
+        {
+          "id": "radiant",
+          "name": "Radiant",
+          "frontImage": "art/lunapup-radiant-front.png",
+          "backImage": "art/lunapup-radiant-back.png",
+          "isRadiant": true
+        }
+      ],
+      "level": 4,
+      "maxHp": 22
+    },
+    {
+      "id": "parrodrill",
+      "name": "Parrodrill",
+      "type": "monster",
+      "assignableTo": ["contact", "player"],
+      "variants": [
+        {
+          "id": "default",
+          "name": "Default",
+          "frontImage": "art/parrodrill-front.png",
+          "backImage": "art/parrodrill-back.png"
+        },
+        {
+          "id": "radiant",
+          "name": "Radiant",
+          "frontImage": "art/parrodrill-radiant-front.png",
+          "backImage": "art/parrodrill-radiant-back.png",
+          "isRadiant": true
+        }
+      ],
+      "level": 7,
+      "maxHp": 30
+    },
+    {
+      "id": "wasperia",
+      "name": "Wasperia",
+      "type": "monster",
+      "assignableTo": ["contact", "player"],
+      "variants": [
+        {
+          "id": "default",
+          "name": "Default",
+          "frontImage": "art/wasperia-front.png",
+          "backImage": "art/wasperia-back.png"
+        },
+        {
+          "id": "radiant",
+          "name": "Radiant",
+          "frontImage": "art/wasperia-radiant-front.png",
+          "backImage": "art/wasperia-radiant-back.png",
+          "isRadiant": true
+        }
+      ],
+      "level": 8,
+      "maxHp": 34
+    },
+    {
+      "id": "rolliforge",
+      "name": "Rolliforge",
+      "type": "monster",
+      "assignableTo": ["contact", "player"],
+      "variants": [
+        {
+          "id": "default",
+          "name": "Default",
+          "frontImage": "art/rolliforge-front.png",
+          "backImage": "art/rolliforge-back.png"
+        },
+        {
+          "id": "radiant",
+          "name": "Radiant",
+          "frontImage": "art/rolliforge-radiant-front.png",
+          "backImage": "art/rolliforge-radiant-back.png",
+          "isRadiant": true
+        }
+      ],
+      "level": 10,
+      "maxHp": 42
+    },
+    {
+      "id": "aquadhorn",
+      "name": "Aquadhorn",
+      "type": "monster",
+      "assignableTo": ["contact", "player"],
+      "variants": [
+        {
+          "id": "default",
+          "name": "Default",
+          "frontImage": "art/aquadhorn-front.png",
+          "backImage": "art/aquadhorn-back.png"
+        },
+        {
+          "id": "radiant",
+          "name": "Radiant",
+          "frontImage": "art/aquadhorn-radiant-front.png",
+          "backImage": "art/aquadhorn-radiant-back.png",
+          "isRadiant": true
+        }
+      ],
+      "level": 9,
+      "maxHp": 38
+    },
+    {
+      "id": "emberhoof",
+      "name": "Emberhoof",
+      "type": "monster",
+      "assignableTo": ["contact", "player"],
+      "variants": [
+        {
+          "id": "default",
+          "name": "Default",
+          "frontImage": "art/emberhoof-front.png",
+          "backImage": "art/emberhoof-back.png"
+        },
+        {
+          "id": "radiant",
+          "name": "Radiant",
+          "frontImage": "art/emberhoof-radiant-front.png",
+          "backImage": "art/emberhoof-radiant-back.png",
+          "isRadiant": true
+        }
+      ],
+      "level": 8,
+      "maxHp": 36
+    }
+  ]
+}

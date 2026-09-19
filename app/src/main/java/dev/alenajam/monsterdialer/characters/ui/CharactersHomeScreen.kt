@@ -93,7 +93,7 @@ private val ProfilePixelFont = FontFamily(Font(R.font.ui_pixel_font))
 private val ProfilePixelTextStyle = androidx.compose.ui.text.TextStyle(
     fontFamily = ProfilePixelFont,
 )
-private val ProfileBackground = Color(0xFF171122)
+private val ProfileBackground = Color(0xFF4B376D)
 
 private enum class ProfileCharacterSection { Trainer, Monster }
 
@@ -141,7 +141,7 @@ fun CharactersHomeScreen(
                     onOpenSubpage(CharacterSettingsPage.PlayerCharacter.index, PlayerCharacterSettingsRoute.Roster.payload)
                 },
                 onOpenContacts = { onOpenSubpage(CharacterSettingsPage.ToolboxContactCharacters.index, ContactCharacterSettingsEntryPoint.Overview.payload) },
-                onOpenCollection = { onOpenSubpage(CharacterSettingsPage.CharacterPacks.index, null) },
+                onOpenCollection = { onOpenSubpage(CharacterSettingsPage.RadiantCollection.index, null) },
                 onOpenJournal = { onOpenSubpage(CharacterSettingsPage.BattleJournal.index, null) },
                 onOpenOnlineProfile = { onOpenSubpage(CharacterSettingsPage.ProfileLink.index, null) },
                 onOpenOptions = onOpenSettings,

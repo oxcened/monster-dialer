@@ -32,10 +32,35 @@ class PacksRepositoryImpl @Inject constructor(
     private val _packs = MutableStateFlow<List<MonsterPack>>(emptyList())
     
     init {
+        scope.launch(Dispatchers.IO) {
+            installBundledPacksIfNeeded()
+            refreshPacks()
+        }
         scope.launch {
             catalog.packs.collectLatest {
                 refreshPacks()
             }
+        }
+    }
+
+    private fun installBundledPacksIfNeeded() {
+        val bundledManifest = readBundledPackManifest()
+        val installed = catalog.list().firstOrNull { it.id == bundledManifest.id }
+        val activeManifest = File(storageRoot, "${bundledManifest.id}/active/${CharacterPackValidator.ManifestPath}")
+        if (installed?.version == bundledManifest.version && activeManifest.isFile) return
+
+        app.assets.open(BundledZapupAssetPath).use(installer::install)
+    }
+
+    private fun readBundledPackManifest(): CharacterPackManifest {
+        val archive = File.createTempFile("bundled-pack-", ".monsterpack", app.cacheDir)
+        return try {
+            app.assets.open(BundledZapupAssetPath).use { input ->
+                archive.outputStream().use { output -> input.copyTo(output) }
+            }
+            CharacterPackArchiveReader().read(archive).manifest
+        } finally {
+            archive.delete()
         }
     }
 
@@ -120,6 +145,7 @@ class PacksRepositoryImpl @Inject constructor(
     }
 
     private companion object {
+        const val BundledZapupAssetPath = "builtin-packs/zapup.monsterpack"
         const val BufferSize = 8 * 1024
         const val MaxArchiveBytes = 24L * 1024 * 1024
     }

@@ -34,6 +34,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import dev.alenajam.monsterdialer.R
+import dev.alenajam.monsterdialer.app.ui.LocalMonsterAppIcons
 import dev.alenajam.monsterdialer.app.ui.RetroSelectableRow
 import dev.alenajam.monsterdialer.app.ui.RetroContextMenu
 import dev.alenajam.monsterdialer.app.ui.RetroContextMenuItem
@@ -49,9 +50,10 @@ import dev.alenajam.monsterdialer.packs.data.CharacterReference
 import dev.alenajam.monsterdialer.packs.data.CharacterType
 import dev.alenajam.monsterdialer.packs.data.InstalledPackCharacter
 import dev.alenajam.monsterdialer.packs.data.CharacterVisualVariant
+import dev.alenajam.opendialer.core.common.ui.AppIcon
 import java.io.File
 
-private val RetroPickerFont = FontFamily(Font(R.font.ui_pixel_font))
+internal val RetroPickerFont = FontFamily(Font(R.font.ui_pixel_font))
 
 private data class RetroCharacterEntry(
     val key: String,
@@ -369,10 +371,7 @@ private fun RetroCharacterRow(
         }
         Column(modifier = Modifier.padding(start = 4.dp), verticalArrangement = Arrangement.spacedBy(1.dp)) {
             Text(
-                text = buildString {
-                    append(entry.name.uppercase())
-                    if (entry.isRadiant) append(" ✦")
-                },
+                text = entry.name.uppercase(),
                 fontFamily = RetroPickerFont,
                 fontSize = 16.sp,
                 color = RetroInk,
@@ -387,7 +386,21 @@ private fun RetroCharacterRow(
                 } else {
                     level
                 }
-                Text(text = metadata, fontFamily = RetroPickerFont, fontSize = 13.sp, color = RetroInk.copy(alpha = 0.75f))
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    if (entry.isRadiant) {
+                        AppIcon(
+                            icon = LocalMonsterAppIcons.current.radiant,
+                            contentDescription = null,
+                            modifier = Modifier.size(14.dp),
+                        )
+                    }
+                    Text(
+                        text = metadata,
+                        fontFamily = RetroPickerFont,
+                        fontSize = 13.sp,
+                        color = RetroInk.copy(alpha = 0.75f),
+                    )
+                }
             }
         }
     }

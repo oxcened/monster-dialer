@@ -22,6 +22,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Surface
@@ -109,6 +110,16 @@ fun RetroContactsScreen(
     val listState = rememberLazyListState()
     val coroutineScope = rememberCoroutineScope()
     var selectedContact by androidx.compose.runtime.remember { androidx.compose.runtime.mutableStateOf<DialerContactSummary?>(null) }
+    var cursorRowKey by androidx.compose.runtime.remember { androidx.compose.runtime.mutableStateOf<String?>(null) }
+    val cursorIndex = listItems.indexOfFirst { item ->
+        val rowKey = when (item) {
+            is RetroContactListItem.Header -> "header-${item.label}"
+            is RetroContactListItem.Contact -> "contact-${item.section}-${item.contact.id}"
+        }
+        rowKey == cursorRowKey
+    }
+        .takeIf { it >= 0 }
+        ?: listItems.indexOfFirst { item -> item is RetroContactListItem.Contact }
 
     LaunchedEffect(filteredContacts, assignmentVersion) {
         artworkViewModel.refreshContacts(filteredContacts)
@@ -155,22 +166,25 @@ fun RetroContactsScreen(
                         }
                     }
                 }
-                items(
+                itemsIndexed(
                     items = listItems,
-                    key = { item ->
+                    key = { _, item ->
                         when (item) {
                             is RetroContactListItem.Header -> "header-${item.label}"
                             is RetroContactListItem.Contact -> "contact-${item.section}-${item.contact.id}"
                         }
                     },
-                ) { item ->
+                ) { index, item ->
                     when (item) {
                         is RetroContactListItem.Header -> RetroContactSectionHeader(item.label, item.favorite)
                         is RetroContactListItem.Contact -> RetroContactRow(
                             contact = item.contact,
                             artwork = artworkByContactId[item.contact.id],
-                            selected = selectedContact?.id == item.contact.id,
-                            onOpenContact = { selectedContact = item.contact },
+                            selected = index == cursorIndex,
+                            onOpenContact = {
+                                cursorRowKey = "contact-${item.section}-${item.contact.id}"
+                                selectedContact = item.contact
+                            },
                         )
                     }
                 }

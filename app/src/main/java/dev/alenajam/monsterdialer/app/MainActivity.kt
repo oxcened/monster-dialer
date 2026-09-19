@@ -21,6 +21,9 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.safeDrawing
+import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -82,6 +85,7 @@ import dev.alenajam.monsterdialer.characters.ui.ContextualGuideButton
 import dev.alenajam.monsterdialer.characters.ui.GuideContent
 import dev.alenajam.monsterdialer.characters.ui.CharacterSettingsSummaryViewModel
 import dev.alenajam.monsterdialer.characters.ui.CharactersHomeScreen
+import dev.alenajam.monsterdialer.characters.ui.RadiantCollectionScreen
 import dev.alenajam.monsterdialer.characters.ui.PlayerCharacterSettingsContent
 import dev.alenajam.monsterdialer.characters.ui.CharacterSharingViewModel
 import dev.alenajam.monsterdialer.characters.ui.PlayerCharacterSettingsRoute
@@ -592,7 +596,35 @@ class MainActivity : AppCompatActivity() {
                                     visibleInSettings = false,
                                 ),
                             )
-                        }
+                        }.plus(
+                            SettingsSubpage(
+                                title = stringResource(R.string.radiant_collection_title),
+                                description = null,
+                                content = { _ -> RadiantCollectionScreen() },
+                                visibleInSettings = false,
+                                isScrollable = false,
+                                topContentPadding = 0.dp,
+                                showTopBar = false,
+                                destinations = listOf(
+                                    SettingsSubpageDestination(title = stringResource(R.string.create_character_pack)) { _, onNavigateBack ->
+                                        CreateCharacterPackScreen(onNavigateBack)
+                                    },
+                                    SettingsSubpageDestination(title = stringResource(R.string.radiant_collection_browse_packs)) { _, _ ->
+                                        Column(
+                                            modifier = Modifier
+                                                .windowInsetsPadding(WindowInsets.safeDrawing)
+                                                .fillMaxSize(),
+                                        ) {
+                                            CharacterPackSettingsContent(
+                                                viewModel = characterPackSettingsViewModel,
+                                                showImportUi = false,
+                                                onImportCharacter = { characterImportLauncher.launch(arrayOf("*/*")) },
+                                            )
+                                        }
+                                    },
+                                ),
+                            ),
+                        )
                         )
                         if (showFirstEncounterPrompt) {
                             FirstEncounterPrompt(
