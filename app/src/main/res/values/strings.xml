@@ -21,6 +21,8 @@
     <string name="github_latest_release_api" comment="GitHub API endpoint used to retrieve the latest MonsterDialer release. Do not translate." translatable="false">https://api.github.com/repos/oxcened/monster-dialer/releases/latest</string>
     <string name="url_feature_requests" comment="URL opened from the feature-request action. Do not translate." translatable="false">https://monsterdialer.fider.io/</string>
     <string name="hang_up" comment="Button to end the current phone call.">Hang up</string>
+    <string name="action_answer" comment="Incoming-call button that starts the fight.">Fight</string>
+    <string name="action_decline" comment="Incoming-call button that runs away.">Run</string>
     <string name="call_command_title">CALL COMMANDS</string>
     <string name="call_command_hear">SPEAKER</string>
     <string name="call_command_shush">MUTE</string>
