@@ -118,7 +118,7 @@ internal fun ColumnScope.PlayerCharacterSettingsContent(
         } else {
             BuiltInCharacters.monster.character
         },
-        defaultArtwork = { playerArtwork.resource },
+        defaultArtwork = { contactArtwork.resource },
         onAssign = { reference ->
             when (selectedType) {
                 CharacterType.Trainer -> viewModel.assignTrainer(reference)

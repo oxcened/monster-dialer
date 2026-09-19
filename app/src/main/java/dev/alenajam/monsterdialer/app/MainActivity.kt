@@ -242,6 +242,7 @@ class MainActivity : AppCompatActivity() {
                             },
                             isScrollable = false,
                             topContentPadding = RetroScreenTopContentPadding,
+                            showTopBar = false,
                             visibleInSettings = false,
                             destinations = listOf(
                                 SettingsSubpageDestination(title = stringResource(R.string.add_trainer)) { payload, onNavigateBack ->
@@ -280,6 +281,7 @@ class MainActivity : AppCompatActivity() {
                             },
                             isScrollable = false,
                             topContentPadding = RetroScreenTopContentPadding,
+                            showTopBar = false,
                             visibleInSettings = false,
                             actions = {
                                 ContextualGuideButton(
@@ -343,6 +345,7 @@ class MainActivity : AppCompatActivity() {
                             isScrollable = false,
                             visibleInSettings = false,
                             topContentPadding = RetroScreenTopContentPadding,
+                            showTopBar = false,
                             actions = {
                                 ContextualGuideButton(
                                     contents = listOf(
@@ -407,6 +410,7 @@ class MainActivity : AppCompatActivity() {
                             },
                             isScrollable = false,
                             topContentPadding = RetroScreenTopContentPadding,
+                            showTopBar = false,
                             visibleInSettings = true,
                             destinations = listOf(
                                 SettingsSubpageDestination(title = stringResource(R.string.add_trainer)) { payload, onNavigateBack ->
@@ -445,6 +449,7 @@ class MainActivity : AppCompatActivity() {
                                 visibleInSettings = false,
                                 isScrollable = false,
                                 topContentPadding = 0.dp,
+                                showTopBar = false,
                                 destinations = listOf(
                                     SettingsSubpageDestination(title = stringResource(R.string.create_character_pack)) { _, onNavigateBack ->
                                         CreateCharacterPackScreen(onNavigateBack)

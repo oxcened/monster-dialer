@@ -75,7 +75,7 @@ class RadiantCollectionViewModel @Inject constructor(
             level = BuiltInCharacters.monster.level,
             reference = BuiltInCharacters.defaultMonsterReference,
             imageFile = null,
-            fallbackArtwork = BuiltInCharacters.monster.character.playerArtwork.resource,
+            fallbackArtwork = BuiltInCharacters.monster.character.contactArtwork.resource,
             isRadiant = false,
             isUnlocked = true,
             isEditable = false,

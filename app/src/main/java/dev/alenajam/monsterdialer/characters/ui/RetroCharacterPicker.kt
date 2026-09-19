@@ -15,6 +15,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -43,6 +44,7 @@ import dev.alenajam.monsterdialer.app.ui.RetroSearchButton
 import dev.alenajam.monsterdialer.app.ui.RetroDoubleBorderTextBox
 import dev.alenajam.monsterdialer.app.ui.RetroFooter
 import dev.alenajam.monsterdialer.app.ui.RetroFooterAction
+import dev.alenajam.monsterdialer.app.ui.RetroFastScroller
 import dev.alenajam.monsterdialer.characters.data.BuiltInCharacter
 import dev.alenajam.monsterdialer.characters.data.BuiltInCharacters
 import dev.alenajam.monsterdialer.packs.data.CharacterAssignmentTarget
@@ -106,6 +108,7 @@ internal fun RetroCharacterPicker(
     var assignmentRandomized by remember(type, selectionVersion) { mutableStateOf(false) }
     var hasMadeSelection by remember(type, selectionVersion) { mutableStateOf(false) }
     var guideOpen by remember(type, selectionVersion) { mutableStateOf(false) }
+    val listState = rememberLazyListState()
     val selectedEntry = entries.firstOrNull { it.reference == pendingSelection }
     val hasConfirmedSelection = selected != null || hasMadeSelection
     val prompt = if (randomPoolOpen) {
@@ -154,42 +157,50 @@ internal fun RetroCharacterPicker(
                 )
             }
         }
-        LazyColumn(
-            modifier = Modifier.weight(1f).fillMaxWidth(),
-            contentPadding = PaddingValues(top = 2.dp, bottom = 2.dp),
-        ) {
-            itemsIndexed(entries, key = { _, entry -> entry.key }) { index, entry ->
-                if (index == 0 || entries[index - 1].section != entry.section) {
-                    Text(
-                        text = entry.section,
-                        modifier = Modifier.fillMaxWidth().padding(top = 5.dp, bottom = 2.dp),
-                        fontFamily = RetroPickerFont,
-                        fontSize = 13.sp,
-                        color = RetroInk,
-                    )
-                }
-                RetroCharacterRow(
-                    entry = entry,
-                    isSelected = if (randomPoolOpen) {
-                        entry.reference == poolCursor
-                    } else {
-                        entry.reference == (pendingSelection ?: entries.firstOrNull()?.reference)
-                    },
-                    poolIncluded = if (randomPoolOpen) entry.reference in poolDraft else null,
-                ) {
-                    if (randomPoolOpen) {
-                        entry.reference?.let { reference ->
-                            poolCursor = reference
-                            poolDraft = if (reference in poolDraft) poolDraft - reference else poolDraft + reference
+        Box(modifier = Modifier.weight(1f).fillMaxWidth()) {
+            LazyColumn(
+                state = listState,
+                modifier = Modifier.fillMaxSize(),
+                contentPadding = PaddingValues(top = 2.dp, bottom = 2.dp),
+            ) {
+                itemsIndexed(entries, key = { _, entry -> entry.key }) { index, entry ->
+                    if (index == 0 || entries[index - 1].section != entry.section) {
+                        Text(
+                            text = entry.section,
+                            modifier = Modifier.fillMaxWidth().padding(top = 5.dp, bottom = 2.dp),
+                            fontFamily = RetroPickerFont,
+                            fontSize = 13.sp,
+                            color = RetroInk,
+                        )
+                    }
+                    RetroCharacterRow(
+                        entry = entry,
+                        isSelected = if (randomPoolOpen) {
+                            entry.reference == poolCursor
+                        } else {
+                            entry.reference == (pendingSelection ?: entries.firstOrNull()?.reference)
+                        },
+                        poolIncluded = if (randomPoolOpen) entry.reference in poolDraft else null,
+                    ) {
+                        if (randomPoolOpen) {
+                            entry.reference?.let { reference ->
+                                poolCursor = reference
+                                poolDraft = if (reference in poolDraft) poolDraft - reference else poolDraft + reference
+                            }
+                        } else {
+                            pendingSelection = entry.reference
+                            hasMadeSelection = true
+                            assignmentCleared = false
+                            assignmentRandomized = false
                         }
-                    } else {
-                        pendingSelection = entry.reference
-                        hasMadeSelection = true
-                        assignmentCleared = false
-                        assignmentRandomized = false
                     }
                 }
             }
+            RetroFastScroller(
+                listState = listState,
+                contentDescription = stringResource(R.string.character_fast_scroller),
+                modifier = Modifier.align(Alignment.CenterEnd).padding(vertical = 8.dp),
+            )
         }
         RetroFooter(
             message = prompt,
