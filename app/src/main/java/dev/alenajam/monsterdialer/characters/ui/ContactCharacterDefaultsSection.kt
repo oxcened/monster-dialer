@@ -65,7 +65,6 @@ internal fun ContactCharacterDefaultsSection(
     val draftPools = remember { mutableStateMapOf<CharacterType, Set<CharacterReference>>() }
     var resetPools by remember { mutableStateOf(emptySet<CharacterType>()) }
     var optionsOpen by remember { mutableStateOf(false) }
-    var characterTypeMenuOpen by remember { mutableStateOf(false) }
     val selectedDefault = defaults.defaults[selectedType]
     val unlockedVariants by viewModel.unlockedVariants.collectAsStateWithLifecycle()
     val filter by viewModel.filter.collectAsStateWithLifecycle()
@@ -122,7 +121,7 @@ internal fun ContactCharacterDefaultsSection(
                 ) {
                     ContactDefaultsDropdowns(
                         selectedType = selectedType,
-                        onOpenCharacterTypeMenu = { characterTypeMenuOpen = true },
+                        onTypeSelected = { selectedType = it },
                         onOpenOptions = { optionsOpen = true },
                     )
                 }
@@ -277,33 +276,6 @@ internal fun ContactCharacterDefaultsSection(
             )
         } else {
             emptyList()
-        }
-        if (characterTypeMenuOpen) {
-            RetroContextMenuOverlay(
-                modifier = Modifier.fillMaxWidth(0.82f),
-                fontFamily = RetroPickerFont,
-                onDismissRequest = { characterTypeMenuOpen = false },
-                items = listOf(
-                    RetroContextMenuItem(
-                        label = stringResource(R.string.character_type_trainer),
-                        showCursor = selectedType == CharacterType.Trainer,
-                    ) {
-                        characterTypeMenuOpen = false
-                        selectedType = CharacterType.Trainer
-                    },
-                    RetroContextMenuItem(
-                        label = stringResource(R.string.character_type_monster),
-                        showCursor = selectedType == CharacterType.Monster,
-                    ) {
-                        characterTypeMenuOpen = false
-                        selectedType = CharacterType.Monster
-                    },
-                    RetroContextMenuItem.cancel(
-                        stringResource(R.string.cancel),
-                        onClick = { characterTypeMenuOpen = false },
-                    ),
-                ),
-            )
         }
         if (optionsOpen) {
         RetroContextMenuOverlay(

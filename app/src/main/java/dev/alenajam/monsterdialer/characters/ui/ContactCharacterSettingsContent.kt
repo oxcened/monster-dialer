@@ -635,7 +635,7 @@ private fun CharacterTypeSwitch(
 @Composable
 internal fun ContactDefaultsDropdowns(
     selectedType: CharacterType,
-    onOpenCharacterTypeMenu: () -> Unit,
+    onTypeSelected: (CharacterType) -> Unit,
     onOpenOptions: () -> Unit,
 ) {
     val characterLabel = stringResource(
@@ -645,7 +645,11 @@ internal fun ContactDefaultsDropdowns(
         Row(modifier = Modifier.fillMaxWidth()) {
             RetroSearchButton(
                 label = characterLabel,
-                onClick = onOpenCharacterTypeMenu,
+                onClick = {
+                    onTypeSelected(
+                        if (selectedType == CharacterType.Trainer) CharacterType.Monster else CharacterType.Trainer,
+                    )
+                },
                 modifier = Modifier.weight(1f),
                 horizontalArrangement = Arrangement.Start,
             )
