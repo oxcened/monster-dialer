@@ -28,18 +28,22 @@ if (file("google-services.json").isFile) {
 
 val appVersionName = providers.gradleProperty("appVersionName").orNull
     ?: error("appVersionName must be set in gradle.properties")
-val semanticVersion = Regex("""(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)""")
+val semanticVersion = Regex("""(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)(?:-(alpha|beta|rc)\.(0|[1-9]\d*))?""")
     .matchEntire(appVersionName)
-    ?: error("appVersionName must use MAJOR.MINOR.PATCH semantic versioning")
-val appVersionCode = semanticVersion.groupValues.drop(1).map(String::toLong).let { (major, minor, patch) ->
+    ?: error("appVersionName must use MAJOR.MINOR.PATCH[-alpha.N|-beta.N|-rc.N] semantic versioning")
+val appVersionCode = providers.gradleProperty("appVersionCode").orNull
+    ?.toLongOrNull()
+    ?.also {
+        require(it in 1..Int.MAX_VALUE.toLong()) {
+            "appVersionCode must be between 1 and ${Int.MAX_VALUE}"
+        }
+    }
+    ?.toInt()
+    ?: error("appVersionCode must be set to a positive integer in gradle.properties")
+semanticVersion.groupValues.drop(1).take(3).map(String::toLong).let { (major, minor, patch) ->
     require(minor <= 999 && patch <= 999) {
         "appVersionName minor and patch values must be at most 999"
     }
-    val code = major * 1_000_000 + minor * 1_000 + patch
-    require(code in 1..Int.MAX_VALUE.toLong()) {
-        "appVersionName is too large to derive an Android versionCode"
-    }
-    code.toInt()
 }
 
 android {
@@ -108,7 +112,7 @@ tasks.register("printReleaseVersion") {
     group = "release"
     description = "Prints the semantic version used for release validation."
     doLast {
-        println(appVersionName)
+        println("$appVersionName ($appVersionCode)")
     }
 }
 
