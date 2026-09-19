@@ -111,7 +111,6 @@ import dev.alenajam.monsterdialer.packs.ui.CreateCharacterPackScreen
 import dev.alenajam.opendialer.core.common.DefaultPhoneManager
 import dev.alenajam.opendialer.core.common.ui.AppThemeExtension
 import dev.alenajam.opendialer.core.common.ui.AppProviders
-import dev.alenajam.opendialer.core.common.ui.LocalDialpadFontFamily
 import dev.alenajam.opendialer.core.common.ui.ContactAvatar
 import dev.alenajam.opendialer.feature.appShell.DialerApp
 import dev.alenajam.opendialer.feature.appShell.HomeNavigationItem
@@ -195,7 +194,6 @@ class MainActivity : AppCompatActivity() {
 
             CompositionLocalProvider(
                 LocalMonsterAppIcons provides LocalMonsterAppIcons.current,
-                LocalDialpadFontFamily provides FontFamily(Font(R.font.ui_pixel_font)),
             ) {
                 val appIcons = rememberMonsterIcons()
                 val appThemeExtension = AppThemeExtension(
