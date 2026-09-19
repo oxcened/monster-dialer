@@ -106,6 +106,17 @@ jobs:
         with:
           subject-path: ${{ steps.assets.outputs.directory }}/*
 
+      - name: Extract curated release notes
+        id: notes
+        working-directory: monster-dialer
+        env:
+          RELEASE_TAG: ${{ github.ref_name }}
+        run: |
+          notes_file="$RUNNER_TEMP/release-notes.md"
+          ./scripts/extract-changelog-section.sh "${RELEASE_TAG#v}" > "$notes_file"
+          test -s "$notes_file"
+          echo "path=$notes_file" >> "$GITHUB_OUTPUT"
+
       - name: Create GitHub Release and upload assets
         working-directory: monster-dialer
         env:
@@ -113,7 +124,8 @@ jobs:
           RELEASE_TAG: ${{ github.ref_name }}
           RELEASE_APK: ${{ steps.assets.outputs.apk }}
           RELEASE_CHECKSUM: ${{ steps.assets.outputs.checksum }}
-        run: gh release create "$RELEASE_TAG" "$RELEASE_APK" "$RELEASE_CHECKSUM" --generate-notes --verify-tag
+          RELEASE_NOTES: ${{ steps.notes.outputs.path }}
+        run: gh release create "$RELEASE_TAG" "$RELEASE_APK" "$RELEASE_CHECKSUM" --notes-file "$RELEASE_NOTES" --verify-tag
 
       - name: Build Discord payload
         working-directory: monster-dialer

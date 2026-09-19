@@ -36,13 +36,21 @@ root="$(git rev-parse --show-toplevel)"
 cd "$root"
 
 [[ "$(git branch --show-current)" == "main" ]] || fail "Switch to main before releasing."
-[[ -z "$(git status --porcelain)" ]] || fail "Commit or stash changes before releasing."
+git status --porcelain | awk '$2 != "CHANGELOG.md" { dirty = 1 } END { exit dirty }' \
+  || fail "Only the intentional CHANGELOG.md release edit may be uncommitted."
 [[ -f gradle.properties ]] || fail "gradle.properties is missing."
 grep -q '^appVersionName=' gradle.properties || fail "appVersionName is missing from gradle.properties."
+[[ -x scripts/extract-changelog-section.sh ]] || fail "scripts/extract-changelog-section.sh is missing or not executable."
+
+validate_changelog_entry() {
+  scripts/extract-changelog-section.sh "$1" >/dev/null \
+    || fail "CHANGELOG.md must contain a dated entry for [$1]."
+}
 
 tag="v$version"
 
 if [[ "$mode" == "prepare" ]]; then
+  validate_changelog_entry "$version"
   git fetch origin main
   [[ "$(git rev-parse HEAD)" == "$(git rev-parse origin/main)" ]] \
     || fail "Local main must exactly match origin/main. Run git pull --ff-only first."
@@ -52,7 +60,7 @@ if [[ "$mode" == "prepare" ]]; then
     && fail "Local tag $tag already exists."
 
   perl -0pi -e "s/^appVersionName=.*/appVersionName=$version/m" gradle.properties
-  git add gradle.properties
+  git add gradle.properties CHANGELOG.md
   git commit -m "chore(release): prepare $tag"
   git push origin main
 
@@ -66,6 +74,7 @@ git fetch origin main
   || fail "Local main must exactly match origin/main. Run git pull --ff-only first."
 [[ "$(sed -n 's/^appVersionName=//p' gradle.properties)" == "$version" ]] \
   || fail "appVersionName does not match $version."
+validate_changelog_entry "$version"
 git ls-remote --exit-code --tags origin "refs/tags/$tag" >/dev/null 2>&1 \
   && fail "Remote tag $tag already exists."
 git rev-parse -q --verify "refs/tags/$tag" >/dev/null \
