@@ -173,16 +173,8 @@ class MonsterInCallUI @Inject constructor(
                         if (uiState.status != CallStatus.IDLE) {
                             InCallDetails(
                                 callerName = uiState.callerName,
-                                callerNumber = if (uiState.status == CallStatus.ACTIVE || uiState.status == CallStatus.HOLDING) {
-                                    ""
-                                } else {
-                                    uiState.callerNumber
-                                },
-                                callerNumberLabel = if (uiState.status == CallStatus.ACTIVE || uiState.status == CallStatus.HOLDING) {
-                                    ""
-                                } else {
-                                    uiState.callerNumberLabel
-                                },
+                                callerNumber = uiState.callerNumber,
+                                callerNumberLabel = uiState.callerNumberLabel,
                                 status = uiState.status,
                                 durationMillis = durationMillis,
                                     callerImageUri = uiState.callerImageUri,
