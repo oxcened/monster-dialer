@@ -6,7 +6,6 @@ import androidx.compose.animation.core.LinearEasing
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.Canvas
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
@@ -91,6 +90,7 @@ fun BattleScreen(
     modifier: Modifier = Modifier,
     timing: BattleTiming = BattleTiming(),
     staticPreview: Boolean = false,
+    framed: Boolean = true,
 ) {
     val scope = rememberCoroutineScope()
     val resources = LocalResources.current
@@ -123,22 +123,33 @@ fun BattleScreen(
     }
     DisposableEffect(coordinator) { onDispose(coordinator::stop) }
 
-    Surface(
-        modifier = modifier,
-        color = MaterialTheme.colorScheme.surfaceContainer,
-        shape = RoundedCornerShape(36.dp),
-        tonalElevation = 8.dp
-    ) {
+    if (framed) {
+        Surface(
+            modifier = modifier,
+            color = MaterialTheme.colorScheme.surfaceContainer,
+            shape = RoundedCornerShape(36.dp),
+            tonalElevation = 8.dp
+        ) {
+            BattleScene(
+                state = state,
+                timing = timing,
+                staticPreview = staticPreview,
+                onAnimationCompleted = coordinator::animationCompleted,
+                onDialogueCompleted = coordinator::dialogueCompleted,
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(6.dp)
+                    .clip(RoundedCornerShape(30.dp))
+            )
+        }
+    } else {
         BattleScene(
             state = state,
             timing = timing,
             staticPreview = staticPreview,
             onAnimationCompleted = coordinator::animationCompleted,
             onDialogueCompleted = coordinator::dialogueCompleted,
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(6.dp)
-                .clip(RoundedCornerShape(30.dp))
+            modifier = modifier.fillMaxSize()
         )
     }
 }
@@ -204,7 +215,6 @@ fun BattleScene(
     BoxWithConstraints(
         modifier = modifier
             .fillMaxSize()
-            .background(Color(0xFFFFFBF2))
             .clipToBounds()
             .semantics { contentDescription = sceneDescription }
     ) {

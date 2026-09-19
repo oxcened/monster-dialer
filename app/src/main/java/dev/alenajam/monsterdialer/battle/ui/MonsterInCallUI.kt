@@ -4,11 +4,11 @@ import android.app.Activity
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.WindowInsets
-import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.heightIn
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
@@ -45,12 +45,12 @@ import dev.alenajam.opendialer.core.common.ui.AppProviders
 import dev.alenajam.opendialer.core.common.ui.AppThemeExtension
 import dev.alenajam.opendialer.core.common.ui.InCallUI
 import dev.alenajam.opendialer.feature.inCall.ui.CallStatus
-import dev.alenajam.opendialer.feature.inCall.ui.InCallControls
 import dev.alenajam.opendialer.feature.inCall.ui.InCallDetails
+import dev.alenajam.opendialer.feature.inCall.ui.InCallActivity
 import dev.alenajam.opendialer.feature.inCall.ui.InCallViewModel
-import dev.alenajam.opendialer.feature.inCall.ui.IncomingCallControls
 import dev.alenajam.opendialer.feature.inCall.ui.ManageConferenceSheet
 import dev.alenajam.opendialer.feature.inCall.ui.SecondaryCallBanner
+import dev.alenajam.opendialer.feature.inCall.R as InCallR
 import javax.inject.Inject
 import kotlinx.coroutines.withTimeoutOrNull
 
@@ -68,6 +68,8 @@ class MonsterInCallUI @Inject constructor(
         val durationMillis by viewModel.activeCallDuration.collectAsStateWithLifecycle(0L)
         val onlineOpponentCacheVersion by onlineOpponentResolver.cacheVersion.collectAsStateWithLifecycle()
         val context = LocalContext.current
+        val inCallActivity = context.getActivity() as? InCallActivity
+        val isUiReady = inCallActivity?.isUiReady?.collectAsStateWithLifecycle()?.value ?: true
         val unknownCallerName = stringResource(R.string.unknown)
         val hasSecondaryCall = uiState.hasSecondaryCall
         val secondaryCallerName = uiState.secondaryCallerName
@@ -82,6 +84,7 @@ class MonsterInCallUI @Inject constructor(
         var encounter by remember { mutableStateOf<BattleEncounter?>(null) }
         val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
         val radiantUnlockSnackbar = remember { SnackbarHostState() }
+        val canStartBattle = isUiReady
 
         LaunchedEffect(uiState.status) {
             if (uiState.status == CallStatus.IDLE) {
@@ -95,8 +98,8 @@ class MonsterInCallUI @Inject constructor(
             }
         }
 
-        LaunchedEffect(uiState.callId, uiState.callerNumber, onlineOpponentCacheVersion) {
-            if (uiState.status == CallStatus.IDLE) return@LaunchedEffect
+        LaunchedEffect(uiState.status, uiState.callId, uiState.callerNumber, onlineOpponentCacheVersion) {
+            if (!canStartBattle || uiState.status == CallStatus.IDLE) return@LaunchedEffect
             if (preparedCallId != uiState.callId) {
                 encounter = null
                 onlineOpponentResolver.refreshForNumberAsync(uiState.callerNumber)?.let { refresh ->
@@ -153,49 +156,7 @@ class MonsterInCallUI @Inject constructor(
             Scaffold(
                 modifier = Modifier.fillMaxSize(),
                 contentWindowInsets = WindowInsets(0, 0, 0, 0),
-                bottomBar = {
-                    if (uiState.isIncoming) {
-                        IncomingCallControls(
-                            onHangup = viewModel::hangup,
-                            onAnswer = viewModel::answer,
-                            onMessage = { viewModel.hangup(it) }
-                        )
-                    } else {
-                        InCallControls(
-                            isMuted = uiState.isMuted,
-                            isSpeaker = uiState.isSpeaker,
-                            audioRoutes = uiState.audioRoutes,
-                            isHolding = uiState.isHolding,
-                            canManageConference = canManageConference,
-                            canMerge = uiState.canMerge,
-                            canSwap = canSwap,
-                            canHold = canHold,
-                            showAddCall = !hasSecondaryCall,
-                            canAddCall = canAddCall,
-                            onHangup = viewModel::hangup,
-                            onMute = viewModel::turnMute,
-                            onSpeaker = viewModel::turnSpeaker,
-                            onAudioRouteSelected = viewModel::selectAudioRoute,
-                            onHold = viewModel::hold,
-                            onAddCall = { viewModel.addCall(context.getActivity() as Activity) },
-                            onMerge = viewModel::merge,
-                            onSwap = viewModel::swap,
-                            onManageConference = { showManageSheet = true },
-                            onDigitPress = viewModel::startDtmf,
-                            onDigitRelease = viewModel::stopDtmf
-                        )
-                    }
-                }
-            ) { innerPadding ->
-                val measuredBottomPadding = innerPadding.calculateBottomPadding()
-                val collapsedBottomPadding = remember(uiState.isIncoming) {
-                    mutableStateOf(measuredBottomPadding)
-                }
-                LaunchedEffect(measuredBottomPadding) {
-                    if (measuredBottomPadding < collapsedBottomPadding.value) {
-                        collapsedBottomPadding.value = measuredBottomPadding
-                    }
-                }
+            ) {
                 val configuration = LocalConfiguration.current
                 val isCompactLayout = configuration.screenHeightDp <= 720 ||
                     configuration.screenWidthDp <= 360
@@ -208,7 +169,6 @@ class MonsterInCallUI @Inject constructor(
                 Box(
                     modifier = Modifier
                         .fillMaxSize()
-                        .padding(bottom = collapsedBottomPadding.value)
                 ) {
                     Column(
                         modifier = Modifier.fillMaxSize()
@@ -220,9 +180,11 @@ class MonsterInCallUI @Inject constructor(
                                 callerNumberLabel = uiState.callerNumberLabel,
                                 status = uiState.status,
                                 durationMillis = durationMillis,
-                                callerImageUri = uiState.callerImageUri,
-                                showCallerImage = false,
-                                useCompactCallerText = isCompactLayout,
+                                    callerImageUri = uiState.callerImageUri,
+                                    showCallerImage = false,
+                                    useCompactCallerText = isCompactLayout,
+                                    showCallerNumber = uiState.status != CallStatus.ACTIVE &&
+                                        uiState.status != CallStatus.HOLDING,
                                 modifier = Modifier
                                     .statusBarsPadding()
                                     .padding(
@@ -234,7 +196,8 @@ class MonsterInCallUI @Inject constructor(
                                     .align(Alignment.CenterHorizontally)
                             )
 
-                            encounter?.let { preparedEncounter ->
+                            val preparedEncounter = encounter?.takeIf { canStartBattle }
+                            if (preparedEncounter != null) {
                                 val radiantUnlockMessage = preparedEncounter.unlockedRadiantName?.let { name ->
                                     stringResource(R.string.radiant_variant_unlocked_message, name)
                                 }
@@ -250,18 +213,70 @@ class MonsterInCallUI @Inject constructor(
                                 Box(
                                     modifier = Modifier
                                         .fillMaxWidth()
-                                        .weight(1f)
-                                        .padding(horizontal = 4.dp, vertical = 4.dp),
+                                        .weight(1f),
                                     contentAlignment = Alignment.Center
                                 ) {
-                                    BattleScreen(
-                                        encounter = preparedEncounter,
+                                    Box(
                                         modifier = Modifier
-                                            .heightIn(max = 380.dp)
-                                            .aspectRatio(160f / 144f)
-                                            .fillMaxSize()
-                                    )
+                                            .fillMaxWidth()
+                                            .height(400.dp)
+                                            .padding(horizontal = 4.dp, vertical = 4.dp),
+                                        contentAlignment = Alignment.Center,
+                                    ) {
+                                        BattleScreen(
+                                            encounter = preparedEncounter,
+                                            modifier = Modifier.fillMaxSize(),
+                                            framed = false,
+                                        )
+                                    }
                                 }
+                            } else {
+                                Spacer(modifier = Modifier.weight(1f))
+                            }
+
+                            if (uiState.isIncoming) {
+                                MonsterIncomingCallControls(
+                                    icons = rememberMonsterIcons(),
+                                    controlsEnabled = true,
+                                    onHangup = viewModel::hangup,
+                                    onAnswer = viewModel::answer,
+                                    onMessage = { viewModel.hangup(it) },
+                                )
+                            } else {
+                                MonsterInCallControls(
+                                    icons = rememberMonsterIcons(),
+                                    isMuted = uiState.isMuted,
+                                    isSpeaker = uiState.isSpeaker,
+                                    audioRoutes = uiState.audioRoutes,
+                                    isHolding = uiState.isHolding,
+                                    canManageConference = canManageConference,
+                                    canMerge = uiState.canMerge,
+                                    canSwap = canSwap,
+                                    canHold = canHold,
+                                    showAddCall = !hasSecondaryCall,
+                                    canAddCall = canAddCall,
+                                    onHangup = viewModel::hangup,
+                                    onMute = viewModel::turnMute,
+                                    onSpeaker = viewModel::turnSpeaker,
+                                    onAudioRouteSelected = viewModel::selectAudioRoute,
+                                    onHold = viewModel::hold,
+                                    onAddCall = { viewModel.addCall(context.getActivity() as Activity) },
+                                    onMerge = viewModel::merge,
+                                    onSwap = viewModel::swap,
+                                    onManageConference = { showManageSheet = true },
+                                    onDigitPress = viewModel::startDtmf,
+                                    onDigitRelease = viewModel::stopDtmf,
+                                    dialpadLabel = stringResource(R.string.call_command_keys),
+                                    muteLabel = stringResource(R.string.call_command_shush),
+                                    speakerLabel = stringResource(R.string.call_command_hear),
+                                    moreLabel = stringResource(R.string.call_command_bag),
+                                    endCallLabel = stringResource(R.string.call_command_run),
+                                    addCallLabel = stringResource(InCallR.string.action_add_call),
+                                    holdLabel = stringResource(InCallR.string.action_hold),
+                                    mergeLabel = stringResource(InCallR.string.conference_merge),
+                                    swapLabel = stringResource(InCallR.string.conference_swap),
+                                    manageLabel = stringResource(InCallR.string.conference_manage),
+                                )
                             }
                         }
                     }

@@ -26,11 +26,11 @@ import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogWindowProvider
 import androidx.compose.ui.platform.LocalView
 import androidx.compose.runtime.SideEffect
-import androidx.compose.ui.unit.sp
 
 internal data class RetroContextMenuItem(
     val label: String,
@@ -56,6 +56,7 @@ internal fun RetroContextMenu(
     onDismissRequest: () -> Unit,
     modifier: Modifier = Modifier,
     title: String? = null,
+    fontSize: Int = 18,
 ) {
     BackHandler(onBack = onDismissRequest)
     var selectedIndex by remember(items) {
@@ -74,7 +75,7 @@ internal fun RetroContextMenu(
                 Text(
                     text = it.uppercase(),
                     fontFamily = fontFamily,
-                    fontSize = 18.sp,
+                    fontSize = fontSize.sp,
                     color = Color(0xFF202020),
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis,
@@ -88,6 +89,7 @@ internal fun RetroContextMenu(
                     item = item,
                     showCursor = index == selectedIndex,
                     fontFamily = fontFamily,
+                    fontSize = fontSize,
                     onClick = {
                         if (item.showCursor != false) selectedIndex = index
                         item.onClick()
@@ -129,6 +131,7 @@ internal fun RetroContextMenuDialog(
     onDismissRequest: () -> Unit,
     modifier: Modifier = Modifier.fillMaxWidth(0.82f),
     title: String? = null,
+    fontSize: Int = 18,
 ) {
     Dialog(onDismissRequest = onDismissRequest) {
         val window = (LocalView.current.parent as? DialogWindowProvider)?.window
@@ -139,6 +142,7 @@ internal fun RetroContextMenuDialog(
             onDismissRequest = onDismissRequest,
             modifier = modifier,
             title = title,
+            fontSize = fontSize,
         )
     }
 }
@@ -167,6 +171,8 @@ internal fun RetroDialog(
     content: @Composable () -> Unit,
 ) {
     Dialog(onDismissRequest = onDismissRequest) {
+        val window = (LocalView.current.parent as? DialogWindowProvider)?.window
+        SideEffect { window?.setDimAmount(0f) }
         RetroDoubleBorderBox(modifier = modifier) {
             content()
         }
@@ -255,6 +261,7 @@ private fun RetroContextMenuItemRow(
     item: RetroContextMenuItem,
     showCursor: Boolean,
     fontFamily: FontFamily,
+    fontSize: Int,
     onClick: () -> Unit,
 ) {
     Row(
@@ -278,7 +285,7 @@ private fun RetroContextMenuItemRow(
         Text(
             text = item.label.uppercase(),
             fontFamily = fontFamily,
-            fontSize = 18.sp,
+            fontSize = fontSize.sp,
             color = Color(0xFF202020),
         )
     }

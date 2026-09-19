@@ -306,7 +306,7 @@ class MainActivity : AppCompatActivity() {
                                             }
                                         }
                                         RetroActionButton(
-                                            key = stringResource(if (searchActive) R.string.retro_key_b else R.string.retro_key_a),
+                                            key = stringResource(R.string.retro_key_b),
                                             label = stringResource(if (searchActive) R.string.customized_contacts_back_action else R.string.retro_action_dial_label),
                                             onClick = if (searchActive) onBack else onSelect,
                                         )

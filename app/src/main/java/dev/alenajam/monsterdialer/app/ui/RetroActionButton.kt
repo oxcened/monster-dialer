@@ -6,6 +6,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -26,33 +27,40 @@ private val RetroActionInk = Color(0xFF202020)
 
 @Composable
 internal fun RetroActionButton(
-    key: String,
+    key: String? = null,
     label: String,
     enabled: Boolean = true,
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
     fontFamily: FontFamily = RetroActionPixelFont,
+    fillWidth: Boolean = false,
+    surfaceColor: Color = RetroActionInk,
+    compact: Boolean = false,
 ) {
     val displayedLabel = label.uppercase(Locale.ROOT)
 
     Row(
         modifier = modifier
             .clickable(enabled = enabled, onClick = onClick)
-            .padding(horizontal = 8.dp, vertical = 6.dp)
+            .padding(horizontal = if (fillWidth) 0.dp else 8.dp, vertical = if (compact) 2.dp else 6.dp)
             .semantics { contentDescription = label },
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(8.dp),
     ) {
         PixelActionSurface(
             enabled = enabled,
+            modifier = if (fillWidth) Modifier.fillMaxWidth() else Modifier,
+            surfaceColor = surfaceColor,
         ) {
             Row(
-                modifier = Modifier.padding(horizontal = 12.dp, vertical = 7.dp),
+                modifier = Modifier.padding(horizontal = 12.dp, vertical = if (compact) 4.dp else 7.dp),
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.spacedBy(6.dp),
             ) {
-                Text(text = key, fontFamily = fontFamily, fontSize = 18.sp, color = Color.White)
-                RetroSelectionArrow(tint = Color.White, size = 14.dp)
+                if (key != null) {
+                    Text(text = key, fontFamily = fontFamily, fontSize = 18.sp, color = Color.White)
+                    RetroSelectionArrow(tint = Color.White, size = 14.dp)
+                }
                 Text(text = displayedLabel, fontFamily = fontFamily, fontSize = 18.sp, color = Color.White)
             }
         }
@@ -63,12 +71,14 @@ internal fun RetroActionButton(
 @Composable
 private fun PixelActionSurface(
     enabled: Boolean,
+    modifier: Modifier = Modifier,
+    surfaceColor: Color,
     content: @Composable () -> Unit,
 ) {
     Box(
-        modifier = Modifier.drawBehind {
+        modifier = modifier.drawBehind {
             val step = 4.dp.toPx()
-            val ink = if (enabled) RetroActionInk else RetroActionInk.copy(alpha = 0.35f)
+            val ink = if (enabled) surfaceColor else surfaceColor.copy(alpha = 0.35f)
             val path = Path().apply {
                 // Two square steps create a compact pixelated curve.
                 moveTo(2f * step, 0f)
@@ -95,6 +105,7 @@ private fun PixelActionSurface(
             }
             drawPath(path, ink)
         },
+        contentAlignment = Alignment.Center,
     ) {
         content()
     }
