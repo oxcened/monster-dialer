@@ -101,6 +101,7 @@ import dev.alenajam.monsterdialer.packs.ui.CreateCharacterPackScreen
 import dev.alenajam.opendialer.core.common.DefaultPhoneManager
 import dev.alenajam.opendialer.core.common.ui.AppThemeExtension
 import dev.alenajam.opendialer.core.common.ui.AppProviders
+import dev.alenajam.opendialer.core.common.ui.AppTheme
 import dev.alenajam.opendialer.core.common.ui.ContactAvatar
 import dev.alenajam.opendialer.feature.appShell.DialerApp
 import dev.alenajam.opendialer.feature.settings.LocalSettingsSubpageNavigator
@@ -188,27 +189,31 @@ class MainActivity : AppCompatActivity() {
                 )
                 AppProviders(icons = appIcons, themeExtension = appThemeExtension) {
                     if (showFirstRunWelcome) {
-                        FirstRunWelcomeScreen(
-                            onContinue = {
-                                onboardingStore.markWelcomeCompleted()
-                                analytics.welcomeCompleted()
-                                showFirstRunWelcome = false
-                                if (isReadyForCalls() &&
-                                    onboardingStore.shouldShowFirstEncounterPrompt()
-                                ) {
-                                    showFirstEncounterPrompt = true
-                                }
-                            },
-                        )
+                        AppTheme(darkTheme = false) {
+                            FirstRunWelcomeScreen(
+                                onContinue = {
+                                    onboardingStore.markWelcomeCompleted()
+                                    analytics.welcomeCompleted()
+                                    showFirstRunWelcome = false
+                                    if (isReadyForCalls() &&
+                                        onboardingStore.shouldShowFirstEncounterPrompt()
+                                    ) {
+                                        showFirstEncounterPrompt = true
+                                    }
+                                },
+                            )
+                        }
                     } else if (sharedProfileImportId != null) {
-                        SharedProfileImportScreen(
-                            viewModel = contactCharacterSettingsViewModel,
-                            onNavigateBack = {
-                                contactCharacterSettingsViewModel.clearPendingOnlineProfile()
-                                sharedProfileImportId = null
-                            },
-                            onProfileLinked = { sharedProfileImportId = null },
-                        )
+                        AppTheme(darkTheme = false) {
+                            SharedProfileImportScreen(
+                                viewModel = contactCharacterSettingsViewModel,
+                                onNavigateBack = {
+                                    contactCharacterSettingsViewModel.clearPendingOnlineProfile()
+                                    sharedProfileImportId = null
+                                },
+                                onProfileLinked = { sharedProfileImportId = null },
+                            )
+                        }
                     } else {
                         DialerApp(
                         defaultPhoneManager = remember(defaultPhoneManager) {
@@ -216,15 +221,18 @@ class MainActivity : AppCompatActivity() {
                         },
                         icons = appIcons,
                         themeExtension = appThemeExtension,
+                        forceLightTheme = true,
                         homeContent = { callbacks ->
-                            MonsterHomeScreen(
-                                callbacks = callbacks,
-                                contactCharacterSettingsViewModel = contactCharacterSettingsViewModel,
-                                characterSharingViewModel = characterSharingViewModel,
-                                playerProfile = playerProfile,
-                                profileMetrics = profileMetrics,
-                                characterSettingsSummaryViewModel = characterSettingsSummaryViewModel,
-                            )
+                            AppTheme(darkTheme = false) {
+                                MonsterHomeScreen(
+                                    callbacks = callbacks,
+                                    contactCharacterSettingsViewModel = contactCharacterSettingsViewModel,
+                                    characterSharingViewModel = characterSharingViewModel,
+                                    playerProfile = playerProfile,
+                                    profileMetrics = profileMetrics,
+                                    characterSettingsSummaryViewModel = characterSettingsSummaryViewModel,
+                                )
+                            }
                         },
                         settingsSubpages = listOf(
                         SettingsSubpage(
@@ -490,7 +498,7 @@ class MainActivity : AppCompatActivity() {
                                     },
                                 ),
                             ),
-                        )
+                        ),
                         )
                         if (showFirstEncounterPrompt) {
                             FirstEncounterPrompt(

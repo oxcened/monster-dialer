@@ -96,7 +96,6 @@ fun RetroContactsScreen(
     val contacts by viewModel.contacts.collectAsStateWithLifecycle()
     val profileContact by viewModel.profileContact.collectAsStateWithLifecycle()
     val hasPermission by viewModel.hasRuntimePermission.collectAsStateWithLifecycle()
-    val assignmentVersion by artworkViewModel.assignmentVersion.collectAsStateWithLifecycle()
     val artworkByContactId by artworkViewModel.artworkByContactId.collectAsStateWithLifecycle()
     val context = LocalContext.current
     val allContactsLabel = stringResource(ContactsR.string.all_contacts)
@@ -123,8 +122,8 @@ fun RetroContactsScreen(
         .takeIf { it >= 0 }
         ?: listItems.indexOfFirst { item -> item is RetroContactListItem.Contact }
 
-    LaunchedEffect(filteredContacts, assignmentVersion) {
-        artworkViewModel.refreshContacts(filteredContacts)
+    LaunchedEffect(filteredContacts) {
+        artworkViewModel.setContactsForArtwork(filteredContacts)
     }
 
     Surface(modifier = Modifier.fillMaxSize(), color = RetroContactsPaper) {
@@ -173,7 +172,10 @@ fun RetroContactsScreen(
                     key = { _, item ->
                         when (item) {
                             is RetroContactListItem.Header -> "header-${item.label}"
-                            is RetroContactListItem.Contact -> "contact-${item.section}-${item.contact.id}"
+                            is RetroContactListItem.Contact -> {
+                                val artwork = artworkByContactId[item.contact.id]
+                                "contact-${item.section}-${item.contact.id}-${artwork?.builtInResource}-${artwork?.file?.absolutePath}"
+                            }
                         }
                     },
                 ) { index, item ->

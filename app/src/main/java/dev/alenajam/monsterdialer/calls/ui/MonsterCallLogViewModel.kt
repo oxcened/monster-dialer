@@ -1,6 +1,7 @@
 package dev.alenajam.monsterdialer.calls.ui
 
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import android.telephony.PhoneNumberUtils
 import dev.alenajam.monsterdialer.battle.data.BattleJournalEntry
@@ -20,6 +21,9 @@ import javax.inject.Inject
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 @HiltViewModel
@@ -35,21 +39,35 @@ class MonsterCallLogViewModel @Inject constructor(
     val artworkByContactNumber: StateFlow<Map<String, MonsterCallLogArtwork>> = _artworkByContactNumber
     private val _artworkByContactId = MutableStateFlow<Map<Int, MonsterCallLogArtwork>>(emptyMap())
     val artworkByContactId: StateFlow<Map<Int, MonsterCallLogArtwork>> = _artworkByContactId
+    private val contactsForArtwork = MutableStateFlow<List<DialerContactSummary>>(emptyList())
     val journalEntries: StateFlow<List<BattleJournalEntry>> = journal.entries
     val assignmentVersion: StateFlow<Long> = assignments.assignmentVersion
 
-    suspend fun refreshContacts(contacts: List<DialerContactSummary>) {
-        _artworkByContactId.value = withContext(Dispatchers.IO) {
-            buildMap {
-                for (contact in contacts) {
-                    var artwork: MonsterCallLogArtwork? = null
-                    for (number in contactsRepository.getContactNumbers(contact.id)) {
-                        artwork = assignedArtworkFor(number)
-                        if (artwork != null) break
+    init {
+        viewModelScope.launch {
+            combine(contactsForArtwork, assignments.assignmentVersion) { contacts, _ -> contacts }
+                .collectLatest { contacts ->
+                    _artworkByContactId.value = withContext(Dispatchers.IO) {
+                        resolveContactArtwork(contacts)
                     }
-                    artwork?.let { put(contact.id, it) }
                 }
+        }
+    }
+
+    fun setContactsForArtwork(contacts: List<DialerContactSummary>) {
+        contactsForArtwork.value = contacts
+    }
+
+    private suspend fun resolveContactArtwork(
+        contacts: List<DialerContactSummary>,
+    ): Map<Int, MonsterCallLogArtwork> = buildMap {
+        for (contact in contacts) {
+            var artwork: MonsterCallLogArtwork? = null
+            for (number in contactsRepository.getContactNumbers(contact.id)) {
+                artwork = assignedArtworkFor(number)
+                if (artwork != null) break
             }
+            artwork?.let { put(contact.id, it) }
         }
     }
 

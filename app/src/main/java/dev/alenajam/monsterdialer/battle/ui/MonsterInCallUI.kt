@@ -42,6 +42,7 @@ import dev.alenajam.monsterdialer.app.ui.rememberMonsterTypography
 import dev.alenajam.monsterdialer.onlineprofiles.data.OnlineOpponentResolver
 import dev.alenajam.opendialer.core.common.getActivity
 import dev.alenajam.opendialer.core.common.ui.AppProviders
+import dev.alenajam.opendialer.core.common.ui.AppTheme
 import dev.alenajam.opendialer.core.common.ui.AppThemeExtension
 import dev.alenajam.opendialer.core.common.ui.InCallUI
 import dev.alenajam.opendialer.feature.inCall.ui.CallStatus
@@ -136,6 +137,7 @@ class MonsterInCallUI @Inject constructor(
                 // backgroundPainter = { painterResource(R.drawable.monster_bg) }
             )
         ) {
+            AppTheme(darkTheme = false) {
             if (showManageSheet && canManageConference) {
                 ModalBottomSheet(
                     onDismissRequest = { showManageSheet = false },
@@ -293,6 +295,7 @@ class MonsterInCallUI @Inject constructor(
                             .padding(horizontal = 16.dp, vertical = 8.dp)
                     )
                 }
+            }
             }
         }
     }
