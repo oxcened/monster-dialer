@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -30,7 +31,6 @@ import dev.alenajam.monsterdialer.app.ui.RetroContextMenuOverlay
 import dev.alenajam.monsterdialer.app.ui.RetroHomeTabs
 import dev.alenajam.monsterdialer.app.ui.MonsterHomeTab
 import dev.alenajam.monsterdialer.app.ui.RetroSearchBar
-import dev.alenajam.monsterdialer.app.ui.RetroSearchButton
 import dev.alenajam.monsterdialer.app.ui.RetroScreenFooterVerticalPadding
 import dev.alenajam.monsterdialer.app.ui.RetroScreenHorizontalPadding
 import dev.alenajam.monsterdialer.calls.ui.RetroCallsScreen
@@ -78,12 +78,11 @@ internal fun MonsterHomeScreen(
             onProfile = { currentTab = MonsterHomeTab.PROFILE },
         )
 
-        if (currentTab != MonsterHomeTab.PROFILE) {
+        if (currentTab != MonsterHomeTab.PROFILE && searchActive) {
             MonsterSearchControl(
                 active = searchActive,
                 query = searchQuery,
                 onQueryChanged = { searchQuery = it },
-                onActivate = { searchActive = true },
             )
         }
 
@@ -183,7 +182,6 @@ private fun MonsterSearchControl(
     active: Boolean,
     query: String,
     onQueryChanged: (String) -> Unit,
-    onActivate: () -> Unit,
 ) {
     val focusRequester = remember { FocusRequester() }
     val keyboardController = LocalSoftwareKeyboardController.current
@@ -195,22 +193,13 @@ private fun MonsterSearchControl(
             keyboardController?.hide()
         }
     }
-    if (active) {
-        RetroSearchBar(
-            label = stringResource(R.string.contact_picker_search_name_prefix),
-            query = query,
-            focusRequester = focusRequester,
-            onQueryChanged = onQueryChanged,
-            modifier = Modifier.padding(horizontal = 16.dp, vertical = 4.dp),
-        )
-    } else {
-        RetroSearchButton(
-            label = stringResource(R.string.contact_picker_search),
-            onClick = onActivate,
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.Start,
-        )
-    }
+    RetroSearchBar(
+        label = stringResource(R.string.contact_picker_search_name_prefix),
+        query = query,
+        focusRequester = focusRequester,
+        onQueryChanged = onQueryChanged,
+        modifier = Modifier.padding(horizontal = 16.dp, vertical = 4.dp),
+    )
 }
 
 @Composable
@@ -225,6 +214,7 @@ private fun MonsterHomeActions(
     Row(
         modifier = Modifier
             .fillMaxWidth()
+            .navigationBarsPadding()
             .padding(
                 horizontal = RetroScreenHorizontalPadding,
                 vertical = RetroScreenFooterVerticalPadding,
