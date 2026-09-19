@@ -43,6 +43,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import dev.alenajam.monsterdialer.R
 import dev.alenajam.monsterdialer.app.ui.LocalMonsterAppIcons
+import dev.alenajam.monsterdialer.app.ui.RetroFastScroller
 import dev.alenajam.monsterdialer.characters.data.BuiltInCharacters
 import dev.alenajam.monsterdialer.characters.data.ContactCharacterDefaults
 import dev.alenajam.monsterdialer.packs.data.CharacterAssignmentTarget
@@ -246,8 +247,9 @@ internal fun ContactCharacterDefaultsSection(
                     } else null,
                 )
             }
-            CharacterFastScroller(
+            RetroFastScroller(
                 listState = listState,
+                contentDescription = stringResource(R.string.character_fast_scroller),
                 modifier = Modifier.align(Alignment.CenterEnd).padding(vertical = 8.dp),
             )
         }

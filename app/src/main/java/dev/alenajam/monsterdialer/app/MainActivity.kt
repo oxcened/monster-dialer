@@ -90,6 +90,7 @@ import dev.alenajam.monsterdialer.characters.ui.PlayerCharacterSettingsContent
 import dev.alenajam.monsterdialer.characters.ui.CharacterSharingViewModel
 import dev.alenajam.monsterdialer.characters.ui.PlayerCharacterSettingsRoute
 import dev.alenajam.monsterdialer.characters.ui.SharedCharacterImportHandler
+import dev.alenajam.monsterdialer.characters.data.SharedCharacterArchive
 import dev.alenajam.monsterdialer.characters.ui.radiantGuideContents
 import dev.alenajam.monsterdialer.battle.ui.BattleJournalScreen
 import dev.alenajam.monsterdialer.battle.ui.BattleJournalOverflowMenu
@@ -168,8 +169,21 @@ class MainActivity : AppCompatActivity() {
 
             val characterPackSettingsViewModel: CharacterPackSettingsViewModel = hiltViewModel()
             val characterSharingViewModel: CharacterSharingViewModel = hiltViewModel()
-            val characterImportLauncher = rememberLauncherForActivityResult(ActivityResultContracts.OpenDocument()) { uri ->
-                if (uri != null) characterSharingViewModel.preview(this@MainActivity, uri)
+            val importLauncher = rememberLauncherForActivityResult(ActivityResultContracts.OpenDocument()) { uri ->
+                if (uri == null) return@rememberLauncherForActivityResult
+                val fileName = uri.displayName(contentResolver)
+                val isPack = contentResolver.getType(uri) == CharacterPackArchive.MimeType ||
+                    CharacterPackArchive.hasSupportedExtension(fileName)
+                if (isPack) {
+                    characterPackSettingsViewModel.previewPack(this@MainActivity, uri)
+                } else {
+                    characterSharingViewModel.preview(this@MainActivity, uri)
+                }
+            }
+            val importCharacterOrPack = {
+                importLauncher.launch(
+                    arrayOf(SharedCharacterArchive.MimeType, *CharacterPackArchive.importMimeTypes),
+                )
             }
             val contactCharacterSettingsViewModel: ContactCharacterSettingsViewModel = hiltViewModel()
             val visiblePacks by characterPackSettingsViewModel.packs.collectAsStateWithLifecycle()
@@ -494,12 +508,14 @@ class MainActivity : AppCompatActivity() {
                                 CharacterPackSettingsContent(
                                     viewModel = characterPackSettingsViewModel,
                                     showImportUi = false,
-                                    onImportCharacter = { characterImportLauncher.launch(arrayOf("*/*")) },
+                                    onImport = importCharacterOrPack,
                                 )
                             },
-                            isScrollable = visiblePacks.isNotEmpty(),
+                            isScrollable = false,
                             visibleInSettings = false,
-                            topContentPadding = 0.dp,
+                            topContentPadding = RetroScreenTopContentPadding,
+                            horizontalContentPadding = RetroScreenHorizontalPadding,
+                            showTopBar = false,
                             actions = {
                                 ContextualGuideButton(
                                     contents = listOf(
@@ -604,23 +620,37 @@ class MainActivity : AppCompatActivity() {
                                 visibleInSettings = false,
                                 isScrollable = false,
                                 topContentPadding = 0.dp,
+                                horizontalContentPadding = RetroScreenHorizontalPadding,
                                 showTopBar = false,
                                 destinations = listOf(
                                     SettingsSubpageDestination(title = stringResource(R.string.create_character_pack)) { _, onNavigateBack ->
                                         CreateCharacterPackScreen(onNavigateBack)
                                     },
                                     SettingsSubpageDestination(title = stringResource(R.string.radiant_collection_browse_packs)) { _, _ ->
-                                        Column(
-                                            modifier = Modifier
-                                                .windowInsetsPadding(WindowInsets.safeDrawing)
-                                                .fillMaxSize(),
+                                        Surface(
+                                            modifier = Modifier.fillMaxSize(),
+                                            color = Color.White,
                                         ) {
-                                            CharacterPackSettingsContent(
-                                                viewModel = characterPackSettingsViewModel,
-                                                showImportUi = false,
-                                                onImportCharacter = { characterImportLauncher.launch(arrayOf("*/*")) },
-                                            )
+                                            Column(
+                                                modifier = Modifier
+                                                    .windowInsetsPadding(WindowInsets.safeDrawing)
+                                                    .fillMaxSize(),
+                                            ) {
+                                                CharacterPackSettingsContent(
+                                                    viewModel = characterPackSettingsViewModel,
+                                                    showImportUi = false,
+                                                    onImport = importCharacterOrPack,
+                                                )
+                                            }
                                         }
+                                    },
+                                    SettingsSubpageDestination(title = stringResource(R.string.edit)) { payload, onNavigateBack ->
+                                        AddCharacterScreen(
+                                            onNavigateBack = onNavigateBack,
+                                            characterType = CharacterType.Monster,
+                                            characterId = payload,
+                                            preferredAssignmentTarget = CharacterAssignmentTarget.Player,
+                                        )
                                     },
                                 ),
                             ),

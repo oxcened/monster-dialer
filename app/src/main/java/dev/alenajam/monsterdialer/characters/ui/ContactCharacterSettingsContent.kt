@@ -61,6 +61,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import dev.alenajam.monsterdialer.R
 import dev.alenajam.monsterdialer.app.ui.LocalMonsterAppIcons
+import dev.alenajam.monsterdialer.app.ui.RetroFastScroller
 import dev.alenajam.opendialer.core.common.ui.AppIcon
 import dev.alenajam.opendialer.core.common.ui.LocalAppIcons
 import dev.alenajam.monsterdialer.characters.data.BuiltInCharacters
@@ -486,8 +487,9 @@ fun ColumnScope.ContactCharacterSettingsContent(
                         )
                     }
                 }
-            CharacterFastScroller(
+            RetroFastScroller(
                     listState = listState,
+                    contentDescription = stringResource(R.string.character_fast_scroller),
                     modifier = Modifier.align(Alignment.CenterEnd).padding(vertical = 8.dp),
                 )
             }

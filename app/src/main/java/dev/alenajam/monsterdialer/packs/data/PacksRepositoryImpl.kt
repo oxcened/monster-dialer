@@ -49,13 +49,13 @@ class PacksRepositoryImpl @Inject constructor(
         val activeManifest = File(storageRoot, "${bundledManifest.id}/active/${CharacterPackValidator.ManifestPath}")
         if (installed?.version == bundledManifest.version && activeManifest.isFile) return
 
-        app.assets.open(BundledZapupAssetPath).use(installer::install)
+        app.assets.open(BundledOddBunchAssetPath).use(installer::install)
     }
 
     private fun readBundledPackManifest(): CharacterPackManifest {
         val archive = File.createTempFile("bundled-pack-", ".monsterpack", app.cacheDir)
         return try {
-            app.assets.open(BundledZapupAssetPath).use { input ->
+            app.assets.open(BundledOddBunchAssetPath).use { input ->
                 archive.outputStream().use { output -> input.copyTo(output) }
             }
             CharacterPackArchiveReader().read(archive).manifest
@@ -145,7 +145,7 @@ class PacksRepositoryImpl @Inject constructor(
     }
 
     private companion object {
-        const val BundledZapupAssetPath = "builtin-packs/zapup.monsterpack"
+        const val BundledOddBunchAssetPath = "builtin-packs/the-odd-bunch.monsterpack"
         const val BufferSize = 8 * 1024
         const val MaxArchiveBytes = 24L * 1024 * 1024
     }

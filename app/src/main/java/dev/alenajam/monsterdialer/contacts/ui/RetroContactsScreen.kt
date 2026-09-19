@@ -59,6 +59,7 @@ import dev.alenajam.monsterdialer.characters.ui.ContactCharacterSettingsViewMode
 import dev.alenajam.monsterdialer.characters.ui.CharacterSettingsPage
 import dev.alenajam.monsterdialer.app.ui.RetroContextMenu
 import dev.alenajam.monsterdialer.app.ui.RetroContextMenuItem
+import dev.alenajam.monsterdialer.app.ui.RetroFastScroller
 import dev.alenajam.monsterdialer.app.ui.RetroSelectionArrow
 import dev.alenajam.opendialer.core.common.CommonUtils
 import dev.alenajam.opendialer.core.common.PermissionUtils
@@ -189,7 +190,7 @@ fun RetroContactsScreen(
                     }
                 }
             }
-            RetroContactFastScroller(
+            RetroFastScroller(
                 listState = listState,
                 contentDescription = stringResource(ContactsR.string.fast_scroll_contacts),
                 modifier = Modifier.align(Alignment.CenterEnd).padding(vertical = 8.dp),
@@ -363,45 +364,5 @@ private fun buildRetroContactListItems(
         sorted.groupBy { it.name.firstOrNull()?.uppercaseChar()?.toString() ?: "#" }
             .toSortedMap()
             .forEach { (initial, sectionContacts) -> addSection(initial, sectionContacts) }
-    }
-}
-
-@Composable
-private fun RetroContactFastScroller(
-    listState: LazyListState,
-    contentDescription: String,
-    modifier: Modifier,
-) {
-    val layoutInfo = listState.layoutInfo
-    val visibleItems = layoutInfo.visibleItemsInfo.size
-    val totalItems = layoutInfo.totalItemsCount
-    if (totalItems <= 12 || totalItems <= visibleItems * 2) return
-    val position = (listState.firstVisibleItemIndex.toFloat() / (totalItems - visibleItems).coerceAtLeast(1)).coerceIn(0f, 1f)
-    BoxWithConstraints(
-        modifier = modifier.width(40.dp).fillMaxHeight().semantics { this.contentDescription = contentDescription }.pointerInput(Unit) {
-            detectDragGestures(
-                onDragStart = { offset ->
-                    val maxFirstVisibleItem = (totalItems - visibleItems).coerceAtLeast(0)
-                    val targetIndex = (offset.y / size.height * maxFirstVisibleItem)
-                        .roundToInt()
-                        .coerceIn(0, maxFirstVisibleItem)
-                    listState.requestScrollToItem(targetIndex)
-                },
-                onDrag = { change, _ ->
-                    val maxFirstVisibleItem = (totalItems - visibleItems).coerceAtLeast(0)
-                    val targetIndex = (change.position.y / size.height * maxFirstVisibleItem)
-                        .roundToInt()
-                        .coerceIn(0, maxFirstVisibleItem)
-                    listState.requestScrollToItem(targetIndex)
-                },
-            )
-        },
-    ) {
-        val thumbHeight = (maxHeight * (visibleItems.toFloat() / totalItems)).coerceIn(48.dp, maxHeight)
-        Box(
-            modifier = Modifier.align(Alignment.TopEnd).padding(vertical = 8.dp).width(6.dp).height(thumbHeight)
-                .offset(y = (maxHeight - thumbHeight).coerceAtLeast(0.dp) * position)
-                .clip(RoundedCornerShape(4.dp)).background(RetroContactsInk.copy(alpha = 0.7f)),
-        )
     }
 }
