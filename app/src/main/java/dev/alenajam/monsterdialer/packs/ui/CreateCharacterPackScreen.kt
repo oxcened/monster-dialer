@@ -95,11 +95,17 @@ fun CreateCharacterPackScreen(
             verticalArrangement = Arrangement.spacedBy(12.dp),
         ) {
             item {
-                Column {
-                    Text(stringResource(R.string.select_characters_for_pack))
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                ) {
+                    Text(
+                        text = stringResource(R.string.select_characters_for_pack),
+                        modifier = Modifier.weight(1f),
+                    )
                     ContextualGuideButton(
                         contents = listOf(GuideContent(R.string.characters_help_packs_title, R.string.characters_help_packs_message)),
-                        modifier = Modifier.align(Alignment.End),
                     )
                 }
             }
