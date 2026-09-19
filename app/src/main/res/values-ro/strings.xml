@@ -377,7 +377,7 @@
     <string name="radiant_collection_regular">Normal</string>
     <string name="radiant_collection_browse_packs">Pachete</string>
     <string name="pack_details_action">Detalii</string>
-    <plurals name="pack_character_count_only"><item quantity="one">%d personaj</item><item quantity="other">%d personaje</item></plurals>
+    <plurals name="pack_character_count_only"><item quantity="one">%d personaj</item><item quantity="few">%d personaje</item><item quantity="other">%d personaje</item></plurals>
     <string name="are_you_sure">Ești sigur?</string>
     <string name="delete_action">Șterge</string>
 
@@ -461,6 +461,7 @@
     <string name="contact_picker_open_action" comment="Retro contact-picker action that opens the selected contact.">Deschide</string>
     <plurals name="contact_picker_found_count" comment="Retro contact-picker search result count.">
         <item quantity="one">%d contact găsit.</item>
+        <item quantity="few">%d contacte găsite.</item>
         <item quantity="other">%d contacte găsite.</item>
     </plurals>
     <string name="contact_context_menu_trainer">Antrenor</string>

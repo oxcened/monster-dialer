@@ -155,7 +155,7 @@ class MonsterInCallUI @Inject constructor(
             Scaffold(
                 modifier = Modifier.fillMaxSize(),
                 contentWindowInsets = WindowInsets(0, 0, 0, 0),
-            ) {
+            ) { innerPadding ->
                 val configuration = LocalConfiguration.current
                 val isCompactLayout = configuration.screenHeightDp <= 720 ||
                     configuration.screenWidthDp <= 360
@@ -168,6 +168,7 @@ class MonsterInCallUI @Inject constructor(
                 Box(
                     modifier = Modifier
                         .fillMaxSize()
+                        .padding(innerPadding)
                 ) {
                     Column(
                         modifier = Modifier.fillMaxSize()

@@ -391,7 +391,7 @@
     <string name="radiant_collection_regular">عادي</string>
     <string name="radiant_collection_browse_packs">الحزم</string>
     <string name="pack_details_action">التفاصيل</string>
-    <plurals name="pack_character_count_only"><item quantity="one">شخصية واحدة</item><item quantity="other">%d شخصيات</item></plurals>
+    <plurals name="pack_character_count_only"><item quantity="zero">لا توجد شخصيات</item><item quantity="one">شخصية واحدة</item><item quantity="two">شخصيتان</item><item quantity="few">%d شخصيات</item><item quantity="many">%d شخصية</item><item quantity="other">%d شخصية</item></plurals>
     <string name="are_you_sure">هل أنت متأكد؟</string>
     <string name="delete_action">حذف</string>
 
@@ -474,7 +474,11 @@
     <string name="contact_picker_prompt" comment="Retro contact-picker prompt that explains the next action.">اختر جهة اتصال لتعيينها.</string>
     <string name="contact_picker_open_action" comment="Retro contact-picker action that opens the selected contact.">فتح</string>
     <plurals name="contact_picker_found_count" comment="Retro contact-picker search result count.">
+        <item quantity="zero">لم يتم العثور على جهات اتصال.</item>
         <item quantity="one">تم العثور على %d جهة اتصال.</item>
+        <item quantity="two">تم العثور على جهتي اتصال.</item>
+        <item quantity="few">تم العثور على %d جهات اتصال.</item>
+        <item quantity="many">تم العثور على %d جهة اتصال.</item>
         <item quantity="other">تم العثور على %d جهات اتصال.</item>
     </plurals>
     <string name="contact_context_menu_trainer">المدرب</string>
