@@ -234,6 +234,10 @@ class CharacterAssignmentStore(
         return when {
             character != null -> ContactCharacterSelection(character, ContactCharacterMode.Default)
             configuredMode == ContactCharacterMode.Random -> ContactCharacterSelection(null, ContactCharacterMode.Random)
+            configuredMode == ContactCharacterMode.Default -> ContactCharacterSelection(
+                defaultCharacter,
+                ContactCharacterMode.Default,
+            )
             defaultCharacter != null -> ContactCharacterSelection(defaultCharacter, ContactCharacterMode.Default)
             else -> ContactCharacterSelection(null, ContactCharacterMode.Random)
         }
