@@ -60,6 +60,7 @@ import dev.alenajam.monsterdialer.characters.ui.CharacterSettingsPage
 import dev.alenajam.monsterdialer.app.ui.RetroContextMenuItem
 import dev.alenajam.monsterdialer.app.ui.RetroContextMenuOverlay
 import dev.alenajam.monsterdialer.app.ui.RetroFastScroller
+import dev.alenajam.monsterdialer.app.ui.PixelRoundedSquareShape
 import dev.alenajam.monsterdialer.app.ui.RetroSelectionArrow
 import dev.alenajam.opendialer.core.common.CommonUtils
 import dev.alenajam.opendialer.core.common.PermissionUtils
@@ -252,7 +253,7 @@ private fun RetroProfileContactRow(
         modifier = Modifier.fillMaxWidth().clickable(onClick = onOpenProfile).padding(horizontal = 8.dp, vertical = 7.dp),
         verticalAlignment = Alignment.CenterVertically,
     ) {
-        ContactAvatar(contact.name, contact.image, colorKey = contactAvatarColorKey(contact.name), modifier = Modifier.size(42.dp))
+        ContactAvatar(contact.name, contact.image, colorKey = contactAvatarColorKey(contact.name), modifier = Modifier.size(42.dp), shape = PixelRoundedSquareShape)
         Column(modifier = Modifier.weight(1f).padding(horizontal = 10.dp)) {
             RetroContactsText(stringResource(ContactsR.string.your_info), 13.sp, RetroContactsInk.copy(alpha = 0.75f))
             RetroContactsText(contact.name, 16.sp, maxLines = 1)
@@ -286,7 +287,7 @@ private fun RetroContactRow(
         if (artwork != null) {
             MonsterCallLogAvatar(artwork)
         } else {
-            ContactAvatar(contact.name, contact.image, colorKey = contactAvatarColorKey(contact.name), modifier = Modifier.size(42.dp))
+            ContactAvatar(contact.name, contact.image, colorKey = contactAvatarColorKey(contact.name), modifier = Modifier.size(42.dp), shape = PixelRoundedSquareShape)
         }
         RetroContactsText(contact.name, 16.sp, modifier = Modifier.weight(1f).padding(horizontal = 10.dp), maxLines = 1)
     }

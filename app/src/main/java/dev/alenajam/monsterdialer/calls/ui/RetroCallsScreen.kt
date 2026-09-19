@@ -40,6 +40,7 @@ import androidx.lifecycle.compose.LifecycleEventEffect
 import dev.alenajam.monsterdialer.R
 import dev.alenajam.monsterdialer.app.ui.RetroContextMenuItem
 import dev.alenajam.monsterdialer.app.ui.RetroContextMenuOverlay
+import dev.alenajam.monsterdialer.app.ui.PixelRoundedSquareShape
 import dev.alenajam.monsterdialer.app.ui.RetroConfirmationDialog
 import dev.alenajam.monsterdialer.app.ui.RetroSearchButton
 import dev.alenajam.monsterdialer.app.ui.RetroScreenBottomContentPadding
@@ -320,6 +321,7 @@ private fun RetroFavoriteRow(
                 photoUri = favorite.image,
                 colorKey = contactAvatarColorKey(favorite.name, favorite.number),
                 fallbackIcon = LocalAppIcons.current.person,
+                shape = PixelRoundedSquareShape,
                 modifier = Modifier.size(42.dp),
             )
         }
@@ -424,6 +426,7 @@ private fun RetroCallLogRow(
                 photoUri = call.contactInfo.photoUri,
                 colorKey = contactAvatarColorKey(call.contactInfo.name, call.contactInfo.number),
                 fallbackIcon = LocalAppIcons.current.person,
+                shape = PixelRoundedSquareShape,
                 modifier = Modifier.size(42.dp),
             )
         }

@@ -59,6 +59,7 @@ import dev.alenajam.monsterdialer.analytics.MonsterAnalytics
 import dev.alenajam.monsterdialer.app.data.OnboardingStore
 import dev.alenajam.monsterdialer.app.ui.LocalMonsterAppIcons
 import dev.alenajam.monsterdialer.app.ui.RetroScreenHorizontalPadding
+import dev.alenajam.monsterdialer.app.ui.PixelRoundedSquareShape
 import dev.alenajam.monsterdialer.app.ui.RetroScreenTopContentPadding
 import dev.alenajam.monsterdialer.app.ui.rememberMonsterIcons
 import dev.alenajam.monsterdialer.app.ui.rememberMonsterTypography
@@ -609,6 +610,7 @@ private fun ContactCharacterTopBarTitle(
                 ContactAvatar(
                     name = contact.name,
                     photoUri = contact.photoUri,
+                    shape = PixelRoundedSquareShape,
                     modifier = Modifier.size(32.dp),
                     initialTextStyle = MaterialTheme.typography.labelLarge,
                 )
