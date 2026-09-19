@@ -3,6 +3,8 @@
     <string name="additional_translation_project_title" comment="Title of the additional translation contribution card.">参与 MonsterDialer 翻译</string>
     <string name="contribute_translations" comment="Title of the OpenDialer translation contribution link on the About screen.">参与 OpenDialer 翻译</string>
     <string name="hang_up" comment="Button to end the current phone call.">挂断</string>
+    <string name="action_answer" comment="Incoming-call button that starts the fight.">战斗</string>
+    <string name="action_decline" comment="Incoming-call button that runs away.">逃跑</string>
     <string name="add" comment="Generic label for adding a new item.">添加</string>
     <string name="settings_character_packs_title" comment="Settings title for managing character packs.">角色包</string>
     <string name="characters_navigation_label" comment="Bottom navigation label for character customization.">个人资料</string>
@@ -46,7 +48,6 @@
     <string name="filter_all">全部</string>
     <string name="filter_regular">普通</string>
     <string name="filter_unlocked_radiant">已解锁闪耀</string>
-    <string name="filter_locked_radiant">已锁定闪耀</string>
     <string name="selected" comment="Status label for the currently chosen option.">已选择</string>
     <string name="randomize" comment="Character selection that chooses a different eligible character for every call.">随机</string>
     <string name="locked">已锁定</string>
@@ -321,8 +322,8 @@
     <string name="contact_defaults_description">选择默认设置并限制联系人的随机选择池。</string>
     <string name="contact_default_trainer">默认训练师</string>
     <string name="contact_default_monster">默认怪物</string>
-    <string name="contact_choose_trainer" comment="Dropdown option that opens the trainer picker for the contact default.">选择训练师</string>
-    <string name="contact_choose_monster" comment="Dropdown option that opens the monster picker for the contact default.">选择怪物</string>
+    <string name="contact_choose_trainer" comment="Option that opens the character picker for the contact default.">选择</string>
+    <string name="contact_choose_monster" comment="Option that opens the character picker for the contact default.">选择</string>
     <string name="contact_default_random">随机</string>
     <string name="contact_random_pool_all">所有可用角色</string>
     <string name="contact_random_pool_choose">选择随机选择池</string>
@@ -342,11 +343,171 @@
     <string name="contact_character_source_global">不自定义</string>
     <string name="contact_character_source_custom">自定义联系人</string>
     <string name="contact_character_inherited_title">正在使用全局默认设置</string>
-    <string name="contact_character_inherited_message">此联系人遵循全局 %1$s 设置。选择上方的“选择%1$s”或“随机”可覆盖这些设置。</string>
+    <string name="contact_character_inherited_message">此联系人遵循全局 %1$s 设置。选择其他角色即可覆盖这些设置，或在下方编辑全局默认设置。</string>
+    <string name="contact_character_customize">选择其他角色</string>
     <string name="contact_character_edit_global_defaults" comment="Button that opens the global contact character defaults from an inherited contact setting.">编辑全局默认设置</string>
     <string name="contact_random_pool_save">保存选择池</string>
     <string name="contact_random_pool_empty_title">请至少选择一个角色</string>
     <string name="contact_random_pool_empty_exit_message">随机选择池为空，因此这些更改尚未保存。请选择至少一个角色以保存选择池，或放弃未保存的更改后退出。</string>
     <string name="contact_random_pool_continue_editing">继续编辑</string>
     <string name="contact_random_pool_discard_changes">放弃更改</string>
+    <string name="import_action">导入</string>
+    <string name="radiant_collection_title">闪耀收藏</string>
+    <string name="radiant_collection_description">查看所有怪物及其闪耀变体，包括尚未发现的变体。</string>
+    <string name="collection_sprite">%1$s 精灵图</string>
+    <string name="radiant_collection_sprite">%1$s 闪耀精灵图</string>
+    <string name="radiant_collection_found">已发现</string>
+    <string name="radiant_collection_locked">已锁定</string>
+    <string name="radiant_collection_regular">普通</string>
+    <string name="radiant_collection_browse_packs">角色包</string>
+    <string name="pack_details_action">详情</string>
+    <plurals name="pack_character_count_only"><item quantity="one">%d 个角色</item><item quantity="other">%d 个角色</item></plurals>
+    <string name="are_you_sure">确定要继续吗？</string>
+    <string name="delete_action">删除</string>
+
+    <string name="first_run_welcome_title">将通话变成怪物遭遇战</string>
+    <string name="first_run_welcome_description">MonsterDialer 为你的通话增添原创的战斗时刻。使用内置角色即可立即开始第一次遭遇战。</string>
+    <string name="first_run_setup_description">接下来，Android 会要求你将 MonsterDialer 设为电话应用，并允许全屏通话通知。这些权限用于正确显示来电。</string>
+    <string name="first_run_continue">设置 MonsterDialer</string>
+    <string name="first_encounter_prompt_title">准备好进行第一次遭遇战了吗？</string>
+    <string name="first_encounter_prompt_description">拨打或接听电话，看看 MonsterDialer 如何运作。之后你可以自定义训练师、怪物和联系人。</string>
+    <string name="first_encounter_prompt_action">打开拨号盘</string>
+    <string name="first_encounter_prompt_later">稍后再说</string>
+    <string name="app_name" comment="Application name shown by Android and in the About screen." translatable="false">MonsterDialer</string>
+    <string name="font_name" comment="Name of the typeface credited in the About screen." translatable="false">Pixel Operator</string>
+    <string name="font_author" comment="Author of the typeface credited in the About screen." translatable="false">Jayvee Enaguas</string>
+    <string name="url_font" comment="Font credit link opened from the About screen." translatable="false">https://www.dafont.com/pixel-operator.font</string>
+    <string name="icon_designer" comment="Name of the icon designer credited in the About screen." translatable="false">ArcherPanda</string>
+    <string name="url_icon_designer" comment="Icon designer credit link opened from the About screen." translatable="false">https://bsky.app/profile/archerpanda.bsky.social</string>
+    <string name="url_additional_translation_project" comment="URL opened from the additional translation contribution card. Do not translate." translatable="false">https://crowdin.com/project/monsterdialer</string>
+    <string name="url_github_opendialer" comment="URL for the MonsterDialer GitHub repository. Do not translate." translatable="false">https://github.com/oxcened/monster-dialer</string>
+    <string name="github_latest_release_api" comment="GitHub API endpoint used to retrieve the latest MonsterDialer release. Do not translate." translatable="false">https://api.github.com/repos/oxcened/monster-dialer/releases/latest</string>
+    <string name="url_feature_requests" comment="URL opened from the feature-request action. Do not translate." translatable="false">https://monsterdialer.fider.io/</string>
+    <string name="call_command_title">通话指令</string>
+    <string name="call_command_hear">扬声器</string>
+    <string name="call_command_shush">静音</string>
+    <string name="call_command_keys">拨号盘</string>
+    <string name="call_command_bag">更多</string>
+    <string name="call_command_key_speaker">S</string>
+    <string name="call_command_key_mute">M</string>
+    <string name="call_command_key_keys">#</string>
+    <string name="call_command_key_bag">B</string>
+    <string name="call_command_key_run">R</string>
+    <string name="call_command_cursor">▶ %1$s</string>
+    <string name="call_command_section">◀ %1$s</string>
+    <string name="call_command_back">返回</string>
+    <string name="call_command_run">执行</string>
+    <string name="call_command_dialpad_digits">123\n456\n789\n*0#</string>
+    <string name="profile_status_title">状态</string>
+    <string name="profile_player_label">玩家</string>
+    <string name="profile_name_label">姓名</string>
+    <string name="profile_trainer_field">训练师/%1$s</string>
+    <string name="profile_back">返回</string>
+    <string name="profile_calls_label">通话</string>
+    <string name="profile_collection_label">收藏</string>
+    <string name="profile_roster_title">怪物队伍</string>
+    <string name="roster_empty_slot" comment="Label for an unfilled row in the six-slot monster roster.">---</string>
+    <string name="roster_empty_slot_message" comment="Prompt shown while an empty monster roster slot is selected.">此栏为空。</string>
+    <string name="roster_choose_monster_message" comment="Prompt shown while an occupied monster roster slot is selected.">选择一个怪物。</string>
+    <string name="roster_switch" comment="GSC-style action to exchange the positions of two monsters in the roster.">交换</string>
+    <string name="roster_switch_target_message" comment="Prompt shown after choosing a roster monster to switch.">选择要与之交换的怪物。</string>
+    <string name="roster_release_title" comment="Title of the confirmation menu before releasing a roster monster.">释放？</string>
+    <string name="roster_release_no" comment="Negative action in the roster release confirmation menu.">否</string>
+    <string name="roster_release_yes" comment="Positive action in the roster release confirmation menu.">是</string>
+    <string name="profile_toolbox_title">工具</string>
+    <string name="profile_add_roster">+</string>
+    <string name="profile_screen_title">个人资料</string>
+    <string name="profile_monster_title">怪物</string>
+    <string name="profile_level_label">等级</string>
+    <string name="profile_monster_field">怪物/%1$s</string>
+    <string name="profile_level_field">等级 %1$d</string>
+    <string name="profile_variant_label">类型</string>
+    <string name="profile_radiants_label">闪耀</string>
+    <string name="profile_menu_roster">队伍</string>
+    <string name="profile_menu_contacts">联系人</string>
+    <string name="profile_menu_collection">收藏</string>
+    <string name="profile_menu_journal">日志</string>
+    <string name="profile_menu_online">分享</string>
+    <string name="profile_menu_toolbox">工具</string>
+    <string name="profile_menu_options">选项</string>
+    <string name="profile_menu_exit">退出</string>
+    <string name="profile_menu_cursor">▶%1$s</string>
+    <string name="profile_roster_description">你的队伍。</string>
+    <string name="profile_footer_prompt">你的个人资料！</string>
+    <string name="character_tools_prompt" comment="Retro prompt shown below the character toolbox list. Asking the player to choose the right tool.">选择合适的工具。</string>
+    <string name="monster_variant_and_level" translatable="false" comment="Language-neutral formatter for a monster variant and an already-localized level. %1$s is the variant (e.g., Regular) and %2$s is the level (e.g., Lv. 12).">%1$s · %2$s</string>
+    <string name="retro_picker_variant_and_level" translatable="false" comment="Language-neutral formatter for the retro assignment picker. %1$s is the variant and %2$s is the level.">%1$s   %2$s</string>
+    <string name="active_monster_variant_and_level" translatable="false" comment="Language-neutral formatter for details beneath the active monster on the profile card. %1$s is its variant (for example, Regular) and %2$s is its localized level (for example, Lv. 12).">%1$s • %2$s</string>
+    <string name="contact_picker_search" comment="Retro contact-picker command that opens name search.">搜索</string>
+    <string name="contact_picker_search_name_prefix" comment="Prefix before the typed name in the retro contact search field.">姓名/</string>
+    <string name="contact_picker_search_empty_prompt" comment="Retro contact-picker prompt shown before a name is typed.">请输入姓名。</string>
+    <string name="contact_picker_prompt" comment="Retro contact-picker prompt that explains the next action.">选择要分配的联系人。</string>
+    <string name="contact_picker_open_action" comment="Retro contact-picker action that opens the selected contact.">打开</string>
+    <plurals name="contact_picker_found_count" comment="Retro contact-picker search result count.">
+        <item quantity="one">找到 %d 个联系人。</item>
+        <item quantity="other">找到 %d 个联系人。</item>
+    </plurals>
+    <string name="contact_context_menu_trainer">训练师</string>
+    <string name="contact_context_menu_monster">怪物</string>
+    <string name="contact_context_menu_remove">移除</string>
+    <string name="contact_picker_options">选项</string>
+    <string name="back">返回</string>
+    <string name="contact_defaults_menu_mode">默认角色</string>
+    <string name="contact_defaults_menu_characters">角色列表</string>
+    <string name="contact_defaults_menu_pool">随机选择池</string>
+    <string name="contact_picker_default">默认</string>
+    <string name="contact_picker_no_trainer_assigned">未分配训练师。</string>
+    <string name="contact_picker_no_monster_assigned">未分配怪物。</string>
+    <string name="contact_picker_random_trainer">随机训练师。</string>
+    <string name="contact_picker_random_monster">随机怪物。</string>
+    <string name="contact_picker_choose_monster">选择怪物。</string>
+    <string name="contact_picker_choose_trainer">选择训练师。</string>
+    <string name="contact_picker_ready">%1$s 已准备好！</string>
+    <string name="contact_picker_pool_trainers">选择要加入选择池的训练师。</string>
+    <string name="contact_picker_pool_monsters">选择要加入选择池的怪物。</string>
+    <string name="contact_picker_pool_done">完成</string>
+    <string name="contact_picker_choose">选择</string>
+    <string name="contact_picker_next">下一步</string>
+    <string name="contact_picker_pool_included">●</string>
+    <string name="contact_picker_pool_excluded">○</string>
+    <string name="contact_remove_prompt">从队伍中移除？</string>
+    <string name="contact_remove_no">否</string>
+    <string name="contact_remove_yes">是</string>
+    <string name="contact_removed_message">%1$s 已移除。</string>
+    <string name="contact_added_message">%1$s 已加入队伍！</string>
+    <string name="character_selection_more_options" comment="Accessibility label for the character selector menu containing secondary pool actions.">更多角色选择选项</string>
+    <string name="radiant_unlock_share_card_link" comment="Link printed on the radiant-unlock share card. Do not translate." translatable="false">monsterdialer.web.app</string>
+    <string name="online_profile_link_on">分享/开</string>
+    <string name="online_profile_link_off">分享/关</string>
+    <string name="online_profile_sign_in_action">登录</string>
+    <string name="online_profile_unlink_action">解除关联</string>
+    <string name="online_profile_linked_message">你的队伍已分享。</string>
+    <string name="online_profile_not_linked_message">与朋友分享你的队伍。</string>
+    <string name="contact_details_action" comment="Contact-row action that opens the system contact details.">详情</string>
+    <string name="customized_contacts_title">自定义联系人</string>
+    <string name="customized_contacts_empty_title">没有自定义联系人</string>
+    <string name="customized_contacts_empty_description">选择一个联系人，为其分配训练师和怪物。</string>
+    <string name="contact_assignment_unavailable">默认</string>
+    <string name="customized_contacts_add">新建联系人</string>
+    <string name="customized_contacts_new_action">新建</string>
+    <string name="customized_contacts_back_action">返回</string>
+    <string name="customized_contacts_cancel_action">取消</string>
+    <string name="customized_contacts_prompt">选择一个联系人。</string>
+    <string name="customized_contacts_assign_action">分配</string>
+    <string name="retro_key_a" comment="Game Boy-style action key label.">A</string>
+    <string name="retro_key_b" comment="Game Boy-style action key label.">B</string>
+    <string name="retro_action_select">A 选择</string>
+    <string name="retro_action_back">B 返回</string>
+    <string name="retro_action_menu">B 菜单</string>
+    <string name="retro_action_select_label">选择</string>
+    <string name="retro_action_menu_label">菜单</string>
+    <string name="retro_action_back_label">返回</string>
+    <string name="retro_action_dial_label">拨号</string>
+    <string name="retro_picker_add" comment="Compact action to add a character in the retro picker.">添加</string>
+    <string name="retro_picker_guide" comment="Compact GSC-style menu action to open the guide.">帮助</string>
+    <string name="default_pack_version" comment="Default technical version assigned to a newly created character pack. Do not translate." translatable="false">1.0.0</string>
+    <string name="call" comment="Menu action that calls the selected phone number.">拨打</string>
+    <string name="favorite_phone_type_number" comment="Favorite contact summary. %1$s is the phone type and %2$s is the phone number.">%1$s • %2$s</string>
+    <string name="call_log_just_now" comment="Call-log time shown for calls less than one minute old.">刚刚</string>
+    <string name="new_contact_short" comment="Compact command for creating a contact.">新建</string>
 </resources>

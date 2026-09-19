@@ -219,7 +219,7 @@ class AssignedCharacterEncounterFactory @Inject constructor(
     ) {
         activeEncounterStore.save(call, radiantReference)
         profileStatsStore.recordBattle()
-        battleJournalStore.record(encounter, isRadiantDiscovery)
+        battleJournalStore.record(encounter, isRadiantDiscovery, call)
     }
 
     private fun radiantWildEncounter(

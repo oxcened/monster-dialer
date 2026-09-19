@@ -14,7 +14,9 @@ interface CharacterAssignmentRepository {
     val assignmentVersion: StateFlow<Long>
     suspend fun getAssignedCharacter(contactKey: String, type: CharacterType): CharacterReference?
     suspend fun getContactCharacterSelection(contactKey: String, type: CharacterType): ContactCharacterSelection
+    suspend fun getContactCharacterOverviews(): List<ContactCharacterOverview>
     suspend fun hasContactOverride(contactKey: String, type: CharacterType): Boolean
+    suspend fun hasContactOverride(contactKeys: List<String>): Boolean
     suspend fun clearContactOverride(contactKey: String, type: CharacterType)
     suspend fun getContactCharacterDefaults(): ContactCharacterDefaults
     suspend fun setContactDefault(type: CharacterType, reference: CharacterReference?)
@@ -24,6 +26,13 @@ interface CharacterAssignmentRepository {
     suspend fun getContactRandomPool(contactKey: String, type: CharacterType): List<CharacterReference>?
     suspend fun setContactRandomPool(contactKey: String, type: CharacterType, references: List<CharacterReference>)
     suspend fun clearContactRandomPool(contactKey: String, type: CharacterType)
+    suspend fun updateContactAssignments(
+        contactKeys: List<String>,
+        label: String,
+        trainer: ContactCharacterAssignmentUpdate,
+        monster: ContactCharacterAssignmentUpdate,
+    )
+    suspend fun clearContactAssignments(contactKeys: List<String>)
     suspend fun assignCharacter(
         contactKey: String,
         type: CharacterType,
@@ -68,8 +77,19 @@ class CharacterAssignmentRepositoryImpl @Inject constructor(
         assignments.selectionForContact(contactKey, type)
     }
 
+    override suspend fun getContactCharacterOverviews(): List<ContactCharacterOverview> = withContext(Dispatchers.IO) {
+        assignments.contactCharacterOverviews()
+    }
+
     override suspend fun hasContactOverride(contactKey: String, type: CharacterType): Boolean = withContext(Dispatchers.IO) {
         assignments.hasContactOverride(contactKey, type)
+    }
+
+    override suspend fun hasContactOverride(contactKeys: List<String>): Boolean = withContext(Dispatchers.IO) {
+        contactKeys.any { key ->
+            assignments.hasContactOverride(key, CharacterType.Trainer) ||
+                assignments.hasContactOverride(key, CharacterType.Monster)
+        }
     }
 
     override suspend fun clearContactOverride(contactKey: String, type: CharacterType) = withContext(Dispatchers.IO) {
@@ -111,6 +131,21 @@ class CharacterAssignmentRepositoryImpl @Inject constructor(
 
     override suspend fun clearContactRandomPool(contactKey: String, type: CharacterType) = withContext(Dispatchers.IO) {
         assignments.clearContactRandomPool(contactKey, type)
+        notifyAssignmentsChanged()
+    }
+
+    override suspend fun updateContactAssignments(
+        contactKeys: List<String>,
+        label: String,
+        trainer: ContactCharacterAssignmentUpdate,
+        monster: ContactCharacterAssignmentUpdate,
+    ) = withContext(Dispatchers.IO) {
+        assignments.updateContactAssignments(contactKeys, label, trainer, monster)
+        notifyAssignmentsChanged()
+    }
+
+    override suspend fun clearContactAssignments(contactKeys: List<String>) = withContext(Dispatchers.IO) {
+        assignments.clearContactAssignments(contactKeys)
         notifyAssignmentsChanged()
     }
 

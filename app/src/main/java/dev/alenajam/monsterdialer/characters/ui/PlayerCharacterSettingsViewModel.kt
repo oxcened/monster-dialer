@@ -2,6 +2,7 @@ package dev.alenajam.monsterdialer.characters.ui
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import dev.alenajam.monsterdialer.analytics.MonsterAnalytics
 import dev.alenajam.monsterdialer.characters.data.CharacterAssignmentRepository
 import dev.alenajam.monsterdialer.characters.data.CharacterLayoutPreferences
 import dev.alenajam.monsterdialer.characters.data.CharactersRepository
@@ -22,7 +23,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 import dagger.hilt.android.lifecycle.HiltViewModel
 
-enum class MonsterFilter { All, Regular, RadiantUnlocked, RadiantLocked }
+enum class MonsterFilter { All, Regular, RadiantUnlocked }
 
 @HiltViewModel
 class PlayerCharacterSettingsViewModel @Inject constructor(
@@ -31,6 +32,7 @@ class PlayerCharacterSettingsViewModel @Inject constructor(
     private val layoutPreferences: CharacterLayoutPreferences,
     private val packsRepository: dev.alenajam.monsterdialer.packs.data.PacksRepository,
     radiantUnlocks: RadiantVariantUnlockStore,
+    private val analytics: MonsterAnalytics,
 ) : ViewModel() {
 
     private val _filter = MutableStateFlow(MonsterFilter.All)
@@ -42,8 +44,13 @@ class PlayerCharacterSettingsViewModel @Inject constructor(
         CharacterAssignmentTarget.Player, CharacterType.Trainer
     ).stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), emptyList())
 
+    val allMonsters: StateFlow<List<InstalledPackCharacter>> = charactersRepository.observeCharactersAssignableTo(
+        CharacterAssignmentTarget.Player,
+        CharacterType.Monster,
+    ).stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), emptyList())
+
     val monsters: StateFlow<List<InstalledPackCharacter>> = combine(
-        charactersRepository.observeCharactersAssignableTo(CharacterAssignmentTarget.Player, CharacterType.Monster),
+        allMonsters,
         filter,
         unlockedVariants
     ) { monsters, filter, unlocked ->
@@ -55,11 +62,6 @@ class PlayerCharacterSettingsViewModel @Inject constructor(
             MonsterFilter.RadiantUnlocked -> monsters.filter { character ->
                 character.character.visualVariants.any { variant ->
                     variant.isRadiant && CharacterReference(character.packId, character.character.id, variant.id) in unlocked
-                }
-            }
-            MonsterFilter.RadiantLocked -> monsters.filter { character ->
-                character.character.visualVariants.any { variant ->
-                    variant.isRadiant && CharacterReference(character.packId, character.character.id, variant.id) !in unlocked
                 }
             }
         }
@@ -112,6 +114,7 @@ class PlayerCharacterSettingsViewModel @Inject constructor(
         viewModelScope.launch {
             assignmentRepository.setPlayerCharacter(CharacterType.Trainer, reference)
             _assignedTrainer.value = reference
+            analytics.playerCharacterAssigned(CharacterType.Trainer.name.lowercase())
         }
     }
 
@@ -125,6 +128,7 @@ class PlayerCharacterSettingsViewModel @Inject constructor(
             }
             _assignedMonster.value = assignmentRepository.getPlayerCharacter(CharacterType.Monster)
             _monsterRoster.value = assignmentRepository.getPlayerMonsterRoster()
+            analytics.playerCharacterAssigned(CharacterType.Monster.name.lowercase())
         }
     }
 

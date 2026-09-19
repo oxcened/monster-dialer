@@ -30,6 +30,9 @@ class OnlineProfileSettingsViewModel @Inject constructor(
     val profile: StateFlow<OwnedOnlineProfile?> = _profile.asStateFlow()
     private val _isSignedIn = MutableStateFlow(publisher.isSignedIn())
     val isSignedIn: StateFlow<Boolean> = _isSignedIn.asStateFlow()
+    private val removeAuthStateListener = publisher.observeAuthState { signedIn ->
+        _isSignedIn.value = signedIn
+    }
     private val _signInRequests = MutableSharedFlow<Unit>()
     val signInRequests: SharedFlow<Unit> = _signInRequests
     private val _isWorking = MutableStateFlow(false)
@@ -56,7 +59,7 @@ class OnlineProfileSettingsViewModel @Inject constructor(
     }
 
     fun enable() {
-        if (publisher.isSignedIn()) {
+        if (_isSignedIn.value) {
             enableProfile()
         } else {
             viewModelScope.launch { _signInRequests.emit(Unit) }
@@ -112,6 +115,11 @@ class OnlineProfileSettingsViewModel @Inject constructor(
         finally { _operation.value = null; _isWorking.value = false }
     }
     fun clearError() { _error.value = null }
+
+    override fun onCleared() {
+        removeAuthStateListener()
+        super.onCleared()
+    }
 
     private fun publishInBackground(
         operation: OnlineProfileOperation,

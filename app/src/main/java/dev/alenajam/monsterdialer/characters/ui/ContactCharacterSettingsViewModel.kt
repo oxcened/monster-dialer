@@ -6,6 +6,8 @@ import dev.alenajam.monsterdialer.characters.data.CharacterAssignmentRepository
 import dev.alenajam.monsterdialer.characters.data.BuiltInCharacters
 import dev.alenajam.monsterdialer.characters.data.ContactCharacterMode
 import dev.alenajam.monsterdialer.characters.data.ContactCharacterSelection
+import dev.alenajam.monsterdialer.characters.data.ContactCharacterOverview
+import dev.alenajam.monsterdialer.characters.data.ContactCharacterAssignmentUpdate
 import dev.alenajam.monsterdialer.characters.data.CharacterLayoutPreferences
 import dev.alenajam.monsterdialer.characters.data.CharactersRepository
 import dev.alenajam.monsterdialer.characters.data.RadiantVariantUnlockStore
@@ -19,13 +21,18 @@ import dev.alenajam.monsterdialer.packs.data.InstalledPackCharacter
 import dev.alenajam.monsterdialer.onlineprofiles.data.OnlineOpponentResolver
 import dev.alenajam.monsterdialer.onlineprofiles.data.PublicProfileId
 import dev.alenajam.opendialer.data.contacts.DialerContactSummary
+import dev.alenajam.opendialer.data.contacts.ContactsRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.mapLatest
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.sync.Mutex
+import kotlinx.coroutines.sync.withLock
 import javax.inject.Inject
 import dagger.hilt.android.lifecycle.HiltViewModel
 
@@ -38,7 +45,16 @@ class ContactCharacterSettingsViewModel @Inject constructor(
     private val packsRepository: dev.alenajam.monsterdialer.packs.data.PacksRepository,
     radiantUnlocks: RadiantVariantUnlockStore,
     private val onlineOpponentResolver: OnlineOpponentResolver,
+    private val contactsRepository: ContactsRepository,
 ) : ViewModel() {
+    private val selectedContactMutex = Mutex()
+    private var overviewEntered = false
+    private var assignmentPickerRequested = false
+    private var pendingGuidedTrainer: CharacterReference? = null
+    private var pendingGuidedTrainerRandom = false
+    private var pendingGuidedTrainerPool: Set<CharacterReference> = emptySet()
+    private val _lastAddedContactLabel = MutableStateFlow<String?>(null)
+    val lastAddedContactLabel: StateFlow<String?> = _lastAddedContactLabel.asStateFlow()
 
     private val _filter = MutableStateFlow(MonsterFilter.All)
     val filter: StateFlow<MonsterFilter> = _filter.asStateFlow()
@@ -66,6 +82,9 @@ class ContactCharacterSettingsViewModel @Inject constructor(
 
     private val _contact = MutableStateFlow<MonsterContact?>(null)
     val contact: StateFlow<MonsterContact?> = _contact.asStateFlow()
+
+    private val _rosterCursorContactKey = MutableStateFlow<String?>(null)
+    val rosterCursorContactKey: StateFlow<String?> = _rosterCursorContactKey.asStateFlow()
 
     private val _assignedTrainer = MutableStateFlow<CharacterReference?>(null)
     val assignedTrainer: StateFlow<CharacterReference?> = _assignedTrainer.asStateFlow()
@@ -117,6 +136,25 @@ class ContactCharacterSettingsViewModel @Inject constructor(
             dev.alenajam.monsterdialer.characters.data.ContactCharacterDefaults(emptyMap(), emptyMap()),
         )
 
+    val customizedContacts: StateFlow<List<ContactCharacterOverview>> = assignmentRepository.assignmentVersion
+        .map { assignmentRepository.getContactCharacterOverviews() }
+        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), emptyList())
+
+    val customizedContactIds: StateFlow<Set<Int>> = combine(
+        contactsRepository.getContacts(),
+        assignmentRepository.assignmentVersion,
+    ) { contacts, _ -> contacts }
+        .mapLatest { contacts ->
+            buildSet {
+                contacts.forEach { contact ->
+                    if (assignmentRepository.hasContactOverride(contactsRepository.getContactNumbers(contact.id))) {
+                        add(contact.id)
+                    }
+                }
+            }
+        }
+        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), emptySet())
+
     fun allContactPoolReferences(type: CharacterType): Set<CharacterReference> {
         val builtInReference = if (type == CharacterType.Trainer) {
             BuiltInCharacters.defaultTrainerReference
@@ -166,6 +204,17 @@ class ContactCharacterSettingsViewModel @Inject constructor(
         restoreSelectedContact()
     }
 
+    fun enterOverview() {
+        if (overviewEntered) return
+        overviewEntered = true
+        viewModelScope.launch {
+            selectedContactMutex.withLock {
+                selectionRepository.clearSelectedContact()
+                restoreSelectedContactState()
+            }
+        }
+    }
+
     fun setContactDefault(type: CharacterType, reference: CharacterReference?) {
         viewModelScope.launch {
             assignmentRepository.setContactDefault(type, reference)
@@ -187,7 +236,9 @@ class ContactCharacterSettingsViewModel @Inject constructor(
 
     fun restoreSelectedContact() {
         viewModelScope.launch {
-            restoreSelectedContactState()
+            selectedContactMutex.withLock {
+                restoreSelectedContactState()
+            }
         }
     }
 
@@ -201,13 +252,139 @@ class ContactCharacterSettingsViewModel @Inject constructor(
         }
     }
 
+    fun selectCustomizedContact(overview: ContactCharacterOverview, type: CharacterType) {
+        viewModelScope.launch {
+            selectedContactMutex.withLock {
+                if (selectionRepository.setSelectedContact(overview.label, overview.contactKeys)) {
+                    assignmentPickerRequested = false
+                    pendingGuidedTrainer = null
+                    pendingGuidedTrainerRandom = false
+                    pendingGuidedTrainerPool = emptySet()
+                    _selectedTab.value = if (type == CharacterType.Trainer) 0 else 1
+                    layoutPreferences.setSelectedTab(_selectedTab.value)
+                    restoreSelectedContactState()
+                }
+            }
+        }
+    }
+
+    fun setRosterCursor(contactKey: String) {
+        _rosterCursorContactKey.value = contactKey
+    }
+
+    fun clearRosterCursor() {
+        _rosterCursorContactKey.value = null
+    }
+
+    fun removeContactFromRoster(overview: ContactCharacterOverview) {
+        viewModelScope.launch {
+            assignmentRepository.clearContactAssignments(overview.contactKeys)
+        }
+    }
+
+    fun clearSelectedContact() {
+        viewModelScope.launch {
+            selectedContactMutex.withLock {
+                assignmentPickerRequested = false
+                pendingGuidedTrainer = null
+                pendingGuidedTrainerRandom = false
+                pendingGuidedTrainerPool = emptySet()
+                selectionRepository.clearSelectedContact()
+                restoreSelectedContactState()
+            }
+        }
+    }
+
+    fun prepareContactAssignment() {
+        assignmentPickerRequested = true
+        pendingGuidedTrainer = null
+        pendingGuidedTrainerRandom = false
+        pendingGuidedTrainerPool = emptySet()
+        _lastAddedContactLabel.value = null
+        _selectedTab.value = 0
+        layoutPreferences.setSelectedTab(0)
+        _trainerUsesGlobalDefaults.value = false
+        _monsterUsesGlobalDefaults.value = false
+    }
+
+    val isGuidedAssignmentActive: Boolean
+        get() = assignmentPickerRequested
+
+    val guidedTrainerSelection: CharacterReference?
+        get() = pendingGuidedTrainer
+
+    fun stageGuidedTrainer(reference: CharacterReference?) {
+        pendingGuidedTrainer = reference
+        pendingGuidedTrainerRandom = false
+        pendingGuidedTrainerPool = emptySet()
+        setSelectedTab(1)
+    }
+
+    fun stageGuidedTrainerRandom(pool: Set<CharacterReference>) {
+        pendingGuidedTrainer = null
+        pendingGuidedTrainerRandom = true
+        pendingGuidedTrainerPool = pool
+        setSelectedTab(1)
+    }
+
+    fun completeGuidedAssignment(
+        monster: CharacterReference?,
+        monsterRandom: Boolean = false,
+        monsterPool: Set<CharacterReference> = emptySet(),
+        onCompleted: () -> Unit,
+    ) {
+        val selected = _contact.value ?: return
+        val trainer = pendingGuidedTrainer
+        val trainerRandom = pendingGuidedTrainerRandom
+        viewModelScope.launch {
+            assignmentRepository.updateContactAssignments(
+                contactKeys = selected.numbers,
+                label = selected.name,
+                trainer = ContactCharacterAssignmentUpdate(
+                    character = trainer,
+                    randomPool = pendingGuidedTrainerPool.takeIf { trainerRandom }?.toList(),
+                ),
+                monster = ContactCharacterAssignmentUpdate(
+                    character = monster,
+                    randomPool = monsterPool.takeIf { monsterRandom }?.toList(),
+                ),
+            )
+            if (!pendingGuidedTrainerRandom && trainer == null) {
+                selected.numbers.forEach { assignmentRepository.clearContactOverride(it, CharacterType.Trainer) }
+            }
+            if (!monsterRandom && monster == null) {
+                selected.numbers.forEach { assignmentRepository.clearContactOverride(it, CharacterType.Monster) }
+            }
+            _assignedTrainer.value = trainer
+            _assignedMonster.value = monster
+            _trainerMode.value = if (trainerRandom) ContactCharacterMode.Random else ContactCharacterMode.Default
+            _monsterMode.value = if (monsterRandom) ContactCharacterMode.Random else ContactCharacterMode.Default
+            _trainerUsesGlobalDefaults.value = false
+            _monsterUsesGlobalDefaults.value = false
+            assignmentPickerRequested = false
+            pendingGuidedTrainer = null
+            pendingGuidedTrainerRandom = false
+            pendingGuidedTrainerPool = emptySet()
+            _lastAddedContactLabel.value = selected.name.takeIf {
+                trainerRandom || monsterRandom || trainer != null || monster != null
+            }
+            onCompleted()
+        }
+    }
+
+    fun clearRosterStatusMessage() {
+        _lastAddedContactLabel.value = null
+    }
+
     suspend fun selectContact(selectedContact: DialerContactSummary): Boolean {
-        if (!selectionRepository.setSelectedContact(selectedContact)) return false
-        restoreSelectedContactState()
-        val profileId = _pendingOnlineProfileId.value ?: return true
-        val contact = _contact.value ?: return false
-        return onlineOpponentResolver.link(contact.numbers, profileId).also { linked ->
-            if (linked) _pendingOnlineProfileId.value = null
+        return selectedContactMutex.withLock {
+            if (!selectionRepository.setSelectedContact(selectedContact)) return@withLock false
+            restoreSelectedContactState()
+            val profileId = _pendingOnlineProfileId.value ?: return@withLock true
+            val contact = _contact.value ?: return@withLock false
+            onlineOpponentResolver.link(contact.numbers, profileId).also { linked ->
+                if (linked) _pendingOnlineProfileId.value = null
+            }
         }
     }
 
@@ -238,37 +415,27 @@ class ContactCharacterSettingsViewModel @Inject constructor(
         }
     }
 
-    fun assignTrainer(reference: CharacterReference?) {
-        val selected = _contact.value ?: return
-        viewModelScope.launch {
-            selected.numbers.forEach {
-                assignmentRepository.assignCharacter(
-                    it,
-                    CharacterType.Trainer,
-                    reference,
-                    selected.name
-                )
-            }
-            _assignedTrainer.value = reference
-            _trainerMode.value = ContactCharacterMode.Default
-            _trainerUsesGlobalDefaults.value = false
+    fun assignTrainer(reference: CharacterReference?, onCompleted: () -> Unit = {}) {
+        if (reference == null) {
+            setUsesGlobalDefaults(CharacterType.Trainer, true, onCompleted)
+        } else {
+            updateExistingContactAssignment(
+                type = CharacterType.Trainer,
+                update = ContactCharacterAssignmentUpdate(character = reference),
+                onCompleted = onCompleted,
+            )
         }
     }
 
-    fun assignMonster(reference: CharacterReference?) {
-        val selected = _contact.value ?: return
-        viewModelScope.launch {
-            selected.numbers.forEach {
-                assignmentRepository.assignCharacter(
-                    it,
-                    CharacterType.Monster,
-                    reference,
-                    selected.name
-                )
-            }
-            _assignedMonster.value = reference
-            _monsterMode.value = ContactCharacterMode.Default
-            _monsterUsesGlobalDefaults.value = false
+    fun assignMonster(reference: CharacterReference?, onCompleted: () -> Unit = {}) {
+        if (reference == null) {
+            setUsesGlobalDefaults(CharacterType.Monster, true, onCompleted)
+        } else {
+            updateExistingContactAssignment(
+                type = CharacterType.Monster,
+                update = ContactCharacterAssignmentUpdate(character = reference),
+                onCompleted = onCompleted,
+            )
         }
     }
 
@@ -276,7 +443,21 @@ class ContactCharacterSettingsViewModel @Inject constructor(
 
     fun randomizeMonster() = setRandomMode(CharacterType.Monster)
 
-    fun setUsesGlobalDefaults(type: CharacterType, usesGlobalDefaults: Boolean) {
+    fun configureRandomMode(
+        type: CharacterType,
+        pool: Set<CharacterReference>,
+        onCompleted: () -> Unit = {},
+    ) = updateExistingContactAssignment(
+        type = type,
+        update = ContactCharacterAssignmentUpdate(randomPool = pool.toList()),
+        onCompleted = onCompleted,
+    )
+
+    fun setUsesGlobalDefaults(
+        type: CharacterType,
+        usesGlobalDefaults: Boolean,
+        onCompleted: () -> Unit = {},
+    ) {
         val selected = _contact.value ?: return
         viewModelScope.launch {
             selected.numbers.forEach { number ->
@@ -301,28 +482,55 @@ class ContactCharacterSettingsViewModel @Inject constructor(
             selected.numbers.forEach { assignmentRepository.clearContactRandomPool(it, type) }
             _contactRandomPools.value = _contactRandomPools.value - type
             restoreSelectedContactState()
+            onCompleted()
         }
     }
 
     private fun setRandomMode(type: CharacterType) {
+        val initialPool = contactDefaults.value.randomPools[type]?.toSet()
+            ?: allContactPoolReferences(type)
+        configureRandomMode(type, initialPool)
+    }
+
+    private fun updateExistingContactAssignment(
+        type: CharacterType,
+        update: ContactCharacterAssignmentUpdate,
+        onCompleted: () -> Unit,
+    ) {
         val selected = _contact.value ?: return
+        val existingTrainer = currentContactAssignment(CharacterType.Trainer)
+        val existingMonster = currentContactAssignment(CharacterType.Monster)
+        val trainer = if (type == CharacterType.Trainer) update else existingTrainer
+        val monster = if (type == CharacterType.Monster) update else existingMonster
         viewModelScope.launch {
-            val initialPool = assignmentRepository.getContactRandomPool(type)?.toSet()
-                ?: allContactPoolReferences(type)
-            selected.numbers.forEach {
-                assignmentRepository.setContactRandomPool(it, type, initialPool.toList())
-                assignmentRepository.randomizeCharacter(it, type, selected.name)
+            assignmentRepository.updateContactAssignments(
+                contactKeys = selected.numbers,
+                label = selected.name,
+                trainer = trainer,
+                monster = monster,
+            )
+            _assignedTrainer.value = trainer.character
+            _trainerMode.value = if (trainer.randomPool != null) ContactCharacterMode.Random else ContactCharacterMode.Default
+            _assignedMonster.value = monster.character
+            _monsterMode.value = if (monster.randomPool != null) ContactCharacterMode.Random else ContactCharacterMode.Default
+            _contactRandomPools.value = buildMap {
+                trainer.randomPool?.let { put(CharacterType.Trainer, it.toSet()) }
+                monster.randomPool?.let { put(CharacterType.Monster, it.toSet()) }
             }
-            _contactRandomPools.value = _contactRandomPools.value + (type to initialPool)
-            if (type == CharacterType.Trainer) {
-                _assignedTrainer.value = null
-                _trainerMode.value = ContactCharacterMode.Random
-                _trainerUsesGlobalDefaults.value = false
-            } else {
-                _assignedMonster.value = null
-                _monsterMode.value = ContactCharacterMode.Random
-                _monsterUsesGlobalDefaults.value = false
-            }
+            _trainerUsesGlobalDefaults.value = false
+            _monsterUsesGlobalDefaults.value = false
+            onCompleted()
+        }
+    }
+
+    private fun currentContactAssignment(type: CharacterType): ContactCharacterAssignmentUpdate {
+        val randomPool = _contactRandomPools.value[type]
+        return if ((if (type == CharacterType.Trainer) _trainerMode.value else _monsterMode.value) == ContactCharacterMode.Random) {
+            ContactCharacterAssignmentUpdate(randomPool = randomPool?.toList().orEmpty())
+        } else {
+            ContactCharacterAssignmentUpdate(
+                character = if (type == CharacterType.Trainer) _assignedTrainer.value else _assignedMonster.value,
+            )
         }
     }
 
@@ -350,27 +558,30 @@ class ContactCharacterSettingsViewModel @Inject constructor(
     private fun MonsterContact.contactKeys(): List<String> = numbers
 
     private suspend fun restoreSelectedContactState() {
+        // Hide the previous picker until every field for the next contact is ready.
+        _contact.value = null
         val restored = selectionRepository.getSelectedContact()
-        _contact.value = restored
-        _linkedOnlineProfileId.value = restored?.numbers?.let(onlineOpponentResolver::linkedProfileId)
-
         val contactKeys = restored?.contactKeys().orEmpty()
         val trainerSelection = contactKeys.commonSelection(CharacterType.Trainer)
         val monsterSelection = contactKeys.commonSelection(CharacterType.Monster)
+        val randomPools = CharacterType.entries.mapNotNull { type ->
+            val pool = contactKeys.map { assignmentRepository.getContactRandomPool(it, type) }.distinct().singleOrNull()
+            pool?.let { type to it.toSet() }
+        }.toMap()
+
         _assignedTrainer.value = trainerSelection?.character
         _trainerMode.value = trainerSelection?.mode ?: ContactCharacterMode.Random
-        _trainerUsesGlobalDefaults.value = contactKeys.none {
+        _trainerUsesGlobalDefaults.value = !assignmentPickerRequested && contactKeys.none {
             assignmentRepository.hasContactOverride(it, CharacterType.Trainer)
         }
         _assignedMonster.value = monsterSelection?.character
         _monsterMode.value = monsterSelection?.mode ?: ContactCharacterMode.Random
-        _monsterUsesGlobalDefaults.value = contactKeys.none {
+        _monsterUsesGlobalDefaults.value = !assignmentPickerRequested && contactKeys.none {
             assignmentRepository.hasContactOverride(it, CharacterType.Monster)
         }
-        _contactRandomPools.value = CharacterType.entries.mapNotNull { type ->
-            val pool = contactKeys.map { assignmentRepository.getContactRandomPool(it, type) }.distinct().singleOrNull()
-            pool?.let { type to it.toSet() }
-        }.toMap()
+        _contactRandomPools.value = randomPools
+        _linkedOnlineProfileId.value = restored?.numbers?.let(onlineOpponentResolver::linkedProfileId)
+        _contact.value = restored
         _contactSelectionVersion.value += 1
     }
 

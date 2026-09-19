@@ -6,7 +6,6 @@ import androidx.compose.animation.core.LinearEasing
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.Canvas
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
@@ -69,6 +68,8 @@ import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import dev.alenajam.monsterdialer.R
+import dev.alenajam.monsterdialer.app.ui.RetroDoubleBorderBox
+import dev.alenajam.monsterdialer.app.ui.RetroDoubleBorderTextBox
 import dev.alenajam.monsterdialer.battle.data.BattleEncounter
 import dev.alenajam.monsterdialer.battle.data.BattleMonster
 import dev.alenajam.monsterdialer.battle.data.BattlePanel
@@ -87,7 +88,9 @@ import kotlin.math.roundToInt
 fun BattleScreen(
     encounter: BattleEncounter,
     modifier: Modifier = Modifier,
-    timing: BattleTiming = BattleTiming()
+    timing: BattleTiming = BattleTiming(),
+    staticPreview: Boolean = false,
+    framed: Boolean = true,
 ) {
     val scope = rememberCoroutineScope()
     val resources = LocalResources.current
@@ -96,26 +99,57 @@ fun BattleScreen(
             resources.getString(resource, *arguments)
         })
     }
-    val state by coordinator.state.collectAsState()
+    val animatedState by coordinator.state.collectAsState()
+    val state = if (staticPreview) {
+        remember(encounter.id, encounter.type, resources) {
+            BattleUiState(
+                runId = 1,
+                phase = BattlePhase.Ready,
+                encounter = encounter,
+                message = resources.getString(R.string.battle_prompt),
+                dialogueId = 1,
+                playerPanel = BattlePanel.Monster,
+                enemyPanel = BattlePanel.Monster,
+                enemyRevealFrame = 4,
+                playerRevealFrame = 4,
+            )
+        }
+    } else {
+        animatedState
+    }
 
-    LaunchedEffect(encounter.id, encounter.type) { coordinator.start(encounter) }
+    LaunchedEffect(encounter.id, encounter.type, staticPreview) {
+        if (!staticPreview) coordinator.start(encounter)
+    }
     DisposableEffect(coordinator) { onDispose(coordinator::stop) }
 
-    Surface(
-        modifier = modifier,
-        color = MaterialTheme.colorScheme.surfaceContainer,
-        shape = RoundedCornerShape(36.dp),
-        tonalElevation = 8.dp
-    ) {
+    if (framed) {
+        Surface(
+            modifier = modifier,
+            color = MaterialTheme.colorScheme.surfaceContainer,
+            shape = RoundedCornerShape(36.dp),
+            tonalElevation = 8.dp
+        ) {
+            BattleScene(
+                state = state,
+                timing = timing,
+                staticPreview = staticPreview,
+                onAnimationCompleted = coordinator::animationCompleted,
+                onDialogueCompleted = coordinator::dialogueCompleted,
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(6.dp)
+                    .clip(RoundedCornerShape(30.dp))
+            )
+        }
+    } else {
         BattleScene(
             state = state,
             timing = timing,
+            staticPreview = staticPreview,
             onAnimationCompleted = coordinator::animationCompleted,
             onDialogueCompleted = coordinator::dialogueCompleted,
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(6.dp)
-                .clip(RoundedCornerShape(30.dp))
+            modifier = modifier.fillMaxSize()
         )
     }
 }
@@ -125,6 +159,7 @@ fun BattleScene(
     state: BattleUiState,
     modifier: Modifier = Modifier,
     timing: BattleTiming = BattleTiming(),
+    staticPreview: Boolean = false,
     onAnimationCompleted: (Long, BattlePhase) -> Unit = { _, _ -> },
     onDialogueCompleted: (Long, Long) -> Unit = { _, _ -> }
 ) {
@@ -132,8 +167,12 @@ fun BattleScene(
     val configuration = LocalConfiguration.current
     val density = LocalDensity.current
     val entranceDistancePx = with(density) { configuration.screenWidthDp.dp.toPx() }
-    val playerOffset = remember(state.runId, entranceDistancePx) { Animatable(entranceDistancePx) }
-    val enemyOffset = remember(state.runId, entranceDistancePx) { Animatable(-entranceDistancePx) }
+    val playerOffset = remember(state.runId, entranceDistancePx, staticPreview) {
+        Animatable(if (staticPreview) 0f else entranceDistancePx)
+    }
+    val enemyOffset = remember(state.runId, entranceDistancePx, staticPreview) {
+        Animatable(if (staticPreview) 0f else -entranceDistancePx)
+    }
     val saturation = remember(state.runId) { Animatable(0f) }
 
     LaunchedEffect(state.runId, state.phase) {
@@ -176,7 +215,6 @@ fun BattleScene(
     BoxWithConstraints(
         modifier = modifier
             .fillMaxSize()
-            .background(Color(0xFFFFFBF2))
             .clipToBounds()
             .semantics { contentDescription = sceneDescription }
     ) {
@@ -400,7 +438,7 @@ internal fun BattlePanelView(
 }
 
 @Composable
-private fun BattleDialogue(
+internal fun BattleDialogue(
     message: String,
     dialogueId: Long,
     isTyping: Boolean,
@@ -410,88 +448,16 @@ private fun BattleDialogue(
     textScale: Float = 1f,
     modifier: Modifier = Modifier
 ) {
-    val font = battleFontFamily()
-    val style = TextStyle(
-        fontFamily = font,
-        fontSize = 18.sp * textScale,
-        lineHeight = 21.sp * textScale,
-        color = Color.Black,
+    RetroDoubleBorderTextBox(
+        message = message,
+        animationKey = dialogueId,
+        modifier = modifier,
+        height = height,
+        characterDelayMillis = timing.characterMillis,
+        pageHoldMillis = timing.dialoguePageHoldMillis,
+        textScale = textScale,
+        onCompleted = onCompleted,
     )
-    val textMeasurer = rememberTextMeasurer()
-    BoxWithConstraints(
-            modifier = modifier
-                .fillMaxWidth(0.95f)
-            .height(height)
-            .background(Color.Black)
-            .padding(2.dp)
-            .background(Color.White)
-            .padding(3.dp)
-            .background(Color.Black)
-            .padding(4.dp)
-            .background(Color.White)
-            .semantics { if (!isTyping) liveRegion = LiveRegionMode.Polite }
-    ) {
-        val textWidth = with(LocalDensity.current) {
-            (maxWidth - 10.dp).roundToPx().coerceAtLeast(0)
-        }
-        val pages = remember(message, textWidth) {
-            measuredDialoguePages(message, textMeasurer, style, textWidth)
-        }
-        var displayedMessage by remember(dialogueId) { mutableStateOf("") }
-        LaunchedEffect(dialogueId, pages) {
-            if (message.isBlank()) {
-                displayedMessage = ""
-                return@LaunchedEffect
-            }
-            pages.forEachIndexed { pageIndex, page ->
-                page.indices.forEach { index ->
-                    displayedMessage = page.take(index + 1)
-                    delay(timing.characterMillis)
-                }
-                if (pageIndex < pages.lastIndex) delay(timing.dialoguePageHoldMillis)
-            }
-            onCompleted()
-        }
-        androidx.compose.material3.Text(
-            text = displayedMessage,
-            style = style,
-            maxLines = 3,
-            overflow = TextOverflow.Clip,
-            modifier = Modifier.padding(5.dp)
-        )
-    }
-}
-
-private fun measuredDialoguePages(
-    text: String,
-    textMeasurer: androidx.compose.ui.text.TextMeasurer,
-    style: TextStyle,
-    maxWidth: Int
-): List<String> {
-    if (text.isBlank()) return emptyList()
-    fun fits(page: String) = !textMeasurer.measure(
-        text = AnnotatedString(page),
-        style = style,
-        overflow = TextOverflow.Clip,
-        maxLines = 3,
-        constraints = Constraints(maxWidth = maxWidth)
-    ).hasVisualOverflow
-
-    val pages = mutableListOf<String>()
-    var remaining = text.trim()
-    while (remaining.isNotEmpty()) {
-        if (fits(remaining)) {
-            pages += remaining
-            break
-        }
-        var end = remaining.length
-        while (end > 1 && !fits(remaining.substring(0, end))) end--
-        val wordBoundary = remaining.lastIndexOfAny(charArrayOf(' ', '\n', '\t'), end - 1)
-        val pageEnd = if (wordBoundary > 0) wordBoundary else end
-        pages += remaining.substring(0, pageEnd).trimEnd()
-        remaining = remaining.substring(if (wordBoundary > 0) wordBoundary + 1 else pageEnd).trimStart()
-    }
-    return pages
 }
 
 private fun enemySprite(state: BattleUiState): BattleVisualAsset {

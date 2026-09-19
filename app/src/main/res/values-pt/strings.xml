@@ -3,6 +3,8 @@
     <string name="additional_translation_project_title" comment="Title of the additional translation contribution card.">Contribuir com traduções do MonsterDialer</string>
     <string name="contribute_translations" comment="Title of the OpenDialer translation contribution link on the About screen.">Contribuir com traduções do OpenDialer</string>
     <string name="hang_up" comment="Button to end the current phone call.">Desligar</string>
+    <string name="action_answer" comment="Incoming-call button that starts the fight.">Lutar</string>
+    <string name="action_decline" comment="Incoming-call button that runs away.">Fugir</string>
     <string name="add" comment="Generic label for adding a new item.">Adicionar</string>
     <string name="settings_character_packs_title" comment="Settings title for managing character packs.">Pacotes de personagens</string>
     <string name="characters_navigation_label" comment="Bottom navigation label for character customization.">Perfil</string>
@@ -46,7 +48,6 @@
     <string name="filter_all">Todos</string>
     <string name="filter_regular">Normal</string>
     <string name="filter_unlocked_radiant">Radiante desbloqueado</string>
-    <string name="filter_locked_radiant">Radiante bloqueado</string>
     <string name="selected" comment="Status label for the currently chosen option.">Selecionado</string>
     <string name="randomize" comment="Character selection that chooses a different eligible character for every call.">Aleatório</string>
     <string name="locked">Bloqueado</string>
@@ -332,8 +333,8 @@
     <string name="contact_defaults_description">Escolha as predefinições e limite o grupo de seleção aleatória dos contactos.</string>
     <string name="contact_default_trainer">Treinador predefinido</string>
     <string name="contact_default_monster">Monstro predefinido</string>
-    <string name="contact_choose_trainer" comment="Dropdown option that opens the trainer picker for the contact default.">Escolher treinador</string>
-    <string name="contact_choose_monster" comment="Dropdown option that opens the monster picker for the contact default.">Escolher monstro</string>
+    <string name="contact_choose_trainer" comment="Option that opens the character picker for the contact default.">Escolher</string>
+    <string name="contact_choose_monster" comment="Option that opens the character picker for the contact default.">Escolher</string>
     <string name="contact_default_random">Aleatório</string>
     <string name="contact_random_pool_all">Todas as personagens disponíveis</string>
     <string name="contact_random_pool_choose">Escolher grupo de seleção aleatória</string>
@@ -353,11 +354,171 @@
     <string name="contact_character_source_global">Não personalizar</string>
     <string name="contact_character_source_custom">Personalizar contacto</string>
     <string name="contact_character_inherited_title">A usar predefinições globais</string>
-    <string name="contact_character_inherited_message">Este contacto segue as definições globais de %1$s. Escolha «Escolher %1$s» ou «Aleatório» acima para as substituir.</string>
+    <string name="contact_character_inherited_message">Este contacto segue as definições globais de %1$s. Escolha outra personagem para as substituir ou edite as predefinições globais abaixo.</string>
+    <string name="contact_character_customize">Escolher outra personagem</string>
     <string name="contact_character_edit_global_defaults" comment="Button that opens the global contact character defaults from an inherited contact setting.">Editar predefinições globais</string>
     <string name="contact_random_pool_save">Guardar grupo</string>
     <string name="contact_random_pool_empty_title">Escolha pelo menos uma personagem</string>
     <string name="contact_random_pool_empty_exit_message">O grupo de seleção aleatória está vazio, por isso estas alterações não foram guardadas. Selecione pelo menos uma personagem para guardar o grupo ou descarte as alterações não guardadas para sair.</string>
     <string name="contact_random_pool_continue_editing">Continuar a editar</string>
     <string name="contact_random_pool_discard_changes">Descartar alterações</string>
+    <string name="import_action">Importar</string>
+    <string name="radiant_collection_title">Coleção radiante</string>
+    <string name="radiant_collection_description">Vê todos os monstros e as suas variantes radiantes, incluindo as ainda não descobertas.</string>
+    <string name="collection_sprite">Sprite de %1$s</string>
+    <string name="radiant_collection_sprite">Sprite radiante de %1$s</string>
+    <string name="radiant_collection_found">Encontrado</string>
+    <string name="radiant_collection_locked">Bloqueado</string>
+    <string name="radiant_collection_regular">Normal</string>
+    <string name="radiant_collection_browse_packs">Pacotes</string>
+    <string name="pack_details_action">Detalhes</string>
+    <plurals name="pack_character_count_only"><item quantity="one">%d personagem</item><item quantity="other">%d personagens</item></plurals>
+    <string name="are_you_sure">Tens a certeza?</string>
+    <string name="delete_action">Eliminar</string>
+
+    <string name="first_run_welcome_title">Transforma chamadas em encontros com monstros</string>
+    <string name="first_run_welcome_description">O MonsterDialer acrescenta um momento de batalha original às tuas chamadas. O teu primeiro encontro funciona imediatamente com as personagens integradas.</string>
+    <string name="first_run_setup_description">Em seguida, o Android irá pedir-te para definires o MonsterDialer como aplicação do telefone e permitires notificações de chamadas em ecrã inteiro. Estas permissões são necessárias para mostrar corretamente as chamadas recebidas.</string>
+    <string name="first_run_continue">Configurar o MonsterDialer</string>
+    <string name="first_encounter_prompt_title">Pronto para o teu primeiro encontro?</string>
+    <string name="first_encounter_prompt_description">Faz ou recebe uma chamada para veres o MonsterDialer em ação. Podes personalizar mais tarde o teu treinador, monstro e contactos.</string>
+    <string name="first_encounter_prompt_action">Abrir teclado numérico</string>
+    <string name="first_encounter_prompt_later">Talvez mais tarde</string>
+    <string name="app_name" comment="Application name shown by Android and in the About screen." translatable="false">MonsterDialer</string>
+    <string name="font_name" comment="Name of the typeface credited in the About screen." translatable="false">Pixel Operator</string>
+    <string name="font_author" comment="Author of the typeface credited in the About screen." translatable="false">Jayvee Enaguas</string>
+    <string name="url_font" comment="Font credit link opened from the About screen." translatable="false">https://www.dafont.com/pixel-operator.font</string>
+    <string name="icon_designer" comment="Name of the icon designer credited in the About screen." translatable="false">ArcherPanda</string>
+    <string name="url_icon_designer" comment="Icon designer credit link opened from the About screen." translatable="false">https://bsky.app/profile/archerpanda.bsky.social</string>
+    <string name="url_additional_translation_project" comment="URL opened from the additional translation contribution card. Do not translate." translatable="false">https://crowdin.com/project/monsterdialer</string>
+    <string name="url_github_opendialer" comment="URL for the MonsterDialer GitHub repository. Do not translate." translatable="false">https://github.com/oxcened/monster-dialer</string>
+    <string name="github_latest_release_api" comment="GitHub API endpoint used to retrieve the latest MonsterDialer release. Do not translate." translatable="false">https://api.github.com/repos/oxcened/monster-dialer/releases/latest</string>
+    <string name="url_feature_requests" comment="URL opened from the feature-request action. Do not translate." translatable="false">https://monsterdialer.fider.io/</string>
+    <string name="call_command_title">COMANDOS DE CHAMADA</string>
+    <string name="call_command_hear">ALTIFALANTE</string>
+    <string name="call_command_shush">SILENCIAR</string>
+    <string name="call_command_keys">TECLADO</string>
+    <string name="call_command_bag">MAIS</string>
+    <string name="call_command_key_speaker">S</string>
+    <string name="call_command_key_mute">M</string>
+    <string name="call_command_key_keys">#</string>
+    <string name="call_command_key_bag">B</string>
+    <string name="call_command_key_run">R</string>
+    <string name="call_command_cursor">▶ %1$s</string>
+    <string name="call_command_section">◀ %1$s</string>
+    <string name="call_command_back">VOLTAR</string>
+    <string name="call_command_run">EXECUTAR</string>
+    <string name="call_command_dialpad_digits">123\n456\n789\n*0#</string>
+    <string name="profile_status_title">ESTADO</string>
+    <string name="profile_player_label">JOGADOR</string>
+    <string name="profile_name_label">NOME</string>
+    <string name="profile_trainer_field">TREINADOR/%1$s</string>
+    <string name="profile_back">VOLTAR</string>
+    <string name="profile_calls_label">CHAMADAS</string>
+    <string name="profile_collection_label">COLEÇÃO</string>
+    <string name="profile_roster_title">EQUIPA DE MONSTROS</string>
+    <string name="roster_empty_slot" comment="Label for an unfilled row in the six-slot monster roster.">---</string>
+    <string name="roster_empty_slot_message" comment="Prompt shown while an empty monster roster slot is selected.">Este espaço está vazio.</string>
+    <string name="roster_choose_monster_message" comment="Prompt shown while an occupied monster roster slot is selected.">Escolhe um monstro.</string>
+    <string name="roster_switch" comment="GSC-style action to exchange the positions of two monsters in the roster.">TROCAR</string>
+    <string name="roster_switch_target_message" comment="Prompt shown after choosing a roster monster to switch.">Escolhe um monstro com o qual trocar.</string>
+    <string name="roster_release_title" comment="Title of the confirmation menu before releasing a roster monster.">LIBERTAR?</string>
+    <string name="roster_release_no" comment="Negative action in the roster release confirmation menu.">NÃO</string>
+    <string name="roster_release_yes" comment="Positive action in the roster release confirmation menu.">SIM</string>
+    <string name="profile_toolbox_title">FERRAMENTAS</string>
+    <string name="profile_add_roster">+</string>
+    <string name="profile_screen_title">PERFIL</string>
+    <string name="profile_monster_title">MONSTRO</string>
+    <string name="profile_level_label">NÍV.</string>
+    <string name="profile_monster_field">MONSTER/%1$s</string>
+    <string name="profile_level_field">NÍVEL %1$d</string>
+    <string name="profile_variant_label">TIPO</string>
+    <string name="profile_radiants_label">RADIANTES</string>
+    <string name="profile_menu_roster">EQUIPA</string>
+    <string name="profile_menu_contacts">CONTACTOS</string>
+    <string name="profile_menu_collection">COLEÇÃO</string>
+    <string name="profile_menu_journal">DIÁRIO</string>
+    <string name="profile_menu_online">PARTILHAR</string>
+    <string name="profile_menu_toolbox">FERRAMENTAS</string>
+    <string name="profile_menu_options">OPÇÕES</string>
+    <string name="profile_menu_exit">SAIR</string>
+    <string name="profile_menu_cursor">▶%1$s</string>
+    <string name="profile_roster_description">A tua equipa.</string>
+    <string name="profile_footer_prompt">O teu perfil!</string>
+    <string name="character_tools_prompt" comment="Retro prompt shown below the character toolbox list. Asking the player to choose the right tool.">Escolhe a ferramenta certa.</string>
+    <string name="monster_variant_and_level" translatable="false" comment="Language-neutral formatter for a monster variant and an already-localized level. %1$s is the variant (e.g., Regular) and %2$s is the level (e.g., Lv. 12).">%1$s · %2$s</string>
+    <string name="retro_picker_variant_and_level" translatable="false" comment="Language-neutral formatter for the retro assignment picker. %1$s is the variant and %2$s is the level.">%1$s   %2$s</string>
+    <string name="active_monster_variant_and_level" translatable="false" comment="Language-neutral formatter for details beneath the active monster on the profile card. %1$s is its variant (for example, Regular) and %2$s is its localized level (for example, Lv. 12).">%1$s • %2$s</string>
+    <string name="contact_picker_search" comment="Retro contact-picker command that opens name search.">Pesquisar</string>
+    <string name="contact_picker_search_name_prefix" comment="Prefix before the typed name in the retro contact search field.">Nome/</string>
+    <string name="contact_picker_search_empty_prompt" comment="Retro contact-picker prompt shown before a name is typed.">Introduz um nome.</string>
+    <string name="contact_picker_prompt" comment="Retro contact-picker prompt that explains the next action.">Escolhe um contacto para atribuir.</string>
+    <string name="contact_picker_open_action" comment="Retro contact-picker action that opens the selected contact.">Abrir</string>
+    <plurals name="contact_picker_found_count" comment="Retro contact-picker search result count.">
+        <item quantity="one">%d contacto encontrado.</item>
+        <item quantity="other">%d contactos encontrados.</item>
+    </plurals>
+    <string name="contact_context_menu_trainer">Treinador</string>
+    <string name="contact_context_menu_monster">Monstro</string>
+    <string name="contact_context_menu_remove">Remover</string>
+    <string name="contact_picker_options">Opções</string>
+    <string name="back">Voltar</string>
+    <string name="contact_defaults_menu_mode">Personagem predefinida</string>
+    <string name="contact_defaults_menu_characters">Lista de personagens</string>
+    <string name="contact_defaults_menu_pool">Grupo de seleção aleatória</string>
+    <string name="contact_picker_default">PREDEFINIDO</string>
+    <string name="contact_picker_no_trainer_assigned">Nenhum treinador atribuído.</string>
+    <string name="contact_picker_no_monster_assigned">Nenhum monstro atribuído.</string>
+    <string name="contact_picker_random_trainer">Treinador aleatório.</string>
+    <string name="contact_picker_random_monster">Monstro aleatório.</string>
+    <string name="contact_picker_choose_monster">Escolhe um monstro.</string>
+    <string name="contact_picker_choose_trainer">Escolhe um treinador.</string>
+    <string name="contact_picker_ready">%1$s está pronto!</string>
+    <string name="contact_picker_pool_trainers">Escolhe treinadores para o grupo.</string>
+    <string name="contact_picker_pool_monsters">Escolhe monstros para o grupo.</string>
+    <string name="contact_picker_pool_done">CONCLUÍDO</string>
+    <string name="contact_picker_choose">ESCOLHER</string>
+    <string name="contact_picker_next">SEGUINTE</string>
+    <string name="contact_picker_pool_included">●</string>
+    <string name="contact_picker_pool_excluded">○</string>
+    <string name="contact_remove_prompt">Remover da equipa?</string>
+    <string name="contact_remove_no">Não</string>
+    <string name="contact_remove_yes">Sim</string>
+    <string name="contact_removed_message">%1$s foi removido.</string>
+    <string name="contact_added_message">%1$s foi adicionado à equipa!</string>
+    <string name="character_selection_more_options" comment="Accessibility label for the character selector menu containing secondary pool actions.">Mais opções de seleção de personagens</string>
+    <string name="radiant_unlock_share_card_link" comment="Link printed on the radiant-unlock share card. Do not translate." translatable="false">monsterdialer.web.app</string>
+    <string name="online_profile_link_on">PARTILHAR/SIM</string>
+    <string name="online_profile_link_off">PARTILHAR/NÃO</string>
+    <string name="online_profile_sign_in_action">INICIAR SESSÃO</string>
+    <string name="online_profile_unlink_action">DESVINCULAR</string>
+    <string name="online_profile_linked_message">A tua equipa é partilhada.</string>
+    <string name="online_profile_not_linked_message">Partilha a tua equipa com os teus amigos.</string>
+    <string name="contact_details_action" comment="Contact-row action that opens the system contact details.">Detalhes</string>
+    <string name="customized_contacts_title">Contactos personalizados</string>
+    <string name="customized_contacts_empty_title">Nenhum contacto personalizado</string>
+    <string name="customized_contacts_empty_description">Escolhe um contacto para atribuir um treinador e um monstro.</string>
+    <string name="contact_assignment_unavailable">PREDEFINIDO</string>
+    <string name="customized_contacts_add">Novo contacto</string>
+    <string name="customized_contacts_new_action">NOVO</string>
+    <string name="customized_contacts_back_action">VOLTAR</string>
+    <string name="customized_contacts_cancel_action">CANCELAR</string>
+    <string name="customized_contacts_prompt">Escolhe um contacto.</string>
+    <string name="customized_contacts_assign_action">ATRIBUIR</string>
+    <string name="retro_key_a" comment="Game Boy-style action key label.">A</string>
+    <string name="retro_key_b" comment="Game Boy-style action key label.">B</string>
+    <string name="retro_action_select">A Selecionar</string>
+    <string name="retro_action_back">B Voltar</string>
+    <string name="retro_action_menu">B Menu</string>
+    <string name="retro_action_select_label">SELECIONAR</string>
+    <string name="retro_action_menu_label">MENU</string>
+    <string name="retro_action_back_label">VOLTAR</string>
+    <string name="retro_action_dial_label">MARCAR</string>
+    <string name="retro_picker_add" comment="Compact action to add a character in the retro picker.">ADICIONAR</string>
+    <string name="retro_picker_guide" comment="Compact GSC-style menu action to open the guide.">AJUDA</string>
+    <string name="default_pack_version" comment="Default technical version assigned to a newly created character pack. Do not translate." translatable="false">1.0.0</string>
+    <string name="call" comment="Menu action that calls the selected phone number.">Ligar</string>
+    <string name="favorite_phone_type_number" comment="Favorite contact summary. %1$s is the phone type and %2$s is the phone number.">%1$s • %2$s</string>
+    <string name="call_log_just_now" comment="Call-log time shown for calls less than one minute old.">Agora mesmo</string>
+    <string name="new_contact_short" comment="Compact command for creating a contact.">Novo</string>
 </resources>

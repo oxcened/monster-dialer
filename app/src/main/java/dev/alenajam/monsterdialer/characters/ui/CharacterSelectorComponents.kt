@@ -6,14 +6,11 @@ import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.offset
@@ -31,17 +28,15 @@ import androidx.compose.foundation.lazy.grid.itemsIndexed as gridItemsIndexed
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.background
-import androidx.compose.foundation.gestures.detectDragGestures
+import androidx.compose.foundation.border
+import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.FilledIconButton
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.OutlinedIconButton
 import androidx.compose.material3.SegmentedButton
 import androidx.compose.material3.SegmentedButtonDefaults
@@ -55,6 +50,7 @@ import androidx.compose.material3.Tab
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.IconButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
@@ -68,17 +64,18 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Shape
-import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.semantics.contentDescription
-import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import dev.alenajam.monsterdialer.R
 import dev.alenajam.monsterdialer.app.ui.LocalMonsterAppIcons
+import dev.alenajam.monsterdialer.app.ui.RetroSelectionArrow
+import dev.alenajam.monsterdialer.app.ui.RetroSelectionArrowSize
 import dev.alenajam.opendialer.core.common.ui.AppIcon
 import dev.alenajam.opendialer.core.common.ui.LocalAppIcons
 import dev.alenajam.monsterdialer.characters.data.BuiltInArtwork
@@ -93,7 +90,6 @@ import dev.alenajam.monsterdialer.packs.data.PackCharacter
 import dev.alenajam.monsterdialer.packs.data.InstalledPackCharacter
 import java.io.File
 import kotlinx.coroutines.launch
-import kotlin.math.roundToInt
 
 enum class CharacterLayout { List, Grid }
 
@@ -136,6 +132,7 @@ internal fun LazyListScope.characterTypeItems(
     onSelected: ((CharacterReference) -> Unit)? = null,
     hideSelected: Boolean = false,
     filter: MonsterFilter = MonsterFilter.All,
+    hideLockedVariants: Boolean = false,
 ) {
     val type = if (defaultCharacter == BuiltInCharacters.trainer) CharacterType.Trainer else CharacterType.Monster
     val selectionState = characterSelectionState(
@@ -152,11 +149,11 @@ internal fun LazyListScope.characterTypeItems(
     fun CharacterSelection.matchesFilter(): Boolean {
         if (type != CharacterType.Monster) return true
         val reference = CharacterReference(installed.packId, installed.character.id, variant.id)
+        if (hideLockedVariants && variant.isRadiant && reference !in unlockedVariants) return false
         return when (filter) {
             MonsterFilter.All -> true
             MonsterFilter.Regular -> !variant.isRadiant
             MonsterFilter.RadiantUnlocked -> variant.isRadiant && reference in unlockedVariants
-            MonsterFilter.RadiantLocked -> variant.isRadiant && reference !in unlockedVariants
         }
     }
 
@@ -167,6 +164,7 @@ internal fun LazyListScope.characterTypeItems(
     }
     val effectiveRandomize = onRandomize?.takeIf { showRandomize }
     val hasNoCharacterOptions = effectiveRandomize == null && hideSelected && selectionState.isDefaultSelected && !hasSelectableCharacter
+    val poolMode = onSelected != null
 
     if (effectiveRandomize != null) {
         item(key = "random") {
@@ -200,6 +198,8 @@ internal fun LazyListScope.characterTypeItems(
                 name = defaultCharacter.name,
                 type = type,
                 isSelected = selectionState.isDefaultSelected,
+                poolMode = poolMode,
+                poolIncluded = defaultReference != null && defaultReference in selectedReferences,
                 roundTop = true,
                 roundBottom = true,
                 artwork = {
@@ -235,6 +235,8 @@ internal fun LazyListScope.characterTypeItems(
                     level = installed.character.level,
                     isRadiant = selection.variant.isRadiant,
                     isSelected = isReferenceSelected(reference),
+                    poolMode = poolMode,
+                    poolIncluded = reference in selectedReferences,
                     isUnlocked = isUnlocked,
                     roundTop = index == 0,
                     roundBottom = index == selections.lastIndex,
@@ -273,6 +275,8 @@ internal fun LazyListScope.characterTypeItems(
                     level = installed.character.level,
                     isRadiant = selection.variant.isRadiant,
                     isSelected = isReferenceSelected(reference),
+                    poolMode = poolMode,
+                    poolIncluded = reference in selectedReferences,
                     isUnlocked = isUnlocked,
                     roundTop = index == 0,
                     roundBottom = index == selections.lastIndex,
@@ -337,7 +341,6 @@ internal fun LazyGridScope.characterTypeGridItems(
             MonsterFilter.All -> true
             MonsterFilter.Regular -> !variant.isRadiant
             MonsterFilter.RadiantUnlocked -> variant.isRadiant && reference in unlockedVariants
-            MonsterFilter.RadiantLocked -> variant.isRadiant && reference !in unlockedVariants
         }
     }
 
@@ -593,90 +596,6 @@ internal fun JumpToSelectedCharacterButton(
 }
 
 @Composable
-internal fun CharacterFastScroller(
-    listState: LazyListState,
-    modifier: Modifier = Modifier,
-) {
-    val layoutInfo = listState.layoutInfo
-    val visibleItemCount = layoutInfo.visibleItemsInfo.size
-    val totalItemCount = layoutInfo.totalItemsCount
-    if (totalItemCount <= 12 || totalItemCount <= visibleItemCount * 2) return
-
-    val position = (listState.firstVisibleItemIndex.toFloat() /
-        (totalItemCount - visibleItemCount).coerceAtLeast(1)).coerceIn(0f, 1f)
-    FastScrollerTrack(
-        position = position,
-        visibleFraction = (visibleItemCount.toFloat() / totalItemCount).coerceIn(0f, 1f),
-        onPositionChanged = { fraction ->
-            listState.requestScrollToItem((fraction * (totalItemCount - visibleItemCount).coerceAtLeast(0)).roundToInt())
-        },
-        modifier = modifier,
-    )
-}
-
-@Composable
-internal fun CharacterFastScroller(
-    gridState: LazyGridState,
-    modifier: Modifier = Modifier,
-) {
-    val layoutInfo = gridState.layoutInfo
-    val visibleItemCount = layoutInfo.visibleItemsInfo.size
-    val totalItemCount = layoutInfo.totalItemsCount
-    if (totalItemCount <= 12 || totalItemCount <= visibleItemCount * 2) return
-
-    val position = (gridState.firstVisibleItemIndex.toFloat() /
-        (totalItemCount - visibleItemCount).coerceAtLeast(1)).coerceIn(0f, 1f)
-    FastScrollerTrack(
-        position = position,
-        visibleFraction = (visibleItemCount.toFloat() / totalItemCount).coerceIn(0f, 1f),
-        onPositionChanged = { fraction ->
-            gridState.requestScrollToItem((fraction * (totalItemCount - visibleItemCount).coerceAtLeast(0)).roundToInt())
-        },
-        modifier = modifier,
-    )
-}
-
-@Composable
-private fun FastScrollerTrack(
-    position: Float,
-    visibleFraction: Float,
-    onPositionChanged: suspend (Float) -> Unit,
-    modifier: Modifier = Modifier,
-) {
-    val contentDescription = stringResource(R.string.character_fast_scroller)
-    val coroutineScope = rememberCoroutineScope()
-    BoxWithConstraints(
-        modifier = modifier
-            .width(32.dp)
-            .fillMaxHeight()
-            .semantics { this.contentDescription = contentDescription }
-            .pointerInput(Unit) {
-                detectDragGestures(
-                    onDragStart = { offset ->
-                        coroutineScope.launch { onPositionChanged((offset.y / size.height).coerceIn(0f, 1f)) }
-                    },
-                    onDrag = { change, _ ->
-                        coroutineScope.launch { onPositionChanged((change.position.y / size.height).coerceIn(0f, 1f)) }
-                    },
-                )
-            },
-    ) {
-        val thumbHeight = (maxHeight * visibleFraction).coerceIn(48.dp, maxHeight)
-        val travel = (maxHeight - thumbHeight).coerceAtLeast(0.dp)
-        Box(
-            modifier = Modifier
-                .align(Alignment.TopEnd)
-                .padding(vertical = 8.dp)
-                .width(6.dp)
-                .height(thumbHeight)
-                .offset(y = travel * position)
-                .clip(RoundedCornerShape(4.dp))
-                .background(MaterialTheme.colorScheme.primary.copy(alpha = 0.7f)),
-        )
-    }
-}
-
-@Composable
 internal fun JumpToSelectedCharacterButton(
     gridState: LazyGridState,
     selectedItemIndex: Int,
@@ -797,7 +716,6 @@ internal fun MonsterFilterButton(
                         MonsterFilter.All -> R.string.filter_all
                         MonsterFilter.Regular -> R.string.filter_regular
                         MonsterFilter.RadiantUnlocked -> R.string.filter_unlocked_radiant
-                        MonsterFilter.RadiantLocked -> R.string.filter_locked_radiant
                     },
                 ),
                 modifier = Modifier.padding(start = 8.dp),
@@ -816,7 +734,6 @@ internal fun MonsterFilterButton(
                                     MonsterFilter.All -> R.string.filter_all
                                     MonsterFilter.Regular -> R.string.filter_regular
                                     MonsterFilter.RadiantUnlocked -> R.string.filter_unlocked_radiant
-                                    MonsterFilter.RadiantLocked -> R.string.filter_locked_radiant
                                 },
                             ),
                         )
@@ -842,13 +759,35 @@ internal fun CharacterSelectionActions(
     modifier: Modifier = Modifier,
     filter: MonsterFilter? = null,
     onFilterSelected: ((MonsterFilter) -> Unit)? = null,
-    poolActions: (@Composable RowScope.() -> Unit)? = null,
+    poolActions: (@Composable ColumnScope.(onDismiss: () -> Unit) -> Unit)? = null,
 ) {
     val scrollState = rememberScrollState()
     val addButton: @Composable () -> Unit = { CharacterAddButton(isAddEnabled, onAddCharacter) }
+    var moreMenuExpanded by remember { mutableStateOf(false) }
     val filterButton: @Composable () -> Unit = {
         if (filter != null && onFilterSelected != null) {
             MonsterFilterButton(filter, onFilterSelected)
+        }
+    }
+    val poolActionsButton: @Composable () -> Unit = {
+        if (poolActions != null) {
+            Box {
+                IconButton(
+                    onClick = { moreMenuExpanded = true },
+                    modifier = Modifier.size(40.dp),
+                ) {
+                    AppIcon(
+                        icon = LocalAppIcons.current.more,
+                        contentDescription = stringResource(R.string.character_selection_more_options),
+                    )
+                }
+                DropdownMenu(
+                    expanded = moreMenuExpanded,
+                    onDismissRequest = { moreMenuExpanded = false },
+                ) {
+                    poolActions { moreMenuExpanded = false }
+                }
+            }
         }
     }
 
@@ -886,7 +825,7 @@ internal fun CharacterSelectionActions(
                 verticalAlignment = Alignment.CenterVertically,
             ) {
                 filterButton()
-                poolActions?.invoke(this)
+                poolActionsButton()
                 Spacer(modifier = Modifier.weight(1f))
                 addButton()
             }
@@ -897,7 +836,7 @@ internal fun CharacterSelectionActions(
                 verticalAlignment = Alignment.CenterVertically,
             ) {
                 filterButton()
-                poolActions?.invoke(this)
+                poolActionsButton()
                 Spacer(modifier = Modifier.weight(1f))
                 addButton()
             }
@@ -986,6 +925,8 @@ private fun CharacterOptionCard(
     level: Int? = null,
     isRadiant: Boolean = false,
     isSelected: Boolean,
+    poolMode: Boolean = false,
+    poolIncluded: Boolean = false,
     isUnlocked: Boolean = true,
     showTypeSubtitle: Boolean = true,
     roundTop: Boolean,
@@ -1000,19 +941,11 @@ private fun CharacterOptionCard(
 ) {
     var showMenu by remember { mutableStateOf(false) }
     var showRadiantUnlockDialog by remember { mutableStateOf(false) }
-    val shape = RoundedCornerShape(
-        topStart = if (roundTop) 20.dp else 2.dp, topEnd = if (roundTop) 20.dp else 2.dp,
-        bottomStart = if (roundBottom) 20.dp else 2.dp, bottomEnd = if (roundBottom) 20.dp else 2.dp
-    )
     Box {
-        Card(
+        Box(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(vertical = 1.dp)
                 .then(modifier),
-            shape = shape,
-            colors = CardDefaults.cardColors(containerColor = if (isSelected) MaterialTheme.colorScheme.secondaryContainer else MaterialTheme.colorScheme.surfaceContainerLow),
-            elevation = CardDefaults.cardElevation(defaultElevation = 0.5.dp)
         ) {
             Row(
                 modifier = Modifier
@@ -1026,54 +959,69 @@ private fun CharacterOptionCard(
                         },
                         onLongClick = if (!isSelected && (onDelete != null || onEdit != null || onShare != null)) { { showMenu = true } } else null
                     )
-                    .padding(12.dp),
+                    .fillMaxWidth()
+                    .padding(horizontal = 2.dp, vertical = 4.dp),
                 verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.spacedBy(12.dp)
+                horizontalArrangement = Arrangement.spacedBy(0.dp),
             ) {
+                if (poolMode) {
+                    Text(
+                        text = stringResource(
+                            if (poolIncluded) {
+                                R.string.contact_picker_pool_included
+                            } else {
+                                R.string.contact_picker_pool_excluded
+                            },
+                        ),
+                        fontFamily = RetroPickerFont,
+                        fontSize = 16.sp,
+                        color = RetroInk,
+                        modifier = Modifier.size(RetroSelectionArrowSize),
+                    )
+                } else if (isSelected) {
+                    RetroSelectionArrow(tint = RetroInk)
+                } else {
+                    Spacer(modifier = Modifier.size(RetroSelectionArrowSize))
+                }
                 Box(
-                    modifier = Modifier.size(60.dp),
+                    modifier = Modifier.size(48.dp),
                     contentAlignment = Alignment.Center,
                 ) {
                     artwork()
                 }
-                Column(modifier = Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(2.dp)) {
-                    Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(6.dp)) {
-                        Text(name, style = MaterialTheme.typography.titleMedium)
-                    }
-
+                Column(
+                    modifier = Modifier.padding(start = 4.dp),
+                    verticalArrangement = Arrangement.spacedBy(1.dp),
+                ) {
+                    Text(
+                        text = name.uppercase(),
+                        fontFamily = RetroPickerFont,
+                        fontSize = 16.sp,
+                        color = RetroInk,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis,
+                    )
                     if (showTypeSubtitle && type == CharacterType.Monster) {
                         val variant = stringResource(if (isRadiant) R.string.radiant else R.string.regular)
-                        val levelText = stringResource(R.string.roster_monster_level, level ?: dev.alenajam.monsterdialer.characters.data.DefaultMonsterLevel)
-                        Row(
-                            verticalAlignment = Alignment.CenterVertically,
-                            horizontalArrangement = Arrangement.spacedBy(4.dp)
-                        ) {
-                            Text(
-                                text = stringResource(R.string.monster_variant_and_level, variant, levelText),
-                                style = MaterialTheme.typography.bodySmall,
-                                color = if (isRadiant) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurfaceVariant
-                            )
+                        val levelText = stringResource(
+                            R.string.roster_monster_level,
+                            level ?: dev.alenajam.monsterdialer.characters.data.DefaultMonsterLevel,
+                        )
+                        Row(verticalAlignment = Alignment.CenterVertically) {
                             if (isRadiant) {
                                 AppIcon(
                                     icon = LocalMonsterAppIcons.current.radiant,
                                     contentDescription = null,
                                     modifier = Modifier.size(14.dp),
-                                    tint = MaterialTheme.colorScheme.primary
                                 )
                             }
+                            Text(
+                                text = stringResource(R.string.retro_picker_variant_and_level, variant, levelText),
+                                fontFamily = RetroPickerFont,
+                                fontSize = 13.sp,
+                                color = RetroInk.copy(alpha = 0.75f),
+                            )
                         }
-                    }
-                }
-                if (isSelected) {
-                    Text(
-                        stringResource(R.string.selected),
-                        style = MaterialTheme.typography.labelLarge,
-                        color = MaterialTheme.colorScheme.primary,
-                        modifier = Modifier.padding(horizontal = 16.dp)
-                    )
-                } else {
-                    OutlinedButton(onClick = onSelect, enabled = isUnlocked) {
-                        Text(stringResource(if (isUnlocked) R.string.select else R.string.locked))
                     }
                 }
             }
@@ -1154,13 +1102,12 @@ private fun CharacterGridItem(
     var showMenu by remember { mutableStateOf(false) }
     var showRadiantUnlockDialog by remember { mutableStateOf(false) }
     Box {
-        Card(
-            modifier = Modifier.fillMaxWidth().then(modifier),
-            shape = shape,
-            colors = CardDefaults.cardColors(
-                containerColor = if (isSelected) MaterialTheme.colorScheme.secondaryContainer else MaterialTheme.colorScheme.surfaceContainerLow
-            ),
-            elevation = CardDefaults.cardElevation(defaultElevation = 0.5.dp)
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .border(2.dp, if (isSelected) RetroInk else RetroInk.copy(alpha = 0.45f), RectangleShape)
+                .background(if (isSelected) RetroLavender else RetroPaper, RectangleShape)
+                .then(modifier),
         ) {
             Column(
                 modifier = Modifier

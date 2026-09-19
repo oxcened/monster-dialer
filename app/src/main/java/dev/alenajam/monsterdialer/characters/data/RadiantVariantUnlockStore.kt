@@ -22,6 +22,8 @@ class RadiantVariantUnlockStore @Inject constructor(
     private val mutableUnlocked = MutableStateFlow(read())
     val unlocked: StateFlow<Set<CharacterReference>> = mutableUnlocked.asStateFlow()
 
+    fun hasStoredData(): Boolean = file.isFile
+
     @Synchronized
     fun unlock(reference: CharacterReference): Boolean {
         if (reference in mutableUnlocked.value) return false

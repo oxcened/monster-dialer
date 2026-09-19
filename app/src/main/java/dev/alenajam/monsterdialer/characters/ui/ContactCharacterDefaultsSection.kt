@@ -1,26 +1,18 @@
 package dev.alenajam.monsterdialer.characters.ui
 
-import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.expandVertically
-import androidx.compose.animation.fadeIn
-import androidx.compose.animation.fadeOut
-import androidx.compose.animation.shrinkVertically
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.rememberLazyListState
-import androidx.compose.material3.AlertDialog
-import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
+import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -30,21 +22,32 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.draw.clipToBounds
-import androidx.compose.ui.geometry.Offset
-import androidx.compose.ui.input.nestedscroll.NestedScrollConnection
-import androidx.compose.ui.input.nestedscroll.NestedScrollSource
-import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import dev.alenajam.monsterdialer.R
+import dev.alenajam.monsterdialer.app.ui.RetroFastScroller
+import dev.alenajam.monsterdialer.app.ui.RetroContextMenuItem
+import dev.alenajam.monsterdialer.app.ui.RetroContextMenuOverlay
+import dev.alenajam.monsterdialer.app.ui.RetroFooter
+import dev.alenajam.monsterdialer.app.ui.RetroSearchButton
 import dev.alenajam.monsterdialer.characters.data.BuiltInCharacters
 import dev.alenajam.monsterdialer.characters.data.ContactCharacterDefaults
 import dev.alenajam.monsterdialer.packs.data.CharacterAssignmentTarget
 import dev.alenajam.monsterdialer.packs.data.CharacterReference
 import dev.alenajam.monsterdialer.packs.data.CharacterType
 import dev.alenajam.monsterdialer.packs.data.InstalledPackCharacter
+import dev.alenajam.opendialer.feature.settings.LocalSettingsBackInterceptor
+import dev.alenajam.opendialer.feature.settings.LocalSettingsSubpageNavigator
+
+private enum class DefaultsOptionsMenu {
+    Root,
+    Mode,
+    Characters,
+    RandomizerPool,
+}
 
 /** Edits the global contact-character defaults and randomizer pools. */
 @Composable
@@ -59,9 +62,12 @@ internal fun ContactCharacterDefaultsSection(
     onAddCharacter: (CharacterType) -> Unit,
     isAddEnabled: Boolean,
 ) {
+    val settingsNavigator = LocalSettingsSubpageNavigator.current
+    val settingsBackInterceptor = LocalSettingsBackInterceptor.current
     var selectedType by remember { mutableStateOf(CharacterType.Trainer) }
     val draftPools = remember { mutableStateMapOf<CharacterType, Set<CharacterReference>>() }
     var resetPools by remember { mutableStateOf(emptySet<CharacterType>()) }
+    var optionsMenu by remember { mutableStateOf<DefaultsOptionsMenu?>(null) }
     val selectedDefault = defaults.defaults[selectedType]
     val unlockedVariants by viewModel.unlockedVariants.collectAsStateWithLifecycle()
     val filter by viewModel.filter.collectAsStateWithLifecycle()
@@ -74,23 +80,6 @@ internal fun ContactCharacterDefaultsSection(
     val selectedPool = if (selectedType in resetPools) allPoolReferences else draftPools[selectedType] ?: savedPool
     val hasUnsavedEmptyPool = draftPools.values.any(Set<CharacterReference>::isEmpty)
     val listState = rememberLazyListState()
-    var controlsVisible by remember { mutableStateOf(true) }
-    val controlsScrollConnection = remember {
-        object : NestedScrollConnection {
-            override fun onPostScroll(
-                consumed: Offset,
-                available: Offset,
-                source: NestedScrollSource,
-            ): Offset {
-                when {
-                    consumed.y < 0f -> controlsVisible = false
-                    consumed.y > 0f -> controlsVisible = true
-                }
-                return Offset.Zero
-            }
-        }
-    }
-
     LaunchedEffect(defaults.randomPools) {
         draftPools.entries.toList().forEach { (type, draftPool) ->
             if (draftPool.isNotEmpty() && defaults.randomPools[type]?.toSet() == draftPool) draftPools.remove(type)
@@ -100,58 +89,22 @@ internal fun ContactCharacterDefaultsSection(
 
     RandomPoolEditorBackHandling(hasUnsavedEmptyPool) { draftPools.clear() }
 
+    Surface(
+        modifier = Modifier.fillMaxSize(),
+        color = Color.White,
+    ) {
+    Box(modifier = Modifier.fillMaxSize()) {
     Column(modifier = Modifier.fillMaxSize()) {
-        AnimatedVisibility(
-            visible = controlsVisible,
-            enter = fadeIn() + expandVertically(),
-            exit = fadeOut() + shrinkVertically(),
-        ) {
-            Column(modifier = Modifier.fillMaxWidth()) {
-                Column(
-                    modifier = Modifier.fillMaxWidth().padding(bottom = 8.dp),
-                    verticalArrangement = Arrangement.spacedBy(8.dp),
-                ) {
-                    ContactDefaultsDropdowns(
-                        selectedType = selectedType,
-                        onTypeSelected = { selectedType = it },
-                        isPoolMode = effectivePoolMode,
-                        onPoolModeChanged = { isRandomizer ->
-                            if (!isRandomizer) draftPools.remove(selectedType)
-                            onDefaultChanged(selectedType, if (isRandomizer) null else if (selectedType == CharacterType.Trainer) BuiltInCharacters.defaultTrainerReference else BuiltInCharacters.defaultMonsterReference)
-                        },
-                    )
-                }
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.spacedBy(8.dp),
-                    verticalAlignment = Alignment.CenterVertically,
-                ) {
-                    if (selectedType == CharacterType.Monster) {
-                        MonsterFilterButton(
-                            filter = filter,
-                            onFilterSelected = viewModel::setFilter,
-                        )
-                    }
-                    if (effectivePoolMode) {
-                        CharacterPoolActionButtons(
-                            isAllSelected = selectedPool == allPoolReferences,
-                            onReset = {
-                                draftPools.remove(selectedType)
-                                resetPools = resetPools + selectedType
-                                onPoolReset(selectedType)
-                            },
-                            onToggleAll = {
-                                resetPools = resetPools - selectedType
-                                updateRandomPoolDraft(selectedType, if (selectedPool == allPoolReferences) emptySet() else allPoolReferences, draftPools) { type, pool -> onPoolChanged(type, pool.toList()) }
-                            },
-                        )
-                    }
-                    Spacer(modifier = Modifier.weight(1f))
-                    CharacterAddButton(
-                        isAddEnabled = isAddEnabled,
-                        onAddCharacter = { onAddCharacter(selectedType) },
-                    )
-                }
+        Column(modifier = Modifier.fillMaxWidth()) {
+            Column(
+                modifier = Modifier.fillMaxWidth().padding(bottom = 8.dp),
+                verticalArrangement = Arrangement.spacedBy(8.dp),
+            ) {
+                ContactDefaultsDropdowns(
+                    selectedType = selectedType,
+                    onTypeSelected = { selectedType = it },
+                    onOpenOptions = { optionsMenu = DefaultsOptionsMenu.Root },
+                )
             }
         }
         Box(
@@ -163,8 +116,7 @@ internal fun ContactCharacterDefaultsSection(
             LazyColumn(
                 state = listState,
                 modifier = Modifier
-                    .fillMaxSize()
-                    .nestedScroll(controlsScrollConnection),
+                    .fillMaxSize(),
                 contentPadding = PaddingValues(bottom = 72.dp),
             ) {
                 if (effectivePoolMode) {
@@ -196,15 +148,148 @@ internal fun ContactCharacterDefaultsSection(
                     showRandomize = false,
                     selectedReferences = if (effectivePoolMode) selectedPool else emptySet(),
                     filter = if (selectedType == CharacterType.Monster) filter else MonsterFilter.All,
+                    hideLockedVariants = true,
                     onSelected = if (effectivePoolMode) { reference ->
                         updateRandomPoolDraft(selectedType, selectedPool - reference, draftPools) { type, pool -> onPoolChanged(type, pool.toList()) }
                     } else null,
                 )
             }
-            CharacterFastScroller(
+            RetroFastScroller(
                 listState = listState,
+                contentDescription = stringResource(R.string.character_fast_scroller),
                 modifier = Modifier.align(Alignment.CenterEnd).padding(vertical = 8.dp),
             )
         }
+        RetroFooter(
+            backKey = stringResource(R.string.retro_key_b),
+            backLabel = stringResource(R.string.customized_contacts_back_action),
+            onBack = {
+                if (settingsBackInterceptor?.consumesBackNavigation() != true) {
+                    settingsNavigator?.navigateBack()
+                }
+            },
+        )
+    }
+    optionsMenu?.let { menu ->
+        val modeItems = listOf(
+            RetroContextMenuItem(
+                label = stringResource(
+                    if (selectedType == CharacterType.Trainer) {
+                        R.string.contact_choose_trainer
+                    } else {
+                        R.string.contact_choose_monster
+                    },
+                ),
+                showCursor = !effectivePoolMode,
+            ) {
+                draftPools.remove(selectedType)
+                onDefaultChanged(
+                    selectedType,
+                    if (selectedType == CharacterType.Trainer) {
+                        BuiltInCharacters.defaultTrainerReference
+                    } else {
+                        BuiltInCharacters.defaultMonsterReference
+                    },
+                )
+                optionsMenu = null
+            },
+            RetroContextMenuItem(
+                label = stringResource(R.string.randomize),
+                showCursor = effectivePoolMode,
+            ) {
+                onDefaultChanged(selectedType, null)
+                optionsMenu = null
+            },
+        )
+        val filterItems = if (selectedType == CharacterType.Monster) {
+            listOf(
+                RetroContextMenuItem(
+                    label = stringResource(R.string.filter_all),
+                    showCursor = filter == MonsterFilter.All,
+                    dividerBefore = true,
+                ) {
+                    viewModel.setFilter(MonsterFilter.All)
+                    optionsMenu = null
+                },
+                RetroContextMenuItem(
+                    label = stringResource(R.string.filter_regular),
+                    showCursor = filter == MonsterFilter.Regular,
+                ) {
+                    viewModel.setFilter(MonsterFilter.Regular)
+                    optionsMenu = null
+                },
+                RetroContextMenuItem(
+                    label = stringResource(R.string.filter_unlocked_radiant),
+                    showCursor = filter == MonsterFilter.RadiantUnlocked,
+                ) {
+                    viewModel.setFilter(MonsterFilter.RadiantUnlocked)
+                    optionsMenu = null
+                },
+            )
+        } else {
+            emptyList()
+        }
+        val addItem = if (isAddEnabled) {
+            RetroContextMenuItem(
+                label = stringResource(R.string.add),
+                dividerBefore = true,
+            ) {
+                optionsMenu = null
+                onAddCharacter(selectedType)
+            }
+        } else {
+            null
+        }
+        val poolItems = if (effectivePoolMode) {
+            listOf(
+                RetroContextMenuItem(
+                    label = stringResource(R.string.contact_random_pool_select_all),
+                    dividerBefore = true,
+                ) {
+                    resetPools = resetPools - selectedType
+                    updateRandomPoolDraft(selectedType, allPoolReferences, draftPools) { type, pool -> onPoolChanged(type, pool.toList()) }
+                    optionsMenu = null
+                },
+                RetroContextMenuItem(stringResource(R.string.contact_random_pool_deselect_all)) {
+                    resetPools = resetPools - selectedType
+                    updateRandomPoolDraft(selectedType, emptySet(), draftPools) { type, pool -> onPoolChanged(type, pool.toList()) }
+                    optionsMenu = null
+                },
+                RetroContextMenuItem(stringResource(R.string.contact_random_pool_reset)) {
+                    draftPools.remove(selectedType)
+                    resetPools = resetPools + selectedType
+                    onPoolReset(selectedType)
+                    optionsMenu = null
+                },
+            )
+        } else {
+            emptyList()
+        }
+        RetroContextMenuOverlay(
+            modifier = Modifier.fillMaxWidth(0.82f),
+            fontFamily = RetroPickerFont,
+            onDismissRequest = { optionsMenu = null },
+            title = when (menu) {
+                DefaultsOptionsMenu.Root -> null
+                DefaultsOptionsMenu.Mode -> stringResource(R.string.contact_defaults_menu_mode)
+                DefaultsOptionsMenu.Characters -> stringResource(R.string.contact_defaults_menu_characters)
+                DefaultsOptionsMenu.RandomizerPool -> stringResource(R.string.contact_defaults_menu_pool)
+            },
+            items = when (menu) {
+                DefaultsOptionsMenu.Root -> buildList {
+                    add(RetroContextMenuItem(stringResource(R.string.contact_defaults_menu_mode)) { optionsMenu = DefaultsOptionsMenu.Mode })
+                    add(RetroContextMenuItem(stringResource(R.string.contact_defaults_menu_characters)) { optionsMenu = DefaultsOptionsMenu.Characters })
+                    if (effectivePoolMode) {
+                        add(RetroContextMenuItem(stringResource(R.string.contact_defaults_menu_pool)) { optionsMenu = DefaultsOptionsMenu.RandomizerPool })
+                    }
+                    add(RetroContextMenuItem.cancel(stringResource(R.string.cancel)) { optionsMenu = null })
+                }
+                DefaultsOptionsMenu.Mode -> modeItems + RetroContextMenuItem.cancel(stringResource(R.string.back)) { optionsMenu = DefaultsOptionsMenu.Root }
+                DefaultsOptionsMenu.Characters -> filterItems + listOfNotNull(addItem) + RetroContextMenuItem.cancel(stringResource(R.string.back)) { optionsMenu = DefaultsOptionsMenu.Root }
+                DefaultsOptionsMenu.RandomizerPool -> poolItems + RetroContextMenuItem.cancel(stringResource(R.string.back)) { optionsMenu = DefaultsOptionsMenu.Root }
+            },
+        )
+    }
+    }
     }
 }

@@ -169,6 +169,25 @@ class CharacterAssignmentStoreTest {
     }
 
     @Test
+    fun `latest release default marker inherits the configured contact default`() {
+        val assignmentsDirectory = temporaryFolder.newFolder("contact-default-marker")
+        val assignmentsFile = File(assignmentsDirectory, "character-assignments.json")
+        assignmentsFile.writeText(
+            """{"contactModes":{"123":{"monster":"Default"}},"contactDefaultsByType":{"monster":{"packId":"com.example.forest","characterId":"mossling"}}}"""
+        )
+        val store = CharacterAssignmentStore(assignmentsDirectory)
+
+        assertEquals(
+            ContactCharacterSelection(
+                CharacterReference("com.example.forest", "mossling"),
+                ContactCharacterMode.Default,
+            ),
+            store.selectionForContact("123", CharacterType.Monster),
+        )
+        assertFalse(store.hasContactOverride("123", CharacterType.Monster))
+    }
+
+    @Test
     fun `contact customization can inherit global defaults again`() {
         val store = CharacterAssignmentStore(temporaryFolder.newFolder("contact-inheritance"))
         val globalTrainer = CharacterReference("builtin", "trainer")
@@ -280,5 +299,70 @@ class CharacterAssignmentStoreTest {
         store.clearAssignmentsForPack(forestMonster.packId)
 
         assertEquals(listOf(coastMonster), store.contactRandomPool("123", CharacterType.Monster))
+    }
+
+    @Test
+    fun `updates a multi-number contact atomically with random trainer and no monster`() {
+        val store = CharacterAssignmentStore(temporaryFolder.newFolder("atomic-contact-assignment"))
+        val trainer = CharacterReference("com.example.coach", "guide")
+
+        store.updateContactAssignments(
+            contactKeys = listOf("111", "222"),
+            label = "Alex",
+            trainer = ContactCharacterAssignmentUpdate(randomPool = listOf(trainer)),
+            monster = ContactCharacterAssignmentUpdate(),
+        )
+
+        listOf("111", "222").forEach { number ->
+            assertEquals(
+                ContactCharacterSelection(null, ContactCharacterMode.Random),
+                store.selectionForContact(number, CharacterType.Trainer),
+            )
+            assertEquals(
+                ContactCharacterSelection(null, ContactCharacterMode.Random),
+                store.selectionForContact(number, CharacterType.Monster),
+            )
+            assertEquals(listOf(trainer), store.contactRandomPool(number, CharacterType.Trainer))
+        }
+        assertEquals(listOf("Alex"), store.contactCharacterOverviews().map { it.label })
+    }
+
+    @Test
+    fun `clearing a multi-number contact removes every roster artifact`() {
+        val store = CharacterAssignmentStore(temporaryFolder.newFolder("atomic-contact-clear"))
+        val trainer = CharacterReference("com.example.coach", "guide")
+
+        store.updateContactAssignments(
+            contactKeys = listOf("111", "222"),
+            label = "Alex",
+            trainer = ContactCharacterAssignmentUpdate(randomPool = listOf(trainer)),
+            monster = ContactCharacterAssignmentUpdate(),
+        )
+        store.clearContactAssignments(listOf("111", "222"))
+
+        assertTrue(store.contactCharacterOverviews().isEmpty())
+        assertEquals(null, store.contactRandomPool("111", CharacterType.Trainer))
+        assertEquals(null, store.contactRandomPool("222", CharacterType.Trainer))
+    }
+
+    @Test
+    fun `keeps distinct contacts with the same label as separate roster rows`() {
+        val store = CharacterAssignmentStore(temporaryFolder.newFolder("same-label-roster-contacts"))
+        val trainer = CharacterReference("com.example.coach", "guide")
+
+        store.updateContactAssignments(
+            contactKeys = listOf("111"),
+            label = "Alex",
+            trainer = ContactCharacterAssignmentUpdate(character = trainer),
+            monster = ContactCharacterAssignmentUpdate(),
+        )
+        store.updateContactAssignments(
+            contactKeys = listOf("222"),
+            label = "Alex",
+            trainer = ContactCharacterAssignmentUpdate(character = trainer),
+            monster = ContactCharacterAssignmentUpdate(),
+        )
+
+        assertEquals(2, store.contactCharacterOverviews().size)
     }
 }

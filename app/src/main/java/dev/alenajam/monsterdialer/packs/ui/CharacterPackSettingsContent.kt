@@ -6,44 +6,33 @@ import android.content.Context
 import android.content.Intent
 import android.graphics.BitmapFactory
 import android.widget.Toast
-import androidx.activity.compose.rememberLauncherForActivityResult
-import androidx.activity.result.contract.ActivityResultContracts
 import kotlinx.coroutines.launch
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.combinedClickable
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.selection.SelectionContainer
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.ErrorOutline
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.DropdownMenu
-import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
-import androidx.compose.material3.OutlinedButton
-import androidx.compose.material3.Switch
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.rememberModalBottomSheetState
@@ -54,32 +43,42 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil.compose.AsyncImage
 import dev.alenajam.monsterdialer.R
 import dev.alenajam.monsterdialer.app.ui.LocalMonsterAppIcons
+import dev.alenajam.monsterdialer.app.ui.RetroConfirmationDialog
+import dev.alenajam.monsterdialer.app.ui.RetroContextMenuItem
+import dev.alenajam.monsterdialer.app.ui.RetroContextMenuOverlay
+import dev.alenajam.monsterdialer.app.ui.RetroSearchButton
+import dev.alenajam.monsterdialer.app.ui.RetroSelectableRow
 import dev.alenajam.monsterdialer.packs.data.CharacterPackImportDiagnostic
-import dev.alenajam.monsterdialer.packs.data.CharacterPackArchive
 import dev.alenajam.monsterdialer.packs.data.MonsterPack
 import dev.alenajam.opendialer.core.common.ui.AppIcon
 import dev.alenajam.opendialer.core.common.ui.LocalAppIcons
 import dev.alenajam.opendialer.feature.settings.LocalSettingsSubpageNavigator
+import androidx.compose.ui.text.font.Font
 
-@OptIn(ExperimentalFoundationApi::class)
+private val PackPixelFont = FontFamily(Font(R.font.ui_pixel_font))
+
 @Composable
 fun ColumnScope.CharacterPackSettingsContent(
     viewModel: CharacterPackSettingsViewModel = hiltViewModel(),
     showImportUi: Boolean = true,
+    onImport: () -> Unit,
 ) {
     val context = LocalContext.current
     val packs by viewModel.packs.collectAsStateWithLifecycle()
@@ -91,17 +90,25 @@ fun ColumnScope.CharacterPackSettingsContent(
     var isPendingDeletionInUse by remember { mutableStateOf(false) }
     var pendingDisable by remember { mutableStateOf<MonsterPack?>(null) }
     var selectedPack by remember { mutableStateOf<MonsterPack?>(null) }
+    var detailsPack by remember { mutableStateOf<MonsterPack?>(null) }
+    var optionsOpen by remember { mutableStateOf(false) }
+    var cursorPackId by remember { mutableStateOf<String?>(null) }
     val scope = androidx.compose.runtime.rememberCoroutineScope()
-    
-    val picker = rememberLauncherForActivityResult(ActivityResultContracts.OpenDocument()) { uri ->
-        if (uri == null) return@rememberLauncherForActivityResult
-        viewModel.previewPack(context, uri)
+
+    LaunchedEffect(packs) {
+        if (packs.none { it.id == cursorPackId }) {
+            cursorPackId = packs.firstOrNull()?.id
+        }
     }
 
-    val importPack = { picker.launch(CharacterPackArchive.importMimeTypes) }
     val navigator = LocalSettingsSubpageNavigator.current
     val createPack = { navigator?.navigateTo(0); Unit }
-    
+
+    Surface(
+        modifier = Modifier.fillMaxSize(),
+        color = Color.White,
+    ) {
+        Column(modifier = Modifier.fillMaxSize()) {
     if (showImportUi) {
         CharacterPackImportHandler(viewModel)
     }
@@ -120,7 +127,6 @@ fun ColumnScope.CharacterPackSettingsContent(
 
     pendingDisable?.let { pack ->
         CharacterPackDisableConfirmationDialog(
-            packName = pack.name,
             onConfirm = {
                 viewModel.togglePack(pack.id, false)
                 pendingDisable = null
@@ -129,10 +135,10 @@ fun ColumnScope.CharacterPackSettingsContent(
         )
     }
 
-    selectedPack?.let { pack ->
+    detailsPack?.let { pack ->
         CharacterPackDetailsSheet(
             pack = pack,
-            onDismiss = { selectedPack = null }
+            onDismiss = { detailsPack = null }
         )
     }
 
@@ -168,14 +174,10 @@ fun ColumnScope.CharacterPackSettingsContent(
                         horizontalAlignment = Alignment.CenterHorizontally,
                         verticalArrangement = Arrangement.spacedBy(4.dp)
                     ) {
-                        Button(onClick = importPack) { Text(stringResource(R.string.import_character_pack)) }
-                        OutlinedButton(onClick = createPack) {
-                            AppIcon(LocalMonsterAppIcons.current.createPack, contentDescription = null, modifier = Modifier.size(18.dp))
-                            Text(stringResource(R.string.create_character_pack), modifier = Modifier.padding(start = 8.dp))
-                        }
+                        PackOptionsButton(onClick = { optionsOpen = true })
                     }
                 } else {
-                    Button(onClick = importPack) { Text(stringResource(R.string.import_character_pack)) }
+                    PackOptionsButton(onClick = { optionsOpen = true })
                 }
                 Text(
                     stringResource(R.string.pack_import_license_notice),
@@ -187,129 +189,160 @@ fun ColumnScope.CharacterPackSettingsContent(
         }
     } else {
         Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
-            Button(
-                onClick = importPack,
-                modifier = Modifier.fillMaxWidth()
-            ) {
-                AppIcon(LocalMonsterAppIcons.current.importCharacter, contentDescription = null, modifier = Modifier.size(18.dp))
-                Text(stringResource(R.string.import_pack), modifier = Modifier.padding(start = 8.dp))
-            }
-            if (canCreatePack) {
-                OutlinedButton(
-                    onClick = createPack,
-                    modifier = Modifier.fillMaxWidth()
-                ) {
-                    AppIcon(LocalMonsterAppIcons.current.createPack, contentDescription = null, modifier = Modifier.size(18.dp))
-                    Text(stringResource(R.string.create_character_pack), modifier = Modifier.padding(start = 8.dp))
-                }
-            }
+            PackOptionsButton(onClick = { optionsOpen = true })
             Column {
-                packs.forEachIndexed { index, pack ->
+                packs.forEach { pack ->
                     val preview = viewModel.getPreviewCharacter(pack.id, pack.name)
-                    var showMenu by remember { mutableStateOf(false) }
-                    Box {
-                        Card(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(vertical = 1.dp),
-                            shape = RoundedCornerShape(
-                                topStart = if (index == 0) 20.dp else 2.dp,
-                                topEnd = if (index == 0) 20.dp else 2.dp,
-                                bottomStart = if (index == packs.lastIndex) 20.dp else 2.dp,
-                                bottomEnd = if (index == packs.lastIndex) 20.dp else 2.dp
-                            ),
-                            colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainerLow),
-                            elevation = CardDefaults.cardElevation(defaultElevation = 0.5.dp)
+                    RetroSelectableRow(
+                        selected = pack.id == cursorPackId,
+                        onClick = {
+                            cursorPackId = pack.id
+                            selectedPack = pack
+                        },
+                        modifier = Modifier.padding(vertical = 2.dp),
+                    ) {
+                        Row(
+                            modifier = Modifier.fillMaxWidth().padding(vertical = 5.dp),
+                            verticalAlignment = Alignment.CenterVertically,
                         ) {
-                            Column(
-                                modifier = Modifier
-                                    .combinedClickable(
-                                        onClick = { selectedPack = pack },
-                                        onLongClick = { showMenu = true }
-                                    )
-                                    .padding(16.dp),
-                                verticalArrangement = Arrangement.spacedBy(8.dp)
-                            ) {
-                                Row(
-                                    modifier = Modifier.fillMaxWidth(),
-                                    verticalAlignment = Alignment.CenterVertically
-                                ) {
-                                    if (preview != null) {
-                                        AsyncImage(
-                                            model = preview.imageFile(
-                                                requireNotNull(
-                                                    preview.character.visualVariants.firstOrNull()?.frontImage
-                                                        ?: preview.character.visualVariants.firstOrNull()?.backImage
-                                                )
-                                            ),
-                                            contentDescription = stringResource(
-                                                R.string.character_artwork,
-                                                preview.character.name
-                                            ),
-                                            modifier = Modifier
-                                                .size(64.dp)
-                                                .clip(RoundedCornerShape(16.dp))
+                            if (preview != null) {
+                                AsyncImage(
+                                    model = preview.imageFile(
+                                        requireNotNull(
+                                            preview.character.visualVariants.firstOrNull()?.frontImage
+                                                ?: preview.character.visualVariants.firstOrNull()?.backImage
                                         )
-                                        Spacer(Modifier.width(10.dp))
-                                    }
-                                    Column(
-                                        modifier = Modifier.weight(1f),
-                                        verticalArrangement = Arrangement.spacedBy(2.dp)
-                                    ) {
-                                        Text(pack.name, style = MaterialTheme.typography.titleMedium)
-                                        Text(
-                                            stringResource(R.string.pack_version, pack.version),
-                                            style = MaterialTheme.typography.bodyMedium,
-                                            color = MaterialTheme.colorScheme.onSurfaceVariant
-                                        )
-                                    }
-                                    Switch(
-                                        checked = pack.enabled,
-                                        onCheckedChange = { enabled ->
-                                            if (!enabled) {
-                                                scope.launch {
-                                                    if (viewModel.isPackInUse(pack.id)) {
-                                                        pendingDisable = pack
-                                                    } else {
-                                                        viewModel.togglePack(pack.id, false)
-                                                    }
-                                                }
-                                            } else {
-                                                viewModel.togglePack(pack.id, true)
-                                            }
-                                        }
-                                    )
-                                }
+                                    ),
+                                    contentDescription = stringResource(
+                                        R.string.character_artwork,
+                                        preview.character.name,
+                                    ),
+                                    contentScale = ContentScale.Fit,
+                                    modifier = Modifier.size(48.dp),
+                                )
                             }
-                        }
-
-                        DropdownMenu(
-                            expanded = showMenu,
-                            onDismissRequest = { showMenu = false }
-                        ) {
-                            DropdownMenuItem(
-                                text = { Text(stringResource(R.string.remove)) },
-                                onClick = {
-                                    showMenu = false
-                                    scope.launch {
-                                        isPendingDeletionInUse = viewModel.isPackInUse(pack.id)
-                                        pendingDeletion = pack
-                                    }
-                                },
-                                leadingIcon = {
-                                    AppIcon(
-                                        LocalAppIcons.current.delete,
-                                        contentDescription = null,
-                                        modifier = Modifier.size(18.dp)
-                                    )
-                                }
-                            )
+                            Column(
+                                modifier = Modifier.weight(1f).padding(start = if (preview == null) 0.dp else 6.dp),
+                                verticalArrangement = Arrangement.spacedBy(1.dp),
+                            ) {
+                                Text(
+                                    text = pack.name.uppercase(),
+                                    fontFamily = PackPixelFont,
+                                    fontSize = 18.sp,
+                                    color = Color(0xFF202020),
+                                    maxLines = 1,
+                                    overflow = TextOverflow.Ellipsis,
+                                )
+                                Text(
+                                    text = buildString {
+                                        if (!pack.enabled) {
+                                            append(stringResource(R.string.disabled).uppercase())
+                                            append(" · ")
+                                        }
+                                        append(
+                                            pluralStringResource(
+                                                R.plurals.pack_character_count_only,
+                                                pack.characterCount,
+                                                pack.characterCount,
+                                            ),
+                                        )
+                                    },
+                                    fontFamily = PackPixelFont,
+                                    fontSize = 13.sp,
+                                    color = Color(0xFF202020).copy(alpha = 0.75f),
+                                    maxLines = 1,
+                                    overflow = TextOverflow.Ellipsis,
+                                )
+                            }
                         }
                     }
                 }
             }
         }
     }
+
+    selectedPack?.let { pack ->
+        Box(
+            modifier = Modifier.fillMaxSize().clickable { selectedPack = null },
+            contentAlignment = Alignment.Center,
+        ) {
+            RetroContextMenuOverlay(
+                modifier = Modifier.fillMaxWidth(0.82f),
+                fontFamily = PackPixelFont,
+                onDismissRequest = { selectedPack = null },
+                items = listOf(
+                    RetroContextMenuItem(stringResource(R.string.pack_details_action)) {
+                        selectedPack = null
+                        detailsPack = pack
+                    },
+                    RetroContextMenuItem(
+                        label = stringResource(if (pack.enabled) R.string.disable else R.string.enable),
+                    ) {
+                        selectedPack = null
+                        if (pack.enabled) {
+                            scope.launch {
+                                if (viewModel.isPackInUse(pack.id)) pendingDisable = pack
+                                else viewModel.togglePack(pack.id, false)
+                            }
+                        } else {
+                            viewModel.togglePack(pack.id, true)
+                        }
+                    },
+                    RetroContextMenuItem(stringResource(R.string.remove)) {
+                        selectedPack = null
+                        scope.launch {
+                            isPendingDeletionInUse = viewModel.isPackInUse(pack.id)
+                            pendingDeletion = pack
+                        }
+                    },
+                    RetroContextMenuItem.cancel(stringResource(R.string.cancel), onClick = { selectedPack = null }),
+                ),
+            )
+        }
+    }
+
+    if (optionsOpen) {
+        Box(
+            modifier = Modifier.fillMaxSize().clickable { optionsOpen = false },
+            contentAlignment = Alignment.Center,
+        ) {
+            RetroContextMenuOverlay(
+                modifier = Modifier.fillMaxWidth(0.82f),
+                fontFamily = PackPixelFont,
+                onDismissRequest = { optionsOpen = false },
+                items = buildList {
+                    add(
+                        RetroContextMenuItem(stringResource(R.string.import_action)) {
+                            optionsOpen = false
+                            onImport()
+                        },
+                    )
+                    if (canCreatePack) {
+                        add(
+                            RetroContextMenuItem(stringResource(R.string.create_character_pack)) {
+                                optionsOpen = false
+                                createPack()
+                            },
+                        )
+                    }
+                    add(RetroContextMenuItem.cancel(stringResource(R.string.cancel), onClick = { optionsOpen = false }))
+                },
+            )
+        }
+    }
+
+        }
+    }
+}
+
+@Composable
+private fun PackOptionsButton(onClick: () -> Unit) {
+    RetroSearchButton(
+        label = stringResource(R.string.contact_picker_options),
+        onClick = onClick,
+        modifier = Modifier.fillMaxWidth(),
+        horizontalArrangement = Arrangement.End,
+    )
 }
 
 @Composable
@@ -488,59 +521,33 @@ private fun CharacterPackDeletionConfirmationDialog(
     onConfirm: () -> Unit,
     onDismiss: () -> Unit
 ) {
-    AlertDialog(
+    RetroConfirmationDialog(
+        title = stringResource(R.string.remove_character_pack_title, packName),
+        message = stringResource(
+            if (isInUse) R.string.remove_character_pack_in_use_message
+            else R.string.remove_character_pack_message,
+            packName,
+        ),
+        noLabel = stringResource(R.string.cancel),
+        yesLabel = stringResource(R.string.remove),
+        fontFamily = PackPixelFont,
         onDismissRequest = onDismiss,
-        title = { Text(stringResource(R.string.remove_character_pack_title, packName)) },
-        text = { 
-            Text(
-                stringResource(
-                    if (isInUse) R.string.remove_character_pack_in_use_message
-                    else R.string.remove_character_pack_message, 
-                    packName
-                )
-            ) 
-        },
-        confirmButton = {
-            Button(
-                onClick = onConfirm,
-                colors = ButtonDefaults.buttonColors(
-                    containerColor = MaterialTheme.colorScheme.error,
-                    contentColor = MaterialTheme.colorScheme.onError
-                )
-            ) {
-                Text(stringResource(R.string.remove))
-            }
-        },
-        dismissButton = {
-            TextButton(onClick = onDismiss) { Text(stringResource(R.string.cancel)) }
-        }
+        onConfirm = onConfirm,
     )
 }
 
 @Composable
 private fun CharacterPackDisableConfirmationDialog(
-    packName: String,
     onConfirm: () -> Unit,
     onDismiss: () -> Unit
 ) {
-    AlertDialog(
+    RetroConfirmationDialog(
+        title = stringResource(R.string.are_you_sure),
+        noLabel = stringResource(R.string.cancel),
+        yesLabel = stringResource(R.string.disable),
+        fontFamily = PackPixelFont,
         onDismissRequest = onDismiss,
-        title = { Text(stringResource(R.string.disable_character_pack_title, packName)) },
-        text = { Text(stringResource(R.string.disable_character_pack_message, packName)) },
-        confirmButton = {
-            Button(
-                onClick = onConfirm,
-                colors = ButtonDefaults.buttonColors(
-                    containerColor = MaterialTheme.colorScheme.error,
-                    contentColor = MaterialTheme.colorScheme.onError
-                )
-            ) {
-                Text(stringResource(R.string.disable))
-            }
-        },
-        dismissButton = {
-            TextButton(onClick = onDismiss) { Text(stringResource(R.string.cancel)) }
-        }
+        onConfirm = onConfirm,
     )
 }
 

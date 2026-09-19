@@ -32,6 +32,8 @@ class CharacterPackCatalog(
     private val clock: () -> Long = System::currentTimeMillis,
     private val json: Json = Json { ignoreUnknownKeys = false; explicitNulls = false }
 ) {
+    fun hasStoredData(): Boolean = File(storageRoot, CatalogFileName).isFile
+
     private val _packs = MutableStateFlow(read().packs)
     val packs: StateFlow<List<InstalledCharacterPackRecord>> = _packs.asStateFlow()
 

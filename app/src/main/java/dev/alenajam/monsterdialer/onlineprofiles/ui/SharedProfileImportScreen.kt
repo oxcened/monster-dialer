@@ -1,18 +1,16 @@
 package dev.alenajam.monsterdialer.onlineprofiles.ui
 
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Button
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
+import androidx.activity.compose.BackHandler
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -34,7 +32,6 @@ import kotlinx.coroutines.launch
 import android.widget.Toast
 
 /** Selects the local contact that should use a profile opened from a shared link. */
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SharedProfileImportScreen(
     viewModel: ContactCharacterSettingsViewModel,
@@ -45,6 +42,7 @@ fun SharedProfileImportScreen(
     val scope = rememberCoroutineScope()
     val context = LocalContext.current
     val linkFailedMessage = stringResource(R.string.shared_profile_import_link_failed)
+    BackHandler(enabled = !isChoosingContact, onBack = onNavigateBack)
 
     if (isChoosingContact) {
         ContactPickerScreen(
@@ -60,31 +58,15 @@ fun SharedProfileImportScreen(
             },
         )
     } else {
-        Scaffold(
-            topBar = {
-                TopAppBar(
-                    title = { Text(stringResource(R.string.shared_profile_import_title)) },
-                    navigationIcon = {
-                        IconButton(onClick = onNavigateBack) {
-                            AppIcon(
-                                LocalAppIcons.current.arrowLeft,
-                                contentDescription = stringResource(R.string.navigate_back),
-                            )
-                        }
-                    },
-                    actions = {
-                        ContextualGuideButton(
-                            contents = sharedOnlineProfileGuideContents(),
-                            contentDescription = R.string.open_shared_online_profile_guide,
-                        )
-                    },
-                )
-            },
-        ) { innerPadding ->
+        Box(modifier = Modifier.fillMaxSize()) {
+            ContextualGuideButton(
+                contents = sharedOnlineProfileGuideContents(),
+                contentDescription = R.string.open_shared_online_profile_guide,
+                modifier = Modifier.align(Alignment.TopEnd).padding(16.dp),
+            )
             Column(
                 modifier = Modifier
                     .fillMaxSize()
-                    .padding(innerPadding)
                     .padding(horizontal = 24.dp),
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.Center,

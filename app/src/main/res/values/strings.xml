@@ -1,5 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="first_run_welcome_title">Turn calls into monster encounters</string>
+    <string name="first_run_welcome_description">MonsterDialer adds an original battle moment to your calls. Your first encounter works immediately with the built-in characters.</string>
+    <string name="first_run_setup_description">Next, Android will ask you to make MonsterDialer your phone app and allow full-screen call notifications. These are needed to show incoming calls correctly.</string>
+    <string name="first_run_continue">Set up MonsterDialer</string>
+    <string name="first_encounter_prompt_title">Ready for your first encounter?</string>
+    <string name="first_encounter_prompt_description">Make or receive a call to see MonsterDialer in action. You can customize your trainer, monster, and contacts later.</string>
+    <string name="first_encounter_prompt_action">Open dialpad</string>
+    <string name="first_encounter_prompt_later">Maybe later</string>
     <string name="app_name" comment="Application name shown by Android and in the About screen." translatable="false">MonsterDialer</string>
     <string name="font_name" comment="Name of the typeface credited in the About screen." translatable="false">Pixel Operator</string>
     <string name="font_author" comment="Author of the typeface credited in the About screen." translatable="false">Jayvee Enaguas</string>
@@ -13,6 +21,23 @@
     <string name="github_latest_release_api" comment="GitHub API endpoint used to retrieve the latest MonsterDialer release. Do not translate." translatable="false">https://api.github.com/repos/oxcened/monster-dialer/releases/latest</string>
     <string name="url_feature_requests" comment="URL opened from the feature-request action. Do not translate." translatable="false">https://monsterdialer.fider.io/</string>
     <string name="hang_up" comment="Button to end the current phone call.">Hang up</string>
+    <string name="action_answer" comment="Incoming-call button that starts the fight.">Fight</string>
+    <string name="action_decline" comment="Incoming-call button that runs away.">Run</string>
+    <string name="call_command_title">CALL COMMANDS</string>
+    <string name="call_command_hear">SPEAKER</string>
+    <string name="call_command_shush">MUTE</string>
+    <string name="call_command_keys">KEYPAD</string>
+    <string name="call_command_bag">MORE</string>
+    <string name="call_command_key_speaker">S</string>
+    <string name="call_command_key_mute">M</string>
+    <string name="call_command_key_keys">#</string>
+    <string name="call_command_key_bag">B</string>
+    <string name="call_command_key_run">R</string>
+    <string name="call_command_cursor">▶ %1$s</string>
+    <string name="call_command_section">◀ %1$s</string>
+    <string name="call_command_back">BACK</string>
+    <string name="call_command_run">RUN</string>
+    <string name="call_command_dialpad_digits">123\n456\n789\n*0#</string>
     <string name="add" comment="Generic label for adding a new item.">Add</string>
     <string name="settings_character_packs_title" comment="Settings title for managing character packs.">Character Packs</string>
     <string name="characters_navigation_label" comment="Bottom navigation label for the player's profile and character collection.">Profile</string>
@@ -34,7 +59,44 @@
     </plurals>
     <string name="profile_calls_battled" comment="Profile activity summary. %1$d is the number of calls with battle presentations.">%1$d calls battled</string>
     <string name="profile_collection_summary" comment="Profile collection summary. %1$d is the number of collected characters and %2$d is the number of radiant variants found.">%1$d collected · %2$d radiants found</string>
-    <string name="character_tools_title" comment="Heading above character management actions.">Toolbox</string>
+    <string name="profile_status_title">STATUS</string>
+    <string name="profile_player_label">PLAYER</string>
+    <string name="profile_name_label">NAME</string>
+    <string name="profile_trainer_field">TRAINER/%1$s</string>
+    <string name="profile_back">BACK</string>
+    <string name="profile_calls_label">CALLS</string>
+    <string name="profile_collection_label">COLLECTION</string>
+    <string name="profile_roster_title">MONSTER ROSTER</string>
+    <string name="roster_empty_slot" comment="Label for an unfilled row in the six-slot monster roster.">---</string>
+    <string name="roster_empty_slot_message" comment="Prompt shown while an empty monster roster slot is selected.">This slot is empty.</string>
+    <string name="roster_choose_monster_message" comment="Prompt shown while an occupied monster roster slot is selected.">Choose a monster.</string>
+    <string name="roster_switch" comment="GSC-style action to exchange the positions of two monsters in the roster.">SWITCH</string>
+    <string name="roster_switch_target_message" comment="Prompt shown after choosing a roster monster to switch.">Choose a monster to switch with.</string>
+    <string name="roster_release_title" comment="Title of the confirmation menu before releasing a roster monster.">RELEASE?</string>
+    <string name="roster_release_no" comment="Negative action in the roster release confirmation menu.">NO</string>
+    <string name="roster_release_yes" comment="Positive action in the roster release confirmation menu.">YES</string>
+    <string name="profile_toolbox_title">TOOLS</string>
+    <string name="profile_add_roster">+</string>
+    <string name="profile_screen_title">PROFILE</string>
+    <string name="profile_monster_title">MONSTER</string>
+    <string name="profile_level_label">LV.</string>
+    <string name="profile_monster_field">MONSTER/%1$s</string>
+    <string name="profile_level_field">LEVEL %1$d</string>
+    <string name="profile_variant_label">TYPE</string>
+    <string name="profile_radiants_label">RADIANTS</string>
+    <string name="profile_menu_roster">ROSTER</string>
+    <string name="profile_menu_contacts">CONTACTS</string>
+    <string name="profile_menu_collection">COLLECTION</string>
+    <string name="profile_menu_journal">JOURNAL</string>
+    <string name="profile_menu_online">SHARE</string>
+    <string name="profile_menu_toolbox">TOOLS</string>
+    <string name="profile_menu_options">OPTIONS</string>
+    <string name="profile_menu_exit">EXIT</string>
+    <string name="profile_menu_cursor">▶%1$s</string>
+    <string name="profile_roster_description">Your team.</string>
+    <string name="profile_footer_prompt">Your profile!</string>
+    <string name="character_tools_title" comment="Heading above character management actions.">Tools</string>
+    <string name="character_tools_prompt" comment="Retro prompt shown below the character toolbox list. Asking the player to choose the right tool.">Choose the right tool.</string>
     <string name="battle_journal_title" comment="Title for the local history of battle encounters.">Battle Journal</string>
     <string name="battle_journal_description" comment="Description for the local history of battle encounters.">Review radiant discoveries and recent battles.</string>
     <string name="battle_journal_empty_title" comment="Empty-state title for the battle journal.">No battles yet</string>
@@ -56,10 +118,10 @@
     <string name="battle_journal_clear_confirmation_title" comment="Title for the confirmation dialog before clearing the Battle Journal.">Clear Battle Journal?</string>
     <string name="battle_journal_clear_confirmation_message" comment="Explanation of what clearing the Battle Journal removes.">This permanently removes all battle history and saved journal sprites.</string>
     <string name="monster_variant_and_level" translatable="false" comment="Language-neutral formatter for a monster variant and an already-localized level. %1$s is the variant (e.g., Regular) and %2$s is the level (e.g., Lv. 12).">%1$s · %2$s</string>
+    <string name="retro_picker_variant_and_level" translatable="false" comment="Language-neutral formatter for the retro assignment picker. %1$s is the variant and %2$s is the level.">%1$s   %2$s</string>
     <string name="filter_all" comment="Filter option to show all monster variants.">All</string>
     <string name="filter_regular" comment="Filter option to show only regular monster variants.">Regular</string>
-    <string name="filter_unlocked_radiant" comment="Filter option to show only unlocked radiant monster variants.">Unlocked Radiant</string>
-    <string name="filter_locked_radiant" comment="Filter option to show only locked radiant monster variants.">Locked Radiant</string>
+    <string name="filter_unlocked_radiant" comment="Filter option to show only available radiant monster variants.">Radiant</string>
     <string name="your_roster" comment="Heading above the player's current active monster roster.">Your roster</string>
     <string name="roster_monster_level" comment="Level shown below a monster in the roster. %1$d is the monster's level.">Lv. %1$d</string>
     <string name="active_monster_variant_and_level" translatable="false" comment="Language-neutral formatter for details beneath the active monster on the profile card. %1$s is its variant (for example, Regular) and %2$s is its localized level (for example, Lv. 12).">%1$s • %2$s</string>
@@ -72,6 +134,7 @@
     <string name="open_character_guide" comment="Action label that opens the Character Guide.">Open guide</string>
     <string name="settings_character_packs_description" comment="Settings description for character packs.">Import and manage custom character artwork.</string>
     <string name="import_character" comment="Action that starts selecting a shared single-character file.">Import character</string>
+    <string name="import_action" comment="GSC action that starts selecting either a shared character or character pack file.">Import</string>
     <string name="import_character_description" comment="Description of the action that imports a shared character.">Add a character someone shared with you.</string>
     <string name="add_to_your_characters" comment="Button confirming that a shared character should be imported.">Add</string>
     <string name="shared_character_creator" comment="Creator shown in a shared-character import preview. %1$s is the creator name.">Creator: %1$s</string>
@@ -97,6 +160,15 @@
     <string name="contact_characters_not_set" comment="Settings subtitle when no contacts have a character assignment.">No contacts customized</string>
     <plurals name="contact_character_assignment_count" comment="Settings subtitle showing how many contacts have a character assignment."><item quantity="one">%d contact customized</item><item quantity="other">%d contacts customized</item></plurals>
     <string name="choose_contact" comment="Button that opens the contact picker.">Choose contact</string>
+    <string name="contact_picker_search" comment="Retro contact-picker command that opens name search.">Search</string>
+    <string name="contact_picker_search_name_prefix" comment="Prefix before the typed name in the retro contact search field.">Name/</string>
+    <string name="contact_picker_search_empty_prompt" comment="Retro contact-picker prompt shown before a name is typed.">Enter a name.</string>
+    <string name="contact_picker_prompt" comment="Retro contact-picker prompt that explains the next action.">Choose a contact to assign.</string>
+    <string name="contact_picker_open_action" comment="Retro contact-picker action that opens the selected contact.">Open</string>
+    <plurals name="contact_picker_found_count" comment="Retro contact-picker search result count.">
+        <item quantity="one">%d contact found.</item>
+        <item quantity="other">%d contacts found.</item>
+    </plurals>
     <string name="contact_phone_number_required" comment="Toast shown when the selected contact has no usable phone number.">This contact can’t be selected because it has no phone number.</string>
     <string name="character_type_trainer" comment="Character category for a human battle character.">Trainer</string>
     <string name="character_type_monster" comment="Character category for a creature battle character.">Monster</string>
@@ -117,8 +189,36 @@
     <string name="contact_defaults_description">Choose defaults and limit the contact randomizer pool.</string>
     <string name="contact_default_trainer">Default trainer</string>
     <string name="contact_default_monster">Default monster</string>
-    <string name="contact_choose_trainer" comment="Dropdown option that opens the trainer picker for the contact default.">Choose trainer</string>
-    <string name="contact_choose_monster" comment="Dropdown option that opens the monster picker for the contact default.">Choose monster</string>
+    <string name="contact_choose_trainer" comment="Option that opens the character picker for the contact default.">Choose</string>
+    <string name="contact_choose_monster" comment="Option that opens the character picker for the contact default.">Choose</string>
+    <string name="contact_context_menu_trainer">Trainer</string>
+    <string name="contact_context_menu_monster">Monster</string>
+    <string name="contact_context_menu_remove">Remove</string>
+    <string name="contact_picker_options">Options</string>
+    <string name="back">Back</string>
+    <string name="contact_defaults_menu_mode">Default character</string>
+    <string name="contact_defaults_menu_characters">Character list</string>
+    <string name="contact_defaults_menu_pool">Randomizer pool</string>
+    <string name="contact_picker_default">DEFAULT</string>
+    <string name="contact_picker_no_trainer_assigned">No trainer assigned.</string>
+    <string name="contact_picker_no_monster_assigned">No monster assigned.</string>
+    <string name="contact_picker_random_trainer">Random trainer.</string>
+    <string name="contact_picker_random_monster">Random monster.</string>
+    <string name="contact_picker_choose_monster">Choose monster.</string>
+    <string name="contact_picker_choose_trainer">Choose trainer.</string>
+    <string name="contact_picker_ready">%1$s is ready!</string>
+    <string name="contact_picker_pool_trainers">Choose trainers for the pool.</string>
+    <string name="contact_picker_pool_monsters">Choose monsters for the pool.</string>
+    <string name="contact_picker_pool_done">DONE</string>
+    <string name="contact_picker_choose">CHOOSE</string>
+    <string name="contact_picker_next">NEXT</string>
+    <string name="contact_picker_pool_included">●</string>
+    <string name="contact_picker_pool_excluded">○</string>
+    <string name="contact_remove_prompt">Remove from roster?</string>
+    <string name="contact_remove_no">No</string>
+    <string name="contact_remove_yes">Yes</string>
+    <string name="contact_removed_message">%1$s was removed.</string>
+    <string name="contact_added_message">%1$s was added to the roster!</string>
     <string name="contact_default_random">Random</string>
     <string name="contact_random_pool_all">All available characters</string>
     <string name="contact_random_pool_choose">Choose randomizer pool</string>
@@ -135,10 +235,12 @@
     <string name="contact_random_pool_description" comment="Explains what the selected characters mean when Randomize is enabled.">Selected characters are the ones Randomize can choose from.</string>
     <string name="contact_random_pool_select_all">Select all</string>
     <string name="contact_random_pool_deselect_all">Deselect all</string>
+    <string name="character_selection_more_options" comment="Accessibility label for the character selector menu containing secondary pool actions.">More character selection options</string>
     <string name="contact_character_source_global">Don’t customize</string>
     <string name="contact_character_source_custom">Customize contact</string>
     <string name="contact_character_inherited_title">Using global defaults</string>
-    <string name="contact_character_inherited_message">This contact follows the global %1$s settings. Select Choose %1$s or Randomize above to override them.</string>
+    <string name="contact_character_inherited_message">This contact follows the global %1$s settings. Choose a different character to override them, or edit the global defaults below.</string>
+    <string name="contact_character_customize">Choose a different character</string>
     <string name="contact_character_edit_global_defaults" comment="Button that opens the global contact character defaults from an inherited contact setting.">Edit global defaults</string>
     <string name="contact_random_pool_save">Save pool</string>
     <string name="contact_random_pool_empty_title">Choose at least one character</string>
@@ -149,6 +251,14 @@
     <string name="radiant_variant_locked_title" comment="Title of the dialog shown for a locked radiant character variant.">Radiant variant locked</string>
     <string name="radiant_variant_locked_message" comment="Explains how to unlock a radiant character variant; %1$s is the character name.">When you encounter a radiant %1$s in a wild battle, it unlocks automatically as the battle begins. You can then assign it.</string>
     <string name="learn_about_radiants" comment="Button that opens the guide to rare radiant variants.">About radiants</string>
+    <string name="radiant_collection_title">Character Collection</string>
+    <string name="radiant_collection_description">View all trainers, monsters, and their radiant variants, including undiscovered ones.</string>
+    <string name="collection_sprite" comment="Accessibility description for a regular collection sprite; %1$s is the monster name.">%1$s sprite</string>
+    <string name="radiant_collection_sprite" comment="Accessibility description for a radiant collection sprite; %1$s is the monster name.">%1$s radiant sprite</string>
+    <string name="radiant_collection_found">Found</string>
+    <string name="radiant_collection_locked">Locked</string>
+    <string name="radiant_collection_regular">Regular</string>
+    <string name="radiant_collection_browse_packs">Packs</string>
     <string name="open_radiants_guide" comment="Accessibility label for the button that opens the Radiants guide.">Open Radiants guide</string>
     <string name="radiants_guide_title" comment="Title of the guide explaining rare radiant monster variants.">Radiants</string>
     <string name="radiants_guide_message" comment="Introduction to radiant monster variants.">Radiants are rare alternate looks for monsters that you can discover and add to your roster.</string>
@@ -170,7 +280,13 @@
     <string name="change" comment="Button label to change the current selection.">Change</string>
     <string name="contact_chooser_prompt" comment="Prompt above the contact picker.">Choose a contact to assign a character.</string>
     <string name="online_profile_choose_contact_prompt" comment="Prompt shown after opening a shared Online Profile link.">Choose a contact to link with this Online Profile. This association stays on your device.</string>
-    <string name="online_profile_title" comment="Title of the settings screen for sharing the player's battle identity with friends.">Online Profile</string>
+    <string name="online_profile_title" comment="Title of the profile SHARE screen for sharing the player's battle identity with friends.">SHARE</string>
+    <string name="online_profile_link_on">SHARE/ON</string>
+    <string name="online_profile_link_off">SHARE/OFF</string>
+    <string name="online_profile_sign_in_action">SIGN IN</string>
+    <string name="online_profile_unlink_action">UNLINK</string>
+    <string name="online_profile_linked_message">Your team is shared.</string>
+    <string name="online_profile_not_linked_message">Share your team with friends.</string>
     <string name="online_profile_description" comment="Description below the Online Profile settings title. The trainer and monster are the player's battle characters.">Let friends see the trainer and monster you bring into every call.</string>
     <string name="online_profile_privacy_note" comment="Privacy note on the Online Profile settings screen. Sprites are character images; metadata is their non-image information.">Only your character sprites and metadata are shared.</string>
     <string name="online_profile_guide_title">Sharing Your Online Profile</string>
@@ -207,6 +323,28 @@
     <string name="online_profile_firebase_not_configured" comment="Technical configuration error shown when the Online Profile backend is unavailable.">Firebase is not configured.</string>
     <string name="online_profile_share_text" comment="%1$s is an HTTPS link to the user's shared MonsterDialer profile.">Check out my MonsterDialer profile:\n%1$s</string>
     <string name="contact_characters_action" comment="Contact-row overflow action that opens character customization for a contact.">Characters</string>
+    <string name="contact_details_action" comment="Contact-row action that opens the system contact details.">Details</string>
+    <string name="customized_contacts_title">Customized contacts</string>
+    <string name="customized_contacts_empty_title">No customized contacts</string>
+    <string name="customized_contacts_empty_description">Choose a contact to assign a trainer and monster.</string>
+    <string name="contact_assignment_unavailable">DEFAULT</string>
+    <string name="customized_contacts_add">New contact</string>
+    <string name="customized_contacts_new_action">NEW</string>
+    <string name="customized_contacts_back_action">BACK</string>
+    <string name="customized_contacts_cancel_action">CANCEL</string>
+    <string name="customized_contacts_prompt">Choose a contact.</string>
+    <string name="customized_contacts_assign_action">ASSIGN</string>
+    <string name="retro_key_a" comment="Game Boy-style action key label.">A</string>
+    <string name="retro_key_b" comment="Game Boy-style action key label.">B</string>
+    <string name="retro_action_select">A Select</string>
+    <string name="retro_action_back">B Back</string>
+    <string name="retro_action_menu">B Menu</string>
+    <string name="retro_action_select_label">Select</string>
+    <string name="retro_action_menu_label">MENU</string>
+    <string name="retro_action_back_label">BACK</string>
+    <string name="retro_action_dial_label">DIAL</string>
+    <string name="retro_picker_add" comment="Compact action to add a character in the retro picker.">ADD</string>
+    <string name="retro_picker_guide" comment="Compact GSC-style menu action to open the guide.">HELP</string>
     <string name="contact_row_actions" comment="Accessibility label for the contact-row overflow menu trigger.">Contact actions</string>
     <string name="linked_online_profile_title" comment="Heading in a contact's character settings for its associated Online Profile.">Linked Online Profile</string>
     <string name="linked_online_profile_none" comment="Empty-state message when a contact has no associated Online Profile.">No Online Profile is linked to this contact.</string>
@@ -242,6 +380,7 @@
     <string name="create_character_pack" comment="Button that starts creating a shareable character pack.">Create pack</string>
     <string name="select_characters_for_pack" comment="Title of the character selection step when creating a pack.">Select characters</string>
     <string name="pack_details" comment="Title of the details step when creating a character pack.">Pack details</string>
+    <string name="pack_details_action" comment="Context-menu action that opens character pack details.">Details</string>
     <string name="pack_name_label" comment="Label for the character-pack name input field.">Pack name</string>
     <string name="pack_version_label" comment="Label for the character-pack version input field.">Version</string>
     <string name="default_pack_version" comment="Default technical version assigned to a newly created character pack. Do not translate." translatable="false">1.0.0</string>
@@ -254,6 +393,7 @@
     <plurals name="installed_pack_count" comment="Number of installed character packs. %d is the count."><item quantity="one">%d installed</item><item quantity="other">%d installed</item></plurals>
     <plurals name="enabled_pack_count" comment="Number of enabled character packs. %d is the count."><item quantity="one">%d enabled</item><item quantity="other">%d enabled</item></plurals>
     <plurals name="pack_character_count" comment="%1$d is the number of characters; %2$s is the pack version."><item quantity="one">%1$d character · v%2$s</item><item quantity="other">%1$d characters · v%2$s</item></plurals>
+    <plurals name="pack_character_count_only" comment="Character count shown in an installed pack row. %d is the count."><item quantity="one">%d character</item><item quantity="other">%d characters</item></plurals>
     <string name="pack_version" comment="%1$s is a character pack version number.">v%1$s</string>
     <string name="pack_creator_label" comment="Label above the creator name in character pack metadata.">Creator</string>
     <string name="pack_license_label" comment="Label above the license in character pack metadata.">License</string>
@@ -269,6 +409,7 @@
     <string name="remove" comment="Button label to permanently remove a character pack.">Remove</string>
     <string name="remove_character_pack_title" comment="Confirmation dialog title; %1$s is the character pack name.">Remove %1$s?</string>
     <string name="remove_character_pack_message" comment="Confirmation dialog message; %1$s is the character pack name.">This permanently removes %1$s and its artwork from MonsterDialer.</string>
+    <string name="are_you_sure" comment="Generic confirmation dialog title.">Are you sure?</string>
     <string name="disable_character_pack_title" comment="Confirmation dialog title; %1$s is the character pack name.">Disable %1$s?</string>
     <string name="disable_character_pack_message" comment="Confirmation dialog message; %1$s is the character pack name.">This pack is currently in use. Disabling it will unassign its characters from you and your contacts.</string>
     <string name="cancel" comment="Button label that dismisses an action without making changes.">Cancel</string>
@@ -328,6 +469,7 @@
     <string name="save_character" comment="Button to save the new character.">Save character</string>
     <string name="save" comment="Button label to save changes.">Save</string>
     <string name="edit" comment="Button label to edit an item.">Edit</string>
+    <string name="delete_action" comment="Context-menu action that permanently deletes a user-created character.">Delete</string>
     <string name="your_characters" comment="Section header for characters added by the user. %1$s is a plural character type, such as trainers or monsters.">Your %1$s</string>
     <string name="built_in_characters_section" comment="Section header for characters included with the app. %1$s is a plural character type, such as trainers or monsters.">Built-in %1$s</string>
     <string name="character_created" comment="Confirmation after a character is successfully created.">Character created</string>
@@ -393,4 +535,8 @@
     <string name="online_profile_qr_action">QR code</string>
     <string name="online_profile_more_options">More profile options</string>
     <string name="online_profile_sign_in_google">Sign in with Google</string>
+    <string name="call" comment="Menu action that calls the selected phone number.">Call</string>
+    <string name="favorite_phone_type_number" comment="Favorite contact summary. %1$s is the phone type and %2$s is the phone number.">%1$s • %2$s</string>
+    <string name="call_log_just_now" comment="Call-log time shown for calls less than one minute old.">Just now</string>
+    <string name="new_contact_short" comment="Compact command for creating a contact.">New</string>
 </resources>

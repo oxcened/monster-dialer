@@ -7,15 +7,26 @@ published asset relationship explicit for sideloading users.
 
 ## Versioning
 
-`appVersionName` in [`gradle.properties`](../gradle.properties) is the single
-authoritative semantic version (`MAJOR.MINOR.PATCH`). The Android `versionCode`
-is derived as `MAJOR * 1,000,000 + MINOR * 1,000 + PATCH`; it is therefore a
-monotonically increasing integer for normal semantic-version releases. Minor
-and patch values must each be 999 or less.
+`appVersionName` and `appVersionCode` in
+[`gradle.properties`](../gradle.properties) are the authoritative app version
+values. `appVersionName` uses `MAJOR.MINOR.PATCH`, optionally with an
+`-alpha.N`, `-beta.N`, or `-rc.N` suffix. `appVersionCode` is an explicit,
+positive integer because Google Play requires it to increase for every upload,
+including uploads to testing tracks. Never reuse a version code or give a
+production build a code lower than a build already uploaded to a testing track.
 
-Before a release, change only `appVersionName`, commit it to `main`, and let CI
-pass. The release tag must be exactly `v` followed by that value; for example,
-`appVersionName=0.4.0` requires tag `v0.4.0`.
+Before a release, update the changelog, `appVersionName`, and
+`appVersionCode`, commit them to `main`, and let CI pass. The release tag must
+be exactly `v` followed by `appVersionName`; for example,
+`appVersionName=0.7.0-beta.1` requires tag `v0.7.0-beta.1`.
+
+`CHANGELOG.md` is the canonical source for user-facing release notes. Add
+notable changes to its `[Unreleased]` section as part of the pull request that
+introduces them. Group entries under `Added`, `Changed`, `Deprecated`,
+`Removed`, `Fixed`, or `Security`. During release preparation, move the entries
+into a dated `## [VERSION] - YYYY-MM-DD` section and add a new empty
+`[Unreleased]` section above it. The release workflow copies that curated
+section into the GitHub Release; it does not generate notes from commit logs.
 
 The `opendialer` git submodule pins the compatible OpenDialer commit used in CI
 and releases. Update the submodule in a normal compatibility-tested change
@@ -88,27 +99,31 @@ Releasing is a two-step process. First, prepare and push the version-change
 commit; this does **not** publish a release:
 
 ```bash
-scripts/prepare-release.sh 0.4.0
+scripts/prepare-release.sh 0.7.0 600004
 ```
 
-This updates `appVersionName`, commits `chore(release): prepare v0.4.0`, and
-pushes `main`. Wait for CI on that commit to pass.
+Before running the script, update `CHANGELOG.md` with the dated release
+section. The script verifies that the section exists, then updates
+`appVersionName` and `appVersionCode`, commits `chore(release): prepare
+v0.7.0`, and pushes `main`.
+Wait for CI on that commit to pass.
 
 Then publish the already-prepared release by creating and pushing its
 `v0.4.0` tag. This tag triggers the public release workflow. The prompt
 defaults to **No**; pass `--yes` only for deliberate non-interactive use.
 
 ```bash
-scripts/prepare-release.sh 0.4.0 --publish
+scripts/prepare-release.sh 0.7.0 600004 --publish
 ```
 
 The script requires a clean, up-to-date `main` branch, validates the semantic
 version, and rejects existing tags.
 
-The `Android Release` workflow validates the tag against `appVersionName`,
+The `Android Release` workflow validates the tag against `appVersionName` and
+the corresponding `CHANGELOG.md` entry, publishes the curated release notes,
 initializes the pinned OpenDialer submodule, decodes the keystore only on the
 runner, builds the signed release APK, writes its SHA-256 checksum, attests the
-assets, and creates a GitHub Release with generated notes.
+assets, and creates the GitHub Release.
 
 Users can verify a downloaded APK with:
 
@@ -118,8 +133,9 @@ sha256sum -c MonsterDialer-v0.4.0.apk.sha256
 
 ## Troubleshooting
 
-* **Tag/version validation failed:** update `appVersionName` on `main`, merge
-  it, then tag the exact matching `vMAJOR.MINOR.PATCH` version.
+* **Tag/version validation failed:** update `appVersionName` and
+  `appVersionCode` on `main`, merge it, then tag the exact matching
+  `vVERSION` version.
 * **Signing failed:** confirm all four secrets exist, the Base64 value was
   copied as one line, and the alias/password values open the original keystore.
 * **Firebase configuration failed:** replace `GOOGLE_SERVICES_JSON_BASE64`

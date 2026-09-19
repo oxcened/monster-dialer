@@ -22,6 +22,8 @@ class PlayerProfileStatsStore @Inject constructor(
 
     val callsBattled: StateFlow<Int> = mutableCallsBattled.asStateFlow()
 
+    fun hasStoredData(): Boolean = file.isFile
+
     @Synchronized
     fun recordBattle() {
         val updated = mutableCallsBattled.value + 1
