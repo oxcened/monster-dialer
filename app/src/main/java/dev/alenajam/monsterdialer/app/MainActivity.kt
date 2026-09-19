@@ -475,10 +475,15 @@ class MainActivity : AppCompatActivity() {
                                         }
                                     },
                                     SettingsSubpageDestination(title = stringResource(R.string.edit)) { payload, onNavigateBack ->
+                                        val editType = payload
+                                            ?.substringBefore(':')
+                                            ?.let { type -> CharacterType.entries.firstOrNull { it.name.equals(type, ignoreCase = true) } }
+                                            ?: CharacterType.Monster
+                                        val editCharacterId = payload?.substringAfter(':', payload)
                                         AddCharacterScreen(
                                             onNavigateBack = onNavigateBack,
-                                            characterType = CharacterType.Monster,
-                                            characterId = payload,
+                                            characterType = editType,
+                                            characterId = editCharacterId,
                                             preferredAssignmentTarget = CharacterAssignmentTarget.Player,
                                         )
                                     },

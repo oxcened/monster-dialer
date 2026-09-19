@@ -40,6 +40,7 @@ import dev.alenajam.monsterdialer.R
 import dev.alenajam.monsterdialer.app.ui.RetroFastScroller
 import dev.alenajam.monsterdialer.app.ui.RetroContextMenuItem
 import dev.alenajam.monsterdialer.app.ui.RetroContextMenuOverlay
+import dev.alenajam.monsterdialer.app.ui.RetroFooter
 import dev.alenajam.monsterdialer.app.ui.RetroSearchButton
 import dev.alenajam.monsterdialer.characters.data.BuiltInCharacters
 import dev.alenajam.monsterdialer.characters.data.ContactCharacterDefaults
@@ -47,6 +48,8 @@ import dev.alenajam.monsterdialer.packs.data.CharacterAssignmentTarget
 import dev.alenajam.monsterdialer.packs.data.CharacterReference
 import dev.alenajam.monsterdialer.packs.data.CharacterType
 import dev.alenajam.monsterdialer.packs.data.InstalledPackCharacter
+import dev.alenajam.opendialer.feature.settings.LocalSettingsBackInterceptor
+import dev.alenajam.opendialer.feature.settings.LocalSettingsSubpageNavigator
 
 private enum class DefaultsOptionsMenu {
     Root,
@@ -68,6 +71,8 @@ internal fun ContactCharacterDefaultsSection(
     onAddCharacter: (CharacterType) -> Unit,
     isAddEnabled: Boolean,
 ) {
+    val settingsNavigator = LocalSettingsSubpageNavigator.current
+    val settingsBackInterceptor = LocalSettingsBackInterceptor.current
     var selectedType by remember { mutableStateOf(CharacterType.Trainer) }
     val draftPools = remember { mutableStateMapOf<CharacterType, Set<CharacterReference>>() }
     var resetPools by remember { mutableStateOf(emptySet<CharacterType>()) }
@@ -188,6 +193,15 @@ internal fun ContactCharacterDefaultsSection(
                 modifier = Modifier.align(Alignment.CenterEnd).padding(vertical = 8.dp),
             )
         }
+        RetroFooter(
+            backKey = stringResource(R.string.retro_key_b),
+            backLabel = stringResource(R.string.customized_contacts_back_action),
+            onBack = {
+                if (settingsBackInterceptor?.consumesBackNavigation() != true) {
+                    settingsNavigator?.navigateBack()
+                }
+            },
+        )
     }
     optionsMenu?.let { menu ->
         val modeItems = listOf(

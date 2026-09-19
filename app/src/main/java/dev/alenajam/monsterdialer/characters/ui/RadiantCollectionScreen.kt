@@ -15,6 +15,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -65,23 +66,43 @@ class RadiantCollectionViewModel @Inject constructor(
     val entries: StateFlow<List<RadiantCollectionEntry>> = combine(
         charactersRepository.observeCharactersAssignableTo(
             CharacterAssignmentTarget.Player,
+            CharacterType.Trainer,
+        ),
+        charactersRepository.observeCharactersAssignableTo(
+            CharacterAssignmentTarget.Player,
             CharacterType.Monster,
         ),
         radiantUnlocks.unlocked,
-    ) { characters, unlocked ->
-        val builtIn = RadiantCollectionEntry(
-            name = BuiltInCharacters.monster.character.name,
-            packName = "",
-            level = BuiltInCharacters.monster.level,
-            reference = BuiltInCharacters.defaultMonsterReference,
-            imageFile = null,
-            fallbackArtwork = BuiltInCharacters.monster.character.contactArtwork.resource,
-            isRadiant = false,
-            isUnlocked = true,
-            isEditable = false,
-            hasRadiantVariant = false,
+    ) { trainers, monsters, unlocked ->
+        val builtInCharacters = listOf(
+            RadiantCollectionEntry(
+                name = BuiltInCharacters.trainer.name,
+                packName = "",
+                type = CharacterType.Trainer,
+                level = null,
+                reference = BuiltInCharacters.defaultTrainerReference,
+                imageFile = null,
+                fallbackArtwork = BuiltInCharacters.trainer.contactArtwork.resource,
+                isRadiant = false,
+                isUnlocked = true,
+                isEditable = false,
+                hasRadiantVariant = false,
+            ),
+            RadiantCollectionEntry(
+                name = BuiltInCharacters.monster.character.name,
+                packName = "",
+                type = CharacterType.Monster,
+                level = BuiltInCharacters.monster.level,
+                reference = BuiltInCharacters.defaultMonsterReference,
+                imageFile = null,
+                fallbackArtwork = BuiltInCharacters.monster.character.contactArtwork.resource,
+                isRadiant = false,
+                isUnlocked = true,
+                isEditable = false,
+                hasRadiantVariant = false,
+            ),
         )
-        (listOf(builtIn) + characters.flatMap { installed ->
+        (builtInCharacters + (trainers + monsters).flatMap { installed ->
             installed.character.visualVariants
                 .mapNotNull { variant ->
                     val imagePath = variant.frontImage ?: variant.backImage ?: return@mapNotNull null
@@ -90,6 +111,7 @@ class RadiantCollectionViewModel @Inject constructor(
                     RadiantCollectionEntry(
                         name = installed.character.name,
                         packName = installed.packName,
+                        type = installed.character.type,
                         level = installed.character.level,
                         reference = reference,
                         imageFile = imageFile,
@@ -120,6 +142,7 @@ class RadiantCollectionViewModel @Inject constructor(
 data class RadiantCollectionEntry(
     val name: String,
     val packName: String,
+    val type: CharacterType,
     val level: Int?,
     val reference: CharacterReference,
     val imageFile: File?,
@@ -139,33 +162,74 @@ fun RadiantCollectionScreen(viewModel: RadiantCollectionViewModel = hiltViewMode
     var pendingDeletion by remember { mutableStateOf<RadiantCollectionEntry?>(null) }
     var isPendingDeletionInUse by remember { mutableStateOf(false) }
     var pendingShare by remember { mutableStateOf<RadiantCollectionEntry?>(null) }
+    var selectedType by remember { mutableStateOf(CharacterType.Monster) }
     val listState = rememberLazyListState()
     val sections = buildCollectionSections(
         entries = entries,
-        builtInTitle = stringResource(
-            R.string.built_in_characters_section,
-            stringResource(R.string.character_type_monsters),
+        builtInTitles = mapOf(
+            CharacterType.Trainer to stringResource(
+                R.string.built_in_characters_section,
+                stringResource(R.string.character_type_trainers),
+            ),
+            CharacterType.Monster to stringResource(
+                R.string.built_in_characters_section,
+                stringResource(R.string.character_type_monsters),
+            ),
         ),
-        userTitle = stringResource(
-            R.string.your_characters,
-            stringResource(R.string.character_type_monsters),
+        userTitles = mapOf(
+            CharacterType.Trainer to stringResource(
+                R.string.your_characters,
+                stringResource(R.string.character_type_trainers),
+            ),
+            CharacterType.Monster to stringResource(
+                R.string.your_characters,
+                stringResource(R.string.character_type_monsters),
+            ),
         ),
     )
+    val visibleSections = sections.mapNotNull { section ->
+        section.copy(entries = section.entries.filter { it.type == selectedType })
+            .takeIf { it.entries.isNotEmpty() }
+    }
+
+    LaunchedEffect(selectedType) {
+        listState.scrollToItem(0)
+    }
 
     Box(modifier = Modifier.fillMaxSize()) {
         Column(modifier = Modifier.fillMaxSize()) {
-        RetroSearchButton(
-            label = stringResource(R.string.radiant_collection_browse_packs),
-            onClick = { navigator?.navigateTo(1) },
-            modifier = Modifier.align(Alignment.End),
-        )
+        Row(modifier = Modifier.fillMaxWidth()) {
+            RetroSearchButton(
+                label = stringResource(
+                    if (selectedType == CharacterType.Trainer) {
+                        R.string.character_type_trainer
+                    } else {
+                        R.string.character_type_monster
+                    },
+                ),
+                onClick = {
+                    selectedType = if (selectedType == CharacterType.Trainer) {
+                        CharacterType.Monster
+                    } else {
+                        CharacterType.Trainer
+                    }
+                },
+                modifier = Modifier.weight(1f),
+                horizontalArrangement = Arrangement.Start,
+            )
+            RetroSearchButton(
+                label = stringResource(R.string.radiant_collection_browse_packs),
+                onClick = { navigator?.navigateTo(1) },
+                modifier = Modifier.weight(1f),
+            )
+        }
         Box(modifier = Modifier.weight(1f)) {
             LazyColumn(
                 modifier = Modifier.fillMaxSize(),
                 state = listState,
                 contentPadding = PaddingValues(top = 2.dp, bottom = 12.dp),
             ) {
-                sections.forEach { section ->
+                visibleSections.forEach { section ->
                     item(key = "header:${section.title}") {
                         CollectionSectionHeader(section.title)
                     }
@@ -227,7 +291,7 @@ fun RadiantCollectionScreen(viewModel: RadiantCollectionViewModel = hiltViewMode
                 items = listOf(
                     RetroContextMenuItem(stringResource(R.string.edit)) {
                         selectedEntry = null
-                        navigator?.navigateTo(2, entry.reference.characterId)
+                        navigator?.navigateTo(2, "${entry.type.name.lowercase()}:${entry.reference.characterId}")
                     },
                     RetroContextMenuItem(stringResource(R.string.delete_action)) {
                         selectedEntry = null
@@ -254,20 +318,28 @@ private data class CollectionSection(
 
 private fun buildCollectionSections(
     entries: List<RadiantCollectionEntry>,
-    builtInTitle: String,
-    userTitle: String,
+    builtInTitles: Map<CharacterType, String>,
+    userTitles: Map<CharacterType, String>,
 ): List<CollectionSection> {
-    val builtIn = entries.filter { it.reference == BuiltInCharacters.defaultMonsterReference }
+    val builtIn = entries.filter { !it.isEditable && it.packName.isBlank() }
     val userCreated = entries.filter { it.isEditable }
     val importedPacks = entries
-        .filter { !it.isEditable && it.reference != BuiltInCharacters.defaultMonsterReference }
+        .filter { !it.isEditable && it.packName.isNotBlank() }
         .groupBy { it.reference.packId }
         .values
         .sortedBy { it.firstOrNull()?.packName?.lowercase() }
 
     return buildList {
-        if (builtIn.isNotEmpty()) add(CollectionSection(builtInTitle, builtIn))
-        if (userCreated.isNotEmpty()) add(CollectionSection(userTitle, userCreated))
+        CharacterType.entries.forEach { type ->
+            builtIn.filter { it.type == type }.takeIf { it.isNotEmpty() }?.let {
+                add(CollectionSection(requireNotNull(builtInTitles[type]), it))
+            }
+        }
+        CharacterType.entries.forEach { type ->
+            userCreated.filter { it.type == type }.takeIf { it.isNotEmpty() }?.let {
+                add(CollectionSection(requireNotNull(userTitles[type]), it))
+            }
+        }
         importedPacks.forEach { packEntries ->
             add(CollectionSection(packEntries.first().packName, packEntries))
         }

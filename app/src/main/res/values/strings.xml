@@ -248,8 +248,8 @@
     <string name="radiant_variant_locked_title" comment="Title of the dialog shown for a locked radiant character variant.">Radiant variant locked</string>
     <string name="radiant_variant_locked_message" comment="Explains how to unlock a radiant character variant; %1$s is the character name.">When you encounter a radiant %1$s in a wild battle, it unlocks automatically as the battle begins. You can then assign it.</string>
     <string name="learn_about_radiants" comment="Button that opens the guide to rare radiant variants.">About radiants</string>
-    <string name="radiant_collection_title">Radiant Collection</string>
-    <string name="radiant_collection_description">View all monsters and their radiant variants, including undiscovered ones.</string>
+    <string name="radiant_collection_title">Character Collection</string>
+    <string name="radiant_collection_description">View all trainers, monsters, and their radiant variants, including undiscovered ones.</string>
     <string name="collection_sprite" comment="Accessibility description for a regular collection sprite; %1$s is the monster name.">%1$s sprite</string>
     <string name="radiant_collection_sprite" comment="Accessibility description for a radiant collection sprite; %1$s is the monster name.">%1$s radiant sprite</string>
     <string name="radiant_collection_found">Found</string>

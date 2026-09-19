@@ -175,7 +175,6 @@ private fun RosterSlotRow(
         selected = selected,
         onClick = onClick,
         enabled = enabled,
-        modifier = Modifier.padding(vertical = 2.dp),
     ) {
         if (monster == null) {
             Text(
