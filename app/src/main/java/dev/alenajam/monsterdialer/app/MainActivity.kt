@@ -242,6 +242,7 @@ class MainActivity : AppCompatActivity() {
                             },
                             isScrollable = false,
                             topContentPadding = RetroScreenTopContentPadding,
+                            contentHorizontalPadding = RetroScreenHorizontalPadding,
                             showTopBar = false,
                             visibleInSettings = false,
                             destinations = listOf(
@@ -281,6 +282,7 @@ class MainActivity : AppCompatActivity() {
                             },
                             isScrollable = false,
                             topContentPadding = RetroScreenTopContentPadding,
+                            contentHorizontalPadding = RetroScreenHorizontalPadding,
                             showTopBar = false,
                             visibleInSettings = false,
                             actions = {

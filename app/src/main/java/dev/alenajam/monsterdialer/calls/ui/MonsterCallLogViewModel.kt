@@ -44,10 +44,7 @@ class MonsterCallLogViewModel @Inject constructor(
                 for (contact in contacts) {
                     var artwork: MonsterCallLogArtwork? = null
                     for (number in contactsRepository.getContactNumbers(contact.id)) {
-                        val reference = assignments
-                            .getContactCharacterSelection(number, CharacterType.Monster)
-                            .character
-                        artwork = reference?.let(::artworkFor)
+                        artwork = assignedArtworkFor(number)
                         if (artwork != null) break
                     }
                     artwork?.let { put(contact.id, it) }
@@ -65,17 +62,12 @@ class MonsterCallLogViewModel @Inject constructor(
                 val resolvedArtwork = if (call.isAnonymous()) {
                     MonsterCallLogArtwork.anonymous()
                 } else {
-                    number?.let {
-                        val reference = assignments
-                            .getContactCharacterSelection(it, CharacterType.Monster)
-                            .character
-                        reference?.let(::artworkFor)
-                    }
+                    if (number == null) null else assignedArtworkFor(number)
                 }
                 val artworkForCall = if (call.isAnonymous()) {
                     resolvedArtwork
                 } else {
-                    journalArtwork ?: resolvedArtwork
+                    resolvedArtwork ?: journalArtwork
                 }
                 artworkForCall?.let { call.id to it }
             }.toMap()
@@ -84,10 +76,7 @@ class MonsterCallLogViewModel @Inject constructor(
 
         _artworkByContactNumber.value = withContext(Dispatchers.IO) {
             favoriteNumbers.mapNotNull { number ->
-                val assignedArtwork = assignments
-                    .getContactCharacterSelection(number, CharacterType.Monster)
-                    .character
-                    ?.let(::artworkFor)
+                val assignedArtwork = assignedArtworkFor(number)
                 assignedArtwork?.let { number to it }
             }.toMap()
         }
@@ -122,15 +111,35 @@ class MonsterCallLogViewModel @Inject constructor(
     }
 
     private fun artworkFor(reference: CharacterReference): MonsterCallLogArtwork? {
-        if (reference == BuiltInCharacters.defaultMonsterReference) {
+        return artworkFor(reference, CharacterType.Monster)
+    }
+
+    private suspend fun assignedArtworkFor(contactKey: String): MonsterCallLogArtwork? {
+        // A monster is the primary avatar. A trainer fills the same role only when no
+        // usable monster assignment exists; the caller's normal avatar remains the fallback.
+        for (type in listOf(CharacterType.Monster, CharacterType.Trainer)) {
+            val reference = assignments.getContactCharacterSelection(contactKey, type).character
+            val artwork = reference?.let { artworkFor(it, type) }
+            if (artwork != null) return artwork
+        }
+        return null
+    }
+
+    private fun artworkFor(reference: CharacterReference, type: CharacterType): MonsterCallLogArtwork? {
+        if (reference == BuiltInCharacters.defaultMonsterReference && type == CharacterType.Monster) {
             return MonsterCallLogArtwork(
                 builtInResource = BuiltInCharacters.monster.character.contactArtwork.resource,
+            )
+        }
+        if (reference == BuiltInCharacters.defaultTrainerReference && type == CharacterType.Trainer) {
+            return MonsterCallLogArtwork(
+                builtInResource = BuiltInCharacters.trainer.contactArtwork.resource,
             )
         }
         val installed = characters.findCharacter(
             reference = reference,
             role = CharacterAssignmentTarget.Contact,
-            type = CharacterType.Monster,
+            type = type,
         ) ?: return null
         val variant = installed.character.variant(reference.variantId) ?: return null
         val image = variant.frontImage ?: variant.backImage ?: return null
