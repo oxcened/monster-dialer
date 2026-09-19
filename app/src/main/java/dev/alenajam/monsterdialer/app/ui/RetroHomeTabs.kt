@@ -92,7 +92,7 @@ internal fun RetroHomeTabs(
             .windowInsetsPadding(WindowInsets.statusBarsIgnoringVisibility)
             .padding(start = 8.dp, end = 8.dp),
     ) {
-        Box(modifier = Modifier.height(62.dp)) {
+        Box(modifier = Modifier.height(70.dp)) {
             Row(
                 modifier = Modifier
                     .padding(top = 2.dp)
