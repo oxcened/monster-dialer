@@ -46,7 +46,6 @@ import dev.alenajam.opendialer.core.common.ui.AppThemeExtension
 import dev.alenajam.opendialer.core.common.ui.InCallUI
 import dev.alenajam.opendialer.feature.inCall.ui.CallStatus
 import dev.alenajam.opendialer.feature.inCall.ui.InCallDetails
-import dev.alenajam.opendialer.feature.inCall.ui.InCallActivity
 import dev.alenajam.opendialer.feature.inCall.ui.InCallViewModel
 import dev.alenajam.opendialer.feature.inCall.ui.ManageConferenceSheet
 import dev.alenajam.opendialer.feature.inCall.ui.SecondaryCallBanner
@@ -68,8 +67,6 @@ class MonsterInCallUI @Inject constructor(
         val durationMillis by viewModel.activeCallDuration.collectAsStateWithLifecycle(0L)
         val onlineOpponentCacheVersion by onlineOpponentResolver.cacheVersion.collectAsStateWithLifecycle()
         val context = LocalContext.current
-        val inCallActivity = context.getActivity() as? InCallActivity
-        val isUiReady = inCallActivity?.isUiReady?.collectAsStateWithLifecycle()?.value ?: true
         val unknownCallerName = stringResource(R.string.unknown)
         val hasSecondaryCall = uiState.hasSecondaryCall
         val secondaryCallerName = uiState.secondaryCallerName
@@ -84,7 +81,7 @@ class MonsterInCallUI @Inject constructor(
         var encounter by remember { mutableStateOf<BattleEncounter?>(null) }
         val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
         val radiantUnlockSnackbar = remember { SnackbarHostState() }
-        val canStartBattle = isUiReady
+        val canStartBattle = true
 
         LaunchedEffect(uiState.status) {
             if (uiState.status == CallStatus.IDLE) {
@@ -176,15 +173,21 @@ class MonsterInCallUI @Inject constructor(
                         if (uiState.status != CallStatus.IDLE) {
                             InCallDetails(
                                 callerName = uiState.callerName,
-                                callerNumber = uiState.callerNumber,
-                                callerNumberLabel = uiState.callerNumberLabel,
+                                callerNumber = if (uiState.status == CallStatus.ACTIVE || uiState.status == CallStatus.HOLDING) {
+                                    ""
+                                } else {
+                                    uiState.callerNumber
+                                },
+                                callerNumberLabel = if (uiState.status == CallStatus.ACTIVE || uiState.status == CallStatus.HOLDING) {
+                                    ""
+                                } else {
+                                    uiState.callerNumberLabel
+                                },
                                 status = uiState.status,
                                 durationMillis = durationMillis,
                                     callerImageUri = uiState.callerImageUri,
                                     showCallerImage = false,
                                     useCompactCallerText = isCompactLayout,
-                                    showCallerNumber = uiState.status != CallStatus.ACTIVE &&
-                                        uiState.status != CallStatus.HOLDING,
                                 modifier = Modifier
                                     .statusBarsPadding()
                                     .padding(

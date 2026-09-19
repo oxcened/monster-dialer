@@ -532,4 +532,8 @@
     <string name="online_profile_qr_action">QR code</string>
     <string name="online_profile_more_options">More profile options</string>
     <string name="online_profile_sign_in_google">Sign in with Google</string>
+    <string name="call" comment="Menu action that calls the selected phone number.">Call</string>
+    <string name="favorite_phone_type_number" comment="Favorite contact summary. %1$s is the phone type and %2$s is the phone number.">%1$s • %2$s</string>
+    <string name="call_log_just_now" comment="Call-log time shown for calls less than one minute old.">Just now</string>
+    <string name="new_contact_short" comment="Compact command for creating a contact.">New</string>
 </resources>

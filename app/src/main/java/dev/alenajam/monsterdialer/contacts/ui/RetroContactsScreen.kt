@@ -153,7 +153,7 @@ fun RetroContactsScreen(
             ) {
                 if (searchQuery.isBlank()) {
                     item("new-contact") {
-                        RetroContactsCommand(stringResource(ContactsR.string.new_contact_short)) {
+                        RetroContactsCommand(stringResource(R.string.new_contact_short)) {
                             CommonUtils.createContact(context, null)
                         }
                     }

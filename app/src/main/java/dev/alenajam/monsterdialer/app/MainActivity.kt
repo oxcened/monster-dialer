@@ -41,15 +41,11 @@ import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.Alignment
-import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalConfiguration
-import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.text.font.Font
-import androidx.compose.ui.text.font.FontFamily
 import androidx.core.content.IntentCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.WindowInsetsControllerCompat
@@ -64,13 +60,6 @@ import dev.alenajam.monsterdialer.app.data.OnboardingStore
 import dev.alenajam.monsterdialer.app.ui.LocalMonsterAppIcons
 import dev.alenajam.monsterdialer.app.ui.RetroScreenHorizontalPadding
 import dev.alenajam.monsterdialer.app.ui.RetroScreenTopContentPadding
-import dev.alenajam.monsterdialer.app.ui.RetroScreenFooterVerticalPadding
-import dev.alenajam.monsterdialer.app.ui.RetroActionButton
-import dev.alenajam.monsterdialer.app.ui.RetroSearchBar
-import dev.alenajam.monsterdialer.app.ui.RetroSearchButton
-import dev.alenajam.monsterdialer.app.ui.RetroContextMenuItem
-import dev.alenajam.monsterdialer.app.ui.RetroContextMenuOverlay
-import dev.alenajam.monsterdialer.app.ui.RetroHomeTabs
 import dev.alenajam.monsterdialer.app.ui.rememberMonsterIcons
 import dev.alenajam.monsterdialer.app.ui.rememberMonsterTypography
 import dev.alenajam.monsterdialer.characters.ui.AddCharacterScreen
@@ -113,9 +102,6 @@ import dev.alenajam.opendialer.core.common.ui.AppThemeExtension
 import dev.alenajam.opendialer.core.common.ui.AppProviders
 import dev.alenajam.opendialer.core.common.ui.ContactAvatar
 import dev.alenajam.opendialer.feature.appShell.DialerApp
-import dev.alenajam.opendialer.feature.appShell.HomeNavigationItem
-import dev.alenajam.opendialer.feature.appShell.HomeScreenConfiguration
-import dev.alenajam.opendialer.feature.appShell.HomeTab
 import dev.alenajam.opendialer.feature.settings.LocalSettingsSubpageNavigator
 import dev.alenajam.opendialer.feature.settings.LocalSettingsRootNavigator
 import kotlinx.coroutines.launch
@@ -229,164 +215,16 @@ class MainActivity : AppCompatActivity() {
                         },
                         icons = appIcons,
                         themeExtension = appThemeExtension,
-                        homeScreenConfiguration = HomeScreenConfiguration(
-                            showVoicemailInNavigation = false,
-                            showVoicemailInOverflow = true,
-                            hideSearchAndDialpadOnCustomTab = true,
-                            showDialpadFab = false,
-                            customCallsContent = { onOpenHistory, onOpenContacts, onAddFavorite, onEditNumberBeforeCall ->
-                                RetroCallsScreen(
-                                    onOpenHistory = onOpenHistory,
-                                    onOpenContacts = onOpenContacts,
-                                    onAddFavorite = onAddFavorite,
-                                    onEditNumberBeforeCall = onEditNumberBeforeCall,
-                                )
-                            },
-                            customFavoritesContent = { onOpenContacts, onAddFavorite, onEditNumberBeforeCall ->
-                                RetroCallsScreen(
-                                    onOpenHistory = {},
-                                    onOpenContacts = onOpenContacts,
-                                    onAddFavorite = onAddFavorite,
-                                    onEditNumberBeforeCall = onEditNumberBeforeCall,
-                                    favoritesOnly = true,
-                                )
-                            },
-                            customContactsContent = { searchQuery, onOpenSettingsSubpage ->
-                                RetroContactsScreen(
-                                    searchQuery = searchQuery,
-                                    onOpenSettingsSubpage = onOpenSettingsSubpage,
-                                    characterSettingsViewModel = contactCharacterSettingsViewModel,
-                                )
-                            },
-                            customActionBarHorizontalPadding = RetroScreenHorizontalPadding,
-                            customActionBarVerticalPadding = RetroScreenFooterVerticalPadding,
-                            customSearchBar = { isActive, query, onQueryChanged, onActivate ->
-                                val searchFocusRequester = remember { FocusRequester() }
-                                val keyboardController = LocalSoftwareKeyboardController.current
-                                LaunchedEffect(isActive) {
-                                    if (isActive) {
-                                        searchFocusRequester.requestFocus()
-                                        keyboardController?.show()
-                                    } else {
-                                        keyboardController?.hide()
-                                    }
-                                }
-                                if (isActive) {
-                                    RetroSearchBar(
-                                        label = stringResource(R.string.contact_picker_search_name_prefix),
-                                        query = query,
-                                        focusRequester = searchFocusRequester,
-                                        onQueryChanged = onQueryChanged,
-                                        modifier = Modifier.padding(horizontal = 16.dp, vertical = 4.dp),
-                                    )
-                                } else {
-                                    RetroSearchButton(
-                                        label = stringResource(R.string.contact_picker_search),
-                                        onClick = onActivate,
-                                        modifier = Modifier.fillMaxWidth(),
-                                        horizontalArrangement = Arrangement.Start,
-                                    )
-                                }
-                            },
-                            customActionBar = { onSelect, _, onBack, onSearch, backEnabled, currentTab, searchActive, searchContent ->
-                                Row(
-                                    modifier = Modifier.fillMaxWidth(),
-                                    verticalAlignment = Alignment.CenterVertically,
-                                ) {
-                                    if (currentTab == HomeTab.CALLS || currentTab == HomeTab.FAVORITES || currentTab == HomeTab.CONTACTS) {
-                                        Box(modifier = Modifier.weight(1f)) {
-                                            if (!searchActive) {
-                                                RetroActionButton(
-                                                    key = stringResource(R.string.retro_key_a),
-                                                    label = stringResource(R.string.contact_picker_search),
-                                                    onClick = onSearch,
-                                                )
-                                            }
-                                        }
-                                        RetroActionButton(
-                                            key = stringResource(R.string.retro_key_b),
-                                            label = stringResource(if (searchActive) R.string.customized_contacts_back_action else R.string.retro_action_dial_label),
-                                            onClick = if (searchActive) onBack else onSelect,
-                                        )
-                                    } else if (backEnabled) {
-                                        RetroActionButton(
-                                            key = stringResource(R.string.retro_key_b),
-                                            label = stringResource(R.string.customized_contacts_back_action),
-                                            onClick = onBack,
-                                        )
-                                    } else {
-                                        RetroActionButton(
-                                            key = stringResource(R.string.retro_key_a),
-                                            label = stringResource(R.string.retro_action_dial_label),
-                                            onClick = onSelect,
-                                        )
-                                    }
-                                }
-                            },
-                            customTopBar = { currentTab, onFavorites, onCalls, onContacts, onProfile ->
-                                RetroHomeTabs(
-                                    currentTab = currentTab,
-                                    onFavorites = onFavorites,
-                                    onCalls = onCalls,
-                                    onContacts = onContacts,
-                                    onProfile = onProfile,
-                                )
-                            },
-                            customContextMenu = { currentTab, onFavorites, onCalls, onContacts, onProfile, onDismiss ->
-                                RetroContextMenuOverlay(
-                                        modifier = Modifier.fillMaxWidth(0.78f),
-                                        fontFamily = FontFamily(Font(R.font.ui_pixel_font)),
-                                        onDismissRequest = onDismiss,
-                                        items = listOf(
-                                            RetroContextMenuItem(
-                                                stringResource(R.string.favorites),
-                                                showCursor = currentTab == HomeTab.FAVORITES,
-                                                onClick = onFavorites,
-                                            ),
-                                            RetroContextMenuItem(
-                                                stringResource(R.string.recents),
-                                                showCursor = currentTab == HomeTab.CALLS,
-                                                onClick = onCalls,
-                                            ),
-                                            RetroContextMenuItem(
-                                                stringResource(R.string.contacts),
-                                                showCursor = currentTab == HomeTab.CONTACTS,
-                                                onClick = onContacts,
-                                            ),
-                                            RetroContextMenuItem(
-                                                stringResource(R.string.characters_navigation_label),
-                                                showCursor = currentTab == HomeTab.CUSTOM,
-                                                onClick = onProfile,
-                                            ),
-                                            RetroContextMenuItem.cancel(stringResource(R.string.cancel), onDismiss),
-                                        ),
-                                )
-                            },
-                            customNavigationItem = HomeNavigationItem(
-                            label = { androidx.compose.material3.Text(stringResource(R.string.characters_navigation_label)) },
-                            icon = { _ -> dev.alenajam.opendialer.core.common.ui.AppIcon(dev.alenajam.opendialer.core.common.ui.LocalAppIcons.current.person, null) },
-                            content = { onOpenSettings, onOpenSubpage, onSetBackAction ->
-                                CharactersHomeScreen(
-                                    onOpenSettings = onOpenSettings,
-                                    onOpenSubpage = { index, payload ->
-                                        val destination = if (index == CharacterSettingsPage.ContactCharacters.index) {
-                                            CharacterSettingsPage.ToolboxContactCharacters.index
-                                        } else {
-                                            index
-                                        }
-                                        onOpenSubpage(destination, payload)
-                                    },
-                                    sharingViewModel = characterSharingViewModel,
-                                    playerProfile = playerProfile,
-                                    profileMetrics = profileMetrics,
-                                    onReorderRoster = characterSettingsSummaryViewModel::reorderPlayerMonsterRoster,
-                                    onRemoveRosterMonster = characterSettingsSummaryViewModel::removePlayerMonsterFromRoster,
-                                    showImportUi = false,
-                                    onSetBackAction = onSetBackAction,
-                                )
-                            }
-                        )
-                        ),
+                        homeContent = { callbacks ->
+                            MonsterHomeScreen(
+                                callbacks = callbacks,
+                                contactCharacterSettingsViewModel = contactCharacterSettingsViewModel,
+                                characterSharingViewModel = characterSharingViewModel,
+                                playerProfile = playerProfile,
+                                profileMetrics = profileMetrics,
+                                characterSettingsSummaryViewModel = characterSettingsSummaryViewModel,
+                            )
+                        },
                         settingsSubpages = listOf(
                         SettingsSubpage(
                             title = stringResource(R.string.settings_player_character_title),
@@ -404,8 +242,6 @@ class MainActivity : AppCompatActivity() {
                             },
                             isScrollable = false,
                             topContentPadding = RetroScreenTopContentPadding,
-                            horizontalContentPadding = RetroScreenHorizontalPadding,
-                            showTopBar = false,
                             visibleInSettings = false,
                             destinations = listOf(
                                 SettingsSubpageDestination(title = stringResource(R.string.add_trainer)) { payload, onNavigateBack ->
@@ -444,8 +280,6 @@ class MainActivity : AppCompatActivity() {
                             },
                             isScrollable = false,
                             topContentPadding = RetroScreenTopContentPadding,
-                            showTopBar = false,
-                            horizontalContentPadding = RetroScreenHorizontalPadding,
                             visibleInSettings = false,
                             actions = {
                                 ContextualGuideButton(
@@ -509,8 +343,6 @@ class MainActivity : AppCompatActivity() {
                             isScrollable = false,
                             visibleInSettings = false,
                             topContentPadding = RetroScreenTopContentPadding,
-                            horizontalContentPadding = RetroScreenHorizontalPadding,
-                            showTopBar = false,
                             actions = {
                                 ContextualGuideButton(
                                     contents = listOf(
@@ -575,8 +407,6 @@ class MainActivity : AppCompatActivity() {
                             },
                             isScrollable = false,
                             topContentPadding = RetroScreenTopContentPadding,
-                            horizontalContentPadding = RetroScreenHorizontalPadding,
-                            showTopBar = false,
                             visibleInSettings = true,
                             destinations = listOf(
                                 SettingsSubpageDestination(title = stringResource(R.string.add_trainer)) { payload, onNavigateBack ->
@@ -604,8 +434,6 @@ class MainActivity : AppCompatActivity() {
                                     content = { _ -> OnlineProfileSection() },
                                     isScrollable = false,
                                     topContentPadding = 0.dp,
-                                    horizontalContentPadding = RetroScreenHorizontalPadding,
-                                    showTopBar = false,
                                     visibleInSettings = false,
                                 ),
                             )
@@ -617,8 +445,6 @@ class MainActivity : AppCompatActivity() {
                                 visibleInSettings = false,
                                 isScrollable = false,
                                 topContentPadding = 0.dp,
-                                horizontalContentPadding = RetroScreenHorizontalPadding,
-                                showTopBar = false,
                                 destinations = listOf(
                                     SettingsSubpageDestination(title = stringResource(R.string.create_character_pack)) { _, onNavigateBack ->
                                         CreateCharacterPackScreen(onNavigateBack)

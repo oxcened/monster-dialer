@@ -227,7 +227,7 @@ private fun RetroCallLogGroup(
 ) {
     Column(modifier = Modifier.fillMaxWidth()) {
         RetroCallText(
-            text = retroRelativeTime(calls.first().date, stringResource(CallsR.string.call_log_just_now)),
+            text = retroRelativeTime(calls.first().date, stringResource(R.string.call_log_just_now)),
             size = 13.sp,
             modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp),
         )
@@ -326,7 +326,7 @@ private fun RetroFavoriteRow(
         Column(modifier = Modifier.weight(1f).padding(horizontal = 10.dp)) {
             RetroCallText(favorite.name, 16.sp, maxLines = 1)
             RetroCallText(
-                stringResource(CallsR.string.favorite_phone_type_number, phoneType, favorite.number),
+                stringResource(R.string.favorite_phone_type_number, phoneType, favorite.number),
                 13.sp,
                 maxLines = 1,
                 color = CallLogInk.copy(alpha = 0.75f),
@@ -347,7 +347,7 @@ private fun RetroFavoriteActionMenu(
             fontFamily = CallLogPixelFont,
             onDismissRequest = onDismiss,
             items = listOf(
-                RetroContextMenuItem(stringResource(CallsR.string.call), onClick = onCall),
+                RetroContextMenuItem(stringResource(R.string.call), onClick = onCall),
                 RetroContextMenuItem(stringResource(CallsR.string.remove), onClick = onRemove),
                 RetroContextMenuItem.cancel(stringResource(CallsR.string.cancel), onDismiss),
             ),
@@ -371,7 +371,7 @@ private fun RetroCallLogRow(
     val locale = LocalConfiguration.current.locales[0]
     val callDate = call.date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate()
     val relativeTime = if (callDate == LocalDate.now()) {
-        retroRelativeTime(call.date, stringResource(CallsR.string.call_log_just_now))
+        retroRelativeTime(call.date, stringResource(R.string.call_log_just_now))
     } else {
         java.text.DateFormat.getTimeInstance(java.text.DateFormat.SHORT, locale).format(call.date)
     }
@@ -467,7 +467,7 @@ private fun RetroCallActionMenu(
     } else {
         val menuItems = buildList {
             if (number != null) {
-                add(RetroContextMenuItem(label = stringResource(CallsR.string.call), onClick = {
+                add(RetroContextMenuItem(label = stringResource(R.string.call), onClick = {
                     onDismiss()
                     viewModel.makeCall(number)
                 }))

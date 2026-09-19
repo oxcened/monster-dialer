@@ -27,7 +27,6 @@ import androidx.compose.ui.unit.dp
 import dev.alenajam.monsterdialer.R
 import dev.alenajam.opendialer.core.common.ui.AppIcon
 import dev.alenajam.opendialer.core.common.ui.LocalAppIcons
-import dev.alenajam.opendialer.feature.appShell.HomeTab
 
 private val RetroTabViolet = Color(0xFF7355A5)
 private val RetroTabFace = Color(0xFF9A7BC4)
@@ -35,17 +34,24 @@ private val RetroTabHighlight = Color(0xFFEDE5F7)
 private val RetroTabShadow = Color(0xFFB8B0C2)
 private val RetroTabInk = Color(0xFF202020)
 
+internal enum class MonsterHomeTab {
+    FAVORITES,
+    CALLS,
+    CONTACTS,
+    PROFILE,
+}
+
 @Composable
 @OptIn(ExperimentalLayoutApi::class)
 internal fun RetroHomeTabs(
-    currentTab: HomeTab,
+    currentTab: MonsterHomeTab,
     onFavorites: () -> Unit,
     onCalls: () -> Unit,
     onContacts: () -> Unit,
     onProfile: () -> Unit,
 ) {
     val tabs = listOf(
-        RetroHomeTab(R.string.favorites, HomeTab.FAVORITES, onFavorites) {
+        RetroHomeTab(R.string.favorites, MonsterHomeTab.FAVORITES, onFavorites) {
             AppIcon(
                 icon = LocalAppIcons.current.favorite,
                 contentDescription = null,
@@ -53,7 +59,7 @@ internal fun RetroHomeTabs(
                 tint = RetroTabInk,
             )
         },
-        RetroHomeTab(R.string.recents, HomeTab.CALLS, onCalls) { selected ->
+        RetroHomeTab(R.string.recents, MonsterHomeTab.CALLS, onCalls) { selected ->
             AppIcon(
                 icon = if (selected) LocalAppIcons.current.recentsSelected else LocalAppIcons.current.recents,
                 contentDescription = null,
@@ -61,7 +67,7 @@ internal fun RetroHomeTabs(
                 tint = RetroTabInk,
             )
         },
-        RetroHomeTab(R.string.contacts, HomeTab.CONTACTS, onContacts) { selected ->
+        RetroHomeTab(R.string.contacts, MonsterHomeTab.CONTACTS, onContacts) { selected ->
             AppIcon(
                 icon = if (selected) LocalAppIcons.current.contactsSelected else LocalAppIcons.current.contacts,
                 contentDescription = null,
@@ -69,7 +75,7 @@ internal fun RetroHomeTabs(
                 tint = RetroTabInk,
             )
         },
-        RetroHomeTab(R.string.characters_navigation_label, HomeTab.CUSTOM, onProfile) {
+        RetroHomeTab(R.string.characters_navigation_label, MonsterHomeTab.PROFILE, onProfile) {
             AppIcon(
                 icon = LocalAppIcons.current.person,
                 contentDescription = null,
@@ -187,7 +193,7 @@ private fun RetroTabSelectionArrow(modifier: Modifier = Modifier) {
 
 private data class RetroHomeTab(
     val label: Int,
-    val destination: HomeTab,
+    val destination: MonsterHomeTab,
     val onClick: () -> Unit,
     val icon: @Composable (selected: Boolean) -> Unit,
 )
