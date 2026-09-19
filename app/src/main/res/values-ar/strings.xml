@@ -391,4 +391,150 @@
     <plurals name="pack_character_count_only"><item quantity="one">شخصية واحدة</item><item quantity="other">%d شخصيات</item></plurals>
     <string name="are_you_sure">هل أنت متأكد؟</string>
     <string name="delete_action">حذف</string>
+
+    <string name="first_run_welcome_title">حوّل المكالمات إلى مواجهات مع الوحوش</string>
+    <string name="first_run_welcome_description">يضيف MonsterDialer لحظة معركة أصلية إلى مكالماتك. تبدأ مواجهتك الأولى فورًا باستخدام الشخصيات المدمجة.</string>
+    <string name="first_run_setup_description">بعد ذلك، سيطلب منك Android تعيين MonsterDialer كتطبيق الهاتف والسماح بإشعارات المكالمات بملء الشاشة. يلزم ذلك لعرض المكالمات الواردة بشكل صحيح.</string>
+    <string name="first_run_continue">إعداد MonsterDialer</string>
+    <string name="first_encounter_prompt_title">هل أنت مستعد لمواجهتك الأولى؟</string>
+    <string name="first_encounter_prompt_description">أجرِ مكالمة أو تلقَّ مكالمة لترى MonsterDialer أثناء العمل. يمكنك تخصيص مدربك ووحشك وجهات اتصالك لاحقًا.</string>
+    <string name="first_encounter_prompt_action">فتح لوحة الاتصال</string>
+    <string name="first_encounter_prompt_later">ربما لاحقًا</string>
+    <string name="app_name" comment="Application name shown by Android and in the About screen." translatable="false">MonsterDialer</string>
+    <string name="font_name" comment="Name of the typeface credited in the About screen." translatable="false">Pixel Operator</string>
+    <string name="font_author" comment="Author of the typeface credited in the About screen." translatable="false">Jayvee Enaguas</string>
+    <string name="url_font" comment="Font credit link opened from the About screen." translatable="false">https://www.dafont.com/pixel-operator.font</string>
+    <string name="icon_designer" comment="Name of the icon designer credited in the About screen." translatable="false">ArcherPanda</string>
+    <string name="url_icon_designer" comment="Icon designer credit link opened from the About screen." translatable="false">https://bsky.app/profile/archerpanda.bsky.social</string>
+    <string name="url_additional_translation_project" comment="URL opened from the additional translation contribution card. Do not translate." translatable="false">https://crowdin.com/project/monsterdialer</string>
+    <string name="url_github_opendialer" comment="URL for the MonsterDialer GitHub repository. Do not translate." translatable="false">https://github.com/oxcened/monster-dialer</string>
+    <string name="github_latest_release_api" comment="GitHub API endpoint used to retrieve the latest MonsterDialer release. Do not translate." translatable="false">https://api.github.com/repos/oxcened/monster-dialer/releases/latest</string>
+    <string name="url_feature_requests" comment="URL opened from the feature-request action. Do not translate." translatable="false">https://monsterdialer.fider.io/</string>
+    <string name="call_command_title">أوامر المكالمة</string>
+    <string name="call_command_hear">مكبر الصوت</string>
+    <string name="call_command_shush">كتم الصوت</string>
+    <string name="call_command_keys">لوحة المفاتيح</string>
+    <string name="call_command_bag">المزيد</string>
+    <string name="call_command_key_speaker">S</string>
+    <string name="call_command_key_mute">M</string>
+    <string name="call_command_key_keys">#</string>
+    <string name="call_command_key_bag">B</string>
+    <string name="call_command_key_run">R</string>
+    <string name="call_command_cursor">▶ %1$s</string>
+    <string name="call_command_section">◀ %1$s</string>
+    <string name="call_command_back">رجوع</string>
+    <string name="call_command_run">تنفيذ</string>
+    <string name="call_command_dialpad_digits">123\n456\n789\n*0#</string>
+    <string name="profile_status_title">الحالة</string>
+    <string name="profile_player_label">اللاعب</string>
+    <string name="profile_name_label">الاسم</string>
+    <string name="profile_trainer_field">المدرب/%1$s</string>
+    <string name="profile_back">رجوع</string>
+    <string name="profile_calls_label">المكالمات</string>
+    <string name="profile_collection_label">المجموعة</string>
+    <string name="profile_roster_title">قائمة الوحوش</string>
+    <string name="roster_empty_slot" comment="Label for an unfilled row in the six-slot monster roster.">---</string>
+    <string name="roster_empty_slot_message" comment="Prompt shown while an empty monster roster slot is selected.">هذه الخانة فارغة.</string>
+    <string name="roster_choose_monster_message" comment="Prompt shown while an occupied monster roster slot is selected.">اختر وحشًا.</string>
+    <string name="roster_switch" comment="GSC-style action to exchange the positions of two monsters in the roster.">تبديل</string>
+    <string name="roster_switch_target_message" comment="Prompt shown after choosing a roster monster to switch.">اختر وحشًا للتبديل معه.</string>
+    <string name="roster_release_title" comment="Title of the confirmation menu before releasing a roster monster.">إطلاق؟</string>
+    <string name="roster_release_no" comment="Negative action in the roster release confirmation menu.">لا</string>
+    <string name="roster_release_yes" comment="Positive action in the roster release confirmation menu.">نعم</string>
+    <string name="profile_toolbox_title">الأدوات</string>
+    <string name="profile_add_roster">+</string>
+    <string name="profile_screen_title">الملف الشخصي</string>
+    <string name="profile_monster_title">الوحش</string>
+    <string name="profile_level_label">م.</string>
+    <string name="profile_monster_field">الوحش/%1$s</string>
+    <string name="profile_level_field">المستوى %1$d</string>
+    <string name="profile_variant_label">النوع</string>
+    <string name="profile_radiants_label">المتوهجات</string>
+    <string name="profile_menu_roster">القائمة</string>
+    <string name="profile_menu_contacts">جهات الاتصال</string>
+    <string name="profile_menu_collection">المجموعة</string>
+    <string name="profile_menu_journal">السجل</string>
+    <string name="profile_menu_online">مشاركة</string>
+    <string name="profile_menu_toolbox">الأدوات</string>
+    <string name="profile_menu_options">الخيارات</string>
+    <string name="profile_menu_exit">خروج</string>
+    <string name="profile_menu_cursor">▶%1$s</string>
+    <string name="profile_roster_description">فريقك.</string>
+    <string name="profile_footer_prompt">ملفك الشخصي!</string>
+    <string name="character_tools_prompt" comment="Retro prompt shown below the character toolbox list. Asking the player to choose the right tool.">اختر الأداة المناسبة.</string>
+    <string name="monster_variant_and_level" translatable="false" comment="Language-neutral formatter for a monster variant and an already-localized level. %1$s is the variant (e.g., Regular) and %2$s is the level (e.g., Lv. 12).">%1$s · %2$s</string>
+    <string name="retro_picker_variant_and_level" translatable="false" comment="Language-neutral formatter for the retro assignment picker. %1$s is the variant and %2$s is the level.">%1$s   %2$s</string>
+    <string name="active_monster_variant_and_level" translatable="false" comment="Language-neutral formatter for details beneath the active monster on the profile card. %1$s is its variant (for example, Regular) and %2$s is its localized level (for example, Lv. 12).">%1$s • %2$s</string>
+    <string name="contact_picker_search" comment="Retro contact-picker command that opens name search.">بحث</string>
+    <string name="contact_picker_search_name_prefix" comment="Prefix before the typed name in the retro contact search field.">الاسم/</string>
+    <string name="contact_picker_search_empty_prompt" comment="Retro contact-picker prompt shown before a name is typed.">أدخل اسمًا.</string>
+    <string name="contact_picker_prompt" comment="Retro contact-picker prompt that explains the next action.">اختر جهة اتصال لتعيينها.</string>
+    <string name="contact_picker_open_action" comment="Retro contact-picker action that opens the selected contact.">فتح</string>
+    <plurals name="contact_picker_found_count" comment="Retro contact-picker search result count.">
+        <item quantity="one">تم العثور على %d جهة اتصال.</item>
+        <item quantity="other">تم العثور على %d جهات اتصال.</item>
+    </plurals>
+    <string name="contact_context_menu_trainer">المدرب</string>
+    <string name="contact_context_menu_monster">الوحش</string>
+    <string name="contact_context_menu_remove">إزالة</string>
+    <string name="contact_picker_options">الخيارات</string>
+    <string name="back">رجوع</string>
+    <string name="contact_defaults_menu_mode">الشخصية الافتراضية</string>
+    <string name="contact_defaults_menu_characters">قائمة الشخصيات</string>
+    <string name="contact_defaults_menu_pool">مجموعة الاختيار العشوائي</string>
+    <string name="contact_picker_default">افتراضي</string>
+    <string name="contact_picker_no_trainer_assigned">لم يتم تعيين مدرب.</string>
+    <string name="contact_picker_no_monster_assigned">لم يتم تعيين وحش.</string>
+    <string name="contact_picker_random_trainer">مدرب عشوائي.</string>
+    <string name="contact_picker_random_monster">وحش عشوائي.</string>
+    <string name="contact_picker_choose_monster">اختر وحشًا.</string>
+    <string name="contact_picker_choose_trainer">اختر مدربًا.</string>
+    <string name="contact_picker_ready">%1$s جاهز!</string>
+    <string name="contact_picker_pool_trainers">اختر المدربين للمجموعة.</string>
+    <string name="contact_picker_pool_monsters">اختر الوحوش للمجموعة.</string>
+    <string name="contact_picker_pool_done">تم</string>
+    <string name="contact_picker_choose">اختيار</string>
+    <string name="contact_picker_next">التالي</string>
+    <string name="contact_picker_pool_included">●</string>
+    <string name="contact_picker_pool_excluded">○</string>
+    <string name="contact_remove_prompt">إزالة من القائمة؟</string>
+    <string name="contact_remove_no">لا</string>
+    <string name="contact_remove_yes">نعم</string>
+    <string name="contact_removed_message">تمت إزالة %1$s.</string>
+    <string name="contact_added_message">تمت إضافة %1$s إلى القائمة!</string>
+    <string name="character_selection_more_options" comment="Accessibility label for the character selector menu containing secondary pool actions.">المزيد من خيارات اختيار الشخصية</string>
+    <string name="radiant_unlock_share_card_link" comment="Link printed on the radiant-unlock share card. Do not translate." translatable="false">monsterdialer.web.app</string>
+    <string name="online_profile_link_on">مشاركة/مفعّل</string>
+    <string name="online_profile_link_off">مشاركة/معطّل</string>
+    <string name="online_profile_sign_in_action">تسجيل الدخول</string>
+    <string name="online_profile_unlink_action">إلغاء الربط</string>
+    <string name="online_profile_linked_message">تمت مشاركة فريقك.</string>
+    <string name="online_profile_not_linked_message">شارك فريقك مع أصدقائك.</string>
+    <string name="contact_details_action" comment="Contact-row action that opens the system contact details.">التفاصيل</string>
+    <string name="customized_contacts_title">جهات الاتصال المخصصة</string>
+    <string name="customized_contacts_empty_title">لا توجد جهات اتصال مخصصة</string>
+    <string name="customized_contacts_empty_description">اختر جهة اتصال لتعيين مدرب ووحش.</string>
+    <string name="contact_assignment_unavailable">افتراضي</string>
+    <string name="customized_contacts_add">جهة اتصال جديدة</string>
+    <string name="customized_contacts_new_action">جديد</string>
+    <string name="customized_contacts_back_action">رجوع</string>
+    <string name="customized_contacts_cancel_action">إلغاء</string>
+    <string name="customized_contacts_prompt">اختر جهة اتصال.</string>
+    <string name="customized_contacts_assign_action">تعيين</string>
+    <string name="retro_key_a" comment="Game Boy-style action key label.">A</string>
+    <string name="retro_key_b" comment="Game Boy-style action key label.">B</string>
+    <string name="retro_action_select">A اختيار</string>
+    <string name="retro_action_back">B رجوع</string>
+    <string name="retro_action_menu">B قائمة</string>
+    <string name="retro_action_select_label">اختيار</string>
+    <string name="retro_action_menu_label">قائمة</string>
+    <string name="retro_action_back_label">رجوع</string>
+    <string name="retro_action_dial_label">اتصال</string>
+    <string name="retro_picker_add" comment="Compact action to add a character in the retro picker.">إضافة</string>
+    <string name="retro_picker_guide" comment="Compact GSC-style menu action to open the guide.">مساعدة</string>
+    <string name="default_pack_version" comment="Default technical version assigned to a newly created character pack. Do not translate." translatable="false">1.0.0</string>
+    <string name="call" comment="Menu action that calls the selected phone number.">اتصال</string>
+    <string name="favorite_phone_type_number" comment="Favorite contact summary. %1$s is the phone type and %2$s is the phone number.">%1$s • %2$s</string>
+    <string name="call_log_just_now" comment="Call-log time shown for calls less than one minute old.">الآن</string>
+    <string name="new_contact_short" comment="Compact command for creating a contact.">جديد</string>
 </resources>
