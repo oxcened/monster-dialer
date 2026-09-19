@@ -11,6 +11,26 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Retro contact and call experience improvements.
 - Character roster and default-character selection improvements.
+- A redesigned retro contact roster, profile navigation, and onboarding activation flow.
+- Activation-funnel analytics for understanding the first-run experience.
+- Refreshed built-in character packs, roster content, radiant collections, and bundled character assets.
+
+### Changed
+
+- Contact assignment, character selection, and character-pack screens were reorganized around the retro roster experience.
+- Retro dialer and in-call controls now use refreshed artwork, pixel avatars, and more game-specific presentation.
+- Default-character controls now separate trainer and monster choices and make inherited, explicit, and random modes clearer.
+- Character picker controls, fast scrolling, avatar fallbacks, and navigation behavior were refined for large rosters.
+- Localized string resources were expanded across the updated contact, character, pack, and call flows.
+- Prerelease version names now produce valid increasing Android version codes for testing releases.
+
+### Fixed
+
+- Preserved explicit contact defaults and random fallback behavior when contacts have no assigned character.
+- Restored character-picker controls, pack creation navigation, and contextual help actions.
+- Refreshed contact artwork correctly when switching to light mode and guarded full-screen intent behavior by Android version.
+- Stabilized contact searching, scrolling, back navigation, system-inset handling, and profile action interactions.
+- Disabled analytics collection in debug builds.
 
 ## [0.6.0] - 2026-09-06
 
