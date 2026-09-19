@@ -46,7 +46,6 @@
     <string name="filter_all">Alle</string>
     <string name="filter_regular">Normal</string>
     <string name="filter_unlocked_radiant">Freigeschaltet strahlend</string>
-    <string name="filter_locked_radiant">Gesperrt strahlend</string>
     <string name="selected" comment="Status label for the currently chosen option.">Ausgewählt</string>
     <string name="randomize" comment="Character selection that chooses a different eligible character for every call.">Zufällig</string>
     <string name="locked">Gesperrt</string>
@@ -332,8 +331,8 @@
     <string name="contact_defaults_description">Wähle Standardeinstellungen und begrenze den Zufallsauswahl-Pool für Kontakte.</string>
     <string name="contact_default_trainer">Standardtrainer</string>
     <string name="contact_default_monster">Standardmonster</string>
-    <string name="contact_choose_trainer" comment="Dropdown option that opens the trainer picker for the contact default.">Trainer auswählen</string>
-    <string name="contact_choose_monster" comment="Dropdown option that opens the monster picker for the contact default.">Monster auswählen</string>
+    <string name="contact_choose_trainer" comment="Option that opens the character picker for the contact default.">Auswählen</string>
+    <string name="contact_choose_monster" comment="Option that opens the character picker for the contact default.">Auswählen</string>
     <string name="contact_default_random">Zufällig</string>
     <string name="contact_random_pool_all">Alle verfügbaren Charaktere</string>
     <string name="contact_random_pool_choose">Zufallsauswahl-Pool auswählen</string>
@@ -360,4 +359,17 @@
     <string name="contact_random_pool_empty_exit_message">Dein Zufallsauswahl-Pool ist leer, daher wurden diese Änderungen nicht gespeichert. Wähle mindestens einen Charakter aus, um den Pool zu speichern, oder verwirf die nicht gespeicherten Änderungen, um die Ansicht zu verlassen.</string>
     <string name="contact_random_pool_continue_editing">Weiter bearbeiten</string>
     <string name="contact_random_pool_discard_changes">Änderungen verwerfen</string>
+    <string name="import_action">Importieren</string>
+    <string name="radiant_collection_title">Strahlende Sammlung</string>
+    <string name="radiant_collection_description">Alle Monster und ihre strahlenden Varianten anzeigen, einschließlich unentdeckter Varianten.</string>
+    <string name="collection_sprite">%1$s-Sprite</string>
+    <string name="radiant_collection_sprite">Strahlendes %1$s-Sprite</string>
+    <string name="radiant_collection_found">Gefunden</string>
+    <string name="radiant_collection_locked">Gesperrt</string>
+    <string name="radiant_collection_regular">Regulär</string>
+    <string name="radiant_collection_browse_packs">Packs</string>
+    <string name="pack_details_action">Details</string>
+    <plurals name="pack_character_count_only"><item quantity="one">%d Charakter</item><item quantity="other">%d Charaktere</item></plurals>
+    <string name="are_you_sure">Bist du sicher?</string>
+    <string name="delete_action">Löschen</string>
 </resources>

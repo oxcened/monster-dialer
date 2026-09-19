@@ -46,7 +46,6 @@
     <string name="filter_all">Alle</string>
     <string name="filter_regular">Normal</string>
     <string name="filter_unlocked_radiant">Ulåst strålende</string>
-    <string name="filter_locked_radiant">Låst strålende</string>
     <string name="selected" comment="Status label for the currently chosen option.">Valgt</string>
     <string name="randomize" comment="Character selection that chooses a different eligible character for every call.">Tilfældig</string>
     <string name="locked">Låst</string>
@@ -327,8 +326,8 @@
     <string name="contact_defaults_description">Vælg standardindstillinger, og begræns puljen til tilfældigt valg af kontakter.</string>
     <string name="contact_default_trainer">Standardtræner</string>
     <string name="contact_default_monster">Standardmonster</string>
-    <string name="contact_choose_trainer" comment="Dropdown option that opens the trainer picker for the contact default.">Vælg træner</string>
-    <string name="contact_choose_monster" comment="Dropdown option that opens the monster picker for the contact default.">Vælg monster</string>
+    <string name="contact_choose_trainer" comment="Option that opens the character picker for the contact default.">Vælg</string>
+    <string name="contact_choose_monster" comment="Option that opens the character picker for the contact default.">Vælg</string>
     <string name="contact_default_random">Tilfældig</string>
     <string name="contact_random_pool_all">Alle tilgængelige figurer</string>
     <string name="contact_random_pool_choose">Vælg pulje til tilfældigt valg</string>
@@ -355,4 +354,17 @@
     <string name="contact_random_pool_empty_exit_message">Din pulje til tilfældigt valg er tom, så ændringerne er ikke blevet gemt. Vælg mindst én figur for at gemme puljen, eller kassér de ikke-gemte ændringer for at forlade siden.</string>
     <string name="contact_random_pool_continue_editing">Fortsæt redigering</string>
     <string name="contact_random_pool_discard_changes">Kassér ændringer</string>
+    <string name="import_action">Importér</string>
+    <string name="radiant_collection_title">Strålende samling</string>
+    <string name="radiant_collection_description">Se alle monstre og deres strålende varianter, inklusive dem du ikke har opdaget.</string>
+    <string name="collection_sprite">%1$s-billede</string>
+    <string name="radiant_collection_sprite">%1$s strålende billede</string>
+    <string name="radiant_collection_found">Fundet</string>
+    <string name="radiant_collection_locked">Låst</string>
+    <string name="radiant_collection_regular">Normal</string>
+    <string name="radiant_collection_browse_packs">Pakker</string>
+    <string name="pack_details_action">Detaljer</string>
+    <plurals name="pack_character_count_only"><item quantity="one">%d figur</item><item quantity="other">%d figurer</item></plurals>
+    <string name="are_you_sure">Er du sikker?</string>
+    <string name="delete_action">Slet</string>
 </resources>

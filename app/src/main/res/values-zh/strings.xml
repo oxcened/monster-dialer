@@ -46,7 +46,6 @@
     <string name="filter_all">全部</string>
     <string name="filter_regular">普通</string>
     <string name="filter_unlocked_radiant">已解锁闪耀</string>
-    <string name="filter_locked_radiant">已锁定闪耀</string>
     <string name="selected" comment="Status label for the currently chosen option.">已选择</string>
     <string name="randomize" comment="Character selection that chooses a different eligible character for every call.">随机</string>
     <string name="locked">已锁定</string>
@@ -321,8 +320,8 @@
     <string name="contact_defaults_description">选择默认设置并限制联系人的随机选择池。</string>
     <string name="contact_default_trainer">默认训练师</string>
     <string name="contact_default_monster">默认怪物</string>
-    <string name="contact_choose_trainer" comment="Dropdown option that opens the trainer picker for the contact default.">选择训练师</string>
-    <string name="contact_choose_monster" comment="Dropdown option that opens the monster picker for the contact default.">选择怪物</string>
+    <string name="contact_choose_trainer" comment="Option that opens the character picker for the contact default.">选择</string>
+    <string name="contact_choose_monster" comment="Option that opens the character picker for the contact default.">选择</string>
     <string name="contact_default_random">随机</string>
     <string name="contact_random_pool_all">所有可用角色</string>
     <string name="contact_random_pool_choose">选择随机选择池</string>
@@ -349,4 +348,17 @@
     <string name="contact_random_pool_empty_exit_message">随机选择池为空，因此这些更改尚未保存。请选择至少一个角色以保存选择池，或放弃未保存的更改后退出。</string>
     <string name="contact_random_pool_continue_editing">继续编辑</string>
     <string name="contact_random_pool_discard_changes">放弃更改</string>
+    <string name="import_action">导入</string>
+    <string name="radiant_collection_title">闪耀收藏</string>
+    <string name="radiant_collection_description">查看所有怪物及其闪耀变体，包括尚未发现的变体。</string>
+    <string name="collection_sprite">%1$s 精灵图</string>
+    <string name="radiant_collection_sprite">%1$s 闪耀精灵图</string>
+    <string name="radiant_collection_found">已发现</string>
+    <string name="radiant_collection_locked">已锁定</string>
+    <string name="radiant_collection_regular">普通</string>
+    <string name="radiant_collection_browse_packs">角色包</string>
+    <string name="pack_details_action">详情</string>
+    <plurals name="pack_character_count_only"><item quantity="one">%d 个角色</item><item quantity="other">%d 个角色</item></plurals>
+    <string name="are_you_sure">确定要继续吗？</string>
+    <string name="delete_action">删除</string>
 </resources>

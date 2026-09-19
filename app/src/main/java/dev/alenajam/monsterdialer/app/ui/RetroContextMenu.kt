@@ -27,15 +27,27 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
+import androidx.compose.ui.window.DialogWindowProvider
+import androidx.compose.ui.platform.LocalView
+import androidx.compose.runtime.SideEffect
 import androidx.compose.ui.unit.sp
+
 internal data class RetroContextMenuItem(
     val label: String,
-    /** Null uses the menu's default cursor position; true/false explicitly overrides it. */
+    /** Null uses the menu's default cursor position; true selects this item; false hides its cursor. */
     val showCursor: Boolean? = null,
     /** Adds a blank GSC-style separator before this item. */
     val dividerBefore: Boolean = false,
     val onClick: () -> Unit,
-)
+) {
+    companion object {
+        fun cancel(label: String, onClick: () -> Unit) = RetroContextMenuItem(
+            label = label,
+            showCursor = false,
+            onClick = onClick,
+        )
+    }
+}
 
 @Composable
 internal fun RetroContextMenu(
@@ -47,7 +59,11 @@ internal fun RetroContextMenu(
 ) {
     BackHandler(onBack = onDismissRequest)
     var selectedIndex by remember(items) {
-        mutableIntStateOf(items.indexOfFirst { it.showCursor == true }.takeIf { it >= 0 } ?: 0)
+        mutableIntStateOf(
+            items.indexOfFirst { it.showCursor == true }
+                .takeIf { it >= 0 }
+                ?: items.indexOfFirst { it.showCursor != false },
+        )
     }
     RetroDoubleBorderBox(modifier = modifier) {
         Column(
@@ -73,12 +89,57 @@ internal fun RetroContextMenu(
                     showCursor = index == selectedIndex,
                     fontFamily = fontFamily,
                     onClick = {
-                        selectedIndex = index
+                        if (item.showCursor != false) selectedIndex = index
                         item.onClick()
                     },
                 )
             }
         }
+    }
+}
+
+/** Full-screen GSC context-menu surface with consistent outside-tap dismissal. */
+@Composable
+internal fun RetroContextMenuOverlay(
+    items: List<RetroContextMenuItem>,
+    fontFamily: FontFamily,
+    onDismissRequest: () -> Unit,
+    modifier: Modifier = Modifier.fillMaxWidth(0.82f),
+    title: String? = null,
+) {
+    Box(
+        modifier = Modifier.fillMaxSize().clickable(onClick = onDismissRequest),
+        contentAlignment = Alignment.Center,
+    ) {
+        RetroContextMenu(
+            items = items,
+            fontFamily = fontFamily,
+            onDismissRequest = onDismissRequest,
+            modifier = modifier,
+            title = title,
+        )
+    }
+}
+
+/** Dialog-hosted GSC context-menu surface for menus opened from compact controls. */
+@Composable
+internal fun RetroContextMenuDialog(
+    items: List<RetroContextMenuItem>,
+    fontFamily: FontFamily,
+    onDismissRequest: () -> Unit,
+    modifier: Modifier = Modifier.fillMaxWidth(0.82f),
+    title: String? = null,
+) {
+    Dialog(onDismissRequest = onDismissRequest) {
+        val window = (LocalView.current.parent as? DialogWindowProvider)?.window
+        SideEffect { window?.setDimAmount(0f) }
+        RetroContextMenu(
+            items = items,
+            fontFamily = fontFamily,
+            onDismissRequest = onDismissRequest,
+            modifier = modifier,
+            title = title,
+        )
     }
 }
 

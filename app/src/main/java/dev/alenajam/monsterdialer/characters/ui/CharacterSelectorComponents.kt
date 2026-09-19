@@ -37,7 +37,6 @@ import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.FilledIconButton
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.OutlinedIconButton
 import androidx.compose.material3.SegmentedButton
 import androidx.compose.material3.SegmentedButtonDefaults
@@ -71,9 +70,12 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import dev.alenajam.monsterdialer.R
 import dev.alenajam.monsterdialer.app.ui.LocalMonsterAppIcons
+import dev.alenajam.monsterdialer.app.ui.RetroSelectionArrow
+import dev.alenajam.monsterdialer.app.ui.RetroSelectionArrowSize
 import dev.alenajam.opendialer.core.common.ui.AppIcon
 import dev.alenajam.opendialer.core.common.ui.LocalAppIcons
 import dev.alenajam.monsterdialer.characters.data.BuiltInArtwork
@@ -130,6 +132,7 @@ internal fun LazyListScope.characterTypeItems(
     onSelected: ((CharacterReference) -> Unit)? = null,
     hideSelected: Boolean = false,
     filter: MonsterFilter = MonsterFilter.All,
+    hideLockedVariants: Boolean = false,
 ) {
     val type = if (defaultCharacter == BuiltInCharacters.trainer) CharacterType.Trainer else CharacterType.Monster
     val selectionState = characterSelectionState(
@@ -146,6 +149,7 @@ internal fun LazyListScope.characterTypeItems(
     fun CharacterSelection.matchesFilter(): Boolean {
         if (type != CharacterType.Monster) return true
         val reference = CharacterReference(installed.packId, installed.character.id, variant.id)
+        if (hideLockedVariants && variant.isRadiant && reference !in unlockedVariants) return false
         return when (filter) {
             MonsterFilter.All -> true
             MonsterFilter.Regular -> !variant.isRadiant
@@ -160,6 +164,7 @@ internal fun LazyListScope.characterTypeItems(
     }
     val effectiveRandomize = onRandomize?.takeIf { showRandomize }
     val hasNoCharacterOptions = effectiveRandomize == null && hideSelected && selectionState.isDefaultSelected && !hasSelectableCharacter
+    val poolMode = onSelected != null
 
     if (effectiveRandomize != null) {
         item(key = "random") {
@@ -193,6 +198,8 @@ internal fun LazyListScope.characterTypeItems(
                 name = defaultCharacter.name,
                 type = type,
                 isSelected = selectionState.isDefaultSelected,
+                poolMode = poolMode,
+                poolIncluded = defaultReference != null && defaultReference in selectedReferences,
                 roundTop = true,
                 roundBottom = true,
                 artwork = {
@@ -228,6 +235,8 @@ internal fun LazyListScope.characterTypeItems(
                     level = installed.character.level,
                     isRadiant = selection.variant.isRadiant,
                     isSelected = isReferenceSelected(reference),
+                    poolMode = poolMode,
+                    poolIncluded = reference in selectedReferences,
                     isUnlocked = isUnlocked,
                     roundTop = index == 0,
                     roundBottom = index == selections.lastIndex,
@@ -266,6 +275,8 @@ internal fun LazyListScope.characterTypeItems(
                     level = installed.character.level,
                     isRadiant = selection.variant.isRadiant,
                     isSelected = isReferenceSelected(reference),
+                    poolMode = poolMode,
+                    poolIncluded = reference in selectedReferences,
                     isUnlocked = isUnlocked,
                     roundTop = index == 0,
                     roundBottom = index == selections.lastIndex,
@@ -914,6 +925,8 @@ private fun CharacterOptionCard(
     level: Int? = null,
     isRadiant: Boolean = false,
     isSelected: Boolean,
+    poolMode: Boolean = false,
+    poolIncluded: Boolean = false,
     isUnlocked: Boolean = true,
     showTypeSubtitle: Boolean = true,
     roundTop: Boolean,
@@ -932,9 +945,6 @@ private fun CharacterOptionCard(
         Box(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(vertical = 1.dp)
-                .border(2.dp, if (isSelected) RetroInk else RetroInk.copy(alpha = 0.45f), RectangleShape)
-                .background(if (isSelected) RetroLavender else RetroPaper, RectangleShape)
                 .then(modifier),
         ) {
             Row(
@@ -949,54 +959,69 @@ private fun CharacterOptionCard(
                         },
                         onLongClick = if (!isSelected && (onDelete != null || onEdit != null || onShare != null)) { { showMenu = true } } else null
                     )
-                    .padding(12.dp),
+                    .fillMaxWidth()
+                    .padding(horizontal = 2.dp, vertical = 4.dp),
                 verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.spacedBy(12.dp)
+                horizontalArrangement = Arrangement.spacedBy(0.dp),
             ) {
+                if (poolMode) {
+                    Text(
+                        text = stringResource(
+                            if (poolIncluded) {
+                                R.string.contact_picker_pool_included
+                            } else {
+                                R.string.contact_picker_pool_excluded
+                            },
+                        ),
+                        fontFamily = RetroPickerFont,
+                        fontSize = 16.sp,
+                        color = RetroInk,
+                        modifier = Modifier.size(RetroSelectionArrowSize),
+                    )
+                } else if (isSelected) {
+                    RetroSelectionArrow(tint = RetroInk)
+                } else {
+                    Spacer(modifier = Modifier.size(RetroSelectionArrowSize))
+                }
                 Box(
-                    modifier = Modifier.size(60.dp),
+                    modifier = Modifier.size(48.dp),
                     contentAlignment = Alignment.Center,
                 ) {
                     artwork()
                 }
-                Column(modifier = Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(2.dp)) {
-                    Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(6.dp)) {
-                        Text(name, style = MaterialTheme.typography.titleMedium)
-                    }
-
+                Column(
+                    modifier = Modifier.padding(start = 4.dp),
+                    verticalArrangement = Arrangement.spacedBy(1.dp),
+                ) {
+                    Text(
+                        text = name.uppercase(),
+                        fontFamily = RetroPickerFont,
+                        fontSize = 16.sp,
+                        color = RetroInk,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis,
+                    )
                     if (showTypeSubtitle && type == CharacterType.Monster) {
                         val variant = stringResource(if (isRadiant) R.string.radiant else R.string.regular)
-                        val levelText = stringResource(R.string.roster_monster_level, level ?: dev.alenajam.monsterdialer.characters.data.DefaultMonsterLevel)
-                        Row(
-                            verticalAlignment = Alignment.CenterVertically,
-                            horizontalArrangement = Arrangement.spacedBy(4.dp)
-                        ) {
-                            Text(
-                                text = stringResource(R.string.monster_variant_and_level, variant, levelText),
-                                style = MaterialTheme.typography.bodySmall,
-                                color = if (isRadiant) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurfaceVariant
-                            )
+                        val levelText = stringResource(
+                            R.string.roster_monster_level,
+                            level ?: dev.alenajam.monsterdialer.characters.data.DefaultMonsterLevel,
+                        )
+                        Row(verticalAlignment = Alignment.CenterVertically) {
                             if (isRadiant) {
                                 AppIcon(
                                     icon = LocalMonsterAppIcons.current.radiant,
                                     contentDescription = null,
                                     modifier = Modifier.size(14.dp),
-                                    tint = MaterialTheme.colorScheme.primary
                                 )
                             }
+                            Text(
+                                text = stringResource(R.string.retro_picker_variant_and_level, variant, levelText),
+                                fontFamily = RetroPickerFont,
+                                fontSize = 13.sp,
+                                color = RetroInk.copy(alpha = 0.75f),
+                            )
                         }
-                    }
-                }
-                if (isSelected) {
-                    Text(
-                        stringResource(R.string.selected),
-                        style = MaterialTheme.typography.labelLarge,
-                        color = MaterialTheme.colorScheme.primary,
-                        modifier = Modifier.padding(horizontal = 16.dp)
-                    )
-                } else {
-                    OutlinedButton(onClick = onSelect, enabled = isUnlocked) {
-                        Text(stringResource(if (isUnlocked) R.string.select else R.string.locked))
                     }
                 }
             }

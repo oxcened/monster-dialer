@@ -38,8 +38,9 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.compose.LifecycleEventEffect
 import dev.alenajam.monsterdialer.R
-import dev.alenajam.monsterdialer.app.ui.RetroContextMenu
 import dev.alenajam.monsterdialer.app.ui.RetroContextMenuItem
+import dev.alenajam.monsterdialer.app.ui.RetroContextMenuOverlay
+import dev.alenajam.monsterdialer.app.ui.RetroConfirmationDialog
 import dev.alenajam.monsterdialer.app.ui.RetroSearchButton
 import dev.alenajam.monsterdialer.app.ui.RetroScreenBottomContentPadding
 import dev.alenajam.monsterdialer.app.ui.RetroScreenHorizontalPadding
@@ -105,6 +106,9 @@ fun RetroCallsScreen(
     var selectedFavorite by remember { mutableStateOf<DialerContact?>(null) }
     var callMenuOpen by remember { mutableStateOf(false) }
     var favoriteMenuOpen by remember { mutableStateOf(false) }
+    val selectedCallId = selectedCall?.id
+        ?.takeIf { selectedId -> calls.any { it.id == selectedId } }
+        ?: defaultCallId
 
     androidx.compose.runtime.LaunchedEffect(calls, assignmentVersion, journalEntries, favorites) {
         monsterCallLogViewModel.refresh(calls, favorites.map { it.number }.toSet())
@@ -142,7 +146,7 @@ fun RetroCallsScreen(
                         RetroCallLogGroup(
                             calls = callsForDate,
                             monsterArtworkByCallId = monsterArtworkByCallId,
-                            selectedCallId = selectedCall?.id ?: defaultCallId,
+                            selectedCallId = selectedCallId,
                             onOpenHistory = onOpenHistory,
                             onOpenContextMenu = {
                                 selectedCall = it
@@ -168,11 +172,7 @@ fun RetroCallsScreen(
         }
 
         if (filterDialogOpen) {
-            Box(
-                modifier = Modifier.fillMaxSize().clickable { filterDialogOpen = false },
-                contentAlignment = Alignment.Center,
-            ) {
-                RetroContextMenu(
+            RetroContextMenuOverlay(
                     modifier = Modifier.fillMaxWidth(0.68f),
                     fontFamily = CallLogPixelFont,
                     onDismissRequest = { filterDialogOpen = false },
@@ -189,8 +189,7 @@ fun RetroCallsScreen(
                     ) {
                         filterDialogOpen = false
                     },
-                )
-            }
+            )
         }
         if (callMenuOpen) selectedCall?.let { call ->
             RetroCallActionMenu(
@@ -309,9 +308,9 @@ private fun RetroFavoriteRow(
     ) {
         if (selected) {
             RetroSelectionArrow(tint = CallLogInk, size = 14.dp)
-            Spacer(Modifier.size(6.dp))
+            Spacer(Modifier.size(2.dp))
         } else {
-            Spacer(Modifier.size(20.dp))
+            Spacer(Modifier.size(16.dp))
         }
         if (monsterArtwork != null) {
             MonsterCallLogAvatar(monsterArtwork)
@@ -343,21 +342,16 @@ private fun RetroFavoriteActionMenu(
     onCall: () -> Unit,
     onRemove: () -> Unit,
 ) {
-    Box(
-        modifier = Modifier.fillMaxSize().clickable { onDismiss() },
-        contentAlignment = Alignment.Center,
-    ) {
-        RetroContextMenu(
+    RetroContextMenuOverlay(
             modifier = Modifier.fillMaxWidth(0.68f),
             fontFamily = CallLogPixelFont,
             onDismissRequest = onDismiss,
             items = listOf(
                 RetroContextMenuItem(stringResource(CallsR.string.call), onClick = onCall),
                 RetroContextMenuItem(stringResource(CallsR.string.remove), onClick = onRemove),
-                RetroContextMenuItem(stringResource(CallsR.string.cancel), onClick = onDismiss),
+                RetroContextMenuItem.cancel(stringResource(CallsR.string.cancel), onDismiss),
             ),
-        )
-    }
+    )
 }
 
 @Composable
@@ -418,9 +412,9 @@ private fun RetroCallLogRow(
     ) {
         if (selected) {
             RetroSelectionArrow(tint = CallLogInk, size = 14.dp)
-            Spacer(Modifier.size(6.dp))
+            Spacer(Modifier.size(2.dp))
         } else {
-            Spacer(Modifier.size(20.dp))
+            Spacer(Modifier.size(16.dp))
         }
         if (monsterArtwork != null) {
             MonsterCallLogAvatar(monsterArtwork)
@@ -457,21 +451,17 @@ private fun RetroCallActionMenu(
     val number = call.contactInfo.number
 
     if (deleteConfirmationOpen) {
-        androidx.compose.material3.AlertDialog(
+        RetroConfirmationDialog(
+            title = stringResource(CallsR.string.delete_call_title),
+            message = stringResource(CallsR.string.delete_call_message),
+            noLabel = stringResource(CallsR.string.cancel),
+            yesLabel = stringResource(CallsR.string.delete),
+            fontFamily = CallLogPixelFont,
             onDismissRequest = { deleteConfirmationOpen = false },
-            title = { androidx.compose.material3.Text(stringResource(CallsR.string.delete_call_title)) },
-            text = { androidx.compose.material3.Text(stringResource(CallsR.string.delete_call_message)) },
-            confirmButton = {
-                androidx.compose.material3.TextButton(onClick = {
-                    deleteConfirmationOpen = false
-                    onDismiss()
-                    viewModel.deleteCall(call)
-                }) { androidx.compose.material3.Text(stringResource(CallsR.string.delete)) }
-            },
-            dismissButton = {
-                androidx.compose.material3.TextButton(onClick = { deleteConfirmationOpen = false }) {
-                    androidx.compose.material3.Text(stringResource(CallsR.string.cancel))
-                }
+            onConfirm = {
+                deleteConfirmationOpen = false
+                onDismiss()
+                viewModel.deleteCall(call)
             },
         )
     } else {
@@ -484,43 +474,13 @@ private fun RetroCallActionMenu(
             }
             add(RetroContextMenuItem(label = stringResource(CallsR.string.history), onClick = { onOpenHistory() }))
             add(RetroContextMenuItem(label = stringResource(CallsR.string.delete), onClick = { deleteConfirmationOpen = true }))
-            add(RetroContextMenuItem(label = stringResource(CallsR.string.cancel), onClick = { onDismiss() }))
+            add(RetroContextMenuItem.cancel(stringResource(CallsR.string.cancel), onDismiss))
         }
-        Box(
-            modifier = Modifier.fillMaxSize().clickable { onDismiss() },
-            contentAlignment = Alignment.Center,
-        ) {
-            RetroContextMenu(
+        RetroContextMenuOverlay(
                 modifier = Modifier.fillMaxWidth(0.82f),
                 fontFamily = CallLogPixelFont,
                 onDismissRequest = onDismiss,
                 items = menuItems,
-            )
-        }
-    }
-}
-
-@Composable
-private fun RetroMenuItem(
-    label: String,
-    selected: Boolean,
-    maxLines: Int = Int.MAX_VALUE,
-    onClick: () -> Unit,
-) {
-    Row(
-        modifier = Modifier.fillMaxWidth().clickable(onClick = onClick),
-        verticalAlignment = Alignment.CenterVertically,
-    ) {
-        if (selected) {
-            RetroSelectionArrow(tint = CallLogInk, size = 14.dp)
-        } else {
-            Spacer(Modifier.size(RetroSelectionArrowSize))
-        }
-        RetroCallText(
-            label,
-            16.sp,
-            modifier = Modifier.weight(1f).padding(start = 4.dp),
-            maxLines = maxLines,
         )
     }
 }

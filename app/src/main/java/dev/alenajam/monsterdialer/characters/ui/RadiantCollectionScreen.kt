@@ -37,8 +37,8 @@ import dev.alenajam.monsterdialer.R
 import dev.alenajam.monsterdialer.app.ui.LocalMonsterAppIcons
 import dev.alenajam.monsterdialer.app.ui.RetroFooter
 import dev.alenajam.monsterdialer.app.ui.RetroFastScroller
-import dev.alenajam.monsterdialer.app.ui.RetroContextMenu
 import dev.alenajam.monsterdialer.app.ui.RetroContextMenuItem
+import dev.alenajam.monsterdialer.app.ui.RetroContextMenuOverlay
 import dev.alenajam.monsterdialer.app.ui.RetroSearchButton
 import dev.alenajam.monsterdialer.characters.data.BuiltInCharacters
 import dev.alenajam.monsterdialer.characters.data.CharactersRepository
@@ -152,7 +152,8 @@ fun RadiantCollectionScreen(viewModel: RadiantCollectionViewModel = hiltViewMode
         ),
     )
 
-    Column(modifier = Modifier.fillMaxSize()) {
+    Box(modifier = Modifier.fillMaxSize()) {
+        Column(modifier = Modifier.fillMaxSize()) {
         RetroSearchButton(
             label = stringResource(R.string.radiant_collection_browse_packs),
             onClick = { navigator?.navigateTo(1) },
@@ -195,7 +196,7 @@ fun RadiantCollectionScreen(viewModel: RadiantCollectionViewModel = hiltViewMode
             backLabel = stringResource(R.string.retro_action_back_label),
             onBack = { navigator?.navigateBack() },
         )
-    }
+        }
 
     pendingDeletion?.let { entry ->
         CustomCharacterDeletionConfirmationDialog(
@@ -219,11 +220,7 @@ fun RadiantCollectionScreen(viewModel: RadiantCollectionViewModel = hiltViewMode
     }
 
     selectedEntry?.let { entry ->
-        Box(
-            modifier = Modifier.fillMaxSize().then(Modifier),
-            contentAlignment = Alignment.Center,
-        ) {
-            RetroContextMenu(
+        RetroContextMenuOverlay(
                 modifier = Modifier.fillMaxWidth(0.82f),
                 fontFamily = RetroPickerFont,
                 onDismissRequest = { selectedEntry = null },
@@ -243,11 +240,11 @@ fun RadiantCollectionScreen(viewModel: RadiantCollectionViewModel = hiltViewMode
                         selectedEntry = null
                         pendingShare = entry
                     },
-                    RetroContextMenuItem(stringResource(R.string.cancel)) { selectedEntry = null },
+                    RetroContextMenuItem.cancel(stringResource(R.string.cancel), onClick = { selectedEntry = null }),
                 ),
-            )
-        }
+        )
     }
+}
 }
 
 private data class CollectionSection(

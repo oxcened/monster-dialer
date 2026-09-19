@@ -57,8 +57,8 @@ import dev.alenajam.monsterdialer.calls.ui.MonsterCallLogViewModel
 import dev.alenajam.monsterdialer.characters.ui.ContactCharacterSettingsEntryPoint
 import dev.alenajam.monsterdialer.characters.ui.ContactCharacterSettingsViewModel
 import dev.alenajam.monsterdialer.characters.ui.CharacterSettingsPage
-import dev.alenajam.monsterdialer.app.ui.RetroContextMenu
 import dev.alenajam.monsterdialer.app.ui.RetroContextMenuItem
+import dev.alenajam.monsterdialer.app.ui.RetroContextMenuOverlay
 import dev.alenajam.monsterdialer.app.ui.RetroFastScroller
 import dev.alenajam.monsterdialer.app.ui.RetroSelectionArrow
 import dev.alenajam.opendialer.core.common.CommonUtils
@@ -196,11 +196,7 @@ fun RetroContactsScreen(
                 modifier = Modifier.align(Alignment.CenterEnd).padding(vertical = 8.dp),
             )
             selectedContact?.let { contact ->
-                Box(
-                    modifier = Modifier.fillMaxSize().clickable { selectedContact = null },
-                    contentAlignment = Alignment.Center,
-                ) {
-                    RetroContextMenu(
+                RetroContextMenuOverlay(
                         modifier = Modifier.fillMaxWidth(0.82f),
                         fontFamily = RetroContactsFont,
                         onDismissRequest = { selectedContact = null },
@@ -238,10 +234,9 @@ fun RetroContactsScreen(
                                     onOpenSettingsSubpage(CharacterSettingsPage.LinkedOnlineProfile.index, null)
                                 }
                             },
-                            RetroContextMenuItem(stringResource(R.string.cancel)) { selectedContact = null },
+                            RetroContextMenuItem.cancel(stringResource(R.string.cancel), onClick = { selectedContact = null }),
                         ),
-                    )
-                }
+                )
             }
         }
     }
@@ -284,9 +279,9 @@ private fun RetroContactRow(
     ) {
         if (selected) {
             RetroSelectionArrow(tint = RetroContactsInk, size = 14.dp)
-            androidx.compose.foundation.layout.Spacer(Modifier.size(6.dp))
+            androidx.compose.foundation.layout.Spacer(Modifier.size(2.dp))
         } else {
-            androidx.compose.foundation.layout.Spacer(Modifier.size(20.dp))
+            androidx.compose.foundation.layout.Spacer(Modifier.size(16.dp))
         }
         if (artwork != null) {
             MonsterCallLogAvatar(artwork)

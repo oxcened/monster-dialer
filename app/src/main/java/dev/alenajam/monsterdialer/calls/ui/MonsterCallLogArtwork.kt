@@ -19,10 +19,6 @@ data class MonsterCallLogArtwork(
     val builtInResource: Int? = null,
 ) {
     companion object {
-        fun plumguard() = MonsterCallLogArtwork(
-            builtInResource = BuiltInCharacters.monster.character.contactArtwork.resource,
-        )
-
         fun anonymous() = MonsterCallLogArtwork(
             builtInResource = BuiltInCharacters.anonymousMonster.enemyArtwork.resource,
         )

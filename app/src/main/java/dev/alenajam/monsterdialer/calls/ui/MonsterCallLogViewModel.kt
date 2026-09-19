@@ -42,16 +42,15 @@ class MonsterCallLogViewModel @Inject constructor(
         _artworkByContactId.value = withContext(Dispatchers.IO) {
             buildMap {
                 for (contact in contacts) {
-                var artwork: MonsterCallLogArtwork? = null
-                for (number in contactsRepository.getContactNumbers(contact.id)) {
-                    val reference = assignments
-                        .getContactCharacterSelection(number, CharacterType.Monster)
-                        .character
-                    artwork = reference?.let(::artworkFor)
-                    if (artwork != null) break
-                }
-                val resolvedArtwork = artwork ?: MonsterCallLogArtwork.plumguard()
-                    put(contact.id, resolvedArtwork)
+                    var artwork: MonsterCallLogArtwork? = null
+                    for (number in contactsRepository.getContactNumbers(contact.id)) {
+                        val reference = assignments
+                            .getContactCharacterSelection(number, CharacterType.Monster)
+                            .character
+                        artwork = reference?.let(::artworkFor)
+                        if (artwork != null) break
+                    }
+                    artwork?.let { put(contact.id, it) }
                 }
             }
         }
@@ -63,40 +62,33 @@ class MonsterCallLogViewModel @Inject constructor(
             calls.mapNotNull { call ->
                 val number = call.contactInfo.number?.takeIf(String::isNotBlank)
                 val journalArtwork = journalArtworkFor(call, number, journalIndex)
-                val fallbackArtwork = if (call.isAnonymous()) {
+                val resolvedArtwork = if (call.isAnonymous()) {
                     MonsterCallLogArtwork.anonymous()
                 } else {
                     number?.let {
-                    val reference = assignments
-                        .getContactCharacterSelection(it, CharacterType.Monster)
-                        .character
-                    reference?.let(::artworkFor)
-                    } ?: MonsterCallLogArtwork.plumguard()
+                        val reference = assignments
+                            .getContactCharacterSelection(it, CharacterType.Monster)
+                            .character
+                        reference?.let(::artworkFor)
+                    }
                 }
-                call.id to if (call.isAnonymous()) {
-                    MonsterCallLogArtwork.anonymous()
+                val artworkForCall = if (call.isAnonymous()) {
+                    resolvedArtwork
                 } else {
-                    journalArtwork ?: fallbackArtwork
+                    journalArtwork ?: resolvedArtwork
                 }
+                artworkForCall?.let { call.id to it }
             }.toMap()
         }
         _artworkByCallId.value = artwork
 
         _artworkByContactNumber.value = withContext(Dispatchers.IO) {
             favoriteNumbers.mapNotNull { number ->
-                val normalizedNumber = PhoneNumberUtils.normalizeNumber(number)
-                val latestCall = calls
-                    .filter { PhoneNumberUtils.normalizeNumber(it.contactInfo.number.orEmpty()) == normalizedNumber }
-                    .maxByOrNull(DialerCall::date)
-                val callArtwork = latestCall?.let { artwork[it.id] }
                 val assignedArtwork = assignments
                     .getContactCharacterSelection(number, CharacterType.Monster)
                     .character
                     ?.let(::artworkFor)
-                val resolvedArtwork = callArtwork
-                    ?: assignedArtwork
-                    ?: MonsterCallLogArtwork.plumguard()
-                number to resolvedArtwork
+                assignedArtwork?.let { number to it }
             }.toMap()
         }
     }

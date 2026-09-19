@@ -10,20 +10,14 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.rememberLazyListState
-import androidx.compose.material3.AlertDialog
-import androidx.compose.material3.DropdownMenu
-import androidx.compose.material3.DropdownMenuItem
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
+import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -33,6 +27,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.draw.clipToBounds
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.input.nestedscroll.NestedScrollConnection
@@ -42,16 +37,16 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import dev.alenajam.monsterdialer.R
-import dev.alenajam.monsterdialer.app.ui.LocalMonsterAppIcons
 import dev.alenajam.monsterdialer.app.ui.RetroFastScroller
+import dev.alenajam.monsterdialer.app.ui.RetroContextMenuItem
+import dev.alenajam.monsterdialer.app.ui.RetroContextMenuOverlay
+import dev.alenajam.monsterdialer.app.ui.RetroSearchButton
 import dev.alenajam.monsterdialer.characters.data.BuiltInCharacters
 import dev.alenajam.monsterdialer.characters.data.ContactCharacterDefaults
 import dev.alenajam.monsterdialer.packs.data.CharacterAssignmentTarget
 import dev.alenajam.monsterdialer.packs.data.CharacterReference
 import dev.alenajam.monsterdialer.packs.data.CharacterType
 import dev.alenajam.monsterdialer.packs.data.InstalledPackCharacter
-import dev.alenajam.opendialer.core.common.ui.AppIcon
-import dev.alenajam.opendialer.core.common.ui.LocalAppIcons
 
 /** Edits the global contact-character defaults and randomizer pools. */
 @Composable
@@ -69,7 +64,8 @@ internal fun ContactCharacterDefaultsSection(
     var selectedType by remember { mutableStateOf(CharacterType.Trainer) }
     val draftPools = remember { mutableStateMapOf<CharacterType, Set<CharacterReference>>() }
     var resetPools by remember { mutableStateOf(emptySet<CharacterType>()) }
-    var moreMenuExpanded by remember { mutableStateOf(false) }
+    var optionsOpen by remember { mutableStateOf(false) }
+    var characterTypeMenuOpen by remember { mutableStateOf(false) }
     val selectedDefault = defaults.defaults[selectedType]
     val unlockedVariants by viewModel.unlockedVariants.collectAsStateWithLifecycle()
     val filter by viewModel.filter.collectAsStateWithLifecycle()
@@ -108,6 +104,11 @@ internal fun ContactCharacterDefaultsSection(
 
     RandomPoolEditorBackHandling(hasUnsavedEmptyPool) { draftPools.clear() }
 
+    Surface(
+        modifier = Modifier.fillMaxSize(),
+        color = Color.White,
+    ) {
+    Box(modifier = Modifier.fillMaxSize()) {
     Column(modifier = Modifier.fillMaxSize()) {
         AnimatedVisibility(
             visible = controlsVisible,
@@ -121,81 +122,8 @@ internal fun ContactCharacterDefaultsSection(
                 ) {
                     ContactDefaultsDropdowns(
                         selectedType = selectedType,
-                        onTypeSelected = { selectedType = it },
-                        isPoolMode = effectivePoolMode,
-                        onPoolModeChanged = { isRandomizer ->
-                            if (!isRandomizer) draftPools.remove(selectedType)
-                            onDefaultChanged(selectedType, if (isRandomizer) null else if (selectedType == CharacterType.Trainer) BuiltInCharacters.defaultTrainerReference else BuiltInCharacters.defaultMonsterReference)
-                        },
-                    )
-                }
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.spacedBy(8.dp),
-                    verticalAlignment = Alignment.CenterVertically,
-                ) {
-                    if (selectedType == CharacterType.Monster) {
-                        MonsterFilterButton(
-                            filter = filter,
-                            onFilterSelected = viewModel::setFilter,
-                        )
-                    }
-                    if (effectivePoolMode) {
-                        Box {
-                            IconButton(
-                                onClick = { moreMenuExpanded = true },
-                                modifier = Modifier.size(40.dp),
-                            ) {
-                                AppIcon(
-                                    icon = LocalAppIcons.current.more,
-                                    contentDescription = stringResource(R.string.character_selection_more_options),
-                                )
-                            }
-                            DropdownMenu(
-                                expanded = moreMenuExpanded,
-                                onDismissRequest = { moreMenuExpanded = false },
-                            ) {
-                                DropdownMenuItem(
-                                    text = { Text(stringResource(R.string.contact_random_pool_select_all)) },
-                                    onClick = {
-                                        resetPools = resetPools - selectedType
-                                        updateRandomPoolDraft(selectedType, allPoolReferences, draftPools) { type, pool -> onPoolChanged(type, pool.toList()) }
-                                        moreMenuExpanded = false
-                                    },
-                                    leadingIcon = {
-                                        AppIcon(LocalMonsterAppIcons.current.selectAll, contentDescription = null)
-                                    },
-                                )
-                                DropdownMenuItem(
-                                    text = { Text(stringResource(R.string.contact_random_pool_deselect_all)) },
-                                    onClick = {
-                                        resetPools = resetPools - selectedType
-                                        updateRandomPoolDraft(selectedType, emptySet(), draftPools) { type, pool -> onPoolChanged(type, pool.toList()) }
-                                        moreMenuExpanded = false
-                                    },
-                                    leadingIcon = {
-                                        AppIcon(LocalMonsterAppIcons.current.deselectAll, contentDescription = null)
-                                    },
-                                )
-                                DropdownMenuItem(
-                                    text = { Text(stringResource(R.string.contact_random_pool_reset)) },
-                                    onClick = {
-                                        draftPools.remove(selectedType)
-                                        resetPools = resetPools + selectedType
-                                        onPoolReset(selectedType)
-                                        moreMenuExpanded = false
-                                    },
-                                    leadingIcon = {
-                                        AppIcon(LocalMonsterAppIcons.current.reset, contentDescription = null)
-                                    },
-                                )
-                            }
-                        }
-                    }
-                    Spacer(modifier = Modifier.weight(1f))
-                    CharacterAddButton(
-                        isAddEnabled = isAddEnabled,
-                        onAddCharacter = { onAddCharacter(selectedType) },
+                        onOpenCharacterTypeMenu = { characterTypeMenuOpen = true },
+                        onOpenOptions = { optionsOpen = true },
                     )
                 }
             }
@@ -242,6 +170,7 @@ internal fun ContactCharacterDefaultsSection(
                     showRandomize = false,
                     selectedReferences = if (effectivePoolMode) selectedPool else emptySet(),
                     filter = if (selectedType == CharacterType.Monster) filter else MonsterFilter.All,
+                    hideLockedVariants = true,
                     onSelected = if (effectivePoolMode) { reference ->
                         updateRandomPoolDraft(selectedType, selectedPool - reference, draftPools) { type, pool -> onPoolChanged(type, pool.toList()) }
                     } else null,
@@ -253,5 +182,139 @@ internal fun ContactCharacterDefaultsSection(
                 modifier = Modifier.align(Alignment.CenterEnd).padding(vertical = 8.dp),
             )
         }
+    }
+    if (optionsOpen) {
+        val modeItems = listOf(
+            RetroContextMenuItem(
+                label = stringResource(
+                    if (selectedType == CharacterType.Trainer) {
+                        R.string.contact_choose_trainer
+                    } else {
+                        R.string.contact_choose_monster
+                    },
+                ),
+                showCursor = !effectivePoolMode,
+            ) {
+                draftPools.remove(selectedType)
+                onDefaultChanged(
+                    selectedType,
+                    if (selectedType == CharacterType.Trainer) {
+                        BuiltInCharacters.defaultTrainerReference
+                    } else {
+                        BuiltInCharacters.defaultMonsterReference
+                    },
+                )
+                optionsOpen = false
+            },
+            RetroContextMenuItem(
+                label = stringResource(R.string.randomize),
+                showCursor = effectivePoolMode,
+            ) {
+                onDefaultChanged(selectedType, null)
+                optionsOpen = false
+            },
+        )
+        val filterItems = if (selectedType == CharacterType.Monster) {
+            listOf(
+                RetroContextMenuItem(
+                    label = stringResource(R.string.filter_all),
+                    showCursor = filter == MonsterFilter.All,
+                    dividerBefore = true,
+                ) {
+                    viewModel.setFilter(MonsterFilter.All)
+                    optionsOpen = false
+                },
+                RetroContextMenuItem(
+                    label = stringResource(R.string.filter_regular),
+                    showCursor = filter == MonsterFilter.Regular,
+                ) {
+                    viewModel.setFilter(MonsterFilter.Regular)
+                    optionsOpen = false
+                },
+                RetroContextMenuItem(
+                    label = stringResource(R.string.filter_unlocked_radiant),
+                    showCursor = filter == MonsterFilter.RadiantUnlocked,
+                ) {
+                    viewModel.setFilter(MonsterFilter.RadiantUnlocked)
+                    optionsOpen = false
+                },
+            )
+        } else {
+            emptyList()
+        }
+        val addItem = if (isAddEnabled) {
+            RetroContextMenuItem(
+                label = stringResource(R.string.add),
+                dividerBefore = true,
+            ) {
+                optionsOpen = false
+                onAddCharacter(selectedType)
+            }
+        } else {
+            null
+        }
+        val poolItems = if (effectivePoolMode) {
+            listOf(
+                RetroContextMenuItem(
+                    label = stringResource(R.string.contact_random_pool_select_all),
+                    dividerBefore = true,
+                ) {
+                    resetPools = resetPools - selectedType
+                    updateRandomPoolDraft(selectedType, allPoolReferences, draftPools) { type, pool -> onPoolChanged(type, pool.toList()) }
+                    optionsOpen = false
+                },
+                RetroContextMenuItem(stringResource(R.string.contact_random_pool_deselect_all)) {
+                    resetPools = resetPools - selectedType
+                    updateRandomPoolDraft(selectedType, emptySet(), draftPools) { type, pool -> onPoolChanged(type, pool.toList()) }
+                    optionsOpen = false
+                },
+                RetroContextMenuItem(stringResource(R.string.contact_random_pool_reset)) {
+                    draftPools.remove(selectedType)
+                    resetPools = resetPools + selectedType
+                    onPoolReset(selectedType)
+                    optionsOpen = false
+                },
+            )
+        } else {
+            emptyList()
+        }
+        if (characterTypeMenuOpen) {
+            RetroContextMenuOverlay(
+                modifier = Modifier.fillMaxWidth(0.82f),
+                fontFamily = RetroPickerFont,
+                onDismissRequest = { characterTypeMenuOpen = false },
+                items = listOf(
+                    RetroContextMenuItem(
+                        label = stringResource(R.string.character_type_trainer),
+                        showCursor = selectedType == CharacterType.Trainer,
+                    ) {
+                        characterTypeMenuOpen = false
+                        selectedType = CharacterType.Trainer
+                    },
+                    RetroContextMenuItem(
+                        label = stringResource(R.string.character_type_monster),
+                        showCursor = selectedType == CharacterType.Monster,
+                    ) {
+                        characterTypeMenuOpen = false
+                        selectedType = CharacterType.Monster
+                    },
+                    RetroContextMenuItem.cancel(
+                        stringResource(R.string.cancel),
+                        onClick = { characterTypeMenuOpen = false },
+                    ),
+                ),
+            )
+        }
+        if (optionsOpen) {
+        RetroContextMenuOverlay(
+            modifier = Modifier.fillMaxWidth(0.82f),
+            fontFamily = RetroPickerFont,
+            onDismissRequest = { optionsOpen = false },
+            items = modeItems + filterItems + listOfNotNull(addItem) + poolItems +
+                RetroContextMenuItem.cancel(stringResource(R.string.cancel), onClick = { optionsOpen = false }),
+        )
+        }
+    }
+    }
     }
 }

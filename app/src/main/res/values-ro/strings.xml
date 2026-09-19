@@ -46,7 +46,6 @@
     <string name="filter_all">Toate</string>
     <string name="filter_regular">Normal</string>
     <string name="filter_unlocked_radiant">Radiant deblocat</string>
-    <string name="filter_locked_radiant">Radiant blocat</string>
     <string name="selected" comment="Status label for the currently chosen option.">Selectat</string>
     <string name="randomize" comment="Character selection that chooses a different eligible character for every call.">Aleatoriu</string>
     <string name="locked">Blocat</string>
@@ -337,8 +336,8 @@
     <string name="contact_defaults_description">Alege setările implicite și limitează grupul de selecție aleatorie pentru contacte.</string>
     <string name="contact_default_trainer">Antrenor implicit</string>
     <string name="contact_default_monster">Monstru implicit</string>
-    <string name="contact_choose_trainer" comment="Dropdown option that opens the trainer picker for the contact default.">Alege antrenorul</string>
-    <string name="contact_choose_monster" comment="Dropdown option that opens the monster picker for the contact default.">Alege monstrul</string>
+    <string name="contact_choose_trainer" comment="Option that opens the character picker for the contact default.">Alege</string>
+    <string name="contact_choose_monster" comment="Option that opens the character picker for the contact default.">Alege</string>
     <string name="contact_default_random">Aleatoriu</string>
     <string name="contact_random_pool_all">Toate personajele disponibile</string>
     <string name="contact_random_pool_choose">Alege grupul de selecție aleatorie</string>
@@ -365,4 +364,17 @@
     <string name="contact_random_pool_empty_exit_message">Grupul de selecție aleatorie este gol, așa că aceste modificări nu au fost salvate. Selectează cel puțin un personaj pentru a salva grupul sau renunță la modificările nesalvate pentru a ieși.</string>
     <string name="contact_random_pool_continue_editing">Continuă editarea</string>
     <string name="contact_random_pool_discard_changes">Renunță la modificări</string>
+    <string name="import_action">Importă</string>
+    <string name="radiant_collection_title">Colecția radiantă</string>
+    <string name="radiant_collection_description">Vezi toți monștrii și variantele lor radiante, inclusiv pe cele nedescoperite.</string>
+    <string name="collection_sprite">Sprite-ul lui %1$s</string>
+    <string name="radiant_collection_sprite">Sprite radiant al lui %1$s</string>
+    <string name="radiant_collection_found">Găsit</string>
+    <string name="radiant_collection_locked">Blocat</string>
+    <string name="radiant_collection_regular">Normal</string>
+    <string name="radiant_collection_browse_packs">Pachete</string>
+    <string name="pack_details_action">Detalii</string>
+    <plurals name="pack_character_count_only"><item quantity="one">%d personaj</item><item quantity="other">%d personaje</item></plurals>
+    <string name="are_you_sure">Ești sigur?</string>
+    <string name="delete_action">Șterge</string>
 </resources>

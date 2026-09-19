@@ -172,8 +172,8 @@
     <string name="contact_defaults_description">Choose defaults and limit the contact randomizer pool.</string>
     <string name="contact_default_trainer">Default trainer</string>
     <string name="contact_default_monster">Default monster</string>
-    <string name="contact_choose_trainer" comment="Dropdown option that opens the trainer picker for the contact default.">Choose trainer</string>
-    <string name="contact_choose_monster" comment="Dropdown option that opens the monster picker for the contact default.">Choose monster</string>
+    <string name="contact_choose_trainer" comment="Option that opens the character picker for the contact default.">Choose</string>
+    <string name="contact_choose_monster" comment="Option that opens the character picker for the contact default.">Choose</string>
     <string name="contact_context_menu_trainer">Trainer</string>
     <string name="contact_context_menu_monster">Monster</string>
     <string name="contact_context_menu_remove">Remove</string>

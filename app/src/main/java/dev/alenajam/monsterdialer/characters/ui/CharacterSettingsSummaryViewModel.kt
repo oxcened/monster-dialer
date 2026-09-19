@@ -46,6 +46,15 @@ class CharacterSettingsSummaryViewModel @Inject constructor(
         ProfileMetrics(
             callsBattled = callsBattled,
             charactersCollected = characters
+                .filter { character ->
+                    character.character.visualVariants.any { variant ->
+                        !variant.isRadiant || CharacterReference(
+                            character.packId,
+                            character.character.id,
+                            variant.id,
+                        ) in unlockedRadiants
+                    }
+                }
                 .map { character -> character.packId to character.character.id }
                 .distinct()
                 .size,

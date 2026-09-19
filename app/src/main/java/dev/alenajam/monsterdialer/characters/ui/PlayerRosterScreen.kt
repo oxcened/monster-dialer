@@ -30,8 +30,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import dev.alenajam.monsterdialer.R
-import dev.alenajam.monsterdialer.app.ui.RetroContextMenu
 import dev.alenajam.monsterdialer.app.ui.RetroContextMenuItem
+import dev.alenajam.monsterdialer.app.ui.RetroContextMenuOverlay
 import dev.alenajam.monsterdialer.app.ui.RetroConfirmationDialog
 import dev.alenajam.monsterdialer.app.ui.RetroFooter
 import dev.alenajam.monsterdialer.app.ui.RetroSelectableRow
@@ -104,13 +104,7 @@ internal fun PlayerRosterScreen(
         )
         menuSlot?.let { slotIndex ->
             val monster = roster.getOrNull(slotIndex)
-            Box(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .clickable { menuSlot = null },
-                contentAlignment = Alignment.Center,
-            ) {
-                RetroContextMenu(
+            RetroContextMenuOverlay(
                     modifier = Modifier.fillMaxWidth(0.72f),
                     onDismissRequest = { menuSlot = null },
                     items = if (monster == null) {
@@ -119,7 +113,7 @@ internal fun PlayerRosterScreen(
                                 menuSlot = null
                                 onSelectSlot(slotIndex)
                             },
-                            RetroContextMenuItem(label = stringResource(R.string.cancel), showCursor = false) {
+                            RetroContextMenuItem.cancel(stringResource(R.string.cancel)) {
                                 menuSlot = null
                             },
                         )
@@ -143,14 +137,13 @@ internal fun PlayerRosterScreen(
                         } else {
                             emptyList()
                         } + listOf(
-                            RetroContextMenuItem(label = stringResource(R.string.cancel), showCursor = false) {
+                            RetroContextMenuItem.cancel(stringResource(R.string.cancel)) {
                                 menuSlot = null
                             },
                         )
                     },
                     fontFamily = RosterPixelFont,
-                )
-            }
+            )
         }
         confirmationSlot?.let { slotIndex ->
             roster.getOrNull(slotIndex)?.let { monster ->

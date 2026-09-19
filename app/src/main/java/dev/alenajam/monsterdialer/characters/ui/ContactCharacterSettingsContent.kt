@@ -39,7 +39,6 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.mutableStateMapOf
@@ -62,6 +61,8 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import dev.alenajam.monsterdialer.R
 import dev.alenajam.monsterdialer.app.ui.LocalMonsterAppIcons
 import dev.alenajam.monsterdialer.app.ui.RetroFastScroller
+import dev.alenajam.monsterdialer.app.ui.RetroContextMenuItem
+import dev.alenajam.monsterdialer.app.ui.RetroSearchButton
 import dev.alenajam.opendialer.core.common.ui.AppIcon
 import dev.alenajam.opendialer.core.common.ui.LocalAppIcons
 import dev.alenajam.monsterdialer.characters.data.BuiltInCharacters
@@ -634,61 +635,25 @@ private fun CharacterTypeSwitch(
 @Composable
 internal fun ContactDefaultsDropdowns(
     selectedType: CharacterType,
-    onTypeSelected: (CharacterType) -> Unit,
-    isPoolMode: Boolean,
-    onPoolModeChanged: (Boolean) -> Unit,
+    onOpenCharacterTypeMenu: () -> Unit,
+    onOpenOptions: () -> Unit,
 ) {
-    var modeMenuExpanded by remember { mutableStateOf(false) }
-    val buttonShape = RoundedCornerShape(18.dp)
-    val modeLabel = stringResource(
-        if (isPoolMode) {
-            R.string.randomize
-        } else if (selectedType == CharacterType.Trainer) {
-            R.string.contact_choose_trainer
-        } else {
-            R.string.contact_choose_monster
-        },
+    val characterLabel = stringResource(
+        if (selectedType == CharacterType.Trainer) R.string.character_type_trainer else R.string.character_type_monster,
     )
-
-    Row(
-        modifier = Modifier.fillMaxWidth(),
-        horizontalArrangement = Arrangement.spacedBy(8.dp),
-    ) {
-        CharacterTypeSwitch(
-            selectedType = selectedType,
-            onTypeSelected = onTypeSelected,
-            modifier = Modifier.weight(1f),
-        )
-        CompactDropdown(
-            label = modeLabel,
-            expanded = modeMenuExpanded,
-            onExpandedChange = { modeMenuExpanded = it },
-            modifier = Modifier.weight(1f),
-            shape = buttonShape,
-        ) {
-            DropdownMenuItem(
-                text = {
-                    Text(
-                            stringResource(
-                                if (selectedType == CharacterType.Trainer) {
-                                    R.string.contact_choose_trainer
-                                } else {
-                                    R.string.contact_choose_monster
-                                },
-                        ),
-                    )
-                },
-                onClick = {
-                    onPoolModeChanged(false)
-                    modeMenuExpanded = false
-                },
+    Box(modifier = Modifier.fillMaxWidth()) {
+        Row(modifier = Modifier.fillMaxWidth()) {
+            RetroSearchButton(
+                label = characterLabel,
+                onClick = onOpenCharacterTypeMenu,
+                modifier = Modifier.weight(1f),
+                horizontalArrangement = Arrangement.Start,
             )
-            DropdownMenuItem(
-                text = { Text(stringResource(R.string.randomize)) },
-                onClick = {
-                    onPoolModeChanged(true)
-                    modeMenuExpanded = false
-                },
+            RetroSearchButton(
+                label = stringResource(R.string.contact_picker_options),
+                onClick = onOpenOptions,
+                modifier = Modifier.weight(1f),
+                horizontalArrangement = Arrangement.End,
             )
         }
     }

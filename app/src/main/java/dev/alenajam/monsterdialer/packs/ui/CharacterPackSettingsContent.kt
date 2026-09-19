@@ -61,8 +61,8 @@ import coil.compose.AsyncImage
 import dev.alenajam.monsterdialer.R
 import dev.alenajam.monsterdialer.app.ui.LocalMonsterAppIcons
 import dev.alenajam.monsterdialer.app.ui.RetroConfirmationDialog
-import dev.alenajam.monsterdialer.app.ui.RetroContextMenu
 import dev.alenajam.monsterdialer.app.ui.RetroContextMenuItem
+import dev.alenajam.monsterdialer.app.ui.RetroContextMenuOverlay
 import dev.alenajam.monsterdialer.app.ui.RetroSearchButton
 import dev.alenajam.monsterdialer.app.ui.RetroSelectableRow
 import dev.alenajam.monsterdialer.packs.data.CharacterPackImportDiagnostic
@@ -266,7 +266,7 @@ fun ColumnScope.CharacterPackSettingsContent(
             modifier = Modifier.fillMaxSize().clickable { selectedPack = null },
             contentAlignment = Alignment.Center,
         ) {
-            RetroContextMenu(
+            RetroContextMenuOverlay(
                 modifier = Modifier.fillMaxWidth(0.82f),
                 fontFamily = PackPixelFont,
                 onDismissRequest = { selectedPack = null },
@@ -295,7 +295,7 @@ fun ColumnScope.CharacterPackSettingsContent(
                             pendingDeletion = pack
                         }
                     },
-                    RetroContextMenuItem(stringResource(R.string.cancel)) { selectedPack = null },
+                    RetroContextMenuItem.cancel(stringResource(R.string.cancel), onClick = { selectedPack = null }),
                 ),
             )
         }
@@ -306,7 +306,7 @@ fun ColumnScope.CharacterPackSettingsContent(
             modifier = Modifier.fillMaxSize().clickable { optionsOpen = false },
             contentAlignment = Alignment.Center,
         ) {
-            RetroContextMenu(
+            RetroContextMenuOverlay(
                 modifier = Modifier.fillMaxWidth(0.82f),
                 fontFamily = PackPixelFont,
                 onDismissRequest = { optionsOpen = false },
@@ -325,7 +325,7 @@ fun ColumnScope.CharacterPackSettingsContent(
                             },
                         )
                     }
-                    add(RetroContextMenuItem(stringResource(R.string.cancel)) { optionsOpen = false })
+                    add(RetroContextMenuItem.cancel(stringResource(R.string.cancel), onClick = { optionsOpen = false }))
                 },
             )
         }

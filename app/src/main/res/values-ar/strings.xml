@@ -46,7 +46,6 @@
     <string name="filter_all">الكل</string>
     <string name="filter_regular">عادي</string>
     <string name="filter_unlocked_radiant">متألق مفتوح</string>
-    <string name="filter_locked_radiant">متألق مقفل</string>
     <string name="selected" comment="Status label for the currently chosen option.">محدد</string>
     <string name="randomize" comment="Character selection that chooses a different eligible character for every call.">اختيار عشوائي</string>
     <string name="locked">مقفل</string>
@@ -351,8 +350,8 @@
     <string name="contact_defaults_description">اختر الإعدادات الافتراضية وحدد مجموعة الاختيار العشوائي لجهات الاتصال.</string>
     <string name="contact_default_trainer">المدرب الافتراضي</string>
     <string name="contact_default_monster">الوحش الافتراضي</string>
-    <string name="contact_choose_trainer" comment="Dropdown option that opens the trainer picker for the contact default.">اختر مدربًا</string>
-    <string name="contact_choose_monster" comment="Dropdown option that opens the monster picker for the contact default.">اختر وحشًا</string>
+    <string name="contact_choose_trainer" comment="Option that opens the character picker for the contact default.">اختر</string>
+    <string name="contact_choose_monster" comment="Option that opens the character picker for the contact default.">اختر</string>
     <string name="contact_default_random">عشوائي</string>
     <string name="contact_random_pool_all">جميع الشخصيات المتاحة</string>
     <string name="contact_random_pool_choose">اختر مجموعة الاختيار العشوائي</string>
@@ -379,4 +378,17 @@
     <string name="contact_random_pool_empty_exit_message">مجموعة الاختيار العشوائي فارغة، لذلك لم يتم حفظ هذه التغييرات. حدد شخصية واحدة على الأقل لحفظ المجموعة، أو تجاهل التغييرات غير المحفوظة للمغادرة.</string>
     <string name="contact_random_pool_continue_editing">متابعة التعديل</string>
     <string name="contact_random_pool_discard_changes">تجاهل التغييرات</string>
+    <string name="import_action">استيراد</string>
+    <string name="radiant_collection_title">مجموعة الراديانت</string>
+    <string name="radiant_collection_description">عرض جميع الوحوش ومتغيراتها الراديانت، بما في ذلك المكتشفة منها.</string>
+    <string name="collection_sprite">صورة %1$s</string>
+    <string name="radiant_collection_sprite">صورة %1$s الراديانت</string>
+    <string name="radiant_collection_found">مكتشف</string>
+    <string name="radiant_collection_locked">مقفل</string>
+    <string name="radiant_collection_regular">عادي</string>
+    <string name="radiant_collection_browse_packs">الحزم</string>
+    <string name="pack_details_action">التفاصيل</string>
+    <plurals name="pack_character_count_only"><item quantity="one">شخصية واحدة</item><item quantity="other">%d شخصيات</item></plurals>
+    <string name="are_you_sure">هل أنت متأكد؟</string>
+    <string name="delete_action">حذف</string>
 </resources>

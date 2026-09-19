@@ -37,8 +37,8 @@ import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import dev.alenajam.monsterdialer.R
 import dev.alenajam.monsterdialer.app.ui.LocalMonsterAppIcons
-import dev.alenajam.monsterdialer.app.ui.RetroContextMenu
 import dev.alenajam.monsterdialer.app.ui.RetroContextMenuItem
+import dev.alenajam.monsterdialer.app.ui.RetroContextMenuOverlay
 import dev.alenajam.monsterdialer.app.ui.RetroConfirmationDialog
 import dev.alenajam.monsterdialer.app.ui.RetroActionButton
 import dev.alenajam.monsterdialer.app.ui.RetroFooter
@@ -123,15 +123,7 @@ internal fun CustomizedContactsOverview(
         )
         }
         menuContact?.let { contact ->
-            Box(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .clickable {
-                        menuContact = null
-                    },
-                contentAlignment = Alignment.Center,
-            ) {
-                RetroContextMenu(
+            RetroContextMenuOverlay(
                     modifier = Modifier.fillMaxWidth(0.72f),
                     fontFamily = ContactRosterPixelFont,
                     onDismissRequest = { menuContact = null },
@@ -155,12 +147,11 @@ internal fun CustomizedContactsOverview(
                             menuContact = null
                             confirmationContact = contact
                         },
-                        RetroContextMenuItem(label = stringResource(R.string.cancel)) {
+                        RetroContextMenuItem.cancel(stringResource(R.string.cancel)) {
                             menuContact = null
                         },
                     ),
-                )
-            }
+            )
         }
         confirmationContact?.let { contact ->
             val removedMessage = stringResource(R.string.contact_removed_message, contact.label.uppercase())

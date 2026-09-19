@@ -46,7 +46,6 @@
     <string name="filter_all">Todos</string>
     <string name="filter_regular">Normal</string>
     <string name="filter_unlocked_radiant">Radiante desbloqueado</string>
-    <string name="filter_locked_radiant">Radiante bloqueado</string>
     <string name="selected" comment="Status label for the currently chosen option.">Selecionado</string>
     <string name="randomize" comment="Character selection that chooses a different eligible character for every call.">Aleatório</string>
     <string name="locked">Bloqueado</string>
@@ -332,8 +331,8 @@
     <string name="contact_defaults_description">Escolha as predefinições e limite o grupo de seleção aleatória dos contactos.</string>
     <string name="contact_default_trainer">Treinador predefinido</string>
     <string name="contact_default_monster">Monstro predefinido</string>
-    <string name="contact_choose_trainer" comment="Dropdown option that opens the trainer picker for the contact default.">Escolher treinador</string>
-    <string name="contact_choose_monster" comment="Dropdown option that opens the monster picker for the contact default.">Escolher monstro</string>
+    <string name="contact_choose_trainer" comment="Option that opens the character picker for the contact default.">Escolher</string>
+    <string name="contact_choose_monster" comment="Option that opens the character picker for the contact default.">Escolher</string>
     <string name="contact_default_random">Aleatório</string>
     <string name="contact_random_pool_all">Todas as personagens disponíveis</string>
     <string name="contact_random_pool_choose">Escolher grupo de seleção aleatória</string>
@@ -360,4 +359,17 @@
     <string name="contact_random_pool_empty_exit_message">O grupo de seleção aleatória está vazio, por isso estas alterações não foram guardadas. Selecione pelo menos uma personagem para guardar o grupo ou descarte as alterações não guardadas para sair.</string>
     <string name="contact_random_pool_continue_editing">Continuar a editar</string>
     <string name="contact_random_pool_discard_changes">Descartar alterações</string>
+    <string name="import_action">Importar</string>
+    <string name="radiant_collection_title">Coleção radiante</string>
+    <string name="radiant_collection_description">Vê todos os monstros e as suas variantes radiantes, incluindo as ainda não descobertas.</string>
+    <string name="collection_sprite">Sprite de %1$s</string>
+    <string name="radiant_collection_sprite">Sprite radiante de %1$s</string>
+    <string name="radiant_collection_found">Encontrado</string>
+    <string name="radiant_collection_locked">Bloqueado</string>
+    <string name="radiant_collection_regular">Normal</string>
+    <string name="radiant_collection_browse_packs">Pacotes</string>
+    <string name="pack_details_action">Detalhes</string>
+    <plurals name="pack_character_count_only"><item quantity="one">%d personagem</item><item quantity="other">%d personagens</item></plurals>
+    <string name="are_you_sure">Tens a certeza?</string>
+    <string name="delete_action">Eliminar</string>
 </resources>

@@ -36,8 +36,8 @@ import coil.compose.AsyncImage
 import dev.alenajam.monsterdialer.R
 import dev.alenajam.monsterdialer.app.ui.LocalMonsterAppIcons
 import dev.alenajam.monsterdialer.app.ui.RetroSelectableRow
-import dev.alenajam.monsterdialer.app.ui.RetroContextMenu
 import dev.alenajam.monsterdialer.app.ui.RetroContextMenuItem
+import dev.alenajam.monsterdialer.app.ui.RetroContextMenuOverlay
 import dev.alenajam.monsterdialer.app.ui.RetroActionButton
 import dev.alenajam.monsterdialer.app.ui.RetroSearchButton
 import dev.alenajam.monsterdialer.app.ui.RetroDoubleBorderTextBox
@@ -242,7 +242,7 @@ internal fun RetroCharacterPicker(
             modifier = Modifier.fillMaxSize().clickable { optionsOpen = false },
             contentAlignment = Alignment.Center,
         ) {
-            RetroContextMenu(
+            RetroContextMenuOverlay(
                 modifier = Modifier.fillMaxWidth(0.68f),
                 fontFamily = RetroPickerFont,
                 onDismissRequest = { optionsOpen = false },
@@ -269,7 +269,7 @@ internal fun RetroCharacterPicker(
                             poolCursor = poolDraft.firstOrNull()
                             optionsOpen = false
                         },
-                        RetroContextMenuItem(label = stringResource(R.string.cancel)) {
+                        RetroContextMenuItem.cancel(stringResource(R.string.cancel)) {
                             optionsOpen = false
                         },
                     )
@@ -286,7 +286,7 @@ internal fun RetroCharacterPicker(
                             onFilterSelected(filterOption)
                             optionsOpen = false
                         }
-                    } + RetroContextMenuItem(label = stringResource(R.string.cancel)) {
+                    } + RetroContextMenuItem.cancel(stringResource(R.string.cancel)) {
                         optionsOpen = false
                     }
                 } else if (onClear != null) {
@@ -306,13 +306,13 @@ internal fun RetroCharacterPicker(
                             assignmentRandomized = false
                             onClear?.invoke()
                         },
-                        RetroContextMenuItem(label = stringResource(R.string.cancel)) {
+                        RetroContextMenuItem.cancel(stringResource(R.string.cancel)) {
                             optionsOpen = false
                         },
                     )
                 } else {
                     listOf(
-                        RetroContextMenuItem(label = stringResource(R.string.cancel)) {
+                        RetroContextMenuItem.cancel(stringResource(R.string.cancel)) {
                             optionsOpen = false
                         },
                     )
