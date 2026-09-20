@@ -4,14 +4,13 @@ import android.app.Activity
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
+import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.layout.WindowInsets
@@ -73,6 +72,7 @@ internal fun RetroDialSearchScreen(
     val result by viewModel.result.collectAsStateWithLifecycle()
     val hasPermission by viewModel.hasRuntimePermission.collectAsStateWithLifecycle()
     var selectedContact by remember { mutableStateOf<DialerSearchContact?>(null) }
+    var selectedResultId by remember { mutableStateOf<Long?>(null) }
     var showModifiers by remember { mutableStateOf(false) }
     var pendingNumber by remember { mutableStateOf<String?>(null) }
     var callAccounts by remember { mutableStateOf<List<CallAccount>?>(null) }
@@ -159,14 +159,21 @@ internal fun RetroDialSearchScreen(
             RetroSearchMatches(
                 contacts = result?.contacts.orEmpty(),
                 query = query,
-                onSelect = { selectedContact = it },
+                selectedId = selectedResultId ?: result?.contacts?.firstOrNull()?.dataId,
+                onSelect = {
+                    selectedResultId = it.dataId
+                    selectedContact = it
+                },
                 modifier = Modifier.weight(1f),
             )
         }
 
         RetroDialpad(
             onDigit = { updateQuery(query + it) },
-            onBackspace = { if (query.isNotEmpty()) updateQuery(query.dropLast(1)) },
+            onBackspace = { clear ->
+                if (clear) updateQuery("")
+                else if (query.isNotEmpty()) updateQuery(query.dropLast(1))
+            },
             onMore = { showModifiers = true },
             moreEnabled = query.isNotEmpty(),
             modifier = Modifier.padding(horizontal = RetroScreenHorizontalPadding),
@@ -270,6 +277,7 @@ private fun RetroPermissionPrompt(onPermissionGranted: () -> Unit) {
 private fun RetroSearchMatches(
     contacts: List<DialerSearchContact>,
     query: String,
+    selectedId: Long?,
     onSelect: (DialerSearchContact) -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -278,7 +286,11 @@ private fun RetroSearchMatches(
             item { Text(stringResource(R.string.dial_search_results), fontFamily = DialSearchFont, fontSize = 16.sp, color = DialSearchInk, modifier = Modifier.fillMaxWidth().padding(start = 24.dp, top = 6.dp)) }
         }
         items(contacts, key = { it.dataId }) { contact ->
-            RetroSelectableRow(selected = false, onClick = { onSelect(contact) }, modifier = Modifier.padding(horizontal = 14.dp)) {
+            RetroSelectableRow(
+                selected = selectedId == contact.dataId,
+                onClick = { onSelect(contact) },
+                modifier = Modifier.padding(horizontal = 14.dp),
+            ) {
                 Column(modifier = Modifier.weight(1f).padding(vertical = 4.dp)) {
                     Text(contact.name.ifBlank { contact.number }, fontFamily = DialSearchFont, fontSize = 17.sp, color = DialSearchInk, maxLines = 1, overflow = TextOverflow.Ellipsis)
                     if (contact.name.isNotBlank()) Text(contact.number, fontFamily = DialSearchFont, fontSize = 13.sp, color = DialSearchInk.copy(alpha = .72f), maxLines = 1)
@@ -292,7 +304,7 @@ private fun RetroSearchMatches(
 @Composable
 private fun RetroDialpad(
     onDigit: (Char) -> Unit,
-    onBackspace: () -> Unit,
+    onBackspace: (clear: Boolean) -> Unit,
     onMore: () -> Unit,
     moreEnabled: Boolean,
     modifier: Modifier = Modifier,
@@ -312,13 +324,30 @@ private fun RetroDialpad(
         rows.forEach { row ->
             Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(4.dp)) {
                 row.forEach { (digit, subtitle) ->
-                    RetroDialKey(digit.toString(), subtitle, { onDigit(digit) }, Modifier.weight(1f))
+                    RetroDialKey(
+                        label = digit.toString(),
+                        subtitle = subtitle,
+                        onClick = { onDigit(digit) },
+                        modifier = Modifier.weight(1f),
+                        onLongClick = if (digit == '0') {
+                            { onDigit('+') }
+                        } else {
+                            null
+                        },
+                    )
                 }
             }
         }
         Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(4.dp)) {
             RetroDialKey(stringResource(R.string.dial_search_more), "", onMore, Modifier.weight(1f), moreEnabled)
-            RetroDialKey("⌫", "", onBackspace, Modifier.weight(1f), moreEnabled)
+            RetroDialKey(
+                label = "⌫",
+                subtitle = "",
+                onClick = { onBackspace(false) },
+                modifier = Modifier.weight(1f),
+                enabled = moreEnabled,
+                onLongClick = { onBackspace(true) },
+            )
         }
     }
 }
@@ -330,11 +359,16 @@ private fun RetroDialKey(
     onClick: () -> Unit,
     modifier: Modifier,
     enabled: Boolean = true,
+    onLongClick: (() -> Unit)? = null,
 ) {
     Box(
         modifier = modifier
-            .height(38.dp)
-            .clickable(enabled = enabled, onClick = onClick),
+            .padding(vertical = 6.dp)
+            .combinedClickable(
+                enabled = enabled,
+                onClick = onClick,
+                onLongClick = onLongClick,
+            ),
         contentAlignment = Alignment.Center,
     ) {
         Column(horizontalAlignment = Alignment.CenterHorizontally) {
