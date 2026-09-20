@@ -79,6 +79,7 @@ import dev.alenajam.monsterdialer.packs.data.CharacterReference
 import dev.alenajam.monsterdialer.packs.data.CharacterType
 import dev.alenajam.opendialer.core.common.ui.AppIcon
 import dev.alenajam.opendialer.core.common.ui.LocalAppIcons
+import dev.alenajam.opendialer.feature.settings.R as SettingsR
 import dev.alenajam.monsterdialer.app.ui.RetroDoubleBorderTextBox
 import dev.alenajam.monsterdialer.app.ui.RetroTypewriterText
 import dev.alenajam.monsterdialer.app.ui.RetroActionButton
@@ -97,7 +98,7 @@ private val ProfileBackground = Color(0xFF4B376D)
 
 private enum class ProfileCharacterSection { Trainer, Monster }
 
-private enum class ProfileMenuAction { Roster, Contacts, Collection, Journal, OnlineProfile, Options }
+private enum class ProfileMenuAction { Roster, Contacts, Collection, Journal, OnlineProfile, Options, Info }
 
 @Composable
 fun CharactersHomeScreen(
@@ -106,6 +107,7 @@ fun CharactersHomeScreen(
     sharingViewModel: CharacterSharingViewModel = hiltViewModel(),
     playerProfile: PlayerProfile,
     profileMetrics: ProfileMetrics,
+    onOpenAbout: () -> Unit,
     onReorderRoster: (List<CharacterReference>) -> Unit,
     onRemoveRosterMonster: (CharacterReference) -> Unit,
     showImportUi: Boolean = true,
@@ -145,6 +147,7 @@ fun CharactersHomeScreen(
                 onOpenJournal = { onOpenSubpage(CharacterSettingsPage.BattleJournal.index, null) },
                 onOpenOnlineProfile = { onOpenSubpage(CharacterSettingsPage.ProfileLink.index, null) },
                 onOpenOptions = onOpenSettings,
+                onOpenAbout = onOpenAbout,
         )
     }
 }
@@ -161,6 +164,7 @@ private fun GameBoyProfileLayout(
     onOpenJournal: () -> Unit,
     onOpenOnlineProfile: () -> Unit,
     onOpenOptions: () -> Unit,
+    onOpenAbout: () -> Unit,
 ) {
     val trainer = playerProfile.trainer
     val monster = playerProfile.monster
@@ -283,6 +287,13 @@ private fun GameBoyProfileLayout(
                         ) {
                             selectedMenuAction = ProfileMenuAction.Options
                             onOpenOptions()
+                        }
+                        GameBoyMenuItem(
+                            stringResource(SettingsR.string.screen_about_title),
+                            selectedMenuAction == ProfileMenuAction.Info,
+                        ) {
+                            selectedMenuAction = ProfileMenuAction.Info
+                            onOpenAbout()
                         }
                     }
                 }

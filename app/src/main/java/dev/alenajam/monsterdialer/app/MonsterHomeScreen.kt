@@ -124,6 +124,7 @@ internal fun MonsterHomeScreen(
                     sharingViewModel = characterSharingViewModel,
                     playerProfile = playerProfile,
                     profileMetrics = profileMetrics,
+                    onOpenAbout = callbacks.onOpenAbout,
                     onReorderRoster = characterSettingsSummaryViewModel::reorderPlayerMonsterRoster,
                     onRemoveRosterMonster = characterSettingsSummaryViewModel::removePlayerMonsterFromRoster,
                     showImportUi = false,
