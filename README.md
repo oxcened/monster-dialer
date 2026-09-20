@@ -74,6 +74,8 @@ Catalog publishers can list externally hosted packs with the [catalog format gui
 
 Optional Google sign-in can be used independently for public [Online Profile sharing](docs/online-profiles.md) and private [Variant Backup](docs/variant-backup.md). Read both guides before enabling either feature.
 
+For an account-free, portable copy of your character collection and local progress, use [Local Backup](docs/local-backup.md).
+
 ## Contributing
 
 Issues, pull requests, reviews, translations, and feature requests are welcome. Please read [CONTRIBUTING.md](CONTRIBUTING.md) before opening a pull request. You can propose and vote on ideas at [MonsterDialer Feedback](https://monsterdialer.fider.io/).

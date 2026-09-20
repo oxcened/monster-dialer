@@ -42,6 +42,16 @@
     <string name="settings_character_packs_title" comment="Settings title for managing character packs.">Character Packs</string>
     <string name="settings_catalogs_title" comment="Settings title for external character-pack catalogs.">Catalogs</string>
     <string name="settings_catalogs_description" comment="Settings description for external character-pack catalogs.">Browse packs from catalog URLs you add.</string>
+    <string name="local_backup_title">Local backup</string>
+    <string name="local_backup_settings_description">Export or restore your character collection and progress.</string>
+    <string name="local_backup_description">Save your character packs, assignments, radiant discoveries, and Battle Journal to a file on this device. Android contacts and call history are not included.</string>
+    <string name="local_backup_export">Export backup</string>
+    <string name="local_backup_import">Restore backup</string>
+    <string name="local_backup_file_name" translatable="false">monsterdialer-backup.monsterbackup</string>
+    <string name="local_backup_import_confirmation_title">Restore backup?</string>
+    <string name="local_backup_import_confirmation_message">This replaces your current character collection and local progress.</string>
+    <string name="local_backup_exported">Backup exported</string>
+    <string name="local_backup_failed">Couldn’t complete the backup.</string>
     <string name="catalogs_description" comment="Explanation at the top of the Catalogs screen.">Catalogs list packs hosted by their publishers. Only install artwork and sounds you are allowed to use.</string>
     <string name="catalogs_empty" comment="Empty state in the Catalogs screen.">Add a catalog URL to browse its packs.</string>
     <string name="add_catalog" comment="Action that adds an external pack catalog.">Add catalog</string>

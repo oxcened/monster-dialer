@@ -11,4 +11,5 @@ internal enum class CharacterSettingsPage(val index: Int) {
     ToolboxContactCharacters(6),
     ProfileLink(7),
     RadiantCollection(8),
+    LocalBackup(9),
 }

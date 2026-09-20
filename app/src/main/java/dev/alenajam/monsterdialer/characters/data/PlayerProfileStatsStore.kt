@@ -25,6 +25,11 @@ class PlayerProfileStatsStore @Inject constructor(
     fun hasStoredData(): Boolean = file.isFile
 
     @Synchronized
+    fun reload() {
+        mutableCallsBattled.value = read().callsBattled
+    }
+
+    @Synchronized
     fun recordBattle() {
         val updated = mutableCallsBattled.value + 1
         file.parentFile?.mkdirs()

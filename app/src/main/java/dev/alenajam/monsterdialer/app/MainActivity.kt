@@ -83,6 +83,7 @@ import dev.alenajam.monsterdialer.characters.ui.SharedCharacterImportHandler
 import dev.alenajam.monsterdialer.characters.data.SharedCharacterArchive
 import dev.alenajam.monsterdialer.characters.ui.radiantGuideContents
 import dev.alenajam.monsterdialer.battle.ui.BattleJournalScreen
+import dev.alenajam.monsterdialer.backup.ui.LocalBackupScreen
 import dev.alenajam.monsterdialer.contacts.data.MonsterContact
 import dev.alenajam.monsterdialer.contacts.ui.formatPhoneNumber
 import dev.alenajam.monsterdialer.packs.data.CharacterAssignmentTarget
@@ -519,6 +520,17 @@ class MainActivity : AppCompatActivity() {
                                 title = stringResource(R.string.settings_catalogs_title),
                                 description = stringResource(R.string.settings_catalogs_description),
                                 content = { _ -> CatalogsScreen() },
+                                isScrollable = false,
+                                topContentPadding = RetroScreenTopContentPadding,
+                                contentHorizontalPadding = RetroScreenHorizontalPadding,
+                                showTopBar = false,
+                                visibleInSettings = true,
+                            ),
+                        ).plus(
+                            SettingsSubpage(
+                                title = stringResource(R.string.local_backup_title),
+                                description = stringResource(R.string.local_backup_settings_description),
+                                content = { LocalBackupScreen() },
                                 isScrollable = false,
                                 topContentPadding = RetroScreenTopContentPadding,
                                 contentHorizontalPadding = RetroScreenHorizontalPadding,

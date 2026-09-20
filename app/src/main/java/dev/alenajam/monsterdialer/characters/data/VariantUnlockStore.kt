@@ -25,6 +25,11 @@ class VariantUnlockStore @Inject constructor(
     fun hasStoredData(): Boolean = file.isFile
 
     @Synchronized
+    fun reload() {
+        mutableUnlocked.value = read()
+    }
+
+    @Synchronized
     fun unlock(reference: CharacterReference): Boolean {
         if (reference in mutableUnlocked.value) return false
         persist(mutableUnlocked.value + reference)
