@@ -149,6 +149,8 @@ dependencies {
     implementation(project(":feature:settings"))
     implementation(project(":feature:calls"))
     implementation(project(":feature:contacts"))
+    implementation(project(":feature:contactsSearch"))
+    implementation(project(":data:contactsSearch"))
     implementation(project(":feature:inCall"))
     implementation(project(":data:calls"))
     implementation(project(":data:contacts"))

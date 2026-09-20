@@ -62,7 +62,6 @@ import dev.alenajam.monsterdialer.app.ui.RetroDoubleBorderTextBox
 import dev.alenajam.monsterdialer.app.ui.RetroActionButton
 import dev.alenajam.monsterdialer.app.ui.RetroFooter
 import dev.alenajam.monsterdialer.app.ui.RetroScreenHorizontalPadding
-import dev.alenajam.monsterdialer.app.ui.RetroScreenPanelMargin
 import dev.alenajam.monsterdialer.characters.ui.ContextualGuideDialog
 import dev.alenajam.monsterdialer.characters.ui.ContextualGuideButton
 import dev.alenajam.monsterdialer.onlineprofiles.data.ProfileSharingLink
@@ -136,7 +135,7 @@ fun OnlineProfileSection(viewModel: OnlineProfileSettingsViewModel = hiltViewMod
                 .fillMaxWidth()
                 .padding(
                     horizontal = RetroScreenHorizontalPadding,
-                    vertical = RetroScreenPanelMargin,
+                    vertical = 0.dp,
                 ),
         ) {
             RetroMenuWindow {

@@ -96,6 +96,7 @@ import dev.alenajam.monsterdialer.onlineprofiles.ui.sharedOnlineProfileGuideCont
 import dev.alenajam.monsterdialer.packs.ui.CharacterPackSettingsContent
 import dev.alenajam.monsterdialer.packs.ui.CharacterPackSettingsViewModel
 import dev.alenajam.monsterdialer.packs.ui.CharacterPackImportHandler
+import dev.alenajam.monsterdialer.packs.ui.CatalogsScreen
 import dev.alenajam.monsterdialer.packs.ui.CreateCharacterPackScreen
 import dev.alenajam.opendialer.core.common.DefaultPhoneManager
 import dev.alenajam.opendialer.core.common.ui.AppThemeExtension
@@ -233,6 +234,16 @@ class MainActivity : AppCompatActivity() {
                                 )
                             }
                         },
+                        dialSearchContent = { prefilledNumber, onOpenHistory, onDialpadCallStarted, onNavigateBack ->
+                            AppTheme(darkTheme = false) {
+                                RetroDialSearchScreen(
+                                    prefilledNumber = prefilledNumber,
+                                    onOpenHistory = onOpenHistory,
+                                    onDialpadCallStarted = onDialpadCallStarted,
+                                    onNavigateBack = onNavigateBack,
+                                )
+                            }
+                        },
                         settingsSubpages = listOf(
                         SettingsSubpage(
                             title = stringResource(R.string.settings_player_character_title),
@@ -355,6 +366,7 @@ class MainActivity : AppCompatActivity() {
                             isScrollable = false,
                             visibleInSettings = false,
                             topContentPadding = RetroScreenTopContentPadding,
+                            contentHorizontalPadding = RetroScreenHorizontalPadding,
                             showTopBar = false,
                             actions = {
                                 ContextualGuideButton(
@@ -377,6 +389,7 @@ class MainActivity : AppCompatActivity() {
                             visibleInSettings = false,
                             isScrollable = false,
                             topContentPadding = 0.dp,
+                            contentHorizontalPadding = RetroScreenHorizontalPadding,
                             showTopBar = false,
                         ),
                         SettingsSubpage(
@@ -420,6 +433,7 @@ class MainActivity : AppCompatActivity() {
                             },
                             isScrollable = false,
                             topContentPadding = RetroScreenTopContentPadding,
+                            contentHorizontalPadding = RetroScreenHorizontalPadding,
                             showTopBar = false,
                             visibleInSettings = true,
                             destinations = listOf(
@@ -448,6 +462,7 @@ class MainActivity : AppCompatActivity() {
                                     content = { _ -> OnlineProfileSection() },
                                     isScrollable = false,
                                     topContentPadding = 0.dp,
+                                    contentHorizontalPadding = RetroScreenHorizontalPadding,
                                     showTopBar = false,
                                     visibleInSettings = false,
                                 ),
@@ -460,6 +475,7 @@ class MainActivity : AppCompatActivity() {
                                 visibleInSettings = false,
                                 isScrollable = false,
                                 topContentPadding = 0.dp,
+                                contentHorizontalPadding = RetroScreenHorizontalPadding,
                                 showTopBar = false,
                                 destinations = listOf(
                                     SettingsSubpageDestination(title = stringResource(R.string.create_character_pack)) { _, onNavigateBack ->
@@ -497,6 +513,17 @@ class MainActivity : AppCompatActivity() {
                                         )
                                     },
                                 ),
+                            ),
+                        ).plus(
+                            SettingsSubpage(
+                                title = stringResource(R.string.settings_catalogs_title),
+                                description = stringResource(R.string.settings_catalogs_description),
+                                content = { _ -> CatalogsScreen() },
+                                isScrollable = false,
+                                topContentPadding = RetroScreenTopContentPadding,
+                                contentHorizontalPadding = RetroScreenHorizontalPadding,
+                                showTopBar = false,
+                                visibleInSettings = true,
                             ),
                         ),
                         )

@@ -40,6 +40,28 @@
     <string name="call_command_dialpad_digits">123\n456\n789\n*0#</string>
     <string name="add" comment="Generic label for adding a new item.">Add</string>
     <string name="settings_character_packs_title" comment="Settings title for managing character packs.">Character Packs</string>
+    <string name="settings_catalogs_title" comment="Settings title for external character-pack catalogs.">Catalogs</string>
+    <string name="settings_catalogs_description" comment="Settings description for external character-pack catalogs.">Browse packs from catalog URLs you add.</string>
+    <string name="catalogs_description" comment="Explanation at the top of the Catalogs screen.">Catalogs list packs hosted by their publishers. Only install artwork and sounds you are allowed to use.</string>
+    <string name="catalogs_empty" comment="Empty state in the Catalogs screen.">Add a catalog URL to browse its packs.</string>
+    <string name="add_catalog" comment="Action that adds an external pack catalog.">Add catalog</string>
+    <string name="catalog_url_label" comment="Label for the external catalog URL field.">Catalog URL</string>
+    <string name="catalog_add_notice" comment="Notice shown before adding a catalog URL.">Only add a catalog from a source you trust. Catalog publishers host and maintain their own pack links.</string>
+    <string name="refresh_catalog" comment="Action that reloads a catalog URL.">Refresh</string>
+    <string name="remove_catalog" comment="Action that removes a catalog URL.">Remove catalog</string>
+    <string name="catalog_loading" comment="Loading status for a catalog.">Loading catalog…</string>
+    <string name="catalog_load_failed" comment="Failure status for a catalog.">Couldn’t load this catalog.</string>
+    <string name="catalog_pack_metadata" comment="Metadata for a catalog pack. %1$s is the creator and %2$s is the version.">%1$s · %2$s</string>
+    <string name="catalog_added" comment="Confirmation after adding a catalog URL.">Catalog added</string>
+    <string name="catalog_add_failed" comment="Failure after adding a catalog URL.">Couldn’t add this catalog.</string>
+    <string name="catalog_removed" comment="Confirmation after removing a catalog URL.">Catalog removed</string>
+    <string name="catalog_remove_failed" comment="Failure after removing a catalog URL.">Couldn’t remove this catalog.</string>
+    <string name="catalog_remove_confirmation_title" comment="Title before removing a catalog URL.">Remove catalog?</string>
+    <string name="catalog_remove_confirmation_message" comment="Explanation before removing a catalog URL.">Installed packs will stay on this device.</string>
+    <string name="catalog_install_confirmation_title" comment="Title before installing a catalog pack.">Install pack?</string>
+    <string name="catalog_install_confirmation_message" comment="Explanation before installing a catalog pack. %1$s is the pack name and %2$s is its license.">%1$s\nLicense: %2$s</string>
+    <string name="catalog_pack_installed" comment="Confirmation after installing a pack from a catalog.">Pack installed</string>
+    <string name="catalog_pack_install_failed" comment="Failure after installing a pack from a catalog.">Couldn’t install this pack.</string>
     <string name="characters_navigation_label" comment="Bottom navigation label for the player's profile and character collection.">Profile</string>
     <string name="customize_your_calls" comment="Section heading above contact character customization.">Customize your calls</string>
     <string name="character_collection_title" comment="Section heading above character pack and import actions.">Your collection</string>
@@ -347,6 +369,18 @@
     <string name="retro_action_menu_label">MENU</string>
     <string name="retro_action_back_label">BACK</string>
     <string name="retro_action_dial_label">DIAL</string>
+    <string name="dial_search_number_prefix" comment="Prefix shown before the number being entered on the retro dial screen.">No./</string>
+    <string name="dial_search_results" comment="Heading for contact suggestions matching a dialed number.">Matches</string>
+    <string name="dial_search_more" comment="Button that opens dial modifiers on the retro dial screen.">More</string>
+    <string name="dialpad_letters_2">ABC</string>
+    <string name="dialpad_letters_3">DEF</string>
+    <string name="dialpad_letters_4">GHI</string>
+    <string name="dialpad_letters_5">JKL</string>
+    <string name="dialpad_letters_6">MNO</string>
+    <string name="dialpad_letters_7">PQRS</string>
+    <string name="dialpad_letters_8">TUV</string>
+    <string name="dialpad_letters_9">WXYZ</string>
+    <string name="dialpad_letters_0">+</string>
     <string name="retro_picker_add" comment="Compact action to add a character in the retro picker.">ADD</string>
     <string name="retro_picker_guide" comment="Compact GSC-style menu action to open the guide.">HELP</string>
     <string name="contact_row_actions" comment="Accessibility label for the contact-row overflow menu trigger.">Contact actions</string>
