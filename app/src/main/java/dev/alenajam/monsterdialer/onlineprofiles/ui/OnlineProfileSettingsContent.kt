@@ -61,6 +61,7 @@ import dev.alenajam.monsterdialer.app.ui.RetroMenuWindow
 import dev.alenajam.monsterdialer.app.ui.RetroDoubleBorderTextBox
 import dev.alenajam.monsterdialer.app.ui.RetroActionButton
 import dev.alenajam.monsterdialer.app.ui.RetroFooter
+import dev.alenajam.monsterdialer.app.ui.RetroScreenHorizontalPadding
 import dev.alenajam.monsterdialer.app.ui.RetroScreenPanelMargin
 import dev.alenajam.monsterdialer.characters.ui.ContextualGuideDialog
 import dev.alenajam.monsterdialer.characters.ui.ContextualGuideButton
@@ -85,6 +86,7 @@ fun OnlineProfileSection(viewModel: OnlineProfileSettingsViewModel = hiltViewMod
     val operation by viewModel.operation.collectAsStateWithLifecycle()
     val error by viewModel.error.collectAsStateWithLifecycle()
     val showRetentionCheckIn by viewModel.showRetentionCheckIn.collectAsStateWithLifecycle()
+    val variantBackupEnabled by viewModel.variantBackupEnabled.collectAsStateWithLifecycle()
     val context = LocalContext.current
     val scope = rememberCoroutineScope()
     val resources = LocalResources.current
@@ -129,7 +131,14 @@ fun OnlineProfileSection(viewModel: OnlineProfileSettingsViewModel = hiltViewMod
     var guideOpen by remember { mutableStateOf(false) }
     var selectedMenuIndex by remember { mutableStateOf(0) }
     Box(modifier = Modifier.fillMaxSize()) {
-        Box(modifier = Modifier.fillMaxWidth().padding(RetroScreenPanelMargin)) {
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(
+                    horizontal = RetroScreenHorizontalPadding,
+                    vertical = RetroScreenPanelMargin,
+                ),
+        ) {
             RetroMenuWindow {
                 Column(verticalArrangement = Arrangement.spacedBy(3.dp)) {
                     Text(
@@ -147,7 +156,9 @@ fun OnlineProfileSection(viewModel: OnlineProfileSettingsViewModel = hiltViewMod
                         onClick = {
                             selectedMenuIndex = 0
                             if (linkIsOn) viewModel.delete()
-                            else if (!working) viewModel.enable()
+                            else if (!working) {
+                                if (isSignedIn) viewModel.enable() else viewModel.signIn()
+                            }
                         },
                     ) {
                         Text(
@@ -178,6 +189,26 @@ fun OnlineProfileSection(viewModel: OnlineProfileSettingsViewModel = hiltViewMod
                             lineHeight = 18.sp,
                             color = ProfileInk,
                         )
+                    }
+                    if (isSignedIn) {
+                        RetroSelectableRow(
+                            selected = selectedMenuIndex == 2,
+                            onClick = {
+                                selectedMenuIndex = 2
+                                if (!working) viewModel.enableVariantBackup()
+                            },
+                        ) {
+                            Text(
+                                text = stringResource(
+                                    if (variantBackupEnabled) R.string.variant_backup_enabled
+                                    else R.string.variant_backup_enable,
+                                ),
+                                fontFamily = ProfilePixelFont,
+                                fontSize = 16.sp,
+                                lineHeight = 18.sp,
+                                color = ProfileInk,
+                            )
+                        }
                     }
                 }
             }

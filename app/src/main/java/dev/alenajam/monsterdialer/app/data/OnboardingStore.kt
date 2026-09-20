@@ -5,7 +5,7 @@ import dev.alenajam.monsterdialer.battle.data.ActiveBattleEncounterStore
 import dev.alenajam.monsterdialer.battle.data.BattleJournalStore
 import dev.alenajam.monsterdialer.characters.data.CharacterAssignmentStore
 import dev.alenajam.monsterdialer.characters.data.PlayerProfileStatsStore
-import dev.alenajam.monsterdialer.characters.data.RadiantVariantUnlockStore
+import dev.alenajam.monsterdialer.characters.data.VariantUnlockStore
 import dev.alenajam.monsterdialer.onlineprofiles.data.OnlineProfileLinkStore
 import dev.alenajam.monsterdialer.packs.data.CharacterPackCatalog
 import dagger.hilt.android.qualifiers.ApplicationContext
@@ -19,7 +19,7 @@ class OnboardingStore @Inject constructor(
     private val packCatalog: CharacterPackCatalog,
     private val battleJournal: BattleJournalStore,
     private val profileStats: PlayerProfileStatsStore,
-    private val radiantUnlocks: RadiantVariantUnlockStore,
+    private val radiantUnlocks: VariantUnlockStore,
     private val activeBattle: ActiveBattleEncounterStore,
     private val onlineProfileLinks: OnlineProfileLinkStore,
 ) {

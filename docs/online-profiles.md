@@ -5,6 +5,30 @@ contact number and an Online Profile only in the app-private `online-profile-lin
 Phone numbers, phone-number hashes, contact names, and address books must never be written to
 Firebase, analytics, crash reports, or logs.
 
+## How sharing works
+
+Online Profile sharing and [variant backup](variant-backup.md) are separate features. Signing in
+with Google does not publish a profile or enable either feature by itself.
+
+After signing in, select **Enable sharing** to publish the currently selected player trainer and
+monster as a battle card. The app creates an opaque share link and QR code that can be given to
+another MonsterDialer user. Anyone with that link can retrieve the shared battle card; it is not
+listed or searchable.
+
+The card contains the selected trainer and monster names, the monster's level and maximum HP,
+whether the monster is radiant, and PNG copies of their front sprites. It never contains your
+Google account ID or email address, phone numbers, contacts, call history, contact assignments,
+or the rest of your character collection.
+
+The app refreshes the shared card when its enabled sharing content changes. Choosing **Regenerate
+link** creates a new opaque link and invalidates the old one. Choosing **Remove sharing** deletes
+the card and its sprites from the remote service. Signing out only disconnects this device; it
+does not remove a shared card. Sign back in and remove sharing to delete it.
+
+MonsterDialer periodically asks the owner to confirm that a shared card should remain online. If
+the confirmation is needed, select **Keep online**. This confirmation does not change the card's
+content or link.
+
 ## Firebase setup
 
 Enable Google as a Firebase Authentication provider, Cloud Firestore, and Cloud Storage in the

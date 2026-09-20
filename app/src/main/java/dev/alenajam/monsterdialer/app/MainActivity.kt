@@ -83,7 +83,6 @@ import dev.alenajam.monsterdialer.characters.ui.SharedCharacterImportHandler
 import dev.alenajam.monsterdialer.characters.data.SharedCharacterArchive
 import dev.alenajam.monsterdialer.characters.ui.radiantGuideContents
 import dev.alenajam.monsterdialer.battle.ui.BattleJournalScreen
-import dev.alenajam.monsterdialer.battle.ui.BattleJournalOverflowMenu
 import dev.alenajam.monsterdialer.contacts.data.MonsterContact
 import dev.alenajam.monsterdialer.contacts.ui.formatPhoneNumber
 import dev.alenajam.monsterdialer.packs.data.CharacterAssignmentTarget
@@ -375,10 +374,10 @@ class MainActivity : AppCompatActivity() {
                             title = stringResource(R.string.battle_journal_title),
                             description = stringResource(R.string.battle_journal_description),
                             content = { _ -> BattleJournalScreen() },
-                            actions = { BattleJournalOverflowMenu() },
                             visibleInSettings = false,
                             isScrollable = false,
                             topContentPadding = 0.dp,
+                            showTopBar = false,
                         ),
                         SettingsSubpage(
                             title = stringResource(R.string.linked_online_profile_title),
@@ -449,6 +448,7 @@ class MainActivity : AppCompatActivity() {
                                     content = { _ -> OnlineProfileSection() },
                                     isScrollable = false,
                                     topContentPadding = 0.dp,
+                                    showTopBar = false,
                                     visibleInSettings = false,
                                 ),
                             )

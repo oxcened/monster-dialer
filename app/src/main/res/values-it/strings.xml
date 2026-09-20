@@ -260,8 +260,8 @@
     <string name="battle_journal_radiant_encounter_label">Incontro radiante</string>
     <string name="battle_journal_more_options">Altre opzioni del diario delle battaglie</string>
     <string name="battle_journal_clear">Cancella diario</string>
-    <string name="battle_journal_clear_confirmation_title">Cancellare il diario delle battaglie?</string>
-    <string name="battle_journal_clear_confirmation_message">Questa azione rimuoverà definitivamente tutta la cronologia delle battaglie e gli sprite salvati.</string>
+    <string name="battle_journal_clear_short">Cancella</string>
+    <string name="battle_journal_clear_confirmation_title">Sei sicuro?</string>
     <string name="your_roster">La tua squadra</string>
     <string name="roster_monster_level">Lv. %1$d</string>
     <string name="roster_monster_description">%1$s, livello %2$d</string>
@@ -456,7 +456,7 @@
     <string name="profile_menu_contacts">CONTATTI</string>
     <string name="profile_menu_collection">COLLEZIONE</string>
     <string name="profile_menu_journal">DIARIO</string>
-    <string name="profile_menu_online">CONDIVIDI</string>
+    <string name="profile_menu_online">LINK</string>
     <string name="profile_menu_toolbox">STRUMENTI</string>
     <string name="profile_menu_options">OPZIONI</string>
     <string name="profile_menu_exit">ESCI</string>
@@ -506,8 +506,8 @@
     <string name="contact_added_message">%1$s è stato aggiunto alla squadra!</string>
     <string name="character_selection_more_options" comment="Accessibility label for the character selector menu containing secondary pool actions.">Altre opzioni per la selezione dei personaggi</string>
     <string name="radiant_unlock_share_card_link" comment="Link printed on the radiant-unlock share card. Do not translate." translatable="false">monsterdialer.web.app</string>
-    <string name="online_profile_link_on">CONDIVIDI/SÌ</string>
-    <string name="online_profile_link_off">CONDIVIDI/NO</string>
+    <string name="online_profile_link_on">LINK/ON</string>
+    <string name="online_profile_link_off">LINK/OFF</string>
     <string name="online_profile_sign_in_action">ACCEDI</string>
     <string name="online_profile_unlink_action">SCOLLEGA</string>
     <string name="online_profile_linked_message">La tua squadra è condivisa.</string>

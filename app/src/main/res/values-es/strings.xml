@@ -234,8 +234,8 @@
     <string name="battle_journal_radiant_encounter_label">Encuentro radiante</string>
     <string name="battle_journal_more_options">Más opciones del diario de combate</string>
     <string name="battle_journal_clear">Borrar diario</string>
-    <string name="battle_journal_clear_confirmation_title">¿Borrar el diario de combate?</string>
-    <string name="battle_journal_clear_confirmation_message">Esto eliminará permanentemente todo el historial de combate y los sprites guardados.</string>
+    <string name="battle_journal_clear_short">Borrar</string>
+    <string name="battle_journal_clear_confirmation_title">¿Estás seguro?</string>
     <string name="your_roster">Tu equipo</string>
     <string name="roster_monster_level">Nv. %1$d</string>
     <string name="roster_monster_description">%1$s, nivel %2$d</string>
@@ -438,7 +438,7 @@
     <string name="profile_menu_contacts">CONTACTOS</string>
     <string name="profile_menu_collection">COLECCIÓN</string>
     <string name="profile_menu_journal">DIARIO</string>
-    <string name="profile_menu_online">COMPARTIR</string>
+    <string name="profile_menu_online">LINK</string>
     <string name="profile_menu_toolbox">HERRAMIENTAS</string>
     <string name="profile_menu_options">OPCIONES</string>
     <string name="profile_menu_exit">SALIR</string>
@@ -488,8 +488,8 @@
     <string name="contact_added_message">¡%1$s se ha añadido a la plantilla!</string>
     <string name="character_selection_more_options" comment="Accessibility label for the character selector menu containing secondary pool actions.">Más opciones de selección de personajes</string>
     <string name="radiant_unlock_share_card_link" comment="Link printed on the radiant-unlock share card. Do not translate." translatable="false">monsterdialer.web.app</string>
-    <string name="online_profile_link_on">COMPARTIR/SÍ</string>
-    <string name="online_profile_link_off">COMPARTIR/NO</string>
+    <string name="online_profile_link_on">LINK/ON</string>
+    <string name="online_profile_link_off">LINK/OFF</string>
     <string name="online_profile_sign_in_action">INICIAR SESIÓN</string>
     <string name="online_profile_unlink_action">DESVINCULAR</string>
     <string name="online_profile_linked_message">Tu equipo se comparte.</string>

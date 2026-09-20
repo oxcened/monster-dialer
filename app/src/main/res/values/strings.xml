@@ -88,7 +88,7 @@
     <string name="profile_menu_contacts">CONTACTS</string>
     <string name="profile_menu_collection">COLLECTION</string>
     <string name="profile_menu_journal">JOURNAL</string>
-    <string name="profile_menu_online">SHARE</string>
+    <string name="profile_menu_online">LINK</string>
     <string name="profile_menu_toolbox">TOOLS</string>
     <string name="profile_menu_options">OPTIONS</string>
     <string name="profile_menu_exit">EXIT</string>
@@ -115,8 +115,8 @@
     <string name="battle_journal_radiant_encounter_label" comment="Compact category label for a repeat radiant encounter.">Radiant encounter</string>
     <string name="battle_journal_more_options" comment="Accessibility label for the Battle Journal overflow menu.">More Battle Journal options</string>
     <string name="battle_journal_clear" comment="Overflow-menu action that removes all Battle Journal entries.">Clear journal</string>
-    <string name="battle_journal_clear_confirmation_title" comment="Title for the confirmation dialog before clearing the Battle Journal.">Clear Battle Journal?</string>
-    <string name="battle_journal_clear_confirmation_message" comment="Explanation of what clearing the Battle Journal removes.">This permanently removes all battle history and saved journal sprites.</string>
+    <string name="battle_journal_clear_short" comment="Compact Battle Journal action that removes all entries.">Clear</string>
+    <string name="battle_journal_clear_confirmation_title" comment="Short prompt shown before clearing the Battle Journal.">Are you sure?</string>
     <string name="monster_variant_and_level" translatable="false" comment="Language-neutral formatter for a monster variant and an already-localized level. %1$s is the variant (e.g., Regular) and %2$s is the level (e.g., Lv. 12).">%1$s · %2$s</string>
     <string name="retro_picker_variant_and_level" translatable="false" comment="Language-neutral formatter for the retro assignment picker. %1$s is the variant and %2$s is the level.">%1$s   %2$s</string>
     <string name="filter_all" comment="Filter option to show all monster variants.">All</string>
@@ -281,13 +281,17 @@
     <string name="contact_chooser_prompt" comment="Prompt above the contact picker.">Choose a contact to assign a character.</string>
     <string name="online_profile_choose_contact_prompt" comment="Prompt shown after opening a shared Online Profile link.">Choose a contact to link with this Online Profile. This association stays on your device.</string>
     <string name="online_profile_title" comment="Title of the profile SHARE screen for sharing the player's battle identity with friends.">SHARE</string>
-    <string name="online_profile_link_on">SHARE/ON</string>
-    <string name="online_profile_link_off">SHARE/OFF</string>
+    <string name="online_profile_link_on">LINK/ON</string>
+    <string name="online_profile_link_off">LINK/OFF</string>
     <string name="online_profile_sign_in_action">SIGN IN</string>
     <string name="online_profile_unlink_action">UNLINK</string>
     <string name="online_profile_linked_message">Your team is shared.</string>
     <string name="online_profile_not_linked_message">Share your team with friends.</string>
     <string name="online_profile_description" comment="Description below the Online Profile settings title. The trainer and monster are the player's battle characters.">Let friends see the trainer and monster you bring into every call.</string>
+    <string name="variant_backup_enable" comment="Action that enables private account backup for unlockable character variants.">Back up variants</string>
+    <string name="variant_backup_enabled" comment="Status/action indicating that private character-variant backup is active.">Variants backed up</string>
+    <string name="variant_backup_guide_title" comment="Guide title for private cloud backup of unlockable character variants.">Variant backup</string>
+    <string name="variant_backup_guide_message" comment="Privacy explanation for cloud backup of unlockable character variants.">Back up your unlockable character variants privately with your Google account. This never publishes them publicly or uploads character artwork, contacts, or call history. When you sign in on another device and enable backup, MonsterDialer restores every unlock it finds and safely combines it with that device’s collection.</string>
     <string name="online_profile_privacy_note" comment="Privacy note on the Online Profile settings screen. Sprites are character images; metadata is their non-image information.">Only your character sprites and metadata are shared.</string>
     <string name="online_profile_guide_title">Sharing Your Online Profile</string>
     <string name="online_profile_guide_message">Online Profiles are optional and designed with privacy and security in mind. To enable one, sign in with Google. Your Google account identifies who can manage the profile; your email and Google account details are not shared. Enabling a profile, or signing in on another device, publishes that device’s current trainer and active monster, including their selected sprites, at a shareable link. Servers do not store your phone number, contact list, call history, or other personal or sensitive data. Links between MonsterDialer profiles and contacts stay exclusively on each device.</string>

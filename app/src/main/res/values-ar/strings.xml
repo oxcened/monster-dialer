@@ -245,8 +245,8 @@
     <string name="battle_journal_radiant_encounter_label">مواجهة متألقة</string>
     <string name="battle_journal_more_options">المزيد من خيارات سجل المعارك</string>
     <string name="battle_journal_clear">مسح السجل</string>
-    <string name="battle_journal_clear_confirmation_title">مسح سجل المعارك؟</string>
-    <string name="battle_journal_clear_confirmation_message">سيؤدي هذا إلى إزالة كل سجل المعارك والرسومات المحفوظة نهائيًا.</string>
+    <string name="battle_journal_clear_short">مسح</string>
+    <string name="battle_journal_clear_confirmation_title">هل أنت متأكد؟</string>
     <string name="your_roster">قائمتك</string>
     <string name="roster_monster_level">المستوى %1$d</string>
     <string name="roster_monster_description">%1$s، المستوى %2$d</string>
@@ -457,7 +457,7 @@
     <string name="profile_menu_contacts">جهات الاتصال</string>
     <string name="profile_menu_collection">المجموعة</string>
     <string name="profile_menu_journal">السجل</string>
-    <string name="profile_menu_online">مشاركة</string>
+    <string name="profile_menu_online">LINK</string>
     <string name="profile_menu_toolbox">الأدوات</string>
     <string name="profile_menu_options">الخيارات</string>
     <string name="profile_menu_exit">خروج</string>
@@ -511,8 +511,8 @@
     <string name="contact_added_message">تمت إضافة %1$s إلى القائمة!</string>
     <string name="character_selection_more_options" comment="Accessibility label for the character selector menu containing secondary pool actions.">المزيد من خيارات اختيار الشخصية</string>
     <string name="radiant_unlock_share_card_link" comment="Link printed on the radiant-unlock share card. Do not translate." translatable="false">monsterdialer.web.app</string>
-    <string name="online_profile_link_on">مشاركة/مفعّل</string>
-    <string name="online_profile_link_off">مشاركة/معطّل</string>
+    <string name="online_profile_link_on">LINK/ON</string>
+    <string name="online_profile_link_off">LINK/OFF</string>
     <string name="online_profile_sign_in_action">تسجيل الدخول</string>
     <string name="online_profile_unlink_action">إلغاء الربط</string>
     <string name="online_profile_linked_message">تمت مشاركة فريقك.</string>

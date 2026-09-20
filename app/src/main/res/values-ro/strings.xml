@@ -231,8 +231,8 @@
     <string name="battle_journal_radiant_encounter_label">Întâlnire radiantă</string>
     <string name="battle_journal_more_options">Mai multe opțiuni pentru jurnalul de lupte</string>
     <string name="battle_journal_clear">Golește jurnalul</string>
-    <string name="battle_journal_clear_confirmation_title">Golești jurnalul de lupte?</string>
-    <string name="battle_journal_clear_confirmation_message">Aceasta va elimina definitiv tot istoricul luptelor și sprite-urile salvate.</string>
+    <string name="battle_journal_clear_short">Golește</string>
+    <string name="battle_journal_clear_confirmation_title">Ești sigur?</string>
     <string name="your_roster">Echipa ta</string>
     <string name="roster_monster_level">Nv. %1$d</string>
     <string name="roster_monster_description">%1$s, nivelul %2$d</string>
@@ -443,7 +443,7 @@
     <string name="profile_menu_contacts">CONTACTE</string>
     <string name="profile_menu_collection">COLECȚIE</string>
     <string name="profile_menu_journal">JURNAL</string>
-    <string name="profile_menu_online">PARTAJEAZĂ</string>
+    <string name="profile_menu_online">LINK</string>
     <string name="profile_menu_toolbox">INSTRUMENTE</string>
     <string name="profile_menu_options">OPȚIUNI</string>
     <string name="profile_menu_exit">IEȘIRE</string>
@@ -494,8 +494,8 @@
     <string name="contact_added_message">%1$s a fost adăugat în echipă!</string>
     <string name="character_selection_more_options" comment="Accessibility label for the character selector menu containing secondary pool actions.">Mai multe opțiuni pentru selectarea personajului</string>
     <string name="radiant_unlock_share_card_link" comment="Link printed on the radiant-unlock share card. Do not translate." translatable="false">monsterdialer.web.app</string>
-    <string name="online_profile_link_on">PARTAJARE/ACTIV</string>
-    <string name="online_profile_link_off">PARTAJARE/INACTIV</string>
+    <string name="online_profile_link_on">LINK/ON</string>
+    <string name="online_profile_link_off">LINK/OFF</string>
     <string name="online_profile_sign_in_action">CONECTARE</string>
     <string name="online_profile_unlink_action">DEZLEAGĂ</string>
     <string name="online_profile_linked_message">Echipa ta este partajată.</string>

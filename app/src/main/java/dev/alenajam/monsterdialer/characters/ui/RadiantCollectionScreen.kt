@@ -43,7 +43,7 @@ import dev.alenajam.monsterdialer.app.ui.RetroContextMenuOverlay
 import dev.alenajam.monsterdialer.app.ui.RetroSearchButton
 import dev.alenajam.monsterdialer.characters.data.BuiltInCharacters
 import dev.alenajam.monsterdialer.characters.data.CharactersRepository
-import dev.alenajam.monsterdialer.characters.data.RadiantVariantUnlockStore
+import dev.alenajam.monsterdialer.characters.data.VariantUnlockStore
 import dev.alenajam.monsterdialer.packs.data.CharacterAssignmentTarget
 import dev.alenajam.monsterdialer.packs.data.CharacterReference
 import dev.alenajam.monsterdialer.packs.data.CharacterType
@@ -61,7 +61,7 @@ import kotlinx.coroutines.flow.stateIn
 @HiltViewModel
 class RadiantCollectionViewModel @Inject constructor(
     private val charactersRepository: CharactersRepository,
-    radiantUnlocks: RadiantVariantUnlockStore,
+    radiantUnlocks: VariantUnlockStore,
 ) : ViewModel() {
     val entries: StateFlow<List<RadiantCollectionEntry>> = combine(
         charactersRepository.observeCharactersAssignableTo(

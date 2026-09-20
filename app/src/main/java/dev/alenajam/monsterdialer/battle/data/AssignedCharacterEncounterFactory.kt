@@ -7,7 +7,7 @@ import dev.alenajam.monsterdialer.characters.data.CharactersRepository
 import dev.alenajam.monsterdialer.characters.data.DefaultMonsterLevel
 import dev.alenajam.monsterdialer.characters.data.BuiltInCharacters
 import dev.alenajam.monsterdialer.characters.data.PlayerProfileStatsStore
-import dev.alenajam.monsterdialer.characters.data.RadiantVariantUnlockStore
+import dev.alenajam.monsterdialer.characters.data.VariantUnlockStore
 import dev.alenajam.monsterdialer.packs.data.CharacterAssignmentTarget
 import dev.alenajam.monsterdialer.packs.data.CharacterReference
 import dev.alenajam.monsterdialer.packs.data.CharacterType
@@ -25,7 +25,7 @@ import kotlin.random.Random
 class AssignedCharacterEncounterFactory @Inject constructor(
     private val charactersRepository: CharactersRepository,
     private val assignmentRepository: CharacterAssignmentRepository,
-    private val radiantUnlocks: RadiantVariantUnlockStore,
+    private val radiantUnlocks: VariantUnlockStore,
     private val activeEncounterStore: ActiveBattleEncounterStore,
     private val profileStatsStore: PlayerProfileStatsStore,
     private val battleJournalStore: BattleJournalStore,
@@ -36,7 +36,7 @@ class AssignedCharacterEncounterFactory @Inject constructor(
     constructor(
         charactersRepository: CharactersRepository,
         assignmentRepository: CharacterAssignmentRepository,
-        radiantUnlocks: RadiantVariantUnlockStore,
+        radiantUnlocks: VariantUnlockStore,
         activeEncounterStore: ActiveBattleEncounterStore,
         profileStatsStore: PlayerProfileStatsStore,
         battleJournalStore: BattleJournalStore,

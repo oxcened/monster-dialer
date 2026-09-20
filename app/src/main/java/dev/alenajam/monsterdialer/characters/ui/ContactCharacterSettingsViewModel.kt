@@ -10,7 +10,7 @@ import dev.alenajam.monsterdialer.characters.data.ContactCharacterOverview
 import dev.alenajam.monsterdialer.characters.data.ContactCharacterAssignmentUpdate
 import dev.alenajam.monsterdialer.characters.data.CharacterLayoutPreferences
 import dev.alenajam.monsterdialer.characters.data.CharactersRepository
-import dev.alenajam.monsterdialer.characters.data.RadiantVariantUnlockStore
+import dev.alenajam.monsterdialer.characters.data.VariantUnlockStore
 import dev.alenajam.monsterdialer.contacts.data.ContactSelectionRepository
 import dev.alenajam.monsterdialer.contacts.data.MonsterContact
 import dev.alenajam.monsterdialer.packs.data.CharacterAssignmentTarget
@@ -43,7 +43,7 @@ class ContactCharacterSettingsViewModel @Inject constructor(
     private val selectionRepository: ContactSelectionRepository,
     private val layoutPreferences: CharacterLayoutPreferences,
     private val packsRepository: dev.alenajam.monsterdialer.packs.data.PacksRepository,
-    radiantUnlocks: RadiantVariantUnlockStore,
+    radiantUnlocks: VariantUnlockStore,
     private val onlineOpponentResolver: OnlineOpponentResolver,
     private val contactsRepository: ContactsRepository,
 ) : ViewModel() {

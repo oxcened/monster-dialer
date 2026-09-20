@@ -221,8 +221,8 @@
     <string name="battle_journal_radiant_encounter_label">Radiant-møde</string>
     <string name="battle_journal_more_options">Flere indstillinger for kampjournal</string>
     <string name="battle_journal_clear">Ryd journal</string>
-    <string name="battle_journal_clear_confirmation_title">Ryd kampjournal?</string>
-    <string name="battle_journal_clear_confirmation_message">Dette fjerner permanent hele kamphistorikken og gemte journal-sprites.</string>
+    <string name="battle_journal_clear_short">Ryd</string>
+    <string name="battle_journal_clear_confirmation_title">Er du sikker?</string>
     <string name="your_roster">Dit hold</string>
     <string name="roster_monster_level">Lv. %1$d</string>
     <string name="roster_monster_description">%1$s, niveau %2$d</string>
@@ -433,7 +433,7 @@
     <string name="profile_menu_contacts">KONTAKTER</string>
     <string name="profile_menu_collection">SAMLING</string>
     <string name="profile_menu_journal">LOGBOG</string>
-    <string name="profile_menu_online">DEL</string>
+    <string name="profile_menu_online">LINK</string>
     <string name="profile_menu_toolbox">VÆRKTØJER</string>
     <string name="profile_menu_options">INDSTILLINGER</string>
     <string name="profile_menu_exit">AFSLUT</string>
@@ -483,8 +483,8 @@
     <string name="contact_added_message">%1$s blev føjet til holdet!</string>
     <string name="character_selection_more_options" comment="Accessibility label for the character selector menu containing secondary pool actions.">Flere valgmuligheder for figurvalg</string>
     <string name="radiant_unlock_share_card_link" comment="Link printed on the radiant-unlock share card. Do not translate." translatable="false">monsterdialer.web.app</string>
-    <string name="online_profile_link_on">DEL/TIL</string>
-    <string name="online_profile_link_off">DEL/FRA</string>
+    <string name="online_profile_link_on">LINK/ON</string>
+    <string name="online_profile_link_off">LINK/OFF</string>
     <string name="online_profile_sign_in_action">LOG IND</string>
     <string name="online_profile_unlink_action">FJERN LINK</string>
     <string name="online_profile_linked_message">Dit hold deles.</string>
