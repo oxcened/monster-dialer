@@ -236,15 +236,18 @@ private fun MonsterHomeActions(
                 label = stringResource(if (searchActive) R.string.customized_contacts_back_action else R.string.retro_action_dial_label),
                 onClick = if (searchActive) onBack else onDial,
             )
-        } else if (profileBackAction != null) {
+        } else {
+            Box(modifier = Modifier.weight(1f)) {
+                if (profileBackAction != null) {
+                    RetroActionButton(
+                        key = stringResource(R.string.retro_key_a),
+                        label = stringResource(R.string.customized_contacts_back_action),
+                        onClick = onBack,
+                    )
+                }
+            }
             RetroActionButton(
                 key = stringResource(R.string.retro_key_b),
-                label = stringResource(R.string.customized_contacts_back_action),
-                onClick = onBack,
-            )
-        } else {
-            RetroActionButton(
-                key = stringResource(R.string.retro_key_a),
                 label = stringResource(R.string.retro_action_dial_label),
                 onClick = onDial,
             )
