@@ -397,7 +397,7 @@
     <string name="call_command_cursor">▶ %1$s</string>
     <string name="call_command_section">◀ %1$s</string>
     <string name="call_command_back">返回</string>
-    <string name="call_command_run">执行</string>
+    <string name="call_command_run">逃跑</string>
     <string name="call_command_dialpad_digits">123\n456\n789\n*0#</string>
     <string name="profile_status_title">状态</string>
     <string name="profile_player_label">玩家</string>

@@ -408,7 +408,7 @@
     <string name="call_command_cursor">▶ %1$s</string>
     <string name="call_command_section">◀ %1$s</string>
     <string name="call_command_back">ATRÁS</string>
-    <string name="call_command_run">EJECUTAR</string>
+    <string name="call_command_run">HUIR</string>
     <string name="call_command_dialpad_digits">123\n456\n789\n*0#</string>
     <string name="profile_status_title">ESTADO</string>
     <string name="profile_player_label">JUGADOR</string>

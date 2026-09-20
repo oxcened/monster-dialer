@@ -426,7 +426,7 @@
     <string name="call_command_cursor">▶ %1$s</string>
     <string name="call_command_section">◀ %1$s</string>
     <string name="call_command_back">INDIETRO</string>
-    <string name="call_command_run">ESEGUI</string>
+    <string name="call_command_run">FUGGI</string>
     <string name="call_command_dialpad_digits">123\n456\n789\n*0#</string>
     <string name="profile_status_title">STATO</string>
     <string name="profile_player_label">GIOCATORE</string>

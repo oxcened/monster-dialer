@@ -427,7 +427,7 @@
     <string name="call_command_cursor">▶ %1$s</string>
     <string name="call_command_section">◀ %1$s</string>
     <string name="call_command_back">رجوع</string>
-    <string name="call_command_run">تنفيذ</string>
+    <string name="call_command_run">اهرب</string>
     <string name="call_command_dialpad_digits">123\n456\n789\n*0#</string>
     <string name="profile_status_title">الحالة</string>
     <string name="profile_player_label">اللاعب</string>

@@ -413,7 +413,7 @@
     <string name="call_command_cursor">▶ %1$s</string>
     <string name="call_command_section">◀ %1$s</string>
     <string name="call_command_back">ÎNAPOI</string>
-    <string name="call_command_run">EXECUTĂ</string>
+    <string name="call_command_run">FUGI</string>
     <string name="call_command_dialpad_digits">123\n456\n789\n*0#</string>
     <string name="profile_status_title">STATUS</string>
     <string name="profile_player_label">JUCĂTOR</string>
