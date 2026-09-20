@@ -14,6 +14,8 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.Text
+import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -159,12 +161,14 @@ fun RadiantCollectionScreen(viewModel: RadiantCollectionViewModel = hiltViewMode
     val navigator = LocalSettingsSubpageNavigator.current
     val scope = androidx.compose.runtime.rememberCoroutineScope()
     var selectedEntry by remember { mutableStateOf<RadiantCollectionEntry?>(null) }
+    var lockedEntry by remember { mutableStateOf<RadiantCollectionEntry?>(null) }
     var pendingDeletion by remember { mutableStateOf<RadiantCollectionEntry?>(null) }
     var isPendingDeletionInUse by remember { mutableStateOf(false) }
     var pendingShare by remember { mutableStateOf<RadiantCollectionEntry?>(null) }
     var selectedType by remember { mutableStateOf(CharacterType.Monster) }
     var selectedFilter by remember { mutableStateOf(CollectionVariantFilter.All) }
     var filterMenuOpen by remember { mutableStateOf(false) }
+    var addMenuOpen by remember { mutableStateOf(false) }
     val listState = rememberLazyListState()
     val sections = buildCollectionSections(
         entries = entries,
@@ -212,6 +216,11 @@ fun RadiantCollectionScreen(viewModel: RadiantCollectionViewModel = hiltViewMode
                 horizontalArrangement = Arrangement.Start,
             )
             RetroSearchButton(
+                label = stringResource(R.string.add),
+                onClick = { addMenuOpen = true },
+                modifier = Modifier.weight(0.7f),
+            )
+            RetroSearchButton(
                 label = stringResource(R.string.radiant_collection_browse_packs),
                 onClick = { navigator?.navigateTo(1) },
                 modifier = Modifier.weight(1f),
@@ -234,10 +243,11 @@ fun RadiantCollectionScreen(viewModel: RadiantCollectionViewModel = hiltViewMode
                         val entry = section.entries[index]
                         CollectionMonsterRow(
                             entry = entry,
-                            onClick = if (entry.isEditable && !entry.isRadiant) {
-                                { selectedEntry = entry }
-                            } else {
-                                null
+                            onClick = {
+                                when {
+                                    entry.isRadiant && !entry.isUnlocked -> lockedEntry = entry
+                                    entry.isEditable && !entry.isRadiant -> selectedEntry = entry
+                                }
                             },
                         )
                     }
@@ -299,6 +309,32 @@ fun RadiantCollectionScreen(viewModel: RadiantCollectionViewModel = hiltViewMode
             }
         }
 
+        if (addMenuOpen) {
+            RetroContextMenuOverlay(
+                modifier = Modifier.fillMaxWidth(0.72f),
+                fontFamily = RetroPickerFont,
+                onDismissRequest = { addMenuOpen = false },
+                items = listOf(
+                    RetroContextMenuItem(stringResource(R.string.add_trainer)) {
+                        addMenuOpen = false
+                        navigator?.navigateTo(3)
+                    },
+                    RetroContextMenuItem(stringResource(R.string.add_monster)) {
+                        addMenuOpen = false
+                        navigator?.navigateTo(4)
+                    },
+                    RetroContextMenuItem.cancel(stringResource(R.string.cancel)) { addMenuOpen = false },
+                ),
+            )
+        }
+
+        lockedEntry?.let { entry ->
+            RadiantVariantUnlockDialog(
+                characterName = entry.name,
+                onDismiss = { lockedEntry = null },
+            )
+        }
+
     pendingDeletion?.let { entry ->
         CustomCharacterDeletionConfirmationDialog(
             characterName = entry.name,
@@ -346,6 +382,34 @@ fun RadiantCollectionScreen(viewModel: RadiantCollectionViewModel = hiltViewMode
         )
     }
 }
+
+}
+
+@Composable
+private fun RadiantVariantUnlockDialog(
+    characterName: String,
+    onDismiss: () -> Unit,
+) {
+    var showGuide by remember { mutableStateOf(false) }
+    if (showGuide) {
+        ContextualGuideDialog(
+            contents = radiantGuideContents(),
+            onDismiss = { showGuide = false },
+        )
+    }
+    AlertDialog(
+        onDismissRequest = onDismiss,
+        title = { Text(stringResource(R.string.radiant_variant_locked_title)) },
+        text = { Text(stringResource(R.string.radiant_variant_locked_message, characterName)) },
+        confirmButton = {
+            TextButton(onClick = onDismiss) { Text(stringResource(R.string.cancel)) }
+        },
+        dismissButton = {
+            TextButton(onClick = { showGuide = true }) {
+                Text(stringResource(R.string.learn_about_radiants))
+            }
+        },
+    )
 }
 
 private enum class CollectionVariantFilter(val labelRes: Int) {

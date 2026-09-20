@@ -513,6 +513,20 @@ class MainActivity : AppCompatActivity() {
                                             preferredAssignmentTarget = CharacterAssignmentTarget.Player,
                                         )
                                     },
+                                    SettingsSubpageDestination(title = stringResource(R.string.add_trainer)) { _, onNavigateBack ->
+                                        AddCharacterScreen(
+                                            onNavigateBack = onNavigateBack,
+                                            characterType = CharacterType.Trainer,
+                                            preferredAssignmentTarget = CharacterAssignmentTarget.Player,
+                                        )
+                                    },
+                                    SettingsSubpageDestination(title = stringResource(R.string.add_monster)) { _, onNavigateBack ->
+                                        AddCharacterScreen(
+                                            onNavigateBack = onNavigateBack,
+                                            characterType = CharacterType.Monster,
+                                            preferredAssignmentTarget = CharacterAssignmentTarget.Player,
+                                        )
+                                    },
                                 ),
                             ),
                         ).plus(
