@@ -87,7 +87,6 @@ fun ColumnScope.CharacterPackSettingsContent(
     val characterPackRemoved = stringResource(R.string.character_pack_removed)
     val characterPackRemoveFailed = stringResource(R.string.character_pack_remove_failed)
     var pendingDeletion by remember { mutableStateOf<MonsterPack?>(null) }
-    var isPendingDeletionInUse by remember { mutableStateOf(false) }
     var pendingDisable by remember { mutableStateOf<MonsterPack?>(null) }
     var selectedPack by remember { mutableStateOf<MonsterPack?>(null) }
     var detailsPack by remember { mutableStateOf<MonsterPack?>(null) }
@@ -115,8 +114,6 @@ fun ColumnScope.CharacterPackSettingsContent(
 
     pendingDeletion?.let { pack ->
         CharacterPackDeletionConfirmationDialog(
-            packName = pack.name,
-            isInUse = isPendingDeletionInUse,
             onConfirm = {
                 viewModel.deletePack(pack.id, characterPackRemoved, characterPackRemoveFailed)
                 pendingDeletion = null
@@ -290,10 +287,7 @@ fun ColumnScope.CharacterPackSettingsContent(
                     },
                     RetroContextMenuItem(stringResource(R.string.remove)) {
                         selectedPack = null
-                        scope.launch {
-                            isPendingDeletionInUse = viewModel.isPackInUse(pack.id)
-                            pendingDeletion = pack
-                        }
+                        pendingDeletion = pack
                     },
                     RetroContextMenuItem.cancel(stringResource(R.string.cancel), onClick = { selectedPack = null }),
                 ),
@@ -516,18 +510,11 @@ private fun MonsterPack.metadataText(
 
 @Composable
 private fun CharacterPackDeletionConfirmationDialog(
-    packName: String,
-    isInUse: Boolean,
     onConfirm: () -> Unit,
     onDismiss: () -> Unit
 ) {
     RetroConfirmationDialog(
-        title = stringResource(R.string.remove_character_pack_title, packName),
-        message = stringResource(
-            if (isInUse) R.string.remove_character_pack_in_use_message
-            else R.string.remove_character_pack_message,
-            packName,
-        ),
+        title = stringResource(R.string.are_you_sure),
         noLabel = stringResource(R.string.cancel),
         yesLabel = stringResource(R.string.remove),
         fontFamily = PackPixelFont,
