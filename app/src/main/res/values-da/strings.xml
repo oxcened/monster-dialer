@@ -517,4 +517,51 @@
     <string name="favorite_phone_type_number" comment="Favorite contact summary. %1$s is the phone type and %2$s is the phone number.">%1$s • %2$s</string>
     <string name="call_log_just_now" comment="Call-log time shown for calls less than one minute old.">Lige nu</string>
     <string name="new_contact_short" comment="Compact command for creating a contact.">Ny</string>
+    <string name="settings_catalogs_title">Kataloger</string>
+    <string name="settings_catalogs_description">Gennemse pakker fra de katalog-URL’er, du tilføjer.</string>
+    <string name="local_backup_title">Lokal sikkerhedskopi</string>
+    <string name="local_backup_settings_description">Eksportér eller gendan din samling af figurer og dine fremskridt.</string>
+    <string name="local_backup_description">Gem dine figurpakker, tildelinger, strålende opdagelser og kampjournal i en fil på denne enhed. Android-kontakter og opkaldshistorik er ikke inkluderet.</string>
+    <string name="local_backup_export">Eksportér sikkerhedskopi</string>
+    <string name="local_backup_import">Gendan sikkerhedskopi</string>
+    <string name="local_backup_import_confirmation_title">Gendan sikkerhedskopi?</string>
+    <string name="local_backup_import_confirmation_message">Dette erstatter din nuværende samling af figurer og lokale fremskridt.</string>
+    <string name="local_backup_exported">Sikkerhedskopi eksporteret</string>
+    <string name="local_backup_failed">Sikkerhedskopien kunne ikke fuldføres.</string>
+    <string name="catalogs_description">Kataloger viser pakker, som deres udgivere hoster. Installér kun illustrationer og lyde, du har tilladelse til at bruge.</string>
+    <string name="catalogs_empty">Tilføj en katalog-URL for at gennemse dens pakker.</string>
+    <string name="add_catalog">Tilføj katalog</string>
+    <string name="catalog_url_label">Katalog-URL</string>
+    <string name="catalog_add_notice">Tilføj kun kataloger fra kilder, du stoler på. Katalogudgivere hoster og vedligeholder selv deres pakkelinks.</string>
+    <string name="refresh_catalog">Opdatér</string>
+    <string name="remove_catalog">Fjern katalog</string>
+    <string name="catalog_loading">Indlæser katalog…</string>
+    <string name="catalog_load_failed">Kataloget kunne ikke indlæses.</string>
+    <string name="catalog_pack_metadata">%1$s · %2$s</string>
+    <string name="catalog_added">Katalog tilføjet</string>
+    <string name="catalog_add_failed">Kataloget kunne ikke tilføjes.</string>
+    <string name="catalog_removed">Katalog fjernet</string>
+    <string name="catalog_remove_failed">Kataloget kunne ikke fjernes.</string>
+    <string name="catalog_remove_confirmation_title">Fjern katalog?</string>
+    <string name="catalog_remove_confirmation_message">Installerede pakker bliver på denne enhed.</string>
+    <string name="catalog_install_confirmation_title">Installér pakke?</string>
+    <string name="catalog_install_confirmation_message">%1$s\nLicens: %2$s</string>
+    <string name="catalog_pack_installed">Pakke installeret</string>
+    <string name="catalog_pack_install_failed">Pakken kunne ikke installeres.</string>
+    <string name="variant_backup_enable">Sikkerhedskopiér varianter</string>
+    <string name="variant_backup_enabled">Varianter sikkerhedskopieret</string>
+    <string name="variant_backup_guide_title">Sikkerhedskopi af varianter</string>
+    <string name="variant_backup_guide_message">Sikkerhedskopiér dine oplåselige figurvarianter privat med din Google-konto. De bliver aldrig offentliggjort, og figurillustrationer, kontakter eller opkaldshistorik uploades ikke. Når du logger ind på en anden enhed og aktiverer sikkerhedskopiering, gendanner MonsterDialer alle oplåsninger, den finder, og kombinerer dem sikkert med enhedens samling.</string>
+    <string name="dial_search_number_prefix">Nr./</string>
+    <string name="dial_search_results">Match</string>
+    <string name="dial_search_more">Flere</string>
+    <string name="dialpad_letters_2">ABC</string>
+    <string name="dialpad_letters_3">DEF</string>
+    <string name="dialpad_letters_4">GHI</string>
+    <string name="dialpad_letters_5">JKL</string>
+    <string name="dialpad_letters_6">MNO</string>
+    <string name="dialpad_letters_7">PQRS</string>
+    <string name="dialpad_letters_8">TUV</string>
+    <string name="dialpad_letters_9">WXYZ</string>
+    <string name="dialpad_letters_0">+</string>
 </resources>

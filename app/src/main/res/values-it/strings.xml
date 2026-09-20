@@ -540,4 +540,51 @@
     <string name="favorite_phone_type_number" comment="Favorite contact summary. %1$s is the phone type and %2$s is the phone number.">%1$s • %2$s</string>
     <string name="call_log_just_now" comment="Call-log time shown for calls less than one minute old.">Proprio ora</string>
     <string name="new_contact_short" comment="Compact command for creating a contact.">Nuovo</string>
+    <string name="settings_catalogs_title">Cataloghi</string>
+    <string name="settings_catalogs_description">Sfoglia i pacchetti dagli URL dei cataloghi che aggiungi.</string>
+    <string name="local_backup_title">Backup locale</string>
+    <string name="local_backup_settings_description">Esporta o ripristina la tua raccolta di personaggi e i tuoi progressi.</string>
+    <string name="local_backup_description">Salva i pacchetti dei personaggi, le assegnazioni, le scoperte radianti e il Diario di battaglia in un file su questo dispositivo. I contatti Android e la cronologia delle chiamate non sono inclusi.</string>
+    <string name="local_backup_export">Esporta backup</string>
+    <string name="local_backup_import">Ripristina backup</string>
+    <string name="local_backup_import_confirmation_title">Ripristinare il backup?</string>
+    <string name="local_backup_import_confirmation_message">Questa operazione sostituirà la raccolta di personaggi attuale e i progressi locali.</string>
+    <string name="local_backup_exported">Backup esportato</string>
+    <string name="local_backup_failed">Impossibile completare il backup.</string>
+    <string name="catalogs_description">I cataloghi elencano i pacchetti ospitati dai relativi editori. Installa solo illustrazioni e suoni che hai il permesso di usare.</string>
+    <string name="catalogs_empty">Aggiungi un URL del catalogo per sfogliare i pacchetti.</string>
+    <string name="add_catalog">Aggiungi catalogo</string>
+    <string name="catalog_url_label">URL del catalogo</string>
+    <string name="catalog_add_notice">Aggiungi solo cataloghi da fonti attendibili. Gli editori dei cataloghi ospitano e gestiscono i propri link ai pacchetti.</string>
+    <string name="refresh_catalog">Aggiorna</string>
+    <string name="remove_catalog">Rimuovi catalogo</string>
+    <string name="catalog_loading">Caricamento catalogo…</string>
+    <string name="catalog_load_failed">Impossibile caricare questo catalogo.</string>
+    <string name="catalog_pack_metadata">%1$s · %2$s</string>
+    <string name="catalog_added">Catalogo aggiunto</string>
+    <string name="catalog_add_failed">Impossibile aggiungere questo catalogo.</string>
+    <string name="catalog_removed">Catalogo rimosso</string>
+    <string name="catalog_remove_failed">Impossibile rimuovere questo catalogo.</string>
+    <string name="catalog_remove_confirmation_title">Rimuovere il catalogo?</string>
+    <string name="catalog_remove_confirmation_message">I pacchetti installati resteranno su questo dispositivo.</string>
+    <string name="catalog_install_confirmation_title">Installare il pacchetto?</string>
+    <string name="catalog_install_confirmation_message">%1$s\nLicenza: %2$s</string>
+    <string name="catalog_pack_installed">Pacchetto installato</string>
+    <string name="catalog_pack_install_failed">Impossibile installare questo pacchetto.</string>
+    <string name="variant_backup_enable">Esegui il backup delle varianti</string>
+    <string name="variant_backup_enabled">Varianti salvate</string>
+    <string name="variant_backup_guide_title">Backup delle varianti</string>
+    <string name="variant_backup_guide_message">Esegui il backup privato delle varianti dei personaggi sbloccabili con il tuo account Google. Non verranno mai pubblicate e non verranno caricati disegni dei personaggi, contatti o cronologia delle chiamate. Quando accedi su un altro dispositivo e attivi il backup, MonsterDialer ripristina ogni sblocco trovato e lo unisce in modo sicuro alla raccolta di quel dispositivo.</string>
+    <string name="dial_search_number_prefix">N./</string>
+    <string name="dial_search_results">Corrispondenze</string>
+    <string name="dial_search_more">Altro</string>
+    <string name="dialpad_letters_2">ABC</string>
+    <string name="dialpad_letters_3">DEF</string>
+    <string name="dialpad_letters_4">GHI</string>
+    <string name="dialpad_letters_5">JKL</string>
+    <string name="dialpad_letters_6">MNO</string>
+    <string name="dialpad_letters_7">PQRS</string>
+    <string name="dialpad_letters_8">TUV</string>
+    <string name="dialpad_letters_9">WXYZ</string>
+    <string name="dialpad_letters_0">+</string>
 </resources>

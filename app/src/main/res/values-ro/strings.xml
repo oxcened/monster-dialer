@@ -528,4 +528,51 @@
     <string name="favorite_phone_type_number" comment="Favorite contact summary. %1$s is the phone type and %2$s is the phone number.">%1$s • %2$s</string>
     <string name="call_log_just_now" comment="Call-log time shown for calls less than one minute old.">Chiar acum</string>
     <string name="new_contact_short" comment="Compact command for creating a contact.">Nou</string>
+    <string name="settings_catalogs_title">Cataloage</string>
+    <string name="settings_catalogs_description">Răsfoiește pachetele de la URL-urile de catalog pe care le adaugi.</string>
+    <string name="local_backup_title">Backup local</string>
+    <string name="local_backup_settings_description">Exportă sau restaurează colecția de personaje și progresul.</string>
+    <string name="local_backup_description">Salvează pachetele de personaje, atribuiri, descoperiri strălucitoare și Jurnalul de lupte într-un fișier pe acest dispozitiv. Contactele Android și istoricul apelurilor nu sunt incluse.</string>
+    <string name="local_backup_export">Exportă backupul</string>
+    <string name="local_backup_import">Restaurează backupul</string>
+    <string name="local_backup_import_confirmation_title">Restaurezi backupul?</string>
+    <string name="local_backup_import_confirmation_message">Aceasta înlocuiește colecția actuală de personaje și progresul local.</string>
+    <string name="local_backup_exported">Backup exportat</string>
+    <string name="local_backup_failed">Backupul nu a putut fi finalizat.</string>
+    <string name="catalogs_description">Cataloagele afișează pachete găzduite de editorii lor. Instalează doar ilustrații și sunete pe care ai voie să le folosești.</string>
+    <string name="catalogs_empty">Adaugă un URL de catalog pentru a-i răsfoi pachetele.</string>
+    <string name="add_catalog">Adaugă catalog</string>
+    <string name="catalog_url_label">URL catalog</string>
+    <string name="catalog_add_notice">Adaugă doar cataloage din surse de încredere. Editorii cataloagelor își găzduiesc și întrețin propriile linkuri către pachete.</string>
+    <string name="refresh_catalog">Reîmprospătează</string>
+    <string name="remove_catalog">Elimină catalogul</string>
+    <string name="catalog_loading">Se încarcă catalogul…</string>
+    <string name="catalog_load_failed">Catalogul nu a putut fi încărcat.</string>
+    <string name="catalog_pack_metadata">%1$s · %2$s</string>
+    <string name="catalog_added">Catalog adăugat</string>
+    <string name="catalog_add_failed">Catalogul nu a putut fi adăugat.</string>
+    <string name="catalog_removed">Catalog eliminat</string>
+    <string name="catalog_remove_failed">Catalogul nu a putut fi eliminat.</string>
+    <string name="catalog_remove_confirmation_title">Elimini catalogul?</string>
+    <string name="catalog_remove_confirmation_message">Pachetele instalate vor rămâne pe acest dispozitiv.</string>
+    <string name="catalog_install_confirmation_title">Instalezi pachetul?</string>
+    <string name="catalog_install_confirmation_message">%1$s\nLicență: %2$s</string>
+    <string name="catalog_pack_installed">Pachet instalat</string>
+    <string name="catalog_pack_install_failed">Pachetul nu a putut fi instalat.</string>
+    <string name="variant_backup_enable">Fă backup pentru variante</string>
+    <string name="variant_backup_enabled">Variante salvate</string>
+    <string name="variant_backup_guide_title">Backup pentru variante</string>
+    <string name="variant_backup_guide_message">Fă backup privat pentru variantele de personaje deblocate, folosind contul tău Google. Acestea nu vor fi publicate niciodată, iar grafica personajelor, contactele sau istoricul apelurilor nu vor fi încărcate. Când te conectezi pe alt dispozitiv și activezi backupul, MonsterDialer restaurează toate deblocările găsite și le combină în siguranță cu colecția acelui dispozitiv.</string>
+    <string name="dial_search_number_prefix">Nr./</string>
+    <string name="dial_search_results">Potriviri</string>
+    <string name="dial_search_more">Mai multe</string>
+    <string name="dialpad_letters_2">ABC</string>
+    <string name="dialpad_letters_3">DEF</string>
+    <string name="dialpad_letters_4">GHI</string>
+    <string name="dialpad_letters_5">JKL</string>
+    <string name="dialpad_letters_6">MNO</string>
+    <string name="dialpad_letters_7">PQRS</string>
+    <string name="dialpad_letters_8">TUV</string>
+    <string name="dialpad_letters_9">WXYZ</string>
+    <string name="dialpad_letters_0">+</string>
 </resources>

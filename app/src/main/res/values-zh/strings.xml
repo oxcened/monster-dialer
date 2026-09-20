@@ -511,4 +511,51 @@
     <string name="favorite_phone_type_number" comment="Favorite contact summary. %1$s is the phone type and %2$s is the phone number.">%1$s • %2$s</string>
     <string name="call_log_just_now" comment="Call-log time shown for calls less than one minute old.">刚刚</string>
     <string name="new_contact_short" comment="Compact command for creating a contact.">新建</string>
+    <string name="settings_catalogs_title">目录</string>
+    <string name="settings_catalogs_description">浏览你添加的目录网址中的数据包。</string>
+    <string name="local_backup_title">本地备份</string>
+    <string name="local_backup_settings_description">导出或恢复你的角色收藏和进度。</string>
+    <string name="local_backup_description">将你的角色包、分配、闪耀发现和对战日志保存到此设备上的文件中。不包括 Android 联系人和通话记录。</string>
+    <string name="local_backup_export">导出备份</string>
+    <string name="local_backup_import">恢复备份</string>
+    <string name="local_backup_import_confirmation_title">要恢复备份吗？</string>
+    <string name="local_backup_import_confirmation_message">这会替换你当前的角色收藏和本地进度。</string>
+    <string name="local_backup_exported">备份已导出</string>
+    <string name="local_backup_failed">无法完成备份。</string>
+    <string name="catalogs_description">目录列出由发布者托管的数据包。只能安装你获准使用的美术和音效。</string>
+    <string name="catalogs_empty">添加目录网址以浏览其中的数据包。</string>
+    <string name="add_catalog">添加目录</string>
+    <string name="catalog_url_label">目录网址</string>
+    <string name="catalog_add_notice">只能添加你信任来源的目录。目录发布者负责托管和维护自己的数据包链接。</string>
+    <string name="refresh_catalog">刷新</string>
+    <string name="remove_catalog">移除目录</string>
+    <string name="catalog_loading">正在加载目录…</string>
+    <string name="catalog_load_failed">无法加载此目录。</string>
+    <string name="catalog_pack_metadata">%1$s · %2$s</string>
+    <string name="catalog_added">目录已添加</string>
+    <string name="catalog_add_failed">无法添加此目录。</string>
+    <string name="catalog_removed">目录已移除</string>
+    <string name="catalog_remove_failed">无法移除此目录。</string>
+    <string name="catalog_remove_confirmation_title">要移除目录吗？</string>
+    <string name="catalog_remove_confirmation_message">已安装的数据包会保留在此设备上。</string>
+    <string name="catalog_install_confirmation_title">要安装数据包吗？</string>
+    <string name="catalog_install_confirmation_message">%1$s\n许可：%2$s</string>
+    <string name="catalog_pack_installed">数据包已安装</string>
+    <string name="catalog_pack_install_failed">无法安装此数据包。</string>
+    <string name="variant_backup_enable">备份变体</string>
+    <string name="variant_backup_enabled">变体已备份</string>
+    <string name="variant_backup_guide_title">变体备份</string>
+    <string name="variant_backup_guide_message">使用你的 Google 账号私密备份可解锁的角色变体。它们不会公开发布，也不会上传角色美术、联系人或通话记录。在另一台设备上登录并启用备份后，MonsterDialer 会恢复找到的所有解锁内容，并将其安全合并到该设备的收藏中。</string>
+    <string name="dial_search_number_prefix">号码/</string>
+    <string name="dial_search_results">匹配项</string>
+    <string name="dial_search_more">更多</string>
+    <string name="dialpad_letters_2">ABC</string>
+    <string name="dialpad_letters_3">DEF</string>
+    <string name="dialpad_letters_4">GHI</string>
+    <string name="dialpad_letters_5">JKL</string>
+    <string name="dialpad_letters_6">MNO</string>
+    <string name="dialpad_letters_7">PQRS</string>
+    <string name="dialpad_letters_8">TUV</string>
+    <string name="dialpad_letters_9">WXYZ</string>
+    <string name="dialpad_letters_0">+</string>
 </resources>

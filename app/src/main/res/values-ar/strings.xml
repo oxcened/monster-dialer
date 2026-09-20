@@ -545,4 +545,51 @@
     <string name="favorite_phone_type_number" comment="Favorite contact summary. %1$s is the phone type and %2$s is the phone number.">%1$s • %2$s</string>
     <string name="call_log_just_now" comment="Call-log time shown for calls less than one minute old.">الآن</string>
     <string name="new_contact_short" comment="Compact command for creating a contact.">جديد</string>
+    <string name="settings_catalogs_title">الكتالوجات</string>
+    <string name="settings_catalogs_description">تصفّح الحزم من عناوين الكتالوجات التي تضيفها.</string>
+    <string name="local_backup_title">نسخة احتياطية محلية</string>
+    <string name="local_backup_settings_description">صدّر مجموعتك من الشخصيات وتقدّمك أو استعدهما.</string>
+    <string name="local_backup_description">احفظ حزم شخصياتك وتعييناتها واكتشافاتك المتألقة ومذكرات المعارك في ملف على هذا الجهاز. لا تشمل النسخة جهات اتصال Android وسجل المكالمات.</string>
+    <string name="local_backup_export">تصدير النسخة الاحتياطية</string>
+    <string name="local_backup_import">استعادة النسخة الاحتياطية</string>
+    <string name="local_backup_import_confirmation_title">استعادة النسخة الاحتياطية؟</string>
+    <string name="local_backup_import_confirmation_message">سيحل هذا محل مجموعة شخصياتك الحالية وتقدّمك المحلي.</string>
+    <string name="local_backup_exported">تم تصدير النسخة الاحتياطية</string>
+    <string name="local_backup_failed">تعذّر إكمال النسخة الاحتياطية.</string>
+    <string name="catalogs_description">تعرض الكتالوجات الحزم التي يستضيفها ناشروها. ثبّت فقط الأعمال الفنية والأصوات المسموح لك باستخدامها.</string>
+    <string name="catalogs_empty">أضف عنوان كتالوج لتصفّح حزمها.</string>
+    <string name="add_catalog">إضافة كتالوج</string>
+    <string name="catalog_url_label">عنوان الكتالوج</string>
+    <string name="catalog_add_notice">أضف كتالوجًا من مصدر تثق به فقط. يستضيف ناشرو الكتالوجات روابط حزمهم ويديرونها.</string>
+    <string name="refresh_catalog">تحديث</string>
+    <string name="remove_catalog">إزالة الكتالوج</string>
+    <string name="catalog_loading">جارٍ تحميل الكتالوج…</string>
+    <string name="catalog_load_failed">تعذّر تحميل هذا الكتالوج.</string>
+    <string name="catalog_pack_metadata">%1$s · %2$s</string>
+    <string name="catalog_added">تمت إضافة الكتالوج</string>
+    <string name="catalog_add_failed">تعذّرت إضافة هذا الكتالوج.</string>
+    <string name="catalog_removed">تمت إزالة الكتالوج</string>
+    <string name="catalog_remove_failed">تعذّرت إزالة هذا الكتالوج.</string>
+    <string name="catalog_remove_confirmation_title">إزالة الكتالوج؟</string>
+    <string name="catalog_remove_confirmation_message">ستبقى الحزم المثبّتة على هذا الجهاز.</string>
+    <string name="catalog_install_confirmation_title">تثبيت الحزمة؟</string>
+    <string name="catalog_install_confirmation_message">%1$s\nالترخيص: %2$s</string>
+    <string name="catalog_pack_installed">تم تثبيت الحزمة</string>
+    <string name="catalog_pack_install_failed">تعذّر تثبيت هذه الحزمة.</string>
+    <string name="variant_backup_enable">النسخ الاحتياطي للأنواع</string>
+    <string name="variant_backup_enabled">تم نسخ الأنواع احتياطيًا</string>
+    <string name="variant_backup_guide_title">النسخ الاحتياطي للنوع</string>
+    <string name="variant_backup_guide_message">انسخ أنواع شخصياتك القابلة للفتح احتياطيًا بشكل خاص باستخدام حساب Google. لا يؤدي ذلك مطلقًا إلى نشرها للعامة أو تحميل أعمال الشخصيات الفنية أو جهات الاتصال أو سجل المكالمات. عند تسجيل الدخول على جهاز آخر وتفعيل النسخ الاحتياطي، يستعيد MonsterDialer كل عملية فتح يجدها ويدمجها بأمان مع مجموعة ذلك الجهاز.</string>
+    <string name="dial_search_number_prefix">رقم/</string>
+    <string name="dial_search_results">التطابقات</string>
+    <string name="dial_search_more">المزيد</string>
+    <string name="dialpad_letters_2">ABC</string>
+    <string name="dialpad_letters_3">DEF</string>
+    <string name="dialpad_letters_4">GHI</string>
+    <string name="dialpad_letters_5">JKL</string>
+    <string name="dialpad_letters_6">MNO</string>
+    <string name="dialpad_letters_7">PQRS</string>
+    <string name="dialpad_letters_8">TUV</string>
+    <string name="dialpad_letters_9">WXYZ</string>
+    <string name="dialpad_letters_0">+</string>
 </resources>

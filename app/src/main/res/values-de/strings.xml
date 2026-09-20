@@ -522,4 +522,51 @@
     <string name="favorite_phone_type_number" comment="Favorite contact summary. %1$s is the phone type and %2$s is the phone number.">%1$s • %2$s</string>
     <string name="call_log_just_now" comment="Call-log time shown for calls less than one minute old.">Gerade eben</string>
     <string name="new_contact_short" comment="Compact command for creating a contact.">Neu</string>
+    <string name="settings_catalogs_title">Kataloge</string>
+    <string name="settings_catalogs_description">Durchsuche Pakete über hinzugefügte Katalog-URLs.</string>
+    <string name="local_backup_title">Lokales Backup</string>
+    <string name="local_backup_settings_description">Exportiere oder stelle deine Charaktersammlung und deinen Fortschritt wieder her.</string>
+    <string name="local_backup_description">Speichere deine Charakterpakete, Zuweisungen, strahlenden Entdeckungen und dein Kampfjournal als Datei auf diesem Gerät. Android-Kontakte und Anrufverlauf sind nicht enthalten.</string>
+    <string name="local_backup_export">Backup exportieren</string>
+    <string name="local_backup_import">Backup wiederherstellen</string>
+    <string name="local_backup_import_confirmation_title">Backup wiederherstellen?</string>
+    <string name="local_backup_import_confirmation_message">Dadurch werden deine aktuelle Charaktersammlung und dein lokaler Fortschritt ersetzt.</string>
+    <string name="local_backup_exported">Backup exportiert</string>
+    <string name="local_backup_failed">Das Backup konnte nicht abgeschlossen werden.</string>
+    <string name="catalogs_description">Kataloge listen Pakete auf, die von ihren Herausgebern gehostet werden. Installiere nur Grafiken und Sounds, die du verwenden darfst.</string>
+    <string name="catalogs_empty">Füge eine Katalog-URL hinzu, um die Pakete zu durchsuchen.</string>
+    <string name="add_catalog">Katalog hinzufügen</string>
+    <string name="catalog_url_label">Katalog-URL</string>
+    <string name="catalog_add_notice">Füge nur Kataloge aus Quellen hinzu, denen du vertraust. Katalogherausgeber hosten und pflegen ihre eigenen Paketlinks.</string>
+    <string name="refresh_catalog">Aktualisieren</string>
+    <string name="remove_catalog">Katalog entfernen</string>
+    <string name="catalog_loading">Katalog wird geladen…</string>
+    <string name="catalog_load_failed">Dieser Katalog konnte nicht geladen werden.</string>
+    <string name="catalog_pack_metadata">%1$s · %2$s</string>
+    <string name="catalog_added">Katalog hinzugefügt</string>
+    <string name="catalog_add_failed">Dieser Katalog konnte nicht hinzugefügt werden.</string>
+    <string name="catalog_removed">Katalog entfernt</string>
+    <string name="catalog_remove_failed">Dieser Katalog konnte nicht entfernt werden.</string>
+    <string name="catalog_remove_confirmation_title">Katalog entfernen?</string>
+    <string name="catalog_remove_confirmation_message">Installierte Pakete bleiben auf diesem Gerät.</string>
+    <string name="catalog_install_confirmation_title">Paket installieren?</string>
+    <string name="catalog_install_confirmation_message">%1$s\nLizenz: %2$s</string>
+    <string name="catalog_pack_installed">Paket installiert</string>
+    <string name="catalog_pack_install_failed">Dieses Paket konnte nicht installiert werden.</string>
+    <string name="variant_backup_enable">Varianten sichern</string>
+    <string name="variant_backup_enabled">Varianten gesichert</string>
+    <string name="variant_backup_guide_title">Varianten-Backup</string>
+    <string name="variant_backup_guide_message">Sichere deine freischaltbaren Charaktervarianten privat mit deinem Google-Konto. Sie werden niemals öffentlich veröffentlicht und Charaktergrafiken, Kontakte oder der Anrufverlauf werden nicht hochgeladen. Wenn du dich auf einem anderen Gerät anmeldest und Backups aktivierst, stellt MonsterDialer alle gefundenen Freischaltungen wieder her und führt sie sicher mit der Sammlung dieses Geräts zusammen.</string>
+    <string name="dial_search_number_prefix">Nr./</string>
+    <string name="dial_search_results">Treffer</string>
+    <string name="dial_search_more">Mehr</string>
+    <string name="dialpad_letters_2">ABC</string>
+    <string name="dialpad_letters_3">DEF</string>
+    <string name="dialpad_letters_4">GHI</string>
+    <string name="dialpad_letters_5">JKL</string>
+    <string name="dialpad_letters_6">MNO</string>
+    <string name="dialpad_letters_7">PQRS</string>
+    <string name="dialpad_letters_8">TUV</string>
+    <string name="dialpad_letters_9">WXYZ</string>
+    <string name="dialpad_letters_0">+</string>
 </resources>
