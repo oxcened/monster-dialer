@@ -123,7 +123,9 @@ The `Android Release` workflow validates the tag against `appVersionName` and
 the corresponding `CHANGELOG.md` entry, publishes the curated release notes,
 initializes the pinned OpenDialer submodule, decodes the keystore only on the
 runner, builds the signed release APK, writes its SHA-256 checksum, attests the
-assets, and creates the GitHub Release.
+assets, and creates the GitHub Release. Tags with an `-alpha.N`, `-beta.N`, or
+`-rc.N` suffix are marked as GitHub pre-releases; stable tags are published as
+normal releases.
 
 Users can verify a downloaded APK with:
 

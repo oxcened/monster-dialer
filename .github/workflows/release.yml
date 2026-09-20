@@ -125,7 +125,20 @@ jobs:
           RELEASE_APK: ${{ steps.assets.outputs.apk }}
           RELEASE_CHECKSUM: ${{ steps.assets.outputs.checksum }}
           RELEASE_NOTES: ${{ steps.notes.outputs.path }}
-        run: gh release create "$RELEASE_TAG" "$RELEASE_APK" "$RELEASE_CHECKSUM" --notes-file "$RELEASE_NOTES" --verify-tag
+        run: |
+          if [[ "$RELEASE_TAG" =~ -(alpha|beta|rc)\.[0-9]+$ ]]; then
+            prerelease_flag=(--prerelease)
+          else
+            prerelease_flag=()
+          fi
+
+          gh release create \
+            "$RELEASE_TAG" \
+            "$RELEASE_APK" \
+            "$RELEASE_CHECKSUM" \
+            "${prerelease_flag[@]}" \
+            --notes-file "$RELEASE_NOTES" \
+            --verify-tag
 
       - name: Build Discord payload
         working-directory: monster-dialer
