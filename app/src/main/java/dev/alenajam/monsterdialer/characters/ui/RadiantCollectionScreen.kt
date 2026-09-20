@@ -168,7 +168,6 @@ fun RadiantCollectionScreen(viewModel: RadiantCollectionViewModel = hiltViewMode
     var selectedType by remember { mutableStateOf(CharacterType.Monster) }
     var selectedFilter by remember { mutableStateOf(CollectionVariantFilter.All) }
     var filterMenuOpen by remember { mutableStateOf(false) }
-    var addMenuOpen by remember { mutableStateOf(false) }
     val listState = rememberLazyListState()
     val sections = buildCollectionSections(
         entries = entries,
@@ -214,11 +213,6 @@ fun RadiantCollectionScreen(viewModel: RadiantCollectionViewModel = hiltViewMode
                 onClick = { filterMenuOpen = true },
                 modifier = Modifier.weight(1f),
                 horizontalArrangement = Arrangement.Start,
-            )
-            RetroSearchButton(
-                label = stringResource(R.string.add),
-                onClick = { addMenuOpen = true },
-                modifier = Modifier.weight(0.7f),
             )
             RetroSearchButton(
                 label = stringResource(R.string.radiant_collection_browse_packs),
@@ -302,30 +296,23 @@ fun RadiantCollectionScreen(viewModel: RadiantCollectionViewModel = hiltViewMode
                         }
                     } else {
                         emptyList()
-                    } + RetroContextMenuItem.cancel(stringResource(R.string.cancel)) {
+                    } + listOf(
+                        RetroContextMenuItem(
+                            label = stringResource(R.string.add_trainer),
+                            dividerBefore = true,
+                        ) {
+                            filterMenuOpen = false
+                            navigator?.navigateTo(3)
+                        },
+                        RetroContextMenuItem(stringResource(R.string.add_monster)) {
+                            filterMenuOpen = false
+                            navigator?.navigateTo(4)
+                        },
+                    ) + RetroContextMenuItem.cancel(stringResource(R.string.cancel)) {
                         filterMenuOpen = false
                     },
                 )
             }
-        }
-
-        if (addMenuOpen) {
-            RetroContextMenuOverlay(
-                modifier = Modifier.fillMaxWidth(0.72f),
-                fontFamily = RetroPickerFont,
-                onDismissRequest = { addMenuOpen = false },
-                items = listOf(
-                    RetroContextMenuItem(stringResource(R.string.add_trainer)) {
-                        addMenuOpen = false
-                        navigator?.navigateTo(3)
-                    },
-                    RetroContextMenuItem(stringResource(R.string.add_monster)) {
-                        addMenuOpen = false
-                        navigator?.navigateTo(4)
-                    },
-                    RetroContextMenuItem.cancel(stringResource(R.string.cancel)) { addMenuOpen = false },
-                ),
-            )
         }
 
         lockedEntry?.let { entry ->
