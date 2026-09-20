@@ -143,6 +143,7 @@
     <string name="retro_picker_variant_and_level" translatable="false" comment="Language-neutral formatter for the retro assignment picker. %1$s is the variant and %2$s is the level.">%1$s   %2$s</string>
     <string name="filter_all" comment="Filter option to show all monster variants.">All</string>
     <string name="filter_regular" comment="Filter option to show only regular monster variants.">Regular</string>
+    <string name="filter_radiant" comment="Filter option to show all radiant monster variants in the collection.">Radiant</string>
     <string name="filter_unlocked_radiant" comment="Filter option to show only available radiant monster variants.">Radiant</string>
     <string name="your_roster" comment="Heading above the player's current active monster roster.">Your roster</string>
     <string name="roster_monster_level" comment="Level shown below a monster in the roster. %1$d is the monster's level.">Lv. %1$d</string>

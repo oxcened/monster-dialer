@@ -47,6 +47,7 @@
     <string name="radiant" comment="Adjective for a rare, sparkling character variant.">Radiant</string>
     <string name="filter_all">Toate</string>
     <string name="filter_regular">Normal</string>
+    <string name="filter_radiant">Radiant</string>
     <string name="filter_unlocked_radiant">Radiant deblocat</string>
     <string name="selected" comment="Status label for the currently chosen option.">Selectat</string>
     <string name="randomize" comment="Character selection that chooses a different eligible character for every call.">Aleatoriu</string>

@@ -163,6 +163,8 @@ fun RadiantCollectionScreen(viewModel: RadiantCollectionViewModel = hiltViewMode
     var isPendingDeletionInUse by remember { mutableStateOf(false) }
     var pendingShare by remember { mutableStateOf<RadiantCollectionEntry?>(null) }
     var selectedType by remember { mutableStateOf(CharacterType.Monster) }
+    var selectedFilter by remember { mutableStateOf(CollectionVariantFilter.All) }
+    var filterMenuOpen by remember { mutableStateOf(false) }
     val listState = rememberLazyListState()
     val sections = buildCollectionSections(
         entries = entries,
@@ -188,11 +190,15 @@ fun RadiantCollectionScreen(viewModel: RadiantCollectionViewModel = hiltViewMode
         ),
     )
     val visibleSections = sections.mapNotNull { section ->
-        section.copy(entries = section.entries.filter { it.type == selectedType })
+        section.copy(
+            entries = section.entries.filter {
+                it.type == selectedType && selectedFilter.matches(it)
+            },
+        )
             .takeIf { it.entries.isNotEmpty() }
     }
 
-    LaunchedEffect(selectedType) {
+    LaunchedEffect(selectedType, selectedFilter) {
         listState.scrollToItem(0)
     }
 
@@ -200,20 +206,8 @@ fun RadiantCollectionScreen(viewModel: RadiantCollectionViewModel = hiltViewMode
         Column(modifier = Modifier.fillMaxSize()) {
         Row(modifier = Modifier.fillMaxWidth()) {
             RetroSearchButton(
-                label = stringResource(
-                    if (selectedType == CharacterType.Trainer) {
-                        R.string.character_type_trainer
-                    } else {
-                        R.string.character_type_monster
-                    },
-                ),
-                onClick = {
-                    selectedType = if (selectedType == CharacterType.Trainer) {
-                        CharacterType.Monster
-                    } else {
-                        CharacterType.Trainer
-                    }
-                },
+                label = stringResource(R.string.contact_picker_options),
+                onClick = { filterMenuOpen = true },
                 modifier = Modifier.weight(1f),
                 horizontalArrangement = Arrangement.Start,
             )
@@ -260,6 +254,49 @@ fun RadiantCollectionScreen(viewModel: RadiantCollectionViewModel = hiltViewMode
             backLabel = stringResource(R.string.retro_action_back_label),
             onBack = { navigator?.navigateBack() },
         )
+        }
+
+        if (filterMenuOpen) {
+            Box(
+                modifier = Modifier.fillMaxSize().clickable { filterMenuOpen = false },
+                contentAlignment = Alignment.Center,
+            ) {
+                RetroContextMenuOverlay(
+                    modifier = Modifier.fillMaxWidth(0.68f),
+                    fontFamily = RetroPickerFont,
+                    onDismissRequest = { filterMenuOpen = false },
+                    items = listOf(
+                        RetroContextMenuItem(
+                            label = stringResource(R.string.character_type_trainer),
+                            showCursor = selectedType == CharacterType.Trainer,
+                        ) {
+                            selectedType = CharacterType.Trainer
+                            filterMenuOpen = false
+                        },
+                        RetroContextMenuItem(
+                            label = stringResource(R.string.character_type_monster),
+                            showCursor = selectedType == CharacterType.Monster,
+                        ) {
+                            selectedType = CharacterType.Monster
+                            filterMenuOpen = false
+                        },
+                    ) + if (selectedType == CharacterType.Monster) {
+                        CollectionVariantFilter.entries.map { filter ->
+                            RetroContextMenuItem(
+                                label = stringResource(filter.labelRes),
+                                showCursor = selectedFilter == filter,
+                            ) {
+                                selectedFilter = filter
+                                filterMenuOpen = false
+                            }
+                        }
+                    } else {
+                        emptyList()
+                    } + RetroContextMenuItem.cancel(stringResource(R.string.cancel)) {
+                        filterMenuOpen = false
+                    },
+                )
+            }
         }
 
     pendingDeletion?.let { entry ->
@@ -309,6 +346,19 @@ fun RadiantCollectionScreen(viewModel: RadiantCollectionViewModel = hiltViewMode
         )
     }
 }
+}
+
+private enum class CollectionVariantFilter(val labelRes: Int) {
+    All(R.string.filter_all),
+    Regular(R.string.filter_regular),
+    Radiant(R.string.filter_radiant),
+    ;
+
+    fun matches(entry: RadiantCollectionEntry): Boolean = when (this) {
+        All -> true
+        Regular -> !entry.isRadiant
+        Radiant -> entry.isRadiant
+    }
 }
 
 private data class CollectionSection(
