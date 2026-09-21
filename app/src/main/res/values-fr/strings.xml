@@ -46,9 +46,10 @@
     <string name="catalogs_empty" comment="Empty state in the Catalogs screen.">Ajoutez une URL de catalogue pour parcourir ses packs.</string>
     <string name="add_catalog" comment="Action that adds an external pack catalog.">Ajouter un catalogue</string>
     <string name="catalog_url_label" comment="Label for the external catalog URL field.">URL du catalogue</string>
+    <string name="copy_catalog_url" comment="Button to copy an installed catalog URL.">Copier</string>
+    <string name="catalog_url_copied" comment="Confirmation after copying an installed catalog URL.">URL du catalogue copiée</string>
     <string name="catalog_add_notice" comment="Notice shown before adding a catalog URL.">Ajoutez uniquement des catalogues provenant d’une source fiable. Les éditeurs hébergent et gèrent leurs propres liens de packs.</string>
     <string name="refresh_catalog" comment="Action that reloads a catalog URL.">Actualiser</string>
-    <string name="remove_catalog" comment="Action that removes a catalog URL.">Supprimer le catalogue</string>
     <string name="catalog_loading" comment="Loading status for a catalog.">Chargement du catalogue…</string>
     <string name="catalog_load_failed" comment="Failure status for a catalog.">Impossible de charger ce catalogue.</string>
     <string name="catalog_pack_metadata" comment="Metadata for a catalog pack. %1$s is the creator and %2$s is the version.">%1$s · %2$s</string>
@@ -57,11 +58,12 @@
     <string name="catalog_removed" comment="Confirmation after removing a catalog URL.">Catalogue supprimé</string>
     <string name="catalog_remove_failed" comment="Failure after removing a catalog URL.">Impossible de supprimer ce catalogue.</string>
     <string name="catalog_remove_confirmation_title" comment="Title before removing a catalog URL.">Supprimer le catalogue ?</string>
-    <string name="catalog_remove_confirmation_message" comment="Explanation before removing a catalog URL.">Les packs installés resteront sur cet appareil.</string>
     <string name="catalog_install_confirmation_title" comment="Title before installing a catalog pack.">Installer le pack ?</string>
     <string name="catalog_install_confirmation_message" comment="Explanation before installing a catalog pack. %1$s is the pack name and %2$s is its license.">%1$s\nLicence : %2$s</string>
     <string name="catalog_pack_installed" comment="Confirmation after installing a pack from a catalog.">Pack installé</string>
     <string name="catalog_pack_install_failed" comment="Failure after installing a pack from a catalog.">Impossible d’installer ce pack.</string>
+    <string name="catalog_pack_install_failed_message">Impossible de télécharger ou de valider ce pack.\n\nMotif : %1$s</string>
+    <string name="catalog_pack_install_failed_unknown_reason">Aucun détail supplémentaire n’est disponible.</string>
     <string name="characters_navigation_label" comment="Bottom navigation label for the player's profile and character collection.">Profil</string>
     <string name="customize_your_calls" comment="Section heading above contact character customization.">Personnalisez vos appels</string>
     <string name="character_collection_title" comment="Section heading above character pack and import actions.">Votre collection</string>
