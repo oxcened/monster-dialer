@@ -247,7 +247,7 @@ fun OnlineProfileSection(viewModel: OnlineProfileSettingsViewModel = hiltViewMod
                                 fontFamily = ProfilePixelFont,
                                 fontSize = 16.sp,
                                 lineHeight = 18.sp,
-                                color = ProfileInk,
+                                color = if (linkIsOn) MaterialTheme.colorScheme.error else ProfileInk,
                             )
                         }
                     }
