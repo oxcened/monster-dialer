@@ -331,12 +331,15 @@
     <string name="online_profile_enabling" comment="Progress label shown while an Online Profile is being enabled.">Aktiverer onlineprofil</string>
     <string name="online_profile_regenerating" comment="Progress label shown while a new profile sharing link is being created.">Opretter nyt delingslink</string>
     <string name="online_profile_deleting" comment="Progress label shown while the player's Online Profile is being deleted.">Sletter onlineprofil</string>
+    <string name="online_profile_clearing_variant_backup" comment="Progress label shown while cloud variant backup is being deleted.">Rydder sikkerhedskopierede varianter</string>
+    <string name="online_profile_deleting_account" comment="Progress label shown while all cloud data and the MonsterDialer account are being deleted.">Sletter clouddata og konto</string>
     <string name="online_profile_keeping_online" comment="Progress label shown while confirming that an Online Profile should remain shared.">Holder onlineprofil aktiv</string>
     <string name="online_profile_enabled" comment="Brief confirmation after an Online Profile is enabled.">Onlineprofil aktiveret</string>
     <string name="online_profile_check_in_title" comment="Title of the reminder dialog asking the player to confirm continued profile sharing.">Deler du stadig din profil?</string>
     <string name="online_profile_check_in_description" comment="Explanation in the profile-sharing reminder dialog. It asks the player to confirm sharing after a long period of inactivity.">Din onlineprofil er ikke blevet bekræftet i næsten et år. Bekræft den for fortsat at dele den.</string>
     <string name="online_profile_keep_online" comment="Confirmation button that keeps the player's Online Profile shared.">Behold aktiv</string>
-    <string name="online_profile_share" comment="Button that opens Android's share sheet for the player's Online Profile link.">Del min profil</string>
+    <string name="online_profile_share" comment="Button that opens choices for sharing the player's Online Profile.">Del profil</string>
+    <string name="online_profile_share_link">Del link</string>
     <string name="online_profile_show_qr_code" comment="Button that displays a scannable QR code for the player's Online Profile link.">Vis QR-kode</string>
     <string name="online_profile_qr_code_title" comment="Title of the dialog displaying the player's shareable Online Profile QR code.">Del med QR-kode</string>
     <string name="online_profile_qr_code_description" comment="Instructions shown below the Online Profile QR code.">Bed en ven om at scanne denne kode med kameraet for at åbne din profil.</string>
@@ -345,6 +348,10 @@
     <string name="online_profile_regenerate_message" comment="Confirmation dialog message explaining that replacing a sharing link invalidates the old link.">Dette opretter et nyt delingslink og gør det nuværende ugyldigt. Venner skal bruge det nye link for at få adgang til din profil.</string>
     <string name="online_profile_delete" comment="Button that deletes the player's shared Online Profile.">Slet profil</string>
     <string name="online_profile_delete_message" comment="Confirmation dialog message for deleting a shared Online Profile. Character and contact customization data remains local.">Dette sletter din delte profil og gør dens link ugyldigt. Dine figurer og kontakttilpasninger bliver på denne enhed.</string>
+    <string name="online_profile_clear_variant_backup">Ryd sikkerhedskopierede varianter</string>
+    <string name="online_profile_clear_variant_backup_message">Dette sletter permanent sikkerhedskopierede varianter fra skyen. Dine varianter bliver på denne enhed. Cloud-sikkerhedskopiering slås fra; aktivér den igen for at sikkerhedskopiere dem.</string>
+    <string name="online_profile_delete_account" comment="Button that permanently deletes all app cloud data and the Firebase Authentication account.">Slet clouddata og konto</string>
+    <string name="online_profile_delete_account_message" comment="Confirmation dialog message for deleting all app cloud data and the Firebase Authentication account.">Dette sletter permanent din delte profil, variantbackup og MonsterDialer-konto. Din Google-konto og lokale figurer forbliver uændrede. Du skal logge ind igen for at bruge cloudfunktioner.</string>
     <string name="online_profile_error_title" comment="Title of an error dialog when an Online Profile operation cannot be completed.">Onlineprofilen kunne ikke opdateres</string>
     <string name="online_profile_sprite_decode_error" comment="Error explaining that the selected character image cannot be read for an Online Profile.">Den valgte figurs sprite kan ikke afkodes.</string>
     <string name="online_profile_google_sign_in_required" comment="Error explaining that a Google account is required to create or manage an Online Profile.">Log ind med Google for at administrere en onlineprofil.</string>
