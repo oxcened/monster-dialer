@@ -40,6 +40,7 @@
     <string name="local_backup_import_confirmation_title">استعادة النسخة الاحتياطية؟</string>
     <string name="local_backup_import_confirmation_message">سيحل هذا محل مجموعة شخصياتك الحالية وتقدّمك المحلي.</string>
     <string name="local_backup_exported">تم تصدير النسخة الاحتياطية</string>
+    <string name="local_backup_restored">تمت استعادة النسخة الاحتياطية</string>
     <string name="local_backup_failed">تعذّر إكمال النسخة الاحتياطية.</string>
     <string name="catalogs_description" comment="Explanation at the top of the Catalogs screen.">تعرض الكتالوجات الحزم التي يستضيفها ناشروها. ثبّت فقط الأعمال الفنية والأصوات المسموح لك باستخدامها.</string>
     <string name="catalogs_empty" comment="Empty state in the Catalogs screen.">أضف عنوان كتالوج لتصفّح حزمها.</string>
@@ -125,8 +126,9 @@
     <string name="profile_menu_toolbox">الأدوات</string>
     <string name="profile_menu_options">الخيارات</string>
     <string name="profile_menu_exit">خروج</string>
+    <string name="profile_menu_info">حول التطبيق</string>
     <string name="profile_menu_cursor">▶%1$s</string>
-    <string name="profile_roster_description">فريقك.</string>
+    <string name="profile_roster_description">فريقك القتالي.</string>
     <string name="profile_footer_prompt">ملفك الشخصي!</string>
     <string name="character_tools_title" comment="Heading above character management actions.">صندوق الأدوات</string>
     <string name="character_tools_prompt" comment="Retro prompt shown below the character toolbox list. Asking the player to choose the right tool.">اختر الأداة المناسبة.</string>
@@ -188,6 +190,8 @@
     <string name="settings_contact_characters_title" comment="Settings title for assigning characters to contacts.">شخصيات جهات الاتصال</string>
     <string name="personalize_contact_character" comment="Accessibility label for the contact-list action that customizes a caller's battle characters.">تخصيص شخصيات المتصل</string>
     <string name="settings_contact_characters_description" comment="Settings description for assigning characters to contacts.">عيّن شخصيات للمتصلين الواردين.</string>
+    <string name="prefer_monster_artwork" comment="Setting that makes assigned monster artwork take priority over trainer artwork.">اعرض الوحش عند تعيين كليهما</string>
+    <string name="prefer_monster_artwork_description" comment="Explanation for the contact artwork priority setting.">يستخدم رسم الوحش في جهات الاتصال وسجل المكالمات عندما يكون لجهة اتصال مدرب ووحش معيّنان.</string>
     <string name="contact_characters_not_set" comment="Settings subtitle when no contacts have a character assignment.">لا توجد جهات اتصال مخصصة</string>
     <plurals name="contact_character_assignment_count" comment="Settings subtitle showing how many contacts have a character assignment.">
         <item quantity="zero">لم يتم تخصيص أي جهات اتصال</item>
@@ -238,6 +242,9 @@
     <string name="contact_context_menu_remove">إزالة</string>
     <string name="contact_picker_options">الخيارات</string>
     <string name="back">رجوع</string>
+    <string name="monster_settings_title" comment="Title of MonsterDialer's in-app settings screen.">الإعدادات</string>
+    <string name="monster_settings_hint" comment="Footer prompt for MonsterDialer's settings screen.">اختر إعدادًا.</string>
+    <string name="settings_section_general" comment="Section heading for standard dialer settings.">الهاتف</string>
     <string name="contact_defaults_menu_mode">الشخصية الافتراضية</string>
     <string name="contact_defaults_menu_characters">قائمة الشخصيات</string>
     <string name="contact_defaults_menu_pool">مجموعة الاختيار العشوائي</string>
