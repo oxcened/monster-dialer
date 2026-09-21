@@ -26,10 +26,41 @@
     <string name="call_command_cursor">▶ %1$s</string>
     <string name="call_command_section">◀ %1$s</string>
     <string name="call_command_back">ÎNAPOI</string>
-    <string name="call_command_run">EXECUTĂ</string>
+    <string name="call_command_run">FUGI</string>
     <string name="call_command_dialpad_digits">123\n456\n789\n*0#</string>
     <string name="add" comment="Generic label for adding a new item.">Adaugă</string>
     <string name="settings_character_packs_title" comment="Settings title for managing character packs.">Pachete de personaje</string>
+    <string name="settings_catalogs_title" comment="Settings title for external character-pack catalogs.">Cataloage</string>
+    <string name="settings_catalogs_description" comment="Settings description for external character-pack catalogs.">Răsfoiește pachetele de la URL-urile de catalog pe care le adaugi.</string>
+    <string name="local_backup_title">Backup local</string>
+    <string name="local_backup_settings_description">Exportă sau restaurează colecția de personaje și progresul.</string>
+    <string name="local_backup_description">Salvează pachetele de personaje, atribuiri, descoperiri strălucitoare și Jurnalul de lupte într-un fișier pe acest dispozitiv. Contactele Android și istoricul apelurilor nu sunt incluse.</string>
+    <string name="local_backup_export">Exportă backupul</string>
+    <string name="local_backup_import">Restaurează backupul</string>
+    <string name="local_backup_import_confirmation_title">Restaurezi backupul?</string>
+    <string name="local_backup_import_confirmation_message">Aceasta înlocuiește colecția actuală de personaje și progresul local.</string>
+    <string name="local_backup_exported">Backup exportat</string>
+    <string name="local_backup_failed">Backupul nu a putut fi finalizat.</string>
+    <string name="catalogs_description" comment="Explanation at the top of the Catalogs screen.">Cataloagele afișează pachete găzduite de editorii lor. Instalează doar ilustrații și sunete pe care ai voie să le folosești.</string>
+    <string name="catalogs_empty" comment="Empty state in the Catalogs screen.">Adaugă un URL de catalog pentru a-i răsfoi pachetele.</string>
+    <string name="add_catalog" comment="Action that adds an external pack catalog.">Adaugă catalog</string>
+    <string name="catalog_url_label" comment="Label for the external catalog URL field.">URL catalog</string>
+    <string name="catalog_add_notice" comment="Notice shown before adding a catalog URL.">Adaugă doar cataloage din surse de încredere. Editorii cataloagelor își găzduiesc și întrețin propriile linkuri către pachete.</string>
+    <string name="refresh_catalog" comment="Action that reloads a catalog URL.">Reîmprospătează</string>
+    <string name="remove_catalog" comment="Action that removes a catalog URL.">Elimină catalogul</string>
+    <string name="catalog_loading" comment="Loading status for a catalog.">Se încarcă catalogul…</string>
+    <string name="catalog_load_failed" comment="Failure status for a catalog.">Catalogul nu a putut fi încărcat.</string>
+    <string name="catalog_pack_metadata" comment="Metadata for a catalog pack. %1$s is the creator and %2$s is the version.">%1$s · %2$s</string>
+    <string name="catalog_added" comment="Confirmation after adding a catalog URL.">Catalog adăugat</string>
+    <string name="catalog_add_failed" comment="Failure after adding a catalog URL.">Catalogul nu a putut fi adăugat.</string>
+    <string name="catalog_removed" comment="Confirmation after removing a catalog URL.">Catalog eliminat</string>
+    <string name="catalog_remove_failed" comment="Failure after removing a catalog URL.">Catalogul nu a putut fi eliminat.</string>
+    <string name="catalog_remove_confirmation_title" comment="Title before removing a catalog URL.">Elimini catalogul?</string>
+    <string name="catalog_remove_confirmation_message" comment="Explanation before removing a catalog URL.">Pachetele instalate vor rămâne pe acest dispozitiv.</string>
+    <string name="catalog_install_confirmation_title" comment="Title before installing a catalog pack.">Instalezi pachetul?</string>
+    <string name="catalog_install_confirmation_message" comment="Explanation before installing a catalog pack. %1$s is the pack name and %2$s is its license.">%1$s\nLicență: %2$s</string>
+    <string name="catalog_pack_installed" comment="Confirmation after installing a pack from a catalog.">Pachet instalat</string>
+    <string name="catalog_pack_install_failed" comment="Failure after installing a pack from a catalog.">Pachetul nu a putut fi instalat.</string>
     <string name="characters_navigation_label" comment="Bottom navigation label for the player's profile and character collection.">Profil</string>
     <string name="customize_your_calls" comment="Section heading above contact character customization.">Personalizează apelurile</string>
     <string name="character_collection_title" comment="Section heading above character pack and import actions.">Colecția ta</string>
@@ -81,7 +112,7 @@
     <string name="profile_menu_contacts">CONTACTE</string>
     <string name="profile_menu_collection">COLECȚIE</string>
     <string name="profile_menu_journal">JURNAL</string>
-    <string name="profile_menu_online">PARTAJEAZĂ</string>
+    <string name="profile_menu_online">LINK</string>
     <string name="profile_menu_toolbox">INSTRUMENTE</string>
     <string name="profile_menu_options">OPȚIUNI</string>
     <string name="profile_menu_exit">IEȘIRE</string>
@@ -108,10 +139,11 @@
     <string name="battle_journal_radiant_encounter_label" comment="Compact category label for a repeat radiant encounter.">Întâlnire radiantă</string>
     <string name="battle_journal_more_options" comment="Accessibility label for the Battle Journal overflow menu.">Mai multe opțiuni pentru jurnalul de lupte</string>
     <string name="battle_journal_clear" comment="Overflow-menu action that removes all Battle Journal entries.">Golește jurnalul</string>
-    <string name="battle_journal_clear_confirmation_title" comment="Title for the confirmation dialog before clearing the Battle Journal.">Golești jurnalul de lupte?</string>
-    <string name="battle_journal_clear_confirmation_message" comment="Explanation of what clearing the Battle Journal removes.">Aceasta va elimina definitiv tot istoricul luptelor și sprite-urile salvate.</string>
+    <string name="battle_journal_clear_short" comment="Compact Battle Journal action that removes all entries.">Golește</string>
+    <string name="battle_journal_clear_confirmation_title" comment="Short prompt shown before clearing the Battle Journal.">Ești sigur?</string>
     <string name="filter_all" comment="Filter option to show all monster variants.">Toate</string>
     <string name="filter_regular" comment="Filter option to show only regular monster variants.">Normal</string>
+    <string name="filter_radiant" comment="Filter option to show all radiant monster variants in the collection.">Radiant</string>
     <string name="filter_unlocked_radiant" comment="Filter option to show only available radiant monster variants.">Radiant deblocat</string>
     <string name="your_roster" comment="Heading above the player's current active monster roster.">Echipa ta</string>
     <string name="roster_monster_level" comment="Level shown below a monster in the roster. %1$d is the monster's level.">Nv. %1$d</string>
@@ -275,13 +307,17 @@
     <string name="contact_chooser_prompt" comment="Prompt above the contact picker.">Alege un contact căruia să îi atribui un personaj.</string>
     <string name="online_profile_choose_contact_prompt" comment="Prompt shown after opening a shared Online Profile link.">Alege un contact pe care să-l asociezi acestui profil online. Asocierea rămâne pe dispozitivul tău.</string>
     <string name="online_profile_title" comment="Title of the profile SHARE screen for sharing the player's battle identity with friends.">Profil online</string>
-    <string name="online_profile_link_on">PARTAJARE/ACTIV</string>
-    <string name="online_profile_link_off">PARTAJARE/INACTIV</string>
+    <string name="online_profile_link_on">LINK/ON</string>
+    <string name="online_profile_link_off">LINK/OFF</string>
     <string name="online_profile_sign_in_action">CONECTARE</string>
     <string name="online_profile_unlink_action">DEZLEAGĂ</string>
     <string name="online_profile_linked_message">Echipa ta este partajată.</string>
     <string name="online_profile_not_linked_message">Partajează-ți echipa cu prietenii.</string>
     <string name="online_profile_description" comment="Description below the Online Profile settings title. The trainer and monster are the player's battle characters.">Permite-le prietenilor să vadă antrenorul și monstrul pe care le aduci în fiecare apel.</string>
+    <string name="variant_backup_enable" comment="Action that enables private account backup for unlockable character variants.">Fă backup pentru variante</string>
+    <string name="variant_backup_enabled" comment="Status/action indicating that private character-variant backup is active.">Variante salvate</string>
+    <string name="variant_backup_guide_title" comment="Guide title for private cloud backup of unlockable character variants.">Backup pentru variante</string>
+    <string name="variant_backup_guide_message" comment="Privacy explanation for cloud backup of unlockable character variants.">Fă backup privat pentru variantele de personaje deblocate, folosind contul tău Google. Acestea nu vor fi publicate niciodată, iar grafica personajelor, contactele sau istoricul apelurilor nu vor fi încărcate. Când te conectezi pe alt dispozitiv și activezi backupul, MonsterDialer restaurează toate deblocările găsite și le combină în siguranță cu colecția acelui dispozitiv.</string>
     <string name="online_profile_privacy_note" comment="Privacy note on the Online Profile settings screen. Sprites are character images; metadata is their non-image information.">Sunt partajate doar sprite-urile și metadatele personajelor tale.</string>
     <string name="online_profile_guide_title">Partajarea profilului tău online</string>
     <string name="online_profile_guide_message">Profilurile online sunt complet opționale și create cu grijă pentru confidențialitate și securitate. Pentru a activa unul, conectează-te cu Google. Contul tău Google identifică persoana care poate administra profilul; e-mailul și detaliile contului Google nu sunt partajate. Când activezi un profil sau te conectezi pe alt dispozitiv, antrenorul actual și monstrul activ de pe acel dispozitiv, inclusiv sprite-urile alese, sunt publicate printr-un link care poate fi partajat. Serverele nu stochează numărul tău de telefon, lista de contacte, istoricul apelurilor sau alte date personale ori sensibile. Legăturile dintre profilurile MonsterDialer și contacte rămân exclusiv pe fiecare dispozitiv.</string>
@@ -337,6 +373,18 @@
     <string name="retro_action_menu_label">MENIU</string>
     <string name="retro_action_back_label">ÎNAPOI</string>
     <string name="retro_action_dial_label">APELEAZĂ</string>
+    <string name="dial_search_number_prefix" comment="Prefix shown before the number being entered on the retro dial screen.">Nr./</string>
+    <string name="dial_search_results" comment="Heading for contact suggestions matching a dialed number.">Potriviri</string>
+    <string name="dial_search_more" comment="Button that opens dial modifiers on the retro dial screen.">Mai multe</string>
+    <string name="dialpad_letters_2">ABC</string>
+    <string name="dialpad_letters_3">DEF</string>
+    <string name="dialpad_letters_4">GHI</string>
+    <string name="dialpad_letters_5">JKL</string>
+    <string name="dialpad_letters_6">MNO</string>
+    <string name="dialpad_letters_7">PQRS</string>
+    <string name="dialpad_letters_8">TUV</string>
+    <string name="dialpad_letters_9">WXYZ</string>
+    <string name="dialpad_letters_0">+</string>
     <string name="retro_picker_add" comment="Compact action to add a character in the retro picker.">ADAUGĂ</string>
     <string name="retro_picker_guide" comment="Compact GSC-style menu action to open the guide.">AJUTOR</string>
     <string name="contact_row_actions" comment="Accessibility label for the contact-row overflow menu trigger.">Acțiuni contact</string>
