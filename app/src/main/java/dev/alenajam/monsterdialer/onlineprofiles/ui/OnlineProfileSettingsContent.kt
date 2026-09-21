@@ -226,22 +226,6 @@ fun OnlineProfileSection(viewModel: OnlineProfileSettingsViewModel = hiltViewMod
                     }
                     if (isSignedIn) {
                         RetroSelectableRow(
-                            selected = selectedMenuIndex == signOutIndex,
-                            enabled = !working,
-                            onClick = {
-                                selectedMenuIndex = signOutIndex
-                                signOut()
-                            },
-                        ) {
-                            Text(
-                                text = stringResource(R.string.online_profile_sign_out_google).uppercase(),
-                                fontFamily = ProfilePixelFont,
-                                fontSize = 16.sp,
-                                lineHeight = 18.sp,
-                                color = ProfileInk,
-                            )
-                        }
-                        RetroSelectableRow(
                             selected = selectedMenuIndex == 1,
                             enabled = !working,
                             onClick = {
@@ -336,6 +320,22 @@ fun OnlineProfileSection(viewModel: OnlineProfileSettingsViewModel = hiltViewMod
                         }
                     }
                     if (isSignedIn) {
+                        RetroSelectableRow(
+                            selected = selectedMenuIndex == signOutIndex,
+                            enabled = !working,
+                            onClick = {
+                                selectedMenuIndex = signOutIndex
+                                signOut()
+                            },
+                        ) {
+                            Text(
+                                text = stringResource(R.string.online_profile_sign_out_google).uppercase(),
+                                fontFamily = ProfilePixelFont,
+                                fontSize = 16.sp,
+                                lineHeight = 18.sp,
+                                color = ProfileInk,
+                            )
+                        }
                         RetroSelectableRow(
                             selected = selectedMenuIndex == deleteAccountIndex,
                             enabled = !working,
