@@ -5,6 +5,8 @@ import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.background
 import androidx.compose.foundation.combinedClickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.foundation.interaction.collectIsPressedAsState
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Box
@@ -19,6 +21,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -51,6 +54,7 @@ import dev.alenajam.opendialer.core.common.getActivity
 import dev.alenajam.opendialer.core.common.telecom.CallAccount
 import dev.alenajam.opendialer.core.common.telecom.CallPlacementResult
 import dev.alenajam.opendialer.core.common.ui.CallAccountPicker
+import dev.alenajam.opendialer.core.common.ui.DialpadTonePlayer
 import dev.alenajam.opendialer.data.contactsSearch.DialerSearchContact
 import dev.alenajam.opendialer.feature.contactsSearch.R as SearchR
 import dev.alenajam.opendialer.feature.contactsSearch.SearchContactsViewModel
@@ -77,6 +81,8 @@ internal fun RetroDialSearchScreen(
     var pendingNumber by remember { mutableStateOf<String?>(null) }
     var callAccounts by remember { mutableStateOf<List<CallAccount>?>(null) }
     val context = LocalContext.current
+    val tonePlayer = remember(context) { DialpadTonePlayer(context) }
+    DisposableEffect(tonePlayer) { onDispose(tonePlayer::release) }
     val requestCallPermissions = rememberLauncherForActivityResult(
         ActivityResultContracts.RequestMultiplePermissions(),
     ) { permissions ->
@@ -170,6 +176,8 @@ internal fun RetroDialSearchScreen(
 
         RetroDialpad(
             onDigit = { updateQuery(query + it) },
+            onDigitPress = tonePlayer::start,
+            onDigitRelease = tonePlayer::stop,
             onBackspace = { clear ->
                 if (clear) updateQuery("")
                 else if (query.isNotEmpty()) updateQuery(query.dropLast(1))
@@ -304,6 +312,8 @@ private fun RetroSearchMatches(
 @Composable
 private fun RetroDialpad(
     onDigit: (Char) -> Unit,
+    onDigitPress: (Char) -> Unit,
+    onDigitRelease: () -> Unit,
     onBackspace: (clear: Boolean) -> Unit,
     onMore: () -> Unit,
     moreEnabled: Boolean,
@@ -328,6 +338,8 @@ private fun RetroDialpad(
                         label = digit.toString(),
                         subtitle = subtitle,
                         onClick = { onDigit(digit) },
+                        onPress = { onDigitPress(digit) },
+                        onRelease = onDigitRelease,
                         modifier = Modifier.weight(1f),
                         onLongClick = if (digit == '0') {
                             { onDigit('+') }
@@ -339,7 +351,13 @@ private fun RetroDialpad(
             }
         }
         Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(4.dp)) {
-            RetroDialKey(stringResource(R.string.dial_search_more), "", onMore, Modifier.weight(1f), moreEnabled)
+            RetroDialKey(
+                label = stringResource(R.string.dial_search_more),
+                subtitle = "",
+                onClick = onMore,
+                modifier = Modifier.weight(1f),
+                enabled = moreEnabled,
+            )
             RetroDialKey(
                 label = "⌫",
                 subtitle = "",
@@ -357,14 +375,22 @@ private fun RetroDialKey(
     label: String,
     subtitle: String,
     onClick: () -> Unit,
+    onPress: () -> Unit = {},
+    onRelease: () -> Unit = {},
     modifier: Modifier,
     enabled: Boolean = true,
     onLongClick: (() -> Unit)? = null,
 ) {
+    val interactionSource = remember { MutableInteractionSource() }
+    val isPressed by interactionSource.collectIsPressedAsState()
+    LaunchedEffect(isPressed) {
+        if (isPressed) onPress() else onRelease()
+    }
     Box(
         modifier = modifier
             .padding(vertical = 6.dp)
             .combinedClickable(
+                interactionSource = interactionSource,
                 enabled = enabled,
                 onClick = onClick,
                 onLongClick = onLongClick,

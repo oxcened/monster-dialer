@@ -243,12 +243,15 @@
     <string name="online_profile_enabling">Aktiverer onlineprofil</string>
     <string name="online_profile_regenerating">Opretter nyt delingslink</string>
     <string name="online_profile_deleting">Sletter onlineprofil</string>
+    <string name="online_profile_clearing_variant_backup">Rydder sikkerhedskopierede varianter</string>
+    <string name="online_profile_deleting_account">Sletter clouddata og konto</string>
     <string name="online_profile_keeping_online">Holder onlineprofil aktiv</string>
     <string name="online_profile_enabled">Onlineprofil aktiveret</string>
     <string name="online_profile_check_in_title">Deler du stadig din profil?</string>
     <string name="online_profile_check_in_description">Din onlineprofil er ikke blevet bekræftet i næsten et år. Bekræft den for fortsat at dele den.</string>
     <string name="online_profile_keep_online">Behold aktiv</string>
-    <string name="online_profile_share">Del min profil</string>
+    <string name="online_profile_share">Del profil</string>
+    <string name="online_profile_share_link">Del link</string>
     <string name="online_profile_show_qr_code">Vis QR-kode</string>
     <string name="online_profile_qr_code_title">Del med QR-kode</string>
     <string name="online_profile_qr_code_description">Bed en ven om at scanne denne kode med kameraet for at åbne din profil.</string>
@@ -257,6 +260,10 @@
     <string name="online_profile_regenerate_message">Dette opretter et nyt delingslink og gør det nuværende ugyldigt. Venner skal bruge det nye link for at få adgang til din profil.</string>
     <string name="online_profile_delete">Slet profil</string>
     <string name="online_profile_delete_message">Dette sletter din delte profil og gør dens link ugyldigt. Dine figurer og kontakttilpasninger bliver på denne enhed.</string>
+    <string name="online_profile_clear_variant_backup">Ryd sikkerhedskopierede varianter</string>
+    <string name="online_profile_clear_variant_backup_message">Dette sletter permanent sikkerhedskopierede varianter fra skyen. Dine varianter bliver på denne enhed. Cloud-sikkerhedskopiering slås fra; aktivér den igen for at sikkerhedskopiere dem.</string>
+    <string name="online_profile_delete_account">Slet clouddata og konto</string>
+    <string name="online_profile_delete_account_message">Dette sletter permanent din delte profil, variantbackup og MonsterDialer-konto. Din Google-konto og lokale figurer forbliver uændrede. Du skal logge ind igen for at bruge cloudfunktioner.</string>
     <string name="online_profile_error_title">Onlineprofilen kunne ikke opdateres</string>
     <string name="online_profile_sprite_decode_error">Den valgte figurs sprite kan ikke afkodes.</string>
     <string name="online_profile_google_sign_in_required">Log ind med Google for at administrere en onlineprofil.</string>

@@ -281,12 +281,15 @@
     <string name="online_profile_enabling">Attivazione profilo online</string>
     <string name="online_profile_regenerating">Rigenerazione del link di condivisione</string>
     <string name="online_profile_deleting">Eliminazione profilo online</string>
+    <string name="online_profile_clearing_variant_backup">Eliminazione delle varianti salvate</string>
+    <string name="online_profile_deleting_account">Eliminazione dei dati cloud e dell’account</string>
     <string name="online_profile_keeping_online">Mantenimento del profilo online</string>
     <string name="online_profile_enabled">Profilo online attivato</string>
     <string name="online_profile_check_in_title">Stai ancora condividendo il tuo profilo?</string>
     <string name="online_profile_check_in_description">Il tuo profilo online non è stato confermato da quasi un anno. Confermalo per continuare a condividerlo.</string>
     <string name="online_profile_keep_online">Mantieni online</string>
-    <string name="online_profile_share">Condividi il mio profilo</string>
+    <string name="online_profile_share">Condividi profilo</string>
+    <string name="online_profile_share_link">Condividi link</string>
     <string name="online_profile_show_qr_code">Mostra codice QR</string>
     <string name="online_profile_qr_code_title">Condividi con codice QR</string>
     <string name="online_profile_qr_code_description">Chiedi a un amico di scansionare questo codice con la fotocamera per aprire il tuo profilo.</string>
@@ -295,6 +298,10 @@
     <string name="online_profile_regenerate_message">Verrà creato un nuovo link di condivisione e quello attuale non sarà più valido. Gli amici avranno bisogno del nuovo link per accedere al tuo profilo.</string>
     <string name="online_profile_delete">Elimina profilo</string>
     <string name="online_profile_delete_message">Questa azione elimina il tuo profilo condiviso e rende non valido il suo link. I tuoi personaggi e le personalizzazioni dei contatti restano su questo dispositivo.</string>
+    <string name="online_profile_clear_variant_backup">Elimina varianti salvate</string>
+    <string name="online_profile_clear_variant_backup_message">Questa azione elimina definitivamente dal cloud le varianti salvate. Le tue varianti restano su questo dispositivo. Il backup cloud viene disattivato; riattivalo per salvarle di nuovo.</string>
+    <string name="online_profile_delete_account">Elimina dati cloud e account</string>
+    <string name="online_profile_delete_account_message">Questa azione elimina definitivamente il profilo condiviso, il backup delle varianti e l’account MonsterDialer. Il tuo account Google e i personaggi locali restano invariati. Dovrai accedere di nuovo per usare le funzionalità cloud.</string>
     <string name="online_profile_error_title">Impossibile aggiornare il profilo online</string>
     <string name="online_profile_sprite_decode_error">Impossibile decodificare lo sprite del personaggio selezionato.</string>
     <string name="online_profile_google_sign_in_required">Accedi con Google per gestire un profilo online.</string>

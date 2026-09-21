@@ -253,12 +253,15 @@
     <string name="online_profile_enabling">Se activează profilul online</string>
     <string name="online_profile_regenerating">Se regenerează linkul de partajare</string>
     <string name="online_profile_deleting">Se șterge profilul online</string>
+    <string name="online_profile_clearing_variant_backup">Se șterg variantele salvate</string>
+    <string name="online_profile_deleting_account">Se șterg datele din cloud și contul</string>
     <string name="online_profile_keeping_online">Profilul online rămâne activ</string>
     <string name="online_profile_enabled">Profil online activat</string>
     <string name="online_profile_check_in_title">Îți mai partajezi profilul?</string>
     <string name="online_profile_check_in_description">Profilul tău online nu a fost confirmat de aproape un an. Confirmă-l ca să continui să-l partajezi.</string>
     <string name="online_profile_keep_online">Păstrează online</string>
-    <string name="online_profile_share">Partajează-mi profilul</string>
+    <string name="online_profile_share">Partajează profilul</string>
+    <string name="online_profile_share_link">Partajează linkul</string>
     <string name="online_profile_show_qr_code">Afișează codul QR</string>
     <string name="online_profile_qr_code_title">Partajează cu cod QR</string>
     <string name="online_profile_qr_code_description">Roagă un prieten să scaneze acest cod cu camera pentru a-ți deschide profilul.</string>
@@ -267,6 +270,10 @@
     <string name="online_profile_regenerate_message">Aceasta creează un link de partajare nou și îl invalidează pe cel actual. Prietenii vor avea nevoie de noul link ca să îți acceseze profilul.</string>
     <string name="online_profile_delete">Șterge profilul</string>
     <string name="online_profile_delete_message">Aceasta șterge profilul tău partajat și îi invalidează linkul. Personajele și personalizările contactelor rămân pe acest dispozitiv.</string>
+    <string name="online_profile_clear_variant_backup">Șterge variantele salvate</string>
+    <string name="online_profile_clear_variant_backup_message">Aceasta șterge definitiv din cloud variantele salvate. Variantele tale rămân pe acest dispozitiv. Copia de siguranță în cloud este dezactivată; activeaz-o din nou pentru a le salva.</string>
+    <string name="online_profile_delete_account">Șterge datele din cloud și contul</string>
+    <string name="online_profile_delete_account_message">Aceasta șterge definitiv profilul tău partajat, copia de siguranță a variantelor și contul MonsterDialer. Contul Google și personajele locale rămân neschimbate. Va trebui să te conectezi din nou pentru a folosi funcțiile cloud.</string>
     <string name="online_profile_error_title">Nu s-a putut actualiza profilul online</string>
     <string name="online_profile_sprite_decode_error">Sprite-ul personajului selectat nu poate fi decodat.</string>
     <string name="online_profile_google_sign_in_required">Conectează-te cu Google pentru a gestiona un profil online.</string>

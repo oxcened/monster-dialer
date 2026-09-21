@@ -9,6 +9,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- Online Profile account deletion, including cleanup of remotely backed-up
+  character variants.
 - Retro contact and call experience improvements.
 - Character roster and default-character selection improvements.
 - A redesigned retro contact roster, profile navigation, and onboarding activation flow.
@@ -17,6 +19,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
+- Online Profile account actions and sign-in progress now have clearer grouping
+  and feedback, with expanded localized account-management strings.
 - Contact assignment, character selection, and character-pack screens were reorganized around the retro roster experience.
 - Retro dialer and in-call controls now use refreshed artwork, pixel avatars, and more game-specific presentation.
 - Default-character controls now separate trainer and monster choices and make inherited, explicit, and random modes clearer.
@@ -26,6 +30,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
+- Restored Online Profile actions and Google sign-out, corrected account-action
+  ordering and deletion highlighting, and made both dialpads play DTMF tones.
 - Preserved explicit contact defaults and random fallback behavior when contacts have no assigned character.
 - Restored character-picker controls, pack creation navigation, and contextual help actions.
 - Refreshed contact artwork correctly when switching to light mode and guarded full-screen intent behavior by Android version.
