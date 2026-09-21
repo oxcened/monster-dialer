@@ -438,6 +438,7 @@
     <string name="profile_menu_toolbox">VÆRKTØJER</string>
     <string name="profile_menu_options">INDSTILLINGER</string>
     <string name="profile_menu_exit">AFSLUT</string>
+    <string name="profile_menu_info">OM</string>
     <string name="profile_menu_cursor">▶%1$s</string>
     <string name="profile_roster_description">Dit hold.</string>
     <string name="profile_footer_prompt">Din profil!</string>

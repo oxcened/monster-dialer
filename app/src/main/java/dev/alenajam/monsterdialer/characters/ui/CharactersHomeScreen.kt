@@ -79,7 +79,6 @@ import dev.alenajam.monsterdialer.packs.data.CharacterReference
 import dev.alenajam.monsterdialer.packs.data.CharacterType
 import dev.alenajam.opendialer.core.common.ui.AppIcon
 import dev.alenajam.opendialer.core.common.ui.LocalAppIcons
-import dev.alenajam.opendialer.feature.settings.R as SettingsR
 import dev.alenajam.monsterdialer.app.ui.RetroDoubleBorderTextBox
 import dev.alenajam.monsterdialer.app.ui.RetroTypewriterText
 import dev.alenajam.monsterdialer.app.ui.RetroActionButton
@@ -289,7 +288,7 @@ private fun GameBoyProfileLayout(
                             onOpenOptions()
                         }
                         GameBoyMenuItem(
-                            stringResource(SettingsR.string.screen_about_title),
+                            stringResource(R.string.profile_menu_info),
                             selectedMenuAction == ProfileMenuAction.Info,
                         ) {
                             selectedMenuAction = ProfileMenuAction.Info

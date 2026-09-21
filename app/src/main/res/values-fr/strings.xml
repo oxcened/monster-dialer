@@ -443,6 +443,7 @@
     <string name="profile_menu_toolbox">OUTILS</string>
     <string name="profile_menu_options">OPTIONS</string>
     <string name="profile_menu_exit">QUITTER</string>
+    <string name="profile_menu_info">À PROPOS</string>
     <string name="profile_menu_cursor">▶%1$s</string>
     <string name="profile_roster_description">Votre équipe.</string>
     <string name="profile_footer_prompt">Votre profil !</string>

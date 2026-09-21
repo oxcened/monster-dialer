@@ -124,6 +124,7 @@
     <string name="profile_menu_toolbox">TOOLS</string>
     <string name="profile_menu_options">OPTIONS</string>
     <string name="profile_menu_exit">EXIT</string>
+    <string name="profile_menu_info">INFO</string>
     <string name="profile_menu_cursor">▶%1$s</string>
     <string name="profile_roster_description">Your team.</string>
     <string name="profile_footer_prompt">Your profile!</string>

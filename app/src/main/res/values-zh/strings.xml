@@ -432,6 +432,7 @@
     <string name="profile_menu_toolbox">工具</string>
     <string name="profile_menu_options">选项</string>
     <string name="profile_menu_exit">退出</string>
+    <string name="profile_menu_info">关于</string>
     <string name="profile_menu_cursor">▶%1$s</string>
     <string name="profile_roster_description">你的队伍。</string>
     <string name="profile_footer_prompt">你的个人资料！</string>

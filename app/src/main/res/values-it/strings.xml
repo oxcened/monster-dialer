@@ -461,6 +461,7 @@
     <string name="profile_menu_toolbox">STRUMENTI</string>
     <string name="profile_menu_options">OPZIONI</string>
     <string name="profile_menu_exit">ESCI</string>
+    <string name="profile_menu_info">INFORMAZIONI</string>
     <string name="profile_menu_cursor">▶%1$s</string>
     <string name="profile_roster_description">La tua squadra.</string>
     <string name="profile_footer_prompt">Il tuo profilo!</string>

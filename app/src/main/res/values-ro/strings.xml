@@ -448,6 +448,7 @@
     <string name="profile_menu_toolbox">INSTRUMENTE</string>
     <string name="profile_menu_options">OPȚIUNI</string>
     <string name="profile_menu_exit">IEȘIRE</string>
+    <string name="profile_menu_info">DESPRE</string>
     <string name="profile_menu_cursor">▶%1$s</string>
     <string name="profile_roster_description">Echipa ta.</string>
     <string name="profile_footer_prompt">Profilul tău!</string>

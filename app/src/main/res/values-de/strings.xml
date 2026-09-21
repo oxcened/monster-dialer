@@ -443,6 +443,7 @@
     <string name="profile_menu_toolbox">WERKZEUGE</string>
     <string name="profile_menu_options">OPTIONEN</string>
     <string name="profile_menu_exit">BEENDEN</string>
+    <string name="profile_menu_info">ÜBER</string>
     <string name="profile_menu_cursor">▶%1$s</string>
     <string name="profile_roster_description">Dein Team.</string>
     <string name="profile_footer_prompt">Dein Profil!</string>
