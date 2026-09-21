@@ -351,12 +351,15 @@
     <string name="online_profile_enabling" comment="Progress label shown while an Online Profile is being enabled.">جارٍ تفعيل الملف الشخصي على الإنترنت</string>
     <string name="online_profile_regenerating" comment="Progress label shown while a new profile sharing link is being created.">جارٍ إنشاء رابط مشاركة جديد</string>
     <string name="online_profile_deleting" comment="Progress label shown while the player's Online Profile is being deleted.">جارٍ حذف الملف الشخصي على الإنترنت</string>
+    <string name="online_profile_clearing_variant_backup" comment="Progress label shown while cloud variant backup is being deleted.">جارٍ مسح المتغيرات التي تم نسخها احتياطيًا</string>
+    <string name="online_profile_deleting_account" comment="Progress label shown while all cloud data and the MonsterDialer account are being deleted.">جارٍ حذف البيانات السحابية والحساب</string>
     <string name="online_profile_keeping_online" comment="Progress label shown while confirming that an Online Profile should remain shared.">جارٍ إبقاء الملف الشخصي على الإنترنت</string>
     <string name="online_profile_enabled" comment="Brief confirmation after an Online Profile is enabled.">تم تفعيل الملف الشخصي على الإنترنت</string>
     <string name="online_profile_check_in_title" comment="Title of the reminder dialog asking the player to confirm continued profile sharing.">هل ما زلت تشارك ملفك الشخصي؟</string>
     <string name="online_profile_check_in_description" comment="Explanation in the profile-sharing reminder dialog. It asks the player to confirm sharing after a long period of inactivity.">لم يتم تأكيد ملفك الشخصي على الإنترنت منذ قرابة عام. أكّده لمواصلة مشاركته.</string>
     <string name="online_profile_keep_online" comment="Confirmation button that keeps the player's Online Profile shared.">إبقاء متصلاً</string>
-    <string name="online_profile_share" comment="Button that opens Android's share sheet for the player's Online Profile link.">مشاركة ملفي الشخصي</string>
+    <string name="online_profile_share" comment="Button that opens choices for sharing the player's Online Profile.">مشاركة الملف الشخصي</string>
+    <string name="online_profile_share_link">مشاركة الرابط</string>
     <string name="online_profile_show_qr_code" comment="Button that displays a scannable QR code for the player's Online Profile link.">عرض رمز QR</string>
     <string name="online_profile_qr_code_title" comment="Title of the dialog displaying the player's shareable Online Profile QR code.">المشاركة عبر رمز QR</string>
     <string name="online_profile_qr_code_description" comment="Instructions shown below the Online Profile QR code.">اطلب من صديق مسح هذا الرمز بالكاميرا لفتح ملفك الشخصي.</string>
@@ -365,6 +368,10 @@
     <string name="online_profile_regenerate_message" comment="Confirmation dialog message explaining that replacing a sharing link invalidates the old link.">سيؤدي هذا إلى إنشاء رابط مشاركة جديد وإبطال الرابط الحالي. سيحتاج أصدقاؤك إلى الرابط الجديد للوصول إلى ملفك الشخصي.</string>
     <string name="online_profile_delete" comment="Button that deletes the player's shared Online Profile.">حذف الملف الشخصي</string>
     <string name="online_profile_delete_message" comment="Confirmation dialog message for deleting a shared Online Profile. Character and contact customization data remains local.">سيؤدي هذا إلى حذف ملفك الشخصي المشترك وإبطال رابطه. تبقى شخصياتك وتخصيصات جهات الاتصال على هذا الجهاز.</string>
+    <string name="online_profile_clear_variant_backup">مسح المتغيرات التي تم نسخها احتياطيًا</string>
+    <string name="online_profile_clear_variant_backup_message">سيؤدي هذا إلى حذف المتغيرات التي تم نسخها احتياطيًا من السحابة نهائيًا. ستبقى متغيراتك على هذا الجهاز. سيتم إيقاف النسخ الاحتياطي السحابي؛ فعّله مرة أخرى لنسخها احتياطيًا.</string>
+    <string name="online_profile_delete_account" comment="Button that permanently deletes all app cloud data and the Firebase Authentication account.">حذف البيانات السحابية والحساب</string>
+    <string name="online_profile_delete_account_message" comment="Confirmation dialog message for deleting all app cloud data and the Firebase Authentication account.">سيؤدي هذا إلى حذف ملفك الشخصي المشترك والنسخة الاحتياطية للمتغيرات وحساب MonsterDialer نهائيًا. سيظل حساب Google والشخصيات المحلية دون تغيير. ستحتاج إلى تسجيل الدخول مرة أخرى لاستخدام الميزات السحابية.</string>
     <string name="online_profile_error_title" comment="Title of an error dialog when an Online Profile operation cannot be completed.">تعذر تحديث الملف الشخصي على الإنترنت</string>
     <string name="online_profile_sprite_decode_error" comment="Error explaining that the selected character image cannot be read for an Online Profile.">تعذر فك ترميز رسم الشخصية المحددة.</string>
     <string name="online_profile_google_sign_in_required" comment="Error explaining that a Google account is required to create or manage an Online Profile.">سجّل الدخول باستخدام Google لإدارة ملف شخصي على الإنترنت.</string>
