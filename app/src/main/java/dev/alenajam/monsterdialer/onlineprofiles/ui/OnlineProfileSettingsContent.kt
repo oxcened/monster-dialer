@@ -92,6 +92,7 @@ fun OnlineProfileSection(viewModel: OnlineProfileSettingsViewModel = hiltViewMod
     val regeneratingDescription = stringResource(R.string.online_profile_regenerating)
     val enablingDescription = stringResource(R.string.online_profile_enabling)
     val deletingDescription = stringResource(R.string.online_profile_deleting)
+    val clearingVariantBackupDescription = stringResource(R.string.online_profile_clearing_variant_backup)
     val deletingAccountDescription = stringResource(R.string.online_profile_deleting_account)
     val keepingOnlineDescription = stringResource(R.string.online_profile_keeping_online)
     val googleSignInNotConfigured = stringResource(R.string.online_profile_google_sign_in_not_configured)
@@ -102,6 +103,7 @@ fun OnlineProfileSection(viewModel: OnlineProfileSettingsViewModel = hiltViewMod
             ?.let(resources::getString)
     }
     var confirmDelete by remember { mutableStateOf(false) }
+    var confirmDeleteVariantBackup by remember { mutableStateOf(false) }
     var confirmDeleteAccount by remember { mutableStateOf(false) }
     var confirmRegenerate by remember { mutableStateOf(false) }
     var showQrCode by remember { mutableStateOf(false) }
@@ -241,21 +243,34 @@ fun OnlineProfileSection(viewModel: OnlineProfileSettingsViewModel = hiltViewMod
                         }
                         RetroSelectableRow(
                             selected = selectedMenuIndex == 1,
+                            enabled = !working,
                             onClick = {
                                 selectedMenuIndex = 1
-                                if (!working) viewModel.enableVariantBackup()
+                                if (variantBackupEnabled) confirmDeleteVariantBackup = true
+                                else viewModel.enableVariantBackup()
                             },
                         ) {
-                            Text(
-                                text = stringResource(
-                                    if (variantBackupEnabled) R.string.variant_backup_enabled
-                                    else R.string.variant_backup_enable,
-                                ).uppercase(),
-                                fontFamily = ProfilePixelFont,
-                                fontSize = 16.sp,
-                                lineHeight = 18.sp,
-                                color = ProfileInk,
-                            )
+                            if (operation == OnlineProfileOperation.DeleteVariantBackup) {
+                                CircularProgressIndicator(modifier = Modifier.size(20.dp), strokeWidth = 2.dp)
+                                Text(
+                                    text = clearingVariantBackupDescription.uppercase(),
+                                    modifier = Modifier.padding(start = 8.dp),
+                                    fontFamily = ProfilePixelFont,
+                                    fontSize = 14.sp,
+                                    color = ProfileInk.copy(alpha = 0.76f),
+                                )
+                            } else {
+                                Text(
+                                    text = stringResource(
+                                        if (variantBackupEnabled) R.string.online_profile_clear_variant_backup
+                                        else R.string.variant_backup_enable,
+                                    ).uppercase(),
+                                    fontFamily = ProfilePixelFont,
+                                    fontSize = 16.sp,
+                                    lineHeight = 18.sp,
+                                    color = if (variantBackupEnabled) MaterialTheme.colorScheme.error else ProfileInk,
+                                )
+                            }
                         }
                     }
                     if (linkIsOn) {
@@ -407,6 +422,23 @@ fun OnlineProfileSection(viewModel: OnlineProfileSettingsViewModel = hiltViewMod
             }
         },
         dismissButton = { TextButton(onClick = { confirmDelete = false }) { Text(stringResource(R.string.cancel)) } },
+    )
+    if (confirmDeleteVariantBackup) AlertDialog(
+        onDismissRequest = { confirmDeleteVariantBackup = false },
+        title = { Text(stringResource(R.string.online_profile_clear_variant_backup)) },
+        text = { Text(stringResource(R.string.online_profile_clear_variant_backup_message)) },
+        confirmButton = {
+            TextButton(
+                onClick = {
+                    confirmDeleteVariantBackup = false
+                    viewModel.deleteVariantBackup()
+                },
+                colors = ButtonDefaults.textButtonColors(contentColor = MaterialTheme.colorScheme.error),
+            ) {
+                Text(stringResource(R.string.online_profile_clear_variant_backup))
+            }
+        },
+        dismissButton = { TextButton(onClick = { confirmDeleteVariantBackup = false }) { Text(stringResource(R.string.cancel)) } },
     )
     if (confirmRegenerate) AlertDialog(
         onDismissRequest = { confirmRegenerate = false },

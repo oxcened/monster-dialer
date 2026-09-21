@@ -237,6 +237,7 @@
     <string name="online_profile_enabling">正在启用在线个人资料</string>
     <string name="online_profile_regenerating">正在重新生成分享链接</string>
     <string name="online_profile_deleting">正在删除在线个人资料</string>
+    <string name="online_profile_clearing_variant_backup">正在清除已备份的变体</string>
     <string name="online_profile_deleting_account">正在删除云端数据和帐户</string>
     <string name="online_profile_keeping_online">正在保持在线个人资料可用</string>
     <string name="online_profile_enabled">已启用在线个人资料</string>
@@ -252,6 +253,8 @@
     <string name="online_profile_regenerate_message">这会创建新的分享链接，并使当前链接失效。好友需要使用新链接才能访问你的个人资料。</string>
     <string name="online_profile_delete">删除个人资料</string>
     <string name="online_profile_delete_message">这会删除你的共享个人资料并使其链接失效。你的角色和联系人自定义设置将保留在此设备上。</string>
+    <string name="online_profile_clear_variant_backup">清除已备份的变体</string>
+    <string name="online_profile_clear_variant_backup_message">这将永久删除云端已备份的变体。你的变体会保留在此设备上。云端备份将被关闭；如需再次备份，请重新启用它。</string>
     <string name="online_profile_delete_account">删除云端数据和帐户</string>
     <string name="online_profile_delete_account_message">这将永久删除你的共享个人资料、变体备份和 MonsterDialer 帐户。你的 Google 帐户和本地角色不会改变。你需要重新登录才能使用云端功能。</string>
     <string name="online_profile_error_title">无法更新在线个人资料</string>

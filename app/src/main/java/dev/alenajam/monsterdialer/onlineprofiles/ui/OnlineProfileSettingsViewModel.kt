@@ -22,6 +22,7 @@ enum class OnlineProfileOperation {
     Regenerate,
     KeepOnline,
     Delete,
+    DeleteVariantBackup,
     DeleteAccount,
 }
 
@@ -137,6 +138,20 @@ class OnlineProfileSettingsViewModel @Inject constructor(
         } else {
             pendingVariantBackupSignIn = true
             viewModelScope.launch { _signInRequests.emit(Unit) }
+        }
+    }
+
+    fun deleteVariantBackup() = viewModelScope.launch {
+        _isWorking.value = true
+        _operation.value = OnlineProfileOperation.DeleteVariantBackup
+        try {
+            variantBackup.deleteBackup()
+            _variantBackupEnabled.value = false
+        } catch (exception: Exception) {
+            _error.value = exception.message
+        } finally {
+            _operation.value = null
+            _isWorking.value = false
         }
     }
 
