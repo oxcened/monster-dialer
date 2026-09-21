@@ -546,9 +546,10 @@
     <string name="catalogs_empty">Adicione um URL de catálogo para explorar os seus pacotes.</string>
     <string name="add_catalog">Adicionar catálogo</string>
     <string name="catalog_url_label">URL do catálogo</string>
+    <string name="copy_catalog_url">Copiar</string>
+    <string name="catalog_url_copied">URL do catálogo copiado</string>
     <string name="catalog_add_notice">Adicione apenas catálogos de fontes em que confia. Os editores alojam e mantêm os seus próprios links de pacotes.</string>
     <string name="refresh_catalog">Atualizar</string>
-    <string name="remove_catalog">Remover catálogo</string>
     <string name="catalog_loading">A carregar catálogo…</string>
     <string name="catalog_load_failed">Não foi possível carregar este catálogo.</string>
     <string name="catalog_pack_metadata">%1$s · %2$s</string>
@@ -557,11 +558,12 @@
     <string name="catalog_removed">Catálogo removido</string>
     <string name="catalog_remove_failed">Não foi possível remover este catálogo.</string>
     <string name="catalog_remove_confirmation_title">Remover catálogo?</string>
-    <string name="catalog_remove_confirmation_message">Os pacotes instalados permanecerão neste dispositivo.</string>
     <string name="catalog_install_confirmation_title">Instalar pacote?</string>
     <string name="catalog_install_confirmation_message">%1$s\nLicença: %2$s</string>
     <string name="catalog_pack_installed">Pacote instalado</string>
     <string name="catalog_pack_install_failed">Não foi possível instalar este pacote.</string>
+    <string name="catalog_pack_install_failed_message">Não foi possível baixar ou validar o pacote.\n\nMotivo: %1$s</string>
+    <string name="catalog_pack_install_failed_unknown_reason">Não há mais detalhes disponíveis.</string>
     <string name="variant_backup_enable">Fazer cópia das variantes</string>
     <string name="variant_backup_enabled">Variantes guardadas</string>
     <string name="variant_backup_guide_title">Cópia de segurança de variantes</string>

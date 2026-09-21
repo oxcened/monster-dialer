@@ -546,9 +546,10 @@
     <string name="catalogs_empty">Añade una URL de catálogo para explorar sus paquetes.</string>
     <string name="add_catalog">Añadir catálogo</string>
     <string name="catalog_url_label">URL del catálogo</string>
+    <string name="copy_catalog_url">Copiar</string>
+    <string name="catalog_url_copied">URL del catálogo copiada</string>
     <string name="catalog_add_notice">Añade solo catálogos de fuentes de confianza. Los creadores alojan y mantienen sus propios enlaces de paquetes.</string>
     <string name="refresh_catalog">Actualizar</string>
-    <string name="remove_catalog">Eliminar catálogo</string>
     <string name="catalog_loading">Cargando catálogo…</string>
     <string name="catalog_load_failed">No se ha podido cargar este catálogo.</string>
     <string name="catalog_pack_metadata">%1$s · %2$s</string>
@@ -557,11 +558,12 @@
     <string name="catalog_removed">Catálogo eliminado</string>
     <string name="catalog_remove_failed">No se ha podido eliminar este catálogo.</string>
     <string name="catalog_remove_confirmation_title">¿Eliminar catálogo?</string>
-    <string name="catalog_remove_confirmation_message">Los paquetes instalados permanecerán en este dispositivo.</string>
     <string name="catalog_install_confirmation_title">¿Instalar paquete?</string>
     <string name="catalog_install_confirmation_message">%1$s\nLicencia: %2$s</string>
     <string name="catalog_pack_installed">Paquete instalado</string>
     <string name="catalog_pack_install_failed">No se ha podido instalar este paquete.</string>
+    <string name="catalog_pack_install_failed_message">No se ha podido descargar o validar el paquete.\n\nMotivo: %1$s</string>
+    <string name="catalog_pack_install_failed_unknown_reason">No hay más detalles disponibles.</string>
     <string name="variant_backup_enable">Hacer copia de seguridad de variantes</string>
     <string name="variant_backup_enabled">Variantes guardadas</string>
     <string name="variant_backup_guide_title">Copia de seguridad de variantes</string>

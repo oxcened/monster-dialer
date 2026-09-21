@@ -1,5 +1,8 @@
 package dev.alenajam.monsterdialer.packs.ui
 
+import android.content.ClipData
+import android.content.ClipboardManager
+import android.content.Context
 import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -8,10 +11,12 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
@@ -41,9 +46,20 @@ private val CatalogPixelFont = FontFamily(Font(R.font.ui_pixel_font))
 fun ColumnScope.CatalogsScreen(viewModel: CatalogsViewModel = hiltViewModel()) {
     val state by viewModel.state.collectAsStateWithLifecycle()
     val context = LocalContext.current
+    val catalogUrlLabel = stringResource(R.string.catalog_url_label)
     var addDialogOpen by remember { mutableStateOf(false) }
     var pendingRemoval by remember { mutableStateOf<String?>(null) }
     var pendingInstall by remember { mutableStateOf<RemotePackCatalogPack?>(null) }
+    var selectedPack by remember { mutableStateOf<RemotePackCatalogPack?>(null) }
+
+    LaunchedEffect(state.sources, state.loads) {
+        if (selectedPack == null) {
+            selectedPack = state.sources.asSequence()
+                .mapNotNull { state.loads[it.url] as? CatalogLoad.Content }
+                .mapNotNull { it.catalog.packs.firstOrNull() }
+                .firstOrNull()
+        }
+    }
 
     val actionMessage = when (state.action) {
         CatalogAction.Added -> stringResource(R.string.catalog_added)
@@ -51,8 +67,15 @@ fun ColumnScope.CatalogsScreen(viewModel: CatalogsViewModel = hiltViewModel()) {
         CatalogAction.Removed -> stringResource(R.string.catalog_removed)
         CatalogAction.RemoveFailed -> stringResource(R.string.catalog_remove_failed)
         CatalogAction.Installed -> stringResource(R.string.catalog_pack_installed)
-        CatalogAction.InstallFailed -> stringResource(R.string.catalog_pack_install_failed)
+        is CatalogAction.InstallFailed -> null
         null -> null
+    }
+    LaunchedEffect(state.action) {
+        when (state.action) {
+            CatalogAction.Added, CatalogAction.AddFailed -> addDialogOpen = false
+            CatalogAction.Installed, is CatalogAction.InstallFailed -> pendingInstall = null
+            else -> Unit
+        }
     }
     actionMessage?.let { message ->
         LaunchedEffect(message) {
@@ -60,17 +83,33 @@ fun ColumnScope.CatalogsScreen(viewModel: CatalogsViewModel = hiltViewModel()) {
             viewModel.dismissAction()
         }
     }
+    (state.action as? CatalogAction.InstallFailed)?.let { failure ->
+        val reason = failure.reason?.takeIf { it.isNotBlank() }
+            ?: stringResource(R.string.catalog_pack_install_failed_unknown_reason)
+        AlertDialog(
+            onDismissRequest = viewModel::dismissAction,
+            title = { Text(stringResource(R.string.catalog_pack_install_failed)) },
+            text = {
+                Text(stringResource(R.string.catalog_pack_install_failed_message, reason))
+            },
+            confirmButton = {
+                TextButton(onClick = viewModel::dismissAction) {
+                    Text(stringResource(R.string.close))
+                }
+            },
+        )
+    }
 
     if (addDialogOpen) {
         AddCatalogDialog(
-            onAdd = { url -> viewModel.add(url); addDialogOpen = false },
-            onDismiss = { addDialogOpen = false },
+            isAdding = state.isAddingCatalog,
+            onAdd = viewModel::add,
+            onDismiss = { if (!state.isAddingCatalog) addDialogOpen = false },
         )
     }
     pendingRemoval?.let { url ->
         RetroConfirmationDialog(
             title = stringResource(R.string.catalog_remove_confirmation_title),
-            message = stringResource(R.string.catalog_remove_confirmation_message),
             noLabel = stringResource(R.string.cancel),
             yesLabel = stringResource(R.string.remove),
             fontFamily = CatalogPixelFont,
@@ -85,8 +124,10 @@ fun ColumnScope.CatalogsScreen(viewModel: CatalogsViewModel = hiltViewModel()) {
             noLabel = stringResource(R.string.cancel),
             yesLabel = stringResource(R.string.import_pack),
             fontFamily = CatalogPixelFont,
-            onConfirm = { viewModel.install(pack); pendingInstall = null },
-            onDismissRequest = { pendingInstall = null },
+            confirmEnabled = state.installingPackId == null,
+            confirmLoading = state.installingPackId == pack.id,
+            onConfirm = { viewModel.install(pack) },
+            onDismissRequest = { if (state.installingPackId == null) pendingInstall = null },
         )
     }
 
@@ -107,9 +148,18 @@ fun ColumnScope.CatalogsScreen(viewModel: CatalogsViewModel = hiltViewModel()) {
             CatalogSourceContent(
                 sourceUrl = source.url,
                 load = load,
+                selectedPack = selectedPack,
+                installingPackId = state.installingPackId,
                 onRefresh = { viewModel.refresh(source.url) },
                 onRemove = { pendingRemoval = source.url },
-                onInstall = { pendingInstall = it },
+                onCopy = {
+                    context.copyToClipboard(catalogUrlLabel, source.url)
+                    Toast.makeText(context, R.string.catalog_url_copied, Toast.LENGTH_SHORT).show()
+                },
+                onInstall = {
+                    selectedPack = it
+                    pendingInstall = it
+                },
             )
         }
     }
@@ -119,15 +169,28 @@ fun ColumnScope.CatalogsScreen(viewModel: CatalogsViewModel = hiltViewModel()) {
 private fun CatalogSourceContent(
     sourceUrl: String,
     load: CatalogLoad?,
+    selectedPack: RemotePackCatalogPack?,
+    installingPackId: String?,
     onRefresh: () -> Unit,
     onRemove: () -> Unit,
+    onCopy: () -> Unit,
     onInstall: (RemotePackCatalogPack) -> Unit,
 ) {
     Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
-        Text(sourceUrl, maxLines = 1, overflow = TextOverflow.Ellipsis)
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+        ) {
+            Text(
+                sourceUrl,
+                modifier = Modifier.weight(1f),
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis,
+            )
+        }
         Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+            TextButton(onClick = onCopy) { Text(stringResource(R.string.copy_catalog_url)) }
             TextButton(onClick = onRefresh) { Text(stringResource(R.string.refresh_catalog)) }
-            TextButton(onClick = onRemove) { Text(stringResource(R.string.remove_catalog)) }
+            TextButton(onClick = onRemove) { Text(stringResource(R.string.remove)) }
         }
         when (load) {
             null, CatalogLoad.Loading -> Text(stringResource(R.string.catalog_loading))
@@ -135,10 +198,19 @@ private fun CatalogSourceContent(
             is CatalogLoad.Content -> {
                 Text(load.catalog.name)
                 load.catalog.packs.forEach { pack ->
-                    RetroSelectableRow(selected = false, onClick = { onInstall(pack) }) {
+                    RetroSelectableRow(
+                        selected = selectedPack == pack,
+                        enabled = installingPackId == null,
+                        onClick = { onInstall(pack) },
+                    ) {
                         Column(modifier = Modifier.fillMaxWidth().padding(8.dp)) {
                             Text(pack.name)
-                            Text(stringResource(R.string.catalog_pack_metadata, pack.creator ?: load.catalog.publisher.orEmpty(), pack.version))
+                            val attribution = pack.creator?.takeIf { it.isNotBlank() }
+                                ?: load.catalog.publisher?.takeIf { it.isNotBlank() }
+                            Text(
+                                attribution?.let { stringResource(R.string.catalog_pack_metadata, it, pack.version) }
+                                    ?: pack.version,
+                            )
                         }
                     }
                 }
@@ -148,7 +220,11 @@ private fun CatalogSourceContent(
 }
 
 @Composable
-private fun AddCatalogDialog(onAdd: (String) -> Unit, onDismiss: () -> Unit) {
+private fun AddCatalogDialog(
+    isAdding: Boolean,
+    onAdd: (String) -> Unit,
+    onDismiss: () -> Unit,
+) {
     var url by remember { mutableStateOf("") }
     AlertDialog(
         onDismissRequest = onDismiss,
@@ -164,7 +240,20 @@ private fun AddCatalogDialog(onAdd: (String) -> Unit, onDismiss: () -> Unit) {
                 )
             }
         },
-        confirmButton = { TextButton(onClick = { onAdd(url) }) { Text(stringResource(R.string.add)) } },
-        dismissButton = { TextButton(onClick = onDismiss) { Text(stringResource(R.string.cancel)) } },
+        confirmButton = {
+            TextButton(enabled = !isAdding, onClick = { onAdd(url) }) {
+                if (isAdding) {
+                    CircularProgressIndicator(modifier = Modifier.size(18.dp), strokeWidth = 2.dp)
+                } else {
+                    Text(stringResource(R.string.add))
+                }
+            }
+        },
+        dismissButton = { TextButton(enabled = !isAdding, onClick = onDismiss) { Text(stringResource(R.string.cancel)) } },
     )
+}
+
+private fun Context.copyToClipboard(label: String, text: String) {
+    val clipboard = getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+    clipboard.setPrimaryClip(ClipData.newPlainText(label, text))
 }

@@ -552,9 +552,10 @@
     <string name="catalogs_empty">Adaugă un URL de catalog pentru a-i răsfoi pachetele.</string>
     <string name="add_catalog">Adaugă catalog</string>
     <string name="catalog_url_label">URL catalog</string>
+    <string name="copy_catalog_url">Copiază</string>
+    <string name="catalog_url_copied">URL-ul catalogului a fost copiat</string>
     <string name="catalog_add_notice">Adaugă doar cataloage din surse de încredere. Editorii cataloagelor își găzduiesc și întrețin propriile linkuri către pachete.</string>
     <string name="refresh_catalog">Reîmprospătează</string>
-    <string name="remove_catalog">Elimină catalogul</string>
     <string name="catalog_loading">Se încarcă catalogul…</string>
     <string name="catalog_load_failed">Catalogul nu a putut fi încărcat.</string>
     <string name="catalog_pack_metadata">%1$s · %2$s</string>
@@ -563,11 +564,12 @@
     <string name="catalog_removed">Catalog eliminat</string>
     <string name="catalog_remove_failed">Catalogul nu a putut fi eliminat.</string>
     <string name="catalog_remove_confirmation_title">Elimini catalogul?</string>
-    <string name="catalog_remove_confirmation_message">Pachetele instalate vor rămâne pe acest dispozitiv.</string>
     <string name="catalog_install_confirmation_title">Instalezi pachetul?</string>
     <string name="catalog_install_confirmation_message">%1$s\nLicență: %2$s</string>
     <string name="catalog_pack_installed">Pachet instalat</string>
     <string name="catalog_pack_install_failed">Pachetul nu a putut fi instalat.</string>
+    <string name="catalog_pack_install_failed_message">Pachetul nu a putut fi descărcat sau validat.\n\nMotiv: %1$s</string>
+    <string name="catalog_pack_install_failed_unknown_reason">Nu sunt disponibile detalii suplimentare.</string>
     <string name="variant_backup_enable">Fă backup pentru variante</string>
     <string name="variant_backup_enabled">Variante salvate</string>
     <string name="variant_backup_guide_title">Backup pentru variante</string>

@@ -564,9 +564,10 @@
     <string name="catalogs_empty">Aggiungi un URL del catalogo per sfogliare i pacchetti.</string>
     <string name="add_catalog">Aggiungi catalogo</string>
     <string name="catalog_url_label">URL del catalogo</string>
+    <string name="copy_catalog_url">Copia</string>
+    <string name="catalog_url_copied">URL del catalogo copiata</string>
     <string name="catalog_add_notice">Aggiungi solo cataloghi da fonti attendibili. Gli editori dei cataloghi ospitano e gestiscono i propri link ai pacchetti.</string>
     <string name="refresh_catalog">Aggiorna</string>
-    <string name="remove_catalog">Rimuovi catalogo</string>
     <string name="catalog_loading">Caricamento catalogo…</string>
     <string name="catalog_load_failed">Impossibile caricare questo catalogo.</string>
     <string name="catalog_pack_metadata">%1$s · %2$s</string>
@@ -575,11 +576,12 @@
     <string name="catalog_removed">Catalogo rimosso</string>
     <string name="catalog_remove_failed">Impossibile rimuovere questo catalogo.</string>
     <string name="catalog_remove_confirmation_title">Rimuovere il catalogo?</string>
-    <string name="catalog_remove_confirmation_message">I pacchetti installati resteranno su questo dispositivo.</string>
     <string name="catalog_install_confirmation_title">Installare il pacchetto?</string>
     <string name="catalog_install_confirmation_message">%1$s\nLicenza: %2$s</string>
     <string name="catalog_pack_installed">Pacchetto installato</string>
     <string name="catalog_pack_install_failed">Impossibile installare questo pacchetto.</string>
+    <string name="catalog_pack_install_failed_message">Impossibile scaricare o convalidare il pacchetto.\n\nMotivo: %1$s</string>
+    <string name="catalog_pack_install_failed_unknown_reason">Non sono disponibili ulteriori dettagli.</string>
     <string name="variant_backup_enable">Esegui il backup delle varianti</string>
     <string name="variant_backup_enabled">Varianti salvate</string>
     <string name="variant_backup_guide_title">Backup delle varianti</string>
