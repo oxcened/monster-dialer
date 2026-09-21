@@ -40,6 +40,7 @@
     <string name="local_backup_import_confirmation_title">要恢复备份吗？</string>
     <string name="local_backup_import_confirmation_message">这会替换你当前的角色收藏和本地进度。</string>
     <string name="local_backup_exported">备份已导出</string>
+    <string name="local_backup_restored">备份已恢复</string>
     <string name="local_backup_failed">无法完成备份。</string>
     <string name="catalogs_description" comment="Explanation at the top of the Catalogs screen.">目录列出由发布者托管的数据包。只能安装你获准使用的美术和音效。</string>
     <string name="catalogs_empty" comment="Empty state in the Catalogs screen.">添加目录网址以浏览其中的数据包。</string>
@@ -110,8 +111,9 @@
     <string name="profile_menu_toolbox">工具</string>
     <string name="profile_menu_options">选项</string>
     <string name="profile_menu_exit">退出</string>
+    <string name="profile_menu_info">关于</string>
     <string name="profile_menu_cursor">▶%1$s</string>
-    <string name="profile_roster_description">你的队伍。</string>
+    <string name="profile_roster_description">你的战斗队伍。</string>
     <string name="profile_footer_prompt">你的个人资料！</string>
     <string name="character_tools_title" comment="Heading above character management actions.">工具箱</string>
     <string name="character_tools_prompt" comment="Retro prompt shown below the character toolbox list. Asking the player to choose the right tool.">选择合适的工具。</string>
@@ -173,6 +175,8 @@
     <string name="settings_contact_characters_title" comment="Settings title for assigning characters to contacts.">联系人角色</string>
     <string name="personalize_contact_character" comment="Accessibility label for the contact-list action that customizes a caller's battle characters.">自定义来电者角色</string>
     <string name="settings_contact_characters_description" comment="Settings description for assigning characters to contacts.">为来电者分配角色。</string>
+    <string name="prefer_monster_artwork" comment="Setting that makes assigned monster artwork take priority over trainer artwork.">同时分配时显示怪兽</string>
+    <string name="prefer_monster_artwork_description" comment="Explanation for the contact artwork priority setting.">当联系人同时分配了训练师和怪兽时，在联系人和通话记录中使用怪兽图像。</string>
     <string name="contact_characters_not_set" comment="Settings subtitle when no contacts have a character assignment.">没有已自定义的联系人</string>
     <plurals name="contact_character_assignment_count" comment="Settings subtitle showing how many contacts have a character assignment.">
         <item quantity="other">已自定义 %d 位联系人</item>
@@ -213,6 +217,9 @@
     <string name="contact_context_menu_remove">移除</string>
     <string name="contact_picker_options">选项</string>
     <string name="back">返回</string>
+    <string name="monster_settings_title" comment="Title of MonsterDialer's in-app settings screen.">设置</string>
+    <string name="monster_settings_hint" comment="Footer prompt for MonsterDialer's settings screen.">选择一项设置。</string>
+    <string name="settings_section_general" comment="Section heading for standard dialer settings.">电话</string>
     <string name="contact_defaults_menu_mode">默认角色</string>
     <string name="contact_defaults_menu_characters">角色列表</string>
     <string name="contact_defaults_menu_pool">随机选择池</string>
