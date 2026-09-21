@@ -156,11 +156,12 @@ fun OnlineProfileSection(viewModel: OnlineProfileSettingsViewModel = hiltViewMod
     }
     val shareIndex = if (linkIsOn) regenerateIndex + 1 else -1
     val qrIndex = if (linkIsOn) regenerateIndex + 2 else -1
-    val deleteAccountIndex = if (isSignedIn) {
+    val signOutIndex = if (isSignedIn) {
         if (linkIsOn) qrIndex + 1 else 2
     } else {
         -1
     }
+    val deleteAccountIndex = if (isSignedIn) signOutIndex + 1 else -1
     val helpIndex = if (isSignedIn) deleteAccountIndex + 1 else if (linkIsOn) regenerateIndex + 3 else 1
     Box(modifier = Modifier.fillMaxSize()) {
         Box(
@@ -222,6 +223,22 @@ fun OnlineProfileSection(viewModel: OnlineProfileSettingsViewModel = hiltViewMod
                         }
                     }
                     if (isSignedIn) {
+                        RetroSelectableRow(
+                            selected = selectedMenuIndex == signOutIndex,
+                            enabled = !working,
+                            onClick = {
+                                selectedMenuIndex = signOutIndex
+                                signOut()
+                            },
+                        ) {
+                            Text(
+                                text = stringResource(R.string.online_profile_sign_out_google).uppercase(),
+                                fontFamily = ProfilePixelFont,
+                                fontSize = 16.sp,
+                                lineHeight = 18.sp,
+                                color = ProfileInk,
+                            )
+                        }
                         RetroSelectableRow(
                             selected = selectedMenuIndex == 1,
                             onClick = {
