@@ -26,10 +26,41 @@
     <string name="call_command_cursor">▶ %1$s</string>
     <string name="call_command_section">◀ %1$s</string>
     <string name="call_command_back">رجوع</string>
-    <string name="call_command_run">تنفيذ</string>
+    <string name="call_command_run">اهرب</string>
     <string name="call_command_dialpad_digits">123\n456\n789\n*0#</string>
     <string name="add" comment="Generic label for adding a new item.">إضافة</string>
     <string name="settings_character_packs_title" comment="Settings title for managing character packs.">حزم الشخصيات</string>
+    <string name="settings_catalogs_title" comment="Settings title for external character-pack catalogs.">الكتالوجات</string>
+    <string name="settings_catalogs_description" comment="Settings description for external character-pack catalogs.">تصفّح الحزم من عناوين الكتالوجات التي تضيفها.</string>
+    <string name="local_backup_title">نسخة احتياطية محلية</string>
+    <string name="local_backup_settings_description">صدّر مجموعتك من الشخصيات وتقدّمك أو استعدهما.</string>
+    <string name="local_backup_description">احفظ حزم شخصياتك وتعييناتها واكتشافاتك المتألقة ومذكرات المعارك في ملف على هذا الجهاز. لا تشمل النسخة جهات اتصال Android وسجل المكالمات.</string>
+    <string name="local_backup_export">تصدير النسخة الاحتياطية</string>
+    <string name="local_backup_import">استعادة النسخة الاحتياطية</string>
+    <string name="local_backup_import_confirmation_title">استعادة النسخة الاحتياطية؟</string>
+    <string name="local_backup_import_confirmation_message">سيحل هذا محل مجموعة شخصياتك الحالية وتقدّمك المحلي.</string>
+    <string name="local_backup_exported">تم تصدير النسخة الاحتياطية</string>
+    <string name="local_backup_failed">تعذّر إكمال النسخة الاحتياطية.</string>
+    <string name="catalogs_description" comment="Explanation at the top of the Catalogs screen.">تعرض الكتالوجات الحزم التي يستضيفها ناشروها. ثبّت فقط الأعمال الفنية والأصوات المسموح لك باستخدامها.</string>
+    <string name="catalogs_empty" comment="Empty state in the Catalogs screen.">أضف عنوان كتالوج لتصفّح حزمها.</string>
+    <string name="add_catalog" comment="Action that adds an external pack catalog.">إضافة كتالوج</string>
+    <string name="catalog_url_label" comment="Label for the external catalog URL field.">عنوان الكتالوج</string>
+    <string name="catalog_add_notice" comment="Notice shown before adding a catalog URL.">أضف كتالوجًا من مصدر تثق به فقط. يستضيف ناشرو الكتالوجات روابط حزمهم ويديرونها.</string>
+    <string name="refresh_catalog" comment="Action that reloads a catalog URL.">تحديث</string>
+    <string name="remove_catalog" comment="Action that removes a catalog URL.">إزالة الكتالوج</string>
+    <string name="catalog_loading" comment="Loading status for a catalog.">جارٍ تحميل الكتالوج…</string>
+    <string name="catalog_load_failed" comment="Failure status for a catalog.">تعذّر تحميل هذا الكتالوج.</string>
+    <string name="catalog_pack_metadata" comment="Metadata for a catalog pack. %1$s is the creator and %2$s is the version.">%1$s · %2$s</string>
+    <string name="catalog_added" comment="Confirmation after adding a catalog URL.">تمت إضافة الكتالوج</string>
+    <string name="catalog_add_failed" comment="Failure after adding a catalog URL.">تعذّرت إضافة هذا الكتالوج.</string>
+    <string name="catalog_removed" comment="Confirmation after removing a catalog URL.">تمت إزالة الكتالوج</string>
+    <string name="catalog_remove_failed" comment="Failure after removing a catalog URL.">تعذّرت إزالة هذا الكتالوج.</string>
+    <string name="catalog_remove_confirmation_title" comment="Title before removing a catalog URL.">إزالة الكتالوج؟</string>
+    <string name="catalog_remove_confirmation_message" comment="Explanation before removing a catalog URL.">ستبقى الحزم المثبّتة على هذا الجهاز.</string>
+    <string name="catalog_install_confirmation_title" comment="Title before installing a catalog pack.">تثبيت الحزمة؟</string>
+    <string name="catalog_install_confirmation_message" comment="Explanation before installing a catalog pack. %1$s is the pack name and %2$s is its license.">%1$s\nالترخيص: %2$s</string>
+    <string name="catalog_pack_installed" comment="Confirmation after installing a pack from a catalog.">تم تثبيت الحزمة</string>
+    <string name="catalog_pack_install_failed" comment="Failure after installing a pack from a catalog.">تعذّر تثبيت هذه الحزمة.</string>
     <string name="characters_navigation_label" comment="Bottom navigation label for the player's profile and character collection.">الملف الشخصي</string>
     <string name="customize_your_calls" comment="Section heading above contact character customization.">تخصيص مكالماتك</string>
     <string name="character_collection_title" comment="Section heading above character pack and import actions.">مجموعة شخصياتك</string>
@@ -90,7 +121,7 @@
     <string name="profile_menu_contacts">جهات الاتصال</string>
     <string name="profile_menu_collection">المجموعة</string>
     <string name="profile_menu_journal">السجل</string>
-    <string name="profile_menu_online">مشاركة</string>
+    <string name="profile_menu_online">LINK</string>
     <string name="profile_menu_toolbox">الأدوات</string>
     <string name="profile_menu_options">الخيارات</string>
     <string name="profile_menu_exit">خروج</string>
@@ -117,10 +148,11 @@
     <string name="battle_journal_radiant_encounter_label" comment="Compact category label for a repeat radiant encounter.">مواجهة متألقة</string>
     <string name="battle_journal_more_options" comment="Accessibility label for the Battle Journal overflow menu.">المزيد من خيارات سجل المعارك</string>
     <string name="battle_journal_clear" comment="Overflow-menu action that removes all Battle Journal entries.">مسح السجل</string>
-    <string name="battle_journal_clear_confirmation_title" comment="Title for the confirmation dialog before clearing the Battle Journal.">مسح سجل المعارك؟</string>
-    <string name="battle_journal_clear_confirmation_message" comment="Explanation of what clearing the Battle Journal removes.">سيؤدي هذا إلى إزالة كل سجل المعارك والرسومات المحفوظة نهائيًا.</string>
+    <string name="battle_journal_clear_short" comment="Compact Battle Journal action that removes all entries.">مسح</string>
+    <string name="battle_journal_clear_confirmation_title" comment="Short prompt shown before clearing the Battle Journal.">هل أنت متأكد؟</string>
     <string name="filter_all" comment="Filter option to show all monster variants.">الكل</string>
     <string name="filter_regular" comment="Filter option to show only regular monster variants.">عادي</string>
+    <string name="filter_radiant" comment="Filter option to show all radiant monster variants in the collection.">متألق</string>
     <string name="filter_unlocked_radiant" comment="Filter option to show only available radiant monster variants.">متألق مفتوح</string>
     <string name="your_roster" comment="Heading above the player's current active monster roster.">قائمتك</string>
     <string name="roster_monster_level" comment="Level shown below a monster in the roster. %1$d is the monster's level.">المستوى %1$d</string>
@@ -290,13 +322,17 @@
     <string name="contact_chooser_prompt" comment="Prompt above the contact picker.">اختر جهة اتصال لتعيين شخصية لها.</string>
     <string name="online_profile_choose_contact_prompt" comment="Prompt shown after opening a shared Online Profile link.">اختر جهة اتصال لربطها بهذا الملف الشخصي على الإنترنت. يبقى هذا الربط على جهازك.</string>
     <string name="online_profile_title" comment="Title of the profile SHARE screen for sharing the player's battle identity with friends.">الملف الشخصي على الإنترنت</string>
-    <string name="online_profile_link_on">مشاركة/مفعّل</string>
-    <string name="online_profile_link_off">مشاركة/معطّل</string>
+    <string name="online_profile_link_on">LINK/ON</string>
+    <string name="online_profile_link_off">LINK/OFF</string>
     <string name="online_profile_sign_in_action">تسجيل الدخول</string>
     <string name="online_profile_unlink_action">إلغاء الربط</string>
     <string name="online_profile_linked_message">تمت مشاركة فريقك.</string>
     <string name="online_profile_not_linked_message">شارك فريقك مع أصدقائك.</string>
     <string name="online_profile_description" comment="Description below the Online Profile settings title. The trainer and monster are the player's battle characters.">اسمح لأصدقائك برؤية المدرّب والوحش اللذين تصطحبهما في كل مكالمة.</string>
+    <string name="variant_backup_enable" comment="Action that enables private account backup for unlockable character variants.">النسخ الاحتياطي للأنواع</string>
+    <string name="variant_backup_enabled" comment="Status/action indicating that private character-variant backup is active.">تم نسخ الأنواع احتياطيًا</string>
+    <string name="variant_backup_guide_title" comment="Guide title for private cloud backup of unlockable character variants.">النسخ الاحتياطي للنوع</string>
+    <string name="variant_backup_guide_message" comment="Privacy explanation for cloud backup of unlockable character variants.">انسخ أنواع شخصياتك القابلة للفتح احتياطيًا بشكل خاص باستخدام حساب Google. لا يؤدي ذلك مطلقًا إلى نشرها للعامة أو تحميل أعمال الشخصيات الفنية أو جهات الاتصال أو سجل المكالمات. عند تسجيل الدخول على جهاز آخر وتفعيل النسخ الاحتياطي، يستعيد MonsterDialer كل عملية فتح يجدها ويدمجها بأمان مع مجموعة ذلك الجهاز.</string>
     <string name="online_profile_privacy_note" comment="Privacy note on the Online Profile settings screen. Sprites are character images; metadata is their non-image information.">تتم مشاركة رسوم شخصياتك وبياناتها الوصفية فقط.</string>
     <string name="online_profile_guide_title">مشاركة ملفك الشخصي على الإنترنت</string>
     <string name="online_profile_guide_message">الملفات الشخصية على الإنترنت اختيارية تمامًا ومصممة مع مراعاة الخصوصية والأمان. لتفعيل أحدها، سجّل الدخول باستخدام Google. يحدد حساب Google الخاص بك من يمكنه إدارة الملف الشخصي؛ ولا تتم مشاركة بريدك الإلكتروني أو تفاصيل حساب Google. عند تفعيل ملف شخصي أو تسجيل الدخول على جهاز آخر، يُنشر المدرّب الحالي والوحش النشط على ذلك الجهاز، بما في ذلك الرسومات المختارة، عبر رابط قابل للمشاركة. لا تخزن الخوادم رقم هاتفك أو قائمة جهات اتصالك أو سجل المكالمات أو أي بيانات شخصية أو حساسة أخرى. تظل الروابط بين ملفات MonsterDialer وجهات الاتصال على كل جهاز فقط.</string>
@@ -352,6 +388,18 @@
     <string name="retro_action_menu_label">قائمة</string>
     <string name="retro_action_back_label">رجوع</string>
     <string name="retro_action_dial_label">اتصال</string>
+    <string name="dial_search_number_prefix" comment="Prefix shown before the number being entered on the retro dial screen.">رقم/</string>
+    <string name="dial_search_results" comment="Heading for contact suggestions matching a dialed number.">التطابقات</string>
+    <string name="dial_search_more" comment="Button that opens dial modifiers on the retro dial screen.">المزيد</string>
+    <string name="dialpad_letters_2">ABC</string>
+    <string name="dialpad_letters_3">DEF</string>
+    <string name="dialpad_letters_4">GHI</string>
+    <string name="dialpad_letters_5">JKL</string>
+    <string name="dialpad_letters_6">MNO</string>
+    <string name="dialpad_letters_7">PQRS</string>
+    <string name="dialpad_letters_8">TUV</string>
+    <string name="dialpad_letters_9">WXYZ</string>
+    <string name="dialpad_letters_0">+</string>
     <string name="retro_picker_add" comment="Compact action to add a character in the retro picker.">إضافة</string>
     <string name="retro_picker_guide" comment="Compact GSC-style menu action to open the guide.">مساعدة</string>
     <string name="contact_row_actions" comment="Accessibility label for the contact-row overflow menu trigger.">إجراءات جهة الاتصال</string>
