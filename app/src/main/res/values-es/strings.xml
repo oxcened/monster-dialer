@@ -263,7 +263,8 @@
     <string name="online_profile_check_in_title">¿Sigues compartiendo tu perfil?</string>
     <string name="online_profile_check_in_description">Tu perfil en línea no se ha confirmado en casi un año. Confírmalo para seguir compartiéndolo.</string>
     <string name="online_profile_keep_online">Mantener en línea</string>
-    <string name="online_profile_share">Compartir mi perfil</string>
+    <string name="online_profile_share">Compartir perfil</string>
+    <string name="online_profile_share_link">Compartir enlace</string>
     <string name="online_profile_show_qr_code">Mostrar código QR</string>
     <string name="online_profile_qr_code_title">Compartir con código QR</string>
     <string name="online_profile_qr_code_description">Pide a un amigo que escanee este código con su cámara para abrir tu perfil.</string>

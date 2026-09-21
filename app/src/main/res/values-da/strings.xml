@@ -250,7 +250,8 @@
     <string name="online_profile_check_in_title">Deler du stadig din profil?</string>
     <string name="online_profile_check_in_description">Din onlineprofil er ikke blevet bekræftet i næsten et år. Bekræft den for fortsat at dele den.</string>
     <string name="online_profile_keep_online">Behold aktiv</string>
-    <string name="online_profile_share">Del min profil</string>
+    <string name="online_profile_share">Del profil</string>
+    <string name="online_profile_share_link">Del link</string>
     <string name="online_profile_show_qr_code">Vis QR-kode</string>
     <string name="online_profile_qr_code_title">Del med QR-kode</string>
     <string name="online_profile_qr_code_description">Bed en ven om at scanne denne kode med kameraet for at åbne din profil.</string>

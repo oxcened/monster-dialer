@@ -260,7 +260,8 @@
     <string name="online_profile_check_in_title">Îți mai partajezi profilul?</string>
     <string name="online_profile_check_in_description">Profilul tău online nu a fost confirmat de aproape un an. Confirmă-l ca să continui să-l partajezi.</string>
     <string name="online_profile_keep_online">Păstrează online</string>
-    <string name="online_profile_share">Partajează-mi profilul</string>
+    <string name="online_profile_share">Partajează profilul</string>
+    <string name="online_profile_share_link">Partajează linkul</string>
     <string name="online_profile_show_qr_code">Afișează codul QR</string>
     <string name="online_profile_qr_code_title">Partajează cu cod QR</string>
     <string name="online_profile_qr_code_description">Roagă un prieten să scaneze acest cod cu camera pentru a-ți deschide profilul.</string>

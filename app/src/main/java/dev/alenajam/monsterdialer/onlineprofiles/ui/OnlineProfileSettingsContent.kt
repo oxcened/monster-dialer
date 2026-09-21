@@ -56,6 +56,8 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import dev.alenajam.monsterdialer.R
 import dev.alenajam.monsterdialer.app.ui.LocalMonsterAppIcons
+import dev.alenajam.monsterdialer.app.ui.RetroContextMenuDialog
+import dev.alenajam.monsterdialer.app.ui.RetroContextMenuItem
 import dev.alenajam.monsterdialer.app.ui.RetroSelectableRow
 import dev.alenajam.monsterdialer.app.ui.RetroMenuWindow
 import dev.alenajam.monsterdialer.app.ui.RetroDoubleBorderTextBox
@@ -106,6 +108,7 @@ fun OnlineProfileSection(viewModel: OnlineProfileSettingsViewModel = hiltViewMod
     var confirmDeleteVariantBackup by remember { mutableStateOf(false) }
     var confirmDeleteAccount by remember { mutableStateOf(false) }
     var confirmRegenerate by remember { mutableStateOf(false) }
+    var showShareOptions by remember { mutableStateOf(false) }
     var showQrCode by remember { mutableStateOf(false) }
     val signOut: () -> Unit = {
         scope.launch {
@@ -151,20 +154,21 @@ fun OnlineProfileSection(viewModel: OnlineProfileSettingsViewModel = hiltViewMod
     val shareTitle = stringResource(R.string.online_profile_share)
     var guideOpen by remember { mutableStateOf(false) }
     var selectedMenuIndex by remember { mutableStateOf(0) }
+    val shareIndex = if (linkIsOn) 0 else -1
+    val primaryIndex = if (linkIsOn) 1 else 0
+    val backupIndex = if (isSignedIn) primaryIndex + 1 else -1
     val regenerateIndex = if (linkIsOn) {
-        if (isSignedIn) 2 else 1
-    } else {
-        -1
-    }
-    val shareIndex = if (linkIsOn) regenerateIndex + 1 else -1
-    val qrIndex = if (linkIsOn) regenerateIndex + 2 else -1
+        if (isSignedIn) backupIndex + 1 else primaryIndex + 1
+    } else -1
     val signOutIndex = if (isSignedIn) {
-        if (linkIsOn) qrIndex + 1 else 2
-    } else {
-        -1
-    }
+        if (linkIsOn) regenerateIndex + 1 else backupIndex + 1
+    } else -1
     val deleteAccountIndex = if (isSignedIn) signOutIndex + 1 else -1
-    val helpIndex = if (isSignedIn) deleteAccountIndex + 1 else if (linkIsOn) regenerateIndex + 3 else 1
+    val helpIndex = when {
+        isSignedIn -> deleteAccountIndex + 1
+        linkIsOn -> regenerateIndex + 1
+        else -> primaryIndex + 1
+    }
     Box(modifier = Modifier.fillMaxSize()) {
         Box(
             modifier = Modifier
@@ -186,11 +190,29 @@ fun OnlineProfileSection(viewModel: OnlineProfileSettingsViewModel = hiltViewMod
                         lineHeight = 18.sp,
                         color = ProfileInk,
                     )
+                    if (linkIsOn) {
+                        RetroSelectableRow(
+                            selected = selectedMenuIndex == shareIndex,
+                            enabled = !working,
+                            onClick = {
+                                selectedMenuIndex = shareIndex
+                                showShareOptions = true
+                            },
+                        ) {
+                            Text(
+                                text = stringResource(R.string.online_profile_share).uppercase(),
+                                fontFamily = ProfilePixelFont,
+                                fontSize = 16.sp,
+                                lineHeight = 18.sp,
+                                color = ProfileInk,
+                            )
+                        }
+                    }
                     RetroSelectableRow(
-                        selected = selectedMenuIndex == 0,
+                        selected = selectedMenuIndex == primaryIndex,
                         enabled = !working,
                         onClick = {
-                            selectedMenuIndex = 0
+                            selectedMenuIndex = primaryIndex
                             if (linkIsOn) confirmDelete = true
                             else if (isSignedIn) viewModel.enable() else viewModel.signIn()
                         },
@@ -226,10 +248,10 @@ fun OnlineProfileSection(viewModel: OnlineProfileSettingsViewModel = hiltViewMod
                     }
                     if (isSignedIn) {
                         RetroSelectableRow(
-                            selected = selectedMenuIndex == 1,
+                            selected = selectedMenuIndex == backupIndex,
                             enabled = !working,
                             onClick = {
-                                selectedMenuIndex = 1
+                                selectedMenuIndex = backupIndex
                                 if (variantBackupEnabled) confirmDeleteVariantBackup = true
                                 else viewModel.enableVariantBackup()
                             },
@@ -284,39 +306,6 @@ fun OnlineProfileSection(viewModel: OnlineProfileSettingsViewModel = hiltViewMod
                                     color = ProfileInk,
                                 )
                             }
-                        }
-                        RetroSelectableRow(
-                            selected = selectedMenuIndex == shareIndex,
-                            onClick = {
-                                selectedMenuIndex = shareIndex
-                                context.startActivity(Intent.createChooser(Intent(Intent.ACTION_SEND).apply {
-                                    type = "text/plain"
-                                    putExtra(Intent.EXTRA_TEXT, requireNotNull(shareText))
-                                }, shareTitle))
-                            },
-                        ) {
-                            Text(
-                                text = stringResource(R.string.share).uppercase(),
-                                fontFamily = ProfilePixelFont,
-                                fontSize = 16.sp,
-                                lineHeight = 18.sp,
-                                color = ProfileInk,
-                            )
-                        }
-                        RetroSelectableRow(
-                            selected = selectedMenuIndex == qrIndex,
-                            onClick = {
-                                selectedMenuIndex = qrIndex
-                                showQrCode = true
-                            },
-                        ) {
-                            Text(
-                                text = stringResource(R.string.online_profile_qr_action).uppercase(),
-                                fontFamily = ProfilePixelFont,
-                                fontSize = 16.sp,
-                                lineHeight = 18.sp,
-                                color = ProfileInk,
-                            )
                         }
                     }
                     if (isSignedIn) {
@@ -401,6 +390,29 @@ fun OnlineProfileSection(viewModel: OnlineProfileSettingsViewModel = hiltViewMod
                 guideOpen = false
                 selectedMenuIndex = helpIndex
             },
+        )
+    }
+    if (showShareOptions) {
+        RetroContextMenuDialog(
+            title = shareTitle,
+            fontFamily = ProfilePixelFont,
+            items = listOf(
+                RetroContextMenuItem(stringResource(R.string.online_profile_share_link)) {
+                    showShareOptions = false
+                    context.startActivity(Intent.createChooser(Intent(Intent.ACTION_SEND).apply {
+                        type = "text/plain"
+                        putExtra(Intent.EXTRA_TEXT, requireNotNull(shareText))
+                    }, shareTitle))
+                },
+                RetroContextMenuItem(stringResource(R.string.online_profile_qr_action)) {
+                    showShareOptions = false
+                    showQrCode = true
+                },
+                RetroContextMenuItem.cancel(stringResource(R.string.cancel)) {
+                    showShareOptions = false
+                },
+            ),
+            onDismissRequest = { showShareOptions = false },
         )
     }
     if (showQrCode) {

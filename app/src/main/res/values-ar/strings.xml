@@ -274,7 +274,8 @@
     <string name="online_profile_check_in_title">هل ما زلت تشارك ملفك الشخصي؟</string>
     <string name="online_profile_check_in_description">لم يتم تأكيد ملفك الشخصي على الإنترنت منذ قرابة عام. أكّده لمواصلة مشاركته.</string>
     <string name="online_profile_keep_online">إبقاء متصلاً</string>
-    <string name="online_profile_share">مشاركة ملفي الشخصي</string>
+    <string name="online_profile_share">مشاركة الملف الشخصي</string>
+    <string name="online_profile_share_link">مشاركة الرابط</string>
     <string name="online_profile_show_qr_code">عرض رمز QR</string>
     <string name="online_profile_qr_code_title">المشاركة عبر رمز QR</string>
     <string name="online_profile_qr_code_description">اطلب من صديق مسح هذا الرمز بالكاميرا لفتح ملفك الشخصي.</string>
