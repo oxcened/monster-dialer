@@ -26,10 +26,41 @@
     <string name="call_command_cursor">▶ %1$s</string>
     <string name="call_command_section">◀ %1$s</string>
     <string name="call_command_back">返回</string>
-    <string name="call_command_run">执行</string>
+    <string name="call_command_run">逃跑</string>
     <string name="call_command_dialpad_digits">123\n456\n789\n*0#</string>
     <string name="add" comment="Generic label for adding a new item.">添加</string>
     <string name="settings_character_packs_title" comment="Settings title for managing character packs.">角色包</string>
+    <string name="settings_catalogs_title" comment="Settings title for external character-pack catalogs.">目录</string>
+    <string name="settings_catalogs_description" comment="Settings description for external character-pack catalogs.">浏览你添加的目录网址中的数据包。</string>
+    <string name="local_backup_title">本地备份</string>
+    <string name="local_backup_settings_description">导出或恢复你的角色收藏和进度。</string>
+    <string name="local_backup_description">将你的角色包、分配、闪耀发现和对战日志保存到此设备上的文件中。不包括 Android 联系人和通话记录。</string>
+    <string name="local_backup_export">导出备份</string>
+    <string name="local_backup_import">恢复备份</string>
+    <string name="local_backup_import_confirmation_title">要恢复备份吗？</string>
+    <string name="local_backup_import_confirmation_message">这会替换你当前的角色收藏和本地进度。</string>
+    <string name="local_backup_exported">备份已导出</string>
+    <string name="local_backup_failed">无法完成备份。</string>
+    <string name="catalogs_description" comment="Explanation at the top of the Catalogs screen.">目录列出由发布者托管的数据包。只能安装你获准使用的美术和音效。</string>
+    <string name="catalogs_empty" comment="Empty state in the Catalogs screen.">添加目录网址以浏览其中的数据包。</string>
+    <string name="add_catalog" comment="Action that adds an external pack catalog.">添加目录</string>
+    <string name="catalog_url_label" comment="Label for the external catalog URL field.">目录网址</string>
+    <string name="catalog_add_notice" comment="Notice shown before adding a catalog URL.">只能添加你信任来源的目录。目录发布者负责托管和维护自己的数据包链接。</string>
+    <string name="refresh_catalog" comment="Action that reloads a catalog URL.">刷新</string>
+    <string name="remove_catalog" comment="Action that removes a catalog URL.">移除目录</string>
+    <string name="catalog_loading" comment="Loading status for a catalog.">正在加载目录…</string>
+    <string name="catalog_load_failed" comment="Failure status for a catalog.">无法加载此目录。</string>
+    <string name="catalog_pack_metadata" comment="Metadata for a catalog pack. %1$s is the creator and %2$s is the version.">%1$s · %2$s</string>
+    <string name="catalog_added" comment="Confirmation after adding a catalog URL.">目录已添加</string>
+    <string name="catalog_add_failed" comment="Failure after adding a catalog URL.">无法添加此目录。</string>
+    <string name="catalog_removed" comment="Confirmation after removing a catalog URL.">目录已移除</string>
+    <string name="catalog_remove_failed" comment="Failure after removing a catalog URL.">无法移除此目录。</string>
+    <string name="catalog_remove_confirmation_title" comment="Title before removing a catalog URL.">要移除目录吗？</string>
+    <string name="catalog_remove_confirmation_message" comment="Explanation before removing a catalog URL.">已安装的数据包会保留在此设备上。</string>
+    <string name="catalog_install_confirmation_title" comment="Title before installing a catalog pack.">要安装数据包吗？</string>
+    <string name="catalog_install_confirmation_message" comment="Explanation before installing a catalog pack. %1$s is the pack name and %2$s is its license.">%1$s\n许可：%2$s</string>
+    <string name="catalog_pack_installed" comment="Confirmation after installing a pack from a catalog.">数据包已安装</string>
+    <string name="catalog_pack_install_failed" comment="Failure after installing a pack from a catalog.">无法安装此数据包。</string>
     <string name="characters_navigation_label" comment="Bottom navigation label for the player's profile and character collection.">个人资料</string>
     <string name="customize_your_calls" comment="Section heading above contact character customization.">自定义你的通话</string>
     <string name="character_collection_title" comment="Section heading above character pack and import actions.">你的收藏</string>
@@ -75,7 +106,7 @@
     <string name="profile_menu_contacts">联系人</string>
     <string name="profile_menu_collection">收藏</string>
     <string name="profile_menu_journal">日志</string>
-    <string name="profile_menu_online">分享</string>
+    <string name="profile_menu_online">LINK</string>
     <string name="profile_menu_toolbox">工具</string>
     <string name="profile_menu_options">选项</string>
     <string name="profile_menu_exit">退出</string>
@@ -102,10 +133,11 @@
     <string name="battle_journal_radiant_encounter_label" comment="Compact category label for a repeat radiant encounter.">闪耀遭遇</string>
     <string name="battle_journal_more_options" comment="Accessibility label for the Battle Journal overflow menu.">更多对战日志选项</string>
     <string name="battle_journal_clear" comment="Overflow-menu action that removes all Battle Journal entries.">清除日志</string>
-    <string name="battle_journal_clear_confirmation_title" comment="Title for the confirmation dialog before clearing the Battle Journal.">清除对战日志？</string>
-    <string name="battle_journal_clear_confirmation_message" comment="Explanation of what clearing the Battle Journal removes.">这将永久删除所有对战记录和已保存的精灵图。</string>
+    <string name="battle_journal_clear_short" comment="Compact Battle Journal action that removes all entries.">清除</string>
+    <string name="battle_journal_clear_confirmation_title" comment="Short prompt shown before clearing the Battle Journal.">确定吗？</string>
     <string name="filter_all" comment="Filter option to show all monster variants.">全部</string>
     <string name="filter_regular" comment="Filter option to show only regular monster variants.">普通</string>
+    <string name="filter_radiant" comment="Filter option to show all radiant monster variants in the collection.">闪耀</string>
     <string name="filter_unlocked_radiant" comment="Filter option to show only available radiant monster variants.">已解锁闪耀</string>
     <string name="your_roster" comment="Heading above the player's current active monster roster.">你的队伍</string>
     <string name="roster_monster_level" comment="Level shown below a monster in the roster. %1$d is the monster's level.">等级 %1$d</string>
@@ -265,13 +297,17 @@
     <string name="contact_chooser_prompt" comment="Prompt above the contact picker.">选择要分配角色的联系人。</string>
     <string name="online_profile_choose_contact_prompt" comment="Prompt shown after opening a shared Online Profile link.">选择要与此在线个人资料关联的联系人。此关联会保留在你的设备上。</string>
     <string name="online_profile_title" comment="Title of the profile SHARE screen for sharing the player's battle identity with friends.">在线个人资料</string>
-    <string name="online_profile_link_on">分享/开</string>
-    <string name="online_profile_link_off">分享/关</string>
+    <string name="online_profile_link_on">LINK/ON</string>
+    <string name="online_profile_link_off">LINK/OFF</string>
     <string name="online_profile_sign_in_action">登录</string>
     <string name="online_profile_unlink_action">解除关联</string>
     <string name="online_profile_linked_message">你的队伍已分享。</string>
     <string name="online_profile_not_linked_message">与朋友分享你的队伍。</string>
     <string name="online_profile_description" comment="Description below the Online Profile settings title. The trainer and monster are the player's battle characters.">让好友看到你每次通话时使用的训练师和怪物。</string>
+    <string name="variant_backup_enable" comment="Action that enables private account backup for unlockable character variants.">备份变体</string>
+    <string name="variant_backup_enabled" comment="Status/action indicating that private character-variant backup is active.">变体已备份</string>
+    <string name="variant_backup_guide_title" comment="Guide title for private cloud backup of unlockable character variants.">变体备份</string>
+    <string name="variant_backup_guide_message" comment="Privacy explanation for cloud backup of unlockable character variants.">使用你的 Google 账号私密备份可解锁的角色变体。它们不会公开发布，也不会上传角色美术、联系人或通话记录。在另一台设备上登录并启用备份后，MonsterDialer 会恢复找到的所有解锁内容，并将其安全合并到该设备的收藏中。</string>
     <string name="online_profile_privacy_note" comment="Privacy note on the Online Profile settings screen. Sprites are character images; metadata is their non-image information.">只会共享你的角色精灵图和元数据。</string>
     <string name="online_profile_guide_title">分享你的在线个人资料</string>
     <string name="online_profile_guide_message">在线个人资料完全由你自愿开启，并以隐私和安全为设计重点。要启用它，请使用 Google 登录。你的 Google 账号用于识别谁可以管理个人资料；不会分享你的电子邮件或 Google 账号详情。启用个人资料或在另一台设备上登录时，该设备当前的训练师和出战怪物（包括所选精灵图）会通过可分享的链接发布。服务器不会存储你的电话号码、联系人列表、通话记录或其他个人及敏感数据。MonsterDialer 个人资料与联系人的关联仅保留在各自设备上。</string>
@@ -327,6 +363,18 @@
     <string name="retro_action_menu_label">菜单</string>
     <string name="retro_action_back_label">返回</string>
     <string name="retro_action_dial_label">拨号</string>
+    <string name="dial_search_number_prefix" comment="Prefix shown before the number being entered on the retro dial screen.">号码/</string>
+    <string name="dial_search_results" comment="Heading for contact suggestions matching a dialed number.">匹配项</string>
+    <string name="dial_search_more" comment="Button that opens dial modifiers on the retro dial screen.">更多</string>
+    <string name="dialpad_letters_2">ABC</string>
+    <string name="dialpad_letters_3">DEF</string>
+    <string name="dialpad_letters_4">GHI</string>
+    <string name="dialpad_letters_5">JKL</string>
+    <string name="dialpad_letters_6">MNO</string>
+    <string name="dialpad_letters_7">PQRS</string>
+    <string name="dialpad_letters_8">TUV</string>
+    <string name="dialpad_letters_9">WXYZ</string>
+    <string name="dialpad_letters_0">+</string>
     <string name="retro_picker_add" comment="Compact action to add a character in the retro picker.">添加</string>
     <string name="retro_picker_guide" comment="Compact GSC-style menu action to open the guide.">帮助</string>
     <string name="contact_row_actions" comment="Accessibility label for the contact-row overflow menu trigger.">联系人操作</string>
