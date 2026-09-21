@@ -46,9 +46,10 @@
     <string name="catalogs_empty" comment="Empty state in the Catalogs screen.">أضف عنوان كتالوج لتصفّح حزمها.</string>
     <string name="add_catalog" comment="Action that adds an external pack catalog.">إضافة كتالوج</string>
     <string name="catalog_url_label" comment="Label for the external catalog URL field.">عنوان الكتالوج</string>
+    <string name="copy_catalog_url" comment="Button to copy an installed catalog URL.">نسخ</string>
+    <string name="catalog_url_copied" comment="Confirmation after copying an installed catalog URL.">تم نسخ عنوان URL للكتالوج</string>
     <string name="catalog_add_notice" comment="Notice shown before adding a catalog URL.">أضف كتالوجًا من مصدر تثق به فقط. يستضيف ناشرو الكتالوجات روابط حزمهم ويديرونها.</string>
     <string name="refresh_catalog" comment="Action that reloads a catalog URL.">تحديث</string>
-    <string name="remove_catalog" comment="Action that removes a catalog URL.">إزالة الكتالوج</string>
     <string name="catalog_loading" comment="Loading status for a catalog.">جارٍ تحميل الكتالوج…</string>
     <string name="catalog_load_failed" comment="Failure status for a catalog.">تعذّر تحميل هذا الكتالوج.</string>
     <string name="catalog_pack_metadata" comment="Metadata for a catalog pack. %1$s is the creator and %2$s is the version.">%1$s · %2$s</string>
@@ -57,11 +58,12 @@
     <string name="catalog_removed" comment="Confirmation after removing a catalog URL.">تمت إزالة الكتالوج</string>
     <string name="catalog_remove_failed" comment="Failure after removing a catalog URL.">تعذّرت إزالة هذا الكتالوج.</string>
     <string name="catalog_remove_confirmation_title" comment="Title before removing a catalog URL.">إزالة الكتالوج؟</string>
-    <string name="catalog_remove_confirmation_message" comment="Explanation before removing a catalog URL.">ستبقى الحزم المثبّتة على هذا الجهاز.</string>
     <string name="catalog_install_confirmation_title" comment="Title before installing a catalog pack.">تثبيت الحزمة؟</string>
     <string name="catalog_install_confirmation_message" comment="Explanation before installing a catalog pack. %1$s is the pack name and %2$s is its license.">%1$s\nالترخيص: %2$s</string>
     <string name="catalog_pack_installed" comment="Confirmation after installing a pack from a catalog.">تم تثبيت الحزمة</string>
     <string name="catalog_pack_install_failed" comment="Failure after installing a pack from a catalog.">تعذّر تثبيت هذه الحزمة.</string>
+    <string name="catalog_pack_install_failed_message">تعذّر تنزيل الحزمة أو التحقق منها.\n\nالسبب: %1$s</string>
+    <string name="catalog_pack_install_failed_unknown_reason">لا تتوفر تفاصيل إضافية.</string>
     <string name="characters_navigation_label" comment="Bottom navigation label for the player's profile and character collection.">الملف الشخصي</string>
     <string name="customize_your_calls" comment="Section heading above contact character customization.">تخصيص مكالماتك</string>
     <string name="character_collection_title" comment="Section heading above character pack and import actions.">مجموعة شخصياتك</string>
