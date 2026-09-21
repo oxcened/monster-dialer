@@ -169,7 +169,6 @@ fun RadiantCollectionScreen(viewModel: RadiantCollectionViewModel = hiltViewMode
     var selectedType by remember { mutableStateOf(CharacterType.Monster) }
     var selectedFilter by remember { mutableStateOf(CollectionVariantFilter.All) }
     var filterMenuOpen by remember { mutableStateOf(false) }
-    var addMenuOpen by remember { mutableStateOf(false) }
     val selectedTypeLabel = stringResource(
         if (selectedType == CharacterType.Trainer) {
             R.string.character_type_trainer
@@ -276,7 +275,11 @@ fun RadiantCollectionScreen(viewModel: RadiantCollectionViewModel = hiltViewMode
             leftAction = RetroFooterAction(
                 key = stringResource(R.string.retro_key_a),
                 label = stringResource(R.string.add),
-                onClick = { addMenuOpen = true },
+                onClick = {
+                    navigator?.navigateTo(
+                        if (selectedType == CharacterType.Trainer) "add-trainer" else "add-monster",
+                    )
+                },
             ),
         )
         }
@@ -312,32 +315,6 @@ fun RadiantCollectionScreen(viewModel: RadiantCollectionViewModel = hiltViewMode
                         },
                         RetroContextMenuItem.cancel(stringResource(R.string.cancel)) {
                         filterMenuOpen = false
-                        },
-                    ),
-                )
-            }
-        }
-
-        if (addMenuOpen) {
-            Box(
-                modifier = Modifier.fillMaxSize().clickable { addMenuOpen = false },
-                contentAlignment = Alignment.Center,
-            ) {
-                RetroContextMenuOverlay(
-                    modifier = Modifier.fillMaxWidth(0.68f),
-                    fontFamily = RetroPickerFont,
-                    onDismissRequest = { addMenuOpen = false },
-                    items = listOf(
-                        RetroContextMenuItem(stringResource(R.string.add_trainer)) {
-                            addMenuOpen = false
-                            navigator?.navigateTo("add-trainer")
-                        },
-                        RetroContextMenuItem(stringResource(R.string.add_monster)) {
-                            addMenuOpen = false
-                            navigator?.navigateTo("add-monster")
-                        },
-                        RetroContextMenuItem.cancel(stringResource(R.string.cancel)) {
-                            addMenuOpen = false
                         },
                     ),
                 )
