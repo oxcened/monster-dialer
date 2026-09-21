@@ -326,12 +326,15 @@
     <string name="online_profile_enabling" comment="Progress label shown while an Online Profile is being enabled.">正在启用在线个人资料</string>
     <string name="online_profile_regenerating" comment="Progress label shown while a new profile sharing link is being created.">正在重新生成分享链接</string>
     <string name="online_profile_deleting" comment="Progress label shown while the player's Online Profile is being deleted.">正在删除在线个人资料</string>
+    <string name="online_profile_clearing_variant_backup" comment="Progress label shown while cloud variant backup is being deleted.">正在清除已备份的变体</string>
+    <string name="online_profile_deleting_account" comment="Progress label shown while all cloud data and the MonsterDialer account are being deleted.">正在删除云端数据和帐户</string>
     <string name="online_profile_keeping_online" comment="Progress label shown while confirming that an Online Profile should remain shared.">正在保持在线个人资料可用</string>
     <string name="online_profile_enabled" comment="Brief confirmation after an Online Profile is enabled.">已启用在线个人资料</string>
     <string name="online_profile_check_in_title" comment="Title of the reminder dialog asking the player to confirm continued profile sharing.">仍在分享你的个人资料吗？</string>
     <string name="online_profile_check_in_description" comment="Explanation in the profile-sharing reminder dialog. It asks the player to confirm sharing after a long period of inactivity.">你的在线个人资料已有近一年未确认。请确认以继续分享。</string>
     <string name="online_profile_keep_online" comment="Confirmation button that keeps the player's Online Profile shared.">保持在线</string>
-    <string name="online_profile_share" comment="Button that opens Android's share sheet for the player's Online Profile link.">分享我的个人资料</string>
+    <string name="online_profile_share" comment="Button that opens choices for sharing the player's Online Profile.">分享个人资料</string>
+    <string name="online_profile_share_link">分享链接</string>
     <string name="online_profile_show_qr_code" comment="Button that displays a scannable QR code for the player's Online Profile link.">显示二维码</string>
     <string name="online_profile_qr_code_title" comment="Title of the dialog displaying the player's shareable Online Profile QR code.">通过二维码分享</string>
     <string name="online_profile_qr_code_description" comment="Instructions shown below the Online Profile QR code.">请让朋友使用相机扫描此代码以打开你的个人资料。</string>
@@ -340,6 +343,10 @@
     <string name="online_profile_regenerate_message" comment="Confirmation dialog message explaining that replacing a sharing link invalidates the old link.">这会创建新的分享链接，并使当前链接失效。好友需要使用新链接才能访问你的个人资料。</string>
     <string name="online_profile_delete" comment="Button that deletes the player's shared Online Profile.">删除个人资料</string>
     <string name="online_profile_delete_message" comment="Confirmation dialog message for deleting a shared Online Profile. Character and contact customization data remains local.">这会删除你的共享个人资料并使其链接失效。你的角色和联系人自定义设置将保留在此设备上。</string>
+    <string name="online_profile_clear_variant_backup">清除已备份的变体</string>
+    <string name="online_profile_clear_variant_backup_message">这将永久删除云端已备份的变体。你的变体会保留在此设备上。云端备份将被关闭；如需再次备份，请重新启用它。</string>
+    <string name="online_profile_delete_account" comment="Button that permanently deletes all app cloud data and the Firebase Authentication account.">删除云端数据和帐户</string>
+    <string name="online_profile_delete_account_message" comment="Confirmation dialog message for deleting all app cloud data and the Firebase Authentication account.">这将永久删除你的共享个人资料、变体备份和 MonsterDialer 帐户。你的 Google 帐户和本地角色不会改变。你需要重新登录才能使用云端功能。</string>
     <string name="online_profile_error_title" comment="Title of an error dialog when an Online Profile operation cannot be completed.">无法更新在线个人资料</string>
     <string name="online_profile_sprite_decode_error" comment="Error explaining that the selected character image cannot be read for an Online Profile.">无法解码所选角色的精灵图。</string>
     <string name="online_profile_google_sign_in_required" comment="Error explaining that a Google account is required to create or manage an Online Profile.">请使用 Google 登录以管理在线个人资料。</string>
