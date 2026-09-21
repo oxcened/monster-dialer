@@ -434,7 +434,7 @@
     <string name="profile_menu_exit">退出</string>
     <string name="profile_menu_info">关于</string>
     <string name="profile_menu_cursor">▶%1$s</string>
-    <string name="profile_roster_description">你的队伍。</string>
+    <string name="profile_roster_description">你的战斗队伍。</string>
     <string name="profile_footer_prompt">你的个人资料！</string>
     <string name="character_tools_prompt" comment="Retro prompt shown below the character toolbox list. Asking the player to choose the right tool.">选择合适的工具。</string>
     <string name="monster_variant_and_level" translatable="false" comment="Language-neutral formatter for a monster variant and an already-localized level. %1$s is the variant (e.g., Regular) and %2$s is the level (e.g., Lv. 12).">%1$s · %2$s</string>

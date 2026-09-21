@@ -240,7 +240,7 @@ private fun GameBoyProfileLayout(
                 RetroMenuWindow(modifier = Modifier.weight(1f).fillMaxHeight()) {
                     RetroTypewriterText(
                         text = stringResource(R.string.profile_roster_description),
-                        style = ProfilePixelTextStyle.copy(fontSize = 16.sp, lineHeight = 18.sp),
+                        style = ProfilePixelTextStyle.copy(fontSize = 18.sp, lineHeight = 20.sp),
                     )
                 }
                 RetroMenuWindow(modifier = Modifier.width(220.dp).fillMaxHeight()) {

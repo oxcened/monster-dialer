@@ -127,7 +127,7 @@
     <string name="profile_menu_exit">EXIT</string>
     <string name="profile_menu_info">INFO</string>
     <string name="profile_menu_cursor">▶%1$s</string>
-    <string name="profile_roster_description">Your team.</string>
+    <string name="profile_roster_description">Your battle team.</string>
     <string name="profile_footer_prompt">Your profile!</string>
     <string name="character_tools_title" comment="Heading above character management actions.">Tools</string>
     <string name="character_tools_prompt" comment="Retro prompt shown below the character toolbox list. Asking the player to choose the right tool.">Choose the right tool.</string>
