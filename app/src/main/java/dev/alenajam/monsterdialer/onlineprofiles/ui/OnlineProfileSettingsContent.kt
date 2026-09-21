@@ -96,6 +96,7 @@ fun OnlineProfileSection(viewModel: OnlineProfileSettingsViewModel = hiltViewMod
     val deletingDescription = stringResource(R.string.online_profile_deleting)
     val clearingVariantBackupDescription = stringResource(R.string.online_profile_clearing_variant_backup)
     val deletingAccountDescription = stringResource(R.string.online_profile_deleting_account)
+    val signingInDescription = stringResource(R.string.online_profile_signing_in)
     val keepingOnlineDescription = stringResource(R.string.online_profile_keeping_online)
     val googleSignInNotConfigured = stringResource(R.string.online_profile_google_sign_in_not_configured)
     val navigator = LocalSettingsSubpageNavigator.current
@@ -217,13 +218,17 @@ fun OnlineProfileSection(viewModel: OnlineProfileSettingsViewModel = hiltViewMod
                             else if (isSignedIn) viewModel.enable() else viewModel.signIn()
                         },
                     ) {
-                        if (operation == OnlineProfileOperation.Enable || operation == OnlineProfileOperation.Delete) {
+                        if (
+                            operation == OnlineProfileOperation.SignIn ||
+                            operation == OnlineProfileOperation.Enable ||
+                            operation == OnlineProfileOperation.Delete
+                        ) {
                             CircularProgressIndicator(modifier = Modifier.size(20.dp), strokeWidth = 2.dp)
                             Text(
-                                text = if (operation == OnlineProfileOperation.Enable) {
-                                    enablingDescription.uppercase()
-                                } else {
-                                    deletingDescription.uppercase()
+                                text = when (operation) {
+                                    OnlineProfileOperation.SignIn -> signingInDescription.uppercase()
+                                    OnlineProfileOperation.Enable -> enablingDescription.uppercase()
+                                    else -> deletingDescription.uppercase()
                                 },
                                 modifier = Modifier.padding(start = 8.dp),
                                 fontFamily = ProfilePixelFont,

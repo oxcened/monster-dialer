@@ -77,7 +77,12 @@ class OnlineProfileSettingsViewModel @Inject constructor(
         }
     }
 
-    fun signIn() = viewModelScope.launch { _signInRequests.emit(Unit) }
+    fun signIn() = viewModelScope.launch {
+        if (_isWorking.value) return@launch
+        _isWorking.value = true
+        _operation.value = OnlineProfileOperation.SignIn
+        _signInRequests.emit(Unit)
+    }
 
     fun requestAccountDeletion() = viewModelScope.launch { _accountDeletionRequests.emit(Unit) }
 
@@ -120,6 +125,8 @@ class OnlineProfileSettingsViewModel @Inject constructor(
     fun failGoogleSignIn(message: String?) {
         pendingVariantBackupSignIn = false
         _error.value = message
+        _operation.value = null
+        _isWorking.value = false
     }
 
     fun enableVariantBackup() {
@@ -137,7 +144,7 @@ class OnlineProfileSettingsViewModel @Inject constructor(
             }
         } else {
             pendingVariantBackupSignIn = true
-            viewModelScope.launch { _signInRequests.emit(Unit) }
+            signIn()
         }
     }
 
