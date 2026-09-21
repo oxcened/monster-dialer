@@ -31,6 +31,7 @@ import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogWindowProvider
 import androidx.compose.ui.platform.LocalView
 import androidx.compose.runtime.SideEffect
+import androidx.compose.material3.CircularProgressIndicator
 
 internal data class RetroContextMenuItem(
     val label: String,
@@ -188,6 +189,8 @@ internal fun RetroConfirmationDialog(
     yesLabel: String,
     fontFamily: FontFamily,
     modifier: Modifier = Modifier.fillMaxWidth(0.82f),
+    confirmEnabled: Boolean = true,
+    confirmLoading: Boolean = false,
     onDismissRequest: () -> Unit,
     onConfirm: () -> Unit,
 ) {
@@ -197,8 +200,18 @@ internal fun RetroConfirmationDialog(
             .clickable(onClick = onDismissRequest),
         contentAlignment = Alignment.Center,
     ) {
-        RetroDoubleBorderBox(modifier = modifier.height(156.dp)) {
-            RetroConfirmationContent(title, message, noLabel, yesLabel, fontFamily, onDismissRequest, onConfirm)
+        RetroDoubleBorderBox(modifier = modifier) {
+            RetroConfirmationContent(
+                title,
+                message,
+                noLabel,
+                yesLabel,
+                fontFamily,
+                onDismissRequest,
+                onConfirm,
+                confirmEnabled,
+                confirmLoading,
+            )
         }
     }
 }
@@ -212,6 +225,8 @@ private fun RetroConfirmationContent(
     fontFamily: FontFamily,
     onCancel: () -> Unit,
     onConfirm: () -> Unit,
+    confirmEnabled: Boolean = true,
+    confirmLoading: Boolean = false,
 ) {
     Column(
         modifier = Modifier.padding(8.dp),
@@ -223,7 +238,7 @@ private fun RetroConfirmationContent(
         }
         Spacer(modifier = Modifier.height(4.dp))
         ConfirmationActionRow(noLabel, true, fontFamily, onCancel)
-        ConfirmationActionRow(yesLabel, false, fontFamily, onConfirm)
+        ConfirmationActionRow(yesLabel, false, fontFamily, onConfirm, confirmEnabled, confirmLoading)
     }
 }
 
@@ -233,12 +248,14 @@ private fun ConfirmationActionRow(
     showCursor: Boolean,
     fontFamily: FontFamily,
     onClick: () -> Unit,
+    enabled: Boolean = true,
+    loading: Boolean = false,
 ) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
             .height(30.dp)
-            .clickable(onClick = onClick)
+            .clickable(enabled = enabled, onClick = onClick)
             .semantics { contentDescription = label },
         horizontalArrangement = Arrangement.spacedBy(5.dp),
         verticalAlignment = Alignment.CenterVertically,
@@ -252,7 +269,15 @@ private fun ConfirmationActionRow(
         } else {
             Spacer(modifier = Modifier.size(RetroSelectionArrowSize))
         }
-        Text(label.uppercase(), fontFamily = fontFamily, fontSize = 18.sp, color = Color(0xFF202020))
+        if (loading) {
+            CircularProgressIndicator(
+                modifier = Modifier.size(14.dp),
+                color = Color(0xFF202020),
+                strokeWidth = 2.dp,
+            )
+        } else {
+            Text(label.uppercase(), fontFamily = fontFamily, fontSize = 18.sp, color = Color(0xFF202020))
+        }
     }
 }
 

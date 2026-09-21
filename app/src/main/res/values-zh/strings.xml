@@ -535,9 +535,10 @@
     <string name="catalogs_empty">添加目录网址以浏览其中的数据包。</string>
     <string name="add_catalog">添加目录</string>
     <string name="catalog_url_label">目录网址</string>
+    <string name="copy_catalog_url">复制</string>
+    <string name="catalog_url_copied">目录网址已复制</string>
     <string name="catalog_add_notice">只能添加你信任来源的目录。目录发布者负责托管和维护自己的数据包链接。</string>
     <string name="refresh_catalog">刷新</string>
-    <string name="remove_catalog">移除目录</string>
     <string name="catalog_loading">正在加载目录…</string>
     <string name="catalog_load_failed">无法加载此目录。</string>
     <string name="catalog_pack_metadata">%1$s · %2$s</string>
@@ -546,11 +547,12 @@
     <string name="catalog_removed">目录已移除</string>
     <string name="catalog_remove_failed">无法移除此目录。</string>
     <string name="catalog_remove_confirmation_title">要移除目录吗？</string>
-    <string name="catalog_remove_confirmation_message">已安装的数据包会保留在此设备上。</string>
     <string name="catalog_install_confirmation_title">要安装数据包吗？</string>
     <string name="catalog_install_confirmation_message">%1$s\n许可：%2$s</string>
     <string name="catalog_pack_installed">数据包已安装</string>
     <string name="catalog_pack_install_failed">无法安装此数据包。</string>
+    <string name="catalog_pack_install_failed_message">无法下载或验证此数据包。\n\n原因：%1$s</string>
+    <string name="catalog_pack_install_failed_unknown_reason">没有更多详细信息。</string>
     <string name="variant_backup_enable">备份变体</string>
     <string name="variant_backup_enabled">变体已备份</string>
     <string name="variant_backup_guide_title">变体备份</string>

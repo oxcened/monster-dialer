@@ -546,9 +546,10 @@
     <string name="catalogs_empty">Füge eine Katalog-URL hinzu, um die Pakete zu durchsuchen.</string>
     <string name="add_catalog">Katalog hinzufügen</string>
     <string name="catalog_url_label">Katalog-URL</string>
+    <string name="copy_catalog_url">Kopieren</string>
+    <string name="catalog_url_copied">Katalog-URL kopiert</string>
     <string name="catalog_add_notice">Füge nur Kataloge aus Quellen hinzu, denen du vertraust. Katalogherausgeber hosten und pflegen ihre eigenen Paketlinks.</string>
     <string name="refresh_catalog">Aktualisieren</string>
-    <string name="remove_catalog">Katalog entfernen</string>
     <string name="catalog_loading">Katalog wird geladen…</string>
     <string name="catalog_load_failed">Dieser Katalog konnte nicht geladen werden.</string>
     <string name="catalog_pack_metadata">%1$s · %2$s</string>
@@ -557,11 +558,12 @@
     <string name="catalog_removed">Katalog entfernt</string>
     <string name="catalog_remove_failed">Dieser Katalog konnte nicht entfernt werden.</string>
     <string name="catalog_remove_confirmation_title">Katalog entfernen?</string>
-    <string name="catalog_remove_confirmation_message">Installierte Pakete bleiben auf diesem Gerät.</string>
     <string name="catalog_install_confirmation_title">Paket installieren?</string>
     <string name="catalog_install_confirmation_message">%1$s\nLizenz: %2$s</string>
     <string name="catalog_pack_installed">Paket installiert</string>
     <string name="catalog_pack_install_failed">Dieses Paket konnte nicht installiert werden.</string>
+    <string name="catalog_pack_install_failed_message">Das Paket konnte nicht heruntergeladen oder validiert werden.\n\nGrund: %1$s</string>
+    <string name="catalog_pack_install_failed_unknown_reason">Keine weiteren Details verfügbar.</string>
     <string name="variant_backup_enable">Varianten sichern</string>
     <string name="variant_backup_enabled">Varianten gesichert</string>
     <string name="variant_backup_guide_title">Varianten-Backup</string>

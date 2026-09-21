@@ -541,9 +541,10 @@
     <string name="catalogs_empty">Tilføj en katalog-URL for at gennemse dens pakker.</string>
     <string name="add_catalog">Tilføj katalog</string>
     <string name="catalog_url_label">Katalog-URL</string>
+    <string name="copy_catalog_url">Kopiér</string>
+    <string name="catalog_url_copied">Katalog-URL kopieret</string>
     <string name="catalog_add_notice">Tilføj kun kataloger fra kilder, du stoler på. Katalogudgivere hoster og vedligeholder selv deres pakkelinks.</string>
     <string name="refresh_catalog">Opdatér</string>
-    <string name="remove_catalog">Fjern katalog</string>
     <string name="catalog_loading">Indlæser katalog…</string>
     <string name="catalog_load_failed">Kataloget kunne ikke indlæses.</string>
     <string name="catalog_pack_metadata">%1$s · %2$s</string>
@@ -552,11 +553,12 @@
     <string name="catalog_removed">Katalog fjernet</string>
     <string name="catalog_remove_failed">Kataloget kunne ikke fjernes.</string>
     <string name="catalog_remove_confirmation_title">Fjern katalog?</string>
-    <string name="catalog_remove_confirmation_message">Installerede pakker bliver på denne enhed.</string>
     <string name="catalog_install_confirmation_title">Installér pakke?</string>
     <string name="catalog_install_confirmation_message">%1$s\nLicens: %2$s</string>
     <string name="catalog_pack_installed">Pakke installeret</string>
     <string name="catalog_pack_install_failed">Pakken kunne ikke installeres.</string>
+    <string name="catalog_pack_install_failed_message">Pakken kunne ikke downloades eller valideres.\n\nÅrsag: %1$s</string>
+    <string name="catalog_pack_install_failed_unknown_reason">Der var ingen yderligere oplysninger.</string>
     <string name="variant_backup_enable">Sikkerhedskopiér varianter</string>
     <string name="variant_backup_enabled">Varianter sikkerhedskopieret</string>
     <string name="variant_backup_guide_title">Sikkerhedskopi af varianter</string>

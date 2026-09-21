@@ -70,6 +70,7 @@ import dev.alenajam.monsterdialer.packs.data.MonsterPack
 import dev.alenajam.opendialer.core.common.ui.AppIcon
 import dev.alenajam.opendialer.core.common.ui.LocalAppIcons
 import dev.alenajam.opendialer.feature.settings.LocalSettingsSubpageNavigator
+import dev.alenajam.opendialer.feature.settings.LocalSettingsRootNavigator
 import androidx.compose.ui.text.font.Font
 
 private val PackPixelFont = FontFamily(Font(R.font.ui_pixel_font))
@@ -101,6 +102,7 @@ fun ColumnScope.CharacterPackSettingsContent(
     }
 
     val navigator = LocalSettingsSubpageNavigator.current
+    val rootNavigator = LocalSettingsRootNavigator.current
     val createPack = { navigator?.navigateTo("create-pack"); Unit }
 
     Surface(
@@ -319,6 +321,12 @@ fun ColumnScope.CharacterPackSettingsContent(
                             },
                         )
                     }
+                    add(
+                        RetroContextMenuItem(stringResource(R.string.settings_catalogs_title)) {
+                            optionsOpen = false
+                            rootNavigator?.invoke("catalogs", null)
+                        },
+                    )
                     add(RetroContextMenuItem.cancel(stringResource(R.string.cancel), onClick = { optionsOpen = false }))
                 },
             )

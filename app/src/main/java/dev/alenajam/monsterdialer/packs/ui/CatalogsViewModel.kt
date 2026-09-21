@@ -21,6 +21,8 @@ data class CatalogsUiState(
     val sources: List<CatalogSource> = emptyList(),
     val loads: Map<String, CatalogLoad> = emptyMap(),
     val action: CatalogAction? = null,
+    val isAddingCatalog: Boolean = false,
+    val installingPackId: String? = null,
 )
 
 sealed interface CatalogLoad {
@@ -29,7 +31,14 @@ sealed interface CatalogLoad {
     data object Failed : CatalogLoad
 }
 
-enum class CatalogAction { Added, AddFailed, Removed, RemoveFailed, Installed, InstallFailed }
+sealed interface CatalogAction {
+    data object Added : CatalogAction
+    data object AddFailed : CatalogAction
+    data object Removed : CatalogAction
+    data object RemoveFailed : CatalogAction
+    data object Installed : CatalogAction
+    data class InstallFailed(val reason: String?) : CatalogAction
+}
 
 @HiltViewModel
 class CatalogsViewModel @Inject constructor(
@@ -53,9 +62,14 @@ class CatalogsViewModel @Inject constructor(
     }
 
     fun add(url: String) = viewModelScope.launch(Dispatchers.IO) {
-        runCatching { sources.add(url) }
-            .onSuccess { setAction(CatalogAction.Added) }
-            .onFailure { setAction(CatalogAction.AddFailed) }
+        update { it.copy(isAddingCatalog = true) }
+        try {
+            runCatching { sources.add(url) }
+                .onSuccess { setAction(CatalogAction.Added) }
+                .onFailure { setAction(CatalogAction.AddFailed) }
+        } finally {
+            update { it.copy(isAddingCatalog = false) }
+        }
     }
 
     fun remove(url: String) = viewModelScope.launch(Dispatchers.IO) {
@@ -72,9 +86,15 @@ class CatalogsViewModel @Inject constructor(
     }
 
     fun install(pack: RemotePackCatalogPack) = viewModelScope.launch {
-        installer.install(pack)
-            .onSuccess { setAction(CatalogAction.Installed) }
-            .onFailure { setAction(CatalogAction.InstallFailed) }
+        if (_state.value.installingPackId != null) return@launch
+        update { it.copy(installingPackId = pack.id) }
+        try {
+            installer.install(pack)
+                .onSuccess { setAction(CatalogAction.Installed) }
+                .onFailure { setAction(CatalogAction.InstallFailed(it.message)) }
+        } finally {
+            update { it.copy(installingPackId = null) }
+        }
     }
 
     fun dismissAction() = update { it.copy(action = null) }
