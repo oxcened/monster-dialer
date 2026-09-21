@@ -97,8 +97,7 @@ internal fun RetroCharacterPicker(
     val entries = remember(type, characters, unlockedVariants, filter, defaultCharacter) {
         retroCharacterEntries(type, characters, unlockedVariants, filter, defaultCharacter, defaultArtwork)
     }
-    val defaultSelection = selected ?: entries.firstOrNull()?.reference
-    var pendingSelection by remember(selected, entries, selectionVersion) { mutableStateOf(defaultSelection) }
+    var pendingSelection by remember(selected, selectionVersion) { mutableStateOf(selected) }
     var optionsOpen by remember(type, selectionVersion) { mutableStateOf(false) }
     var randomPoolOpen by remember(type, selectionVersion) { mutableStateOf(isRandomMode) }
     val enteredFromRandomMode = remember(type, selectionVersion) { isRandomMode }
@@ -129,7 +128,7 @@ internal fun RetroCharacterPicker(
     }
 
     LaunchedEffect(selected, entries, selectionVersion) {
-        pendingSelection = selected ?: entries.firstOrNull()?.reference
+        pendingSelection = selected
         hasMadeSelection = false
     }
     BackHandler(enabled = optionsOpen) { optionsOpen = false }
@@ -178,7 +177,7 @@ internal fun RetroCharacterPicker(
                         isSelected = if (randomPoolOpen) {
                             entry.reference == poolCursor
                         } else {
-                            entry.reference == (pendingSelection ?: entries.firstOrNull()?.reference)
+                            entry.reference == pendingSelection
                         },
                         poolIncluded = if (randomPoolOpen) entry.reference in poolDraft else null,
                     ) {

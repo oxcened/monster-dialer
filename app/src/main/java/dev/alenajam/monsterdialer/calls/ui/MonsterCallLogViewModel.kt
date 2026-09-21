@@ -10,6 +10,8 @@ import dev.alenajam.monsterdialer.battle.data.BattleJournalSprite
 import dev.alenajam.monsterdialer.characters.data.BuiltInCharacters
 import dev.alenajam.monsterdialer.characters.data.CharacterAssignmentRepository
 import dev.alenajam.monsterdialer.characters.data.CharactersRepository
+import dev.alenajam.monsterdialer.characters.data.ContactArtworkPreferences
+import dev.alenajam.monsterdialer.characters.data.ContactArtworkPriority
 import dev.alenajam.monsterdialer.packs.data.CharacterAssignmentTarget
 import dev.alenajam.monsterdialer.packs.data.CharacterReference
 import dev.alenajam.monsterdialer.packs.data.CharacterType
@@ -32,6 +34,7 @@ class MonsterCallLogViewModel @Inject constructor(
     private val characters: CharactersRepository,
     private val journal: BattleJournalStore,
     private val contactsRepository: ContactsRepository,
+    private val artworkPreferences: ContactArtworkPreferences,
 ) : ViewModel() {
     private val _artworkByCallId = MutableStateFlow<Map<Int, MonsterCallLogArtwork>>(emptyMap())
     val artworkByCallId: StateFlow<Map<Int, MonsterCallLogArtwork>> = _artworkByCallId
@@ -42,13 +45,16 @@ class MonsterCallLogViewModel @Inject constructor(
     private val contactsForArtwork = MutableStateFlow<List<DialerContactSummary>>(emptyList())
     val journalEntries: StateFlow<List<BattleJournalEntry>> = journal.entries
     val assignmentVersion: StateFlow<Long> = assignments.assignmentVersion
+    val artworkPriority: StateFlow<ContactArtworkPriority> = artworkPreferences.priority
 
     init {
         viewModelScope.launch {
-            combine(contactsForArtwork, assignments.assignmentVersion) { contacts, _ -> contacts }
-                .collectLatest { contacts ->
+            combine(contactsForArtwork, assignments.assignmentVersion, artworkPriority) { contacts, _, priority ->
+                contacts to priority
+            }
+                .collectLatest { (contacts, priority) ->
                     _artworkByContactId.value = withContext(Dispatchers.IO) {
-                        resolveContactArtwork(contacts)
+                        resolveContactArtwork(contacts, priority)
                     }
                 }
         }
@@ -60,18 +66,23 @@ class MonsterCallLogViewModel @Inject constructor(
 
     private suspend fun resolveContactArtwork(
         contacts: List<DialerContactSummary>,
+        priority: ContactArtworkPriority,
     ): Map<Int, MonsterCallLogArtwork> = buildMap {
         for (contact in contacts) {
             var artwork: MonsterCallLogArtwork? = null
             for (number in contactsRepository.getContactNumbers(contact.id)) {
-                artwork = assignedArtworkFor(number)
+                artwork = assignedArtworkFor(number, priority)
                 if (artwork != null) break
             }
             artwork?.let { put(contact.id, it) }
         }
     }
 
-    suspend fun refresh(calls: List<DialerCall>, favoriteNumbers: Set<String> = emptySet()) {
+    suspend fun refresh(
+        calls: List<DialerCall>,
+        favoriteNumbers: Set<String> = emptySet(),
+        priority: ContactArtworkPriority = artworkPriority.value,
+    ) {
         val artwork = withContext(Dispatchers.IO) {
             val journalIndex = JournalIndex(journal.entries.value)
             calls.mapNotNull { call ->
@@ -80,7 +91,7 @@ class MonsterCallLogViewModel @Inject constructor(
                 val resolvedArtwork = if (call.isAnonymous()) {
                     MonsterCallLogArtwork.anonymous()
                 } else {
-                    if (number == null) null else assignedArtworkFor(number)
+                    if (number == null) null else assignedArtworkFor(number, priority)
                 }
                 val artworkForCall = if (call.isAnonymous()) {
                     resolvedArtwork
@@ -94,7 +105,7 @@ class MonsterCallLogViewModel @Inject constructor(
 
         _artworkByContactNumber.value = withContext(Dispatchers.IO) {
             favoriteNumbers.mapNotNull { number ->
-                val assignedArtwork = assignedArtworkFor(number)
+                val assignedArtwork = assignedArtworkFor(number, priority)
                 assignedArtwork?.let { number to it }
             }.toMap()
         }
@@ -132,10 +143,15 @@ class MonsterCallLogViewModel @Inject constructor(
         return artworkFor(reference, CharacterType.Monster)
     }
 
-    private suspend fun assignedArtworkFor(contactKey: String): MonsterCallLogArtwork? {
-        // A monster is the primary avatar. A trainer fills the same role only when no
-        // usable monster assignment exists; the caller's normal avatar remains the fallback.
-        for (type in listOf(CharacterType.Monster, CharacterType.Trainer)) {
+    private suspend fun assignedArtworkFor(
+        contactKey: String,
+        priority: ContactArtworkPriority,
+    ): MonsterCallLogArtwork? {
+        val types = when (priority) {
+            ContactArtworkPriority.TRAINER -> listOf(CharacterType.Trainer, CharacterType.Monster)
+            ContactArtworkPriority.MONSTER -> listOf(CharacterType.Monster, CharacterType.Trainer)
+        }
+        for (type in types) {
             val reference = assignments.getContactCharacterSelection(contactKey, type).character
             val artwork = reference?.let { artworkFor(it, type) }
             if (artwork != null) return artwork

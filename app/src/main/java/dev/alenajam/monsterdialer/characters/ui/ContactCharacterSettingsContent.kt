@@ -144,7 +144,7 @@ fun ColumnScope.ContactCharacterSettingsContent(
             onDefaultChanged = viewModel::setContactDefault,
             onPoolChanged = viewModel::setContactRandomPool,
             onPoolReset = viewModel::resetContactRandomPool,
-            onAddCharacter = { type -> navigator?.navigateTo(if (type == CharacterType.Trainer) 0 else 1) },
+            onAddCharacter = { type -> navigator?.navigateTo(if (type == CharacterType.Trainer) "add-trainer" else "add-monster") },
             isAddEnabled = !isLimitReached,
         )
         return
@@ -169,7 +169,7 @@ fun ColumnScope.ContactCharacterSettingsContent(
             isAddEnabled = !isLimitReached,
             onAddContact = {
                 viewModel.clearRosterCursor()
-                navigator?.navigateTo(0)
+                navigator?.navigateTo("choose-contact")
             },
             onBack = {
                 viewModel.clearRosterCursor()
@@ -292,7 +292,7 @@ fun ColumnScope.ContactCharacterSettingsContent(
                         )
                     },
                     onOpenGlobalDefaults = {
-                        rootNavigator?.invoke(CharacterSettingsPage.ContactDefaults.index, null)
+                        rootNavigator?.invoke(CharacterSettingsPage.ContactDefaults.id, null)
                     },
                 )
             } else if (!usesGlobalDefaults || entryPoint == ContactCharacterSettingsEntryPoint.ContactList) {
@@ -456,7 +456,7 @@ fun ColumnScope.ContactCharacterSettingsContent(
                                 updateContactPool(CharacterType.Trainer, effectiveTrainerRandomPool - reference)
                             } else null,
                             onDelete = { character -> scope.launch { isPendingDeletionInUse = viewModel.isCharacterInUse(character.character.id); pendingDeletion = character } },
-                            onEdit = { navigator?.navigateTo(1, it.character.id) },
+                            onEdit = { navigator?.navigateTo("add-trainer", it.character.id) },
                             onShare = { pendingShare = it }
                         )
                         1 -> characterTypeItems(
@@ -489,7 +489,7 @@ fun ColumnScope.ContactCharacterSettingsContent(
                                 updateContactPool(CharacterType.Monster, effectiveMonsterRandomPool - reference)
                             } else null,
                             onDelete = { character -> scope.launch { isPendingDeletionInUse = viewModel.isCharacterInUse(character.character.id); pendingDeletion = character } },
-                            onEdit = { navigator?.navigateTo(2, it.character.id) },
+                            onEdit = { navigator?.navigateTo("add-monster", it.character.id) },
                             onShare = { pendingShare = it }
                         )
                     }

@@ -522,6 +522,7 @@
     <string name="local_backup_import_confirmation_title">要恢复备份吗？</string>
     <string name="local_backup_import_confirmation_message">这会替换你当前的角色收藏和本地进度。</string>
     <string name="local_backup_exported">备份已导出</string>
+    <string name="local_backup_restored">备份已恢复</string>
     <string name="local_backup_failed">无法完成备份。</string>
     <string name="catalogs_description">目录列出由发布者托管的数据包。只能安装你获准使用的美术和音效。</string>
     <string name="catalogs_empty">添加目录网址以浏览其中的数据包。</string>
@@ -559,4 +560,9 @@
     <string name="dialpad_letters_8">TUV</string>
     <string name="dialpad_letters_9">WXYZ</string>
     <string name="dialpad_letters_0">+</string>
+    <string name="prefer_monster_artwork">同时分配时显示怪兽</string>
+    <string name="prefer_monster_artwork_description">当联系人同时分配了训练师和怪兽时，在联系人和通话记录中使用怪兽图像。</string>
+    <string name="monster_settings_title">设置</string>
+    <string name="monster_settings_hint">选择一项设置。</string>
+    <string name="settings_section_general">电话</string>
 </resources>

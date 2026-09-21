@@ -101,7 +101,7 @@ fun ColumnScope.CharacterPackSettingsContent(
     }
 
     val navigator = LocalSettingsSubpageNavigator.current
-    val createPack = { navigator?.navigateTo(0); Unit }
+    val createPack = { navigator?.navigateTo("create-pack"); Unit }
 
     Surface(
         modifier = Modifier.fillMaxSize(),

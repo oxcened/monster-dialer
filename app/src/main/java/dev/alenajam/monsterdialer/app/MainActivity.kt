@@ -247,6 +247,7 @@ class MainActivity : AppCompatActivity() {
                         },
                         settingsSubpages = listOf(
                         SettingsSubpage(
+                            id = CharacterSettingsPage.PlayerCharacter.id,
                             title = stringResource(R.string.settings_player_character_title),
                             description = stringResource(R.string.settings_player_character_description),
                             subtitle = stringResource(
@@ -266,7 +267,7 @@ class MainActivity : AppCompatActivity() {
                             showTopBar = false,
                             visibleInSettings = false,
                             destinations = listOf(
-                                SettingsSubpageDestination(title = stringResource(R.string.add_trainer)) { payload, onNavigateBack ->
+                                SettingsSubpageDestination(id = "add-trainer", title = stringResource(R.string.add_trainer)) { payload, onNavigateBack ->
                                     AddCharacterScreen(
                                         onNavigateBack,
                                         characterType = CharacterType.Trainer,
@@ -274,7 +275,7 @@ class MainActivity : AppCompatActivity() {
                                         preferredAssignmentTarget = CharacterAssignmentTarget.Player
                                     )
                                 },
-                                SettingsSubpageDestination(title = stringResource(R.string.add_monster)) { payload, onNavigateBack ->
+                                SettingsSubpageDestination(id = "add-monster", title = stringResource(R.string.add_monster)) { payload, onNavigateBack ->
                                     AddCharacterScreen(
                                         onNavigateBack,
                                         characterType = CharacterType.Monster,
@@ -285,13 +286,14 @@ class MainActivity : AppCompatActivity() {
                             )
                         ),
                         SettingsSubpage(
+                            id = CharacterSettingsPage.ContactCharacters.id,
                             title = stringResource(R.string.settings_contact_characters_title),
                             description = stringResource(R.string.settings_contact_characters_description),
                             topBarTitle = {
                                 val navigator = LocalSettingsSubpageNavigator.current
                                 ContactCharacterTopBarTitle(
                                     contact = selectedContact,
-                                    onClick = { navigator?.navigateTo(0) }
+                                    onClick = { navigator?.navigateTo("choose-contact") }
                                 )
                             },
                             content = { payload ->
@@ -318,13 +320,13 @@ class MainActivity : AppCompatActivity() {
                                 )
                             },
                             destinations = listOf(
-                                SettingsSubpageDestination(title = stringResource(R.string.choose_contact)) { _, onNavigateBack ->
+                                SettingsSubpageDestination(id = "choose-contact", title = stringResource(R.string.choose_contact)) { _, onNavigateBack ->
                                     ContactPickerDestination(
                                         onNavigateBack = onNavigateBack,
                                         viewModel = contactCharacterSettingsViewModel,
                                     )
                                 },
-                                SettingsSubpageDestination(title = stringResource(R.string.add_trainer)) { payload, onNavigateBack ->
+                                SettingsSubpageDestination(id = "add-trainer", title = stringResource(R.string.add_trainer)) { payload, onNavigateBack ->
                                     AddCharacterScreen(
                                         onNavigateBack,
                                         characterType = CharacterType.Trainer,
@@ -332,7 +334,7 @@ class MainActivity : AppCompatActivity() {
                                         preferredAssignmentTarget = CharacterAssignmentTarget.Contact
                                     )
                                 },
-                                SettingsSubpageDestination(title = stringResource(R.string.add_monster)) { payload, onNavigateBack ->
+                                SettingsSubpageDestination(id = "add-monster", title = stringResource(R.string.add_monster)) { payload, onNavigateBack ->
                                     AddCharacterScreen(
                                         onNavigateBack,
                                         characterType = CharacterType.Monster,
@@ -343,6 +345,7 @@ class MainActivity : AppCompatActivity() {
                             )
                         ),
                         SettingsSubpage(
+                            id = CharacterSettingsPage.CharacterPacks.id,
                             title = stringResource(R.string.settings_character_packs_title),
                             description = stringResource(R.string.settings_character_packs_description),
                             subtitle = run {
@@ -378,12 +381,13 @@ class MainActivity : AppCompatActivity() {
                                 )
                             },
                             destinations = listOf(
-                                SettingsSubpageDestination(title = stringResource(R.string.create_character_pack)) { _, onNavigateBack ->
+                                SettingsSubpageDestination(id = "create-pack", title = stringResource(R.string.create_character_pack)) { _, onNavigateBack ->
                                     CreateCharacterPackScreen(onNavigateBack)
                                 }
                             )
                         ),
                         SettingsSubpage(
+                            id = CharacterSettingsPage.BattleJournal.id,
                             title = stringResource(R.string.battle_journal_title),
                             description = stringResource(R.string.battle_journal_description),
                             content = { _ -> BattleJournalScreen() },
@@ -394,6 +398,7 @@ class MainActivity : AppCompatActivity() {
                             showTopBar = false,
                         ),
                         SettingsSubpage(
+                            id = CharacterSettingsPage.LinkedOnlineProfile.id,
                             title = stringResource(R.string.linked_online_profile_title),
                             description = null,
                             content = { LinkedOnlineProfileContent(contactCharacterSettingsViewModel) },
@@ -408,6 +413,7 @@ class MainActivity : AppCompatActivity() {
                             visibleInSettings = false,
                         ),
                         SettingsSubpage(
+                            id = CharacterSettingsPage.ContactDefaults.id,
                             title = stringResource(R.string.contact_defaults_toolbox_title),
                             description = stringResource(R.string.contact_defaults_description),
                             content = { _ ->
@@ -438,7 +444,7 @@ class MainActivity : AppCompatActivity() {
                             showTopBar = false,
                             visibleInSettings = true,
                             destinations = listOf(
-                                SettingsSubpageDestination(title = stringResource(R.string.add_trainer)) { payload, onNavigateBack ->
+                                SettingsSubpageDestination(id = "add-trainer", title = stringResource(R.string.add_trainer)) { payload, onNavigateBack ->
                                     AddCharacterScreen(
                                         onNavigateBack,
                                         characterType = CharacterType.Trainer,
@@ -446,7 +452,7 @@ class MainActivity : AppCompatActivity() {
                                         preferredAssignmentTarget = CharacterAssignmentTarget.Contact,
                                     )
                                 },
-                                SettingsSubpageDestination(title = stringResource(R.string.add_monster)) { payload, onNavigateBack ->
+                                SettingsSubpageDestination(id = "add-monster", title = stringResource(R.string.add_monster)) { payload, onNavigateBack ->
                                     AddCharacterScreen(
                                         onNavigateBack,
                                         characterType = CharacterType.Monster,
@@ -457,8 +463,11 @@ class MainActivity : AppCompatActivity() {
                             ),
                         ),
                         ).let { subpages ->
-                            subpages + subpages[CharacterSettingsPage.ContactCharacters.index] + listOf(
+                            subpages + requireNotNull(
+                                subpages.firstOrNull { it.id == CharacterSettingsPage.ContactCharacters.id },
+                            ).copy(id = CharacterSettingsPage.ToolboxContactCharacters.id) + listOf(
                                 SettingsSubpage(
+                                    id = CharacterSettingsPage.ProfileLink.id,
                                     title = stringResource(R.string.profile_menu_online),
                                     content = { _ -> OnlineProfileSection() },
                                     isScrollable = false,
@@ -470,6 +479,7 @@ class MainActivity : AppCompatActivity() {
                             )
                         }.plus(
                             SettingsSubpage(
+                                id = CharacterSettingsPage.RadiantCollection.id,
                                 title = stringResource(R.string.radiant_collection_title),
                                 description = null,
                                 content = { _ -> RadiantCollectionScreen() },
@@ -479,10 +489,10 @@ class MainActivity : AppCompatActivity() {
                                 contentHorizontalPadding = RetroScreenHorizontalPadding,
                                 showTopBar = false,
                                 destinations = listOf(
-                                    SettingsSubpageDestination(title = stringResource(R.string.create_character_pack)) { _, onNavigateBack ->
+                                    SettingsSubpageDestination(id = "create-pack", title = stringResource(R.string.create_character_pack)) { _, onNavigateBack ->
                                         CreateCharacterPackScreen(onNavigateBack)
                                     },
-                                    SettingsSubpageDestination(title = stringResource(R.string.radiant_collection_browse_packs)) { _, _ ->
+                                    SettingsSubpageDestination(id = "browse-packs", title = stringResource(R.string.radiant_collection_browse_packs)) { _, _ ->
                                         Surface(
                                             modifier = Modifier.fillMaxSize(),
                                             color = Color.White,
@@ -500,7 +510,7 @@ class MainActivity : AppCompatActivity() {
                                             }
                                         }
                                     },
-                                    SettingsSubpageDestination(title = stringResource(R.string.edit)) { payload, onNavigateBack ->
+                                    SettingsSubpageDestination(id = "edit-character", title = stringResource(R.string.edit)) { payload, onNavigateBack ->
                                         val editType = payload
                                             ?.substringBefore(':')
                                             ?.let { type -> CharacterType.entries.firstOrNull { it.name.equals(type, ignoreCase = true) } }
@@ -513,14 +523,14 @@ class MainActivity : AppCompatActivity() {
                                             preferredAssignmentTarget = CharacterAssignmentTarget.Player,
                                         )
                                     },
-                                    SettingsSubpageDestination(title = stringResource(R.string.add_trainer)) { _, onNavigateBack ->
+                                    SettingsSubpageDestination(id = "add-trainer", title = stringResource(R.string.add_trainer)) { _, onNavigateBack ->
                                         AddCharacterScreen(
                                             onNavigateBack = onNavigateBack,
                                             characterType = CharacterType.Trainer,
                                             preferredAssignmentTarget = CharacterAssignmentTarget.Player,
                                         )
                                     },
-                                    SettingsSubpageDestination(title = stringResource(R.string.add_monster)) { _, onNavigateBack ->
+                                    SettingsSubpageDestination(id = "add-monster", title = stringResource(R.string.add_monster)) { _, onNavigateBack ->
                                         AddCharacterScreen(
                                             onNavigateBack = onNavigateBack,
                                             characterType = CharacterType.Monster,
@@ -531,6 +541,7 @@ class MainActivity : AppCompatActivity() {
                             ),
                         ).plus(
                             SettingsSubpage(
+                                id = "catalogs",
                                 title = stringResource(R.string.settings_catalogs_title),
                                 description = stringResource(R.string.settings_catalogs_description),
                                 content = { _ -> CatalogsScreen() },
@@ -542,6 +553,7 @@ class MainActivity : AppCompatActivity() {
                             ),
                         ).plus(
                             SettingsSubpage(
+                                id = CharacterSettingsPage.LocalBackup.id,
                                 title = stringResource(R.string.local_backup_title),
                                 description = stringResource(R.string.local_backup_settings_description),
                                 content = { LocalBackupScreen() },
@@ -552,6 +564,11 @@ class MainActivity : AppCompatActivity() {
                                 visibleInSettings = true,
                             ),
                         ),
+                        settingsContent = { callbacks ->
+                            MonsterSettingsScreen(
+                                callbacks = callbacks,
+                            )
+                        },
                         )
                         if (showFirstEncounterPrompt) {
                             FirstEncounterPrompt(

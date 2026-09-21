@@ -83,7 +83,7 @@ internal fun ColumnScope.PlayerCharacterSettingsContent(
                 } else {
                     PlayerCharacterSettingsRoute.AddToRoster.payload
                 }
-                rootNavigator?.invoke(CharacterSettingsPage.PlayerCharacter.index, targetPayload)
+                rootNavigator?.invoke(CharacterSettingsPage.PlayerCharacter.id, targetPayload)
             },
             onRemoveMonster = { monster ->
                 monster.reference?.let(profileViewModel::removePlayerMonsterFromRoster)
@@ -128,7 +128,7 @@ internal fun ColumnScope.PlayerCharacterSettingsContent(
         },
         onBack = { navigator?.navigateBack() },
         onAddCharacter = if (!isLimitReached) {
-            { navigator?.navigateTo(if (selectedType == CharacterType.Trainer) 0 else 1) }
+            { navigator?.navigateTo(if (selectedType == CharacterType.Trainer) "add-trainer" else "add-monster") }
         } else {
             null
         },

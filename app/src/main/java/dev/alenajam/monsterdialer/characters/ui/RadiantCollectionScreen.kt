@@ -216,7 +216,7 @@ fun RadiantCollectionScreen(viewModel: RadiantCollectionViewModel = hiltViewMode
             )
             RetroSearchButton(
                 label = stringResource(R.string.radiant_collection_browse_packs),
-                onClick = { navigator?.navigateTo(1) },
+                onClick = { navigator?.navigateTo("browse-packs") },
                 modifier = Modifier.weight(1f),
             )
         }
@@ -302,11 +302,11 @@ fun RadiantCollectionScreen(viewModel: RadiantCollectionViewModel = hiltViewMode
                             dividerBefore = true,
                         ) {
                             filterMenuOpen = false
-                            navigator?.navigateTo(3)
+                            navigator?.navigateTo("add-trainer")
                         },
                         RetroContextMenuItem(stringResource(R.string.add_monster)) {
                             filterMenuOpen = false
-                            navigator?.navigateTo(4)
+                            navigator?.navigateTo("add-monster")
                         },
                     ) + RetroContextMenuItem.cancel(stringResource(R.string.cancel)) {
                         filterMenuOpen = false
@@ -351,7 +351,7 @@ fun RadiantCollectionScreen(viewModel: RadiantCollectionViewModel = hiltViewMode
                 items = listOf(
                     RetroContextMenuItem(stringResource(R.string.edit)) {
                         selectedEntry = null
-                        navigator?.navigateTo(2, "${entry.type.name.lowercase()}:${entry.reference.characterId}")
+                        navigator?.navigateTo("edit-character", "${entry.type.name.lowercase()}:${entry.reference.characterId}")
                     },
                     RetroContextMenuItem(stringResource(R.string.delete_action)) {
                         selectedEntry = null

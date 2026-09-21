@@ -84,6 +84,7 @@ fun RetroCallsScreen(
     val monsterArtworkByCallId by monsterCallLogViewModel.artworkByCallId.collectAsStateWithLifecycle()
     val monsterArtworkByContactNumber by monsterCallLogViewModel.artworkByContactNumber.collectAsStateWithLifecycle()
     val journalEntries by monsterCallLogViewModel.journalEntries.collectAsStateWithLifecycle()
+    val artworkPriority by monsterCallLogViewModel.artworkPriority.collectAsStateWithLifecycle()
     val favorites by viewModel.favorites.collectAsStateWithLifecycle()
     var filter by remember { mutableStateOf(RetroCallFilter.All) }
     val filteredCalls = remember(calls, filter) {
@@ -111,8 +112,12 @@ fun RetroCallsScreen(
         ?.takeIf { selectedId -> calls.any { it.id == selectedId } }
         ?: defaultCallId
 
-    androidx.compose.runtime.LaunchedEffect(calls, assignmentVersion, journalEntries, favorites) {
-        monsterCallLogViewModel.refresh(calls, favorites.map { it.number }.toSet())
+    androidx.compose.runtime.LaunchedEffect(calls, assignmentVersion, journalEntries, favorites, artworkPriority) {
+        monsterCallLogViewModel.refresh(
+            calls = calls,
+            favoriteNumbers = favorites.map { it.number }.toSet(),
+            priority = artworkPriority,
+        )
     }
 
     LifecycleEventEffect(Lifecycle.Event.ON_START) {
