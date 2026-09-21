@@ -26,10 +26,41 @@
     <string name="call_command_cursor">▶ %1$s</string>
     <string name="call_command_section">◀ %1$s</string>
     <string name="call_command_back">ZURÜCK</string>
-    <string name="call_command_run">AUSFÜHREN</string>
+    <string name="call_command_run">FLIEHEN</string>
     <string name="call_command_dialpad_digits">123\n456\n789\n*0#</string>
     <string name="add" comment="Generic label for adding a new item.">Hinzufügen</string>
     <string name="settings_character_packs_title" comment="Settings title for managing character packs.">Charakterpakete</string>
+    <string name="settings_catalogs_title" comment="Settings title for external character-pack catalogs.">Kataloge</string>
+    <string name="settings_catalogs_description" comment="Settings description for external character-pack catalogs.">Durchsuche Pakete über hinzugefügte Katalog-URLs.</string>
+    <string name="local_backup_title">Lokales Backup</string>
+    <string name="local_backup_settings_description">Exportiere oder stelle deine Charaktersammlung und deinen Fortschritt wieder her.</string>
+    <string name="local_backup_description">Speichere deine Charakterpakete, Zuweisungen, strahlenden Entdeckungen und dein Kampfjournal als Datei auf diesem Gerät. Android-Kontakte und Anrufverlauf sind nicht enthalten.</string>
+    <string name="local_backup_export">Backup exportieren</string>
+    <string name="local_backup_import">Backup wiederherstellen</string>
+    <string name="local_backup_import_confirmation_title">Backup wiederherstellen?</string>
+    <string name="local_backup_import_confirmation_message">Dadurch werden deine aktuelle Charaktersammlung und dein lokaler Fortschritt ersetzt.</string>
+    <string name="local_backup_exported">Backup exportiert</string>
+    <string name="local_backup_failed">Das Backup konnte nicht abgeschlossen werden.</string>
+    <string name="catalogs_description" comment="Explanation at the top of the Catalogs screen.">Kataloge listen Pakete auf, die von ihren Herausgebern gehostet werden. Installiere nur Grafiken und Sounds, die du verwenden darfst.</string>
+    <string name="catalogs_empty" comment="Empty state in the Catalogs screen.">Füge eine Katalog-URL hinzu, um die Pakete zu durchsuchen.</string>
+    <string name="add_catalog" comment="Action that adds an external pack catalog.">Katalog hinzufügen</string>
+    <string name="catalog_url_label" comment="Label for the external catalog URL field.">Katalog-URL</string>
+    <string name="catalog_add_notice" comment="Notice shown before adding a catalog URL.">Füge nur Kataloge aus Quellen hinzu, denen du vertraust. Katalogherausgeber hosten und pflegen ihre eigenen Paketlinks.</string>
+    <string name="refresh_catalog" comment="Action that reloads a catalog URL.">Aktualisieren</string>
+    <string name="remove_catalog" comment="Action that removes a catalog URL.">Katalog entfernen</string>
+    <string name="catalog_loading" comment="Loading status for a catalog.">Katalog wird geladen…</string>
+    <string name="catalog_load_failed" comment="Failure status for a catalog.">Dieser Katalog konnte nicht geladen werden.</string>
+    <string name="catalog_pack_metadata" comment="Metadata for a catalog pack. %1$s is the creator and %2$s is the version.">%1$s · %2$s</string>
+    <string name="catalog_added" comment="Confirmation after adding a catalog URL.">Katalog hinzugefügt</string>
+    <string name="catalog_add_failed" comment="Failure after adding a catalog URL.">Dieser Katalog konnte nicht hinzugefügt werden.</string>
+    <string name="catalog_removed" comment="Confirmation after removing a catalog URL.">Katalog entfernt</string>
+    <string name="catalog_remove_failed" comment="Failure after removing a catalog URL.">Dieser Katalog konnte nicht entfernt werden.</string>
+    <string name="catalog_remove_confirmation_title" comment="Title before removing a catalog URL.">Katalog entfernen?</string>
+    <string name="catalog_remove_confirmation_message" comment="Explanation before removing a catalog URL.">Installierte Pakete bleiben auf diesem Gerät.</string>
+    <string name="catalog_install_confirmation_title" comment="Title before installing a catalog pack.">Paket installieren?</string>
+    <string name="catalog_install_confirmation_message" comment="Explanation before installing a catalog pack. %1$s is the pack name and %2$s is its license.">%1$s\nLizenz: %2$s</string>
+    <string name="catalog_pack_installed" comment="Confirmation after installing a pack from a catalog.">Paket installiert</string>
+    <string name="catalog_pack_install_failed" comment="Failure after installing a pack from a catalog.">Dieses Paket konnte nicht installiert werden.</string>
     <string name="characters_navigation_label" comment="Bottom navigation label for the player's profile and character collection.">Profil</string>
     <string name="customize_your_calls" comment="Section heading above contact character customization.">Passe deine Anrufe an</string>
     <string name="character_collection_title" comment="Section heading above character pack and import actions.">Deine Sammlung</string>
@@ -78,7 +109,7 @@
     <string name="profile_menu_contacts">KONTAKTE</string>
     <string name="profile_menu_collection">SAMMLUNG</string>
     <string name="profile_menu_journal">PROTOKOLL</string>
-    <string name="profile_menu_online">TEILEN</string>
+    <string name="profile_menu_online">LINK</string>
     <string name="profile_menu_toolbox">WERKZEUGE</string>
     <string name="profile_menu_options">OPTIONEN</string>
     <string name="profile_menu_exit">BEENDEN</string>
@@ -105,10 +136,11 @@
     <string name="battle_journal_radiant_encounter_label" comment="Compact category label for a repeat radiant encounter.">Radiant-Begegnung</string>
     <string name="battle_journal_more_options" comment="Accessibility label for the Battle Journal overflow menu.">Weitere Optionen für das Kampfjournal</string>
     <string name="battle_journal_clear" comment="Overflow-menu action that removes all Battle Journal entries.">Journal leeren</string>
-    <string name="battle_journal_clear_confirmation_title" comment="Title for the confirmation dialog before clearing the Battle Journal.">Kampfjournal leeren?</string>
-    <string name="battle_journal_clear_confirmation_message" comment="Explanation of what clearing the Battle Journal removes.">Dadurch werden der gesamte Kampfverlauf und gespeicherte Journal-Sprites dauerhaft entfernt.</string>
+    <string name="battle_journal_clear_short" comment="Compact Battle Journal action that removes all entries.">Leeren</string>
+    <string name="battle_journal_clear_confirmation_title" comment="Short prompt shown before clearing the Battle Journal.">Bist du sicher?</string>
     <string name="filter_all" comment="Filter option to show all monster variants.">Alle</string>
     <string name="filter_regular" comment="Filter option to show only regular monster variants.">Normal</string>
+    <string name="filter_radiant" comment="Filter option to show all radiant monster variants in the collection.">Strahlend</string>
     <string name="filter_unlocked_radiant" comment="Filter option to show only available radiant monster variants.">Freigeschaltet strahlend</string>
     <string name="your_roster" comment="Heading above the player's current active monster roster.">Dein Team</string>
     <string name="roster_monster_level" comment="Level shown below a monster in the roster. %1$d is the monster's level.">Lv. %1$d</string>
@@ -270,13 +302,17 @@
     <string name="contact_chooser_prompt" comment="Prompt above the contact picker.">Wähle einen Kontakt, dem ein Charakter zugewiesen werden soll.</string>
     <string name="online_profile_choose_contact_prompt" comment="Prompt shown after opening a shared Online Profile link.">Wähle einen Kontakt aus, den du mit diesem Online-Profil verknüpfen möchtest. Diese Zuordnung bleibt auf deinem Gerät.</string>
     <string name="online_profile_title" comment="Title of the profile SHARE screen for sharing the player's battle identity with friends.">Online-Profil</string>
-    <string name="online_profile_link_on">TEILEN/AN</string>
-    <string name="online_profile_link_off">TEILEN/AUS</string>
+    <string name="online_profile_link_on">LINK/ON</string>
+    <string name="online_profile_link_off">LINK/OFF</string>
     <string name="online_profile_sign_in_action">ANMELDEN</string>
     <string name="online_profile_unlink_action">VERKNÜPFUNG AUFHEBEN</string>
     <string name="online_profile_linked_message">Dein Team wird geteilt.</string>
     <string name="online_profile_not_linked_message">Teile dein Team mit Freunden.</string>
     <string name="online_profile_description" comment="Description below the Online Profile settings title. The trainer and monster are the player's battle characters.">Lass Freunde den Trainer und das Monster sehen, die du zu jedem Anruf mitbringst.</string>
+    <string name="variant_backup_enable" comment="Action that enables private account backup for unlockable character variants.">Varianten sichern</string>
+    <string name="variant_backup_enabled" comment="Status/action indicating that private character-variant backup is active.">Varianten gesichert</string>
+    <string name="variant_backup_guide_title" comment="Guide title for private cloud backup of unlockable character variants.">Varianten-Backup</string>
+    <string name="variant_backup_guide_message" comment="Privacy explanation for cloud backup of unlockable character variants.">Sichere deine freischaltbaren Charaktervarianten privat mit deinem Google-Konto. Sie werden niemals öffentlich veröffentlicht und Charaktergrafiken, Kontakte oder der Anrufverlauf werden nicht hochgeladen. Wenn du dich auf einem anderen Gerät anmeldest und Backups aktivierst, stellt MonsterDialer alle gefundenen Freischaltungen wieder her und führt sie sicher mit der Sammlung dieses Geräts zusammen.</string>
     <string name="online_profile_privacy_note" comment="Privacy note on the Online Profile settings screen. Sprites are character images; metadata is their non-image information.">Nur deine Figuren-Sprites und Metadaten werden geteilt.</string>
     <string name="online_profile_guide_title">Dein Online-Profil teilen</string>
     <string name="online_profile_guide_message">Online-Profile sind vollständig optional und auf Datenschutz und Sicherheit ausgelegt. Um eines zu aktivieren, melde dich mit Google an. Dein Google-Konto bestimmt, wer das Profil verwalten kann; deine E-Mail-Adresse und Google-Kontodaten werden nicht geteilt. Beim Aktivieren eines Profils oder bei der Anmeldung auf einem anderen Gerät werden der aktuelle Trainer und das aktive Monster dieses Geräts einschließlich der gewählten Sprites über einen teilbaren Link veröffentlicht. Server speichern weder deine Telefonnummer, deine Kontaktliste oder deinen Anrufverlauf noch andere persönliche oder sensible Daten. Verknüpfungen zwischen MonsterDialer-Profilen und Kontakten bleiben ausschließlich auf dem jeweiligen Gerät.</string>
@@ -332,6 +368,18 @@
     <string name="retro_action_menu_label">MENÜ</string>
     <string name="retro_action_back_label">ZURÜCK</string>
     <string name="retro_action_dial_label">WÄHLEN</string>
+    <string name="dial_search_number_prefix" comment="Prefix shown before the number being entered on the retro dial screen.">Nr./</string>
+    <string name="dial_search_results" comment="Heading for contact suggestions matching a dialed number.">Treffer</string>
+    <string name="dial_search_more" comment="Button that opens dial modifiers on the retro dial screen.">Mehr</string>
+    <string name="dialpad_letters_2">ABC</string>
+    <string name="dialpad_letters_3">DEF</string>
+    <string name="dialpad_letters_4">GHI</string>
+    <string name="dialpad_letters_5">JKL</string>
+    <string name="dialpad_letters_6">MNO</string>
+    <string name="dialpad_letters_7">PQRS</string>
+    <string name="dialpad_letters_8">TUV</string>
+    <string name="dialpad_letters_9">WXYZ</string>
+    <string name="dialpad_letters_0">+</string>
     <string name="retro_picker_add" comment="Compact action to add a character in the retro picker.">HINZUFÜGEN</string>
     <string name="retro_picker_guide" comment="Compact GSC-style menu action to open the guide.">HILFE</string>
     <string name="contact_row_actions" comment="Accessibility label for the contact-row overflow menu trigger.">Kontaktaktionen</string>
