@@ -248,6 +248,7 @@
     <string name="online_profile_enabling">Online-Profil wird aktiviert</string>
     <string name="online_profile_regenerating">Freigabelink wird neu erstellt</string>
     <string name="online_profile_deleting">Online-Profil wird gelöscht</string>
+    <string name="online_profile_deleting_account">Cloud-Daten und Konto werden gelöscht</string>
     <string name="online_profile_keeping_online">Online-Profil bleibt online</string>
     <string name="online_profile_enabled">Online-Profil aktiviert</string>
     <string name="online_profile_check_in_title">Teilst du dein Profil noch?</string>
@@ -262,6 +263,8 @@
     <string name="online_profile_regenerate_message">Dadurch wird ein neuer Freigabelink erstellt und der aktuelle ungültig. Freunde benötigen den neuen Link, um auf dein Profil zuzugreifen.</string>
     <string name="online_profile_delete">Profil löschen</string>
     <string name="online_profile_delete_message">Dadurch wird dein geteiltes Profil gelöscht und sein Link ungültig. Deine Figuren und Kontaktanpassungen bleiben auf diesem Gerät.</string>
+    <string name="online_profile_delete_account">Cloud-Daten und Konto löschen</string>
+    <string name="online_profile_delete_account_message">Dadurch werden dein geteiltes Profil, die Varianten-Sicherung und dein MonsterDialer-Konto dauerhaft gelöscht. Dein Google-Konto und lokale Figuren bleiben unverändert. Du musst dich erneut anmelden, um Cloud-Funktionen zu nutzen.</string>
     <string name="online_profile_error_title">Online-Profil konnte nicht aktualisiert werden</string>
     <string name="online_profile_sprite_decode_error">Der Sprite der ausgewählten Figur kann nicht dekodiert werden.</string>
     <string name="online_profile_google_sign_in_required">Melde dich mit Google an, um ein Online-Profil zu verwalten.</string>

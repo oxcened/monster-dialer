@@ -267,6 +267,7 @@
     <string name="online_profile_enabling">جارٍ تفعيل الملف الشخصي على الإنترنت</string>
     <string name="online_profile_regenerating">جارٍ إنشاء رابط مشاركة جديد</string>
     <string name="online_profile_deleting">جارٍ حذف الملف الشخصي على الإنترنت</string>
+    <string name="online_profile_deleting_account">جارٍ حذف البيانات السحابية والحساب</string>
     <string name="online_profile_keeping_online">جارٍ إبقاء الملف الشخصي على الإنترنت</string>
     <string name="online_profile_enabled">تم تفعيل الملف الشخصي على الإنترنت</string>
     <string name="online_profile_check_in_title">هل ما زلت تشارك ملفك الشخصي؟</string>
@@ -281,6 +282,8 @@
     <string name="online_profile_regenerate_message">سيؤدي هذا إلى إنشاء رابط مشاركة جديد وإبطال الرابط الحالي. سيحتاج أصدقاؤك إلى الرابط الجديد للوصول إلى ملفك الشخصي.</string>
     <string name="online_profile_delete">حذف الملف الشخصي</string>
     <string name="online_profile_delete_message">سيؤدي هذا إلى حذف ملفك الشخصي المشترك وإبطال رابطه. تبقى شخصياتك وتخصيصات جهات الاتصال على هذا الجهاز.</string>
+    <string name="online_profile_delete_account">حذف البيانات السحابية والحساب</string>
+    <string name="online_profile_delete_account_message">سيؤدي هذا إلى حذف ملفك الشخصي المشترك والنسخة الاحتياطية للمتغيرات وحساب MonsterDialer نهائيًا. سيظل حساب Google والشخصيات المحلية دون تغيير. ستحتاج إلى تسجيل الدخول مرة أخرى لاستخدام الميزات السحابية.</string>
     <string name="online_profile_error_title">تعذر تحديث الملف الشخصي على الإنترنت</string>
     <string name="online_profile_sprite_decode_error">تعذر فك ترميز رسم الشخصية المحددة.</string>
     <string name="online_profile_google_sign_in_required">سجّل الدخول باستخدام Google لإدارة ملف شخصي على الإنترنت.</string>

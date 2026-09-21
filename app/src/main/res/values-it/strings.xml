@@ -281,6 +281,7 @@
     <string name="online_profile_enabling">Attivazione profilo online</string>
     <string name="online_profile_regenerating">Rigenerazione del link di condivisione</string>
     <string name="online_profile_deleting">Eliminazione profilo online</string>
+    <string name="online_profile_deleting_account">Eliminazione dei dati cloud e dell’account</string>
     <string name="online_profile_keeping_online">Mantenimento del profilo online</string>
     <string name="online_profile_enabled">Profilo online attivato</string>
     <string name="online_profile_check_in_title">Stai ancora condividendo il tuo profilo?</string>
@@ -295,6 +296,8 @@
     <string name="online_profile_regenerate_message">Verrà creato un nuovo link di condivisione e quello attuale non sarà più valido. Gli amici avranno bisogno del nuovo link per accedere al tuo profilo.</string>
     <string name="online_profile_delete">Elimina profilo</string>
     <string name="online_profile_delete_message">Questa azione elimina il tuo profilo condiviso e rende non valido il suo link. I tuoi personaggi e le personalizzazioni dei contatti restano su questo dispositivo.</string>
+    <string name="online_profile_delete_account">Elimina dati cloud e account</string>
+    <string name="online_profile_delete_account_message">Questa azione elimina definitivamente il profilo condiviso, il backup delle varianti e l’account MonsterDialer. Il tuo account Google e i personaggi locali restano invariati. Dovrai accedere di nuovo per usare le funzionalità cloud.</string>
     <string name="online_profile_error_title">Impossibile aggiornare il profilo online</string>
     <string name="online_profile_sprite_decode_error">Impossibile decodificare lo sprite del personaggio selezionato.</string>
     <string name="online_profile_google_sign_in_required">Accedi con Google per gestire un profilo online.</string>
