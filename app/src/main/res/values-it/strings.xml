@@ -40,6 +40,7 @@
     <string name="local_backup_import_confirmation_title">Ripristinare il backup?</string>
     <string name="local_backup_import_confirmation_message">Questa operazione sostituirà la raccolta di personaggi attuale e i progressi locali.</string>
     <string name="local_backup_exported">Backup esportato</string>
+    <string name="local_backup_restored">Backup ripristinato</string>
     <string name="local_backup_failed">Impossibile completare il backup.</string>
     <string name="catalogs_description" comment="Explanation at the top of the Catalogs screen.">I cataloghi elencano i pacchetti ospitati dai relativi editori. Installa solo illustrazioni e suoni che hai il permesso di usare.</string>
     <string name="catalogs_empty" comment="Empty state in the Catalogs screen.">Aggiungi un URL del catalogo per sfogliare i pacchetti.</string>
@@ -113,8 +114,9 @@
     <string name="profile_menu_toolbox">STRUMENTI</string>
     <string name="profile_menu_options">OPZIONI</string>
     <string name="profile_menu_exit">ESCI</string>
+    <string name="profile_menu_info">INFORMAZIONI</string>
     <string name="profile_menu_cursor">▶%1$s</string>
-    <string name="profile_roster_description">La tua squadra.</string>
+    <string name="profile_roster_description">La tua squadra da battaglia.</string>
     <string name="profile_footer_prompt">Il tuo profilo!</string>
     <string name="character_tools_title" comment="Heading above character management actions.">Cassetta degli attrezzi</string>
     <string name="character_tools_prompt" comment="Retro prompt shown below the character toolbox list. Asking the player to choose the right tool.">Scegli lo strumento giusto.</string>
@@ -176,6 +178,8 @@
     <string name="settings_contact_characters_title" comment="Settings title for assigning characters to contacts.">Personaggi dei contatti</string>
     <string name="personalize_contact_character" comment="Accessibility label for the contact-list action that customizes a caller's battle characters.">Personalizza i personaggi del chiamante</string>
     <string name="settings_contact_characters_description" comment="Settings description for assigning characters to contacts.">Assegna personaggi a chi ti chiama.</string>
+    <string name="prefer_monster_artwork" comment="Setting that makes assigned monster artwork take priority over trainer artwork.">Mostra il mostro quando entrambi sono assegnati</string>
+    <string name="prefer_monster_artwork_description" comment="Explanation for the contact artwork priority setting.">Usa l’illustrazione del mostro in Contatti e Cronologia chiamate quando a un contatto sono assegnati sia un allenatore sia un mostro.</string>
     <string name="contact_characters_not_set" comment="Settings subtitle when no contacts have a character assignment.">Nessun contatto personalizzato</string>
     <plurals name="contact_character_assignment_count" comment="Settings subtitle showing how many contacts have a character assignment.">
         <item quantity="one">%d contatto personalizzato</item>
@@ -218,6 +222,9 @@
     <string name="contact_context_menu_remove">Rimuovi</string>
     <string name="contact_picker_options">Opzioni</string>
     <string name="back">Indietro</string>
+    <string name="monster_settings_title" comment="Title of MonsterDialer's in-app settings screen.">Impostazioni</string>
+    <string name="monster_settings_hint" comment="Footer prompt for MonsterDialer's settings screen.">Scegli un’impostazione.</string>
+    <string name="settings_section_general" comment="Section heading for standard dialer settings.">Telefono</string>
     <string name="contact_defaults_menu_mode">Personaggio predefinito</string>
     <string name="contact_defaults_menu_characters">Elenco personaggi</string>
     <string name="contact_defaults_menu_pool">Gruppo casuale</string>
