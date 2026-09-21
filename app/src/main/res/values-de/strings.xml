@@ -443,6 +443,7 @@
     <string name="profile_menu_toolbox">WERKZEUGE</string>
     <string name="profile_menu_options">OPTIONEN</string>
     <string name="profile_menu_exit">BEENDEN</string>
+    <string name="profile_menu_info">ÜBER</string>
     <string name="profile_menu_cursor">▶%1$s</string>
     <string name="profile_roster_description">Dein Team.</string>
     <string name="profile_footer_prompt">Dein Profil!</string>
@@ -532,6 +533,7 @@
     <string name="local_backup_import_confirmation_title">Backup wiederherstellen?</string>
     <string name="local_backup_import_confirmation_message">Dadurch werden deine aktuelle Charaktersammlung und dein lokaler Fortschritt ersetzt.</string>
     <string name="local_backup_exported">Backup exportiert</string>
+    <string name="local_backup_restored">Backup wiederhergestellt</string>
     <string name="local_backup_failed">Das Backup konnte nicht abgeschlossen werden.</string>
     <string name="catalogs_description">Kataloge listen Pakete auf, die von ihren Herausgebern gehostet werden. Installiere nur Grafiken und Sounds, die du verwenden darfst.</string>
     <string name="catalogs_empty">Füge eine Katalog-URL hinzu, um die Pakete zu durchsuchen.</string>
@@ -569,4 +571,9 @@
     <string name="dialpad_letters_8">TUV</string>
     <string name="dialpad_letters_9">WXYZ</string>
     <string name="dialpad_letters_0">+</string>
+    <string name="prefer_monster_artwork">Monster anzeigen, wenn beide zugewiesen sind</string>
+    <string name="prefer_monster_artwork_description">Verwendet die Monstergrafik in Kontakten und im Anrufverlauf, wenn einem Kontakt sowohl ein Trainer als auch ein Monster zugewiesen sind.</string>
+    <string name="monster_settings_title">Einstellungen</string>
+    <string name="monster_settings_hint">Wähle eine Einstellung.</string>
+    <string name="settings_section_general">Telefon</string>
 </resources>

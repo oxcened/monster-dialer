@@ -462,6 +462,7 @@
     <string name="profile_menu_toolbox">الأدوات</string>
     <string name="profile_menu_options">الخيارات</string>
     <string name="profile_menu_exit">خروج</string>
+    <string name="profile_menu_info">حول التطبيق</string>
     <string name="profile_menu_cursor">▶%1$s</string>
     <string name="profile_roster_description">فريقك.</string>
     <string name="profile_footer_prompt">ملفك الشخصي!</string>
@@ -555,6 +556,7 @@
     <string name="local_backup_import_confirmation_title">استعادة النسخة الاحتياطية؟</string>
     <string name="local_backup_import_confirmation_message">سيحل هذا محل مجموعة شخصياتك الحالية وتقدّمك المحلي.</string>
     <string name="local_backup_exported">تم تصدير النسخة الاحتياطية</string>
+    <string name="local_backup_restored">تمت استعادة النسخة الاحتياطية</string>
     <string name="local_backup_failed">تعذّر إكمال النسخة الاحتياطية.</string>
     <string name="catalogs_description">تعرض الكتالوجات الحزم التي يستضيفها ناشروها. ثبّت فقط الأعمال الفنية والأصوات المسموح لك باستخدامها.</string>
     <string name="catalogs_empty">أضف عنوان كتالوج لتصفّح حزمها.</string>
@@ -592,4 +594,9 @@
     <string name="dialpad_letters_8">TUV</string>
     <string name="dialpad_letters_9">WXYZ</string>
     <string name="dialpad_letters_0">+</string>
+    <string name="prefer_monster_artwork">اعرض الوحش عند تعيين كليهما</string>
+    <string name="prefer_monster_artwork_description">يستخدم رسم الوحش في جهات الاتصال وسجل المكالمات عندما يكون لجهة اتصال مدرب ووحش معيّنان.</string>
+    <string name="monster_settings_title">الإعدادات</string>
+    <string name="monster_settings_hint">اختر إعدادًا.</string>
+    <string name="settings_section_general">الهاتف</string>
 </resources>

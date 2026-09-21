@@ -443,6 +443,7 @@
     <string name="profile_menu_toolbox">FERRAMENTAS</string>
     <string name="profile_menu_options">OPÇÕES</string>
     <string name="profile_menu_exit">SAIR</string>
+    <string name="profile_menu_info">SOBRE</string>
     <string name="profile_menu_cursor">▶%1$s</string>
     <string name="profile_roster_description">A tua equipa.</string>
     <string name="profile_footer_prompt">O teu perfil!</string>
@@ -532,6 +533,7 @@
     <string name="local_backup_import_confirmation_title">Restaurar cópia de segurança?</string>
     <string name="local_backup_import_confirmation_message">Isto substitui a sua coleção de personagens atual e o progresso local.</string>
     <string name="local_backup_exported">Cópia de segurança exportada</string>
+    <string name="local_backup_restored">Cópia de segurança restaurada</string>
     <string name="local_backup_failed">Não foi possível concluir a cópia de segurança.</string>
     <string name="catalogs_description">Os catálogos listam pacotes alojados pelos respetivos editores. Instale apenas ilustrações e sons que esteja autorizado a utilizar.</string>
     <string name="catalogs_empty">Adicione um URL de catálogo para explorar os seus pacotes.</string>
@@ -569,4 +571,9 @@
     <string name="dialpad_letters_8">TUV</string>
     <string name="dialpad_letters_9">WXYZ</string>
     <string name="dialpad_letters_0">+</string>
+    <string name="prefer_monster_artwork">Mostrar o monstro quando ambos estão atribuídos</string>
+    <string name="prefer_monster_artwork_description">Usa a ilustração do monstro em Contactos e no histórico de chamadas quando um contacto tem um treinador e um monstro atribuídos.</string>
+    <string name="monster_settings_title">Definições</string>
+    <string name="monster_settings_hint">Escolha uma definição.</string>
+    <string name="settings_section_general">Telefone</string>
 </resources>

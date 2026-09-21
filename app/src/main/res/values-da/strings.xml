@@ -438,6 +438,7 @@
     <string name="profile_menu_toolbox">VÆRKTØJER</string>
     <string name="profile_menu_options">INDSTILLINGER</string>
     <string name="profile_menu_exit">AFSLUT</string>
+    <string name="profile_menu_info">OM</string>
     <string name="profile_menu_cursor">▶%1$s</string>
     <string name="profile_roster_description">Dit hold.</string>
     <string name="profile_footer_prompt">Din profil!</string>
@@ -527,6 +528,7 @@
     <string name="local_backup_import_confirmation_title">Gendan sikkerhedskopi?</string>
     <string name="local_backup_import_confirmation_message">Dette erstatter din nuværende samling af figurer og lokale fremskridt.</string>
     <string name="local_backup_exported">Sikkerhedskopi eksporteret</string>
+    <string name="local_backup_restored">Sikkerhedskopi gendannet</string>
     <string name="local_backup_failed">Sikkerhedskopien kunne ikke fuldføres.</string>
     <string name="catalogs_description">Kataloger viser pakker, som deres udgivere hoster. Installér kun illustrationer og lyde, du har tilladelse til at bruge.</string>
     <string name="catalogs_empty">Tilføj en katalog-URL for at gennemse dens pakker.</string>
@@ -564,4 +566,9 @@
     <string name="dialpad_letters_8">TUV</string>
     <string name="dialpad_letters_9">WXYZ</string>
     <string name="dialpad_letters_0">+</string>
+    <string name="prefer_monster_artwork">Vis monsteret, når begge er tildelt</string>
+    <string name="prefer_monster_artwork_description">Bruger monsterillustrationen i Kontakter og opkaldshistorik, når en kontakt både har en træner og et monster.</string>
+    <string name="monster_settings_title">Indstillinger</string>
+    <string name="monster_settings_hint">Vælg en indstilling.</string>
+    <string name="settings_section_general">Telefon</string>
 </resources>

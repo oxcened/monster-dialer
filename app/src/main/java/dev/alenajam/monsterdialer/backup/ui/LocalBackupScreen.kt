@@ -1,17 +1,18 @@
 package dev.alenajam.monsterdialer.backup.ui
 
 import android.app.Activity
-import android.content.Intent
 import android.net.Uri
+import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -42,7 +43,11 @@ class LocalBackupViewModel @Inject constructor(private val repository: LocalBack
     val message = _message.asStateFlow()
     fun export(uri: Uri) = viewModelScope.launch { _message.value = if (repository.export(uri).isSuccess) R.string.local_backup_exported else R.string.local_backup_failed }
     fun import(uri: Uri, onRestored: () -> Unit) = viewModelScope.launch {
-        if (repository.import(uri).isSuccess) onRestored() else _message.value = R.string.local_backup_failed
+        if (repository.import(uri).isSuccess) {
+            onRestored()
+        } else {
+            _message.value = R.string.local_backup_failed
+        }
     }
     fun dismissMessage() { _message.value = null }
 }
@@ -55,26 +60,38 @@ fun LocalBackupScreen(viewModel: LocalBackupViewModel = hiltViewModel()) {
     var pendingImport by remember { mutableStateOf<Uri?>(null) }
     val exportLauncher = rememberLauncherForActivityResult(ActivityResultContracts.CreateDocument(LocalBackupMimeType)) { uri -> uri?.let(viewModel::export) }
     val importLauncher = rememberLauncherForActivityResult(ActivityResultContracts.OpenDocument()) { uri -> pendingImport = uri }
-    Column(Modifier.fillMaxSize().padding(24.dp), verticalArrangement = Arrangement.spacedBy(18.dp)) {
-        Text(stringResource(R.string.local_backup_description))
-        RetroActionButton(
-            label = stringResource(R.string.local_backup_export),
-            onClick = { exportLauncher.launch(backupFileName) },
-        )
-        RetroActionButton(
-            label = stringResource(R.string.local_backup_import),
-            onClick = { importLauncher.launch(arrayOf(LocalBackupMimeType, "application/zip")) },
-        )
-        message?.let { Text(stringResource(it)) }
+    LaunchedEffect(message) {
+        message?.let {
+            Toast.makeText(context, it, Toast.LENGTH_SHORT).show()
+            viewModel.dismissMessage()
+        }
     }
-    pendingImport?.let { uri ->
-        RetroConfirmationDialog(
-            title = stringResource(R.string.local_backup_import_confirmation_title),
-            message = stringResource(R.string.local_backup_import_confirmation_message),
-            noLabel = stringResource(R.string.cancel), yesLabel = stringResource(R.string.local_backup_import),
-            fontFamily = FontFamily(Font(R.font.ui_pixel_font)), onDismissRequest = { pendingImport = null },
-            onConfirm = { viewModel.import(uri) { (context as? Activity)?.recreate() }; pendingImport = null },
-        )
+    Box(Modifier.fillMaxSize()) {
+        Column(Modifier.fillMaxSize().padding(24.dp), verticalArrangement = Arrangement.spacedBy(18.dp)) {
+            Text(stringResource(R.string.local_backup_description))
+            RetroActionButton(
+                label = stringResource(R.string.local_backup_export),
+                onClick = { exportLauncher.launch(backupFileName) },
+            )
+            RetroActionButton(
+                label = stringResource(R.string.local_backup_import),
+                onClick = { importLauncher.launch(arrayOf("*/*")) },
+            )
+        }
+        pendingImport?.let { uri ->
+            RetroConfirmationDialog(
+                title = stringResource(R.string.local_backup_import_confirmation_title),
+                noLabel = stringResource(R.string.cancel), yesLabel = stringResource(R.string.local_backup_import),
+                fontFamily = FontFamily(Font(R.font.ui_pixel_font)), onDismissRequest = { pendingImport = null },
+                onConfirm = {
+                    viewModel.import(uri) {
+                        Toast.makeText(context, R.string.local_backup_restored, Toast.LENGTH_SHORT).show()
+                        (context as? Activity)?.recreate()
+                    }
+                    pendingImport = null
+                },
+            )
+        }
     }
 }
 

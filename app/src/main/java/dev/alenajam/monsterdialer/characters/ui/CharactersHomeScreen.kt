@@ -97,15 +97,16 @@ private val ProfileBackground = Color(0xFF4B376D)
 
 private enum class ProfileCharacterSection { Trainer, Monster }
 
-private enum class ProfileMenuAction { Roster, Contacts, Collection, Journal, OnlineProfile, Options }
+private enum class ProfileMenuAction { Roster, Contacts, Collection, Journal, OnlineProfile, Options, Info }
 
 @Composable
 fun CharactersHomeScreen(
     onOpenSettings: () -> Unit,
-    onOpenSubpage: (Int, String?) -> Unit,
+    onOpenSubpage: (String, String?) -> Unit,
     sharingViewModel: CharacterSharingViewModel = hiltViewModel(),
     playerProfile: PlayerProfile,
     profileMetrics: ProfileMetrics,
+    onOpenAbout: () -> Unit,
     onReorderRoster: (List<CharacterReference>) -> Unit,
     onRemoveRosterMonster: (CharacterReference) -> Unit,
     showImportUi: Boolean = true,
@@ -135,16 +136,17 @@ fun CharactersHomeScreen(
         GameBoyProfileLayout(
                 playerProfile = playerProfile,
                 profileMetrics = profileMetrics,
-                onChangeTrainer = { onOpenSubpage(CharacterSettingsPage.PlayerCharacter.index, PlayerCharacterSettingsRoute.ChangeTrainer.payload) },
-                onChangeMonster = { onOpenSubpage(CharacterSettingsPage.PlayerCharacter.index, "${PlayerCharacterSettingsRoute.AddToRoster.payload}:0") },
+                onChangeTrainer = { onOpenSubpage(CharacterSettingsPage.PlayerCharacter.id, PlayerCharacterSettingsRoute.ChangeTrainer.payload) },
+                onChangeMonster = { onOpenSubpage(CharacterSettingsPage.PlayerCharacter.id, "${PlayerCharacterSettingsRoute.AddToRoster.payload}:0") },
                 onOpenRoster = {
-                    onOpenSubpage(CharacterSettingsPage.PlayerCharacter.index, PlayerCharacterSettingsRoute.Roster.payload)
+                    onOpenSubpage(CharacterSettingsPage.PlayerCharacter.id, PlayerCharacterSettingsRoute.Roster.payload)
                 },
-                onOpenContacts = { onOpenSubpage(CharacterSettingsPage.ToolboxContactCharacters.index, ContactCharacterSettingsEntryPoint.Overview.payload) },
-                onOpenCollection = { onOpenSubpage(CharacterSettingsPage.RadiantCollection.index, null) },
-                onOpenJournal = { onOpenSubpage(CharacterSettingsPage.BattleJournal.index, null) },
-                onOpenOnlineProfile = { onOpenSubpage(CharacterSettingsPage.ProfileLink.index, null) },
+                onOpenContacts = { onOpenSubpage(CharacterSettingsPage.ToolboxContactCharacters.id, ContactCharacterSettingsEntryPoint.Overview.payload) },
+                onOpenCollection = { onOpenSubpage(CharacterSettingsPage.RadiantCollection.id, null) },
+                onOpenJournal = { onOpenSubpage(CharacterSettingsPage.BattleJournal.id, null) },
+                onOpenOnlineProfile = { onOpenSubpage(CharacterSettingsPage.ProfileLink.id, null) },
                 onOpenOptions = onOpenSettings,
+                onOpenAbout = onOpenAbout,
         )
     }
 }
@@ -161,6 +163,7 @@ private fun GameBoyProfileLayout(
     onOpenJournal: () -> Unit,
     onOpenOnlineProfile: () -> Unit,
     onOpenOptions: () -> Unit,
+    onOpenAbout: () -> Unit,
 ) {
     val trainer = playerProfile.trainer
     val monster = playerProfile.monster
@@ -283,6 +286,13 @@ private fun GameBoyProfileLayout(
                         ) {
                             selectedMenuAction = ProfileMenuAction.Options
                             onOpenOptions()
+                        }
+                        GameBoyMenuItem(
+                            stringResource(R.string.profile_menu_info),
+                            selectedMenuAction == ProfileMenuAction.Info,
+                        ) {
+                            selectedMenuAction = ProfileMenuAction.Info
+                            onOpenAbout()
                         }
                     }
                 }

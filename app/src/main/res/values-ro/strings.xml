@@ -448,6 +448,7 @@
     <string name="profile_menu_toolbox">INSTRUMENTE</string>
     <string name="profile_menu_options">OPȚIUNI</string>
     <string name="profile_menu_exit">IEȘIRE</string>
+    <string name="profile_menu_info">DESPRE</string>
     <string name="profile_menu_cursor">▶%1$s</string>
     <string name="profile_roster_description">Echipa ta.</string>
     <string name="profile_footer_prompt">Profilul tău!</string>
@@ -538,6 +539,7 @@
     <string name="local_backup_import_confirmation_title">Restaurezi backupul?</string>
     <string name="local_backup_import_confirmation_message">Aceasta înlocuiește colecția actuală de personaje și progresul local.</string>
     <string name="local_backup_exported">Backup exportat</string>
+    <string name="local_backup_restored">Backup restaurat</string>
     <string name="local_backup_failed">Backupul nu a putut fi finalizat.</string>
     <string name="catalogs_description">Cataloagele afișează pachete găzduite de editorii lor. Instalează doar ilustrații și sunete pe care ai voie să le folosești.</string>
     <string name="catalogs_empty">Adaugă un URL de catalog pentru a-i răsfoi pachetele.</string>
@@ -575,4 +577,9 @@
     <string name="dialpad_letters_8">TUV</string>
     <string name="dialpad_letters_9">WXYZ</string>
     <string name="dialpad_letters_0">+</string>
+    <string name="prefer_monster_artwork">Afișează monstrul când ambele sunt atribuite</string>
+    <string name="prefer_monster_artwork_description">Folosește grafica monstrului în Contacte și în istoricul apelurilor când unui contact îi sunt atribuite un antrenor și un monstru.</string>
+    <string name="monster_settings_title">Setări</string>
+    <string name="monster_settings_hint">Alege o setare.</string>
+    <string name="settings_section_general">Telefon</string>
 </resources>

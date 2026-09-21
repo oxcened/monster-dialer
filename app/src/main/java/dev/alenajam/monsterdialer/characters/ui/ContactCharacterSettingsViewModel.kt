@@ -256,10 +256,7 @@ class ContactCharacterSettingsViewModel @Inject constructor(
         viewModelScope.launch {
             selectedContactMutex.withLock {
                 if (selectionRepository.setSelectedContact(overview.label, overview.contactKeys)) {
-                    assignmentPickerRequested = false
-                    pendingGuidedTrainer = null
-                    pendingGuidedTrainerRandom = false
-                    pendingGuidedTrainerPool = emptySet()
+                    clearGuidedAssignment()
                     _selectedTab.value = if (type == CharacterType.Trainer) 0 else 1
                     layoutPreferences.setSelectedTab(_selectedTab.value)
                     restoreSelectedContactState()
@@ -285,10 +282,7 @@ class ContactCharacterSettingsViewModel @Inject constructor(
     fun clearSelectedContact() {
         viewModelScope.launch {
             selectedContactMutex.withLock {
-                assignmentPickerRequested = false
-                pendingGuidedTrainer = null
-                pendingGuidedTrainerRandom = false
-                pendingGuidedTrainerPool = emptySet()
+                clearGuidedAssignment()
                 selectionRepository.clearSelectedContact()
                 restoreSelectedContactState()
             }
@@ -309,6 +303,13 @@ class ContactCharacterSettingsViewModel @Inject constructor(
 
     val isGuidedAssignmentActive: Boolean
         get() = assignmentPickerRequested
+
+    private fun clearGuidedAssignment() {
+        assignmentPickerRequested = false
+        pendingGuidedTrainer = null
+        pendingGuidedTrainerRandom = false
+        pendingGuidedTrainerPool = emptySet()
+    }
 
     val guidedTrainerSelection: CharacterReference?
         get() = pendingGuidedTrainer
@@ -385,6 +386,21 @@ class ContactCharacterSettingsViewModel @Inject constructor(
             onlineOpponentResolver.link(contact.numbers, profileId).also { linked ->
                 if (linked) _pendingOnlineProfileId.value = null
             }
+        }
+    }
+
+    /** Opens an existing contact without retaining the two-step guided assignment state. */
+    suspend fun selectContactForDirectEditing(selectedContact: DialerContactSummary): Boolean {
+        return selectedContactMutex.withLock {
+            clearGuidedAssignment()
+            val contact = MonsterContact(
+                name = selectedContact.name,
+                numbers = contactsRepository.getContactNumbers(selectedContact.id),
+                photoUri = selectedContact.image,
+            )
+            if (contact.numbers.isEmpty()) return@withLock false
+            restoreContactState(contact)
+            true
         }
     }
 
@@ -558,9 +574,13 @@ class ContactCharacterSettingsViewModel @Inject constructor(
     private fun MonsterContact.contactKeys(): List<String> = numbers
 
     private suspend fun restoreSelectedContactState() {
+        restoreContactState(selectionRepository.getSelectedContact())
+    }
+
+    /** Hydrates editor state from the exact contact being edited. */
+    private suspend fun restoreContactState(restored: MonsterContact?) {
         // Hide the previous picker until every field for the next contact is ready.
         _contact.value = null
-        val restored = selectionRepository.getSelectedContact()
         val contactKeys = restored?.contactKeys().orEmpty()
         val trainerSelection = contactKeys.commonSelection(CharacterType.Trainer)
         val monsterSelection = contactKeys.commonSelection(CharacterType.Monster)

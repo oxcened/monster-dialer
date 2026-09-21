@@ -113,17 +113,18 @@ internal fun MonsterHomeScreen(
                 )
                 else -> CharactersHomeScreen(
                     onOpenSettings = callbacks.onOpenSettings,
-                    onOpenSubpage = { index, payload ->
-                        val destination = if (index == CharacterSettingsPage.ContactCharacters.index) {
-                            CharacterSettingsPage.ToolboxContactCharacters.index
+                    onOpenSubpage = { pageId, payload ->
+                        val destination = if (pageId == CharacterSettingsPage.ContactCharacters.id) {
+                            CharacterSettingsPage.ToolboxContactCharacters.id
                         } else {
-                            index
+                            pageId
                         }
                         callbacks.onOpenSettingsSubpage(destination, payload)
                     },
                     sharingViewModel = characterSharingViewModel,
                     playerProfile = playerProfile,
                     profileMetrics = profileMetrics,
+                    onOpenAbout = callbacks.onOpenAbout,
                     onReorderRoster = characterSettingsSummaryViewModel::reorderPlayerMonsterRoster,
                     onRemoveRosterMonster = characterSettingsSummaryViewModel::removePlayerMonsterFromRoster,
                     showImportUi = false,

@@ -51,6 +51,7 @@
     <string name="local_backup_import_confirmation_title">Restore backup?</string>
     <string name="local_backup_import_confirmation_message">This replaces your current character collection and local progress.</string>
     <string name="local_backup_exported">Backup exported</string>
+    <string name="local_backup_restored">Backup restored</string>
     <string name="local_backup_failed">Couldn’t complete the backup.</string>
     <string name="catalogs_description" comment="Explanation at the top of the Catalogs screen.">Catalogs list packs hosted by their publishers. Only install artwork and sounds you are allowed to use.</string>
     <string name="catalogs_empty" comment="Empty state in the Catalogs screen.">Add a catalog URL to browse its packs.</string>
@@ -124,6 +125,7 @@
     <string name="profile_menu_toolbox">TOOLS</string>
     <string name="profile_menu_options">OPTIONS</string>
     <string name="profile_menu_exit">EXIT</string>
+    <string name="profile_menu_info">INFO</string>
     <string name="profile_menu_cursor">▶%1$s</string>
     <string name="profile_roster_description">Your team.</string>
     <string name="profile_footer_prompt">Your profile!</string>
@@ -190,6 +192,8 @@
     <string name="settings_contact_characters_title" comment="Settings title for assigning characters to contacts.">Contact Characters</string>
     <string name="personalize_contact_character" comment="Accessibility label for the contact-list action that customizes a caller's battle characters.">Personalize caller characters</string>
     <string name="settings_contact_characters_description" comment="Settings description for assigning characters to contacts.">Assign characters to incoming callers.</string>
+    <string name="prefer_monster_artwork" comment="Setting that makes assigned monster artwork take priority over trainer artwork.">Show monster when both are assigned</string>
+    <string name="prefer_monster_artwork_description" comment="Explanation for the contact artwork priority setting.">Uses the monster artwork in Contacts and Call history when a contact has both a trainer and a monster.</string>
     <string name="contact_characters_not_set" comment="Settings subtitle when no contacts have a character assignment.">No contacts customized</string>
     <plurals name="contact_character_assignment_count" comment="Settings subtitle showing how many contacts have a character assignment."><item quantity="one">%d contact customized</item><item quantity="other">%d contacts customized</item></plurals>
     <string name="choose_contact" comment="Button that opens the contact picker.">Choose contact</string>
@@ -229,6 +233,10 @@
     <string name="contact_context_menu_remove">Remove</string>
     <string name="contact_picker_options">Options</string>
     <string name="back">Back</string>
+    <string name="monster_settings_title" comment="Title of MonsterDialer's in-app settings screen.">Settings</string>
+    <string name="monster_settings_hint" comment="Footer prompt for MonsterDialer's settings screen.">Choose a setting.</string>
+    <string name="settings_section_general" comment="Section heading for standard dialer settings.">Dialer</string>
+    <string name="settings_section_characters" translatable="false" comment="Section heading for MonsterDialer-specific settings.">MonsterDialer</string>
     <string name="contact_defaults_menu_mode">Default character</string>
     <string name="contact_defaults_menu_characters">Character list</string>
     <string name="contact_defaults_menu_pool">Randomizer pool</string>

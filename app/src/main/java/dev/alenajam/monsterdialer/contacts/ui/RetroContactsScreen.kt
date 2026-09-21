@@ -81,7 +81,7 @@ private val RetroContactsFont = FontFamily(Font(R.font.ui_pixel_font))
 @Composable
 fun RetroContactsScreen(
     searchQuery: String,
-    onOpenSettingsSubpage: (Int, String?) -> Unit,
+    onOpenSettingsSubpage: (String, String?) -> Unit,
     characterSettingsViewModel: ContactCharacterSettingsViewModel,
     viewModel: ContactsViewModel = hiltViewModel(),
     artworkViewModel: MonsterCallLogViewModel = hiltViewModel(),
@@ -211,10 +211,10 @@ fun RetroContactsScreen(
                             RetroContextMenuItem(stringResource(R.string.character_type_trainer)) {
                                 selectedContact = null
                                 coroutineScope.launch {
-                                    characterSettingsViewModel.selectContact(contact)
+                                    if (!characterSettingsViewModel.selectContactForDirectEditing(contact)) return@launch
                                     characterSettingsViewModel.setSelectedTab(0)
                                     onOpenSettingsSubpage(
-                                        CharacterSettingsPage.ContactCharacters.index,
+                                        CharacterSettingsPage.ContactCharacters.id,
                                         ContactCharacterSettingsEntryPoint.ContactList.payload,
                                     )
                                 }
@@ -222,10 +222,10 @@ fun RetroContactsScreen(
                             RetroContextMenuItem(stringResource(R.string.character_type_monster)) {
                                 selectedContact = null
                                 coroutineScope.launch {
-                                    characterSettingsViewModel.selectContact(contact)
+                                    if (!characterSettingsViewModel.selectContactForDirectEditing(contact)) return@launch
                                     characterSettingsViewModel.setSelectedTab(1)
                                     onOpenSettingsSubpage(
-                                        CharacterSettingsPage.ContactCharacters.index,
+                                        CharacterSettingsPage.ContactCharacters.id,
                                         ContactCharacterSettingsEntryPoint.ContactList.payload,
                                     )
                                 }
@@ -234,7 +234,7 @@ fun RetroContactsScreen(
                                 selectedContact = null
                                 coroutineScope.launch {
                                     characterSettingsViewModel.selectContact(contact)
-                                    onOpenSettingsSubpage(CharacterSettingsPage.LinkedOnlineProfile.index, null)
+                                    onOpenSettingsSubpage(CharacterSettingsPage.LinkedOnlineProfile.id, null)
                                 }
                             },
                             RetroContextMenuItem.cancel(stringResource(R.string.cancel), onClick = { selectedContact = null }),
