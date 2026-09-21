@@ -3,6 +3,9 @@ package dev.alenajam.monsterdialer.battle.ui
 import androidx.compose.foundation.border
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.combinedClickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.foundation.interaction.collectIsPressedAsState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -223,10 +226,10 @@ internal fun MonsterInCallControls(
             number = dialpadInput.value,
             onDigit = { digit ->
                 dialpadInput.value += digit
-                onDigitPress(digit)
-                onDigitRelease()
             },
-            onDismissRequest = { expanded.value = null },
+            onDigitPress = onDigitPress,
+            onDigitRelease = onDigitRelease,
+            onDismissRequest = { onDigitRelease(); expanded.value = null },
         )
         CommandSection.MORE -> RetroContextMenuDialog(
             items = buildList {
@@ -263,6 +266,8 @@ private fun RetroKeypadDialog(
     label: String,
     number: String,
     onDigit: (Char) -> Unit,
+    onDigitPress: (Char) -> Unit,
+    onDigitRelease: () -> Unit,
     onDismissRequest: () -> Unit,
 ) {
     RetroDialog(
@@ -312,9 +317,12 @@ private fun RetroKeypadDialog(
                                 .weight(1f)
                                 .height(54.dp)
                                 .border(2.dp, Ink, RectangleShape)
-                                .clickable {
-                                    onDigit(digit)
-                                }
+                                .retroDtmfKey(
+                                    digit = digit,
+                                    onDigit = onDigit,
+                                    onDigitPress = onDigitPress,
+                                    onDigitRelease = onDigitRelease,
+                                )
                                 .semantics { role = Role.Button },
                             contentAlignment = Alignment.Center,
                         ) {
@@ -335,6 +343,24 @@ private fun RetroKeypadDialog(
             }
         }
     }
+}
+
+@Composable
+private fun Modifier.retroDtmfKey(
+    digit: Char,
+    onDigit: (Char) -> Unit,
+    onDigitPress: (Char) -> Unit,
+    onDigitRelease: () -> Unit,
+): Modifier {
+    val interactionSource = remember { MutableInteractionSource() }
+    val isPressed by interactionSource.collectIsPressedAsState()
+    LaunchedEffect(isPressed) {
+        if (isPressed) onDigitPress(digit) else onDigitRelease()
+    }
+    return combinedClickable(
+        interactionSource = interactionSource,
+        onClick = { onDigit(digit) },
+    )
 }
 
 @Composable
