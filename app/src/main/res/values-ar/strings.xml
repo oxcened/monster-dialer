@@ -47,6 +47,7 @@
     <string name="radiant" comment="Adjective for a rare, sparkling character variant.">متألق</string>
     <string name="filter_all">الكل</string>
     <string name="filter_regular">عادي</string>
+    <string name="filter_radiant">متألق</string>
     <string name="filter_unlocked_radiant">متألق مفتوح</string>
     <string name="selected" comment="Status label for the currently chosen option.">محدد</string>
     <string name="randomize" comment="Character selection that chooses a different eligible character for every call.">اختيار عشوائي</string>
@@ -245,8 +246,8 @@
     <string name="battle_journal_radiant_encounter_label">مواجهة متألقة</string>
     <string name="battle_journal_more_options">المزيد من خيارات سجل المعارك</string>
     <string name="battle_journal_clear">مسح السجل</string>
-    <string name="battle_journal_clear_confirmation_title">مسح سجل المعارك؟</string>
-    <string name="battle_journal_clear_confirmation_message">سيؤدي هذا إلى إزالة كل سجل المعارك والرسومات المحفوظة نهائيًا.</string>
+    <string name="battle_journal_clear_short">مسح</string>
+    <string name="battle_journal_clear_confirmation_title">هل أنت متأكد؟</string>
     <string name="your_roster">قائمتك</string>
     <string name="roster_monster_level">المستوى %1$d</string>
     <string name="roster_monster_description">%1$s، المستوى %2$d</string>
@@ -426,7 +427,7 @@
     <string name="call_command_cursor">▶ %1$s</string>
     <string name="call_command_section">◀ %1$s</string>
     <string name="call_command_back">رجوع</string>
-    <string name="call_command_run">تنفيذ</string>
+    <string name="call_command_run">اهرب</string>
     <string name="call_command_dialpad_digits">123\n456\n789\n*0#</string>
     <string name="profile_status_title">الحالة</string>
     <string name="profile_player_label">اللاعب</string>
@@ -457,7 +458,7 @@
     <string name="profile_menu_contacts">جهات الاتصال</string>
     <string name="profile_menu_collection">المجموعة</string>
     <string name="profile_menu_journal">السجل</string>
-    <string name="profile_menu_online">مشاركة</string>
+    <string name="profile_menu_online">LINK</string>
     <string name="profile_menu_toolbox">الأدوات</string>
     <string name="profile_menu_options">الخيارات</string>
     <string name="profile_menu_exit">خروج</string>
@@ -511,8 +512,8 @@
     <string name="contact_added_message">تمت إضافة %1$s إلى القائمة!</string>
     <string name="character_selection_more_options" comment="Accessibility label for the character selector menu containing secondary pool actions.">المزيد من خيارات اختيار الشخصية</string>
     <string name="radiant_unlock_share_card_link" comment="Link printed on the radiant-unlock share card. Do not translate." translatable="false">monsterdialer.web.app</string>
-    <string name="online_profile_link_on">مشاركة/مفعّل</string>
-    <string name="online_profile_link_off">مشاركة/معطّل</string>
+    <string name="online_profile_link_on">LINK/ON</string>
+    <string name="online_profile_link_off">LINK/OFF</string>
     <string name="online_profile_sign_in_action">تسجيل الدخول</string>
     <string name="online_profile_unlink_action">إلغاء الربط</string>
     <string name="online_profile_linked_message">تمت مشاركة فريقك.</string>
@@ -544,4 +545,51 @@
     <string name="favorite_phone_type_number" comment="Favorite contact summary. %1$s is the phone type and %2$s is the phone number.">%1$s • %2$s</string>
     <string name="call_log_just_now" comment="Call-log time shown for calls less than one minute old.">الآن</string>
     <string name="new_contact_short" comment="Compact command for creating a contact.">جديد</string>
+    <string name="settings_catalogs_title">الكتالوجات</string>
+    <string name="settings_catalogs_description">تصفّح الحزم من عناوين الكتالوجات التي تضيفها.</string>
+    <string name="local_backup_title">نسخة احتياطية محلية</string>
+    <string name="local_backup_settings_description">صدّر مجموعتك من الشخصيات وتقدّمك أو استعدهما.</string>
+    <string name="local_backup_description">احفظ حزم شخصياتك وتعييناتها واكتشافاتك المتألقة ومذكرات المعارك في ملف على هذا الجهاز. لا تشمل النسخة جهات اتصال Android وسجل المكالمات.</string>
+    <string name="local_backup_export">تصدير النسخة الاحتياطية</string>
+    <string name="local_backup_import">استعادة النسخة الاحتياطية</string>
+    <string name="local_backup_import_confirmation_title">استعادة النسخة الاحتياطية؟</string>
+    <string name="local_backup_import_confirmation_message">سيحل هذا محل مجموعة شخصياتك الحالية وتقدّمك المحلي.</string>
+    <string name="local_backup_exported">تم تصدير النسخة الاحتياطية</string>
+    <string name="local_backup_failed">تعذّر إكمال النسخة الاحتياطية.</string>
+    <string name="catalogs_description">تعرض الكتالوجات الحزم التي يستضيفها ناشروها. ثبّت فقط الأعمال الفنية والأصوات المسموح لك باستخدامها.</string>
+    <string name="catalogs_empty">أضف عنوان كتالوج لتصفّح حزمها.</string>
+    <string name="add_catalog">إضافة كتالوج</string>
+    <string name="catalog_url_label">عنوان الكتالوج</string>
+    <string name="catalog_add_notice">أضف كتالوجًا من مصدر تثق به فقط. يستضيف ناشرو الكتالوجات روابط حزمهم ويديرونها.</string>
+    <string name="refresh_catalog">تحديث</string>
+    <string name="remove_catalog">إزالة الكتالوج</string>
+    <string name="catalog_loading">جارٍ تحميل الكتالوج…</string>
+    <string name="catalog_load_failed">تعذّر تحميل هذا الكتالوج.</string>
+    <string name="catalog_pack_metadata">%1$s · %2$s</string>
+    <string name="catalog_added">تمت إضافة الكتالوج</string>
+    <string name="catalog_add_failed">تعذّرت إضافة هذا الكتالوج.</string>
+    <string name="catalog_removed">تمت إزالة الكتالوج</string>
+    <string name="catalog_remove_failed">تعذّرت إزالة هذا الكتالوج.</string>
+    <string name="catalog_remove_confirmation_title">إزالة الكتالوج؟</string>
+    <string name="catalog_remove_confirmation_message">ستبقى الحزم المثبّتة على هذا الجهاز.</string>
+    <string name="catalog_install_confirmation_title">تثبيت الحزمة؟</string>
+    <string name="catalog_install_confirmation_message">%1$s\nالترخيص: %2$s</string>
+    <string name="catalog_pack_installed">تم تثبيت الحزمة</string>
+    <string name="catalog_pack_install_failed">تعذّر تثبيت هذه الحزمة.</string>
+    <string name="variant_backup_enable">النسخ الاحتياطي للأنواع</string>
+    <string name="variant_backup_enabled">تم نسخ الأنواع احتياطيًا</string>
+    <string name="variant_backup_guide_title">النسخ الاحتياطي للنوع</string>
+    <string name="variant_backup_guide_message">انسخ أنواع شخصياتك القابلة للفتح احتياطيًا بشكل خاص باستخدام حساب Google. لا يؤدي ذلك مطلقًا إلى نشرها للعامة أو تحميل أعمال الشخصيات الفنية أو جهات الاتصال أو سجل المكالمات. عند تسجيل الدخول على جهاز آخر وتفعيل النسخ الاحتياطي، يستعيد MonsterDialer كل عملية فتح يجدها ويدمجها بأمان مع مجموعة ذلك الجهاز.</string>
+    <string name="dial_search_number_prefix">رقم/</string>
+    <string name="dial_search_results">التطابقات</string>
+    <string name="dial_search_more">المزيد</string>
+    <string name="dialpad_letters_2">ABC</string>
+    <string name="dialpad_letters_3">DEF</string>
+    <string name="dialpad_letters_4">GHI</string>
+    <string name="dialpad_letters_5">JKL</string>
+    <string name="dialpad_letters_6">MNO</string>
+    <string name="dialpad_letters_7">PQRS</string>
+    <string name="dialpad_letters_8">TUV</string>
+    <string name="dialpad_letters_9">WXYZ</string>
+    <string name="dialpad_letters_0">+</string>
 </resources>

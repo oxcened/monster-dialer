@@ -12,12 +12,12 @@ import kotlinx.serialization.Serializable
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 
-/** Persists radiant forms discovered in wild encounters. */
+/** Persists unlockable character variants, including radiant discoveries and future variant types. */
 @Singleton
-class RadiantVariantUnlockStore @Inject constructor(
+class VariantUnlockStore @Inject constructor(
     @CharacterPacksDir private val storageRoot: File,
 ) {
-    private val file = File(storageRoot, "radiant-variant-unlocks.json")
+    private val file = File(storageRoot, "variant-unlocks.json")
     private val json = Json { ignoreUnknownKeys = false; explicitNulls = false }
     private val mutableUnlocked = MutableStateFlow(read())
     val unlocked: StateFlow<Set<CharacterReference>> = mutableUnlocked.asStateFlow()
@@ -25,21 +25,38 @@ class RadiantVariantUnlockStore @Inject constructor(
     fun hasStoredData(): Boolean = file.isFile
 
     @Synchronized
+    fun reload() {
+        mutableUnlocked.value = read()
+    }
+
+    @Synchronized
     fun unlock(reference: CharacterReference): Boolean {
         if (reference in mutableUnlocked.value) return false
-        val updated = mutableUnlocked.value + reference
-        file.parentFile?.mkdirs()
-        file.writeText(json.encodeToString(RadiantVariantUnlockDocument(updated.toList())))
-        mutableUnlocked.value = updated
+        persist(mutableUnlocked.value + reference)
         return true
     }
 
+    /** Adds restored unlocks without ever removing a local discovery. */
+    @Synchronized
+    fun merge(references: Set<CharacterReference>): Boolean {
+        val updated = mutableUnlocked.value + references
+        if (updated == mutableUnlocked.value) return false
+        persist(updated)
+        return true
+    }
+
+    private fun persist(updated: Set<CharacterReference>) {
+        file.parentFile?.mkdirs()
+        file.writeText(json.encodeToString(VariantUnlockDocument(updated.toList())))
+        mutableUnlocked.value = updated
+    }
+
     private fun read(): Set<CharacterReference> = runCatching {
-        json.decodeFromString<RadiantVariantUnlockDocument>(file.readText()).unlocked.toSet()
+        json.decodeFromString<VariantUnlockDocument>(file.readText()).unlocked.toSet()
     }.getOrDefault(emptySet())
 
     @Serializable
-    private data class RadiantVariantUnlockDocument(
+    private data class VariantUnlockDocument(
         val unlocked: List<CharacterReference> = emptyList(),
     )
 }

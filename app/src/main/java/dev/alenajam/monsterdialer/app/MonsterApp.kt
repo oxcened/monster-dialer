@@ -4,12 +4,14 @@ import android.app.Application
 import com.google.firebase.FirebaseApp
 import com.google.firebase.appcheck.FirebaseAppCheck
 import dagger.hilt.android.HiltAndroidApp
+import dev.alenajam.monsterdialer.characters.data.VariantBackupSynchronizer
 import dev.alenajam.monsterdialer.onlineprofiles.data.OnlineProfileAutoPublisher
 import javax.inject.Inject
 
 @HiltAndroidApp
 class MonsterApp : Application() {
     @Inject lateinit var onlineProfileAutoPublisher: OnlineProfileAutoPublisher
+    @Inject lateinit var variantBackupSynchronizer: VariantBackupSynchronizer
 
     override fun onCreate() {
         super.onCreate()
@@ -17,5 +19,6 @@ class MonsterApp : Application() {
             FirebaseAppCheck.getInstance(app).installAppCheckProviderFactory(appCheckProviderFactory())
         }
         onlineProfileAutoPublisher.start()
+        variantBackupSynchronizer.start()
     }
 }

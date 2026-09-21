@@ -2,7 +2,7 @@ package dev.alenajam.monsterdialer.ui.battle
 
 import dev.alenajam.monsterdialer.characters.data.CharacterAssignmentStore
 import dev.alenajam.monsterdialer.characters.data.CharactersRepositoryImpl
-import dev.alenajam.monsterdialer.characters.data.RadiantVariantUnlockStore
+import dev.alenajam.monsterdialer.characters.data.VariantUnlockStore
 import dev.alenajam.monsterdialer.characters.data.PlayerProfileStatsStore
 import dev.alenajam.monsterdialer.characters.data.CharacterAssignmentRepositoryImpl
 import dev.alenajam.monsterdialer.battle.data.AssignedCharacterEncounterFactory
@@ -39,7 +39,7 @@ class AssignedCharacterEncounterFactoryTest {
     private val repository by lazy { CharacterPackRepository(storageRoot, catalog) }
     private val assignmentRepository by lazy { CharacterAssignmentRepositoryImpl(store) }
     private val charactersRepository by lazy { CharactersRepositoryImpl(repository, assignmentRepository) }
-    private val radiantUnlocks by lazy { RadiantVariantUnlockStore(storageRoot) }
+    private val radiantUnlocks by lazy { VariantUnlockStore(storageRoot) }
     private val activeEncounterStore by lazy { ActiveBattleEncounterStore(storageRoot) }
     private val profileStatsStore by lazy { PlayerProfileStatsStore(storageRoot) }
     private val battleJournalStore by lazy { BattleJournalStore(storageRoot) }

@@ -40,6 +40,38 @@
     <string name="call_command_dialpad_digits">123\n456\n789\n*0#</string>
     <string name="add" comment="Generic label for adding a new item.">Add</string>
     <string name="settings_character_packs_title" comment="Settings title for managing character packs.">Character Packs</string>
+    <string name="settings_catalogs_title" comment="Settings title for external character-pack catalogs.">Catalogs</string>
+    <string name="settings_catalogs_description" comment="Settings description for external character-pack catalogs.">Browse packs from catalog URLs you add.</string>
+    <string name="local_backup_title">Local backup</string>
+    <string name="local_backup_settings_description">Export or restore your character collection and progress.</string>
+    <string name="local_backup_description">Save your character packs, assignments, radiant discoveries, and Battle Journal to a file on this device. Android contacts and call history are not included.</string>
+    <string name="local_backup_export">Export backup</string>
+    <string name="local_backup_import">Restore backup</string>
+    <string name="local_backup_file_name" translatable="false">monsterdialer-backup.monsterbackup</string>
+    <string name="local_backup_import_confirmation_title">Restore backup?</string>
+    <string name="local_backup_import_confirmation_message">This replaces your current character collection and local progress.</string>
+    <string name="local_backup_exported">Backup exported</string>
+    <string name="local_backup_failed">Couldn’t complete the backup.</string>
+    <string name="catalogs_description" comment="Explanation at the top of the Catalogs screen.">Catalogs list packs hosted by their publishers. Only install artwork and sounds you are allowed to use.</string>
+    <string name="catalogs_empty" comment="Empty state in the Catalogs screen.">Add a catalog URL to browse its packs.</string>
+    <string name="add_catalog" comment="Action that adds an external pack catalog.">Add catalog</string>
+    <string name="catalog_url_label" comment="Label for the external catalog URL field.">Catalog URL</string>
+    <string name="catalog_add_notice" comment="Notice shown before adding a catalog URL.">Only add a catalog from a source you trust. Catalog publishers host and maintain their own pack links.</string>
+    <string name="refresh_catalog" comment="Action that reloads a catalog URL.">Refresh</string>
+    <string name="remove_catalog" comment="Action that removes a catalog URL.">Remove catalog</string>
+    <string name="catalog_loading" comment="Loading status for a catalog.">Loading catalog…</string>
+    <string name="catalog_load_failed" comment="Failure status for a catalog.">Couldn’t load this catalog.</string>
+    <string name="catalog_pack_metadata" comment="Metadata for a catalog pack. %1$s is the creator and %2$s is the version.">%1$s · %2$s</string>
+    <string name="catalog_added" comment="Confirmation after adding a catalog URL.">Catalog added</string>
+    <string name="catalog_add_failed" comment="Failure after adding a catalog URL.">Couldn’t add this catalog.</string>
+    <string name="catalog_removed" comment="Confirmation after removing a catalog URL.">Catalog removed</string>
+    <string name="catalog_remove_failed" comment="Failure after removing a catalog URL.">Couldn’t remove this catalog.</string>
+    <string name="catalog_remove_confirmation_title" comment="Title before removing a catalog URL.">Remove catalog?</string>
+    <string name="catalog_remove_confirmation_message" comment="Explanation before removing a catalog URL.">Installed packs will stay on this device.</string>
+    <string name="catalog_install_confirmation_title" comment="Title before installing a catalog pack.">Install pack?</string>
+    <string name="catalog_install_confirmation_message" comment="Explanation before installing a catalog pack. %1$s is the pack name and %2$s is its license.">%1$s\nLicense: %2$s</string>
+    <string name="catalog_pack_installed" comment="Confirmation after installing a pack from a catalog.">Pack installed</string>
+    <string name="catalog_pack_install_failed" comment="Failure after installing a pack from a catalog.">Couldn’t install this pack.</string>
     <string name="characters_navigation_label" comment="Bottom navigation label for the player's profile and character collection.">Profile</string>
     <string name="customize_your_calls" comment="Section heading above contact character customization.">Customize your calls</string>
     <string name="character_collection_title" comment="Section heading above character pack and import actions.">Your collection</string>
@@ -88,7 +120,7 @@
     <string name="profile_menu_contacts">CONTACTS</string>
     <string name="profile_menu_collection">COLLECTION</string>
     <string name="profile_menu_journal">JOURNAL</string>
-    <string name="profile_menu_online">SHARE</string>
+    <string name="profile_menu_online">LINK</string>
     <string name="profile_menu_toolbox">TOOLS</string>
     <string name="profile_menu_options">OPTIONS</string>
     <string name="profile_menu_exit">EXIT</string>
@@ -115,12 +147,13 @@
     <string name="battle_journal_radiant_encounter_label" comment="Compact category label for a repeat radiant encounter.">Radiant encounter</string>
     <string name="battle_journal_more_options" comment="Accessibility label for the Battle Journal overflow menu.">More Battle Journal options</string>
     <string name="battle_journal_clear" comment="Overflow-menu action that removes all Battle Journal entries.">Clear journal</string>
-    <string name="battle_journal_clear_confirmation_title" comment="Title for the confirmation dialog before clearing the Battle Journal.">Clear Battle Journal?</string>
-    <string name="battle_journal_clear_confirmation_message" comment="Explanation of what clearing the Battle Journal removes.">This permanently removes all battle history and saved journal sprites.</string>
+    <string name="battle_journal_clear_short" comment="Compact Battle Journal action that removes all entries.">Clear</string>
+    <string name="battle_journal_clear_confirmation_title" comment="Short prompt shown before clearing the Battle Journal.">Are you sure?</string>
     <string name="monster_variant_and_level" translatable="false" comment="Language-neutral formatter for a monster variant and an already-localized level. %1$s is the variant (e.g., Regular) and %2$s is the level (e.g., Lv. 12).">%1$s · %2$s</string>
     <string name="retro_picker_variant_and_level" translatable="false" comment="Language-neutral formatter for the retro assignment picker. %1$s is the variant and %2$s is the level.">%1$s   %2$s</string>
     <string name="filter_all" comment="Filter option to show all monster variants.">All</string>
     <string name="filter_regular" comment="Filter option to show only regular monster variants.">Regular</string>
+    <string name="filter_radiant" comment="Filter option to show all radiant monster variants in the collection.">Radiant</string>
     <string name="filter_unlocked_radiant" comment="Filter option to show only available radiant monster variants.">Radiant</string>
     <string name="your_roster" comment="Heading above the player's current active monster roster.">Your roster</string>
     <string name="roster_monster_level" comment="Level shown below a monster in the roster. %1$d is the monster's level.">Lv. %1$d</string>
@@ -281,13 +314,17 @@
     <string name="contact_chooser_prompt" comment="Prompt above the contact picker.">Choose a contact to assign a character.</string>
     <string name="online_profile_choose_contact_prompt" comment="Prompt shown after opening a shared Online Profile link.">Choose a contact to link with this Online Profile. This association stays on your device.</string>
     <string name="online_profile_title" comment="Title of the profile SHARE screen for sharing the player's battle identity with friends.">SHARE</string>
-    <string name="online_profile_link_on">SHARE/ON</string>
-    <string name="online_profile_link_off">SHARE/OFF</string>
+    <string name="online_profile_link_on">LINK/ON</string>
+    <string name="online_profile_link_off">LINK/OFF</string>
     <string name="online_profile_sign_in_action">SIGN IN</string>
     <string name="online_profile_unlink_action">UNLINK</string>
     <string name="online_profile_linked_message">Your team is shared.</string>
     <string name="online_profile_not_linked_message">Share your team with friends.</string>
     <string name="online_profile_description" comment="Description below the Online Profile settings title. The trainer and monster are the player's battle characters.">Let friends see the trainer and monster you bring into every call.</string>
+    <string name="variant_backup_enable" comment="Action that enables private account backup for unlockable character variants.">Back up variants</string>
+    <string name="variant_backup_enabled" comment="Status/action indicating that private character-variant backup is active.">Variants backed up</string>
+    <string name="variant_backup_guide_title" comment="Guide title for private cloud backup of unlockable character variants.">Variant backup</string>
+    <string name="variant_backup_guide_message" comment="Privacy explanation for cloud backup of unlockable character variants.">Back up your unlockable character variants privately with your Google account. This never publishes them publicly or uploads character artwork, contacts, or call history. When you sign in on another device and enable backup, MonsterDialer restores every unlock it finds and safely combines it with that device’s collection.</string>
     <string name="online_profile_privacy_note" comment="Privacy note on the Online Profile settings screen. Sprites are character images; metadata is their non-image information.">Only your character sprites and metadata are shared.</string>
     <string name="online_profile_guide_title">Sharing Your Online Profile</string>
     <string name="online_profile_guide_message">Online Profiles are optional and designed with privacy and security in mind. To enable one, sign in with Google. Your Google account identifies who can manage the profile; your email and Google account details are not shared. Enabling a profile, or signing in on another device, publishes that device’s current trainer and active monster, including their selected sprites, at a shareable link. Servers do not store your phone number, contact list, call history, or other personal or sensitive data. Links between MonsterDialer profiles and contacts stay exclusively on each device.</string>
@@ -343,6 +380,18 @@
     <string name="retro_action_menu_label">MENU</string>
     <string name="retro_action_back_label">BACK</string>
     <string name="retro_action_dial_label">DIAL</string>
+    <string name="dial_search_number_prefix" comment="Prefix shown before the number being entered on the retro dial screen.">No./</string>
+    <string name="dial_search_results" comment="Heading for contact suggestions matching a dialed number.">Matches</string>
+    <string name="dial_search_more" comment="Button that opens dial modifiers on the retro dial screen.">More</string>
+    <string name="dialpad_letters_2">ABC</string>
+    <string name="dialpad_letters_3">DEF</string>
+    <string name="dialpad_letters_4">GHI</string>
+    <string name="dialpad_letters_5">JKL</string>
+    <string name="dialpad_letters_6">MNO</string>
+    <string name="dialpad_letters_7">PQRS</string>
+    <string name="dialpad_letters_8">TUV</string>
+    <string name="dialpad_letters_9">WXYZ</string>
+    <string name="dialpad_letters_0">+</string>
     <string name="retro_picker_add" comment="Compact action to add a character in the retro picker.">ADD</string>
     <string name="retro_picker_guide" comment="Compact GSC-style menu action to open the guide.">HELP</string>
     <string name="contact_row_actions" comment="Accessibility label for the contact-row overflow menu trigger.">Contact actions</string>

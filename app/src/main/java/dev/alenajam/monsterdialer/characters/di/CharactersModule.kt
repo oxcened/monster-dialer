@@ -9,6 +9,8 @@ import dev.alenajam.monsterdialer.characters.data.CharacterAssignmentRepositoryI
 import dev.alenajam.monsterdialer.characters.data.CharactersRepository
 import dev.alenajam.monsterdialer.characters.data.CharactersRepositoryImpl
 import dev.alenajam.monsterdialer.characters.data.CharacterAssignmentStore
+import dev.alenajam.monsterdialer.characters.data.FirebaseVariantBackupRemoteDataSource
+import dev.alenajam.monsterdialer.characters.data.VariantBackupRemoteDataSource
 import dev.alenajam.monsterdialer.packs.di.CharacterPacksDir
 import java.io.File
 import javax.inject.Singleton
@@ -33,4 +35,10 @@ object CharactersModule {
     fun provideCharacterAssignmentRepository(impl: CharacterAssignmentRepositoryImpl): CharacterAssignmentRepository {
         return impl
     }
+
+    @Provides
+    @Singleton
+    fun provideVariantBackupRemoteDataSource(
+        impl: FirebaseVariantBackupRemoteDataSource,
+    ): VariantBackupRemoteDataSource = impl
 }

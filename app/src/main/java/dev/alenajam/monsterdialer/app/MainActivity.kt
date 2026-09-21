@@ -83,7 +83,7 @@ import dev.alenajam.monsterdialer.characters.ui.SharedCharacterImportHandler
 import dev.alenajam.monsterdialer.characters.data.SharedCharacterArchive
 import dev.alenajam.monsterdialer.characters.ui.radiantGuideContents
 import dev.alenajam.monsterdialer.battle.ui.BattleJournalScreen
-import dev.alenajam.monsterdialer.battle.ui.BattleJournalOverflowMenu
+import dev.alenajam.monsterdialer.backup.ui.LocalBackupScreen
 import dev.alenajam.monsterdialer.contacts.data.MonsterContact
 import dev.alenajam.monsterdialer.contacts.ui.formatPhoneNumber
 import dev.alenajam.monsterdialer.packs.data.CharacterAssignmentTarget
@@ -97,6 +97,7 @@ import dev.alenajam.monsterdialer.onlineprofiles.ui.sharedOnlineProfileGuideCont
 import dev.alenajam.monsterdialer.packs.ui.CharacterPackSettingsContent
 import dev.alenajam.monsterdialer.packs.ui.CharacterPackSettingsViewModel
 import dev.alenajam.monsterdialer.packs.ui.CharacterPackImportHandler
+import dev.alenajam.monsterdialer.packs.ui.CatalogsScreen
 import dev.alenajam.monsterdialer.packs.ui.CreateCharacterPackScreen
 import dev.alenajam.opendialer.core.common.DefaultPhoneManager
 import dev.alenajam.opendialer.core.common.ui.AppThemeExtension
@@ -234,6 +235,16 @@ class MainActivity : AppCompatActivity() {
                                 )
                             }
                         },
+                        dialSearchContent = { prefilledNumber, onOpenHistory, onDialpadCallStarted, onNavigateBack ->
+                            AppTheme(darkTheme = false) {
+                                RetroDialSearchScreen(
+                                    prefilledNumber = prefilledNumber,
+                                    onOpenHistory = onOpenHistory,
+                                    onDialpadCallStarted = onDialpadCallStarted,
+                                    onNavigateBack = onNavigateBack,
+                                )
+                            }
+                        },
                         settingsSubpages = listOf(
                         SettingsSubpage(
                             title = stringResource(R.string.settings_player_character_title),
@@ -356,6 +367,7 @@ class MainActivity : AppCompatActivity() {
                             isScrollable = false,
                             visibleInSettings = false,
                             topContentPadding = RetroScreenTopContentPadding,
+                            contentHorizontalPadding = RetroScreenHorizontalPadding,
                             showTopBar = false,
                             actions = {
                                 ContextualGuideButton(
@@ -375,10 +387,11 @@ class MainActivity : AppCompatActivity() {
                             title = stringResource(R.string.battle_journal_title),
                             description = stringResource(R.string.battle_journal_description),
                             content = { _ -> BattleJournalScreen() },
-                            actions = { BattleJournalOverflowMenu() },
                             visibleInSettings = false,
                             isScrollable = false,
                             topContentPadding = 0.dp,
+                            contentHorizontalPadding = RetroScreenHorizontalPadding,
+                            showTopBar = false,
                         ),
                         SettingsSubpage(
                             title = stringResource(R.string.linked_online_profile_title),
@@ -421,6 +434,7 @@ class MainActivity : AppCompatActivity() {
                             },
                             isScrollable = false,
                             topContentPadding = RetroScreenTopContentPadding,
+                            contentHorizontalPadding = RetroScreenHorizontalPadding,
                             showTopBar = false,
                             visibleInSettings = true,
                             destinations = listOf(
@@ -449,6 +463,8 @@ class MainActivity : AppCompatActivity() {
                                     content = { _ -> OnlineProfileSection() },
                                     isScrollable = false,
                                     topContentPadding = 0.dp,
+                                    contentHorizontalPadding = RetroScreenHorizontalPadding,
+                                    showTopBar = false,
                                     visibleInSettings = false,
                                 ),
                             )
@@ -460,6 +476,7 @@ class MainActivity : AppCompatActivity() {
                                 visibleInSettings = false,
                                 isScrollable = false,
                                 topContentPadding = 0.dp,
+                                contentHorizontalPadding = RetroScreenHorizontalPadding,
                                 showTopBar = false,
                                 destinations = listOf(
                                     SettingsSubpageDestination(title = stringResource(R.string.create_character_pack)) { _, onNavigateBack ->
@@ -496,7 +513,43 @@ class MainActivity : AppCompatActivity() {
                                             preferredAssignmentTarget = CharacterAssignmentTarget.Player,
                                         )
                                     },
+                                    SettingsSubpageDestination(title = stringResource(R.string.add_trainer)) { _, onNavigateBack ->
+                                        AddCharacterScreen(
+                                            onNavigateBack = onNavigateBack,
+                                            characterType = CharacterType.Trainer,
+                                            preferredAssignmentTarget = CharacterAssignmentTarget.Player,
+                                        )
+                                    },
+                                    SettingsSubpageDestination(title = stringResource(R.string.add_monster)) { _, onNavigateBack ->
+                                        AddCharacterScreen(
+                                            onNavigateBack = onNavigateBack,
+                                            characterType = CharacterType.Monster,
+                                            preferredAssignmentTarget = CharacterAssignmentTarget.Player,
+                                        )
+                                    },
                                 ),
+                            ),
+                        ).plus(
+                            SettingsSubpage(
+                                title = stringResource(R.string.settings_catalogs_title),
+                                description = stringResource(R.string.settings_catalogs_description),
+                                content = { _ -> CatalogsScreen() },
+                                isScrollable = false,
+                                topContentPadding = RetroScreenTopContentPadding,
+                                contentHorizontalPadding = RetroScreenHorizontalPadding,
+                                showTopBar = false,
+                                visibleInSettings = true,
+                            ),
+                        ).plus(
+                            SettingsSubpage(
+                                title = stringResource(R.string.local_backup_title),
+                                description = stringResource(R.string.local_backup_settings_description),
+                                content = { LocalBackupScreen() },
+                                isScrollable = false,
+                                topContentPadding = RetroScreenTopContentPadding,
+                                contentHorizontalPadding = RetroScreenHorizontalPadding,
+                                showTopBar = false,
+                                visibleInSettings = true,
                             ),
                         ),
                         )

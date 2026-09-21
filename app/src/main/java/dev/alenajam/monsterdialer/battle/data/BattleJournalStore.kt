@@ -31,6 +31,11 @@ class BattleJournalStore @Inject constructor(
     fun hasStoredData(): Boolean = file.isFile
 
     @Synchronized
+    fun reload() {
+        mutableEntries.value = read()
+    }
+
+    @Synchronized
     fun record(
         encounter: BattleEncounter,
         isRadiantDiscovery: Boolean,

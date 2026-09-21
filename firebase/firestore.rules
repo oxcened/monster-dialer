@@ -18,6 +18,12 @@ service cloud.firestore {
   // - document ID: the Firebase Auth UID
   // - activeProfileId: the owner's active public profile ID
   // - updatedAt: server timestamp
+  //
+  // Assumed private variant-backup schema:
+  // - `variantBackups/{uid}/unlocks/{unlockId}` contains one immutable
+  //   variant unlock. `unlockId` is `<packId>:<characterId>:<variantId>`.
+  // - schemaVersion: integer 1
+  // - packId / characterId / variantId: validated 2–64-character identifiers
   match /databases/{database}/documents {
     function isAuthenticated() {
       return request.auth != null;
@@ -98,6 +104,22 @@ service cloud.firestore {
         && request.resource.data.updatedAt is timestamp;
     }
 
+    function isValidVariantIdentifier(value) {
+      return value is string
+        && value.matches('^[a-z0-9][a-z0-9._-]{1,63}$');
+    }
+
+    function isValidVariantUnlock(unlockId) {
+      return unlockId.matches('^[a-z0-9][a-z0-9._-]{1,63}:[a-z0-9][a-z0-9._-]{1,63}:[a-z0-9][a-z0-9._-]{1,63}$')
+        && request.resource.data.keys().hasAll(['schemaVersion', 'packId', 'characterId', 'variantId'])
+        && request.resource.data.keys().hasOnly(['schemaVersion', 'packId', 'characterId', 'variantId'])
+        && request.resource.data.schemaVersion == 1
+        && isValidVariantIdentifier(request.resource.data.packId)
+        && isValidVariantIdentifier(request.resource.data.characterId)
+        && isValidVariantIdentifier(request.resource.data.variantId)
+        && unlockId == request.resource.data.packId + ':' + request.resource.data.characterId + ':' + request.resource.data.variantId;
+    }
+
     function timestampsAreValidForUpdate() {
       let onlyRetentionChanged = request.resource.data.diff(resource.data)
         .affectedKeys().hasOnly(['retentionConfirmedAt']);
@@ -143,6 +165,17 @@ service cloud.firestore {
         && !existsAfter(/databases/$(database)/documents/onlineProfiles/$(resource.data.activeProfileId));
       allow delete: if isOwner(ownerUid)
         && !existsAfter(/databases/$(database)/documents/onlineProfiles/$(resource.data.activeProfileId));
+    }
+
+    // Private, append-only backup. Separate unlock documents make a
+    // multi-device union merge safe: no client can overwrite another record.
+    match /variantBackups/{ownerUid}/unlocks/{unlockId} {
+      allow get, list: if isOwner(ownerUid);
+      allow create: if isOwner(ownerUid) && isValidVariantUnlock(unlockId);
+      allow update: if isOwner(ownerUid)
+        && isValidVariantUnlock(unlockId)
+        && request.resource.data == resource.data;
+      allow delete: if isOwner(ownerUid);
     }
   }
 }

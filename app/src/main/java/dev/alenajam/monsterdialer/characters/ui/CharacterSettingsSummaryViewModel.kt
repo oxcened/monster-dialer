@@ -9,7 +9,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import dev.alenajam.monsterdialer.characters.data.CharacterAssignmentRepository
 import dev.alenajam.monsterdialer.characters.data.CharactersRepository
 import dev.alenajam.monsterdialer.characters.data.PlayerProfileStatsStore
-import dev.alenajam.monsterdialer.characters.data.RadiantVariantUnlockStore
+import dev.alenajam.monsterdialer.characters.data.VariantUnlockStore
 import dev.alenajam.monsterdialer.packs.data.CharacterAssignmentTarget
 import dev.alenajam.monsterdialer.packs.data.CharacterReference
 import java.io.File
@@ -27,7 +27,7 @@ class CharacterSettingsSummaryViewModel @Inject constructor(
     private val assignmentRepository: CharacterAssignmentRepository,
     private val charactersRepository: CharactersRepository,
     profileStatsStore: PlayerProfileStatsStore,
-    radiantUnlocks: RadiantVariantUnlockStore,
+    radiantUnlocks: VariantUnlockStore,
 ) : ViewModel() {
 
     val playerProfile: StateFlow<PlayerProfile> = assignmentRepository.assignmentVersion

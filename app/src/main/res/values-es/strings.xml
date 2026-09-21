@@ -47,6 +47,7 @@
     <string name="radiant" comment="Adjective for a rare, sparkling character variant.">Radiante</string>
     <string name="filter_all">Todos</string>
     <string name="filter_regular">Normal</string>
+    <string name="filter_radiant">Radiante</string>
     <string name="filter_unlocked_radiant">Radiante desbloqueado</string>
     <string name="selected" comment="Status label for the currently chosen option.">Seleccionado</string>
     <string name="randomize" comment="Character selection that chooses a different eligible character for every call.">Aleatorio</string>
@@ -234,8 +235,8 @@
     <string name="battle_journal_radiant_encounter_label">Encuentro radiante</string>
     <string name="battle_journal_more_options">Más opciones del diario de combate</string>
     <string name="battle_journal_clear">Borrar diario</string>
-    <string name="battle_journal_clear_confirmation_title">¿Borrar el diario de combate?</string>
-    <string name="battle_journal_clear_confirmation_message">Esto eliminará permanentemente todo el historial de combate y los sprites guardados.</string>
+    <string name="battle_journal_clear_short">Borrar</string>
+    <string name="battle_journal_clear_confirmation_title">¿Estás seguro?</string>
     <string name="your_roster">Tu equipo</string>
     <string name="roster_monster_level">Nv. %1$d</string>
     <string name="roster_monster_description">%1$s, nivel %2$d</string>
@@ -407,7 +408,7 @@
     <string name="call_command_cursor">▶ %1$s</string>
     <string name="call_command_section">◀ %1$s</string>
     <string name="call_command_back">ATRÁS</string>
-    <string name="call_command_run">EJECUTAR</string>
+    <string name="call_command_run">HUIR</string>
     <string name="call_command_dialpad_digits">123\n456\n789\n*0#</string>
     <string name="profile_status_title">ESTADO</string>
     <string name="profile_player_label">JUGADOR</string>
@@ -438,7 +439,7 @@
     <string name="profile_menu_contacts">CONTACTOS</string>
     <string name="profile_menu_collection">COLECCIÓN</string>
     <string name="profile_menu_journal">DIARIO</string>
-    <string name="profile_menu_online">COMPARTIR</string>
+    <string name="profile_menu_online">LINK</string>
     <string name="profile_menu_toolbox">HERRAMIENTAS</string>
     <string name="profile_menu_options">OPCIONES</string>
     <string name="profile_menu_exit">SALIR</string>
@@ -488,8 +489,8 @@
     <string name="contact_added_message">¡%1$s se ha añadido a la plantilla!</string>
     <string name="character_selection_more_options" comment="Accessibility label for the character selector menu containing secondary pool actions.">Más opciones de selección de personajes</string>
     <string name="radiant_unlock_share_card_link" comment="Link printed on the radiant-unlock share card. Do not translate." translatable="false">monsterdialer.web.app</string>
-    <string name="online_profile_link_on">COMPARTIR/SÍ</string>
-    <string name="online_profile_link_off">COMPARTIR/NO</string>
+    <string name="online_profile_link_on">LINK/ON</string>
+    <string name="online_profile_link_off">LINK/OFF</string>
     <string name="online_profile_sign_in_action">INICIAR SESIÓN</string>
     <string name="online_profile_unlink_action">DESVINCULAR</string>
     <string name="online_profile_linked_message">Tu equipo se comparte.</string>
@@ -521,4 +522,51 @@
     <string name="favorite_phone_type_number" comment="Favorite contact summary. %1$s is the phone type and %2$s is the phone number.">%1$s • %2$s</string>
     <string name="call_log_just_now" comment="Call-log time shown for calls less than one minute old.">Ahora mismo</string>
     <string name="new_contact_short" comment="Compact command for creating a contact.">Nuevo</string>
+    <string name="settings_catalogs_title">Catálogos</string>
+    <string name="settings_catalogs_description">Explora paquetes de las URL de catálogo que añadas.</string>
+    <string name="local_backup_title">Copia de seguridad local</string>
+    <string name="local_backup_settings_description">Exporta o restaura tu colección de personajes y tu progreso.</string>
+    <string name="local_backup_description">Guarda tus paquetes de personajes, asignaciones, descubrimientos radiantes y Diario de batalla en un archivo de este dispositivo. No se incluyen los contactos de Android ni el historial de llamadas.</string>
+    <string name="local_backup_export">Exportar copia de seguridad</string>
+    <string name="local_backup_import">Restaurar copia de seguridad</string>
+    <string name="local_backup_import_confirmation_title">¿Restaurar copia de seguridad?</string>
+    <string name="local_backup_import_confirmation_message">Esto reemplazará tu colección actual de personajes y el progreso local.</string>
+    <string name="local_backup_exported">Copia de seguridad exportada</string>
+    <string name="local_backup_failed">No se ha podido completar la copia de seguridad.</string>
+    <string name="catalogs_description">Los catálogos muestran paquetes alojados por sus creadores. Instala solo ilustraciones y sonidos que tengas permiso para usar.</string>
+    <string name="catalogs_empty">Añade una URL de catálogo para explorar sus paquetes.</string>
+    <string name="add_catalog">Añadir catálogo</string>
+    <string name="catalog_url_label">URL del catálogo</string>
+    <string name="catalog_add_notice">Añade solo catálogos de fuentes de confianza. Los creadores alojan y mantienen sus propios enlaces de paquetes.</string>
+    <string name="refresh_catalog">Actualizar</string>
+    <string name="remove_catalog">Eliminar catálogo</string>
+    <string name="catalog_loading">Cargando catálogo…</string>
+    <string name="catalog_load_failed">No se ha podido cargar este catálogo.</string>
+    <string name="catalog_pack_metadata">%1$s · %2$s</string>
+    <string name="catalog_added">Catálogo añadido</string>
+    <string name="catalog_add_failed">No se ha podido añadir este catálogo.</string>
+    <string name="catalog_removed">Catálogo eliminado</string>
+    <string name="catalog_remove_failed">No se ha podido eliminar este catálogo.</string>
+    <string name="catalog_remove_confirmation_title">¿Eliminar catálogo?</string>
+    <string name="catalog_remove_confirmation_message">Los paquetes instalados permanecerán en este dispositivo.</string>
+    <string name="catalog_install_confirmation_title">¿Instalar paquete?</string>
+    <string name="catalog_install_confirmation_message">%1$s\nLicencia: %2$s</string>
+    <string name="catalog_pack_installed">Paquete instalado</string>
+    <string name="catalog_pack_install_failed">No se ha podido instalar este paquete.</string>
+    <string name="variant_backup_enable">Hacer copia de seguridad de variantes</string>
+    <string name="variant_backup_enabled">Variantes guardadas</string>
+    <string name="variant_backup_guide_title">Copia de seguridad de variantes</string>
+    <string name="variant_backup_guide_message">Haz una copia privada de tus variantes de personajes desbloqueables con tu cuenta de Google. Nunca se publicarán ni se subirán ilustraciones de personajes, contactos o historial de llamadas. Cuando inicies sesión en otro dispositivo y actives la copia de seguridad, MonsterDialer restaurará todos los desbloqueos que encuentre y los combinará de forma segura con la colección de ese dispositivo.</string>
+    <string name="dial_search_number_prefix">N.º/</string>
+    <string name="dial_search_results">Coincidencias</string>
+    <string name="dial_search_more">Más</string>
+    <string name="dialpad_letters_2">ABC</string>
+    <string name="dialpad_letters_3">DEF</string>
+    <string name="dialpad_letters_4">GHI</string>
+    <string name="dialpad_letters_5">JKL</string>
+    <string name="dialpad_letters_6">MNO</string>
+    <string name="dialpad_letters_7">PQRS</string>
+    <string name="dialpad_letters_8">TUV</string>
+    <string name="dialpad_letters_9">WXYZ</string>
+    <string name="dialpad_letters_0">+</string>
 </resources>

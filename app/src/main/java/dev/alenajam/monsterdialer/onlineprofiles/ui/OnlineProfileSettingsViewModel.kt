@@ -3,6 +3,7 @@ package dev.alenajam.monsterdialer.onlineprofiles.ui
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import dev.alenajam.monsterdialer.characters.data.VariantBackupSynchronizer
 import dev.alenajam.monsterdialer.onlineprofiles.data.OnlineProfilePublisher
 import dev.alenajam.monsterdialer.onlineprofiles.data.OwnedOnlineProfile
 import javax.inject.Inject
@@ -25,6 +26,7 @@ enum class OnlineProfileOperation {
 @HiltViewModel
 class OnlineProfileSettingsViewModel @Inject constructor(
     private val publisher: OnlineProfilePublisher,
+    private val variantBackup: VariantBackupSynchronizer,
 ) : ViewModel() {
     private val _profile = MutableStateFlow(publisher.currentProfile())
     val profile: StateFlow<OwnedOnlineProfile?> = _profile.asStateFlow()
@@ -43,6 +45,9 @@ class OnlineProfileSettingsViewModel @Inject constructor(
     val error: StateFlow<String?> = _error.asStateFlow()
     private val _showRetentionCheckIn = MutableStateFlow(false)
     val showRetentionCheckIn: StateFlow<Boolean> = _showRetentionCheckIn.asStateFlow()
+    private val _variantBackupEnabled = MutableStateFlow(variantBackup.isEnabled())
+    val variantBackupEnabled: StateFlow<Boolean> = _variantBackupEnabled.asStateFlow()
+    private var pendingVariantBackupSignIn = false
 
     init {
         viewModelScope.launch {
@@ -62,9 +67,11 @@ class OnlineProfileSettingsViewModel @Inject constructor(
         if (_isSignedIn.value) {
             enableProfile()
         } else {
-            viewModelScope.launch { _signInRequests.emit(Unit) }
+            signIn()
         }
     }
+
+    fun signIn() = viewModelScope.launch { _signInRequests.emit(Unit) }
 
     fun completeGoogleSignIn(idToken: String) = viewModelScope.launch {
         _isWorking.value = true
@@ -72,7 +79,11 @@ class OnlineProfileSettingsViewModel @Inject constructor(
         try {
             publisher.signInWithGoogle(idToken)
             _isSignedIn.value = true
-            _profile.value = publisher.publish()
+            if (pendingVariantBackupSignIn) {
+                pendingVariantBackupSignIn = false
+                variantBackup.enable()
+                _variantBackupEnabled.value = true
+            }
         } catch (exception: Exception) {
             _error.value = exception.message
         } finally {
@@ -82,7 +93,27 @@ class OnlineProfileSettingsViewModel @Inject constructor(
     }
 
     fun failGoogleSignIn(message: String?) {
+        pendingVariantBackupSignIn = false
         _error.value = message
+    }
+
+    fun enableVariantBackup() {
+        if (publisher.isSignedIn()) {
+            viewModelScope.launch {
+                _isWorking.value = true
+                try {
+                    variantBackup.enable()
+                    _variantBackupEnabled.value = true
+                } catch (exception: Exception) {
+                    _error.value = exception.message
+                } finally {
+                    _isWorking.value = false
+                }
+            }
+        } else {
+            pendingVariantBackupSignIn = true
+            viewModelScope.launch { _signInRequests.emit(Unit) }
+        }
     }
 
     private fun enableProfile() = viewModelScope.launch {

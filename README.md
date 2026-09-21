@@ -68,6 +68,14 @@ Character packs are ZIP archives containing a `manifest.json` file and their loc
 
 Read the complete [character-pack format guide](docs/character-packs.md) before creating or sharing a pack. Only import assets you created or are licensed to use.
 
+Catalog publishers can list externally hosted packs with the [catalog format guide](docs/catalogs.md). MonsterDialer does not curate community catalog URLs.
+
+## Sharing and backup
+
+Optional Google sign-in can be used independently for public [Online Profile sharing](docs/online-profiles.md) and private [Variant Backup](docs/variant-backup.md). Read both guides before enabling either feature.
+
+For an account-free, portable copy of your character collection and local progress, use [Local Backup](docs/local-backup.md).
+
 ## Contributing
 
 Issues, pull requests, reviews, translations, and feature requests are welcome. Please read [CONTRIBUTING.md](CONTRIBUTING.md) before opening a pull request. You can propose and vote on ideas at [MonsterDialer Feedback](https://monsterdialer.fider.io/).

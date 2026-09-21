@@ -39,6 +39,12 @@ class CharacterPackCatalog(
 
     fun list(): List<InstalledCharacterPackRecord> = _packs.value.sortedBy { it.name.lowercase() }
 
+    /** Re-reads disk after a local backup restore. */
+    @Synchronized
+    fun reload() {
+        _packs.value = read().packs
+    }
+
     @Synchronized
     fun recordInstallation(manifest: CharacterPackManifest): InstalledCharacterPackRecord {
         val existing = _packs.value
