@@ -42,6 +42,7 @@ import dev.alenajam.monsterdialer.app.ui.RetroFooter
 import dev.alenajam.monsterdialer.app.ui.RetroFastScroller
 import dev.alenajam.monsterdialer.app.ui.RetroContextMenuItem
 import dev.alenajam.monsterdialer.app.ui.RetroContextMenuOverlay
+import dev.alenajam.monsterdialer.app.ui.RetroFooterAction
 import dev.alenajam.monsterdialer.app.ui.RetroSearchButton
 import dev.alenajam.monsterdialer.characters.data.BuiltInCharacters
 import dev.alenajam.monsterdialer.characters.data.CharactersRepository
@@ -168,6 +169,14 @@ fun RadiantCollectionScreen(viewModel: RadiantCollectionViewModel = hiltViewMode
     var selectedType by remember { mutableStateOf(CharacterType.Monster) }
     var selectedFilter by remember { mutableStateOf(CollectionVariantFilter.All) }
     var filterMenuOpen by remember { mutableStateOf(false) }
+    var addMenuOpen by remember { mutableStateOf(false) }
+    val selectedTypeLabel = stringResource(
+        if (selectedType == CharacterType.Trainer) {
+            R.string.character_type_trainer
+        } else {
+            R.string.character_type_monster
+        },
+    )
     val listState = rememberLazyListState()
     val sections = buildCollectionSections(
         entries = entries,
@@ -209,15 +218,22 @@ fun RadiantCollectionScreen(viewModel: RadiantCollectionViewModel = hiltViewMode
         Column(modifier = Modifier.fillMaxSize()) {
         Row(modifier = Modifier.fillMaxWidth()) {
             RetroSearchButton(
-                label = stringResource(R.string.contact_picker_options),
-                onClick = { filterMenuOpen = true },
+                label = selectedTypeLabel,
+                onClick = {
+                    selectedType = if (selectedType == CharacterType.Trainer) {
+                        CharacterType.Monster
+                    } else {
+                        CharacterType.Trainer
+                    }
+                },
                 modifier = Modifier.weight(1f),
                 horizontalArrangement = Arrangement.Start,
             )
             RetroSearchButton(
-                label = stringResource(R.string.radiant_collection_browse_packs),
-                onClick = { navigator?.navigateTo("browse-packs") },
+                label = stringResource(R.string.contact_picker_options),
+                onClick = { filterMenuOpen = true },
                 modifier = Modifier.weight(1f),
+                horizontalArrangement = Arrangement.End,
             )
         }
         Box(modifier = Modifier.weight(1f)) {
@@ -257,6 +273,11 @@ fun RadiantCollectionScreen(viewModel: RadiantCollectionViewModel = hiltViewMode
             backKey = stringResource(R.string.retro_key_b),
             backLabel = stringResource(R.string.retro_action_back_label),
             onBack = { navigator?.navigateBack() },
+            leftAction = RetroFooterAction(
+                key = stringResource(R.string.retro_key_a),
+                label = stringResource(R.string.add),
+                onClick = { addMenuOpen = true },
+            ),
         )
         }
 
@@ -269,22 +290,7 @@ fun RadiantCollectionScreen(viewModel: RadiantCollectionViewModel = hiltViewMode
                     modifier = Modifier.fillMaxWidth(0.68f),
                     fontFamily = RetroPickerFont,
                     onDismissRequest = { filterMenuOpen = false },
-                    items = listOf(
-                        RetroContextMenuItem(
-                            label = stringResource(R.string.character_type_trainer),
-                            showCursor = selectedType == CharacterType.Trainer,
-                        ) {
-                            selectedType = CharacterType.Trainer
-                            filterMenuOpen = false
-                        },
-                        RetroContextMenuItem(
-                            label = stringResource(R.string.character_type_monster),
-                            showCursor = selectedType == CharacterType.Monster,
-                        ) {
-                            selectedType = CharacterType.Monster
-                            filterMenuOpen = false
-                        },
-                    ) + if (selectedType == CharacterType.Monster) {
+                    items = (if (selectedType == CharacterType.Monster) {
                         CollectionVariantFilter.entries.map { filter ->
                             RetroContextMenuItem(
                                 label = stringResource(filter.labelRes),
@@ -295,22 +301,45 @@ fun RadiantCollectionScreen(viewModel: RadiantCollectionViewModel = hiltViewMode
                             }
                         }
                     } else {
-                        emptyList()
-                    } + listOf(
+                        emptyList<RetroContextMenuItem>()
+                    }) + listOf(
                         RetroContextMenuItem(
-                            label = stringResource(R.string.add_trainer),
-                            dividerBefore = true,
+                            label = stringResource(R.string.radiant_collection_browse_packs),
+                            dividerBefore = selectedType == CharacterType.Monster,
                         ) {
                             filterMenuOpen = false
+                            navigator?.navigateTo("browse-packs")
+                        },
+                        RetroContextMenuItem.cancel(stringResource(R.string.cancel)) {
+                        filterMenuOpen = false
+                        },
+                    ),
+                )
+            }
+        }
+
+        if (addMenuOpen) {
+            Box(
+                modifier = Modifier.fillMaxSize().clickable { addMenuOpen = false },
+                contentAlignment = Alignment.Center,
+            ) {
+                RetroContextMenuOverlay(
+                    modifier = Modifier.fillMaxWidth(0.68f),
+                    fontFamily = RetroPickerFont,
+                    onDismissRequest = { addMenuOpen = false },
+                    items = listOf(
+                        RetroContextMenuItem(stringResource(R.string.add_trainer)) {
+                            addMenuOpen = false
                             navigator?.navigateTo("add-trainer")
                         },
                         RetroContextMenuItem(stringResource(R.string.add_monster)) {
-                            filterMenuOpen = false
+                            addMenuOpen = false
                             navigator?.navigateTo("add-monster")
                         },
-                    ) + RetroContextMenuItem.cancel(stringResource(R.string.cancel)) {
-                        filterMenuOpen = false
-                    },
+                        RetroContextMenuItem.cancel(stringResource(R.string.cancel)) {
+                            addMenuOpen = false
+                        },
+                    ),
                 )
             }
         }
