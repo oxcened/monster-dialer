@@ -40,6 +40,7 @@
     <string name="local_backup_import_confirmation_title">Restaurezi backupul?</string>
     <string name="local_backup_import_confirmation_message">Aceasta înlocuiește colecția actuală de personaje și progresul local.</string>
     <string name="local_backup_exported">Backup exportat</string>
+    <string name="local_backup_restored">Backup restaurat</string>
     <string name="local_backup_failed">Backupul nu a putut fi finalizat.</string>
     <string name="catalogs_description" comment="Explanation at the top of the Catalogs screen.">Cataloagele afișează pachete găzduite de editorii lor. Instalează doar ilustrații și sunete pe care ai voie să le folosești.</string>
     <string name="catalogs_empty" comment="Empty state in the Catalogs screen.">Adaugă un URL de catalog pentru a-i răsfoi pachetele.</string>
@@ -116,8 +117,9 @@
     <string name="profile_menu_toolbox">INSTRUMENTE</string>
     <string name="profile_menu_options">OPȚIUNI</string>
     <string name="profile_menu_exit">IEȘIRE</string>
+    <string name="profile_menu_info">DESPRE</string>
     <string name="profile_menu_cursor">▶%1$s</string>
-    <string name="profile_roster_description">Echipa ta.</string>
+    <string name="profile_roster_description">Echipa ta de luptă.</string>
     <string name="profile_footer_prompt">Profilul tău!</string>
     <string name="character_tools_title" comment="Heading above character management actions.">Trusă de unelte</string>
     <string name="character_tools_prompt" comment="Retro prompt shown below the character toolbox list. Asking the player to choose the right tool.">Alege instrumentul potrivit.</string>
@@ -179,6 +181,8 @@
     <string name="settings_contact_characters_title" comment="Settings title for assigning characters to contacts.">Personajele contactelor</string>
     <string name="personalize_contact_character" comment="Accessibility label for the contact-list action that customizes a caller's battle characters.">Personalizează personajele apelantului</string>
     <string name="settings_contact_characters_description" comment="Settings description for assigning characters to contacts.">Atribuie personaje apelanților.</string>
+    <string name="prefer_monster_artwork" comment="Setting that makes assigned monster artwork take priority over trainer artwork.">Afișează monstrul când ambele sunt atribuite</string>
+    <string name="prefer_monster_artwork_description" comment="Explanation for the contact artwork priority setting.">Folosește grafica monstrului în Contacte și în istoricul apelurilor când unui contact îi sunt atribuite un antrenor și un monstru.</string>
     <string name="contact_characters_not_set" comment="Settings subtitle when no contacts have a character assignment.">Niciun contact personalizat</string>
     <plurals name="contact_character_assignment_count" comment="Settings subtitle showing how many contacts have a character assignment.">
         <item quantity="one">%d contact personalizat</item>
@@ -223,6 +227,9 @@
     <string name="contact_context_menu_remove">Elimină</string>
     <string name="contact_picker_options">Opțiuni</string>
     <string name="back">Înapoi</string>
+    <string name="monster_settings_title" comment="Title of MonsterDialer's in-app settings screen.">Setări</string>
+    <string name="monster_settings_hint" comment="Footer prompt for MonsterDialer's settings screen.">Alege o setare.</string>
+    <string name="settings_section_general" comment="Section heading for standard dialer settings.">Telefon</string>
     <string name="contact_defaults_menu_mode">Personaj implicit</string>
     <string name="contact_defaults_menu_characters">Lista personajelor</string>
     <string name="contact_defaults_menu_pool">Grup de selecție aleatorie</string>
