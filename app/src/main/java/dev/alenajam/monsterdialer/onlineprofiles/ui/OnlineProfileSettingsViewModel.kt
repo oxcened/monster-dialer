@@ -78,7 +78,8 @@ class OnlineProfileSettingsViewModel @Inject constructor(
         _operation.value = OnlineProfileOperation.SignIn
         try {
             publisher.signInWithGoogle(idToken)
-            _isSignedIn.value = true
+            _isSignedIn.value = publisher.isSignedIn()
+            refreshProfile()
             if (pendingVariantBackupSignIn) {
                 pendingVariantBackupSignIn = false
                 variantBackup.enable()
@@ -142,10 +143,21 @@ class OnlineProfileSettingsViewModel @Inject constructor(
     fun delete() = viewModelScope.launch {
         _isWorking.value = true
         _operation.value = OnlineProfileOperation.Delete
-        try { publisher.delete(); _profile.value = null } catch (exception: Exception) { _error.value = exception.message }
+        try {
+            publisher.delete()
+            refreshProfile()
+        } catch (exception: Exception) { _error.value = exception.message }
         finally { _operation.value = null; _isWorking.value = false }
     }
     fun clearError() { _error.value = null }
+
+    private suspend fun refreshProfile() {
+        _profile.value = if (publisher.isSignedIn()) {
+            runCatching { publisher.restoreProfile() }.getOrNull()
+        } else {
+            publisher.currentProfile()
+        }
+    }
 
     override fun onCleared() {
         removeAuthStateListener()

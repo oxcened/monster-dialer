@@ -90,6 +90,7 @@ fun OnlineProfileSection(viewModel: OnlineProfileSettingsViewModel = hiltViewMod
     val scope = rememberCoroutineScope()
     val resources = LocalResources.current
     val regeneratingDescription = stringResource(R.string.online_profile_regenerating)
+    val enablingDescription = stringResource(R.string.online_profile_enabling)
     val deletingDescription = stringResource(R.string.online_profile_deleting)
     val keepingOnlineDescription = stringResource(R.string.online_profile_keeping_online)
     val googleSignInNotConfigured = stringResource(R.string.online_profile_google_sign_in_not_configured)
@@ -127,8 +128,21 @@ fun OnlineProfileSection(viewModel: OnlineProfileSettingsViewModel = hiltViewMod
         }
     }
     val linkIsOn = profile != null
+    val sharingLink = profile?.let { ProfileSharingLink.urlFor(it.publicProfileId) }
+    val shareText = sharingLink?.let {
+        stringResource(R.string.online_profile_share_text, it)
+    }
+    val shareTitle = stringResource(R.string.online_profile_share)
     var guideOpen by remember { mutableStateOf(false) }
     var selectedMenuIndex by remember { mutableStateOf(0) }
+    val regenerateIndex = if (linkIsOn) {
+        if (isSignedIn) 2 else 1
+    } else {
+        -1
+    }
+    val shareIndex = if (linkIsOn) regenerateIndex + 1 else -1
+    val qrIndex = if (linkIsOn) regenerateIndex + 2 else -1
+    val helpIndex = if (linkIsOn) regenerateIndex + 3 else if (isSignedIn) 2 else 1
     Box(modifier = Modifier.fillMaxSize()) {
         Box(
             modifier = Modifier
@@ -152,48 +166,47 @@ fun OnlineProfileSection(viewModel: OnlineProfileSettingsViewModel = hiltViewMod
                     )
                     RetroSelectableRow(
                         selected = selectedMenuIndex == 0,
+                        enabled = !working,
                         onClick = {
                             selectedMenuIndex = 0
-                            if (linkIsOn) viewModel.delete()
-                            else if (!working) {
-                                if (isSignedIn) viewModel.enable() else viewModel.signIn()
-                            }
+                            if (linkIsOn) confirmDelete = true
+                            else if (isSignedIn) viewModel.enable() else viewModel.signIn()
                         },
                     ) {
-                        Text(
-                            text = stringResource(
-                                when {
-                                    linkIsOn -> R.string.online_profile_unlink_action
-                                    isSignedIn -> R.string.online_profile_enable
-                                    else -> R.string.online_profile_sign_in_action
+                        if (operation == OnlineProfileOperation.Enable || operation == OnlineProfileOperation.Delete) {
+                            CircularProgressIndicator(modifier = Modifier.size(20.dp), strokeWidth = 2.dp)
+                            Text(
+                                text = if (operation == OnlineProfileOperation.Enable) {
+                                    enablingDescription.uppercase()
+                                } else {
+                                    deletingDescription.uppercase()
                                 },
-                            ),
-                            fontFamily = ProfilePixelFont,
-                            fontSize = 16.sp,
-                            lineHeight = 18.sp,
-                            color = ProfileInk,
-                        )
-                    }
-                    RetroSelectableRow(
-                        selected = selectedMenuIndex == 1,
-                        onClick = {
-                            selectedMenuIndex = 1
-                            guideOpen = true
-                        },
-                    ) {
-                        Text(
-                            text = stringResource(R.string.retro_picker_guide),
-                            fontFamily = ProfilePixelFont,
-                            fontSize = 16.sp,
-                            lineHeight = 18.sp,
-                            color = ProfileInk,
-                        )
+                                modifier = Modifier.padding(start = 8.dp),
+                                fontFamily = ProfilePixelFont,
+                                fontSize = 14.sp,
+                                color = ProfileInk.copy(alpha = 0.76f),
+                            )
+                        } else {
+                            Text(
+                                text = stringResource(
+                                    when {
+                                        linkIsOn -> R.string.online_profile_delete
+                                        isSignedIn -> R.string.online_profile_enable
+                                        else -> R.string.online_profile_sign_in_action
+                                    },
+                                ).uppercase(),
+                                fontFamily = ProfilePixelFont,
+                                fontSize = 16.sp,
+                                lineHeight = 18.sp,
+                                color = ProfileInk,
+                            )
+                        }
                     }
                     if (isSignedIn) {
                         RetroSelectableRow(
-                            selected = selectedMenuIndex == 2,
+                            selected = selectedMenuIndex == 1,
                             onClick = {
-                                selectedMenuIndex = 2
+                                selectedMenuIndex = 1
                                 if (!working) viewModel.enableVariantBackup()
                             },
                         ) {
@@ -201,13 +214,90 @@ fun OnlineProfileSection(viewModel: OnlineProfileSettingsViewModel = hiltViewMod
                                 text = stringResource(
                                     if (variantBackupEnabled) R.string.variant_backup_enabled
                                     else R.string.variant_backup_enable,
-                                ),
+                                ).uppercase(),
                                 fontFamily = ProfilePixelFont,
                                 fontSize = 16.sp,
                                 lineHeight = 18.sp,
                                 color = ProfileInk,
                             )
                         }
+                    }
+                    if (linkIsOn) {
+                        RetroSelectableRow(
+                            selected = selectedMenuIndex == regenerateIndex,
+                            enabled = !working,
+                            onClick = {
+                                selectedMenuIndex = regenerateIndex
+                                confirmRegenerate = true
+                            },
+                        ) {
+                            if (operation == OnlineProfileOperation.Regenerate) {
+                                CircularProgressIndicator(modifier = Modifier.size(20.dp), strokeWidth = 2.dp)
+                                Text(
+                                    text = regeneratingDescription.uppercase(),
+                                    modifier = Modifier.padding(start = 8.dp),
+                                    fontFamily = ProfilePixelFont,
+                                    fontSize = 14.sp,
+                                    color = ProfileInk.copy(alpha = 0.76f),
+                                )
+                            } else {
+                                Text(
+                                    text = stringResource(R.string.online_profile_regenerate).uppercase(),
+                                    fontFamily = ProfilePixelFont,
+                                    fontSize = 16.sp,
+                                    lineHeight = 18.sp,
+                                    color = ProfileInk,
+                                )
+                            }
+                        }
+                        RetroSelectableRow(
+                            selected = selectedMenuIndex == shareIndex,
+                            onClick = {
+                                selectedMenuIndex = shareIndex
+                                context.startActivity(Intent.createChooser(Intent(Intent.ACTION_SEND).apply {
+                                    type = "text/plain"
+                                    putExtra(Intent.EXTRA_TEXT, requireNotNull(shareText))
+                                }, shareTitle))
+                            },
+                        ) {
+                            Text(
+                                text = stringResource(R.string.share).uppercase(),
+                                fontFamily = ProfilePixelFont,
+                                fontSize = 16.sp,
+                                lineHeight = 18.sp,
+                                color = ProfileInk,
+                            )
+                        }
+                        RetroSelectableRow(
+                            selected = selectedMenuIndex == qrIndex,
+                            onClick = {
+                                selectedMenuIndex = qrIndex
+                                showQrCode = true
+                            },
+                        ) {
+                            Text(
+                                text = stringResource(R.string.online_profile_qr_action).uppercase(),
+                                fontFamily = ProfilePixelFont,
+                                fontSize = 16.sp,
+                                lineHeight = 18.sp,
+                                color = ProfileInk,
+                            )
+                        }
+                    }
+                    RetroSelectableRow(
+                        selected = selectedMenuIndex == helpIndex,
+                        onClick = {
+                            selectedMenuIndex = helpIndex
+                            guideOpen = true
+                        },
+                    ) {
+                        Text(
+                            text = stringResource(R.string.retro_picker_guide).uppercase(),
+                            fontFamily = ProfilePixelFont,
+                            fontSize = 16.sp,
+                            lineHeight = 18.sp,
+                            color = ProfileInk,
+                        )
                     }
                 }
             }
@@ -229,10 +319,43 @@ fun OnlineProfileSection(viewModel: OnlineProfileSettingsViewModel = hiltViewMod
             contents = ownedOnlineProfileGuideContents(),
             onDismiss = {
                 guideOpen = false
-                selectedMenuIndex = 1
+                selectedMenuIndex = helpIndex
             },
         )
     }
+    if (showQrCode) {
+        ProfileSharingQrCodeSheet(
+            sharingLink = requireNotNull(sharingLink),
+            onDismiss = { showQrCode = false },
+        )
+    }
+    if (confirmDelete) AlertDialog(
+        onDismissRequest = { confirmDelete = false },
+        title = { Text(stringResource(R.string.online_profile_delete)) },
+        text = { Text(stringResource(R.string.online_profile_delete_message)) },
+        confirmButton = {
+            TextButton(
+                onClick = { confirmDelete = false; viewModel.delete() },
+                colors = ButtonDefaults.textButtonColors(contentColor = MaterialTheme.colorScheme.error),
+            ) {
+                Text(stringResource(R.string.online_profile_delete))
+            }
+        },
+        dismissButton = { TextButton(onClick = { confirmDelete = false }) { Text(stringResource(R.string.cancel)) } },
+    )
+    if (confirmRegenerate) AlertDialog(
+        onDismissRequest = { confirmRegenerate = false },
+        title = { Text(stringResource(R.string.online_profile_regenerate)) },
+        text = { Text(stringResource(R.string.online_profile_regenerate_message)) },
+        confirmButton = {
+            TextButton(
+                onClick = { confirmRegenerate = false; viewModel.regenerate() },
+            ) {
+                Text(stringResource(R.string.online_profile_regenerate))
+            }
+        },
+        dismissButton = { TextButton(onClick = { confirmRegenerate = false }) { Text(stringResource(R.string.cancel)) } },
+    )
     return
 
     if (profile == null) {
