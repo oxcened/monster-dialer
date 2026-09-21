@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dev.alenajam.monsterdialer.characters.data.VariantBackupSynchronizer
 import dev.alenajam.monsterdialer.onlineprofiles.data.OnlineProfilePublisher
+import dev.alenajam.monsterdialer.onlineprofiles.data.OnlineAccountDataDeletion
 import dev.alenajam.monsterdialer.onlineprofiles.data.OwnedOnlineProfile
 import javax.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -21,12 +22,14 @@ enum class OnlineProfileOperation {
     Regenerate,
     KeepOnline,
     Delete,
+    DeleteAccount,
 }
 
 @HiltViewModel
 class OnlineProfileSettingsViewModel @Inject constructor(
     private val publisher: OnlineProfilePublisher,
     private val variantBackup: VariantBackupSynchronizer,
+    private val accountDataDeletion: OnlineAccountDataDeletion,
 ) : ViewModel() {
     private val _profile = MutableStateFlow(publisher.currentProfile())
     val profile: StateFlow<OwnedOnlineProfile?> = _profile.asStateFlow()
@@ -37,6 +40,8 @@ class OnlineProfileSettingsViewModel @Inject constructor(
     }
     private val _signInRequests = MutableSharedFlow<Unit>()
     val signInRequests: SharedFlow<Unit> = _signInRequests
+    private val _accountDeletionRequests = MutableSharedFlow<Unit>()
+    val accountDeletionRequests: SharedFlow<Unit> = _accountDeletionRequests
     private val _isWorking = MutableStateFlow(false)
     val isWorking: StateFlow<Boolean> = _isWorking.asStateFlow()
     private val _operation = MutableStateFlow<OnlineProfileOperation?>(null)
@@ -72,6 +77,24 @@ class OnlineProfileSettingsViewModel @Inject constructor(
     }
 
     fun signIn() = viewModelScope.launch { _signInRequests.emit(Unit) }
+
+    fun requestAccountDeletion() = viewModelScope.launch { _accountDeletionRequests.emit(Unit) }
+
+    fun deleteAccount(idToken: String) = viewModelScope.launch {
+        _isWorking.value = true
+        _operation.value = OnlineProfileOperation.DeleteAccount
+        try {
+            accountDataDeletion.deleteAll(idToken)
+            _isSignedIn.value = false
+            _profile.value = null
+            _variantBackupEnabled.value = false
+        } catch (exception: Exception) {
+            _error.value = exception.message
+        } finally {
+            _operation.value = null
+            _isWorking.value = false
+        }
+    }
 
     fun completeGoogleSignIn(idToken: String) = viewModelScope.launch {
         _isWorking.value = true

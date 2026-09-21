@@ -45,6 +45,11 @@ class VariantBackupSynchronizer @Inject constructor(
         synchronize()
     }
 
+    suspend fun deleteBackup() = synchronizationMutex.withLock {
+        remote.deleteAll()
+        settings.disable()
+    }
+
     suspend fun synchronize() = synchronizationMutex.withLock {
         if (!settings.isEnabled() || !remote.isSignedIn()) return
         unlocks.merge(remote.restore())

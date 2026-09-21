@@ -6,5 +6,6 @@ import dev.alenajam.monsterdialer.packs.data.CharacterReference
 interface VariantBackupRemoteDataSource {
     suspend fun restore(): Set<CharacterReference>
     suspend fun backup(references: Set<CharacterReference>)
+    suspend fun deleteAll()
     fun isSignedIn(): Boolean
 }

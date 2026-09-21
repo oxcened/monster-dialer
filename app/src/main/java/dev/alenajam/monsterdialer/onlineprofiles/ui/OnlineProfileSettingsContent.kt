@@ -92,6 +92,7 @@ fun OnlineProfileSection(viewModel: OnlineProfileSettingsViewModel = hiltViewMod
     val regeneratingDescription = stringResource(R.string.online_profile_regenerating)
     val enablingDescription = stringResource(R.string.online_profile_enabling)
     val deletingDescription = stringResource(R.string.online_profile_deleting)
+    val deletingAccountDescription = stringResource(R.string.online_profile_deleting_account)
     val keepingOnlineDescription = stringResource(R.string.online_profile_keeping_online)
     val googleSignInNotConfigured = stringResource(R.string.online_profile_google_sign_in_not_configured)
     val navigator = LocalSettingsSubpageNavigator.current
@@ -101,6 +102,7 @@ fun OnlineProfileSection(viewModel: OnlineProfileSettingsViewModel = hiltViewMod
             ?.let(resources::getString)
     }
     var confirmDelete by remember { mutableStateOf(false) }
+    var confirmDeleteAccount by remember { mutableStateOf(false) }
     var confirmRegenerate by remember { mutableStateOf(false) }
     var showQrCode by remember { mutableStateOf(false) }
     val signOut: () -> Unit = {
@@ -120,6 +122,18 @@ fun OnlineProfileSection(viewModel: OnlineProfileSettingsViewModel = hiltViewMod
                     .onFailure { exception -> viewModel.failGoogleSignIn(exception.message) }
             }
     }
+    }
+    androidx.compose.runtime.LaunchedEffect(viewModel, googleServerClientId) {
+        viewModel.accountDeletionRequests.collectLatest {
+            val serverClientId = googleServerClientId
+            if (serverClientId == null) {
+                viewModel.failGoogleSignIn(googleSignInNotConfigured)
+            } else {
+                runCatching { GoogleProfileSignIn.idToken(context, serverClientId) }
+                    .onSuccess(viewModel::deleteAccount)
+                    .onFailure { exception -> viewModel.failGoogleSignIn(exception.message) }
+            }
+        }
     }
     androidx.compose.runtime.LaunchedEffect(error) {
         error?.let { message ->
@@ -142,7 +156,12 @@ fun OnlineProfileSection(viewModel: OnlineProfileSettingsViewModel = hiltViewMod
     }
     val shareIndex = if (linkIsOn) regenerateIndex + 1 else -1
     val qrIndex = if (linkIsOn) regenerateIndex + 2 else -1
-    val helpIndex = if (linkIsOn) regenerateIndex + 3 else if (isSignedIn) 2 else 1
+    val deleteAccountIndex = if (isSignedIn) {
+        if (linkIsOn) qrIndex + 1 else 2
+    } else {
+        -1
+    }
+    val helpIndex = if (isSignedIn) deleteAccountIndex + 1 else if (linkIsOn) regenerateIndex + 3 else 1
     Box(modifier = Modifier.fillMaxSize()) {
         Box(
             modifier = Modifier
@@ -284,6 +303,35 @@ fun OnlineProfileSection(viewModel: OnlineProfileSettingsViewModel = hiltViewMod
                             )
                         }
                     }
+                    if (isSignedIn) {
+                        RetroSelectableRow(
+                            selected = selectedMenuIndex == deleteAccountIndex,
+                            enabled = !working,
+                            onClick = {
+                                selectedMenuIndex = deleteAccountIndex
+                                confirmDeleteAccount = true
+                            },
+                        ) {
+                            if (operation == OnlineProfileOperation.DeleteAccount) {
+                                CircularProgressIndicator(modifier = Modifier.size(20.dp), strokeWidth = 2.dp)
+                                Text(
+                                    text = deletingAccountDescription.uppercase(),
+                                    modifier = Modifier.padding(start = 8.dp),
+                                    fontFamily = ProfilePixelFont,
+                                    fontSize = 14.sp,
+                                    color = ProfileInk.copy(alpha = 0.76f),
+                                )
+                            } else {
+                                Text(
+                                    text = stringResource(R.string.online_profile_delete_account).uppercase(),
+                                    fontFamily = ProfilePixelFont,
+                                    fontSize = 16.sp,
+                                    lineHeight = 18.sp,
+                                    color = MaterialTheme.colorScheme.error,
+                                )
+                            }
+                        }
+                    }
                     RetroSelectableRow(
                         selected = selectedMenuIndex == helpIndex,
                         onClick = {
@@ -355,6 +403,23 @@ fun OnlineProfileSection(viewModel: OnlineProfileSettingsViewModel = hiltViewMod
             }
         },
         dismissButton = { TextButton(onClick = { confirmRegenerate = false }) { Text(stringResource(R.string.cancel)) } },
+    )
+    if (confirmDeleteAccount) AlertDialog(
+        onDismissRequest = { confirmDeleteAccount = false },
+        title = { Text(stringResource(R.string.online_profile_delete_account)) },
+        text = { Text(stringResource(R.string.online_profile_delete_account_message)) },
+        confirmButton = {
+            TextButton(
+                onClick = {
+                    confirmDeleteAccount = false
+                    viewModel.requestAccountDeletion()
+                },
+                colors = ButtonDefaults.textButtonColors(contentColor = MaterialTheme.colorScheme.error),
+            ) {
+                Text(stringResource(R.string.online_profile_delete_account))
+            }
+        },
+        dismissButton = { TextButton(onClick = { confirmDeleteAccount = false }) { Text(stringResource(R.string.cancel)) } },
     )
     return
 

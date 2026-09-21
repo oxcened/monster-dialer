@@ -47,6 +47,22 @@ class FirebaseVariantBackupRemoteDataSource @Inject constructor(
         }
     }
 
+    override suspend fun deleteAll() {
+        val userId = requireNotNull(currentUserId())
+        val firestore = FirebaseFirestore.getInstance(firebaseApp())
+        val unlocks = firestore.collection(Collection)
+            .document(userId)
+            .collection(UnlocksCollection)
+            .get(Source.SERVER)
+            .await()
+            .documents
+        unlocks.chunked(MaxBatchSize).forEach { chunk ->
+            firestore.runBatch { batch ->
+                chunk.forEach { document -> batch.delete(document.reference) }
+            }.await()
+        }
+    }
+
     override fun isSignedIn(): Boolean = currentUserId() != null
 
     private fun currentUserId(): String? = FirebaseApp.initializeApp(context)

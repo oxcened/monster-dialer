@@ -40,6 +40,17 @@ class OnlineProfileAuthentication @Inject constructor(
         return requireNotNull(user?.uid) { context.getString(R.string.online_profile_google_sign_in_error) }
     }
 
+    suspend fun reauthenticateAndDeleteCurrentUser(idToken: String) {
+        val app = requireNotNull(FirebaseApp.initializeApp(context)) {
+            context.getString(R.string.online_profile_firebase_not_configured)
+        }
+        val user = requireNotNull(FirebaseAuth.getInstance(app).currentUser) {
+            context.getString(R.string.online_profile_google_sign_in_required)
+        }
+        user.reauthenticate(GoogleAuthProvider.getCredential(idToken, null)).await()
+        user.delete().await()
+    }
+
     fun requireCurrentUserId(): String = requireNotNull(currentUserId()) {
         context.getString(R.string.online_profile_google_sign_in_required)
     }

@@ -134,7 +134,7 @@ class OnlineProfilePublisher @Inject constructor(
     }
 
     suspend fun delete(): Unit = withContext(Dispatchers.IO) {
-        currentProfile()?.let { owned ->
+        (currentProfile() ?: restoreProfile())?.let { owned ->
             remoteDataSource.delete(owned)
             ownerStore.clear()
         }

@@ -26,6 +26,12 @@ class VariantBackupSettingsStore @Inject constructor(
         file.writeText(json.encodeToString(VariantBackupSettings(enabled = true)))
     }
 
+    @Synchronized
+    fun disable() {
+        file.parentFile?.mkdirs()
+        file.writeText(json.encodeToString(VariantBackupSettings(enabled = false)))
+    }
+
     private fun read(): VariantBackupSettings = runCatching {
         json.decodeFromString<VariantBackupSettings>(file.readText())
     }.getOrDefault(VariantBackupSettings())
