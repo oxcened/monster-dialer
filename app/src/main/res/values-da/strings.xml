@@ -40,6 +40,7 @@
     <string name="local_backup_import_confirmation_title">Gendan sikkerhedskopi?</string>
     <string name="local_backup_import_confirmation_message">Dette erstatter din nuværende samling af figurer og lokale fremskridt.</string>
     <string name="local_backup_exported">Sikkerhedskopi eksporteret</string>
+    <string name="local_backup_restored">Sikkerhedskopi gendannet</string>
     <string name="local_backup_failed">Sikkerhedskopien kunne ikke fuldføres.</string>
     <string name="catalogs_description" comment="Explanation at the top of the Catalogs screen.">Kataloger viser pakker, som deres udgivere hoster. Installér kun illustrationer og lyde, du har tilladelse til at bruge.</string>
     <string name="catalogs_empty" comment="Empty state in the Catalogs screen.">Tilføj en katalog-URL for at gennemse dens pakker.</string>
@@ -113,8 +114,9 @@
     <string name="profile_menu_toolbox">VÆRKTØJER</string>
     <string name="profile_menu_options">INDSTILLINGER</string>
     <string name="profile_menu_exit">AFSLUT</string>
+    <string name="profile_menu_info">OM</string>
     <string name="profile_menu_cursor">▶%1$s</string>
-    <string name="profile_roster_description">Dit hold.</string>
+    <string name="profile_roster_description">Dit kamphold.</string>
     <string name="profile_footer_prompt">Din profil!</string>
     <string name="character_tools_title" comment="Heading above character management actions.">Værktøjskasse</string>
     <string name="character_tools_prompt" comment="Retro prompt shown below the character toolbox list. Asking the player to choose the right tool.">Vælg det rigtige værktøj.</string>
@@ -176,6 +178,8 @@
     <string name="settings_contact_characters_title" comment="Settings title for assigning characters to contacts.">Kontaktfigurer</string>
     <string name="personalize_contact_character" comment="Accessibility label for the contact-list action that customizes a caller's battle characters.">Tilpas opkalderfigurer</string>
     <string name="settings_contact_characters_description" comment="Settings description for assigning characters to contacts.">Tildel figurer til indgående opkald.</string>
+    <string name="prefer_monster_artwork" comment="Setting that makes assigned monster artwork take priority over trainer artwork.">Vis monsteret, når begge er tildelt</string>
+    <string name="prefer_monster_artwork_description" comment="Explanation for the contact artwork priority setting.">Bruger monsterillustrationen i Kontakter og opkaldshistorik, når en kontakt både har en træner og et monster.</string>
     <string name="contact_characters_not_set" comment="Settings subtitle when no contacts have a character assignment.">Ingen kontakter tilpasset</string>
     <plurals name="contact_character_assignment_count" comment="Settings subtitle showing how many contacts have a character assignment.">
         <item quantity="one">%d kontakt tilpasset</item>
@@ -218,6 +222,9 @@
     <string name="contact_context_menu_remove">Fjern</string>
     <string name="contact_picker_options">Indstillinger</string>
     <string name="back">Tilbage</string>
+    <string name="monster_settings_title" comment="Title of MonsterDialer's in-app settings screen.">Indstillinger</string>
+    <string name="monster_settings_hint" comment="Footer prompt for MonsterDialer's settings screen.">Vælg en indstilling.</string>
+    <string name="settings_section_general" comment="Section heading for standard dialer settings.">Telefon</string>
     <string name="contact_defaults_menu_mode">Standardfigur</string>
     <string name="contact_defaults_menu_characters">Figurliste</string>
     <string name="contact_defaults_menu_pool">Tilfældighedspulje</string>
