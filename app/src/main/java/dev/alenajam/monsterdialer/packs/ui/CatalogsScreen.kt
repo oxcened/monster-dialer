@@ -5,6 +5,7 @@ import android.content.ClipboardManager
 import android.content.Context
 import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.Row
@@ -107,59 +108,61 @@ fun ColumnScope.CatalogsScreen(viewModel: CatalogsViewModel = hiltViewModel()) {
             onDismiss = { if (!state.isAddingCatalog) addDialogOpen = false },
         )
     }
-    pendingRemoval?.let { url ->
-        RetroConfirmationDialog(
-            title = stringResource(R.string.catalog_remove_confirmation_title),
-            noLabel = stringResource(R.string.cancel),
-            yesLabel = stringResource(R.string.remove),
-            fontFamily = CatalogPixelFont,
-            onConfirm = { viewModel.remove(url); pendingRemoval = null },
-            onDismissRequest = { pendingRemoval = null },
-        )
-    }
-    pendingInstall?.let { pack ->
-        RetroConfirmationDialog(
-            title = stringResource(R.string.catalog_install_confirmation_title),
-            message = stringResource(R.string.catalog_install_confirmation_message, pack.name, pack.license),
-            noLabel = stringResource(R.string.cancel),
-            yesLabel = stringResource(R.string.import_pack),
-            fontFamily = CatalogPixelFont,
-            confirmEnabled = state.installingPackId == null,
-            confirmLoading = state.installingPackId == pack.id,
-            onConfirm = { viewModel.install(pack) },
-            onDismissRequest = { if (state.installingPackId == null) pendingInstall = null },
-        )
-    }
-
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .verticalScroll(rememberScrollState())
-            .padding(horizontal = 16.dp, vertical = 12.dp),
-        verticalArrangement = Arrangement.spacedBy(12.dp),
-    ) {
-        Text(stringResource(R.string.catalogs_description))
-        Button(onClick = { addDialogOpen = true }) { Text(stringResource(R.string.add_catalog)) }
-        if (state.sources.isEmpty()) {
-            Text(stringResource(R.string.catalogs_empty))
+    Box(modifier = Modifier.fillMaxSize()) {
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .verticalScroll(rememberScrollState())
+                .padding(horizontal = 16.dp, vertical = 12.dp),
+            verticalArrangement = Arrangement.spacedBy(12.dp),
+        ) {
+            Text(stringResource(R.string.catalogs_description))
+            Button(onClick = { addDialogOpen = true }) { Text(stringResource(R.string.add_catalog)) }
+            if (state.sources.isEmpty()) {
+                Text(stringResource(R.string.catalogs_empty))
+            }
+            state.sources.forEach { source ->
+                val load = state.loads[source.url]
+                CatalogSourceContent(
+                    sourceUrl = source.url,
+                    load = load,
+                    selectedPack = selectedPack,
+                    installingPackId = state.installingPackId,
+                    onRefresh = { viewModel.refresh(source.url) },
+                    onRemove = { pendingRemoval = source.url },
+                    onCopy = {
+                        context.copyToClipboard(catalogUrlLabel, source.url)
+                        Toast.makeText(context, R.string.catalog_url_copied, Toast.LENGTH_SHORT).show()
+                    },
+                    onInstall = {
+                        selectedPack = it
+                        pendingInstall = it
+                    },
+                )
+            }
         }
-        state.sources.forEach { source ->
-            val load = state.loads[source.url]
-            CatalogSourceContent(
-                sourceUrl = source.url,
-                load = load,
-                selectedPack = selectedPack,
-                installingPackId = state.installingPackId,
-                onRefresh = { viewModel.refresh(source.url) },
-                onRemove = { pendingRemoval = source.url },
-                onCopy = {
-                    context.copyToClipboard(catalogUrlLabel, source.url)
-                    Toast.makeText(context, R.string.catalog_url_copied, Toast.LENGTH_SHORT).show()
-                },
-                onInstall = {
-                    selectedPack = it
-                    pendingInstall = it
-                },
+
+        pendingRemoval?.let { url ->
+            RetroConfirmationDialog(
+                title = stringResource(R.string.catalog_remove_confirmation_title),
+                noLabel = stringResource(R.string.cancel),
+                yesLabel = stringResource(R.string.remove),
+                fontFamily = CatalogPixelFont,
+                onConfirm = { viewModel.remove(url); pendingRemoval = null },
+                onDismissRequest = { pendingRemoval = null },
+            )
+        }
+        pendingInstall?.let { pack ->
+            RetroConfirmationDialog(
+                title = stringResource(R.string.catalog_install_confirmation_title),
+                message = stringResource(R.string.catalog_install_confirmation_message, pack.name, pack.license),
+                noLabel = stringResource(R.string.cancel),
+                yesLabel = stringResource(R.string.import_pack),
+                fontFamily = CatalogPixelFont,
+                confirmEnabled = state.installingPackId == null,
+                confirmLoading = state.installingPackId == pack.id,
+                onConfirm = { viewModel.install(pack) },
+                onDismissRequest = { if (state.installingPackId == null) pendingInstall = null },
             )
         }
     }
