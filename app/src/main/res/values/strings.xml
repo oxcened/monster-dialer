@@ -604,8 +604,8 @@ Reason: %1$s</string>
     <string name="online_profile_more_options">More profile options</string>
     <string name="online_profile_sign_in_google">Sign in with Google</string>
     <string name="call" comment="Menu action that calls the selected phone number.">Call</string>
-    <string name="call_detail_options_key" comment="Game Boy A-button prompt for the call-history options action.">A</string>
-    <string name="call_detail_back_key" comment="Game Boy B-button prompt for returning from call history.">B</string>
+    <string name="call_detail_options_key" translatable="false" comment="Game Boy A-button prompt for the call-history options action.">A</string>
+    <string name="call_detail_back_key" translatable="false" comment="Game Boy B-button prompt for returning from call history.">B</string>
     <string name="favorite_phone_type_number" comment="Favorite contact summary. %1$s is the phone type and %2$s is the phone number.">%1$s • %2$s</string>
     <string name="call_log_just_now" comment="Call-log time shown for calls less than one minute old.">Just now</string>
     <string name="new_contact_short" comment="Compact command for creating a contact.">New</string>
