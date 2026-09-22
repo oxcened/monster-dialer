@@ -315,9 +315,6 @@ private fun RetroSearchMatches(
     modifier: Modifier = Modifier,
 ) {
     LazyColumn(modifier = modifier.fillMaxWidth(), horizontalAlignment = Alignment.CenterHorizontally) {
-        if (contacts.isNotEmpty()) {
-            item { Text(stringResource(R.string.dial_search_results), fontFamily = DialSearchFont, fontSize = 16.sp, color = DialSearchInk, modifier = Modifier.fillMaxWidth().padding(start = 24.dp, top = 6.dp)) }
-        }
         items(contacts, key = { it.dataId }) { contact ->
             RetroSelectableRow(
                 selected = selectedId == contact.dataId,
@@ -325,7 +322,7 @@ private fun RetroSearchMatches(
                 modifier = Modifier.padding(horizontal = 14.dp),
             ) {
                 Column(modifier = Modifier.weight(1f).padding(vertical = 4.dp)) {
-                    Text(contact.name.ifBlank { contact.number }, fontFamily = DialSearchFont, fontSize = 17.sp, color = DialSearchInk, maxLines = 1, overflow = TextOverflow.Ellipsis)
+                    Text(contact.name.ifBlank { contact.number }.uppercase(), fontFamily = DialSearchFont, fontSize = 17.sp, color = DialSearchInk, maxLines = 1, overflow = TextOverflow.Ellipsis)
                     if (contact.name.isNotBlank()) Text(contact.number, fontFamily = DialSearchFont, fontSize = 13.sp, color = DialSearchInk.copy(alpha = .72f), maxLines = 1)
                 }
             }
