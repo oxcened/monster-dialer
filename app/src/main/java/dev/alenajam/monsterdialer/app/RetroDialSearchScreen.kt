@@ -30,6 +30,7 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
@@ -70,6 +71,8 @@ internal fun RetroDialSearchScreen(
     onOpenHistory: (List<Int>) -> Unit,
     onDialpadCallStarted: () -> Unit,
     onNavigateBack: () -> Unit,
+    showDialpad: Boolean = true,
+    searchByName: Boolean = false,
     viewModel: SearchContactsViewModel = hiltViewModel(),
 ) {
     var query by rememberSaveable(prefilledNumber) { mutableStateOf(prefilledNumber) }
@@ -80,6 +83,7 @@ internal fun RetroDialSearchScreen(
     var showModifiers by remember { mutableStateOf(false) }
     var pendingNumber by remember { mutableStateOf<String?>(null) }
     var callAccounts by remember { mutableStateOf<List<CallAccount>?>(null) }
+    val searchFocusRequester = remember { FocusRequester() }
     val context = LocalContext.current
     val tonePlayer = remember(context) { DialpadTonePlayer(context) }
     DisposableEffect(tonePlayer) { onDispose(tonePlayer::release) }
@@ -100,9 +104,16 @@ internal fun RetroDialSearchScreen(
         }
     }
 
+    fun searchContacts(value: String) {
+        if (searchByName && value.isNotBlank()) viewModel.searchContacts(value)
+        else viewModel.searchContactsByDialpad(value)
+    }
+
     fun updateQuery(value: String) {
         query = value
-        if (hasPermission) viewModel.searchContactsByDialpad(value)
+        if (hasPermission) {
+            searchContacts(value)
+        }
     }
 
     fun makeCall(number: String) {
@@ -121,7 +132,11 @@ internal fun RetroDialSearchScreen(
     }
 
     LaunchedEffect(hasPermission, query) {
-        if (hasPermission) viewModel.searchContactsByDialpad(query)
+        if (hasPermission) searchContacts(query)
+    }
+
+    LaunchedEffect(Unit) {
+        searchFocusRequester.requestFocus()
     }
 
     callAccounts?.let { accounts ->
@@ -148,9 +163,12 @@ internal fun RetroDialSearchScreen(
             .windowInsetsPadding(WindowInsets.safeDrawing),
     ) {
         RetroSearchBar(
-            label = stringResource(R.string.dial_search_number_prefix),
+            label = stringResource(
+                if (searchByName) R.string.contact_picker_search_name_prefix
+                else R.string.dial_search_number_prefix,
+            ),
             query = query,
-            focusRequester = remember { androidx.compose.ui.focus.FocusRequester() },
+            focusRequester = searchFocusRequester,
             onQueryChanged = ::updateQuery,
             modifier = Modifier.padding(horizontal = RetroScreenHorizontalPadding, vertical = 8.dp),
         )
@@ -158,7 +176,8 @@ internal fun RetroDialSearchScreen(
         if (!hasPermission) {
             androidx.compose.foundation.layout.Box(modifier = Modifier.weight(1f)) {
                 RetroPermissionPrompt(onPermissionGranted = {
-                    viewModel.handleRuntimePermissionGranted(query)
+                    if (searchByName && query.isNotBlank()) viewModel.handleTextSearchPermissionGranted(query)
+                    else viewModel.handleRuntimePermissionGranted(query)
                 })
             }
         } else {
@@ -174,33 +193,39 @@ internal fun RetroDialSearchScreen(
             )
         }
 
-        RetroDialpad(
-            onDigit = { updateQuery(query + it) },
-            onDigitPress = tonePlayer::start,
-            onDigitRelease = tonePlayer::stop,
-            onBackspace = { clear ->
-                if (clear) updateQuery("")
-                else if (query.isNotEmpty()) updateQuery(query.dropLast(1))
-            },
-            onMore = { showModifiers = true },
-            moreEnabled = query.isNotEmpty(),
-            modifier = Modifier.padding(horizontal = RetroScreenHorizontalPadding),
-        )
+        if (showDialpad) {
+            RetroDialpad(
+                onDigit = { updateQuery(query + it) },
+                onDigitPress = tonePlayer::start,
+                onDigitRelease = tonePlayer::stop,
+                onBackspace = { clear ->
+                    if (clear) updateQuery("")
+                    else if (query.isNotEmpty()) updateQuery(query.dropLast(1))
+                },
+                onMore = { showModifiers = true },
+                moreEnabled = query.isNotEmpty(),
+                modifier = Modifier.padding(horizontal = RetroScreenHorizontalPadding),
+            )
+        }
 
         RetroFooter(
             animationKey = "dial-search:$query",
-            leftAction = RetroFooterAction(
-                key = stringResource(R.string.retro_key_a),
-                label = stringResource(R.string.call),
-                enabled = true,
-                onClick = {
-                    if (query.isBlank()) {
-                        viewModel.getLastOutgoingNumber()?.let(::updateQuery)
-                    } else {
-                        makeCall(query)
-                    }
-                },
-            ),
+            leftAction = if (showDialpad) {
+                RetroFooterAction(
+                    key = stringResource(R.string.retro_key_a),
+                    label = stringResource(R.string.call),
+                    enabled = true,
+                    onClick = {
+                        if (query.isBlank()) {
+                            viewModel.getLastOutgoingNumber()?.let(::updateQuery)
+                        } else {
+                            makeCall(query)
+                        }
+                    },
+                )
+            } else {
+                null
+            },
             onBack = onNavigateBack,
             backKey = stringResource(R.string.retro_key_b),
             backLabel = stringResource(R.string.customized_contacts_back_action),

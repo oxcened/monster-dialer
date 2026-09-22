@@ -8,7 +8,6 @@ import android.graphics.BitmapFactory
 import android.widget.Toast
 import kotlinx.coroutines.launch
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -109,7 +108,7 @@ fun ColumnScope.CharacterPackSettingsContent(
         modifier = Modifier.fillMaxSize(),
         color = Color.White,
     ) {
-        Column(modifier = Modifier.fillMaxSize()) {
+        Box(modifier = Modifier.fillMaxSize()) {
     if (showImportUi) {
         CharacterPackImportHandler(viewModel)
     }
@@ -147,9 +146,17 @@ fun ColumnScope.CharacterPackSettingsContent(
             viewModel.dismissMessage()
         }
     }
-    
-    if (packs.isEmpty()) {
-        Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+
+    Column(modifier = Modifier.fillMaxSize()) {
+        PackOptionsButton(onClick = { optionsOpen = true })
+
+        if (packs.isEmpty()) {
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .weight(1f),
+            contentAlignment = Alignment.Center,
+        ) {
             Column(
                 modifier = Modifier.fillMaxWidth().padding(horizontal = 24.dp),
                 horizontalAlignment = Alignment.CenterHorizontally,
@@ -168,16 +175,6 @@ fun ColumnScope.CharacterPackSettingsContent(
                         color = MaterialTheme.colorScheme.onSurfaceVariant
                     )
                 }
-                if (canCreatePack) {
-                    Column(
-                        horizontalAlignment = Alignment.CenterHorizontally,
-                        verticalArrangement = Arrangement.spacedBy(4.dp)
-                    ) {
-                        PackOptionsButton(onClick = { optionsOpen = true })
-                    }
-                } else {
-                    PackOptionsButton(onClick = { optionsOpen = true })
-                }
                 Text(
                     stringResource(R.string.pack_import_license_notice),
                     style = MaterialTheme.typography.bodySmall,
@@ -186,9 +183,8 @@ fun ColumnScope.CharacterPackSettingsContent(
                 )
             }
         }
-    } else {
+        } else {
         Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
-            PackOptionsButton(onClick = { optionsOpen = true })
             Column {
                 packs.forEach { pack ->
                     val preview = viewModel.getPreviewCharacter(pack.id, pack.name)
@@ -259,17 +255,14 @@ fun ColumnScope.CharacterPackSettingsContent(
             }
         }
     }
+    }
 
     selectedPack?.let { pack ->
-        Box(
-            modifier = Modifier.fillMaxSize().clickable { selectedPack = null },
-            contentAlignment = Alignment.Center,
-        ) {
-            RetroContextMenuOverlay(
-                modifier = Modifier.fillMaxWidth(0.82f),
-                fontFamily = PackPixelFont,
-                onDismissRequest = { selectedPack = null },
-                items = listOf(
+        RetroContextMenuOverlay(
+            modifier = Modifier.fillMaxWidth(0.82f),
+            fontFamily = PackPixelFont,
+            onDismissRequest = { selectedPack = null },
+            items = listOf(
                     RetroContextMenuItem(stringResource(R.string.pack_details_action)) {
                         selectedPack = null
                         detailsPack = pack
@@ -292,21 +285,16 @@ fun ColumnScope.CharacterPackSettingsContent(
                         pendingDeletion = pack
                     },
                     RetroContextMenuItem.cancel(stringResource(R.string.cancel), onClick = { selectedPack = null }),
-                ),
-            )
-        }
+            ),
+        )
     }
 
     if (optionsOpen) {
-        Box(
-            modifier = Modifier.fillMaxSize().clickable { optionsOpen = false },
-            contentAlignment = Alignment.Center,
-        ) {
-            RetroContextMenuOverlay(
-                modifier = Modifier.fillMaxWidth(0.82f),
-                fontFamily = PackPixelFont,
-                onDismissRequest = { optionsOpen = false },
-                items = buildList {
+        RetroContextMenuOverlay(
+            modifier = Modifier.fillMaxWidth(0.82f),
+            fontFamily = PackPixelFont,
+            onDismissRequest = { optionsOpen = false },
+            items = buildList {
                     add(
                         RetroContextMenuItem(stringResource(R.string.import_action)) {
                             optionsOpen = false
@@ -328,9 +316,8 @@ fun ColumnScope.CharacterPackSettingsContent(
                         },
                     )
                     add(RetroContextMenuItem.cancel(stringResource(R.string.cancel), onClick = { optionsOpen = false }))
-                },
-            )
-        }
+            },
+        )
     }
 
         }
