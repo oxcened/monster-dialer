@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.layout.WindowInsets
@@ -405,16 +406,28 @@ private fun RetroDialKey(
 ) {
     val interactionSource = remember { MutableInteractionSource() }
     val isPressed by interactionSource.collectIsPressedAsState()
+    var handledOnPress by remember { mutableStateOf(false) }
     LaunchedEffect(isPressed) {
-        if (isPressed) onPress() else onRelease()
+        if (isPressed) {
+            onPress()
+            if (onLongClick == null) {
+                handledOnPress = true
+                onClick()
+            }
+        } else {
+            onRelease()
+        }
     }
     Box(
         modifier = modifier
-            .padding(vertical = 6.dp)
+            .height(48.dp)
             .combinedClickable(
                 interactionSource = interactionSource,
                 enabled = enabled,
-                onClick = onClick,
+                onClick = {
+                    if (!handledOnPress || onLongClick != null) onClick()
+                    handledOnPress = false
+                },
                 onLongClick = onLongClick,
             ),
         contentAlignment = Alignment.Center,

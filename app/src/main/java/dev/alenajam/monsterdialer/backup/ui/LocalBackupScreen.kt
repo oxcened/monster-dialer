@@ -3,6 +3,7 @@ package dev.alenajam.monsterdialer.backup.ui
 import android.app.Activity
 import android.net.Uri
 import android.widget.Toast
+import java.util.Locale
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.Arrangement
@@ -11,6 +12,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Text
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -18,19 +20,21 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dev.alenajam.monsterdialer.R
-import dev.alenajam.monsterdialer.app.ui.RetroActionButton
 import dev.alenajam.monsterdialer.app.ui.RetroConfirmationDialog
+import dev.alenajam.monsterdialer.app.ui.RetroSelectableRow
 import dev.alenajam.monsterdialer.backup.data.LocalBackupRepository
 import javax.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -67,20 +71,27 @@ fun LocalBackupScreen(viewModel: LocalBackupViewModel = hiltViewModel()) {
         }
     }
     Box(Modifier.fillMaxSize()) {
-        Column(Modifier.fillMaxSize().padding(24.dp), verticalArrangement = Arrangement.spacedBy(18.dp)) {
-            Text(stringResource(R.string.local_backup_description))
-            RetroActionButton(
-                label = stringResource(R.string.local_backup_export),
-                onClick = { exportLauncher.launch(backupFileName) },
-            )
-            RetroActionButton(
-                label = stringResource(R.string.local_backup_import),
-                onClick = { importLauncher.launch(arrayOf("*/*")) },
-            )
+        Column(
+            Modifier.fillMaxSize().padding(horizontal = 16.dp, vertical = 12.dp),
+            verticalArrangement = Arrangement.spacedBy(6.dp),
+        ) {
+            Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
+                Text(stringResource(R.string.local_backup_description))
+                HorizontalDivider(thickness = 1.dp, color = Color(0xFF202020))
+                Column {
+                    RetroSelectableRow(selected = false, onClick = { exportLauncher.launch(backupFileName) }) {
+                        Text(stringResource(R.string.local_backup_export).uppercase(Locale.ROOT), fontFamily = FontFamily(Font(R.font.ui_pixel_font)), fontSize = 18.sp, modifier = Modifier.padding(vertical = 2.dp, horizontal = 6.dp))
+                    }
+                    RetroSelectableRow(selected = false, onClick = { importLauncher.launch(arrayOf("*/*")) }) {
+                        Text(stringResource(R.string.local_backup_import).uppercase(Locale.ROOT), fontFamily = FontFamily(Font(R.font.ui_pixel_font)), fontSize = 18.sp, modifier = Modifier.padding(vertical = 2.dp, horizontal = 6.dp))
+                    }
+                }
+            }
         }
         pendingImport?.let { uri ->
             RetroConfirmationDialog(
                 title = stringResource(R.string.local_backup_import_confirmation_title),
+                message = stringResource(R.string.local_backup_import_confirmation_message),
                 noLabel = stringResource(R.string.cancel), yesLabel = stringResource(R.string.local_backup_import),
                 fontFamily = FontFamily(Font(R.font.ui_pixel_font)), onDismissRequest = { pendingImport = null },
                 onConfirm = {
