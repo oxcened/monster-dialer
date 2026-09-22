@@ -354,12 +354,22 @@ private fun Modifier.retroDtmfKey(
 ): Modifier {
     val interactionSource = remember { MutableInteractionSource() }
     val isPressed by interactionSource.collectIsPressedAsState()
+    var handledOnPress by remember { mutableStateOf(false) }
     LaunchedEffect(isPressed) {
-        if (isPressed) onDigitPress(digit) else onDigitRelease()
+        if (isPressed) {
+            handledOnPress = true
+            onDigit(digit)
+            onDigitPress(digit)
+        } else {
+            onDigitRelease()
+        }
     }
     return combinedClickable(
         interactionSource = interactionSource,
-        onClick = { onDigit(digit) },
+        onClick = {
+            if (!handledOnPress) onDigit(digit)
+            handledOnPress = false
+        },
     )
 }
 
