@@ -189,6 +189,8 @@ private fun CatalogSourceContent(
     onCopy: () -> Unit,
     onInstall: (RemotePackCatalogPack) -> Unit,
 ) {
+    val isLoading = load == null || load == CatalogLoad.Loading
+    val hasLoadedPacks = (load as? CatalogLoad.Content)?.catalog?.packs?.isNotEmpty() == true
     RetroMenuWindow {
         Column(verticalArrangement = Arrangement.spacedBy(3.dp)) {
             when (load) {
@@ -208,7 +210,9 @@ private fun CatalogSourceContent(
                     Text(stringResource(R.string.remove).uppercase(Locale.ROOT), fontFamily = CatalogPixelFont, fontSize = 18.sp, modifier = Modifier.padding(vertical = 2.dp, horizontal = 6.dp))
                 }
             }
-            HorizontalDivider(thickness = 1.dp, color = Color(0xFF202020))
+            if (isLoading || hasLoadedPacks) {
+                HorizontalDivider(thickness = 1.dp, color = Color(0xFF202020))
+            }
             when (load) {
                 null, CatalogLoad.Loading -> CircularProgressIndicator(
                     modifier = Modifier.align(Alignment.CenterHorizontally).padding(vertical = 8.dp).size(20.dp),
