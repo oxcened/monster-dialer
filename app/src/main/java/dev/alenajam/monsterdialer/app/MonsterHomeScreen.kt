@@ -126,7 +126,6 @@ internal fun MonsterHomeScreen(
             profileBackAction = profileBackAction,
             onSearch = { searchActive = true },
             onDial = { callbacks.onOpenDialpad("") },
-            onBack = { profileBackAction?.invoke() },
         )
     }
 
@@ -164,7 +163,6 @@ private fun MonsterHomeActions(
     profileBackAction: (() -> Unit)?,
     onSearch: () -> Unit,
     onDial: () -> Unit,
-    onBack: () -> Unit,
 ) {
     Row(
         modifier = Modifier
@@ -176,34 +174,20 @@ private fun MonsterHomeActions(
             ),
         verticalAlignment = Alignment.CenterVertically,
     ) {
-        if (currentTab != MonsterHomeTab.PROFILE) {
-            Box(modifier = Modifier.weight(1f)) {
-                RetroActionButton(
-                    key = stringResource(R.string.retro_key_a),
-                    label = stringResource(R.string.contact_picker_search),
-                    onClick = onSearch,
-                )
-            }
+        Box(modifier = Modifier.weight(1f)) {
             RetroActionButton(
-                key = stringResource(R.string.retro_key_b),
-                label = stringResource(R.string.retro_action_dial_label),
-                onClick = onDial,
-            )
-        } else {
-            Box(modifier = Modifier.weight(1f)) {
-                if (profileBackAction != null) {
-                    RetroActionButton(
-                        key = stringResource(R.string.retro_key_a),
-                        label = stringResource(R.string.customized_contacts_back_action),
-                        onClick = onBack,
-                    )
-                }
-            }
-            RetroActionButton(
-                key = stringResource(R.string.retro_key_b),
-                label = stringResource(R.string.retro_action_dial_label),
-                onClick = onDial,
+                key = stringResource(R.string.retro_key_a),
+                label = stringResource(R.string.contact_picker_search),
+                onClick = onSearch,
             )
         }
+        RetroActionButton(
+            key = stringResource(R.string.retro_key_b),
+            label = stringResource(
+                if (profileBackAction != null) R.string.customized_contacts_back_action
+                else R.string.retro_action_dial_label,
+            ),
+            onClick = profileBackAction ?: onDial,
+        )
     }
 }
