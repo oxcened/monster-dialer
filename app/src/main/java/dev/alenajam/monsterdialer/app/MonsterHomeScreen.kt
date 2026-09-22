@@ -10,7 +10,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -18,8 +17,6 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.focus.FocusRequester
-import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
@@ -30,7 +27,6 @@ import dev.alenajam.monsterdialer.app.ui.RetroContextMenuItem
 import dev.alenajam.monsterdialer.app.ui.RetroContextMenuOverlay
 import dev.alenajam.monsterdialer.app.ui.RetroHomeTabs
 import dev.alenajam.monsterdialer.app.ui.MonsterHomeTab
-import dev.alenajam.monsterdialer.app.ui.RetroSearchBar
 import dev.alenajam.monsterdialer.app.ui.RetroScreenFooterVerticalPadding
 import dev.alenajam.monsterdialer.app.ui.RetroScreenHorizontalPadding
 import dev.alenajam.monsterdialer.calls.ui.RetroCallsScreen
@@ -55,18 +51,23 @@ internal fun MonsterHomeScreen(
 ) {
     var currentTab by rememberSaveable { mutableStateOf(MonsterHomeTab.CALLS) }
     var searchActive by rememberSaveable { mutableStateOf(false) }
-    var searchQuery by rememberSaveable { mutableStateOf("") }
     var menuOpen by remember { mutableStateOf(false) }
     var profileBackAction by remember { mutableStateOf<(() -> Unit)?>(null) }
 
     BackHandler(enabled = searchActive || profileBackAction != null) {
-        when {
-            searchActive -> {
-                searchActive = false
-                searchQuery = ""
-            }
-            else -> profileBackAction?.invoke()
-        }
+        if (searchActive) searchActive = false else profileBackAction?.invoke()
+    }
+
+    if (searchActive) {
+        RetroDialSearchScreen(
+            prefilledNumber = "",
+            onOpenHistory = callbacks.onOpenHistory,
+            onDialpadCallStarted = { searchActive = false },
+            onNavigateBack = { searchActive = false },
+            showDialpad = false,
+            searchByName = true,
+        )
+        return
     }
 
     Column(modifier = Modifier.fillMaxSize()) {
@@ -78,40 +79,27 @@ internal fun MonsterHomeScreen(
             onProfile = { currentTab = MonsterHomeTab.PROFILE },
         )
 
-        if (currentTab != MonsterHomeTab.PROFILE && searchActive) {
-            MonsterSearchControl(
-                active = searchActive,
-                query = searchQuery,
-                onQueryChanged = { searchQuery = it },
-            )
-        }
-
         Box(modifier = Modifier.weight(1f)) {
-            when {
-                searchActive -> RetroContactsScreen(
-                    searchQuery = searchQuery,
-                    onOpenSettingsSubpage = callbacks.onOpenSettingsSubpage,
-                    characterSettingsViewModel = contactCharacterSettingsViewModel,
-                )
-                currentTab == MonsterHomeTab.FAVORITES -> RetroCallsScreen(
+            when (currentTab) {
+                MonsterHomeTab.FAVORITES -> RetroCallsScreen(
                     onOpenHistory = callbacks.onOpenHistory,
                     onOpenContacts = { currentTab = MonsterHomeTab.CONTACTS },
                     onAddFavorite = callbacks.onAddFavorite,
                     onEditNumberBeforeCall = callbacks.onOpenDialpad,
                     favoritesOnly = true,
                 )
-                currentTab == MonsterHomeTab.CALLS -> RetroCallsScreen(
+                MonsterHomeTab.CALLS -> RetroCallsScreen(
                     onOpenHistory = callbacks.onOpenHistory,
                     onOpenContacts = { currentTab = MonsterHomeTab.CONTACTS },
                     onAddFavorite = callbacks.onAddFavorite,
                     onEditNumberBeforeCall = callbacks.onOpenDialpad,
                 )
-                currentTab == MonsterHomeTab.CONTACTS -> RetroContactsScreen(
-                    searchQuery = searchQuery,
+                MonsterHomeTab.CONTACTS -> RetroContactsScreen(
+                    searchQuery = "",
                     onOpenSettingsSubpage = callbacks.onOpenSettingsSubpage,
                     characterSettingsViewModel = contactCharacterSettingsViewModel,
                 )
-                else -> CharactersHomeScreen(
+                MonsterHomeTab.PROFILE -> CharactersHomeScreen(
                     onOpenSettings = callbacks.onOpenSettings,
                     onOpenSubpage = { pageId, payload ->
                         val destination = if (pageId == CharacterSettingsPage.ContactCharacters.id) {
@@ -135,18 +123,10 @@ internal fun MonsterHomeScreen(
 
         MonsterHomeActions(
             currentTab = currentTab,
-            searchActive = searchActive,
             profileBackAction = profileBackAction,
             onSearch = { searchActive = true },
             onDial = { callbacks.onOpenDialpad("") },
-            onBack = {
-                if (searchActive) {
-                    searchActive = false
-                    searchQuery = ""
-                } else {
-                    profileBackAction?.invoke()
-                }
-            },
+            onBack = { profileBackAction?.invoke() },
         )
     }
 
@@ -179,34 +159,8 @@ internal fun MonsterHomeScreen(
 }
 
 @Composable
-private fun MonsterSearchControl(
-    active: Boolean,
-    query: String,
-    onQueryChanged: (String) -> Unit,
-) {
-    val focusRequester = remember { FocusRequester() }
-    val keyboardController = LocalSoftwareKeyboardController.current
-    LaunchedEffect(active) {
-        if (active) {
-            focusRequester.requestFocus()
-            keyboardController?.show()
-        } else {
-            keyboardController?.hide()
-        }
-    }
-    RetroSearchBar(
-        label = stringResource(R.string.contact_picker_search_name_prefix),
-        query = query,
-        focusRequester = focusRequester,
-        onQueryChanged = onQueryChanged,
-        modifier = Modifier.padding(horizontal = 16.dp, vertical = 4.dp),
-    )
-}
-
-@Composable
 private fun MonsterHomeActions(
     currentTab: MonsterHomeTab,
-    searchActive: Boolean,
     profileBackAction: (() -> Unit)?,
     onSearch: () -> Unit,
     onDial: () -> Unit,
@@ -224,18 +178,16 @@ private fun MonsterHomeActions(
     ) {
         if (currentTab != MonsterHomeTab.PROFILE) {
             Box(modifier = Modifier.weight(1f)) {
-                if (!searchActive) {
-                    RetroActionButton(
-                        key = stringResource(R.string.retro_key_a),
-                        label = stringResource(R.string.contact_picker_search),
-                        onClick = onSearch,
-                    )
-                }
+                RetroActionButton(
+                    key = stringResource(R.string.retro_key_a),
+                    label = stringResource(R.string.contact_picker_search),
+                    onClick = onSearch,
+                )
             }
             RetroActionButton(
                 key = stringResource(R.string.retro_key_b),
-                label = stringResource(if (searchActive) R.string.customized_contacts_back_action else R.string.retro_action_dial_label),
-                onClick = if (searchActive) onBack else onDial,
+                label = stringResource(R.string.retro_action_dial_label),
+                onClick = onDial,
             )
         } else {
             Box(modifier = Modifier.weight(1f)) {
