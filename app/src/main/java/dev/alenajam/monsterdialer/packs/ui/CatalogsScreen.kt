@@ -4,11 +4,11 @@ import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context
 import android.widget.Toast
+import java.util.Locale
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -16,10 +16,11 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.AlertDialog
-import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -27,17 +28,21 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import dev.alenajam.monsterdialer.R
 import dev.alenajam.monsterdialer.app.ui.RetroConfirmationDialog
+import dev.alenajam.monsterdialer.app.ui.RetroMenuWindow
 import dev.alenajam.monsterdialer.app.ui.RetroSelectableRow
 import dev.alenajam.monsterdialer.packs.data.RemotePackCatalogPack
 
@@ -114,17 +119,23 @@ fun ColumnScope.CatalogsScreen(viewModel: CatalogsViewModel = hiltViewModel()) {
                 .fillMaxSize()
                 .verticalScroll(rememberScrollState())
                 .padding(horizontal = 16.dp, vertical = 12.dp),
-            verticalArrangement = Arrangement.spacedBy(12.dp),
+            verticalArrangement = Arrangement.spacedBy(6.dp),
         ) {
-            Text(stringResource(R.string.catalogs_description))
-            Button(onClick = { addDialogOpen = true }) { Text(stringResource(R.string.add_catalog)) }
+            RetroMenuWindow {
+                Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
+                    Text(stringResource(R.string.catalogs_description))
+                    HorizontalDivider(thickness = 1.dp, color = Color(0xFF202020))
+                    RetroSelectableRow(selected = true, onClick = { addDialogOpen = true }) {
+                        Text(stringResource(R.string.add_catalog).uppercase(Locale.ROOT), fontFamily = CatalogPixelFont, fontSize = 18.sp, modifier = Modifier.padding(vertical = 2.dp, horizontal = 6.dp))
+                    }
+                }
+            }
             if (state.sources.isEmpty()) {
-                Text(stringResource(R.string.catalogs_empty))
+                RetroMenuWindow { Text(stringResource(R.string.catalogs_empty)) }
             }
             state.sources.forEach { source ->
                 val load = state.loads[source.url]
                 CatalogSourceContent(
-                    sourceUrl = source.url,
                     load = load,
                     selectedPack = selectedPack,
                     installingPackId = state.installingPackId,
@@ -170,7 +181,6 @@ fun ColumnScope.CatalogsScreen(viewModel: CatalogsViewModel = hiltViewModel()) {
 
 @Composable
 private fun CatalogSourceContent(
-    sourceUrl: String,
     load: CatalogLoad?,
     selectedPack: RemotePackCatalogPack?,
     installingPackId: String?,
@@ -179,40 +189,47 @@ private fun CatalogSourceContent(
     onCopy: () -> Unit,
     onInstall: (RemotePackCatalogPack) -> Unit,
 ) {
-    Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-        ) {
-            Text(
-                sourceUrl,
-                modifier = Modifier.weight(1f),
-                maxLines = 1,
-                overflow = TextOverflow.Ellipsis,
-            )
-        }
-        Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-            TextButton(onClick = onCopy) { Text(stringResource(R.string.copy_catalog_url)) }
-            TextButton(onClick = onRefresh) { Text(stringResource(R.string.refresh_catalog)) }
-            TextButton(onClick = onRemove) { Text(stringResource(R.string.remove)) }
-        }
-        when (load) {
-            null, CatalogLoad.Loading -> Text(stringResource(R.string.catalog_loading))
-            CatalogLoad.Failed -> Text(stringResource(R.string.catalog_load_failed))
-            is CatalogLoad.Content -> {
-                Text(load.catalog.name)
-                load.catalog.packs.forEach { pack ->
+    RetroMenuWindow {
+        Column(verticalArrangement = Arrangement.spacedBy(3.dp)) {
+            when (load) {
+                null, CatalogLoad.Loading -> Text(stringResource(R.string.catalog_loading))
+                CatalogLoad.Failed -> Text(stringResource(R.string.catalog_load_failed))
+                is CatalogLoad.Content -> Text(load.catalog.name, style = MaterialTheme.typography.titleMedium)
+            }
+            HorizontalDivider(thickness = 1.dp, color = Color(0xFF202020))
+            Column {
+                RetroSelectableRow(selected = false, onClick = onCopy) {
+                    Text(stringResource(R.string.copy_catalog_url).uppercase(Locale.ROOT), fontFamily = CatalogPixelFont, fontSize = 18.sp, modifier = Modifier.padding(vertical = 2.dp, horizontal = 6.dp))
+                }
+                RetroSelectableRow(selected = false, onClick = onRefresh) {
+                    Text(stringResource(R.string.refresh_catalog).uppercase(Locale.ROOT), fontFamily = CatalogPixelFont, fontSize = 18.sp, modifier = Modifier.padding(vertical = 2.dp, horizontal = 6.dp))
+                }
+                RetroSelectableRow(selected = false, onClick = onRemove) {
+                    Text(stringResource(R.string.remove).uppercase(Locale.ROOT), fontFamily = CatalogPixelFont, fontSize = 18.sp, modifier = Modifier.padding(vertical = 2.dp, horizontal = 6.dp))
+                }
+            }
+            HorizontalDivider(thickness = 1.dp, color = Color(0xFF202020))
+            when (load) {
+                null, CatalogLoad.Loading -> CircularProgressIndicator(
+                    modifier = Modifier.align(Alignment.CenterHorizontally).padding(vertical = 8.dp).size(20.dp),
+                    strokeWidth = 2.dp,
+                )
+                CatalogLoad.Failed -> Unit
+                is CatalogLoad.Content -> load.catalog.packs.forEachIndexed { index, pack ->
+                    if (index > 0) HorizontalDivider(thickness = 1.dp, color = Color(0xFF202020))
                     RetroSelectableRow(
                         selected = selectedPack == pack,
                         enabled = installingPackId == null,
                         onClick = { onInstall(pack) },
                     ) {
                         Column(modifier = Modifier.fillMaxWidth().padding(8.dp)) {
-                            Text(pack.name)
+                            Text(pack.name.uppercase(Locale.ROOT), fontFamily = CatalogPixelFont, fontSize = 18.sp)
                             val attribution = pack.creator?.takeIf { it.isNotBlank() }
                                 ?: load.catalog.publisher?.takeIf { it.isNotBlank() }
                             Text(
                                 attribution?.let { stringResource(R.string.catalog_pack_metadata, it, pack.version) }
                                     ?: pack.version,
+                                style = MaterialTheme.typography.bodySmall,
                             )
                         }
                     }
