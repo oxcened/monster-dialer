@@ -65,6 +65,7 @@ import dev.alenajam.monsterdialer.app.ui.rememberMonsterIcons
 import dev.alenajam.monsterdialer.app.ui.rememberMonsterTypography
 import dev.alenajam.monsterdialer.characters.ui.AddCharacterScreen
 import dev.alenajam.monsterdialer.calls.ui.RetroCallsScreen
+import dev.alenajam.monsterdialer.calls.ui.RetroCallDetailScreen
 import dev.alenajam.monsterdialer.contacts.ui.RetroContactsScreen
 import dev.alenajam.monsterdialer.characters.ui.ContactCharacterSettingsEntryPoint
 import dev.alenajam.monsterdialer.characters.ui.ContactCharacterSettingsContent
@@ -243,6 +244,11 @@ class MainActivity : AppCompatActivity() {
                                     onDialpadCallStarted = onDialpadCallStarted,
                                     onNavigateBack = onNavigateBack,
                                 )
+                            }
+                        },
+                        callDetailContent = { onNavigateBack ->
+                            AppTheme(darkTheme = false) {
+                                RetroCallDetailScreen(onNavigateBack = onNavigateBack)
                             }
                         },
                         settingsSubpages = listOf(

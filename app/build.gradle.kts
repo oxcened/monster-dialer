@@ -148,6 +148,7 @@ dependencies {
     implementation(project(":feature:appShell"))
     implementation(project(":feature:settings"))
     implementation(project(":feature:calls"))
+    implementation(project(":feature:callDetail"))
     implementation(project(":feature:contacts"))
     implementation(project(":feature:contactsSearch"))
     implementation(project(":data:contactsSearch"))
