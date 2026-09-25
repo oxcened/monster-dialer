@@ -301,22 +301,22 @@
     <string name="locked" comment="Status label for a character variant that must be unlocked before selection.">مقفل</string>
     <string name="radiant_variant_locked_title" comment="Title of the dialog shown for a locked radiant character variant.">النسخة المتألقة مقفلة</string>
     <string name="radiant_variant_locked_message" comment="Explains how to unlock a radiant character variant; %1$s is the character name.">عندما تقابل %1$s متألقًا في معركة برية، يُفتح تلقائيًا عند بدء المعركة. يمكنك بعدها تعيينه.</string>
-    <string name="learn_about_radiants" comment="Button that opens the guide to rare radiant variants.">حول المتوهجات</string>
-    <string name="radiant_collection_title">مجموعة الراديانت</string>
-    <string name="radiant_collection_description">عرض جميع الوحوش ومتغيراتها الراديانت، بما في ذلك المكتشفة منها.</string>
+    <string name="learn_about_radiants" comment="Button that opens the guide to rare radiant variants.">حول النسخ المتألقة</string>
+    <string name="radiant_collection_title">مجموعة النسخ المتألقة</string>
+    <string name="radiant_collection_description">عرض جميع الوحوش ونسخها المتألقة، بما في ذلك غير المكتشفة منها.</string>
     <string name="collection_sprite" comment="Accessibility description for a regular collection sprite; %1$s is the monster name.">صورة %1$s</string>
-    <string name="radiant_collection_sprite" comment="Accessibility description for a radiant collection sprite; %1$s is the monster name.">صورة %1$s الراديانت</string>
+    <string name="radiant_collection_sprite" comment="Accessibility description for a radiant collection sprite; %1$s is the monster name.">صورة %1$s المتألقة</string>
     <string name="radiant_collection_found">مكتشف</string>
     <string name="radiant_collection_locked">مقفل</string>
     <string name="radiant_collection_regular">عادي</string>
     <string name="radiant_collection_browse_packs">الحزم</string>
-    <string name="open_radiants_guide" comment="Accessibility label for the button that opens the Radiants guide.">فتح دليل المتوهجات</string>
-    <string name="radiants_guide_title" comment="Title of the guide explaining rare radiant monster variants.">المتوهجات</string>
-    <string name="radiants_guide_message" comment="Introduction to radiant monster variants.">المتوهجات هي مظاهر بديلة نادرة للوحوش يمكنك اكتشافها وإضافتها إلى قائمتك.</string>
+    <string name="open_radiants_guide" comment="Accessibility label for the button that opens the Radiants guide.">فتح دليل النسخ المتألقة</string>
+    <string name="radiants_guide_title" comment="Title of the guide explaining rare radiant monster variants.">النسخ المتألقة</string>
+    <string name="radiants_guide_message" comment="Introduction to radiant monster variants.">النسخ المتألقة هي مظاهر بديلة نادرة للوحوش يمكنك اكتشافها وإضافتها إلى قائمتك.</string>
     <string name="radiants_guide_availability" comment="Guide detail explaining which monsters can appear as radiants.">• لا يمكن أن تظهر إلا الوحوش ذات النسخة المتوهجة.</string>
-    <string name="radiants_guide_unlock" comment="Guide detail explaining when radiants unlock.">• يمكن لمتوهج أن يحل محل معركة مؤهلة. يُفتح فور بدء المعركة، ولا تحتاج إلى فعل أي شيء.</string>
-    <string name="radiants_guide_assign" comment="Guide detail explaining how to use a discovered radiant.">• بعد اكتشافه، اختر نسخته المتوهجة من شخصيتك ← الوحوش لتعيينها.</string>
-    <string name="radiants_guide_journal" comment="Guide detail explaining where radiant encounters are recorded.">• اعثر على اكتشافاتك المتوهجة وشاركها في سجل المعارك.</string>
+    <string name="radiants_guide_unlock" comment="Guide detail explaining when radiants unlock.">• يمكن لنسخة متألقة أن تحل محل معركة مؤهلة. تُفتح فور بدء المعركة، ولا تحتاج إلى فعل أي شيء.</string>
+    <string name="radiants_guide_assign" comment="Guide detail explaining how to use a discovered radiant.">• بعد اكتشافها، اختر نسختها المتألقة من شخصيتك ← الوحوش لتعيينها.</string>
+    <string name="radiants_guide_journal" comment="Guide detail explaining where radiant encounters are recorded.">• اعثر على اكتشافاتك المتألقة وشاركها في سجل المعارك.</string>
     <string name="radiant_unlock_notifications" comment="Notification channel name for radiant variant discoveries.">فتح النسخ المتألقة</string>
     <string name="radiant_variant_unlocked_title" comment="Title of the notification shown when a radiant character variant is discovered.">تم فتح النسخة المتألقة!</string>
     <string name="radiant_variant_unlocked_message" comment="Confirms a radiant character variant was unlocked; %1$s is the character name.">أصبح %1$s جاهزًا للتعيين الآن.</string>
@@ -601,7 +601,7 @@
     <string name="characters_help_radiant_title">النسخ المتألقة</string>
     <string name="characters_help_radiant_message">بالنسبة للوحوش فقط، افتح الإعدادات المتقدمة وفعّل مفتاح «متألق» لإضافة نسخة متألقة. سيعرض اختيار الشخصية بعد ذلك النسختين العادية والمتألقة من الوحش نفسه. تبدأ النسخة المتألقة مقفلة، ويجب العثور عليها أثناء المعارك قبل أن يصبح من الممكن اختيارها. يلزم وجود سبرايت أمامي لأن ميزة «العثور» تستخدمه لاكتشاف النسخة المتألقة وفتحها.</string>
     <string name="characters_help_advanced_title" comment="Section heading in the Character Guide about optional monster settings.">إحصاءات متقدمة</string>
-    <string name="characters_help_advanced_message" comment="Character Guide explanation of monster settings. Advanced, Level, Max HP, and Radiant refer to UI labels; translate consistently with those labels.">لل وحوش، اضبط المستوى وأقصى نقاط الصحة من «متقدم»، ويمكنك تفعيل حالة «متألق».</string>
+    <string name="characters_help_advanced_message" comment="Character Guide explanation of monster settings. Advanced, Level, Max HP, and Radiant refer to UI labels; translate consistently with those labels.">بالنسبة للوحوش، اضبط المستوى وأقصى نقاط الصحة من «متقدم»، ويمكنك تفعيل حالة «متألق».</string>
     <string name="characters_help_sharing_title" comment="Section heading in the Character Guide about sharing and importing characters. Preserve the ampersand or use the locale's equivalent.">المشاركة والاستيراد</string>
     <string name="characters_help_sharing_message" comment="Character Guide introduction to the two shareable MonsterDialer file types. Keep the trailing colon or use equivalent punctuation.">يستخدم MonsterDialer نوعين من الملفات:</string>
     <string name="characters_help_sharing_files_character" comment="Character Guide bullet describing a .monstercharacter file. Preserve the bold file extension and do not translate it."><b>.monstercharacter:</b> شخصية بإحصاءات ورسومات.</string>
@@ -629,4 +629,5 @@
     <string name="favorite_phone_type_number" comment="Favorite contact summary. %1$s is the phone type and %2$s is the phone number.">%1$s • %2$s</string>
     <string name="call_log_just_now" comment="Call-log time shown for calls less than one minute old.">الآن</string>
     <string name="new_contact_short" comment="Compact command for creating a contact.">جديد</string>
+    <string name="variant_backup_retry">إعادة محاولة نسخ المتغيرات احتياطيًا</string>
 </resources>
