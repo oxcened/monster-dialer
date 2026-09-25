@@ -7,6 +7,7 @@ import java.util.Base64
 import java.util.zip.ZipEntry
 import java.util.zip.ZipOutputStream
 import org.junit.Assert.assertEquals
+import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
 import org.junit.Rule
 import org.junit.Test
@@ -209,6 +210,42 @@ class CharacterPackArchiveReaderTest {
         assertTrue(File(installed.directory, "art/mossling.png").isFile)
         assertTrue(File(installed.directory, "audio/mossling.ogg").isFile)
         assertEquals("com.example.forest", catalog.list().single().id)
+    }
+
+    @Test
+    fun installerRestoresThePreviousPackWhenCatalogPersistenceFails() {
+        val storage = temporaryFolder.newFolder("transactional-install")
+        val originalArchive = archive(
+            "manifest.json" to validManifest(),
+            "art/mossling.png" to "image",
+            "art/mossling-back.png" to "image",
+            "audio/mossling.ogg" to "sound",
+        )
+        val originalCatalog = CharacterPackCatalog(storage)
+        CharacterPackInstaller(storage, originalCatalog).install(originalArchive.inputStream())
+
+        val failingCatalog = object : CharacterPackCatalog(storage) {
+            override fun recordInstallation(manifest: CharacterPackManifest): InstalledCharacterPackRecord {
+                throw CharacterPackValidationException("Simulated catalog failure")
+            }
+        }
+        val updatedArchive = archive(
+            "manifest.json" to validManifest().replace("\"version\": \"1.0.0\"", "\"version\": \"2.0.0\""),
+            "art/mossling.png" to "image",
+            "art/mossling-back.png" to "image",
+            "audio/mossling.ogg" to "sound",
+        )
+
+        val failure = runCatching {
+            CharacterPackInstaller(storage, failingCatalog).install(updatedArchive.inputStream())
+        }.exceptionOrNull()
+
+        assertTrue(failure is CharacterPackValidationException)
+        val active = File(storage, "com.example.forest/active")
+        assertTrue(File(active, "manifest.json").readText().contains("\"version\": \"1.0.0\""))
+        assertEquals("1.0.0", originalCatalog.list().single().version)
+        assertFalse(File(storage, ".pack-installation.json").exists())
+        assertTrue(File(storage, ".staging").listFiles().orEmpty().isEmpty())
     }
 
     @Test
