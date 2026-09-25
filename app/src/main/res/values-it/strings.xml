@@ -565,7 +565,7 @@
     <string name="characters_help_radiant_title">Varianti radiose</string>
     <string name="characters_help_radiant_message">Solo per i mostri: apri Avanzate e attiva l’interruttore Radioso per aggiungere una variante radiosa. La selezione dei personaggi mostrerà le versioni normale e radiosa dello stesso mostro. La versione radiosa è inizialmente bloccata e deve essere trovata nelle battaglie prima di poter essere selezionata. È necessario uno sprite frontale perché la funzione Trova lo usa per scoprire e sbloccare la variante radiosa.</string>
     <string name="characters_help_advanced_title" comment="Section heading in the Character Guide about optional monster settings.">Statistiche avanzate</string>
-    <string name="characters_help_advanced_message" comment="Character Guide explanation of monster settings. Advanced, Level, Max HP, and Radiant refer to UI labels; translate consistently with those labels.">Per i mostri, espandi “Avanzate” per impostare livello e PS massimi. Puoi anche attivare manualmente lo stato “Radioso” per i personaggi creati da te.</string>
+    <string name="characters_help_advanced_message" comment="Character Guide explanation of monster settings. Advanced, Level, Max HP, and Radiant refer to UI labels; translate consistently with those labels.">Per i mostri, espandi “Avanzate” per impostare il livello e i PS massimi. Puoi anche attivare lo stato “Radioso”.</string>
     <string name="characters_help_sharing_title" comment="Section heading in the Character Guide about sharing and importing characters. Preserve the ampersand or use the locale's equivalent.">Condivisione e importazione</string>
     <string name="characters_help_sharing_message" comment="Character Guide introduction to the two shareable MonsterDialer file types. Keep the trailing colon or use equivalent punctuation.">MonsterDialer usa due tipi di file condivisibili:</string>
     <string name="characters_help_sharing_files_character" comment="Character Guide bullet describing a .monstercharacter file. Preserve the bold file extension and do not translate it."><b>.monstercharacter:</b> un personaggio con statistiche e illustrazioni.</string>
@@ -593,4 +593,5 @@
     <string name="favorite_phone_type_number" comment="Favorite contact summary. %1$s is the phone type and %2$s is the phone number.">%1$s • %2$s</string>
     <string name="call_log_just_now" comment="Call-log time shown for calls less than one minute old.">Proprio ora</string>
     <string name="new_contact_short" comment="Compact command for creating a contact.">Nuovo</string>
+    <string name="variant_backup_retry">Riprova il backup delle varianti</string>
 </resources>
