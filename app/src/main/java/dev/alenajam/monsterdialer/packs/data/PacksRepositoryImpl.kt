@@ -14,6 +14,7 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.io.File
+import java.io.InputStream
 import java.util.zip.ZipFile
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -49,11 +50,7 @@ class PacksRepositoryImpl @Inject constructor(
         val activeManifest = File(storageRoot, "${bundledManifest.id}/active/${CharacterPackValidator.ManifestPath}")
         if (installedRecord?.version == bundledManifest.version && activeManifest.isFile) return
 
-        val installed = app.assets.open(BundledOddBunchAssetPath).use(installer::install)
-        assignmentRepository.clearAssignmentsMissingFromPack(
-            installed.manifest.id,
-            installed.manifest.references(),
-        )
+        app.assets.open(BundledOddBunchAssetPath).use { installAndClearAssignments(it) }
     }
 
     private fun readBundledPackManifest(): CharacterPackManifest {
@@ -86,23 +83,15 @@ class PacksRepositoryImpl @Inject constructor(
 
     override suspend fun importPack(file: File): Result<Unit> = withContext(Dispatchers.IO) {
         runCatching {
-            val installed = file.inputStream().use(installer::install)
-            assignmentRepository.clearAssignmentsMissingFromPack(
-                installed.manifest.id,
-                installed.manifest.references(),
-            )
+            file.inputStream().use { installAndClearAssignments(it) }
             refreshPacks()
         }
     }
 
     suspend fun importPackFromUri(uri: Uri): Result<Unit> = withContext(Dispatchers.IO) {
         runCatching {
-            val installed = app.contentResolver.openInputStream(uri)?.use(installer::install)
+            app.contentResolver.openInputStream(uri)?.use { installAndClearAssignments(it) }
                 ?: throw Exception("Unable to open stream")
-            assignmentRepository.clearAssignmentsMissingFromPack(
-                installed.manifest.id,
-                installed.manifest.references(),
-            )
             refreshPacks()
         }
     }
@@ -159,6 +148,15 @@ class PacksRepositoryImpl @Inject constructor(
 
     private fun CharacterPackManifest.references(): Set<CharacterReference> = characters.flatMapTo(mutableSetOf()) { character ->
         character.visualVariants.map { variant -> CharacterReference(id, character.id, variant.id) }
+    }
+
+    private suspend fun installAndClearAssignments(source: InputStream): InstalledCharacterPack {
+        val installed = installer.install(source)
+        assignmentRepository.clearAssignmentsMissingFromPack(
+            installed.manifest.id,
+            installed.manifest.references(),
+        )
+        return installed
     }
 
     private companion object {
