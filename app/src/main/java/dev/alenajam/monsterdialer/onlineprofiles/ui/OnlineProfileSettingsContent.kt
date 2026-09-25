@@ -49,6 +49,7 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import dev.alenajam.monsterdialer.R
+import dev.alenajam.monsterdialer.characters.data.VariantBackupSynchronizer
 import dev.alenajam.monsterdialer.app.ui.RetroContextMenuDialog
 import dev.alenajam.monsterdialer.app.ui.RetroContextMenuItem
 import dev.alenajam.monsterdialer.app.ui.RetroSelectableRow
@@ -77,6 +78,7 @@ fun OnlineProfileSection(viewModel: OnlineProfileSettingsViewModel = hiltViewMod
     val error by viewModel.error.collectAsStateWithLifecycle()
     val showRetentionCheckIn by viewModel.showRetentionCheckIn.collectAsStateWithLifecycle()
     val variantBackupEnabled by viewModel.variantBackupEnabled.collectAsStateWithLifecycle()
+    val variantBackupStatus by viewModel.variantBackupStatus.collectAsStateWithLifecycle()
     val context = LocalContext.current
     val scope = rememberCoroutineScope()
     val resources = LocalResources.current
@@ -263,6 +265,21 @@ fun OnlineProfileSection(viewModel: OnlineProfileSettingsViewModel = hiltViewMod
                                     fontSize = 16.sp,
                                     lineHeight = 18.sp,
                                     color = if (variantBackupEnabled) MaterialTheme.colorScheme.error else ProfileInk,
+                                )
+                            }
+                        }
+                        if (variantBackupStatus is VariantBackupSynchronizer.Status.Failed) {
+                            RetroSelectableRow(
+                                selected = false,
+                                enabled = !working,
+                                onClick = viewModel::retryVariantBackup,
+                            ) {
+                                Text(
+                                    text = stringResource(R.string.variant_backup_retry).uppercase(),
+                                    fontFamily = ProfilePixelFont,
+                                    fontSize = 16.sp,
+                                    lineHeight = 18.sp,
+                                    color = MaterialTheme.colorScheme.error,
                                 )
                             }
                         }

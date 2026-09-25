@@ -55,6 +55,7 @@ class OnlineProfileSettingsViewModel @Inject constructor(
     val showRetentionCheckIn: StateFlow<Boolean> = _showRetentionCheckIn.asStateFlow()
     private val _variantBackupEnabled = MutableStateFlow(variantBackup.isEnabled())
     val variantBackupEnabled: StateFlow<Boolean> = _variantBackupEnabled.asStateFlow()
+    val variantBackupStatus: StateFlow<VariantBackupSynchronizer.Status> = variantBackup.status
     private var pendingVariantBackupSignIn = false
 
     init {
@@ -165,6 +166,15 @@ class OnlineProfileSettingsViewModel @Inject constructor(
             _error.value = exception.message
         } finally {
             _operation.value = null
+            _isWorking.value = false
+        }
+    }
+
+    fun retryVariantBackup() = viewModelScope.launch {
+        _isWorking.value = true
+        try {
+            variantBackup.retry()
+        } finally {
             _isWorking.value = false
         }
     }
