@@ -498,13 +498,14 @@ private fun enemyDescription(state: BattleUiState): String {
 @Composable
 private fun pixelBitmapResource(asset: BattleVisualAsset): ImageBitmap {
     val context = LocalContext.current
-    return remember(context.resources, asset) {
+    val resources = LocalResources.current
+    return remember(resources, asset) {
         val bitmap = when (asset) {
             is BattleVisualAsset.AppDrawable -> {
                 val resolvedResource = asset.resource.takeIf { it != 0 } ?: asset.fallbackName?.let { name ->
-                    context.resources.getIdentifier(name, "drawable", context.packageName)
+                    resources.getIdentifier(name, "drawable", context.packageName)
                 } ?: 0
-                BitmapFactory.decodeResource(context.resources, resolvedResource)
+                BitmapFactory.decodeResource(resources, resolvedResource)
             }
             is BattleVisualAsset.LocalFile -> BitmapFactory.decodeFile(asset.path)
             is BattleVisualAsset.VectorDrawable -> error("Vector drawables must be rendered with painterResource.")
