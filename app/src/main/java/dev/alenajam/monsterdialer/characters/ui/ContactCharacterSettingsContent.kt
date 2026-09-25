@@ -22,11 +22,8 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
-import androidx.compose.material3.TextButton
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
@@ -53,15 +50,20 @@ import androidx.compose.ui.input.nestedscroll.NestedScrollSource
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.text.font.Font
+import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import dev.alenajam.monsterdialer.R
 import dev.alenajam.monsterdialer.app.ui.LocalMonsterAppIcons
 import dev.alenajam.monsterdialer.app.ui.RetroFastScroller
 import dev.alenajam.monsterdialer.app.ui.RetroContextMenuItem
+import dev.alenajam.monsterdialer.app.ui.RetroMenuWindow
+import dev.alenajam.monsterdialer.app.ui.RetroSelectableRow
 import dev.alenajam.monsterdialer.app.ui.RetroSearchButton
 import dev.alenajam.opendialer.core.common.ui.AppIcon
 import dev.alenajam.opendialer.core.common.ui.LocalAppIcons
@@ -79,6 +81,8 @@ import dev.alenajam.opendialer.feature.settings.LocalSettingsSubpageNavigator
 import kotlinx.coroutines.launch
 
 internal enum class ContactAssignmentMode { Global, Custom, Random }
+
+private val ContactInheritedFont = FontFamily(Font(R.font.pixel_operator))
 
 @Composable
 fun ColumnScope.ContactCharacterSettingsContent(
@@ -510,37 +514,58 @@ private fun ContactCharacterInheritedSummary(
     onCustomizeContact: () -> Unit,
     onOpenGlobalDefaults: () -> Unit,
 ) {
+    var selectedAction by remember { mutableStateOf(0) }
     val typeLabel = stringResource(
         if (selectedType == CharacterType.Trainer) R.string.character_type_trainer else R.string.character_type_monster,
     )
-    Card(
+    RetroMenuWindow(
         modifier = Modifier.fillMaxWidth().padding(top = 8.dp),
-        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainerLow),
     ) {
         Column(
-            modifier = Modifier.padding(16.dp),
+            modifier = Modifier.fillMaxWidth(),
             verticalArrangement = Arrangement.spacedBy(4.dp),
         ) {
             Text(
                 text = stringResource(R.string.contact_character_inherited_title),
-                style = MaterialTheme.typography.titleMedium,
+                fontFamily = ContactInheritedFont,
+                fontSize = 22.sp,
+                color = RetroInk,
             )
             Text(
                 text = stringResource(R.string.contact_character_inherited_message, typeLabel),
-                style = MaterialTheme.typography.bodyMedium,
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                fontFamily = ContactInheritedFont,
+                fontSize = 18.sp,
+                color = RetroInk,
             )
-            TextButton(
-                onClick = onCustomizeContact,
-                modifier = Modifier.align(Alignment.End),
+            RetroSelectableRow(
+                selected = selectedAction == 0,
+                onClick = {
+                    selectedAction = 0
+                    onCustomizeContact()
+                },
+                modifier = Modifier.fillMaxWidth(),
             ) {
-                Text(stringResource(R.string.contact_character_customize))
+                Text(
+                    text = stringResource(R.string.contact_character_customize).uppercase(),
+                    fontFamily = RetroPickerFont,
+                    fontSize = 16.sp,
+                    color = RetroInk,
+                )
             }
-            TextButton(
-                onClick = onOpenGlobalDefaults,
-                modifier = Modifier.align(Alignment.End),
+            RetroSelectableRow(
+                selected = selectedAction == 1,
+                onClick = {
+                    selectedAction = 1
+                    onOpenGlobalDefaults()
+                },
+                modifier = Modifier.fillMaxWidth(),
             ) {
-                Text(stringResource(R.string.contact_character_edit_global_defaults))
+                Text(
+                    text = stringResource(R.string.contact_character_edit_global_defaults).uppercase(),
+                    fontFamily = RetroPickerFont,
+                    fontSize = 16.sp,
+                    color = RetroInk,
+                )
             }
         }
     }
