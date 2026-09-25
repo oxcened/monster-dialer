@@ -117,6 +117,24 @@ class CharacterAssignmentStoreTest {
     }
 
     @Test
+    fun `clears only references removed by a pack update`() {
+        val store = CharacterAssignmentStore(temporaryFolder.newFolder("pack-update-cleanup"))
+        val defaultVariant = CharacterReference("com.example.forest", "mossling", "default")
+        val retiredVariant = CharacterReference("com.example.forest", "mossling", "radiant")
+        val retainedVariant = CharacterReference("com.example.forest", "fernfox", "default")
+        store.setPlayerMonsterRoster(listOf(retiredVariant, retainedVariant))
+        store.setContactRandomPool("123", CharacterType.Monster, listOf(defaultVariant, retiredVariant))
+
+        store.clearAssignmentsMissingFromPack(
+            retiredVariant.packId,
+            setOf(defaultVariant, retainedVariant),
+        )
+
+        assertEquals(listOf(retainedVariant), store.playerMonsterRoster())
+        assertEquals(listOf(defaultVariant), store.contactRandomPool("123", CharacterType.Monster))
+    }
+
+    @Test
     fun `ignores a replacement outside the roster bounds`() {
         val store = CharacterAssignmentStore(temporaryFolder.newFolder("invalid-roster-index"))
         val replacement = CharacterReference("com.example.forest", "mossling")
