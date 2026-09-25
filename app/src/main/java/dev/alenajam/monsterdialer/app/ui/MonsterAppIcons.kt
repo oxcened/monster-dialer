@@ -8,7 +8,6 @@ import androidx.compose.material.icons.outlined.Reorder
 import androidx.compose.material.icons.outlined.RestartAlt
 import androidx.compose.material.icons.outlined.Deselect
 import androidx.compose.material.icons.outlined.SelectAll
-import androidx.compose.material.icons.outlined.Shuffle
 import androidx.compose.runtime.Immutable
 import androidx.compose.runtime.staticCompositionLocalOf
 import dev.alenajam.monsterdialer.R
@@ -55,7 +54,7 @@ val DefaultMonsterAppIcons = MonsterAppIcons(
     reset = IconSource.Vector(Icons.Outlined.RestartAlt),
     selectAll = IconSource.Vector(Icons.Outlined.SelectAll),
     deselectAll = IconSource.Vector(Icons.Outlined.Deselect),
-    randomize = IconSource.Vector(Icons.Outlined.Shuffle),
+    randomize = IconSource.Resource(R.drawable.randomize, tintable = false),
     qrCode = IconSource.Vector(Icons.Outlined.QrCode2),
     filter = IconSource.Vector(Icons.Outlined.FilterList),
     selectionCursor = IconSource.Resource(R.drawable.selection_arrow, tintable = true),
