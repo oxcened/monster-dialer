@@ -557,6 +557,7 @@
     <string name="variant_backup_enabled">变体已备份</string>
     <string name="variant_backup_guide_title">变体备份</string>
     <string name="variant_backup_guide_message">使用你的 Google 账号私密备份可解锁的角色变体。它们不会公开发布，也不会上传角色美术、联系人或通话记录。在另一台设备上登录并启用备份后，MonsterDialer 会恢复找到的所有解锁内容，并将其安全合并到该设备的收藏中。</string>
+    <string name="variant_backup_retry">重试备份变体</string>
     <string name="dial_search_number_prefix">号码/</string>
     <string name="dial_search_results">匹配项</string>
     <string name="dial_search_more">更多</string>

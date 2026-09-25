@@ -586,6 +586,7 @@
     <string name="variant_backup_enabled">Varianti salvate</string>
     <string name="variant_backup_guide_title">Backup delle varianti</string>
     <string name="variant_backup_guide_message">Esegui il backup privato delle varianti dei personaggi sbloccabili con il tuo account Google. Non verranno mai pubblicate e non verranno caricati disegni dei personaggi, contatti o cronologia delle chiamate. Quando accedi su un altro dispositivo e attivi il backup, MonsterDialer ripristina ogni sblocco trovato e lo unisce in modo sicuro alla raccolta di quel dispositivo.</string>
+    <string name="variant_backup_retry">Riprova il backup delle varianti</string>
     <string name="dial_search_number_prefix">N./</string>
     <string name="dial_search_results">Corrispondenze</string>
     <string name="dial_search_more">Altro</string>

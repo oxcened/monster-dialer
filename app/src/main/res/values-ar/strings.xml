@@ -591,6 +591,7 @@
     <string name="variant_backup_enabled">تم نسخ الأنواع احتياطيًا</string>
     <string name="variant_backup_guide_title">النسخ الاحتياطي للنوع</string>
     <string name="variant_backup_guide_message">انسخ أنواع شخصياتك القابلة للفتح احتياطيًا بشكل خاص باستخدام حساب Google. لا يؤدي ذلك مطلقًا إلى نشرها للعامة أو تحميل أعمال الشخصيات الفنية أو جهات الاتصال أو سجل المكالمات. عند تسجيل الدخول على جهاز آخر وتفعيل النسخ الاحتياطي، يستعيد MonsterDialer كل عملية فتح يجدها ويدمجها بأمان مع مجموعة ذلك الجهاز.</string>
+    <string name="variant_backup_retry">إعادة محاولة نسخ المتغيرات احتياطيًا</string>
     <string name="dial_search_number_prefix">رقم/</string>
     <string name="dial_search_results">التطابقات</string>
     <string name="dial_search_more">المزيد</string>

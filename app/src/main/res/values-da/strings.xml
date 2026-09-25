@@ -563,6 +563,7 @@
     <string name="variant_backup_enabled">Varianter sikkerhedskopieret</string>
     <string name="variant_backup_guide_title">Sikkerhedskopi af varianter</string>
     <string name="variant_backup_guide_message">Sikkerhedskopiér dine oplåselige figurvarianter privat med din Google-konto. De bliver aldrig offentliggjort, og figurillustrationer, kontakter eller opkaldshistorik uploades ikke. Når du logger ind på en anden enhed og aktiverer sikkerhedskopiering, gendanner MonsterDialer alle oplåsninger, den finder, og kombinerer dem sikkert med enhedens samling.</string>
+    <string name="variant_backup_retry">Prøv sikkerhedskopiering af varianter igen</string>
     <string name="dial_search_number_prefix">Nr./</string>
     <string name="dial_search_results">Match</string>
     <string name="dial_search_more">Flere</string>

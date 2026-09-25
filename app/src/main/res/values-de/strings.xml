@@ -568,6 +568,7 @@
     <string name="variant_backup_enabled">Varianten gesichert</string>
     <string name="variant_backup_guide_title">Varianten-Backup</string>
     <string name="variant_backup_guide_message">Sichere deine freischaltbaren Charaktervarianten privat mit deinem Google-Konto. Sie werden niemals öffentlich veröffentlicht und Charaktergrafiken, Kontakte oder der Anrufverlauf werden nicht hochgeladen. Wenn du dich auf einem anderen Gerät anmeldest und Backups aktivierst, stellt MonsterDialer alle gefundenen Freischaltungen wieder her und führt sie sicher mit der Sammlung dieses Geräts zusammen.</string>
+    <string name="variant_backup_retry">Variantensicherung erneut versuchen</string>
     <string name="dial_search_number_prefix">Nr./</string>
     <string name="dial_search_results">Treffer</string>
     <string name="dial_search_more">Mehr</string>
