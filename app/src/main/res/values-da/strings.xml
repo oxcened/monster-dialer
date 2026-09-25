@@ -136,8 +136,8 @@
     <string name="battle_journal_player_monster" comment="Journal entry detail. %1$s is the player's active monster name.">Dit monster: %1$s</string>
     <string name="battle_journal_matchup" comment="Journal entry matchup. %1$s is the player's monster and %2$s is the opponent monster.">%1$s mod %2$s</string>
     <string name="battle_journal_battle_label" comment="Compact category label for a regular journal entry.">Kamp</string>
-    <string name="battle_journal_radiant_label" comment="Compact category label for a radiant discovery journal entry.">Radiant fundet</string>
-    <string name="battle_journal_radiant_encounter_label" comment="Compact category label for a repeat radiant encounter.">Radiant-møde</string>
+    <string name="battle_journal_radiant_label" comment="Compact category label for a radiant discovery journal entry.">Strålende fundet</string>
+    <string name="battle_journal_radiant_encounter_label" comment="Compact category label for a repeat radiant encounter.">Strålende møde</string>
     <string name="battle_journal_more_options" comment="Accessibility label for the Battle Journal overflow menu.">Flere indstillinger for kampjournal</string>
     <string name="battle_journal_clear" comment="Overflow-menu action that removes all Battle Journal entries.">Ryd journal</string>
     <string name="battle_journal_clear_short" comment="Compact Battle Journal action that removes all entries.">Ryd</string>
@@ -593,4 +593,5 @@
     <string name="favorite_phone_type_number" comment="Favorite contact summary. %1$s is the phone type and %2$s is the phone number.">%1$s • %2$s</string>
     <string name="call_log_just_now" comment="Call-log time shown for calls less than one minute old.">Lige nu</string>
     <string name="new_contact_short" comment="Compact command for creating a contact.">Ny</string>
+    <string name="variant_backup_retry">Prøv sikkerhedskopiering af varianter igen</string>
 </resources>
