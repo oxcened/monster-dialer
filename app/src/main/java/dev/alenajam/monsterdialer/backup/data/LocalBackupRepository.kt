@@ -4,10 +4,13 @@ import android.app.Application
 import android.net.Uri
 import dev.alenajam.monsterdialer.packs.di.CharacterPacksDir
 import dev.alenajam.monsterdialer.packs.data.CharacterPackCatalog
+import dev.alenajam.monsterdialer.packs.data.CharacterPackManifestCodec
+import dev.alenajam.monsterdialer.packs.data.CharacterPackValidator
 import dev.alenajam.monsterdialer.characters.data.PlayerProfileStatsStore
 import dev.alenajam.monsterdialer.characters.data.VariantUnlockStore
 import dev.alenajam.monsterdialer.battle.data.BattleJournalStore
 import java.io.File
+import java.util.UUID
 import java.util.zip.ZipEntry
 import java.util.zip.ZipInputStream
 import java.util.zip.ZipOutputStream
@@ -40,6 +43,7 @@ class LocalBackupRepository @Inject constructor(
                         ?.filter(File::isFile)
                         ?.forEach { file ->
                             val path = file.relativeTo(storageRoot).invariantSeparatorsPath
+                            if (path.isTransientStoragePath()) return@forEach
                             zip.putNextEntry(ZipEntry("$DataDirectory/$path"))
                             file.inputStream().use { it.copyTo(zip) }
                             zip.closeEntry()
@@ -66,18 +70,8 @@ class LocalBackupRepository @Inject constructor(
                 }
                 val restoredData = File(staging, DataDirectory)
                 require(restoredData.isDirectory) { "The backup does not contain any data" }
-                val previous = File(storageRoot.parentFile, ".character-packs-previous")
-                previous.deleteRecursively()
-                if (storageRoot.exists() && !storageRoot.renameTo(previous)) error("Could not prepare local data for restore")
-                if (!restoredData.renameTo(storageRoot)) {
-                    previous.renameTo(storageRoot)
-                    error("Could not restore the backup")
-                }
-                previous.deleteRecursively()
-                catalog.reload()
-                profileStats.reload()
-                unlocks.reload()
-                journal.reload()
+                validate(restoredData)
+                replaceStorage(restoredData, staging)
             } finally {
                 staging.deleteRecursively()
             }
@@ -89,12 +83,14 @@ class LocalBackupRepository @Inject constructor(
         var manifestFound = false
         var totalBytes = 0L
         var entryCount = 0
+        val entryNames = mutableSetOf<String>()
         ZipInputStream(input.buffered()).use { zip ->
             while (true) {
                 val entry = zip.nextEntry ?: break
                 val name = entry.name
                 require(!entry.isDirectory && name.isSafeBackupPath()) { "The backup contains an invalid file path" }
                 require(name == ManifestPath || name.startsWith("$DataDirectory/")) { "The backup contains an unsupported file" }
+                require(entryNames.add(name)) { "The backup contains duplicate file paths" }
                 require(++entryCount <= MaxEntryCount) { "The backup contains too many files" }
                 val target = File(destination, name)
                 target.parentFile?.mkdirs()
@@ -117,6 +113,84 @@ class LocalBackupRepository @Inject constructor(
 
     private fun String.isSafeBackupPath() = !startsWith('/') && !contains("\\") && split('/').none { it == ".." || it.isBlank() }
 
+    private fun String.isTransientStoragePath(): Boolean {
+        val segments = split('/')
+        return segments.any { segment ->
+            segment.startsWith('.') || segment.startsWith("backup-") || segment.startsWith("incoming-")
+        }
+    }
+
+    /** Verifies every installed pack before it can replace the currently usable collection. */
+    private fun validate(restoredData: File) {
+        val restoredCatalog = CharacterPackCatalog(restoredData)
+        val records = restoredCatalog.list()
+        require(records.map { it.id }.distinct().size == records.size) { "The backup contains duplicate pack records" }
+        val packIds = records.mapTo(mutableSetOf()) { it.id }
+        restoredData.listFiles().orEmpty().forEach { entry ->
+            require(entry.name in PersistentRootEntries || entry.name in packIds) {
+                "The backup contains unsupported local data"
+            }
+        }
+        records.forEach { record ->
+            val activeDirectory = File(restoredData, "${record.id}/active")
+            val manifestFile = File(activeDirectory, CharacterPackValidator.ManifestPath)
+            require(manifestFile.isFile) { "Pack '${record.id}' is missing its manifest" }
+            val validated = CharacterPackValidator.validate(CharacterPackManifestCodec.decode(manifestFile.readText()))
+            require(validated.manifest.id == record.id) { "Pack '${record.id}' has a mismatched manifest" }
+            require(
+                record.name == validated.manifest.name &&
+                    record.version == validated.manifest.version &&
+                    record.creator == validated.manifest.creator &&
+                    record.license == validated.manifest.license &&
+                    record.characterCount == validated.manifest.characters.size
+            ) { "Pack '${record.id}' does not match its catalog record" }
+            val actualFiles = activeDirectory.walkTopDown().filter(File::isFile)
+                .map { it.relativeTo(activeDirectory).invariantSeparatorsPath }.toSet()
+            require(actualFiles == validated.files) { "Pack '${record.id}' contains unexpected or missing files" }
+            require(File(restoredData, record.id).listFiles().orEmpty().all { it.name == "active" }) {
+                "Pack '${record.id}' contains unsupported installation data"
+            }
+        }
+    }
+
+    /** Keeps the old root intact until all live stores have reloaded from the restored data. */
+    private fun replaceStorage(restoredData: File, staging: File) {
+        val parent = requireNotNull(storageRoot.parentFile)
+        val previous = File(parent, ".character-packs-previous-${UUID.randomUUID()}")
+        val hadExistingData = storageRoot.exists()
+        var preservePrevious = false
+        if (hadExistingData && !storageRoot.renameTo(previous)) error("Could not prepare local data for restore")
+        if (!restoredData.renameTo(storageRoot)) {
+            if (hadExistingData) previous.renameTo(storageRoot)
+            error("Could not restore the backup")
+        }
+        try {
+            catalog.reload()
+            profileStats.reload()
+            unlocks.reload()
+            journal.reload()
+        } catch (exception: Exception) {
+            val failedRestore = File(staging, DataDirectory)
+            if (storageRoot.exists() && !storageRoot.renameTo(failedRestore)) {
+                preservePrevious = true
+                throw IllegalStateException("Could not roll back the failed restore", exception)
+            }
+            if (hadExistingData && !previous.renameTo(storageRoot)) {
+                preservePrevious = true
+                throw IllegalStateException("Could not roll back the failed restore", exception)
+            }
+            runCatching {
+                catalog.reload()
+                profileStats.reload()
+                unlocks.reload()
+                journal.reload()
+            }
+            throw exception
+        } finally {
+            if (!preservePrevious) previous.deleteRecursively()
+        }
+    }
+
     @Serializable
     private data class LocalBackupManifest(val formatVersion: Int = FormatVersion)
 
@@ -127,6 +201,16 @@ class LocalBackupRepository @Inject constructor(
         const val BufferSize = 8 * 1024
         const val MaxEntryCount = 4_096
         const val MaxUncompressedBytes = 128L * 1024 * 1024
+        val PersistentRootEntries = setOf(
+            "catalog.json",
+            "character-assignments.json",
+            "variant-unlocks.json",
+            "player-profile-stats.json",
+            "battle-journal.json",
+            "battle-journal-sprites",
+            "active-battle-encounter.json",
+            "catalog-sources.json",
+        )
         val json = Json { ignoreUnknownKeys = false; explicitNulls = false }
     }
 }
