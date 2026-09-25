@@ -218,8 +218,8 @@
     <string name="battle_journal_player_monster">Dit monster: %1$s</string>
     <string name="battle_journal_matchup">%1$s mod %2$s</string>
     <string name="battle_journal_battle_label">Kamp</string>
-    <string name="battle_journal_radiant_label">Radiant fundet</string>
-    <string name="battle_journal_radiant_encounter_label">Radiant-møde</string>
+    <string name="battle_journal_radiant_label">Strålende fundet</string>
+    <string name="battle_journal_radiant_encounter_label">Strålende møde</string>
     <string name="battle_journal_more_options">Flere indstillinger for kampjournal</string>
     <string name="battle_journal_clear">Ryd journal</string>
     <string name="battle_journal_clear_short">Ryd</string>

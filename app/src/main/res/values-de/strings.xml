@@ -223,8 +223,8 @@
     <string name="battle_journal_player_monster">Dein Monster: %1$s</string>
     <string name="battle_journal_matchup">%1$s gegen %2$s</string>
     <string name="battle_journal_battle_label">Kampf</string>
-    <string name="battle_journal_radiant_label">Radiant gefunden</string>
-    <string name="battle_journal_radiant_encounter_label">Radiant-Begegnung</string>
+    <string name="battle_journal_radiant_label">Strahlender gefunden</string>
+    <string name="battle_journal_radiant_encounter_label">Strahlende Begegnung</string>
     <string name="battle_journal_more_options">Weitere Optionen für das Kampfjournal</string>
     <string name="battle_journal_clear">Journal leeren</string>
     <string name="battle_journal_clear_short">Leeren</string>

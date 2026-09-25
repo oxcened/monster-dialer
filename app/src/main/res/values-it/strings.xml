@@ -206,7 +206,7 @@
     <string name="characters_help_creating_sprites_front"><b>Sprite frontale:</b> lo vedi quando ti chiama questo contatto.</string>
     <string name="characters_help_creating_sprites_back"><b>Sprite posteriore:</b> rappresenta il tuo personaggio nelle battaglie.</string>
     <string name="characters_help_advanced_title">Statistiche avanzate</string>
-    <string name="characters_help_advanced_message">Per i mostri, espandi “Avanzate” per impostare livello e PS massimi. Puoi anche attivare manualmente lo stato “Radioso” per i personaggi creati da te.</string>
+    <string name="characters_help_advanced_message">Per i mostri, espandi “Avanzate” per impostare il livello e i PS massimi. Puoi anche attivare lo stato “Radioso”.</string>
     <string name="characters_help_sharing_title">Condivisione e importazione</string>
     <string name="characters_help_sharing_message">MonsterDialer usa due tipi di file condivisibili:</string>
     <string name="characters_help_sharing_files_character"><b>.monstercharacter:</b> un personaggio con statistiche e illustrazioni.</string>
