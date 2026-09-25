@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Text
 import androidx.compose.material3.HorizontalDivider
@@ -34,12 +35,14 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dev.alenajam.monsterdialer.R
 import dev.alenajam.monsterdialer.app.ui.RetroConfirmationDialog
+import dev.alenajam.monsterdialer.app.ui.RetroFooter
 import dev.alenajam.monsterdialer.app.ui.RetroSelectableRow
 import dev.alenajam.monsterdialer.backup.data.LocalBackupRepository
 import javax.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
+import dev.alenajam.opendialer.feature.settings.LocalSettingsSubpageNavigator
 
 @HiltViewModel
 class LocalBackupViewModel @Inject constructor(private val repository: LocalBackupRepository) : ViewModel() {
@@ -57,7 +60,10 @@ class LocalBackupViewModel @Inject constructor(private val repository: LocalBack
 }
 
 @Composable
-fun LocalBackupScreen(viewModel: LocalBackupViewModel = hiltViewModel()) {
+fun LocalBackupScreen(
+    viewModel: LocalBackupViewModel = hiltViewModel(),
+) {
+    val navigator = LocalSettingsSubpageNavigator.current
     val context = LocalContext.current
     val message by viewModel.message.collectAsStateWithLifecycle()
     val backupFileName = stringResource(R.string.local_backup_file_name)
@@ -72,10 +78,12 @@ fun LocalBackupScreen(viewModel: LocalBackupViewModel = hiltViewModel()) {
     }
     Box(Modifier.fillMaxSize()) {
         Column(
-            Modifier.fillMaxSize().padding(horizontal = 16.dp, vertical = 12.dp),
-            verticalArrangement = Arrangement.spacedBy(6.dp),
+            Modifier.fillMaxSize(),
         ) {
-            Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
+            Column(
+                Modifier.weight(1f).padding(horizontal = 16.dp, vertical = 12.dp),
+                verticalArrangement = Arrangement.spacedBy(4.dp),
+            ) {
                 Text(stringResource(R.string.local_backup_description))
                 HorizontalDivider(thickness = 1.dp, color = Color(0xFF202020))
                 Column {
@@ -87,6 +95,12 @@ fun LocalBackupScreen(viewModel: LocalBackupViewModel = hiltViewModel()) {
                     }
                 }
             }
+            RetroFooter(
+                onBack = { navigator?.navigateBack() },
+                backKey = stringResource(R.string.retro_key_b),
+                backLabel = stringResource(R.string.back),
+                modifier = Modifier.navigationBarsPadding().padding(horizontal = 2.dp),
+            )
         }
         pendingImport?.let { uri ->
             RetroConfirmationDialog(

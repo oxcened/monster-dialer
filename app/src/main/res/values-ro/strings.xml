@@ -574,6 +574,7 @@
     <string name="variant_backup_enabled">Variante salvate</string>
     <string name="variant_backup_guide_title">Backup pentru variante</string>
     <string name="variant_backup_guide_message">Fă backup privat pentru variantele de personaje deblocate, folosind contul tău Google. Acestea nu vor fi publicate niciodată, iar grafica personajelor, contactele sau istoricul apelurilor nu vor fi încărcate. Când te conectezi pe alt dispozitiv și activezi backupul, MonsterDialer restaurează toate deblocările găsite și le combină în siguranță cu colecția acelui dispozitiv.</string>
+    <string name="variant_backup_retry">Reîncearcă backupul variantelor</string>
     <string name="dial_search_number_prefix">Nr./</string>
     <string name="dial_search_results">Potriviri</string>
     <string name="dial_search_more">Mai multe</string>

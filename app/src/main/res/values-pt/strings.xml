@@ -568,6 +568,7 @@
     <string name="variant_backup_enabled">Variantes guardadas</string>
     <string name="variant_backup_guide_title">Cópia de segurança de variantes</string>
     <string name="variant_backup_guide_message">Faça uma cópia privada das variantes de personagens desbloqueáveis com a sua conta Google. Estas nunca serão publicadas e não serão carregadas ilustrações de personagens, contactos ou histórico de chamadas. Quando iniciar sessão noutro dispositivo e ativar a cópia de segurança, o MonsterDialer restaura todos os desbloqueios encontrados e combina-os em segurança com a coleção desse dispositivo.</string>
+    <string name="variant_backup_retry">Tentar novamente a cópia de segurança das variantes</string>
     <string name="dial_search_number_prefix">N.º/</string>
     <string name="dial_search_results">Correspondências</string>
     <string name="dial_search_more">Mais</string>

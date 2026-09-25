@@ -723,6 +723,56 @@ class CharacterAssignmentStore(
         ))
     }
 
+    /** Removes only obsolete variants when a pack is updated in place. */
+    @Synchronized
+    fun clearAssignmentsMissingFromPack(packId: String, availableReferences: Set<CharacterReference>) {
+        clearAssignmentsMatching { reference ->
+            reference.packId == packId && reference !in availableReferences
+        }
+    }
+
+    private fun clearAssignmentsMatching(shouldClear: (CharacterReference) -> Boolean) {
+        val document = read()
+        val updatedPlayerByType = document.playerByType.filterValues { !shouldClear(it) }
+        val updatedRoster = benchRoster(document).filterNot(shouldClear)
+        val updatedActiveMonster = activeMonster(document).takeUnless(shouldClear) ?: updatedRoster.firstOrNull()
+        val updatedBench = updatedRoster.filterNot { it == updatedActiveMonster }
+        val updatedContactsByType = document.contactsByType.mapValues { (_, assignments) ->
+            assignments.filterValues { !shouldClear(it) }
+        }.filterValues { it.isNotEmpty() }
+        val legacyContacts = document.contacts.filterValues { !shouldClear(it) }
+        val updatedModes = document.contactModes.mapValues { (_, modes) -> modes.toMutableMap() }.toMutableMap()
+        document.contactsByType.forEach { (key, assignments) ->
+            assignments.filterValues(shouldClear).keys.forEach { type ->
+                updatedModes.getOrPut(key) { mutableMapOf() }[type] = ContactCharacterMode.Random
+            }
+        }
+        val cleanedModes = updatedModes.filterValues { it.isNotEmpty() }
+        val updatedLabels = document.contactLabels.filterKeys { key ->
+            key in updatedContactsByType || key in legacyContacts || key in cleanedModes
+        }
+        val updatedDefaults = document.contactDefaultsByType.filterValues { !shouldClear(it) }
+        val updatedRandomPools = document.contactRandomPoolsByType.mapValues { (_, pool) ->
+            pool.filterNot(shouldClear)
+        }.filterValues { it.isNotEmpty() }
+        val updatedContactRandomPools = document.contactRandomPoolsByContact.mapValues { (_, pools) ->
+            pools.mapValues { (_, pool) -> pool.filterNot(shouldClear) }.filterValues { it.isNotEmpty() }
+        }.filterValues { it.isNotEmpty() }
+        write(document.copy(
+            player = document.player?.takeUnless(shouldClear),
+            contacts = legacyContacts,
+            playerByType = updatedPlayerByType,
+            playerMonsterRoster = updatedBench,
+            activePlayerMonster = updatedActiveMonster,
+            contactsByType = updatedContactsByType,
+            contactModes = cleanedModes,
+            contactLabels = updatedLabels,
+            contactDefaultsByType = updatedDefaults,
+            contactRandomPoolsByType = updatedRandomPools,
+            contactRandomPoolsByContact = updatedContactRandomPools,
+        ))
+    }
+
     private fun CharacterReference.validate() {
         require(packId.isNotBlank() && packId.length <= MaxIdentifierLength) { "Pack id is invalid" }
         require(characterId.isNotBlank() && characterId.length <= MaxIdentifierLength) { "Character id is invalid" }

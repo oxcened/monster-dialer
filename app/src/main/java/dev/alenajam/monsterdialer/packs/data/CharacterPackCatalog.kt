@@ -27,7 +27,7 @@ private data class CharacterPackCatalogDocument(
 )
 
 /** A small, atomic catalog for packs already copied to app-private storage. */
-class CharacterPackCatalog(
+open class CharacterPackCatalog(
     private val storageRoot: File,
     private val clock: () -> Long = System::currentTimeMillis,
     private val json: Json = Json { ignoreUnknownKeys = false; explicitNulls = false }
@@ -46,7 +46,7 @@ class CharacterPackCatalog(
     }
 
     @Synchronized
-    fun recordInstallation(manifest: CharacterPackManifest): InstalledCharacterPackRecord {
+    open fun recordInstallation(manifest: CharacterPackManifest): InstalledCharacterPackRecord {
         val existing = _packs.value
         val previous = existing.firstOrNull { it.id == manifest.id }
         val record = InstalledCharacterPackRecord(

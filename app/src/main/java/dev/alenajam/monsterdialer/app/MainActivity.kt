@@ -251,6 +251,11 @@ class MainActivity : AppCompatActivity() {
                                 RetroCallDetailScreen(onNavigateBack = onNavigateBack)
                             }
                         },
+                        aboutContent = { onNavigateBack ->
+                            AppTheme(darkTheme = false) {
+                                MonsterAboutScreen(onNavigateBack = onNavigateBack)
+                            }
+                        },
                         settingsSubpages = listOf(
                         SettingsSubpage(
                             id = CharacterSettingsPage.PlayerCharacter.id,

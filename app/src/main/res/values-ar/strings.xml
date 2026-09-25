@@ -193,7 +193,7 @@
     <string name="remove_character_with_radiant_variant_in_use_message">سيؤدي حذف %1$s إلى إزالة النسختين العادية والمتألقة وإلغاء تعيينهما منك ومن جهات اتصالك.</string>
     <string name="remove_character_pack_in_use_message" comment="Confirmation dialog message when deleting a pack in use; %1$s is the character pack name.">هذه الحزمة قيد الاستخدام حاليًا. ستؤدي إزالتها إلى إلغاء تعيين شخصياتها منك ومن جهات اتصالك.</string>
     <string name="regular">عادي</string><string name="characters_help_title">دليل الشخصيات</string><string name="characters_help_description">تعرّف على شخصيات MonsterDialer.</string><string name="characters_help_intro_title">مجموعتك</string><string name="characters_help_intro_message">تتيح لك علامة الشخصيات تخصيص كل مكالمة لك ولجهات اتصالك.</string>
-    <string name="characters_help_creating_title">إنشاء شخصيات</string><string name="characters_help_creating_message">اضغط «إضافة مدرب» أو «إضافة وحش» واختر صوراً من المعرض لـ:</string><string name="characters_help_creating_sprites_front"><b>الرسم الأمامي:</b> يظهر عند اتصال جهة اتصال.</string><string name="characters_help_creating_sprites_back"><b>الرسم الخلفي:</b> شخصيتك في المعارك.</string><string name="characters_help_advanced_title">إحصاءات متقدمة</string><string name="characters_help_advanced_message">لل وحوش، اضبط المستوى وأقصى نقاط الصحة من «متقدم»، ويمكنك تفعيل حالة «متألق».</string>
+    <string name="characters_help_creating_title">إنشاء شخصيات</string><string name="characters_help_creating_message">اضغط «إضافة مدرب» أو «إضافة وحش» واختر صوراً من المعرض لـ:</string><string name="characters_help_creating_sprites_front"><b>الرسم الأمامي:</b> يظهر عند اتصال جهة اتصال.</string><string name="characters_help_creating_sprites_back"><b>الرسم الخلفي:</b> شخصيتك في المعارك.</string><string name="characters_help_advanced_title">إحصاءات متقدمة</string><string name="characters_help_advanced_message">بالنسبة للوحوش، اضبط المستوى وأقصى نقاط الصحة من «متقدم»، ويمكنك تفعيل حالة «متألق».</string>
     <string name="characters_help_sharing_title">المشاركة والاستيراد</string><string name="characters_help_sharing_message">يستخدم MonsterDialer نوعين من الملفات:</string><string name="characters_help_sharing_files_character"><b>.monstercharacter:</b> شخصية بإحصاءات ورسومات.</string><string name="characters_help_sharing_files_pack"><b>.monsterpack:</b> مجموعة شخصيات.</string><string name="characters_help_sharing_how_to">اضغط مطولاً على شخصية لتصديرها. للاستيراد، افتح ملفاً مستلماً أو استخدم «استيراد شخصية».</string>
     <string name="characters_help_packs_title">إنشاء حزم</string><string name="characters_help_packs_message">أنشئ حزمة من «حزم الشخصيات»، واختر الوحوش ثم صدّر ملف .monsterpack.</string><string name="characters_help_packs_import_title">استيراد حزم الشخصيات</string><string name="characters_help_packs_import_message">اضغط «استيراد حزمة» لإضافة ملف .monsterpack شاركه معك شخص ما. تصبح الشخصيات المستوردة متاحة للاختيار عند تفعيل الحزمة. لا تستورد إلا الرسومات والأصوات التي أنشأتها أو تملك ترخيصًا لاستخدامها.</string><string name="characters_help_radiants_title">اكتشاف متألق</string><string name="characters_help_radiants_message">الوحوش المتألقة نادرة. تُفتح متغيرات الحزم عند مواجهتها في البرية أثناء مكالمة.</string>
     <string name="characters_help_management_title">إدارة المجموعة</string><string name="characters_help_management_message">اضغط مطولاً على شخصية في «وحوشك» أو «مدربوك» لتعديلها أو مشاركتها أو حذفها.</string><string name="characters_help_assignments_title">تخصيص المكالمات</string><string name="characters_help_assignments_message">يمكن استخدام الشخصيات بطريقتين:</string><string name="characters_help_assignments_player"><b>شخصية اللاعب:</b> صورتك الرمزية في كل مكالمة.</string><string name="characters_help_assignments_contact"><b>شخصيات جهات الاتصال:</b> عيّن وحوشاً أو مدربين لجهات الاتصال؛ سيظهرون كخصوم عند اتصالهم.</string>
@@ -325,14 +325,14 @@
     <string name="online_profile_delete_guide_title">حذف ملفك الشخصي</string>
     <string name="online_profile_delete_guide_message">اضغط على «حذف الملف الشخصي» لإزالة بيانات ملفك الشخصي المنشورة نهائيًا. لن يتمكن أي شخص لديه رابط المشاركة من رؤية فريقك بعد الآن. إذا فعّلت ملفًا شخصيًا مرة أخرى لاحقًا، فسيكون له رابط مشاركة جديد.</string>
     <string name="characters_help_character_list_title">قائمة الشخصيات</string>
-    <string name="learn_about_radiants">حول المتوهجات</string>
-    <string name="open_radiants_guide">فتح دليل المتوهجات</string>
-    <string name="radiants_guide_title">المتوهجات</string>
-    <string name="radiants_guide_message">المتوهجات هي مظاهر بديلة نادرة للوحوش يمكنك اكتشافها وإضافتها إلى قائمتك.</string>
+    <string name="learn_about_radiants">حول النسخ المتألقة</string>
+    <string name="open_radiants_guide">فتح دليل النسخ المتألقة</string>
+    <string name="radiants_guide_title">النسخ المتألقة</string>
+    <string name="radiants_guide_message">النسخ المتألقة هي مظاهر بديلة نادرة للوحوش يمكنك اكتشافها وإضافتها إلى قائمتك.</string>
     <string name="radiants_guide_availability">• لا يمكن أن تظهر إلا الوحوش ذات النسخة المتوهجة.</string>
-    <string name="radiants_guide_unlock">• يمكن لمتوهج أن يحل محل معركة مؤهلة. يُفتح فور بدء المعركة، ولا تحتاج إلى فعل أي شيء.</string>
-    <string name="radiants_guide_assign">• بعد اكتشافه، اختر نسخته المتوهجة من شخصيتك ← الوحوش لتعيينها.</string>
-    <string name="radiants_guide_journal">• اعثر على اكتشافاتك المتوهجة وشاركها في سجل المعارك.</string>
+    <string name="radiants_guide_unlock">• يمكن لنسخة متألقة أن تحل محل معركة مؤهلة. تُفتح فور بدء المعركة، ولا تحتاج إلى فعل أي شيء.</string>
+    <string name="radiants_guide_assign">• بعد اكتشافها، اختر نسختها المتألقة من شخصيتك ← الوحوش لتعيينها.</string>
+    <string name="radiants_guide_journal">• اعثر على اكتشافاتك المتألقة وشاركها في سجل المعارك.</string>
     <string name="open_shared_online_profile_guide">فتح دليل الملفات الشخصية المتصلة المشتركة</string>
     <string name="shared_online_profile_guide_title">استخدام ملف شخصي متصل مشترك</string>
     <string name="shared_online_profile_guide_message">عندما يشارك شخص ما رابط ملف شخصي متصل معك، يمكنك ربط فريقه المشترك بإحدى جهات اتصالك لمعارك المكالمات.</string>
@@ -390,10 +390,10 @@
     <string name="contact_random_pool_continue_editing">متابعة التعديل</string>
     <string name="contact_random_pool_discard_changes">تجاهل التغييرات</string>
     <string name="import_action">استيراد</string>
-    <string name="radiant_collection_title">مجموعة الراديانت</string>
-    <string name="radiant_collection_description">عرض جميع الوحوش ومتغيراتها الراديانت، بما في ذلك المكتشفة منها.</string>
+    <string name="radiant_collection_title">مجموعة النسخ المتألقة</string>
+    <string name="radiant_collection_description">عرض جميع الوحوش ونسخها المتألقة، بما في ذلك غير المكتشفة منها.</string>
     <string name="collection_sprite">صورة %1$s</string>
-    <string name="radiant_collection_sprite">صورة %1$s الراديانت</string>
+    <string name="radiant_collection_sprite">صورة %1$s المتألقة</string>
     <string name="radiant_collection_found">مكتشف</string>
     <string name="radiant_collection_locked">مقفل</string>
     <string name="radiant_collection_regular">عادي</string>
@@ -591,6 +591,7 @@
     <string name="variant_backup_enabled">تم نسخ الأنواع احتياطيًا</string>
     <string name="variant_backup_guide_title">النسخ الاحتياطي للنوع</string>
     <string name="variant_backup_guide_message">انسخ أنواع شخصياتك القابلة للفتح احتياطيًا بشكل خاص باستخدام حساب Google. لا يؤدي ذلك مطلقًا إلى نشرها للعامة أو تحميل أعمال الشخصيات الفنية أو جهات الاتصال أو سجل المكالمات. عند تسجيل الدخول على جهاز آخر وتفعيل النسخ الاحتياطي، يستعيد MonsterDialer كل عملية فتح يجدها ويدمجها بأمان مع مجموعة ذلك الجهاز.</string>
+    <string name="variant_backup_retry">إعادة محاولة نسخ المتغيرات احتياطيًا</string>
     <string name="dial_search_number_prefix">رقم/</string>
     <string name="dial_search_results">التطابقات</string>
     <string name="dial_search_more">المزيد</string>

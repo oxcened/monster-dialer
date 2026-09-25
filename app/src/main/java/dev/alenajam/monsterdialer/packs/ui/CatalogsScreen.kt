@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
@@ -42,14 +43,19 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import dev.alenajam.monsterdialer.R
 import dev.alenajam.monsterdialer.app.ui.RetroConfirmationDialog
+import dev.alenajam.monsterdialer.app.ui.RetroFooter
 import dev.alenajam.monsterdialer.app.ui.RetroMenuWindow
 import dev.alenajam.monsterdialer.app.ui.RetroSelectableRow
 import dev.alenajam.monsterdialer.packs.data.RemotePackCatalogPack
+import dev.alenajam.opendialer.feature.settings.LocalSettingsSubpageNavigator
 
 private val CatalogPixelFont = FontFamily(Font(R.font.ui_pixel_font))
 
 @Composable
-fun ColumnScope.CatalogsScreen(viewModel: CatalogsViewModel = hiltViewModel()) {
+fun ColumnScope.CatalogsScreen(
+    viewModel: CatalogsViewModel = hiltViewModel(),
+) {
+    val navigator = LocalSettingsSubpageNavigator.current
     val state by viewModel.state.collectAsStateWithLifecycle()
     val context = LocalContext.current
     val catalogUrlLabel = stringResource(R.string.catalog_url_label)
@@ -115,42 +121,48 @@ fun ColumnScope.CatalogsScreen(viewModel: CatalogsViewModel = hiltViewModel()) {
     }
     Box(modifier = Modifier.fillMaxSize()) {
         Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .verticalScroll(rememberScrollState())
-                .padding(horizontal = 16.dp, vertical = 12.dp),
-            verticalArrangement = Arrangement.spacedBy(6.dp),
+            modifier = Modifier.fillMaxSize(),
         ) {
-            RetroMenuWindow {
-                Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
-                    Text(stringResource(R.string.catalogs_description))
-                    HorizontalDivider(thickness = 1.dp, color = Color(0xFF202020))
-                    RetroSelectableRow(selected = true, onClick = { addDialogOpen = true }) {
-                        Text(stringResource(R.string.add_catalog).uppercase(Locale.ROOT), fontFamily = CatalogPixelFont, fontSize = 18.sp, modifier = Modifier.padding(vertical = 2.dp, horizontal = 6.dp))
-                    }
+            Column(
+                modifier = Modifier
+                    .weight(1f)
+                    .verticalScroll(rememberScrollState())
+                    .padding(horizontal = 16.dp, vertical = 12.dp),
+                verticalArrangement = Arrangement.spacedBy(6.dp),
+            ) {
+                Text(stringResource(R.string.catalogs_description))
+                HorizontalDivider(thickness = 1.dp, color = Color(0xFF202020))
+                RetroSelectableRow(selected = true, onClick = { addDialogOpen = true }) {
+                    Text(stringResource(R.string.add_catalog).uppercase(Locale.ROOT), fontFamily = CatalogPixelFont, fontSize = 18.sp, modifier = Modifier.padding(vertical = 2.dp, horizontal = 6.dp))
+                }
+                if (state.sources.isEmpty()) {
+                    Text(stringResource(R.string.catalogs_empty))
+                }
+                state.sources.forEach { source ->
+                    val load = state.loads[source.url]
+                    CatalogSourceContent(
+                        load = load,
+                        selectedPack = selectedPack,
+                        installingPackId = state.installingPackId,
+                        onRefresh = { viewModel.refresh(source.url) },
+                        onRemove = { pendingRemoval = source.url },
+                        onCopy = {
+                            context.copyToClipboard(catalogUrlLabel, source.url)
+                            Toast.makeText(context, R.string.catalog_url_copied, Toast.LENGTH_SHORT).show()
+                        },
+                        onInstall = {
+                            selectedPack = it
+                            pendingInstall = it
+                        },
+                    )
                 }
             }
-            if (state.sources.isEmpty()) {
-                RetroMenuWindow { Text(stringResource(R.string.catalogs_empty)) }
-            }
-            state.sources.forEach { source ->
-                val load = state.loads[source.url]
-                CatalogSourceContent(
-                    load = load,
-                    selectedPack = selectedPack,
-                    installingPackId = state.installingPackId,
-                    onRefresh = { viewModel.refresh(source.url) },
-                    onRemove = { pendingRemoval = source.url },
-                    onCopy = {
-                        context.copyToClipboard(catalogUrlLabel, source.url)
-                        Toast.makeText(context, R.string.catalog_url_copied, Toast.LENGTH_SHORT).show()
-                    },
-                    onInstall = {
-                        selectedPack = it
-                        pendingInstall = it
-                    },
-                )
-            }
+            RetroFooter(
+                onBack = { navigator?.navigateBack() },
+                backKey = stringResource(R.string.retro_key_b),
+                backLabel = stringResource(R.string.back),
+                modifier = Modifier.navigationBarsPadding().padding(horizontal = 2.dp),
+            )
         }
 
         pendingRemoval?.let { url ->

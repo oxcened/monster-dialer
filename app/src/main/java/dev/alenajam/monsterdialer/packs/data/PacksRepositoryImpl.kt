@@ -14,6 +14,7 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.io.File
+import java.io.InputStream
 import java.util.zip.ZipFile
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -43,13 +44,13 @@ class PacksRepositoryImpl @Inject constructor(
         }
     }
 
-    private fun installBundledPacksIfNeeded() {
+    private suspend fun installBundledPacksIfNeeded() {
         val bundledManifest = readBundledPackManifest()
-        val installed = catalog.list().firstOrNull { it.id == bundledManifest.id }
+        val installedRecord = catalog.list().firstOrNull { it.id == bundledManifest.id }
         val activeManifest = File(storageRoot, "${bundledManifest.id}/active/${CharacterPackValidator.ManifestPath}")
-        if (installed?.version == bundledManifest.version && activeManifest.isFile) return
+        if (installedRecord?.version == bundledManifest.version && activeManifest.isFile) return
 
-        app.assets.open(BundledOddBunchAssetPath).use(installer::install)
+        app.assets.open(BundledOddBunchAssetPath).use { installAndClearAssignments(it) }
     }
 
     private fun readBundledPackManifest(): CharacterPackManifest {
@@ -82,14 +83,15 @@ class PacksRepositoryImpl @Inject constructor(
 
     override suspend fun importPack(file: File): Result<Unit> = withContext(Dispatchers.IO) {
         runCatching {
-            file.inputStream().use(installer::install)
+            file.inputStream().use { installAndClearAssignments(it) }
             refreshPacks()
         }
     }
 
     suspend fun importPackFromUri(uri: Uri): Result<Unit> = withContext(Dispatchers.IO) {
         runCatching {
-            app.contentResolver.openInputStream(uri)?.use(installer::install) ?: throw Exception("Unable to open stream")
+            app.contentResolver.openInputStream(uri)?.use { installAndClearAssignments(it) }
+                ?: throw Exception("Unable to open stream")
             refreshPacks()
         }
     }
@@ -142,6 +144,19 @@ class PacksRepositoryImpl @Inject constructor(
             if (total > MaxArchiveBytes) throw CharacterPackValidationException("Pack archive is too large")
             output.write(buffer, 0, read)
         }
+    }
+
+    private fun CharacterPackManifest.references(): Set<CharacterReference> = characters.flatMapTo(mutableSetOf()) { character ->
+        character.visualVariants.map { variant -> CharacterReference(id, character.id, variant.id) }
+    }
+
+    private suspend fun installAndClearAssignments(source: InputStream): InstalledCharacterPack {
+        val installed = installer.install(source)
+        assignmentRepository.clearAssignmentsMissingFromPack(
+            installed.manifest.id,
+            installed.manifest.references(),
+        )
+        return installed
     }
 
     private companion object {

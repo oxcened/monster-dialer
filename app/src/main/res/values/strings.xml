@@ -609,4 +609,5 @@ Reason: %1$s</string>
     <string name="favorite_phone_type_number" comment="Favorite contact summary. %1$s is the phone type and %2$s is the phone number.">%1$s • %2$s</string>
     <string name="call_log_just_now" comment="Call-log time shown for calls less than one minute old.">Just now</string>
     <string name="new_contact_short" comment="Compact command for creating a contact.">New</string>
+    <string name="variant_backup_retry">Retry variant backup</string>
 </resources>
