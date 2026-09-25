@@ -118,25 +118,19 @@ fun OnlineProfileSection(viewModel: OnlineProfileSettingsViewModel = hiltViewMod
         }
     }
     androidx.compose.runtime.LaunchedEffect(viewModel, googleServerClientId) {
-        viewModel.signInRequests.collectLatest {
+        viewModel.credentialRequest.collectLatest { request ->
+            if (request == null) return@collectLatest
             val serverClientId = googleServerClientId
             if (serverClientId == null) {
                 viewModel.failGoogleSignIn(googleSignInNotConfigured)
             } else {
                 runCatching { GoogleProfileSignIn.idToken(context, serverClientId) }
-                    .onSuccess(viewModel::completeGoogleSignIn)
-                    .onFailure { exception -> viewModel.failGoogleSignIn(exception.message) }
-            }
-    }
-    }
-    androidx.compose.runtime.LaunchedEffect(viewModel, googleServerClientId) {
-        viewModel.accountDeletionRequests.collectLatest {
-            val serverClientId = googleServerClientId
-            if (serverClientId == null) {
-                viewModel.failGoogleSignIn(googleSignInNotConfigured)
-            } else {
-                runCatching { GoogleProfileSignIn.idToken(context, serverClientId) }
-                    .onSuccess(viewModel::deleteAccount)
+                    .onSuccess { idToken ->
+                        when (request) {
+                            OnlineProfileCredentialRequest.SignIn -> viewModel.completeGoogleSignIn(idToken)
+                            OnlineProfileCredentialRequest.DeleteAccount -> viewModel.deleteAccount(idToken)
+                        }
+                    }
                     .onFailure { exception -> viewModel.failGoogleSignIn(exception.message) }
             }
         }

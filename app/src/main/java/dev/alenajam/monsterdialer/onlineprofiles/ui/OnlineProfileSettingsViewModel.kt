@@ -9,8 +9,6 @@ import dev.alenajam.monsterdialer.onlineprofiles.data.OnlineAccountDataDeletion
 import dev.alenajam.monsterdialer.onlineprofiles.data.OwnedOnlineProfile
 import javax.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.MutableSharedFlow
-import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collect
@@ -23,6 +21,12 @@ enum class OnlineProfileOperation {
     KeepOnline,
     Delete,
     DeleteVariantBackup,
+    DeleteAccount,
+}
+
+/** A credential prompt remains pending until the UI completes or cancels it. */
+enum class OnlineProfileCredentialRequest {
+    SignIn,
     DeleteAccount,
 }
 
@@ -39,10 +43,8 @@ class OnlineProfileSettingsViewModel @Inject constructor(
     private val removeAuthStateListener = publisher.observeAuthState { signedIn ->
         _isSignedIn.value = signedIn
     }
-    private val _signInRequests = MutableSharedFlow<Unit>()
-    val signInRequests: SharedFlow<Unit> = _signInRequests
-    private val _accountDeletionRequests = MutableSharedFlow<Unit>()
-    val accountDeletionRequests: SharedFlow<Unit> = _accountDeletionRequests
+    private val _credentialRequest = MutableStateFlow<OnlineProfileCredentialRequest?>(null)
+    val credentialRequest: StateFlow<OnlineProfileCredentialRequest?> = _credentialRequest.asStateFlow()
     private val _isWorking = MutableStateFlow(false)
     val isWorking: StateFlow<Boolean> = _isWorking.asStateFlow()
     private val _operation = MutableStateFlow<OnlineProfileOperation?>(null)
@@ -81,12 +83,15 @@ class OnlineProfileSettingsViewModel @Inject constructor(
         if (_isWorking.value) return@launch
         _isWorking.value = true
         _operation.value = OnlineProfileOperation.SignIn
-        _signInRequests.emit(Unit)
+        _credentialRequest.value = OnlineProfileCredentialRequest.SignIn
     }
 
-    fun requestAccountDeletion() = viewModelScope.launch { _accountDeletionRequests.emit(Unit) }
+    fun requestAccountDeletion() {
+        _credentialRequest.value = OnlineProfileCredentialRequest.DeleteAccount
+    }
 
     fun deleteAccount(idToken: String) = viewModelScope.launch {
+        _credentialRequest.value = null
         _isWorking.value = true
         _operation.value = OnlineProfileOperation.DeleteAccount
         try {
@@ -103,6 +108,7 @@ class OnlineProfileSettingsViewModel @Inject constructor(
     }
 
     fun completeGoogleSignIn(idToken: String) = viewModelScope.launch {
+        _credentialRequest.value = null
         _isWorking.value = true
         _operation.value = OnlineProfileOperation.SignIn
         try {
@@ -123,6 +129,7 @@ class OnlineProfileSettingsViewModel @Inject constructor(
     }
 
     fun failGoogleSignIn(message: String?) {
+        _credentialRequest.value = null
         pendingVariantBackupSignIn = false
         _error.value = message
         _operation.value = null
