@@ -3,7 +3,6 @@ package dev.alenajam.monsterdialer.onlineprofiles.ui
 import android.content.Intent
 import android.widget.Toast
 import androidx.compose.foundation.Canvas
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.Box
@@ -16,16 +15,11 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.width
 import androidx.compose.material3.AlertDialog
-import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.DropdownMenu
-import androidx.compose.material3.DropdownMenuItem
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ModalBottomSheet
-import androidx.compose.material3.OutlinedIconButton
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.rememberModalBottomSheetState
@@ -55,12 +49,10 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import dev.alenajam.monsterdialer.R
-import dev.alenajam.monsterdialer.app.ui.LocalMonsterAppIcons
 import dev.alenajam.monsterdialer.app.ui.RetroContextMenuDialog
 import dev.alenajam.monsterdialer.app.ui.RetroContextMenuItem
 import dev.alenajam.monsterdialer.app.ui.RetroSelectableRow
 import dev.alenajam.monsterdialer.app.ui.RetroMenuWindow
-import dev.alenajam.monsterdialer.app.ui.RetroDoubleBorderTextBox
 import dev.alenajam.monsterdialer.app.ui.RetroActionButton
 import dev.alenajam.monsterdialer.app.ui.RetroFooter
 import dev.alenajam.monsterdialer.app.ui.RetroScreenHorizontalPadding
@@ -69,15 +61,12 @@ import dev.alenajam.monsterdialer.characters.ui.ContextualGuideButton
 import dev.alenajam.monsterdialer.onlineprofiles.data.ProfileSharingLink
 import dev.alenajam.monsterdialer.onlineprofiles.data.ProfileSharingQrCode
 import dev.alenajam.monsterdialer.onlineprofiles.data.QrCodeMatrix
-import dev.alenajam.opendialer.core.common.ui.AppIcon
-import dev.alenajam.opendialer.core.common.ui.LocalAppIcons
 import dev.alenajam.opendialer.feature.settings.LocalSettingsSubpageNavigator
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 private val ProfilePixelFont = FontFamily(Font(R.font.ui_pixel_font))
 private val ProfileInk = Color(0xFF202020)
-private val ProfileLavender = Color(0xFFE5E5DA)
 
 @Composable
 fun OnlineProfileSection(viewModel: OnlineProfileSettingsViewModel = hiltViewModel()) {
@@ -481,203 +470,6 @@ fun OnlineProfileSection(viewModel: OnlineProfileSettingsViewModel = hiltViewMod
         },
         dismissButton = { TextButton(onClick = { confirmDeleteAccount = false }) { Text(stringResource(R.string.cancel)) } },
     )
-    return
-
-    if (profile == null) {
-        Box(modifier = Modifier.fillMaxWidth().padding(8.dp)) {
-            RetroMenuWindow {
-            Column(
-                verticalArrangement = Arrangement.spacedBy(8.dp),
-            ) {
-                Row(verticalAlignment = Alignment.CenterVertically) {
-                    Text(
-                        stringResource(R.string.online_profile_title),
-                        modifier = Modifier.weight(1f),
-                        fontFamily = ProfilePixelFont,
-                        fontSize = 16.sp,
-                        color = ProfileInk,
-                    )
-                    ContextualGuideButton(
-                        contents = ownedOnlineProfileGuideContents(),
-                        modifier = Modifier.size(32.dp),
-                    )
-                    if (isSignedIn) {
-                        OnlineProfileMenu(
-                            working = working,
-                            onSignOut = signOut,
-                        )
-                    }
-                }
-                Text(
-                    stringResource(R.string.online_profile_description),
-                    fontFamily = ProfilePixelFont,
-                    fontSize = 16.sp,
-                    color = ProfileInk.copy(alpha = 0.76f),
-                )
-                RetroSelectableRow(
-                    selected = true,
-                    onClick = { if (!working) viewModel.enable() },
-                ) {
-                    Text(
-                        text = stringResource(
-                            if (isSignedIn) R.string.online_profile_enable else R.string.online_profile_sign_in_google,
-                        ).uppercase(),
-                        fontFamily = ProfilePixelFont,
-                        fontSize = 16.sp,
-                        color = ProfileInk,
-                    )
-                }
-                Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
-                    Text(
-                        stringResource(R.string.online_profile_privacy_note),
-                        modifier = Modifier.fillMaxWidth(),
-                        textAlign = TextAlign.Center,
-                        fontFamily = ProfilePixelFont,
-                        fontSize = 16.sp,
-                        color = ProfileInk.copy(alpha = 0.72f),
-                    )
-                }
-            }
-            }
-        }
-    } else {
-        val currentProfile = requireNotNull(profile)
-        val sharingLink = ProfileSharingLink.urlFor(currentProfile.publicProfileId)
-        val shareText = stringResource(
-            R.string.online_profile_share_text,
-            sharingLink,
-        )
-        val shareTitle = stringResource(R.string.online_profile_share)
-        Box(modifier = Modifier.fillMaxWidth().padding(8.dp)) {
-            RetroMenuWindow {
-            Column(
-                verticalArrangement = Arrangement.spacedBy(8.dp),
-            ) {
-                Row(verticalAlignment = Alignment.CenterVertically) {
-                    Text(
-                        stringResource(R.string.online_profile_title),
-                        modifier = Modifier.weight(1f),
-                        fontFamily = ProfilePixelFont,
-                        fontSize = 16.sp,
-                        color = ProfileInk,
-                    )
-                    ContextualGuideButton(
-                        contents = ownedOnlineProfileGuideContents(),
-                        modifier = Modifier.size(32.dp),
-                    )
-                    OnlineProfileMenu(
-                        working = working,
-                        onSignOut = signOut.takeIf { isSignedIn },
-                        onRegenerate = { confirmRegenerate = true },
-                        onDelete = { confirmDelete = true },
-                    )
-                }
-                Text(
-                    stringResource(R.string.online_profile_enabled),
-                    fontFamily = ProfilePixelFont,
-                    fontSize = 16.sp,
-                    color = ProfileInk.copy(alpha = 0.76f),
-                )
-                RetroSelectableRow(
-                    selected = true,
-                    onClick = {
-                        context.startActivity(Intent.createChooser(Intent(Intent.ACTION_SEND).apply {
-                            type = "text/plain"; putExtra(Intent.EXTRA_TEXT, shareText)
-                        }, shareTitle))
-                    },
-                ) {
-                    Text(
-                        text = stringResource(R.string.share).uppercase(),
-                        fontFamily = ProfilePixelFont,
-                        fontSize = 16.sp,
-                        color = ProfileInk,
-                    )
-                }
-                RetroSelectableRow(
-                    selected = false,
-                    onClick = { showQrCode = true },
-                ) {
-                    Text(
-                        text = stringResource(R.string.online_profile_qr_action).uppercase(),
-                        fontFamily = ProfilePixelFont,
-                        fontSize = 16.sp,
-                        color = ProfileInk,
-                    )
-                }
-                if (operation == OnlineProfileOperation.Regenerate || operation == OnlineProfileOperation.Delete) {
-                    Row(
-                        horizontalArrangement = Arrangement.spacedBy(8.dp),
-                        verticalAlignment = Alignment.CenterVertically,
-                    ) {
-                        CircularProgressIndicator(modifier = Modifier.size(20.dp), strokeWidth = 2.dp)
-                        Text(
-                            if (operation == OnlineProfileOperation.Regenerate) regeneratingDescription else deletingDescription,
-                            style = MaterialTheme.typography.bodySmall,
-                        )
-                    }
-                }
-            }
-            }
-        }
-        if (showQrCode) {
-            ProfileSharingQrCodeSheet(
-                sharingLink = sharingLink,
-                onDismiss = { showQrCode = false },
-            )
-        }
-        if (showRetentionCheckIn) {
-            Column(
-                    modifier = Modifier.fillMaxWidth().padding(top = 8.dp, start = 8.dp, end = 8.dp),
-                    verticalArrangement = Arrangement.spacedBy(8.dp),
-                ) {
-                    Text(
-                        stringResource(R.string.online_profile_check_in_title),
-                        style = MaterialTheme.typography.titleMedium,
-                        color = ProfileInk,
-                        fontFamily = ProfilePixelFont,
-                    )
-                    Text(
-                        stringResource(R.string.online_profile_check_in_description),
-                        style = MaterialTheme.typography.bodyMedium,
-                        color = ProfileInk.copy(alpha = 0.8f),
-                        fontFamily = ProfilePixelFont,
-                    )
-                    RetroSelectableRow(
-                        selected = true,
-                        onClick = viewModel::keepOnline,
-                    ) {
-                        Text(
-                            text = stringResource(R.string.online_profile_keep_online).uppercase(),
-                            fontFamily = ProfilePixelFont,
-                            fontSize = 18.sp,
-                            color = ProfileInk,
-                        )
-                    }
-            }
-        }
-    }
-    if (confirmDelete) AlertDialog(
-        onDismissRequest = { confirmDelete = false },
-        title = { Text(stringResource(R.string.online_profile_delete)) },
-        text = { Text(stringResource(R.string.online_profile_delete_message)) },
-        confirmButton = {
-            TextButton(
-                onClick = { confirmDelete = false; viewModel.delete() },
-                colors = ButtonDefaults.textButtonColors(contentColor = MaterialTheme.colorScheme.error),
-            ) {
-                Text(stringResource(R.string.online_profile_delete))
-            }
-        },
-        dismissButton = { TextButton(onClick = { confirmDelete = false }) { Text(stringResource(R.string.cancel)) } },
-    )
-    if (confirmRegenerate) AlertDialog(
-        onDismissRequest = { confirmRegenerate = false },
-        title = { Text(stringResource(R.string.online_profile_regenerate)) },
-        text = { Text(stringResource(R.string.online_profile_regenerate_message)) },
-        confirmButton = { TextButton(onClick = { confirmRegenerate = false; viewModel.regenerate() }) { Text(stringResource(R.string.online_profile_regenerate)) } },
-        dismissButton = { TextButton(onClick = { confirmRegenerate = false }) { Text(stringResource(R.string.cancel)) } },
-    )
-    error?.let { AlertDialog(onDismissRequest = viewModel::clearError, title = { Text(stringResource(R.string.online_profile_error_title)) }, text = { Text(it) }, confirmButton = { TextButton(onClick = viewModel::clearError) { Text(stringResource(R.string.close)) } }) }
 }
 
 
@@ -715,50 +507,6 @@ private fun ProfileSharingQrCodeSheet(
                 style = MaterialTheme.typography.bodyMedium,
                 color = MaterialTheme.colorScheme.onSecondaryContainer.copy(alpha = 0.76f),
             )
-        }
-    }
-}
-
-@Composable
-private fun OnlineProfileMenu(
-    working: Boolean,
-    onSignOut: (() -> Unit)?,
-    onRegenerate: (() -> Unit)? = null,
-    onDelete: (() -> Unit)? = null,
-    modifier: Modifier = Modifier,
-) {
-    var expanded by remember { mutableStateOf(false) }
-    Box(modifier = modifier) {
-        IconButton(
-            onClick = { expanded = true },
-            enabled = !working,
-            modifier = Modifier.size(32.dp),
-        ) {
-            AppIcon(
-                LocalAppIcons.current.more,
-                stringResource(R.string.online_profile_more_options),
-                Modifier.size(24.dp),
-            )
-        }
-        DropdownMenu(expanded = expanded && !working, onDismissRequest = { expanded = false }) {
-            onRegenerate?.let { action ->
-                DropdownMenuItem(
-                    text = { Text(stringResource(R.string.online_profile_regenerate)) },
-                    onClick = { expanded = false; action() },
-                )
-            }
-            onSignOut?.let { action ->
-                DropdownMenuItem(
-                    text = { Text(stringResource(R.string.online_profile_sign_out_google)) },
-                    onClick = { expanded = false; action() },
-                )
-            }
-            onDelete?.let { action ->
-                DropdownMenuItem(
-                    text = { Text(stringResource(R.string.online_profile_delete), color = MaterialTheme.colorScheme.error) },
-                    onClick = { expanded = false; action() },
-                )
-            }
         }
     }
 }
