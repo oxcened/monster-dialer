@@ -416,6 +416,7 @@ Reason: %1$s</string>
     <string name="retro_picker_guide" comment="Compact GSC-style menu action to open the guide.">HELP</string>
     <string name="contact_row_actions" comment="Accessibility label for the contact-row overflow menu trigger.">Contact actions</string>
     <string name="linked_online_profile_title" comment="Heading in a contact's character settings for its associated Online Profile.">Linked Online Profile</string>
+    <string name="contact_row_link_online_profile" comment="Contact-row context-menu action to link an Online Profile.">Link</string>
     <string name="linked_online_profile_none" comment="Empty-state message when a contact has no associated Online Profile.">No Online Profile is linked to this contact.</string>
     <string name="linked_online_profile_link_hint" comment="Instruction shown when a contact has no linked profile. It refers to opening a profile link shared through MonsterDialer.">Open a shared MonsterDialer profile link to associate one with this contact.</string>
     <string name="linked_online_profile_description" comment="Label before the Online Profile details associated with a contact. Keep the trailing colon or use equivalent punctuation.">This contact is linked to this Online Profile:</string>
@@ -423,6 +424,7 @@ Reason: %1$s</string>
     <string name="linked_online_profile_active_message" comment="Explanation shown after linking a contact to an Online Profile. The team is the contact's trainer and monster used during calls.">This contact’s shared team can be used during calls. Remove the link at any time to return to the contact’s local team.</string>
     <string name="linked_online_profile_id_label" comment="Label before the technical identifier of a linked Online Profile.">Profile ID</string>
     <string name="unlink_online_profile" comment="Button that removes a contact's association with an Online Profile.">Unlink Online Profile</string>
+    <string name="unlink_online_profile_action" comment="Compact action that removes the linked Online Profile from a contact.">Unlink</string>
     <string name="unlink_online_profile_confirmation_title" comment="Title of the confirmation dialog before unlinking an Online Profile from a contact.">Remove profile link?</string>
     <string name="unlink_online_profile_confirmation_message" comment="Confirmation dialog message for unlinking an Online Profile. The action affects only this device and does not change the shared profile.">This removes the link to the shared Online Profile on this device. The contact will use their local team again. The shared profile and its owner’s data will not be changed.</string>
     <string name="shared_profile_import_title" comment="Title of the screen opened from a shared MonsterDialer Online Profile link.">Shared profile</string>

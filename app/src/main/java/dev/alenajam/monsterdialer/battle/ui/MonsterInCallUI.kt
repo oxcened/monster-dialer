@@ -131,7 +131,7 @@ class MonsterInCallUI @Inject constructor(
 
         // Here you provide the MonsterDialer specific UI!
         AppProviders(
-            icons = rememberMonsterIcons(),
+            icons = rememberMonsterIcons(forceLightDialpad = true),
             themeExtension = AppThemeExtension(
                 typography = rememberMonsterTypography(MaterialTheme.typography)
                 // backgroundPainter = { painterResource(R.drawable.monster_bg) }
@@ -234,7 +234,7 @@ class MonsterInCallUI @Inject constructor(
 
                             if (uiState.isIncoming) {
                                 MonsterIncomingCallControls(
-                                    icons = rememberMonsterIcons(),
+                                    icons = rememberMonsterIcons(forceLightDialpad = true),
                                     controlsEnabled = true,
                                     onHangup = viewModel::hangup,
                                     onAnswer = viewModel::answer,
@@ -242,7 +242,7 @@ class MonsterInCallUI @Inject constructor(
                                 )
                             } else {
                                 MonsterInCallControls(
-                                    icons = rememberMonsterIcons(),
+                                    icons = rememberMonsterIcons(forceLightDialpad = true),
                                     isMuted = uiState.isMuted,
                                     isSpeaker = uiState.isSpeaker,
                                     audioRoutes = uiState.audioRoutes,

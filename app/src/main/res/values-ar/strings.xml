@@ -300,6 +300,7 @@
     <string name="contact_characters_action">الشخصيات</string>
     <string name="contact_row_actions">إجراءات جهة الاتصال</string>
     <string name="linked_online_profile_title">ملف شخصي مرتبط على الإنترنت</string>
+    <string name="contact_row_link_online_profile" comment="Contact-row context-menu action to link an Online Profile.">ربط</string>
     <string name="linked_online_profile_none">لا يوجد ملف شخصي على الإنترنت مرتبط بجهة الاتصال هذه.</string>
     <string name="linked_online_profile_link_hint">افتح رابط ملف شخصي مشترك في MonsterDialer لربطه بجهة الاتصال هذه.</string>
     <string name="linked_online_profile_description">جهة الاتصال هذه مرتبطة بهذا الملف الشخصي على الإنترنت:</string>
@@ -307,6 +308,7 @@
     <string name="linked_online_profile_active_message">يمكن استخدام فريق جهة الاتصال المشترك أثناء المكالمات. أزل الرابط في أي وقت للعودة إلى فريق جهة الاتصال المحلي.</string>
     <string name="linked_online_profile_id_label">معرّف الملف الشخصي</string>
     <string name="unlink_online_profile">إلغاء ربط الملف الشخصي على الإنترنت</string>
+    <string name="unlink_online_profile_action" comment="Compact action that removes the linked Online Profile from a contact.">إلغاء الربط</string>
     <string name="unlink_online_profile_confirmation_title">إزالة رابط الملف الشخصي؟</string>
     <string name="unlink_online_profile_confirmation_message">سيؤدي هذا إلى إزالة رابط الملف الشخصي المشترك على هذا الجهاز. ستستخدم جهة الاتصال فريقها المحلي مجددًا. لن يتغير الملف الشخصي المشترك أو بيانات مالكه.</string>
     <string name="shared_profile_import_title">ملف شخصي مشترك</string>
@@ -482,6 +484,7 @@
     <string name="contact_picker_search_empty_prompt" comment="Retro contact-picker prompt shown before a name is typed.">أدخل اسمًا.</string>
     <string name="contact_picker_prompt" comment="Retro contact-picker prompt that explains the next action.">اختر جهة اتصال لتعيينها.</string>
     <string name="contact_picker_open_action" comment="Retro contact-picker action that opens the selected contact.">فتح</string>
+    <string name="contact_picker_fast_scroller" comment="Accessibility label for the retro contact-picker fast scroller.">شريط التمرير السريع لقائمة جهات الاتصال</string>
     <plurals name="contact_picker_found_count" comment="Retro contact-picker search result count.">
         <item quantity="zero">لم يتم العثور على جهات اتصال.</item>
         <item quantity="one">تم العثور على %d جهة اتصال.</item>

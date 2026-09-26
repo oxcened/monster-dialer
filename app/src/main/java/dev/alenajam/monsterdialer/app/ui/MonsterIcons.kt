@@ -8,16 +8,21 @@ import dev.alenajam.opendialer.core.common.ui.IconSource
 import dev.alenajam.opendialer.core.common.ui.rememberAppIsDarkTheme
 
 @Composable
-fun rememberMonsterIcons(): AppIcons {
+fun rememberMonsterIcons(forceLightDialpad: Boolean = false): AppIcons {
     val isDarkTheme = rememberAppIsDarkTheme()
-    return remember(isDarkTheme) {
+    return remember(isDarkTheme, forceLightDialpad) {
+        val dialpadIcon = if (forceLightDialpad || !isDarkTheme) {
+            R.drawable.dial_on_light
+        } else {
+            R.drawable.dial_on_dark
+        }
         AppIcons(
             hangup = IconSource.Resource(R.drawable.hangup, tintable = false),
-            dialpad = IconSource.Resource(
-                if (isDarkTheme) R.drawable.dial_on_dark else R.drawable.dial_on_light,
+            dialpad = IconSource.Resource(dialpadIcon, tintable = false),
+            dialpadActive = IconSource.Resource(
+                if (forceLightDialpad) R.drawable.dial_on_light else R.drawable.dial_on_dark,
                 tintable = false,
             ),
-            dialpadActive = IconSource.Resource(R.drawable.dial_on_dark, tintable = false),
             mute = IconSource.Resource(R.drawable.mic_off, tintable = false),
             speaker = IconSource.Resource(R.drawable.speaker, tintable = false),
             more = IconSource.Resource(R.drawable.more, tintable = false),

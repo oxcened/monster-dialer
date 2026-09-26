@@ -270,6 +270,7 @@
     <string name="contact_characters_action">角色</string>
     <string name="contact_row_actions">联系人操作</string>
     <string name="linked_online_profile_title">已关联的在线个人资料</string>
+    <string name="contact_row_link_online_profile" comment="Contact-row context-menu action to link an Online Profile.">关联</string>
     <string name="linked_online_profile_none">此联系人未关联在线个人资料。</string>
     <string name="linked_online_profile_link_hint">打开共享的 MonsterDialer 个人资料链接以将其关联到此联系人。</string>
     <string name="linked_online_profile_description">此联系人已关联到以下在线个人资料：</string>
@@ -277,6 +278,7 @@
     <string name="linked_online_profile_active_message">可在通话期间使用此联系人的共享队伍。随时移除关联即可恢复使用联系人的本地队伍。</string>
     <string name="linked_online_profile_id_label">个人资料 ID</string>
     <string name="unlink_online_profile">取消关联在线个人资料</string>
+    <string name="unlink_online_profile_action" comment="Compact action that removes the linked Online Profile from a contact.">取消关联</string>
     <string name="unlink_online_profile_confirmation_title">移除个人资料关联？</string>
     <string name="unlink_online_profile_confirmation_message">这会移除此设备上与共享在线个人资料的关联。该联系人将再次使用其本地队伍。共享个人资料及其所有者的数据不会被更改。</string>
     <string name="shared_profile_import_title">共享个人资料</string>
@@ -452,6 +454,7 @@
     <string name="contact_picker_search_empty_prompt" comment="Retro contact-picker prompt shown before a name is typed.">请输入姓名。</string>
     <string name="contact_picker_prompt" comment="Retro contact-picker prompt that explains the next action.">选择要分配的联系人。</string>
     <string name="contact_picker_open_action" comment="Retro contact-picker action that opens the selected contact.">打开</string>
+    <string name="contact_picker_fast_scroller" comment="Accessibility label for the retro contact-picker fast scroller.">联系人列表快速滚动条</string>
     <plurals name="contact_picker_found_count" comment="Retro contact-picker search result count.">
         <item quantity="one">找到 %d 个联系人。</item>
         <item quantity="other">找到 %d 个联系人。</item>

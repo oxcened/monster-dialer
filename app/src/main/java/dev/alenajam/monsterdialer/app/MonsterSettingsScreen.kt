@@ -74,13 +74,6 @@ internal fun MonsterSettingsScreen(
         add(MonsterSettingsEntry.Section(stringResource(R.string.settings_section_general)))
         add(
         MonsterSettingsEntry.Action(
-            title = stringResource(SettingsR.string.display_options),
-            description = stringResource(SettingsR.string.display_options_description, stringResource(R.string.app_name)),
-            onClick = callbacks.onOpenDisplayOptions,
-        )
-        )
-        add(
-        MonsterSettingsEntry.Action(
             title = stringResource(SettingsR.string.customize_quick_responses),
             description = stringResource(SettingsR.string.customize_quick_responses_description),
             onClick = callbacks.onOpenQuickResponses,

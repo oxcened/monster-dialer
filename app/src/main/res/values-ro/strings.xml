@@ -286,6 +286,7 @@
     <string name="contact_characters_action">Personaje</string>
     <string name="contact_row_actions">Acțiuni contact</string>
     <string name="linked_online_profile_title">Profil online asociat</string>
+    <string name="contact_row_link_online_profile" comment="Contact-row context-menu action to link an Online Profile.">Asociază</string>
     <string name="linked_online_profile_none">Niciun profil online nu este asociat acestui contact.</string>
     <string name="linked_online_profile_link_hint">Deschide un link de profil MonsterDialer partajat pentru a-l asocia acestui contact.</string>
     <string name="linked_online_profile_description">Acest contact este asociat acestui profil online:</string>
@@ -293,6 +294,7 @@
     <string name="linked_online_profile_active_message">Echipa partajată a acestui contact poate fi utilizată în timpul apelurilor. Elimină asocierea oricând pentru a reveni la echipa locală a contactului.</string>
     <string name="linked_online_profile_id_label">ID profil</string>
     <string name="unlink_online_profile">Anulează asocierea profilului online</string>
+    <string name="unlink_online_profile_action" comment="Compact action that removes the linked Online Profile from a contact.">Dezleagă</string>
     <string name="unlink_online_profile_confirmation_title">Elimini asocierea profilului?</string>
     <string name="unlink_online_profile_confirmation_message">Aceasta elimină de pe acest dispozitiv asocierea cu profilul online partajat. Contactul va folosi din nou echipa locală. Profilul partajat și datele proprietarului nu vor fi modificate.</string>
     <string name="shared_profile_import_title">Profil partajat</string>
@@ -468,6 +470,7 @@
     <string name="contact_picker_search_empty_prompt" comment="Retro contact-picker prompt shown before a name is typed.">Introdu un nume.</string>
     <string name="contact_picker_prompt" comment="Retro contact-picker prompt that explains the next action.">Alege un contact căruia să-i atribui.</string>
     <string name="contact_picker_open_action" comment="Retro contact-picker action that opens the selected contact.">Deschide</string>
+    <string name="contact_picker_fast_scroller" comment="Accessibility label for the retro contact-picker fast scroller.">Derulare rapidă în lista de contacte</string>
     <plurals name="contact_picker_found_count" comment="Retro contact-picker search result count.">
         <item quantity="one">%d contact găsit.</item>
         <item quantity="few">%d contacte găsite.</item>
