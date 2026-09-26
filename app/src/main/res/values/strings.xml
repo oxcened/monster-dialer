@@ -206,6 +206,7 @@ Reason: %1$s</string>
     <string name="contact_picker_search_empty_prompt" comment="Retro contact-picker prompt shown before a name is typed.">Enter a name.</string>
     <string name="contact_picker_prompt" comment="Retro contact-picker prompt that explains the next action.">Choose a contact to assign.</string>
     <string name="contact_picker_open_action" comment="Retro contact-picker action that opens the selected contact.">Open</string>
+    <string name="contact_picker_fast_scroller" comment="Accessibility label for the retro contact-picker fast scroller.">Contact list fast scroller</string>
     <plurals name="contact_picker_found_count" comment="Retro contact-picker search result count.">
         <item quantity="one">%d contact found.</item>
         <item quantity="other">%d contacts found.</item>

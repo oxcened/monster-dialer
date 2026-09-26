@@ -33,6 +33,7 @@ import dev.alenajam.monsterdialer.calls.ui.RetroCallsScreen
 import dev.alenajam.monsterdialer.characters.ui.CharacterSettingsPage
 import dev.alenajam.monsterdialer.characters.ui.CharacterSettingsSummaryViewModel
 import dev.alenajam.monsterdialer.characters.ui.CharactersHomeScreen
+import dev.alenajam.monsterdialer.characters.ui.RetroAddFavoriteScreen
 import dev.alenajam.monsterdialer.characters.ui.ContactCharacterSettingsViewModel
 import dev.alenajam.monsterdialer.characters.ui.PlayerProfile
 import dev.alenajam.monsterdialer.characters.ui.ProfileMetrics
@@ -52,10 +53,15 @@ internal fun MonsterHomeScreen(
     var currentTab by rememberSaveable { mutableStateOf(MonsterHomeTab.CALLS) }
     var searchActive by rememberSaveable { mutableStateOf(false) }
     var menuOpen by remember { mutableStateOf(false) }
+    var showAddFavoritePicker by rememberSaveable { mutableStateOf(false) }
     var profileBackAction by remember { mutableStateOf<(() -> Unit)?>(null) }
 
-    BackHandler(enabled = searchActive || profileBackAction != null) {
-        if (searchActive) searchActive = false else profileBackAction?.invoke()
+    BackHandler(enabled = searchActive || showAddFavoritePicker || profileBackAction != null) {
+        when {
+            searchActive -> searchActive = false
+            showAddFavoritePicker -> showAddFavoritePicker = false
+            else -> profileBackAction?.invoke()
+        }
     }
 
     if (searchActive) {
@@ -67,6 +73,11 @@ internal fun MonsterHomeScreen(
             showDialpad = false,
             searchByName = true,
         )
+        return
+    }
+
+    if (showAddFavoritePicker) {
+        RetroAddFavoriteScreen(onNavigateBack = { showAddFavoritePicker = false })
         return
     }
 
@@ -84,14 +95,14 @@ internal fun MonsterHomeScreen(
                 MonsterHomeTab.FAVORITES -> RetroCallsScreen(
                     onOpenHistory = callbacks.onOpenHistory,
                     onOpenContacts = { currentTab = MonsterHomeTab.CONTACTS },
-                    onAddFavorite = callbacks.onAddFavorite,
+                    onAddFavorite = { showAddFavoritePicker = true },
                     onEditNumberBeforeCall = callbacks.onOpenDialpad,
                     favoritesOnly = true,
                 )
                 MonsterHomeTab.CALLS -> RetroCallsScreen(
                     onOpenHistory = callbacks.onOpenHistory,
                     onOpenContacts = { currentTab = MonsterHomeTab.CONTACTS },
-                    onAddFavorite = callbacks.onAddFavorite,
+                    onAddFavorite = { showAddFavoritePicker = true },
                     onEditNumberBeforeCall = callbacks.onOpenDialpad,
                 )
                 MonsterHomeTab.CONTACTS -> RetroContactsScreen(
