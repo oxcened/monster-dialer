@@ -413,15 +413,10 @@ class MainActivity : AppCompatActivity() {
                             title = stringResource(R.string.linked_online_profile_title),
                             description = null,
                             content = { LinkedOnlineProfileContent(contactCharacterSettingsViewModel) },
-                            actions = {
-                                ContextualGuideButton(
-                                    contents = sharedOnlineProfileGuideContents(),
-                                    contentDescription = R.string.open_shared_online_profile_guide,
-                                )
-                            },
                             isScrollable = false,
                             topContentPadding = 0.dp,
                             visibleInSettings = false,
+                            showTopBar = false,
                         ),
                         SettingsSubpage(
                             id = CharacterSettingsPage.ContactDefaults.id,

@@ -230,7 +230,7 @@ fun RetroContactsScreen(
                                     )
                                 }
                             },
-                            RetroContextMenuItem(stringResource(R.string.linked_online_profile_title)) {
+                            RetroContextMenuItem(stringResource(R.string.contact_row_link_online_profile)) {
                                 selectedContact = null
                                 coroutineScope.launch {
                                     characterSettingsViewModel.selectContact(contact)

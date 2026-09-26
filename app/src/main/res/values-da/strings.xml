@@ -276,6 +276,7 @@
     <string name="contact_characters_action">Figurer</string>
     <string name="contact_row_actions">Kontakthandlinger</string>
     <string name="linked_online_profile_title">Tilknyttet onlineprofil</string>
+    <string name="contact_row_link_online_profile" comment="Contact-row context-menu action to link an Online Profile.">Link</string>
     <string name="linked_online_profile_none">Ingen onlineprofil er knyttet til denne kontakt.</string>
     <string name="linked_online_profile_link_hint">Åbn et delt MonsterDialer-profillink for at knytte det til denne kontakt.</string>
     <string name="linked_online_profile_description">Denne kontakt er knyttet til denne onlineprofil:</string>
@@ -283,6 +284,7 @@
     <string name="linked_online_profile_active_message">Kontaktens delte hold kan bruges under opkald. Fjern tilknytningen når som helst for at vende tilbage til kontaktens lokale hold.</string>
     <string name="linked_online_profile_id_label">Profil-id</string>
     <string name="unlink_online_profile">Fjern tilknytning til onlineprofil</string>
+    <string name="unlink_online_profile_action" comment="Compact action that removes the linked Online Profile from a contact.">Fjern link</string>
     <string name="unlink_online_profile_confirmation_title">Fjern profillink?</string>
     <string name="unlink_online_profile_confirmation_message">Dette fjerner linket til den delte onlineprofil på denne enhed. Kontakten bruger igen sit lokale hold. Den delte profil og ejerens data ændres ikke.</string>
     <string name="shared_profile_import_title">Delt profil</string>
@@ -458,6 +460,7 @@
     <string name="contact_picker_search_empty_prompt" comment="Retro contact-picker prompt shown before a name is typed.">Indtast et navn.</string>
     <string name="contact_picker_prompt" comment="Retro contact-picker prompt that explains the next action.">Vælg en kontakt, der skal tildeles.</string>
     <string name="contact_picker_open_action" comment="Retro contact-picker action that opens the selected contact.">Åbn</string>
+    <string name="contact_picker_fast_scroller" comment="Accessibility label for the retro contact-picker fast scroller.">Hurtigrulning for kontaktlisten</string>
     <plurals name="contact_picker_found_count" comment="Retro contact-picker search result count.">
         <item quantity="one">%d kontakt fundet.</item>
         <item quantity="other">%d kontakter fundet.</item>

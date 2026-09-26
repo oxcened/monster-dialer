@@ -135,10 +135,12 @@
     <string name="contact_characters_action" comment="Contact-row overflow action that opens character customization for a contact.">Personaggi</string>
     <string name="contact_row_actions" comment="Accessibility label for the contact-row overflow menu trigger.">Azioni del contatto</string>
     <string name="linked_online_profile_title">Profilo online collegato</string>
+    <string name="contact_row_link_online_profile" comment="Contact-row context-menu action to link an Online Profile.">Collega</string>
     <string name="linked_online_profile_none">Nessun profilo online è collegato a questo contatto.</string>
     <string name="linked_online_profile_link_hint">Apri un link a un profilo MonsterDialer condiviso per associarlo a questo contatto.</string>
     <string name="linked_online_profile_description">Questo contatto è collegato a questo profilo online:</string>
     <string name="unlink_online_profile">Scollega profilo online</string>
+    <string name="unlink_online_profile_action" comment="Compact action that removes the linked Online Profile from a contact.">Scollega</string>
     <string name="your_monster" comment="%1$s is the player's monster name.">Il tuo %1$s</string>
     <string name="radiant_sparkle" comment="Accessibility description for a rare-variant sparkle.">Scintillio radioso</string>
     <string name="available_monsters" comment="Heading for the selectable monster roster.">Mostri disponibili</string>
@@ -481,6 +483,7 @@
     <string name="contact_picker_search_empty_prompt" comment="Retro contact-picker prompt shown before a name is typed.">Inserisci un nome.</string>
     <string name="contact_picker_prompt" comment="Retro contact-picker prompt that explains the next action.">Scegli un contatto da assegnare.</string>
     <string name="contact_picker_open_action" comment="Retro contact-picker action that opens the selected contact.">Apri</string>
+    <string name="contact_picker_fast_scroller" comment="Accessibility label for the retro contact-picker fast scroller.">Scorrimento rapido dell’elenco contatti</string>
     <plurals name="contact_picker_found_count" comment="Retro contact-picker search result count.">
         <item quantity="one">%d contatto trovato.</item>
         <item quantity="other">%d contatti trovati.</item>

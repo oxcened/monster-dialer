@@ -281,6 +281,7 @@
     <string name="contact_characters_action">Personagens</string>
     <string name="contact_row_actions">Ações do contacto</string>
     <string name="linked_online_profile_title">Perfil online associado</string>
+    <string name="contact_row_link_online_profile" comment="Contact-row context-menu action to link an Online Profile.">Associar</string>
     <string name="linked_online_profile_none">Nenhum perfil online está associado a este contacto.</string>
     <string name="linked_online_profile_link_hint">Abre uma ligação de perfil MonsterDialer partilhado para a associar a este contacto.</string>
     <string name="linked_online_profile_description">Este contacto está associado a este perfil online:</string>
@@ -288,6 +289,7 @@
     <string name="linked_online_profile_active_message">A equipa partilhada deste contacto pode ser usada durante as chamadas. Remove a associação a qualquer momento para voltares à equipa local do contacto.</string>
     <string name="linked_online_profile_id_label">ID do perfil</string>
     <string name="unlink_online_profile">Desassociar perfil online</string>
+    <string name="unlink_online_profile_action" comment="Compact action that removes the linked Online Profile from a contact.">Desassociar</string>
     <string name="unlink_online_profile_confirmation_title">Remover associação do perfil?</string>
     <string name="unlink_online_profile_confirmation_message">Isto remove neste dispositivo a associação ao perfil online partilhado. O contacto voltará a usar a equipa local. O perfil partilhado e os dados do proprietário não serão alterados.</string>
     <string name="shared_profile_import_title">Perfil partilhado</string>
@@ -463,6 +465,7 @@
     <string name="contact_picker_search_empty_prompt" comment="Retro contact-picker prompt shown before a name is typed.">Introduz um nome.</string>
     <string name="contact_picker_prompt" comment="Retro contact-picker prompt that explains the next action.">Escolhe um contacto para atribuir.</string>
     <string name="contact_picker_open_action" comment="Retro contact-picker action that opens the selected contact.">Abrir</string>
+    <string name="contact_picker_fast_scroller" comment="Accessibility label for the retro contact-picker fast scroller.">Deslocamento rápido da lista de contactos</string>
     <plurals name="contact_picker_found_count" comment="Retro contact-picker search result count.">
         <item quantity="one">%d contacto encontrado.</item>
         <item quantity="other">%d contactos encontrados.</item>

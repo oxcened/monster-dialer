@@ -1,36 +1,42 @@
 package dev.alenajam.monsterdialer.onlineprofiles.ui
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.material3.AlertDialog
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.ColorFilter
+import androidx.compose.ui.graphics.ColorMatrix
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.Font
+import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import java.util.Locale
 import dev.alenajam.monsterdialer.R
+import dev.alenajam.monsterdialer.app.ui.RetroConfirmationDialog
+import dev.alenajam.monsterdialer.app.ui.RetroFooter
+import dev.alenajam.monsterdialer.app.ui.RetroSelectableRow
 import dev.alenajam.monsterdialer.characters.ui.ContactCharacterSettingsViewModel
-import dev.alenajam.opendialer.core.common.ui.AppIcon
-import dev.alenajam.opendialer.core.common.ui.LocalAppIcons
-import androidx.compose.foundation.shape.RoundedCornerShape
+import dev.alenajam.monsterdialer.characters.ui.ContextualGuideDialog
+import dev.alenajam.opendialer.feature.settings.LocalSettingsSubpageNavigator
+
+private val LinkedProfileFont = FontFamily(Font(R.font.ui_pixel_font))
+private val LinkedProfileInk = Color(0xFF202020)
 
 /** Shows and removes the Online Profile associated with the selected contact. */
 @Composable
@@ -39,6 +45,11 @@ fun ColumnScope.LinkedOnlineProfileContent(
 ) {
     val profileId by viewModel.linkedOnlineProfileId.collectAsStateWithLifecycle()
     var confirmUnlink by remember { mutableStateOf(false) }
+    var guideOpen by remember { mutableStateOf(false) }
+    var selectedAction by remember(profileId) {
+        mutableStateOf(if (profileId == null) LinkedProfileAction.Help else LinkedProfileAction.Unlink)
+    }
+    val navigator = LocalSettingsSubpageNavigator.current
 
     Column(
         modifier = Modifier
@@ -57,90 +68,120 @@ fun ColumnScope.LinkedOnlineProfileContent(
                 message = stringResource(R.string.linked_online_profile_active_message),
                 isLinked = true,
             )
-            Card(
-                modifier = Modifier.fillMaxWidth(),
-                shape = RoundedCornerShape(20.dp),
-                colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainerLow),
-            ) {
-                Column(
-                    modifier = Modifier.padding(16.dp),
-                    verticalArrangement = Arrangement.spacedBy(4.dp),
-                ) {
-                    Text(
-                        text = stringResource(R.string.linked_online_profile_id_label),
-                        style = MaterialTheme.typography.labelLarge,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant,
-                    )
-                    Text(
-                        text = requireNotNull(profileId),
-                        style = MaterialTheme.typography.bodyMedium,
-                        color = MaterialTheme.colorScheme.onSurface,
-                    )
-                }
-            }
-            OutlinedButton(
-                onClick = { confirmUnlink = true },
-                modifier = Modifier.fillMaxWidth(),
-                colors = ButtonDefaults.outlinedButtonColors(contentColor = MaterialTheme.colorScheme.error),
-                border = BorderStroke(1.dp, MaterialTheme.colorScheme.error),
-            ) {
-                Text(stringResource(R.string.unlink_online_profile))
+            Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
+                Text(
+                    text = stringResource(R.string.linked_online_profile_id_label),
+                    fontFamily = LinkedProfileFont,
+                    fontSize = 15.sp,
+                    color = LinkedProfileInk.copy(alpha = 0.72f),
+                )
+                Text(
+                    text = requireNotNull(profileId),
+                    fontFamily = LinkedProfileFont,
+                    fontSize = 16.sp,
+                    color = LinkedProfileInk,
+                )
             }
         }
+        Column(verticalArrangement = Arrangement.spacedBy(0.dp)) {
+            if (profileId != null) {
+                RetroSelectableRow(
+                    selected = selectedAction == LinkedProfileAction.Unlink,
+                    onClick = {
+                        selectedAction = LinkedProfileAction.Unlink
+                        confirmUnlink = true
+                    },
+                ) {
+                    Text(
+                        text = stringResource(R.string.unlink_online_profile_action).uppercase(Locale.ROOT),
+                        modifier = Modifier.padding(start = 8.dp, top = 4.dp, bottom = 4.dp),
+                        fontFamily = LinkedProfileFont,
+                        fontSize = 17.sp,
+                        color = LinkedProfileInk,
+                    )
+                }
+            }
+            RetroSelectableRow(
+                selected = selectedAction == LinkedProfileAction.Help,
+                onClick = {
+                    selectedAction = LinkedProfileAction.Help
+                    guideOpen = true
+                },
+            ) {
+                Text(
+                    text = stringResource(R.string.retro_picker_guide).uppercase(Locale.ROOT),
+                    modifier = Modifier.padding(start = 8.dp, top = 4.dp, bottom = 4.dp),
+                    fontFamily = LinkedProfileFont,
+                    fontSize = 17.sp,
+                    color = LinkedProfileInk,
+                )
+            }
+        }
+        Spacer(modifier = Modifier.weight(1f))
+        RetroFooter(
+            message = null,
+            animationKey = "linked-online-profile",
+            backKey = stringResource(R.string.retro_key_b),
+            backLabel = stringResource(R.string.customized_contacts_back_action),
+            onBack = { navigator?.navigateBack() },
+        )
+    }
+    if (guideOpen) {
+        ContextualGuideDialog(
+            contents = sharedOnlineProfileGuideContents(),
+            onDismiss = { guideOpen = false },
+        )
     }
     if (confirmUnlink) {
-        AlertDialog(
+        RetroConfirmationDialog(
+            title = stringResource(R.string.unlink_online_profile_confirmation_title),
+            message = stringResource(R.string.unlink_online_profile_confirmation_message),
+            noLabel = stringResource(R.string.cancel),
+            yesLabel = stringResource(R.string.unlink_online_profile),
+            fontFamily = LinkedProfileFont,
             onDismissRequest = { confirmUnlink = false },
-            title = { Text(stringResource(R.string.unlink_online_profile_confirmation_title)) },
-            text = { Text(stringResource(R.string.unlink_online_profile_confirmation_message)) },
-            confirmButton = {
-                TextButton(
-                    onClick = {
-                        confirmUnlink = false
-                        viewModel.unlinkOnlineProfile()
-                    },
-                    colors = ButtonDefaults.textButtonColors(contentColor = MaterialTheme.colorScheme.error),
-                ) {
-                    Text(stringResource(R.string.unlink_online_profile))
-                }
-            },
-            dismissButton = {
-                TextButton(onClick = { confirmUnlink = false }) {
-                    Text(stringResource(R.string.cancel))
-                }
+            onConfirm = {
+                confirmUnlink = false
+                viewModel.unlinkOnlineProfile()
             },
         )
     }
 }
 
+private enum class LinkedProfileAction {
+    Unlink,
+    Help,
+}
+
 @Composable
 private fun LinkedProfileCard(title: String, message: String, isLinked: Boolean) {
-    Card(
+    Column(
         modifier = Modifier.fillMaxWidth(),
-        shape = RoundedCornerShape(28.dp),
-        colors = CardDefaults.cardColors(
-            containerColor = if (isLinked) MaterialTheme.colorScheme.secondaryContainer else MaterialTheme.colorScheme.surfaceContainerLow,
-        ),
+        verticalArrangement = Arrangement.spacedBy(12.dp),
     ) {
-        Column(
-            modifier = Modifier.padding(20.dp),
-            verticalArrangement = Arrangement.spacedBy(12.dp),
-        ) {
-            AppIcon(
-                icon = LocalAppIcons.current.person,
-                contentDescription = null,
-                modifier = Modifier.size(40.dp),
-                tint = MaterialTheme.colorScheme.primary,
-            )
-            Text(
-                text = title,
-                style = MaterialTheme.typography.titleLarge,
-            )
-            Text(
-                text = message,
-                style = MaterialTheme.typography.bodyMedium,
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
-            )
-        }
+        Image(
+            painter = painterResource(R.drawable.player),
+            contentDescription = null,
+            modifier = Modifier.size(40.dp),
+            colorFilter = if (isLinked) {
+                null
+            } else {
+                ColorFilter.colorMatrix(ColorMatrix().apply { setToSaturation(0f) })
+            },
+        )
+        Text(
+            text = title,
+            fontFamily = LinkedProfileFont,
+            fontSize = 20.sp,
+            lineHeight = 26.sp,
+            color = LinkedProfileInk,
+        )
+        Text(
+            text = message,
+            fontFamily = LinkedProfileFont,
+            fontSize = 15.sp,
+            lineHeight = 21.sp,
+            color = LinkedProfileInk.copy(alpha = 0.72f),
+        )
     }
 }
