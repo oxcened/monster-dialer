@@ -1,396 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="additional_translation_project_title" comment="Title of the additional translation contribution card.">Contribuie la traducerile MonsterDialer</string>
-    <string name="contribute_translations" comment="Title of the OpenDialer translation contribution link on the About screen.">Contribuie la traducerile OpenDialer</string>
-    <string name="hang_up" comment="Button to end the current phone call.">Închide</string>
-    <string name="action_answer" comment="Incoming-call button that starts the fight.">Luptă</string>
-    <string name="action_decline" comment="Incoming-call button that runs away.">Fugi</string>
-    <string name="add" comment="Generic label for adding a new item.">Adaugă</string>
-    <string name="settings_character_packs_title" comment="Settings title for managing character packs.">Pachete de personaje</string>
-    <string name="characters_navigation_label" comment="Bottom navigation label for character customization.">Profil</string>
-    <string name="settings_character_packs_description" comment="Settings description for character packs.">Importă și gestionează ilustrații personalizate ale personajelor.</string>
-    <string name="import_character">Importă personaj</string>
-    <string name="import_character_description">Adaugă un personaj pe care cineva l-a distribuit cu tine.</string>
-    <string name="add_to_your_characters">Adaugă</string>
-    <string name="shared_character_creator">Creator: %1$s</string>
-    <string name="shared_character_license">Licență: %1$s</string>
-    <string name="shared_character_import_description">Acest %1$s va fi adăugat la colecția ta.</string>
-    <string name="shared_character_import_title">Adaugi %1$s?</string>
-    <string name="shared_character_import_failed_title">Nu s-a putut importa personajul</string>
-    <string name="shared_character_import_failed_message">Alege un fișier .monstercharacter exportat din MonsterDialer.</string>
-    <string name="share_character_title">Distribuie %1$s</string>
-    <string name="creator_label">Creator</string>
-    <string name="license_label">Licență</string>
-    <string name="default_license">Toate drepturile rezervate</string>
-    <string name="export_character">Exportă personajul</string>
-    <string name="save_to_device">Salvează pe dispozitiv</string>
-    <string name="shared_character_file_name">%1$s.monstercharacter</string>
-    <string name="settings_player_character_title" comment="Settings title for the player's battle character.">Personajul tău</string>
-    <string name="settings_player_character_description" comment="Settings description for the player's battle character.">Alege cine te reprezintă în timpul apelurilor.</string>
-    <string name="player_characters_not_set" comment="Settings subtitle when no player character is selected.">Nepersonalizat</string>
-    <string name="using_characters" comment="Settings subtitle; %1$s is a list of selected character names.">Folosește %1$s</string>
-    <string name="settings_contact_characters_title" comment="Settings title for assigning characters to contacts.">Personajele contactelor</string>
-    <string name="settings_contact_characters_description" comment="Settings description for assigning characters to contacts.">Atribuie personaje apelanților.</string>
-    <string name="contact_characters_not_set" comment="Settings subtitle when no contacts have a character assignment.">Niciun contact personalizat</string>
-    <plurals name="contact_character_assignment_count" comment="Settings subtitle showing how many contacts have a character assignment."><item quantity="one">%d contact personalizat</item><item quantity="few">%d contacte personalizate</item><item quantity="other">%d contacte personalizate</item></plurals>
-    <string name="choose_contact" comment="Button that opens the contact picker.">Alege contactul</string>
-    <string name="contact_phone_number_required" comment="Toast shown when the selected contact has no usable phone number.">Acest contact nu poate fi selectat deoarece nu are un număr de telefon.</string>
-    <string name="character_type_trainer" comment="Character category for a human battle character.">Antrenor</string>
-    <string name="character_type_monster" comment="Character category for a creature battle character.">Monstru</string>
-    <string name="character_type_trainers">antrenori</string>
-    <string name="character_type_monsters">monștri</string>
-    <string name="built_in_character" comment="Label for a character included with the app.">Personaj inclus</string>
-    <string name="default_character_artwork" comment="%1$s is a character type, such as Trainer or Monster.">Ilustrarea implicită pentru %1$s</string>
-    <string name="character_artwork" comment="%1$s is a character name.">Ilustrarea lui %1$s</string>
-    <string name="no_other_character_options" comment="%1$s is a character type, such as Trainer or Monster.">Nicio altă opțiune pentru %1$s</string>
-    <string name="import_and_enable_character_pack" comment="Empty-state message in the character selector.">Adaugă propriul personaj sau importă un pachet pentru a vedea mai multe.</string>
-    <string name="radiant" comment="Adjective for a rare, sparkling character variant.">Radiant</string>
-    <string name="filter_all">Toate</string>
-    <string name="filter_regular">Normal</string>
-    <string name="filter_radiant">Radiant</string>
-    <string name="filter_unlocked_radiant">Radiant deblocat</string>
-    <string name="selected" comment="Status label for the currently chosen option.">Selectat</string>
-    <string name="randomize" comment="Character selection that chooses a different eligible character for every call.">Aleatoriu</string>
-    <string name="locked">Blocat</string>
-    <string name="radiant_variant_locked_title">Variantă radiantă blocată</string>
-    <string name="radiant_variant_locked_message">Când întâlnești un %1$s radiant într-o luptă sălbatică, se deblochează automat la începutul luptei. Îl poți apoi atribui.</string>
-    <string name="radiant_unlock_notifications">Deblocări radiante</string>
-    <string name="radiant_variant_unlocked_title">Variantă radiantă deblocată!</string>
-    <string name="radiant_variant_unlocked_message">%1$s poate fi acum atribuit.</string>
-    <string name="radiant_unlock_share_title">Distribuie deblocarea radiantă</string>
-    <string name="radiant_unlock_share_card_title">MONSTRU RADIANT DEBLOCAT!</string>
-    <string name="show_grid_view" comment="Accessibility label for the control that switches the character selector to a grid.">Afișează grila</string>
-    <string name="show_list_view" comment="Accessibility label for the control that switches the character selector to a list.">Afișează lista</string>
-    <string name="jump_to_selected_character" comment="Accessibility label for a button that scrolls to the selected character.">Salt la personajul selectat</string>
-    <string name="character_fast_scroller" comment="Accessibility label for the draggable fast-scrolling control in the character selector.">Derulare rapidă prin personaje</string>
-    <string name="select" comment="Button label to choose an option.">Selectează</string>
-    <string name="change" comment="Button label to change the current selection.">Schimbă</string>
-    <string name="contact_chooser_prompt" comment="Prompt above the contact picker.">Alege un contact căruia să îi atribui un personaj.</string>
-    <string name="contact_chooser_title" comment="Title of the contact-character assignment screen.">Personalizează un contact</string>
-    <string name="contact_chooser_empty_prompt" comment="Empty state when no assignable characters are available.">Mai întâi importă și activează un pachet cu un personaj atribuibil unui contact.</string>
-    <string name="pack_collection_empty_title" comment="Title of the empty character-pack collection screen.">Colecția ta începe aici</string>
-    <string name="pack_collection_empty_description" comment="Description of the empty character-pack collection screen.">Importă un pachet de personaje pentru a-ți personaliza apelurile.</string>
-    <string name="import_character_pack" comment="Button that starts selecting a character-pack file.">Importă pachetul</string>
-    <string name="create_character_pack">Creează pachet</string>
-    <string name="select_characters_for_pack">Selectează personaje</string>
-    <string name="pack_details">Detalii pachet</string>
-    <string name="pack_name_label">Nume pachet</string>
-    <string name="pack_version_label">Versiune</string>
-    <string name="share_character_pack">Partajează pachetul de personaje</string>
-    <string name="character_pack_default_name">character-pack</string>
-    <string name="character_pack_file_name">%1$s.monsterpack</string>
-    <string name="character_pack_extension_required">Alege un pachet de personaje .monsterpack sau .zip.</string>
-    <string name="pack_import_license_notice" comment="Legal notice shown before importing a character pack.">Importă doar ilustrații și sunete create de tine sau pentru care ai licență de utilizare.</string>
-    <string name="your_character_packs" comment="Heading above installed character packs.">Pachetele tale de personaje</string>
-    <plurals name="installed_pack_count" comment="Number of installed character packs. %d is the count.">
-        <item quantity="one">%d instalat</item>
-        <item quantity="few">%d instalate</item>
-        <item quantity="other">%d instalate</item>
-    </plurals>
-    <plurals name="enabled_pack_count" comment="Number of enabled character packs. %d is the count.">
-        <item quantity="one">%d activat</item>
-        <item quantity="few">%d activate</item>
-        <item quantity="other">%d activate</item>
-    </plurals>
-    <plurals name="pack_character_count" comment="%1$d is the number of characters; %2$s is the pack version.">
-        <item quantity="one">%1$d personaj · v%2$s</item>
-        <item quantity="few">%1$d personaje · v%2$s</item>
-        <item quantity="other">%1$d personaje · v%2$s</item>
-    </plurals>
-    <string name="pack_version" comment="%1$s is a character pack version number.">v%1$s</string>
-    <string name="pack_creator_label" comment="Label above the creator name in character pack metadata.">Creator</string>
-    <string name="pack_license_label" comment="Label above the license in character pack metadata.">Licență</string>
-    <string name="pack_identifier_label" comment="Label above the technical identifier in character pack metadata.">ID pachet</string>
-    <string name="pack_metadata" comment="Label used for copied character-pack metadata.">Metadate pachet</string>
-    <string name="copy_pack_metadata" comment="Accessibility label for the action that copies character-pack metadata.">Copiază metadatele pachetului</string>
-    <string name="pack_metadata_copied" comment="Brief confirmation after character-pack metadata is copied.">Metadatele pachetului au fost copiate</string>
-    <string name="import_pack" comment="Button label to import a character pack.">Importă</string>
-    <string name="enabled" comment="Status label for an active character pack.">Activat</string>
-    <string name="disabled" comment="Status label for an inactive character pack.">Dezactivat</string>
-    <string name="enable" comment="Button label to activate a character pack.">Activează</string>
-    <string name="disable" comment="Button label to deactivate a character pack.">Dezactivează</string>
-    <string name="remove" comment="Button label to permanently remove a character pack.">Elimină</string>
-    <string name="remove_character_pack_title" comment="Confirmation dialog title; %1$s is the character pack name.">Elimini %1$s?</string>
-    <string name="remove_character_pack_message" comment="Confirmation dialog message; %1$s is the character pack name.">Această acțiune elimină definitiv %1$s și ilustrațiile sale din MonsterDialer.</string>
-    <string name="cancel" comment="Button label that dismisses an action without making changes.">Anulează</string>
-    <string name="character_pack_removed" comment="Confirmation after a character pack is removed.">Pachet de personaje eliminat</string>
-    <string name="character_pack_remove_failed" comment="Error when a character pack cannot be removed.">Pachetul de personaje nu a putut fi eliminat</string>
-    <string name="pack_import_failed_title" comment="Title of the character-pack import error dialog.">Pachetul nu a putut fi importat</string>
-    <string name="file_label" comment="%1$s is the selected file name.">Fișier: %1$s</string>
-    <string name="pack_import_report_notice" comment="Explains that an import diagnostic excludes the user's pack contents.">Copiază sau partajează acest raport cu creatorul pachetului. Conține detalii despre eroare, nu conținutul pachetului.</string>
-    <string name="pack_import_diagnostic_label" comment="Label for a failed character-pack import report.">Diagnostic de import al pachetului</string>
-    <string name="copied" comment="Brief confirmation after text is copied.">Copiat</string>
-    <string name="copy_report" comment="Button to copy the import diagnostic.">Copiază raportul</string>
-    <string name="share" comment="Button to share the import diagnostic.">Partajează</string>
-    <string name="close" comment="Button to dismiss a dialog.">Închide</string>
-    <string name="selected_file" comment="Label before the selected file name.">Fișier selectat</string>
-    <string name="share_pack_import_diagnostic" comment="Title of Android's share sheet for an import diagnostic.">Partajează diagnosticul importului</string>
-    <string name="battle_scene_description" comment="Accessibility description for the battle scene image.">Scenă de luptă cu monștri</string>
-    <string name="your_monster" comment="%1$s is the player's monster name.">Monstrul tău: %1$s</string>
-    <string name="radiant_sparkle" comment="Accessibility description for a rare-variant sparkle.">Sclipire radiantă</string>
-    <string name="available_monsters" comment="Heading for the selectable monster roster.">Monștri disponibili</string>
-    <string name="monster_status" comment="%1$s is a monster name.">Starea lui %1$s</string>
-    <string name="opponent_monster" comment="%1$s is the opposing monster name.">Monstrul advers: %1$s</string>
-    <string name="opponent_trainer" comment="%1$s is the opposing trainer name.">Antrenor advers: %1$s</string>
-    <string name="unknown" comment="Fallback label when a value is not known.">Necunoscut</string>
-    <string name="battle_player_send_out" comment="Battle announcement; %1$s is the player's monster name.">Du-te, %1$s!</string>
-    <string name="battle_prompt" comment="Prompt shown to the player during a battle.">Ce vei face?</string>
-    <string name="battle_trainer_challenge" comment="Battle announcement; %1$s is the opposing trainer name.">Antrenorul %1$s vrea să lupte!</string>
-    <string name="battle_trainer_sent_out" comment="Battle announcement; %1$s is the trainer name and %2$s is the monster name.">Antrenorul %1$s îl trimite pe %2$s!</string>
-    <string name="battle_wild_radiant_appeared" comment="Battle announcement; %1$s is the wild monster name and radiant is its rare variant.">A apărut un %1$s sălbatic radiant!</string>
-    <string name="battle_wild_appeared" comment="Battle announcement; %1$s is the wild monster name.">A apărut un %1$s sălbatic!</string>
-
-    <!-- Character creation -->
-    <string name="add_trainer" comment="Button to start adding a new custom trainer.">Adaugă antrenor</string>
-    <string name="add_monster" comment="Button to start adding a new custom monster.">Adaugă monstru</string>
-    <string name="roster_full_message" comment="Message shown when the player tries to add a monster but the roster is full.">Echipa ta este completă. Elimină mai întâi un monstru pentru a adăuga altul.</string>
-    <string name="create_trainer_title" comment="Title of the trainer creation screen.">Adaugă antrenor</string>
-    <string name="create_monster_title" comment="Title of the monster creation screen.">Adaugă monstru</string>
-    <string name="character_sprites_section" comment="Heading for the character sprites section.">Sprite-uri</string>
-    <string name="front_sprite_label" comment="Label for the front sprite picker.">Sprite frontal</string>
-    <string name="back_sprite_label" comment="Label for the back sprite picker.">Sprite posterior</string>
-    <string name="radiant_sprites_section">Sprite-uri radiante</string>
-    <string name="radiant_front_sprite_label">Sprite frontal radiant</string>
-    <string name="radiant_back_sprite_label">Sprite posterior radiant</string>
-    <string name="front_sprite_description" comment="Explains that the front sprite is required for contacts.">Adăugarea unui sprite frontal permite atribuirea acestui personaj contactelor.</string>
-    <string name="back_sprite_description" comment="Explains that the back sprite is required for the player.">Adăugarea unui sprite posterior permite atribuirea acestui personaj propriei persoane.</string>
-    <string name="advanced_section" comment="Heading for advanced character settings.">Avansat</string>
-    <string name="radiant_label" comment="Label for the radiant toggle.">Radiant</string>
-    <string name="radiant_description" comment="Explains what the radiant status means.">O variantă rară și strălucitoare a acestui monstru.</string>
-    <string name="level_label" comment="Label for the character level input.">Nivel</string>
-    <string name="max_hp_label" comment="Label for the character max HP input.">PV max</string>
-    <string name="required_label" comment="Suffix for required fields.">*</string>
-    <string name="edit_trainer_title" comment="Title of the trainer edit screen.">Editează antrenorul</string>
-    <string name="edit_monster_title" comment="Title of the monster edit screen.">Editează monstrul</string>
-    <string name="character_name_label" comment="Label for the character name input field.">Numele personajului</string>
-    <string name="character_name_hint" comment="Hint for the character name input field.">Introdu numele</string>
-    <string name="select_image" comment="Button to pick an image from the gallery.">Selectează imaginea</string>
-    <string name="change_image" comment="Button to change the already selected image.">Schimbă imaginea</string>
-    <string name="save_character" comment="Button to save the new character.">Salvează personajul</string>
-    <string name="save" comment="Button label to save changes.">Salvează</string>
-    <string name="edit" comment="Button label to edit an item.">Editează</string>
-    <string name="your_characters">%1$s tăi</string>
-    <string name="built_in_characters_section">%1$s incluși</string>
-    <string name="character_created" comment="Confirmation after a character is successfully created.">Personaj creat</string>
-    <string name="character_creation_failed" comment="Error when a character cannot be saved.">Nu s-a putut crea personajul</string>
-    <string name="character_limit_reached_message" comment="Error message when the 200 character limit is hit.">Limită de 200 de personaje atinsă. Șterge câteva pentru a adăuga mai multe.</string>
-    <string name="character_limit_reached_hint" comment="Short hint shown below the disabled add button.">Limită de 200 de personaje atinsă</string>
-    <string name="disable_character_pack_title" comment="Confirmation dialog title; %1$s is the character pack name.">Dezactivezi %1$s?</string>
-    <string name="disable_character_pack_message" comment="Confirmation dialog message; %1$s is the character pack name.">Acest pachet este utilizat în prezent. Dezactivarea acestuia va anula atribuirea personajelor sale pentru tine și contactele tale.</string>
-    <string name="front_sprite_required_for_contact" comment="Message shown when a front sprite is missing but required by an assignment.">Sprite-ul frontal este necesar deoarece acest personaj este atribuit unui contact.</string>
-    <string name="back_sprite_required_for_player" comment="Message shown when a back sprite is missing but required by an assignment.">Sprite-ul posterior este necesar deoarece acest personaj îți este atribuit ție.</string>
-    <string name="remove_character_in_use_message" comment="Confirmation dialog message when deleting a character in use; %1$s is the character name.">%1$s este utilizat în prezent. Ștergerea acestuia va anula atribuirea sa pentru tine și contactele tale.</string>
-    <string name="remove_character_with_radiant_variant_message">Ștergerea lui %1$s elimină atât varianta normală, cât și pe cea radiantă.</string>
-    <string name="remove_character_with_radiant_variant_in_use_message">Ștergerea lui %1$s elimină ambele variante și le anulează atribuirea pentru tine și contactele tale.</string>
-    <string name="remove_character_pack_in_use_message" comment="Confirmation dialog message when deleting a pack in use; %1$s is the character pack name.">Acest pachet este utilizat în prezent. Eliminarea acestuia va anula atribuirea personajelor sale pentru tine și contactele tale.</string>
-    <string name="regular">Normal</string><string name="characters_help_title">Ghidul personajelor</string><string name="characters_help_description">Descoperă personajele din MonsterDialer.</string>
-    <string name="characters_help_intro_title">Colecția ta</string><string name="characters_help_intro_message">Fila Personaje personalizează fiecare apel pentru tine și contactele tale.</string>
-    <string name="characters_help_creating_title">Crearea personajelor</string><string name="characters_help_creating_message">Atinge „Adaugă antrenor” sau „Adaugă monstru” și alege imagini din galerie pentru:</string><string name="characters_help_creating_sprites_front"><b>Sprite frontal:</b> vizibil la apelul unui contact.</string><string name="characters_help_creating_sprites_back"><b>Sprite posterior:</b> personajul tău în lupte.</string>
-    <string name="characters_help_advanced_title">Statistici avansate</string><string name="characters_help_advanced_message">Pentru monștri, setează nivelul și PS max în „Avansat”. Poți activa și starea „Radiant”.</string>
-    <string name="characters_help_sharing_title">Partajare și import</string><string name="characters_help_sharing_message">MonsterDialer folosește două tipuri de fișiere:</string><string name="characters_help_sharing_files_character"><b>.monstercharacter:</b> un personaj cu statistici și ilustrații.</string><string name="characters_help_sharing_files_pack"><b>.monsterpack:</b> o colecție de personaje.</string><string name="characters_help_sharing_how_to">Ține apăsat un personaj propriu pentru a-l exporta. Pentru import, deschide un fișier primit sau folosește „Importă personaj”.</string>
-    <string name="characters_help_packs_title">Crearea pachetelor</string><string name="characters_help_packs_message">În „Pachete de personaje”, creează un pachet, alege monștrii și exportă fișierul .monsterpack.</string><string name="characters_help_packs_import_title">Importarea pachetelor de personaje</string><string name="characters_help_packs_import_message">Atinge „Importă pachet” pentru a adăuga un fișier .monsterpack pe care cineva l-a partajat cu tine. Personajele importate devin disponibile pentru selectare când pachetul este activat. Importă doar ilustrații și sunete pe care le-ai creat sau pentru care ai licență de utilizare.</string>
-    <string name="characters_help_radiants_title">Descoperire radiantă</string><string name="characters_help_radiants_message">Monștrii radianți sunt rari. Variantele din pachete se deblochează când le întâlnești în sălbăticie în timpul unui apel.</string>
-    <string name="characters_help_management_title">Gestionarea colecției</string><string name="characters_help_management_message">Ține apăsat un personaj din „Monștrii tăi” sau „Antrenorii tăi” pentru a-l edita, partaja sau șterge.</string>
-    <string name="characters_help_assignments_title">Personalizarea apelurilor</string><string name="characters_help_assignments_message">Personajele pot fi folosite în două moduri:</string><string name="characters_help_assignments_player"><b>Personajul jucătorului:</b> avatarul tău la fiecare apel.</string><string name="characters_help_assignments_contact"><b>Personajele contactelor:</b> atribuie monștri sau antrenori contactelor; ei vor fi adversarii când te sună.</string>
-    <string name="customize_your_calls">Personalizează apelurile</string>
-    <string name="character_collection_title">Colecția ta</string>
-    <string name="profile_trainer_label">Antrenorul tău</string>
-    <string name="active_monster_label">Monstru activ</string>
-    <plurals name="calls_battled">
-        <item quantity="one">%1$d apel cu luptă</item>
-        <item quantity="few">%1$d apeluri cu lupte</item>
-        <item quantity="other">%1$d apeluri cu lupte</item>
-    </plurals>
-    <plurals name="characters_collected">
-        <item quantity="one">%1$d personaj colecționat</item>
-        <item quantity="few">%1$d personaje colecționate</item>
-        <item quantity="other">%1$d personaje colecționate</item>
-    </plurals>
-    <plurals name="radiants_found">
-        <item quantity="one">%1$d radiant găsit</item>
-        <item quantity="few">%1$d radiante găsite</item>
-        <item quantity="other">%1$d radiante găsite</item>
-    </plurals>
-    <string name="profile_calls_battled">%1$d apeluri cu lupte</string>
-    <string name="profile_collection_summary">%1$d colecționate · %2$d radiante găsite</string>
-    <string name="character_tools_title">Trusă de unelte</string>
-    <string name="battle_journal_title">Jurnal de lupte</string>
-    <string name="battle_journal_description">Vezi descoperirile radiante și luptele recente.</string>
-    <string name="battle_journal_empty_title">Încă nu ai lupte</string>
-    <string name="battle_journal_empty_description">Descoperirile radiante și luptele recente vor apărea aici.</string>
-    <string name="battle_journal_no_matches_title">Încă nu este nimic aici</string>
-    <string name="battle_journal_no_matches_description">Încearcă un alt filtru sau revino după următoarea luptă.</string>
-    <string name="battle_journal_radiant_found">Ai găsit %1$s radiant</string>
-    <string name="battle_journal_trainer_battle">Ai luptat cu %1$s</string>
-    <string name="battle_journal_wild_battle">Ai întâlnit un %1$s sălbatic</string>
-    <string name="battle_journal_anonymous_battle">Luptă anonimă</string>
-    <string name="battle_journal_opponent_trainer">Antrenor: %1$s</string>
-    <string name="battle_journal_player_monster">Monstrul tău: %1$s</string>
-    <string name="battle_journal_matchup">%1$s contra %2$s</string>
-    <string name="battle_journal_battle_label">Luptă</string>
-    <string name="battle_journal_radiant_label">Radiant găsit</string>
-    <string name="battle_journal_radiant_encounter_label">Întâlnire radiantă</string>
-    <string name="battle_journal_more_options">Mai multe opțiuni pentru jurnalul de lupte</string>
-    <string name="battle_journal_clear">Golește jurnalul</string>
-    <string name="battle_journal_clear_short">Golește</string>
-    <string name="battle_journal_clear_confirmation_title">Ești sigur?</string>
-    <string name="your_roster">Echipa ta</string>
-    <string name="roster_monster_level">Nv. %1$d</string>
-    <string name="roster_monster_description">%1$s, nivelul %2$d</string>
-    <string name="remove_roster_monster">Elimină monstrul</string>
-    <string name="contact_characters_ready">Echipa de apel este gata</string>
-    <string name="character_packs_home_description">Răsfoiește pachetele</string>
-    <string name="import_character_home_description">Adaugă unul partajat</string>
-    <string name="open_character_guide">Deschide ghidul</string>
-    <string name="personalize_contact_character">Personalizează personajele apelantului</string>
-    <string name="reorder_monster">Reordonează monstrul</string>
-    <string name="no_available_character_options">Nu există %1$s disponibili</string>
-    <string name="online_profile_choose_contact_prompt">Alege un contact pe care să-l asociezi acestui profil online. Asocierea rămâne pe dispozitivul tău.</string>
-    <string name="online_profile_title">Profil online</string>
-    <string name="online_profile_description">Permite-le prietenilor să vadă antrenorul și monstrul pe care le aduci în fiecare apel.</string>
-    <string name="online_profile_privacy_note">Sunt partajate doar sprite-urile și metadatele personajelor tale.</string>
-    <string name="online_profile_enable">Activează</string>
-    <string name="online_profile_enabling">Se activează profilul online</string>
-    <string name="online_profile_regenerating">Se regenerează linkul de partajare</string>
-    <string name="online_profile_deleting">Se șterge profilul online</string>
-    <string name="online_profile_clearing_variant_backup">Se șterg variantele salvate</string>
-    <string name="online_profile_deleting_account">Se șterg datele din cloud și contul</string>
-    <string name="online_profile_keeping_online">Profilul online rămâne activ</string>
-    <string name="online_profile_enabled">Profil online activat</string>
-    <string name="online_profile_check_in_title">Îți mai partajezi profilul?</string>
-    <string name="online_profile_check_in_description">Profilul tău online nu a fost confirmat de aproape un an. Confirmă-l ca să continui să-l partajezi.</string>
-    <string name="online_profile_keep_online">Păstrează online</string>
-    <string name="online_profile_share">Partajează profilul</string>
-    <string name="online_profile_share_link">Partajează linkul</string>
-    <string name="online_profile_show_qr_code">Afișează codul QR</string>
-    <string name="online_profile_qr_code_title">Partajează cu cod QR</string>
-    <string name="online_profile_qr_code_description">Roagă un prieten să scaneze acest cod cu camera pentru a-ți deschide profilul.</string>
-    <string name="online_profile_qr_code_content_description">Cod QR pentru profilul tău online</string>
-    <string name="online_profile_regenerate">Regenerează linkul de partajare</string>
-    <string name="online_profile_regenerate_message">Aceasta creează un link de partajare nou și îl invalidează pe cel actual. Prietenii vor avea nevoie de noul link ca să îți acceseze profilul.</string>
-    <string name="online_profile_delete">Șterge profilul</string>
-    <string name="online_profile_delete_message">Aceasta șterge profilul tău partajat și îi invalidează linkul. Personajele și personalizările contactelor rămân pe acest dispozitiv.</string>
-    <string name="online_profile_clear_variant_backup">Șterge variantele salvate</string>
-    <string name="online_profile_clear_variant_backup_message">Aceasta șterge definitiv din cloud variantele salvate. Variantele tale rămân pe acest dispozitiv. Copia de siguranță în cloud este dezactivată; activeaz-o din nou pentru a le salva.</string>
-    <string name="online_profile_delete_account">Șterge datele din cloud și contul</string>
-    <string name="online_profile_delete_account_message">Aceasta șterge definitiv profilul tău partajat, copia de siguranță a variantelor și contul MonsterDialer. Contul Google și personajele locale rămân neschimbate. Va trebui să te conectezi din nou pentru a folosi funcțiile cloud.</string>
-    <string name="online_profile_error_title">Nu s-a putut actualiza profilul online</string>
-    <string name="online_profile_sprite_decode_error">Sprite-ul personajului selectat nu poate fi decodat.</string>
-    <string name="online_profile_google_sign_in_required">Conectează-te cu Google pentru a gestiona un profil online.</string>
-    <string name="online_profile_google_sign_in_error">Nu s-a putut conecta cu Google.</string>
-    <string name="online_profile_google_sign_in_not_configured">Conectarea cu Google nu este configurată încă.</string>
-    <string name="online_profile_signing_in">Se conectează cu Google</string>
-    <string name="online_profile_sign_out_google">Deconectează-te de la Google</string>
-    <string name="online_profile_firebase_not_configured">Firebase nu este configurat.</string>
-    <string name="online_profile_share_text">Vezi profilul meu MonsterDialer:\n%1$s</string>
-    <string name="contact_characters_action">Personaje</string>
-    <string name="contact_row_actions">Acțiuni contact</string>
-    <string name="linked_online_profile_title">Profil online asociat</string>
-    <string name="contact_row_link_online_profile" comment="Contact-row context-menu action to link an Online Profile.">Asociază</string>
-    <string name="linked_online_profile_none">Niciun profil online nu este asociat acestui contact.</string>
-    <string name="linked_online_profile_link_hint">Deschide un link de profil MonsterDialer partajat pentru a-l asocia acestui contact.</string>
-    <string name="linked_online_profile_description">Acest contact este asociat acestui profil online:</string>
-    <string name="linked_online_profile_active_title">Profil online asociat</string>
-    <string name="linked_online_profile_active_message">Echipa partajată a acestui contact poate fi utilizată în timpul apelurilor. Elimină asocierea oricând pentru a reveni la echipa locală a contactului.</string>
-    <string name="linked_online_profile_id_label">ID profil</string>
-    <string name="unlink_online_profile">Anulează asocierea profilului online</string>
-    <string name="unlink_online_profile_action" comment="Compact action that removes the linked Online Profile from a contact.">Dezleagă</string>
-    <string name="unlink_online_profile_confirmation_title">Elimini asocierea profilului?</string>
-    <string name="unlink_online_profile_confirmation_message">Aceasta elimină de pe acest dispozitiv asocierea cu profilul online partajat. Contactul va folosi din nou echipa locală. Profilul partajat și datele proprietarului nu vor fi modificate.</string>
-    <string name="shared_profile_import_title">Profil partajat</string>
-    <string name="shared_profile_import_heading">Un profil MonsterDialer a fost partajat cu tine</string>
-    <string name="shared_profile_import_description">Alege din lista de contacte persoana căreia îi aparține acest profil. MonsterDialer îl va afișa în timpul apelurilor cu acea persoană. Linkul rămâne pe dispozitivul tău.</string>
-    <string name="shared_profile_import_choose_contact">Alege contactul</string>
-    <string name="shared_profile_import_link_failed">Nu s-a găsit un număr de telefon valid pentru contactul selectat.</string>
-    <string name="characters_help_team_title">Echipa ta</string>
-    <string name="characters_help_team_message">Echipa ta este antrenorul și monstrul activ afișate aici. Te reprezintă în fiecare luptă din timpul unui apel. Atinge oricare dintre ele pentru a alege un alt personaj.</string>
-    <string name="characters_help_roster_title">Lista ta de monștri</string>
-    <string name="characters_help_roster_message">Lista ta conține până la șase monștri pe care îi alegi pentru echipă. Trage și plasează monștrii personalizați pentru a le schimba ordinea. Primul monstru din listă este monstrul tău activ în luptele din apeluri.</string>
-    <string name="online_profile_guide_title">Partajarea profilului tău online</string>
-    <string name="online_profile_guide_message">Profilurile online sunt complet opționale și create cu grijă pentru confidențialitate și securitate. Pentru a activa unul, conectează-te cu Google. Contul tău Google identifică persoana care poate administra profilul; e-mailul și detaliile contului Google nu sunt partajate. Când activezi un profil sau te conectezi pe alt dispozitiv, antrenorul actual și monstrul activ de pe acel dispozitiv, inclusiv sprite-urile alese, sunt publicate printr-un link care poate fi partajat. Serverele nu stochează numărul tău de telefon, lista de contacte, istoricul apelurilor sau alte date personale ori sensibile. Legăturile dintre profilurile MonsterDialer și contacte rămân exclusiv pe fiecare dispozitiv.</string>
-    <string name="online_profile_public_id_title">ID-ul tău de profil public</string>
-    <string name="online_profile_public_id_message">Oricine primește linkul tău de partajare îți poate găsi profilul prin ID-ul public generat aleatoriu. Același cont Google păstrează acest ID când te conectezi pe alt dispozitiv, astfel încât linkurile existente continuă să funcționeze. Atinge „Regenerează linkul de partajare” pentru a invalida ID-ul public curent și a crea unul nou. Linkul anterior nu va mai funcționa pentru nimeni cu care l-ai partajat.</string>
-    <string name="online_profile_delete_guide_title">Ștergerea profilului tău</string>
-    <string name="online_profile_delete_guide_message">Atinge „Șterge profilul” pentru a elimina definitiv datele publicate ale profilului tău. Oricine are linkul tău de partajare nu va mai putea vedea echipa ta. Dacă activezi din nou un profil mai târziu, acesta va avea un link nou.</string>
-    <string name="characters_help_character_list_title">Lista de personaje</string>
-    <string name="learn_about_radiants">Despre radianți</string>
-    <string name="open_radiants_guide">Deschide ghidul radianților</string>
-    <string name="radiants_guide_title">Radianți</string>
-    <string name="radiants_guide_message">Radianții sunt aspecte alternative rare ale monștrilor pe care îi poți descoperi și adăuga în lista ta.</string>
-    <string name="radiants_guide_availability">• Pot apărea numai monștrii cu o variantă radiantă.</string>
-    <string name="radiants_guide_unlock">• Un radiant poate înlocui o luptă eligibilă. Se deblochează imediat ce începe lupta — nu trebuie să faci nimic.</string>
-    <string name="radiants_guide_assign">• După ce îl descoperi, alege varianta sa radiantă din Personajul tău → Monștri pentru a o atribui.</string>
-    <string name="radiants_guide_journal">• Găsește și distribuie descoperirile tale radiante în Jurnalul de lupte.</string>
-    <string name="open_shared_online_profile_guide">Deschide ghidul profilurilor online partajate</string>
-    <string name="shared_online_profile_guide_title">Folosirea unui profil online partajat</string>
-    <string name="shared_online_profile_guide_message">Când cineva îți partajează un link de profil online, poți asocia echipa sa partajată cu unul dintre contactele tale pentru lupte în apeluri.</string>
-    <string name="shared_online_profile_choose_contact_guide_title">Alege contactul potrivit</string>
-    <string name="shared_online_profile_choose_contact_guide_message">Selectează contactul care deține profilul partajat. Asocierea dintre contact și profil este salvată numai pe dispozitivul tău; nu îi modifică profilul și nu îți partajează contactele cu acea persoană.</string>
-    <string name="shared_online_profile_loading_guide_title">Încărcarea în timpul unei lupte</string>
-    <string name="shared_online_profile_loading_guide_message">Când începe o luptă, MonsterDialer încearcă să încarce un profil online asociat pentru acel contact. Așteaptă până la 500 de milisecunde. Dacă profilul nu se poate încărca la timp — de exemplu, deoarece nu există conexiune sau este lentă — lupta începe offline, folosind personajele selectate local.</string>
-    <string name="shared_online_profile_cache_guide_title">Stocare în cache și actualizări</string>
-    <string name="shared_online_profile_cache_guide_message">Un prim apel poate începe offline în timp ce profilul termină de încărcat, apoi îl poate folosi la apelurile ulterioare. După încărcare, profilul este stocat în cache timp de o oră și nu este preluat din nou până la expirarea acestui timp. Proprietarul poate actualiza sau elimina profilul partajat oricând.</string>
-    <string name="shared_online_profile_unlink_guide_title">Elimină o legătură oricând</string>
-    <string name="shared_online_profile_unlink_guide_message">Deschide Profil online asociat din meniul contactului și atinge „Dezasociază profilul online” pentru a nu-l mai folosi. Contactul va reveni la echipa locală, iar profilul partajat va rămâne neschimbat.</string>
-    <string name="characters_help_player_character_list_message">Personajele sunt grupate după sursă: personajele încorporate vin cu aplicația; Antrenorii tăi și Monștrii tăi sunt personaje create de tine în aplicație; iar personajele importate sunt organizate după pachetul lor de personaje. Apasă lung un personaj creat de tine pentru a-l edita, partaja sau șterge.</string>
-    <string name="characters_help_contact_character_list_message">Personajele sunt grupate după sursă: Aleatoriu este disponibil numai pentru contacte și alege automat un personaj eligibil la fiecare apel; personajele încorporate vin cu aplicația; Antrenorii tăi și Monștrii tăi sunt personaje create de tine în aplicație; iar personajele importate sunt organizate după pachetul lor de personaje. Apasă lung un personaj creat de tine pentru a-l edita, partaja sau șterge.</string>
-    <string name="characters_help_creation_title">Crearea unui personaj</string>
-    <string name="characters_help_creation_message">Dă-i personajului tău un nume și adaugă grafica sprite. Sprite-ul frontal este folosit atunci când personajul apare ca adversar, iar sprite-ul din spate reprezintă personajul din echipa ta în timpul luptelor.</string>
-    <string name="characters_help_sprites_title">Fișiere sprite și sfaturi pentru grafică</string>
-    <string name="characters_help_sprites_message">Alege un fișier imagine disponibil prin selectorul de imagini al dispozitivului. MonsterDialer nu impune o rezoluție fixă sau o limită de dimensiune a fișierului pentru sprite-urile personalizate. Pentru cel mai clar rezultat, folosește imagini PNG cu fundal transparent, menține personajul centrat cu cât mai puțin spațiu liber în jur și folosește o scară și o poziție similare pentru sprite-urile frontal și din spate.</string>
-    <string name="characters_help_radiant_title">Variante radiante</string>
-    <string name="characters_help_radiant_message">Doar pentru monștri, deschide secțiunea Avansat și activează opțiunea Radiant pentru a adăuga o variantă radiantă. La selectarea personajului vor fi afișate apoi versiunile normală și radiantă ale aceluiași monstru. Versiunea radiantă este inițial blocată și trebuie găsită în timpul luptelor înainte de a putea fi selectată. Este necesar un sprite frontal, deoarece funcția Găsește îl folosește pentru a descoperi și debloca varianta radiantă.</string>
-    <string name="online_profile_qr_action">Cod QR</string>
-    <string name="online_profile_more_options">Mai multe opțiuni de profil</string>
-    <string name="online_profile_sign_in_google">Conectează-te cu Google</string>
-    <string name="contact_defaults_title">Contacte nealocate</string>
-    <string name="contact_defaults_toolbox_title">Setări implicite pentru contacte</string>
-    <string name="contact_defaults_description">Alege setările implicite și limitează grupul de selecție aleatorie pentru contacte.</string>
-    <string name="contact_default_trainer">Antrenor implicit</string>
-    <string name="contact_default_monster">Monstru implicit</string>
-    <string name="contact_choose_trainer" comment="Option that opens the character picker for the contact default.">Alege</string>
-    <string name="contact_choose_monster" comment="Option that opens the character picker for the contact default.">Alege</string>
-    <string name="contact_default_random">Aleatoriu</string>
-    <string name="contact_random_pool_all">Toate personajele disponibile</string>
-    <string name="contact_random_pool_choose">Alege grupul de selecție aleatorie</string>
-    <string name="contact_default_choose">Alege personajul implicit</string>
-    <string name="contact_defaults_mode_default">Personaj implicit</string>
-    <string name="contact_defaults_mode_pool">Grup de selecție aleatorie</string>
-    <string name="open_contact_defaults_guide" comment="Accessibility label for the help button on the contact defaults screen.">Deschide ghidul pentru setările implicite ale contactelor</string>
-    <string name="contact_defaults_guide_title" comment="Title of the guide explaining contact character defaults.">Setări implicite pentru contacte</string>
-    <string name="contact_defaults_guide_message">Aceste setări se aplică persoanelor de contact care nu au propria personalizare a personajului.</string>
-    <string name="contact_defaults_guide_default">• Alege un antrenor sau un monstru implicit pentru contactele nealocate.</string>
-    <string name="contact_defaults_guide_randomizer">• Alege Aleatoriu pentru ca aplicația să selecteze un personaj din grupul de selecție aleatorie ales.</string>
-    <string name="contact_defaults_guide_overrides">• Setarea Personalizează contactul a unui contact înlocuiește aceste setări implicite globale. Contactele care folosesc Nu personaliza continuă să le urmeze.</string>
-    <string name="contact_random_pool_reset">Resetează</string>
-    <string name="contact_random_pool_description" comment="Explains what the selected characters mean when Randomize is enabled.">Opțiunea Aleatoriu poate alege dintre personajele selectate.</string>
-    <string name="contact_random_pool_select_all">Selectează tot</string>
-    <string name="contact_random_pool_deselect_all">Deselectează tot</string>
-    <string name="contact_character_source_global">Nu personaliza</string>
-    <string name="contact_character_source_custom">Personalizează contactul</string>
-    <string name="contact_character_inherited_title">Se folosesc setările implicite globale</string>
-    <string name="contact_character_inherited_message">Acest contact urmează setările globale pentru %1$s. Alege un personaj diferit pentru a le înlocui sau editează setările implicite globale de mai jos.</string>
-    <string name="contact_character_customize">Alege un alt personaj</string>
-    <string name="contact_character_edit_global_defaults" comment="Button that opens the global contact character defaults from an inherited contact setting.">Editează setările implicite globale</string>
-    <string name="contact_random_pool_save">Salvează grupul</string>
-    <string name="contact_random_pool_empty_title">Alege cel puțin un personaj</string>
-    <string name="contact_random_pool_empty_exit_message">Grupul de selecție aleatorie este gol, așa că aceste modificări nu au fost salvate. Selectează cel puțin un personaj pentru a salva grupul sau renunță la modificările nesalvate pentru a ieși.</string>
-    <string name="contact_random_pool_continue_editing">Continuă editarea</string>
-    <string name="contact_random_pool_discard_changes">Renunță la modificări</string>
-    <string name="import_action">Importă</string>
-    <string name="radiant_collection_title">Colecția radiantă</string>
-    <string name="radiant_collection_description">Vezi toți monștrii și variantele lor radiante, inclusiv pe cele nedescoperite.</string>
-    <string name="collection_sprite">Sprite-ul lui %1$s</string>
-    <string name="radiant_collection_sprite">Sprite radiant al lui %1$s</string>
-    <string name="radiant_collection_found">Găsit</string>
-    <string name="radiant_collection_locked">Blocat</string>
-    <string name="radiant_collection_regular">Normal</string>
-    <string name="radiant_collection_browse_packs">Pachete</string>
-    <string name="pack_details_action">Detalii</string>
-    <plurals name="pack_character_count_only"><item quantity="one">%d personaj</item><item quantity="few">%d personaje</item><item quantity="other">%d personaje</item></plurals>
-    <string name="are_you_sure">Ești sigur?</string>
-    <string name="delete_action">Șterge</string>
-
     <string name="first_run_welcome_title">Transformă apelurile în întâlniri cu monștri</string>
     <string name="first_run_welcome_description">MonsterDialer adaugă un moment de luptă original apelurilor tale. Prima ta întâlnire funcționează imediat cu personajele incluse.</string>
     <string name="first_run_setup_description">În continuare, Android îți va cere să setezi MonsterDialer ca aplicație de telefon și să permiți notificările apelurilor pe tot ecranul. Acestea sunt necesare pentru afișarea corectă a apelurilor primite.</string>
@@ -399,16 +8,11 @@
     <string name="first_encounter_prompt_description">Efectuează sau primește un apel pentru a vedea MonsterDialer în acțiune. Îți poți personaliza antrenorul, monstrul și contactele mai târziu.</string>
     <string name="first_encounter_prompt_action">Deschide tastatura</string>
     <string name="first_encounter_prompt_later">Poate mai târziu</string>
-    <string name="app_name" comment="Application name shown by Android and in the About screen." translatable="false">MonsterDialer</string>
-    <string name="font_name" comment="Name of the typeface credited in the About screen." translatable="false">Pixel Operator</string>
-    <string name="font_author" comment="Author of the typeface credited in the About screen." translatable="false">Jayvee Enaguas</string>
-    <string name="url_font" comment="Font credit link opened from the About screen." translatable="false">https://www.dafont.com/pixel-operator.font</string>
-    <string name="icon_designer" comment="Name of the icon designer credited in the About screen." translatable="false">ArcherPanda</string>
-    <string name="url_icon_designer" comment="Icon designer credit link opened from the About screen." translatable="false">https://bsky.app/profile/archerpanda.bsky.social</string>
-    <string name="url_additional_translation_project" comment="URL opened from the additional translation contribution card. Do not translate." translatable="false">https://crowdin.com/project/monsterdialer</string>
-    <string name="url_github_opendialer" comment="URL for the MonsterDialer GitHub repository. Do not translate." translatable="false">https://github.com/oxcened/monster-dialer</string>
-    <string name="github_latest_release_api" comment="GitHub API endpoint used to retrieve the latest MonsterDialer release. Do not translate." translatable="false">https://api.github.com/repos/oxcened/monster-dialer/releases/latest</string>
-    <string name="url_feature_requests" comment="URL opened from the feature-request action. Do not translate." translatable="false">https://monsterdialer.fider.io/</string>
+    <string name="additional_translation_project_title" comment="Title of the additional translation contribution card.">Contribuie la traducerile MonsterDialer</string>
+    <string name="contribute_translations" comment="Title of the OpenDialer translation contribution link on the About screen.">Contribuie la traducerile OpenDialer</string>
+    <string name="hang_up" comment="Button to end the current phone call.">Închide</string>
+    <string name="action_answer" comment="Incoming-call button that starts the fight.">Luptă</string>
+    <string name="action_decline" comment="Incoming-call button that runs away.">Fugi</string>
     <string name="call_command_title">COMENZI APEL</string>
     <string name="call_command_hear">DIFUZOR</string>
     <string name="call_command_shush">FĂRĂ SUNET</string>
@@ -424,6 +28,64 @@
     <string name="call_command_back">ÎNAPOI</string>
     <string name="call_command_run">FUGI</string>
     <string name="call_command_dialpad_digits">123\n456\n789\n*0#</string>
+    <string name="add" comment="Generic label for adding a new item.">Adaugă</string>
+    <string name="settings_character_packs_title" comment="Settings title for managing character packs.">Pachete de personaje</string>
+    <string name="settings_catalogs_title" comment="Settings title for external character-pack catalogs.">Cataloage</string>
+    <string name="settings_catalogs_description" comment="Settings description for external character-pack catalogs.">Răsfoiește pachetele de la URL-urile de catalog pe care le adaugi.</string>
+    <string name="local_backup_title">Backup local</string>
+    <string name="local_backup_settings_description">Exportă sau restaurează colecția de personaje și progresul.</string>
+    <string name="local_backup_description">Salvează pachetele de personaje, atribuiri, descoperiri strălucitoare și Jurnalul de lupte într-un fișier pe acest dispozitiv. Contactele Android și istoricul apelurilor nu sunt incluse.</string>
+    <string name="local_backup_export">Exportă backupul</string>
+    <string name="local_backup_import">Restaurează backupul</string>
+    <string name="local_backup_import_confirmation_title">Restaurezi backupul?</string>
+    <string name="local_backup_import_confirmation_message">Aceasta înlocuiește colecția actuală de personaje și progresul local.</string>
+    <string name="local_backup_exported">Backup exportat</string>
+    <string name="local_backup_restored">Backup restaurat</string>
+    <string name="local_backup_failed">Backupul nu a putut fi finalizat.</string>
+    <string name="catalogs_description" comment="Explanation at the top of the Catalogs screen.">Cataloagele afișează pachete găzduite de editorii lor. Instalează doar ilustrații și sunete pe care ai voie să le folosești.</string>
+    <string name="catalogs_empty" comment="Empty state in the Catalogs screen.">Adaugă un URL de catalog pentru a-i răsfoi pachetele.</string>
+    <string name="add_catalog" comment="Action that adds an external pack catalog.">Adaugă catalog</string>
+    <string name="catalog_url_label" comment="Label for the external catalog URL field.">URL catalog</string>
+    <string name="copy_catalog_url" comment="Button to copy an installed catalog URL.">Copiază</string>
+    <string name="catalog_url_copied" comment="Confirmation after copying an installed catalog URL.">URL-ul catalogului a fost copiat</string>
+    <string name="catalog_add_notice" comment="Notice shown before adding a catalog URL.">Adaugă doar cataloage din surse de încredere. Editorii cataloagelor își găzduiesc și întrețin propriile linkuri către pachete.</string>
+    <string name="refresh_catalog" comment="Action that reloads a catalog URL.">Reîmprospătează</string>
+    <string name="catalog_loading" comment="Loading status for a catalog.">Se încarcă catalogul…</string>
+    <string name="catalog_load_failed" comment="Failure status for a catalog.">Catalogul nu a putut fi încărcat.</string>
+    <string name="catalog_pack_metadata" comment="Metadata for a catalog pack. %1$s is the creator and %2$s is the version.">%1$s · %2$s</string>
+    <string name="catalog_added" comment="Confirmation after adding a catalog URL.">Catalog adăugat</string>
+    <string name="catalog_add_failed" comment="Failure after adding a catalog URL.">Catalogul nu a putut fi adăugat.</string>
+    <string name="catalog_removed" comment="Confirmation after removing a catalog URL.">Catalog eliminat</string>
+    <string name="catalog_remove_failed" comment="Failure after removing a catalog URL.">Catalogul nu a putut fi eliminat.</string>
+    <string name="catalog_remove_confirmation_title" comment="Title before removing a catalog URL.">Elimini catalogul?</string>
+    <string name="catalog_install_confirmation_title" comment="Title before installing a catalog pack.">Instalezi pachetul?</string>
+    <string name="catalog_install_confirmation_message" comment="Explanation before installing a catalog pack. %1$s is the pack name and %2$s is its license.">%1$s\nLicență: %2$s</string>
+    <string name="catalog_pack_installed" comment="Confirmation after installing a pack from a catalog.">Pachet instalat</string>
+    <string name="catalog_pack_install_failed" comment="Failure after installing a pack from a catalog.">Pachetul nu a putut fi instalat.</string>
+    <string name="catalog_pack_install_failed_message">Pachetul nu a putut fi descărcat sau validat.\n\nMotiv: %1$s</string>
+    <string name="catalog_pack_install_failed_unknown_reason">Nu sunt disponibile detalii suplimentare.</string>
+    <string name="characters_navigation_label" comment="Bottom navigation label for the player's profile and character collection.">Profil</string>
+    <string name="customize_your_calls" comment="Section heading above contact character customization.">Personalizează apelurile</string>
+    <string name="character_collection_title" comment="Section heading above character pack and import actions.">Colecția ta</string>
+    <string name="profile_trainer_label" comment="Label above the player's name in the Character profile card.">Antrenorul tău</string>
+    <string name="active_monster_label" comment="Label above the currently selected player monster in the Character profile card.">Monstru activ</string>
+    <plurals name="calls_battled" comment="Label for the number of calls that have had a battle presentation.">
+        <item quantity="one">%1$d apel cu luptă</item>
+        <item quantity="few">%1$d apeluri cu lupte</item>
+        <item quantity="other">%1$d apeluri cu lupte</item>
+    </plurals>
+    <plurals name="characters_collected" comment="Label for the number of characters in the player's collection.">
+        <item quantity="one">%1$d personaj colecționat</item>
+        <item quantity="few">%1$d personaje colecționate</item>
+        <item quantity="other">%1$d personaje colecționate</item>
+    </plurals>
+    <plurals name="radiants_found" comment="Label for the number of rare radiant variants the player has found.">
+        <item quantity="one">%1$d radiant găsit</item>
+        <item quantity="few">%1$d radiante găsite</item>
+        <item quantity="other">%1$d radiante găsite</item>
+    </plurals>
+    <string name="profile_calls_battled" comment="Profile activity summary. %1$d is the number of calls with battle presentations.">%1$d apeluri cu lupte</string>
+    <string name="profile_collection_summary" comment="Profile collection summary. %1$d is the number of collected characters and %2$d is the number of radiant variants found.">%1$d colecționate · %2$d radiante găsite</string>
     <string name="profile_status_title">STATUS</string>
     <string name="profile_player_label">JUCĂTOR</string>
     <string name="profile_name_label">NUME</string>
@@ -461,10 +123,75 @@
     <string name="profile_menu_cursor">▶%1$s</string>
     <string name="profile_roster_description">Echipa ta de luptă.</string>
     <string name="profile_footer_prompt">Profilul tău!</string>
+    <string name="character_tools_title" comment="Heading above character management actions.">Trusă de unelte</string>
     <string name="character_tools_prompt" comment="Retro prompt shown below the character toolbox list. Asking the player to choose the right tool.">Alege instrumentul potrivit.</string>
-    <string name="monster_variant_and_level" translatable="false" comment="Language-neutral formatter for a monster variant and an already-localized level. %1$s is the variant (e.g., Regular) and %2$s is the level (e.g., Lv. 12).">%1$s · %2$s</string>
-    <string name="retro_picker_variant_and_level" translatable="false" comment="Language-neutral formatter for the retro assignment picker. %1$s is the variant and %2$s is the level.">%1$s   %2$s</string>
-    <string name="active_monster_variant_and_level" translatable="false" comment="Language-neutral formatter for details beneath the active monster on the profile card. %1$s is its variant (for example, Regular) and %2$s is its localized level (for example, Lv. 12).">%1$s • %2$s</string>
+    <string name="battle_journal_title" comment="Title for the local history of battle encounters.">Jurnal de lupte</string>
+    <string name="battle_journal_description" comment="Description for the local history of battle encounters.">Vezi descoperirile radiante și luptele recente.</string>
+    <string name="battle_journal_empty_title" comment="Empty-state title for the battle journal.">Încă nu ai lupte</string>
+    <string name="battle_journal_empty_description" comment="Empty-state message for the battle journal.">Descoperirile radiante și luptele recente vor apărea aici.</string>
+    <string name="battle_journal_no_matches_title" comment="Title shown when the selected Battle Journal filter has no entries.">Încă nu este nimic aici</string>
+    <string name="battle_journal_no_matches_description" comment="Message shown when the selected Battle Journal filter has no entries.">Încearcă un alt filtru sau revino după următoarea luptă.</string>
+    <string name="battle_journal_radiant_found" comment="Journal entry for a newly discovered radiant monster. %1$s is the monster name.">Ai găsit %1$s radiant</string>
+    <string name="battle_journal_trainer_battle" comment="Journal entry for a battle against a trainer. %1$s is the opponent monster name.">Ai luptat cu %1$s</string>
+    <string name="battle_journal_wild_battle" comment="Journal entry for a non-discovery radiant wild encounter. %1$s is the opponent monster name.">Ai întâlnit un %1$s sălbatic</string>
+    <string name="battle_journal_anonymous_battle" comment="Journal entry for an anonymous call battle.">Luptă anonimă</string>
+    <string name="battle_journal_opponent_trainer" comment="Journal entry detail. %1$s is the opponent trainer name.">Antrenor: %1$s</string>
+    <string name="battle_journal_player_monster" comment="Journal entry detail. %1$s is the player's active monster name.">Monstrul tău: %1$s</string>
+    <string name="battle_journal_matchup" comment="Journal entry matchup. %1$s is the player's monster and %2$s is the opponent monster.">%1$s contra %2$s</string>
+    <string name="battle_journal_battle_label" comment="Compact category label for a regular journal entry.">Luptă</string>
+    <string name="battle_journal_radiant_label" comment="Compact category label for a radiant discovery journal entry.">Radiant găsit</string>
+    <string name="battle_journal_radiant_encounter_label" comment="Compact category label for a repeat radiant encounter.">Întâlnire radiantă</string>
+    <string name="battle_journal_more_options" comment="Accessibility label for the Battle Journal overflow menu.">Mai multe opțiuni pentru jurnalul de lupte</string>
+    <string name="battle_journal_clear" comment="Overflow-menu action that removes all Battle Journal entries.">Golește jurnalul</string>
+    <string name="battle_journal_clear_short" comment="Compact Battle Journal action that removes all entries.">Golește</string>
+    <string name="battle_journal_clear_confirmation_title" comment="Short prompt shown before clearing the Battle Journal.">Ești sigur?</string>
+    <string name="filter_all" comment="Filter option to show all monster variants.">Toate</string>
+    <string name="filter_regular" comment="Filter option to show only regular monster variants.">Normal</string>
+    <string name="filter_radiant" comment="Filter option to show all radiant monster variants in the collection.">Radiant</string>
+    <string name="filter_unlocked_radiant" comment="Filter option to show only available radiant monster variants.">Radiant deblocat</string>
+    <string name="your_roster" comment="Heading above the player's current active monster roster.">Echipa ta</string>
+    <string name="roster_monster_level" comment="Level shown below a monster in the roster. %1$d is the monster's level.">Nv. %1$d</string>
+    <string name="roster_monster_description" comment="Accessibility description for a roster monster. %1$s is its name and %2$d is its level.">%1$s, nivelul %2$d</string>
+    <string name="roster_full_message" comment="Message shown when the player tries to add a monster but the roster is full.">Echipa ta este completă. Elimină mai întâi un monstru pentru a adăuga altul.</string>
+    <string name="remove_roster_monster" comment="Accessibility label for removing a monster from the player's roster.">Elimină monstrul</string>
+    <string name="contact_characters_ready" comment="Short status shown on the Contact Characters action when one or more contacts are configured.">Echipa de apel este gata</string>
+    <string name="character_packs_home_description" comment="Short description for the character packs action on the Characters home screen.">Răsfoiește pachetele</string>
+    <string name="import_character_home_description" comment="Short description for the character import action on the Characters home screen.">Adaugă unul partajat</string>
+    <string name="open_character_guide" comment="Action label that opens the Character Guide.">Deschide ghidul</string>
+    <string name="settings_character_packs_description" comment="Settings description for character packs.">Importă și gestionează ilustrații personalizate ale personajelor.</string>
+    <string name="import_character" comment="Action that starts selecting a shared single-character file.">Importă personaj</string>
+    <string name="import_action" comment="GSC action that starts selecting either a shared character or character pack file.">Importă</string>
+    <string name="import_character_description" comment="Description of the action that imports a shared character.">Adaugă un personaj pe care cineva l-a distribuit cu tine.</string>
+    <string name="add_to_your_characters" comment="Button confirming that a shared character should be imported.">Adaugă</string>
+    <string name="shared_character_creator" comment="Creator shown in a shared-character import preview. %1$s is the creator name.">Creator: %1$s</string>
+    <string name="shared_character_license" comment="License shown in a shared-character import preview. %1$s is the license name.">Licență: %1$s</string>
+    <string name="shared_character_import_description" comment="Explains the result of importing one shared character. %1$s is a character type, such as Trainer or Monster.">Acest %1$s va fi adăugat la colecția ta.</string>
+    <string name="shared_character_import_title" comment="Title confirming the import of a shared character. %1$s is the character name.">Adaugi %1$s?</string>
+    <string name="shared_character_import_failed_title" comment="Title shown when a selected file is not a valid shared character.">Nu s-a putut importa personajul</string>
+    <string name="shared_character_import_failed_message" comment="Explains that the selected file is not a valid shared character.">Alege un fișier .monstercharacter exportat din MonsterDialer.</string>
+    <string name="share_character_title" comment="Title of the export dialog. %1$s is the character name.">Distribuie %1$s</string>
+    <string name="creator_label" comment="Field label requesting the creator of a shared character.">Creator</string>
+    <string name="license_label" comment="Field label requesting the license of a shared character.">Licență</string>
+    <string name="default_license" comment="Default license used when sharing a character or creating a pack.">Toate drepturile rezervate</string>
+    <string name="export_character" comment="Button that exports one character as a shareable file.">Exportă personajul</string>
+    <string name="save_to_device" comment="Button that saves a shared character file through the device's document picker.">Salvează pe dispozitiv</string>
+    <string name="shared_character_file_name" comment="Default filename for an exported character. Keep the .monstercharacter extension. %1$s is the character name.">%1$s.monstercharacter</string>
+    <string name="settings_player_character_title" comment="Settings title for the player's battle character.">Personajul tău</string>
+    <string name="settings_player_character_description" comment="Settings description for the player's battle character.">Alege cine te reprezintă în timpul apelurilor.</string>
+    <string name="player_characters_not_set" comment="Settings subtitle when no player character is selected.">Nepersonalizat</string>
+    <string name="using_characters" comment="Settings subtitle; %1$s is a list of selected character names.">Folosește %1$s</string>
+    <string name="settings_contact_characters_title" comment="Settings title for assigning characters to contacts.">Personajele contactelor</string>
+    <string name="personalize_contact_character" comment="Accessibility label for the contact-list action that customizes a caller's battle characters.">Personalizează personajele apelantului</string>
+    <string name="settings_contact_characters_description" comment="Settings description for assigning characters to contacts.">Atribuie personaje apelanților.</string>
+    <string name="prefer_monster_artwork" comment="Setting that makes assigned monster artwork take priority over trainer artwork.">Afișează monstrul când ambele sunt atribuite</string>
+    <string name="prefer_monster_artwork_description" comment="Explanation for the contact artwork priority setting.">Folosește grafica monstrului în Contacte și în istoricul apelurilor când unui contact îi sunt atribuite un antrenor și un monstru.</string>
+    <string name="contact_characters_not_set" comment="Settings subtitle when no contacts have a character assignment.">Niciun contact personalizat</string>
+    <plurals name="contact_character_assignment_count" comment="Settings subtitle showing how many contacts have a character assignment.">
+        <item quantity="one">%d contact personalizat</item>
+        <item quantity="few">%d contacte personalizate</item>
+        <item quantity="other">%d contacte personalizate</item>
+    </plurals>
+    <string name="choose_contact" comment="Button that opens the contact picker.">Alege contactul</string>
     <string name="contact_picker_search" comment="Retro contact-picker command that opens name search.">Caută</string>
     <string name="contact_picker_search_name_prefix" comment="Prefix before the typed name in the retro contact search field.">Nume/</string>
     <string name="contact_picker_search_empty_prompt" comment="Retro contact-picker prompt shown before a name is typed.">Introdu un nume.</string>
@@ -476,11 +203,36 @@
         <item quantity="few">%d contacte găsite.</item>
         <item quantity="other">%d contacte găsite.</item>
     </plurals>
+    <string name="contact_phone_number_required" comment="Toast shown when the selected contact has no usable phone number.">Acest contact nu poate fi selectat deoarece nu are un număr de telefon.</string>
+    <string name="character_type_trainer" comment="Character category for a human battle character.">Antrenor</string>
+    <string name="character_type_monster" comment="Character category for a creature battle character.">Monstru</string>
+    <string name="character_type_trainers" comment="Plural character category for a collection of human battle characters.">antrenori</string>
+    <string name="character_type_monsters" comment="Plural character category for a collection of creature battle characters.">monștri</string>
+    <string name="built_in_character" comment="Label for a character included with the app.">Personaj inclus</string>
+    <string name="default_character_artwork" comment="%1$s is a character type, such as Trainer or Monster.">Ilustrarea implicită pentru %1$s</string>
+    <string name="character_artwork" comment="%1$s is a character name.">Ilustrarea lui %1$s</string>
+    <string name="no_other_character_options" comment="%1$s is a character type, such as Trainer or Monster.">Nicio altă opțiune pentru %1$s</string>
+    <string name="no_available_character_options" comment="%1$s is a plural character type, such as monsters.">Nu există %1$s disponibili</string>
+    <string name="import_and_enable_character_pack" comment="Empty-state message in the character selector.">Adaugă propriul personaj sau importă un pachet pentru a vedea mai multe.</string>
+    <string name="radiant" comment="Adjective for a rare, sparkling character variant.">Radiant</string>
+    <string name="regular" comment="Adjective for a standard, non-rare character variant.">Normal</string>
+    <string name="selected" comment="Status label for the currently chosen option.">Selectat</string>
+    <string name="randomize" comment="Character selection that chooses a different eligible character for every call.">Aleatoriu</string>
+    <string name="contact_defaults_title">Contacte nealocate</string>
+    <string name="contact_defaults_toolbox_title">Setări implicite pentru contacte</string>
+    <string name="contact_defaults_description">Alege setările implicite și limitează grupul de selecție aleatorie pentru contacte.</string>
+    <string name="contact_default_trainer">Antrenor implicit</string>
+    <string name="contact_default_monster">Monstru implicit</string>
+    <string name="contact_choose_trainer" comment="Option that opens the character picker for the contact default.">Alege</string>
+    <string name="contact_choose_monster" comment="Option that opens the character picker for the contact default.">Alege</string>
     <string name="contact_context_menu_trainer">Antrenor</string>
     <string name="contact_context_menu_monster">Monstru</string>
     <string name="contact_context_menu_remove">Elimină</string>
     <string name="contact_picker_options">Opțiuni</string>
     <string name="back">Înapoi</string>
+    <string name="monster_settings_title" comment="Title of MonsterDialer's in-app settings screen.">Setări</string>
+    <string name="monster_settings_hint" comment="Footer prompt for MonsterDialer's settings screen.">Alege o setare.</string>
+    <string name="settings_section_general" comment="Section heading for standard dialer settings.">Telefon</string>
     <string name="contact_defaults_menu_mode">Personaj implicit</string>
     <string name="contact_defaults_menu_characters">Lista personajelor</string>
     <string name="contact_defaults_menu_pool">Grup de selecție aleatorie</string>
@@ -504,14 +256,120 @@
     <string name="contact_remove_yes">Da</string>
     <string name="contact_removed_message">%1$s a fost eliminat.</string>
     <string name="contact_added_message">%1$s a fost adăugat în echipă!</string>
+    <string name="contact_default_random">Aleatoriu</string>
+    <string name="contact_random_pool_all">Toate personajele disponibile</string>
+    <string name="contact_random_pool_choose">Alege grupul de selecție aleatorie</string>
+    <string name="contact_default_choose">Alege personajul implicit</string>
+    <string name="contact_defaults_mode_default">Personaj implicit</string>
+    <string name="contact_defaults_mode_pool">Grup de selecție aleatorie</string>
+    <string name="open_contact_defaults_guide" comment="Accessibility label for the help button on the contact defaults screen.">Deschide ghidul pentru setările implicite ale contactelor</string>
+    <string name="contact_defaults_guide_title" comment="Title of the guide explaining contact character defaults.">Setări implicite pentru contacte</string>
+    <string name="contact_defaults_guide_message">Aceste setări se aplică persoanelor de contact care nu au propria personalizare a personajului.</string>
+    <string name="contact_defaults_guide_default">• Alege un antrenor sau un monstru implicit pentru contactele nealocate.</string>
+    <string name="contact_defaults_guide_randomizer">• Alege Aleatoriu pentru ca aplicația să selecteze un personaj din grupul de selecție aleatorie ales.</string>
+    <string name="contact_defaults_guide_overrides">• Setarea Personalizează contactul a unui contact înlocuiește aceste setări implicite globale. Contactele care folosesc Nu personaliza continuă să le urmeze.</string>
+    <string name="contact_random_pool_reset">Resetează</string>
+    <string name="contact_random_pool_description" comment="Explains what the selected characters mean when Randomize is enabled.">Opțiunea Aleatoriu poate alege dintre personajele selectate.</string>
+    <string name="contact_random_pool_select_all">Selectează tot</string>
+    <string name="contact_random_pool_deselect_all">Deselectează tot</string>
     <string name="character_selection_more_options" comment="Accessibility label for the character selector menu containing secondary pool actions.">Mai multe opțiuni pentru selectarea personajului</string>
-    <string name="radiant_unlock_share_card_link" comment="Link printed on the radiant-unlock share card. Do not translate." translatable="false">monsterdialer.web.app</string>
+    <string name="contact_character_source_global">Nu personaliza</string>
+    <string name="contact_character_source_custom">Personalizează contactul</string>
+    <string name="contact_character_inherited_title">Se folosesc setările implicite globale</string>
+    <string name="contact_character_inherited_message">Acest contact urmează setările globale pentru %1$s. Alege un personaj diferit pentru a le înlocui sau editează setările implicite globale de mai jos.</string>
+    <string name="contact_character_customize">Alege un alt personaj</string>
+    <string name="contact_character_edit_global_defaults" comment="Button that opens the global contact character defaults from an inherited contact setting.">Editează setările implicite globale</string>
+    <string name="contact_random_pool_save">Salvează grupul</string>
+    <string name="contact_random_pool_empty_title">Alege cel puțin un personaj</string>
+    <string name="contact_random_pool_empty_exit_message">Grupul de selecție aleatorie este gol, așa că aceste modificări nu au fost salvate. Selectează cel puțin un personaj pentru a salva grupul sau renunță la modificările nesalvate pentru a ieși.</string>
+    <string name="contact_random_pool_continue_editing">Continuă editarea</string>
+    <string name="contact_random_pool_discard_changes">Renunță la modificări</string>
+    <string name="locked" comment="Status label for a character variant that must be unlocked before selection.">Blocat</string>
+    <string name="radiant_variant_locked_title" comment="Title of the dialog shown for a locked radiant character variant.">Variantă radiantă blocată</string>
+    <string name="radiant_variant_locked_message" comment="Explains how to unlock a radiant character variant; %1$s is the character name.">Când întâlnești un %1$s radiant într-o luptă sălbatică, se deblochează automat la începutul luptei. Îl poți apoi atribui.</string>
+    <string name="learn_about_radiants" comment="Button that opens the guide to rare radiant variants.">Despre radianți</string>
+    <string name="radiant_collection_title">Colecția radiantă</string>
+    <string name="radiant_collection_description">Vezi toți monștrii și variantele lor radiante, inclusiv pe cele nedescoperite.</string>
+    <string name="collection_sprite" comment="Accessibility description for a regular collection sprite; %1$s is the monster name.">Sprite-ul lui %1$s</string>
+    <string name="radiant_collection_sprite" comment="Accessibility description for a radiant collection sprite; %1$s is the monster name.">Sprite radiant al lui %1$s</string>
+    <string name="radiant_collection_found">Găsit</string>
+    <string name="radiant_collection_locked">Blocat</string>
+    <string name="radiant_collection_regular">Normal</string>
+    <string name="radiant_collection_browse_packs">Pachete</string>
+    <string name="open_radiants_guide" comment="Accessibility label for the button that opens the Radiants guide.">Deschide ghidul radianților</string>
+    <string name="radiants_guide_title" comment="Title of the guide explaining rare radiant monster variants.">Radianți</string>
+    <string name="radiants_guide_message" comment="Introduction to radiant monster variants.">Radianții sunt aspecte alternative rare ale monștrilor pe care îi poți descoperi și adăuga în lista ta.</string>
+    <string name="radiants_guide_availability" comment="Guide detail explaining which monsters can appear as radiants.">• Pot apărea numai monștrii cu o variantă radiantă.</string>
+    <string name="radiants_guide_unlock" comment="Guide detail explaining when radiants unlock.">• Un radiant poate înlocui o luptă eligibilă. Se deblochează imediat ce începe lupta — nu trebuie să faci nimic.</string>
+    <string name="radiants_guide_assign" comment="Guide detail explaining how to use a discovered radiant.">• După ce îl descoperi, alege varianta sa radiantă din Personajul tău → Monștri pentru a o atribui.</string>
+    <string name="radiants_guide_journal" comment="Guide detail explaining where radiant encounters are recorded.">• Găsește și distribuie descoperirile tale radiante în Jurnalul de lupte.</string>
+    <string name="radiant_unlock_notifications" comment="Notification channel name for radiant variant discoveries.">Deblocări radiante</string>
+    <string name="radiant_variant_unlocked_title" comment="Title of the notification shown when a radiant character variant is discovered.">Variantă radiantă deblocată!</string>
+    <string name="radiant_variant_unlocked_message" comment="Confirms a radiant character variant was unlocked; %1$s is the character name.">%1$s poate fi acum atribuit.</string>
+    <string name="radiant_unlock_share_title" comment="Chooser title for sharing a radiant variant unlock.">Distribuie deblocarea radiantă</string>
+    <string name="radiant_unlock_share_card_title" comment="Heading on a radiant variant unlock share image.">MONSTRU RADIANT DEBLOCAT!</string>
+    <string name="show_grid_view" comment="Accessibility label for the control that switches the character selector to a grid.">Afișează grila</string>
+    <string name="show_list_view" comment="Accessibility label for the control that switches the character selector to a list.">Afișează lista</string>
+    <string name="jump_to_selected_character" comment="Accessibility label for a button that scrolls to the selected character.">Salt la personajul selectat</string>
+    <string name="character_fast_scroller" comment="Accessibility label for the draggable fast-scrolling control in the character selector.">Derulare rapidă prin personaje</string>
+    <string name="select" comment="Button label to choose an option.">Selectează</string>
+    <string name="change" comment="Button label to change the current selection.">Schimbă</string>
+    <string name="contact_chooser_prompt" comment="Prompt above the contact picker.">Alege un contact căruia să îi atribui un personaj.</string>
+    <string name="online_profile_choose_contact_prompt" comment="Prompt shown after opening a shared Online Profile link.">Alege un contact pe care să-l asociezi acestui profil online. Asocierea rămâne pe dispozitivul tău.</string>
+    <string name="online_profile_title" comment="Title of the profile SHARE screen for sharing the player's battle identity with friends.">Profil online</string>
     <string name="online_profile_link_on">LINK/ON</string>
     <string name="online_profile_link_off">LINK/OFF</string>
     <string name="online_profile_sign_in_action">CONECTARE</string>
     <string name="online_profile_unlink_action">DEZLEAGĂ</string>
     <string name="online_profile_linked_message">Echipa ta este partajată.</string>
     <string name="online_profile_not_linked_message">Partajează-ți echipa cu prietenii.</string>
+    <string name="online_profile_description" comment="Description below the Online Profile settings title. The trainer and monster are the player's battle characters.">Permite-le prietenilor să vadă antrenorul și monstrul pe care le aduci în fiecare apel.</string>
+    <string name="variant_backup_enable" comment="Action that enables private account backup for unlockable character variants.">Fă backup pentru variante</string>
+    <string name="variant_backup_enabled" comment="Status/action indicating that private character-variant backup is active.">Variante salvate</string>
+    <string name="variant_backup_guide_title" comment="Guide title for private cloud backup of unlockable character variants.">Backup pentru variante</string>
+    <string name="variant_backup_guide_message" comment="Privacy explanation for cloud backup of unlockable character variants.">Fă backup privat pentru variantele de personaje deblocate, folosind contul tău Google. Acestea nu vor fi publicate niciodată, iar grafica personajelor, contactele sau istoricul apelurilor nu vor fi încărcate. Când te conectezi pe alt dispozitiv și activezi backupul, MonsterDialer restaurează toate deblocările găsite și le combină în siguranță cu colecția acelui dispozitiv.</string>
+    <string name="online_profile_privacy_note" comment="Privacy note on the Online Profile settings screen. Sprites are character images; metadata is their non-image information.">Sunt partajate doar sprite-urile și metadatele personajelor tale.</string>
+    <string name="online_profile_guide_title">Partajarea profilului tău online</string>
+    <string name="online_profile_guide_message">Profilurile online sunt complet opționale și create cu grijă pentru confidențialitate și securitate. Pentru a activa unul, conectează-te cu Google. Contul tău Google identifică persoana care poate administra profilul; e-mailul și detaliile contului Google nu sunt partajate. Când activezi un profil sau te conectezi pe alt dispozitiv, antrenorul actual și monstrul activ de pe acel dispozitiv, inclusiv sprite-urile alese, sunt publicate printr-un link care poate fi partajat. Serverele nu stochează numărul tău de telefon, lista de contacte, istoricul apelurilor sau alte date personale ori sensibile. Legăturile dintre profilurile MonsterDialer și contacte rămân exclusiv pe fiecare dispozitiv.</string>
+    <string name="online_profile_public_id_title">ID-ul tău de profil public</string>
+    <string name="online_profile_public_id_message">Oricine primește linkul tău de partajare îți poate găsi profilul prin ID-ul public generat aleatoriu. Același cont Google păstrează acest ID când te conectezi pe alt dispozitiv, astfel încât linkurile existente continuă să funcționeze. Atinge „Regenerează linkul de partajare” pentru a invalida ID-ul public curent și a crea unul nou. Linkul anterior nu va mai funcționa pentru nimeni cu care l-ai partajat.</string>
+    <string name="online_profile_delete_guide_title">Ștergerea profilului tău</string>
+    <string name="online_profile_delete_guide_message">Atinge „Șterge profilul” pentru a elimina definitiv datele publicate ale profilului tău. Oricine are linkul tău de partajare nu va mai putea vedea echipa ta. Dacă activezi din nou un profil mai târziu, acesta va avea un link nou.</string>
+    <string name="online_profile_enable" comment="Button that creates and enables the player's Online Profile.">Activează</string>
+    <string name="online_profile_enabling" comment="Progress label shown while an Online Profile is being enabled.">Se activează profilul online</string>
+    <string name="online_profile_regenerating" comment="Progress label shown while a new profile sharing link is being created.">Se regenerează linkul de partajare</string>
+    <string name="online_profile_deleting" comment="Progress label shown while the player's Online Profile is being deleted.">Se șterge profilul online</string>
+    <string name="online_profile_clearing_variant_backup" comment="Progress label shown while cloud variant backup is being deleted.">Se șterg variantele salvate</string>
+    <string name="online_profile_deleting_account" comment="Progress label shown while all cloud data and the MonsterDialer account are being deleted.">Se șterg datele din cloud și contul</string>
+    <string name="online_profile_keeping_online" comment="Progress label shown while confirming that an Online Profile should remain shared.">Profilul online rămâne activ</string>
+    <string name="online_profile_enabled" comment="Brief confirmation after an Online Profile is enabled.">Profil online activat</string>
+    <string name="online_profile_check_in_title" comment="Title of the reminder dialog asking the player to confirm continued profile sharing.">Îți mai partajezi profilul?</string>
+    <string name="online_profile_check_in_description" comment="Explanation in the profile-sharing reminder dialog. It asks the player to confirm sharing after a long period of inactivity.">Profilul tău online nu a fost confirmat de aproape un an. Confirmă-l ca să continui să-l partajezi.</string>
+    <string name="online_profile_keep_online" comment="Confirmation button that keeps the player's Online Profile shared.">Păstrează online</string>
+    <string name="online_profile_share" comment="Button that opens choices for sharing the player's Online Profile.">Partajează profilul</string>
+    <string name="online_profile_share_link">Partajează linkul</string>
+    <string name="online_profile_show_qr_code" comment="Button that displays a scannable QR code for the player's Online Profile link.">Afișează codul QR</string>
+    <string name="online_profile_qr_code_title" comment="Title of the dialog displaying the player's shareable Online Profile QR code.">Partajează cu cod QR</string>
+    <string name="online_profile_qr_code_description" comment="Instructions shown below the Online Profile QR code.">Roagă un prieten să scaneze acest cod cu camera pentru a-ți deschide profilul.</string>
+    <string name="online_profile_qr_code_content_description" comment="Accessibility description for the player's Online Profile QR code.">Cod QR pentru profilul tău online</string>
+    <string name="online_profile_regenerate" comment="Button that replaces the current Online Profile sharing link.">Regenerează linkul de partajare</string>
+    <string name="online_profile_regenerate_message" comment="Confirmation dialog message explaining that replacing a sharing link invalidates the old link.">Aceasta creează un link de partajare nou și îl invalidează pe cel actual. Prietenii vor avea nevoie de noul link ca să îți acceseze profilul.</string>
+    <string name="online_profile_delete" comment="Button that deletes the player's shared Online Profile.">Șterge profilul</string>
+    <string name="online_profile_delete_message" comment="Confirmation dialog message for deleting a shared Online Profile. Character and contact customization data remains local.">Aceasta șterge profilul tău partajat și îi invalidează linkul. Personajele și personalizările contactelor rămân pe acest dispozitiv.</string>
+    <string name="online_profile_clear_variant_backup">Șterge variantele salvate</string>
+    <string name="online_profile_clear_variant_backup_message">Aceasta șterge definitiv din cloud variantele salvate. Variantele tale rămân pe acest dispozitiv. Copia de siguranță în cloud este dezactivată; activeaz-o din nou pentru a le salva.</string>
+    <string name="online_profile_delete_account" comment="Button that permanently deletes all app cloud data and the Firebase Authentication account.">Șterge datele din cloud și contul</string>
+    <string name="online_profile_delete_account_message" comment="Confirmation dialog message for deleting all app cloud data and the Firebase Authentication account.">Aceasta șterge definitiv profilul tău partajat, copia de siguranță a variantelor și contul MonsterDialer. Contul Google și personajele locale rămân neschimbate. Va trebui să te conectezi din nou pentru a folosi funcțiile cloud.</string>
+    <string name="online_profile_error_title" comment="Title of an error dialog when an Online Profile operation cannot be completed.">Nu s-a putut actualiza profilul online</string>
+    <string name="online_profile_sprite_decode_error" comment="Error explaining that the selected character image cannot be read for an Online Profile.">Sprite-ul personajului selectat nu poate fi decodat.</string>
+    <string name="online_profile_google_sign_in_required" comment="Error explaining that a Google account is required to create or manage an Online Profile.">Conectează-te cu Google pentru a gestiona un profil online.</string>
+    <string name="online_profile_google_sign_in_error" comment="Generic error explaining that Google sign-in did not complete.">Nu s-a putut conecta cu Google.</string>
+    <string name="online_profile_google_sign_in_not_configured" comment="Technical configuration error explaining that the Firebase Google Sign-In client ID is missing.">Conectarea cu Google nu este configurată încă.</string>
+    <string name="online_profile_signing_in" comment="Progress label shown while signing in with Google.">Se conectează cu Google</string>
+    <string name="online_profile_sign_out_google" comment="Button that signs the player out of Google so they can use a different account for Online Profiles.">Deconectează-te de la Google</string>
+    <string name="online_profile_firebase_not_configured" comment="Technical configuration error shown when the Online Profile backend is unavailable.">Firebase nu este configurat.</string>
+    <string name="online_profile_share_text" comment="%1$s is an HTTPS link to the user's shared MonsterDialer profile.">Vezi profilul meu MonsterDialer:\n%1$s</string>
+    <string name="contact_characters_action" comment="Contact-row overflow action that opens character customization for a contact.">Personaje</string>
     <string name="contact_details_action" comment="Contact-row action that opens the system contact details.">Detalii</string>
     <string name="customized_contacts_title">Contacte personalizate</string>
     <string name="customized_contacts_empty_title">Niciun contact personalizat</string>
@@ -532,55 +390,9 @@
     <string name="retro_action_menu_label">MENIU</string>
     <string name="retro_action_back_label">ÎNAPOI</string>
     <string name="retro_action_dial_label">APELEAZĂ</string>
-    <string name="retro_picker_add" comment="Compact action to add a character in the retro picker.">ADAUGĂ</string>
-    <string name="retro_picker_guide" comment="Compact GSC-style menu action to open the guide.">AJUTOR</string>
-    <string name="default_pack_version" comment="Default technical version assigned to a newly created character pack. Do not translate." translatable="false">1.0.0</string>
-    <string name="call" comment="Menu action that calls the selected phone number.">Apelează</string>
-    <string name="favorite_phone_type_number" comment="Favorite contact summary. %1$s is the phone type and %2$s is the phone number.">%1$s • %2$s</string>
-    <string name="call_log_just_now" comment="Call-log time shown for calls less than one minute old.">Chiar acum</string>
-    <string name="new_contact_short" comment="Compact command for creating a contact.">Nou</string>
-    <string name="settings_catalogs_title">Cataloage</string>
-    <string name="settings_catalogs_description">Răsfoiește pachetele de la URL-urile de catalog pe care le adaugi.</string>
-    <string name="local_backup_title">Backup local</string>
-    <string name="local_backup_settings_description">Exportă sau restaurează colecția de personaje și progresul.</string>
-    <string name="local_backup_description">Salvează pachetele de personaje, atribuiri, descoperiri strălucitoare și Jurnalul de lupte într-un fișier pe acest dispozitiv. Contactele Android și istoricul apelurilor nu sunt incluse.</string>
-    <string name="local_backup_export">Exportă backupul</string>
-    <string name="local_backup_import">Restaurează backupul</string>
-    <string name="local_backup_import_confirmation_title">Restaurezi backupul?</string>
-    <string name="local_backup_import_confirmation_message">Aceasta înlocuiește colecția actuală de personaje și progresul local.</string>
-    <string name="local_backup_exported">Backup exportat</string>
-    <string name="local_backup_restored">Backup restaurat</string>
-    <string name="local_backup_failed">Backupul nu a putut fi finalizat.</string>
-    <string name="catalogs_description">Cataloagele afișează pachete găzduite de editorii lor. Instalează doar ilustrații și sunete pe care ai voie să le folosești.</string>
-    <string name="catalogs_empty">Adaugă un URL de catalog pentru a-i răsfoi pachetele.</string>
-    <string name="add_catalog">Adaugă catalog</string>
-    <string name="catalog_url_label">URL catalog</string>
-    <string name="copy_catalog_url">Copiază</string>
-    <string name="catalog_url_copied">URL-ul catalogului a fost copiat</string>
-    <string name="catalog_add_notice">Adaugă doar cataloage din surse de încredere. Editorii cataloagelor își găzduiesc și întrețin propriile linkuri către pachete.</string>
-    <string name="refresh_catalog">Reîmprospătează</string>
-    <string name="catalog_loading">Se încarcă catalogul…</string>
-    <string name="catalog_load_failed">Catalogul nu a putut fi încărcat.</string>
-    <string name="catalog_pack_metadata">%1$s · %2$s</string>
-    <string name="catalog_added">Catalog adăugat</string>
-    <string name="catalog_add_failed">Catalogul nu a putut fi adăugat.</string>
-    <string name="catalog_removed">Catalog eliminat</string>
-    <string name="catalog_remove_failed">Catalogul nu a putut fi eliminat.</string>
-    <string name="catalog_remove_confirmation_title">Elimini catalogul?</string>
-    <string name="catalog_install_confirmation_title">Instalezi pachetul?</string>
-    <string name="catalog_install_confirmation_message">%1$s\nLicență: %2$s</string>
-    <string name="catalog_pack_installed">Pachet instalat</string>
-    <string name="catalog_pack_install_failed">Pachetul nu a putut fi instalat.</string>
-    <string name="catalog_pack_install_failed_message">Pachetul nu a putut fi descărcat sau validat.\n\nMotiv: %1$s</string>
-    <string name="catalog_pack_install_failed_unknown_reason">Nu sunt disponibile detalii suplimentare.</string>
-    <string name="variant_backup_enable">Fă backup pentru variante</string>
-    <string name="variant_backup_enabled">Variante salvate</string>
-    <string name="variant_backup_guide_title">Backup pentru variante</string>
-    <string name="variant_backup_guide_message">Fă backup privat pentru variantele de personaje deblocate, folosind contul tău Google. Acestea nu vor fi publicate niciodată, iar grafica personajelor, contactele sau istoricul apelurilor nu vor fi încărcate. Când te conectezi pe alt dispozitiv și activezi backupul, MonsterDialer restaurează toate deblocările găsite și le combină în siguranță cu colecția acelui dispozitiv.</string>
-    <string name="variant_backup_retry">Reîncearcă backupul variantelor</string>
-    <string name="dial_search_number_prefix">Nr./</string>
-    <string name="dial_search_results">Potriviri</string>
-    <string name="dial_search_more">Mai multe</string>
+    <string name="dial_search_number_prefix" comment="Prefix shown before the number being entered on the retro dial screen.">Nr./</string>
+    <string name="dial_search_results" comment="Heading for contact suggestions matching a dialed number.">Potriviri</string>
+    <string name="dial_search_more" comment="Button that opens dial modifiers on the retro dial screen.">Mai multe</string>
     <string name="dialpad_letters_2">ABC</string>
     <string name="dialpad_letters_3">DEF</string>
     <string name="dialpad_letters_4">GHI</string>
@@ -590,9 +402,208 @@
     <string name="dialpad_letters_8">TUV</string>
     <string name="dialpad_letters_9">WXYZ</string>
     <string name="dialpad_letters_0">+</string>
-    <string name="prefer_monster_artwork">Afișează monstrul când ambele sunt atribuite</string>
-    <string name="prefer_monster_artwork_description">Folosește grafica monstrului în Contacte și în istoricul apelurilor când unui contact îi sunt atribuite un antrenor și un monstru.</string>
-    <string name="monster_settings_title">Setări</string>
-    <string name="monster_settings_hint">Alege o setare.</string>
-    <string name="settings_section_general">Telefon</string>
+    <string name="retro_picker_add" comment="Compact action to add a character in the retro picker.">ADAUGĂ</string>
+    <string name="retro_picker_guide" comment="Compact GSC-style menu action to open the guide.">AJUTOR</string>
+    <string name="contact_row_actions" comment="Accessibility label for the contact-row overflow menu trigger.">Acțiuni contact</string>
+    <string name="linked_online_profile_title" comment="Heading in a contact's character settings for its associated Online Profile.">Profil online asociat</string>
+    <string name="contact_row_link_online_profile" comment="Contact-row context-menu action to link an Online Profile.">Asociază</string>
+    <string name="linked_online_profile_none" comment="Empty-state message when a contact has no associated Online Profile.">Niciun profil online nu este asociat acestui contact.</string>
+    <string name="linked_online_profile_link_hint" comment="Instruction shown when a contact has no linked profile. It refers to opening a profile link shared through MonsterDialer.">Deschide un link de profil MonsterDialer partajat pentru a-l asocia acestui contact.</string>
+    <string name="linked_online_profile_description" comment="Label before the Online Profile details associated with a contact. Keep the trailing colon or use equivalent punctuation.">Acest contact este asociat acestui profil online:</string>
+    <string name="linked_online_profile_active_title" comment="Brief confirmation title after an Online Profile is associated with a contact.">Profil online asociat</string>
+    <string name="linked_online_profile_active_message" comment="Explanation shown after linking a contact to an Online Profile. The team is the contact's trainer and monster used during calls.">Echipa partajată a acestui contact poate fi utilizată în timpul apelurilor. Elimină asocierea oricând pentru a reveni la echipa locală a contactului.</string>
+    <string name="linked_online_profile_id_label" comment="Label before the technical identifier of a linked Online Profile.">ID profil</string>
+    <string name="unlink_online_profile" comment="Button that removes a contact's association with an Online Profile.">Anulează asocierea profilului online</string>
+    <string name="unlink_online_profile_action" comment="Compact action that removes the linked Online Profile from a contact.">Dezleagă</string>
+    <string name="unlink_online_profile_confirmation_title" comment="Title of the confirmation dialog before unlinking an Online Profile from a contact.">Elimini asocierea profilului?</string>
+    <string name="unlink_online_profile_confirmation_message" comment="Confirmation dialog message for unlinking an Online Profile. The action affects only this device and does not change the shared profile.">Aceasta elimină de pe acest dispozitiv asocierea cu profilul online partajat. Contactul va folosi din nou echipa locală. Profilul partajat și datele proprietarului nu vor fi modificate.</string>
+    <string name="shared_profile_import_title" comment="Title of the screen opened from a shared MonsterDialer Online Profile link.">Profil partajat</string>
+    <string name="shared_profile_import_heading" comment="Heading explaining that another person shared an Online Profile with the player.">Un profil MonsterDialer a fost partajat cu tine</string>
+    <string name="shared_profile_import_description" comment="Instructions for linking an incoming shared profile to a contact. The link is stored only on the player's device.">Alege din lista de contacte persoana căreia îi aparține acest profil. MonsterDialer îl va afișa în timpul apelurilor cu acea persoană. Linkul rămâne pe dispozitivul tău.</string>
+    <string name="shared_profile_import_choose_contact" comment="Button that opens the contact picker while importing a shared Online Profile.">Alege contactul</string>
+    <string name="shared_profile_import_link_failed" comment="Error shown when the selected contact has no valid phone number for linking a shared Online Profile.">Nu s-a găsit un număr de telefon valid pentru contactul selectat.</string>
+    <string name="open_shared_online_profile_guide" comment="Accessibility label for the button that opens help about using another person's Online Profile.">Deschide ghidul profilurilor online partajate</string>
+    <string name="shared_online_profile_guide_title" comment="Title of the guide explaining how to use an Online Profile received from another person.">Folosirea unui profil online partajat</string>
+    <string name="shared_online_profile_guide_message" comment="Introduction to the guide for linking another person's Online Profile.">Când cineva îți partajează un link de profil online, poți asocia echipa sa partajată cu unul dintre contactele tale pentru lupte în apeluri.</string>
+    <string name="shared_online_profile_choose_contact_guide_title" comment="Guide section explaining how a shared profile is associated with a contact.">Alege contactul potrivit</string>
+    <string name="shared_online_profile_choose_contact_guide_message" comment="Guide section explaining the local privacy scope of a shared Online Profile link.">Selectează contactul care deține profilul partajat. Asocierea dintre contact și profil este salvată numai pe dispozitivul tău; nu îi modifică profilul și nu îți partajează contactele cu acea persoană.</string>
+    <string name="shared_online_profile_loading_guide_title" comment="Guide section explaining how long MonsterDialer waits for a linked Online Profile when a battle begins.">Încărcarea în timpul unei lupte</string>
+    <string name="shared_online_profile_loading_guide_message" comment="Guide section explaining the 500-millisecond time limit and offline fallback for a linked Online Profile.">Când începe o luptă, MonsterDialer încearcă să încarce un profil online asociat pentru acel contact. Așteaptă până la 500 de milisecunde. Dacă profilul nu se poate încărca la timp — de exemplu, deoarece nu există conexiune sau este lentă — lupta începe offline, folosind personajele selectate local.</string>
+    <string name="shared_online_profile_cache_guide_title" comment="Guide section explaining caching of a linked Online Profile after it has loaded.">Stocare în cache și actualizări</string>
+    <string name="shared_online_profile_cache_guide_message" comment="Guide section explaining that a first call can be offline while loading continues, and that a shared profile is cached for an hour.">Un prim apel poate începe offline în timp ce profilul termină de încărcat, apoi îl poate folosi la apelurile ulterioare. După încărcare, profilul este stocat în cache timp de o oră și nu este preluat din nou până la expirarea acestui timp. Proprietarul poate actualiza sau elimina profilul partajat oricând.</string>
+    <string name="shared_online_profile_unlink_guide_title" comment="Guide section explaining how to remove a linked shared profile.">Elimină o legătură oricând</string>
+    <string name="shared_online_profile_unlink_guide_message" comment="Guide section explaining the effect of unlinking another person's Online Profile.">Deschide Profil online asociat din meniul contactului și atinge „Dezasociază profilul online” pentru a nu-l mai folosi. Contactul va reveni la echipa locală, iar profilul partajat va rămâne neschimbat.</string>
+    <string name="contact_chooser_title" comment="Title of the contact-character assignment screen.">Personalizează un contact</string>
+    <string name="contact_chooser_empty_prompt" comment="Empty state when no assignable characters are available.">Mai întâi importă și activează un pachet cu un personaj atribuibil unui contact.</string>
+    <string name="pack_collection_empty_title" comment="Title of the empty character-pack collection screen.">Colecția ta începe aici</string>
+    <string name="pack_collection_empty_description" comment="Description of the empty character-pack collection screen.">Importă un pachet de personaje pentru a-ți personaliza apelurile.</string>
+    <string name="import_character_pack" comment="Button that starts selecting a character-pack file.">Importă pachetul</string>
+    <string name="create_character_pack" comment="Button that starts creating a shareable character pack.">Creează pachet</string>
+    <string name="select_characters_for_pack" comment="Title of the character selection step when creating a pack.">Selectează personaje</string>
+    <string name="pack_details" comment="Title of the details step when creating a character pack.">Detalii pachet</string>
+    <string name="pack_details_action" comment="Context-menu action that opens character pack details.">Detalii</string>
+    <string name="pack_name_label" comment="Label for the character-pack name input field.">Nume pachet</string>
+    <string name="pack_version_label" comment="Label for the character-pack version input field.">Versiune</string>
+    <string name="share_character_pack" comment="Button that exports a character pack through Android's share flow.">Partajează pachetul de personaje</string>
+    <string name="character_pack_default_name" comment="Default filename stem for a newly created character pack. Translate only if the locale convention calls for a localized generic filename.">character-pack</string>
+    <string name="character_pack_file_name" comment="Filename for an exported character pack. Keep the .monsterpack extension. %1$s is the pack name.">%1$s.monsterpack</string>
+    <string name="character_pack_extension_required" comment="Shown when a selected file is not a MonsterDialer character pack or a legacy ZIP pack.">Alege un pachet de personaje .monsterpack sau .zip.</string>
+    <string name="pack_import_license_notice" comment="Legal notice shown before importing a character pack.">Importă doar ilustrații și sunete create de tine sau pentru care ai licență de utilizare.</string>
+    <string name="your_character_packs" comment="Heading above installed character packs.">Pachetele tale de personaje</string>
+    <plurals name="installed_pack_count" comment="Number of installed character packs. %d is the count.">
+        <item quantity="one">%d instalat</item>
+        <item quantity="few">%d instalate</item>
+        <item quantity="other">%d instalate</item>
+    </plurals>
+    <plurals name="enabled_pack_count" comment="Number of enabled character packs. %d is the count.">
+        <item quantity="one">%d activat</item>
+        <item quantity="few">%d activate</item>
+        <item quantity="other">%d activate</item>
+    </plurals>
+    <plurals name="pack_character_count" comment="%1$d is the number of characters; %2$s is the pack version.">
+        <item quantity="one">%1$d personaj · v%2$s</item>
+        <item quantity="few">%1$d personaje · v%2$s</item>
+        <item quantity="other">%1$d personaje · v%2$s</item>
+    </plurals>
+    <plurals name="pack_character_count_only" comment="Character count shown in an installed pack row. %d is the count.">
+        <item quantity="one">%d personaj</item>
+        <item quantity="few">%d personaje</item>
+        <item quantity="other">%d personaje</item>
+    </plurals>
+    <string name="pack_version" comment="%1$s is a character pack version number.">v%1$s</string>
+    <string name="pack_creator_label" comment="Label above the creator name in character pack metadata.">Creator</string>
+    <string name="pack_license_label" comment="Label above the license in character pack metadata.">Licență</string>
+    <string name="pack_identifier_label" comment="Label above the technical identifier in character pack metadata.">ID pachet</string>
+    <string name="pack_metadata" comment="Label used for copied character-pack metadata.">Metadate pachet</string>
+    <string name="copy_pack_metadata" comment="Accessibility label for the action that copies character-pack metadata.">Copiază metadatele pachetului</string>
+    <string name="pack_metadata_copied" comment="Brief confirmation after character-pack metadata is copied.">Metadatele pachetului au fost copiate</string>
+    <string name="import_pack" comment="Button label to import a character pack.">Importă</string>
+    <string name="enabled" comment="Status label for an active character pack.">Activat</string>
+    <string name="disabled" comment="Status label for an inactive character pack.">Dezactivat</string>
+    <string name="enable" comment="Button label to activate a character pack.">Activează</string>
+    <string name="disable" comment="Button label to deactivate a character pack.">Dezactivează</string>
+    <string name="remove" comment="Button label to permanently remove a character pack.">Elimină</string>
+    <string name="remove_character_pack_title" comment="Confirmation dialog title; %1$s is the character pack name.">Elimini %1$s?</string>
+    <string name="remove_character_pack_message" comment="Confirmation dialog message; %1$s is the character pack name.">Această acțiune elimină definitiv %1$s și ilustrațiile sale din MonsterDialer.</string>
+    <string name="are_you_sure" comment="Generic confirmation dialog title.">Ești sigur?</string>
+    <string name="disable_character_pack_title" comment="Confirmation dialog title; %1$s is the character pack name.">Dezactivezi %1$s?</string>
+    <string name="disable_character_pack_message" comment="Confirmation dialog message; %1$s is the character pack name.">Acest pachet este utilizat în prezent. Dezactivarea acestuia va anula atribuirea personajelor sale pentru tine și contactele tale.</string>
+    <string name="cancel" comment="Button label that dismisses an action without making changes.">Anulează</string>
+    <string name="character_pack_removed" comment="Confirmation after a character pack is removed.">Pachet de personaje eliminat</string>
+    <string name="character_pack_remove_failed" comment="Error when a character pack cannot be removed.">Pachetul de personaje nu a putut fi eliminat</string>
+    <string name="pack_import_failed_title" comment="Title of the character-pack import error dialog.">Pachetul nu a putut fi importat</string>
+    <string name="file_label" comment="%1$s is the selected file name.">Fișier: %1$s</string>
+    <string name="pack_import_report_notice" comment="Explains that an import diagnostic excludes the user's pack contents.">Copiază sau partajează acest raport cu creatorul pachetului. Conține detalii despre eroare, nu conținutul pachetului.</string>
+    <string name="pack_import_diagnostic_label" comment="Label for a failed character-pack import report.">Diagnostic de import al pachetului</string>
+    <string name="copied" comment="Brief confirmation after text is copied.">Copiat</string>
+    <string name="copy_report" comment="Button to copy the import diagnostic.">Copiază raportul</string>
+    <string name="share" comment="Button to share the import diagnostic.">Partajează</string>
+    <string name="close" comment="Button to dismiss a dialog.">Închide</string>
+    <string name="selected_file" comment="Label before the selected file name.">Fișier selectat</string>
+    <string name="share_pack_import_diagnostic" comment="Title of Android's share sheet for an import diagnostic.">Partajează diagnosticul importului</string>
+    <string name="battle_scene_description" comment="Accessibility description for the battle scene image.">Scenă de luptă cu monștri</string>
+    <string name="your_monster" comment="%1$s is the player's monster name.">Monstrul tău: %1$s</string>
+    <string name="radiant_sparkle" comment="Accessibility description for a rare-variant sparkle.">Sclipire radiantă</string>
+    <string name="available_monsters" comment="Heading for the selectable monster roster.">Monștri disponibili</string>
+    <string name="monster_status" comment="%1$s is a monster name.">Starea lui %1$s</string>
+    <string name="opponent_monster" comment="%1$s is the opposing monster name.">Monstrul advers: %1$s</string>
+    <string name="opponent_trainer" comment="%1$s is the opposing trainer name.">Antrenor advers: %1$s</string>
+    <string name="unknown" comment="Fallback label when a value is not known.">Necunoscut</string>
+    <string name="battle_player_send_out" comment="Battle announcement; %1$s is the player's monster name.">Du-te, %1$s!</string>
+    <string name="battle_prompt" comment="Prompt shown to the player during a battle.">Ce vei face?</string>
+    <string name="battle_trainer_challenge" comment="Battle announcement; %1$s is the opposing trainer name.">Antrenorul %1$s vrea să lupte!</string>
+    <string name="battle_trainer_sent_out" comment="Battle announcement; %1$s is the trainer name and %2$s is the monster name.">Antrenorul %1$s îl trimite pe %2$s!</string>
+    <string name="battle_wild_radiant_appeared" comment="Battle announcement; %1$s is the wild monster name and radiant is its rare variant.">A apărut un %1$s sălbatic radiant!</string>
+    <string name="battle_wild_appeared" comment="Battle announcement; %1$s is the wild monster name.">A apărut un %1$s sălbatic!</string>
+    <!-- Character creation -->
+    <string name="add_trainer" comment="Button to start adding a new custom trainer.">Adaugă antrenor</string>
+    <string name="add_monster" comment="Button to start adding a new custom monster.">Adaugă monstru</string>
+    <string name="reorder_monster" comment="Accessibility label for the drag handle that changes a monster's order in the player's roster.">Reordonează monstrul</string>
+    <string name="create_trainer_title" comment="Title of the trainer creation screen.">Adaugă antrenor</string>
+    <string name="create_monster_title" comment="Title of the monster creation screen.">Adaugă monstru</string>
+    <string name="character_sprites_section" comment="Heading for the character sprites section.">Sprite-uri</string>
+    <string name="front_sprite_label" comment="Label for the front sprite picker.">Sprite frontal</string>
+    <string name="back_sprite_label" comment="Label for the back sprite picker.">Sprite posterior</string>
+    <string name="radiant_sprites_section" comment="Heading for a monster's radiant sprite pickers.">Sprite-uri radiante</string>
+    <string name="radiant_front_sprite_label" comment="Label for the radiant front sprite picker.">Sprite frontal radiant</string>
+    <string name="radiant_back_sprite_label" comment="Label for the radiant back sprite picker.">Sprite posterior radiant</string>
+    <string name="front_sprite_description" comment="Explains that the front sprite is required for contacts.">Adăugarea unui sprite frontal permite atribuirea acestui personaj contactelor.</string>
+    <string name="back_sprite_description" comment="Explains that the back sprite is required for the player.">Adăugarea unui sprite posterior permite atribuirea acestui personaj propriei persoane.</string>
+    <string name="advanced_section" comment="Heading for advanced character settings.">Avansat</string>
+    <string name="radiant_label" comment="Label for the radiant toggle.">Radiant</string>
+    <string name="radiant_description" comment="Explains what the radiant status means.">O variantă rară și strălucitoare a acestui monstru.</string>
+    <string name="level_label" comment="Label for the character level input.">Nivel</string>
+    <string name="max_hp_label" comment="Label for the character max HP input.">PV max</string>
+    <string name="required_label" comment="Suffix for required fields.">*</string>
+    <string name="edit_trainer_title" comment="Title of the trainer edit screen.">Editează antrenorul</string>
+    <string name="edit_monster_title" comment="Title of the monster edit screen.">Editează monstrul</string>
+    <string name="character_name_label" comment="Label for the character name input field.">Numele personajului</string>
+    <string name="character_name_hint" comment="Hint for the character name input field.">Introdu numele</string>
+    <string name="select_image" comment="Button to pick an image from the gallery.">Selectează imaginea</string>
+    <string name="change_image" comment="Button to change the already selected image.">Schimbă imaginea</string>
+    <string name="save_character" comment="Button to save the new character.">Salvează personajul</string>
+    <string name="save" comment="Button label to save changes.">Salvează</string>
+    <string name="edit" comment="Button label to edit an item.">Editează</string>
+    <string name="delete_action" comment="Context-menu action that permanently deletes a user-created character.">Șterge</string>
+    <string name="your_characters" comment="Section header for characters added by the user. %1$s is a plural character type, such as trainers or monsters.">%1$s tăi</string>
+    <string name="built_in_characters_section" comment="Section header for characters included with the app. %1$s is a plural character type, such as trainers or monsters.">%1$s incluși</string>
+    <string name="character_created" comment="Confirmation after a character is successfully created.">Personaj creat</string>
+    <string name="character_creation_failed" comment="Error when a character cannot be saved.">Nu s-a putut crea personajul</string>
+    <string name="character_limit_reached_message" comment="Error message when the 200 character limit is hit.">Limită de 200 de personaje atinsă. Șterge câteva pentru a adăuga mai multe.</string>
+    <string name="character_limit_reached_hint" comment="Short hint shown below the disabled add button.">Limită de 200 de personaje atinsă</string>
+    <string name="front_sprite_required_for_contact" comment="Message shown when a front sprite is missing but required by an assignment.">Sprite-ul frontal este necesar deoarece acest personaj este atribuit unui contact.</string>
+    <string name="back_sprite_required_for_player" comment="Message shown when a back sprite is missing but required by an assignment.">Sprite-ul posterior este necesar deoarece acest personaj îți este atribuit ție.</string>
+    <string name="remove_character_in_use_message" comment="Confirmation dialog message when deleting a character in use; %1$s is the character name.">%1$s este utilizat în prezent. Ștergerea acestuia va anula atribuirea sa pentru tine și contactele tale.</string>
+    <string name="remove_character_with_radiant_variant_message" comment="Confirmation dialog message when deleting a character with a radiant variant; %1$s is the character name.">Ștergerea lui %1$s elimină atât varianta normală, cât și pe cea radiantă.</string>
+    <string name="remove_character_with_radiant_variant_in_use_message" comment="Confirmation dialog message when deleting an in-use character with a radiant variant; %1$s is the character name.">Ștergerea lui %1$s elimină ambele variante și le anulează atribuirea pentru tine și contactele tale.</string>
+    <string name="remove_character_pack_in_use_message" comment="Confirmation dialog message when deleting a pack in use; %1$s is the character pack name.">Acest pachet este utilizat în prezent. Eliminarea acestuia va anula atribuirea personajelor sale pentru tine și contactele tale.</string>
+    <!-- Help -->
+    <string name="characters_help_title" comment="Title of the in-app guide explaining MonsterDialer characters and character packs.">Ghidul personajelor</string>
+    <string name="characters_help_description" comment="Short description below the Character Guide title. The roster system is the set of player and contact battle characters.">Descoperă personajele din MonsterDialer.</string>
+    <string name="characters_help_intro_title" comment="Section heading in the Character Guide introducing the player's character collection.">Colecția ta</string>
+    <string name="characters_help_intro_message" comment="Introductory Character Guide paragraph. Player Character and Contact Characters are names of settings; translate consistently with their UI labels.">Fila Personaje personalizează fiecare apel pentru tine și contactele tale.</string>
+    <string name="characters_help_team_title">Echipa ta</string>
+    <string name="characters_help_team_message">Echipa ta este antrenorul și monstrul activ afișate aici. Te reprezintă în fiecare luptă din timpul unui apel. Atinge oricare dintre ele pentru a alege un alt personaj.</string>
+    <string name="characters_help_roster_title">Lista ta de monștri</string>
+    <string name="characters_help_roster_message">Lista ta conține până la șase monștri pe care îi alegi pentru echipă. Trage și plasează monștrii personalizați pentru a le schimba ordinea. Primul monstru din listă este monstrul tău activ în luptele din apeluri.</string>
+    <string name="characters_help_creating_title" comment="Section heading in the Character Guide about making custom characters.">Crearea personajelor</string>
+    <string name="characters_help_creating_message" comment="Character Guide instruction for creating a trainer or monster. “Add trainer” and “Add monster” refer to UI actions; translate consistently with those labels.">Atinge „Adaugă antrenor” sau „Adaugă monstru” și alege imagini din galerie pentru:</string>
+    <string name="characters_help_creating_sprites_front" comment="Character Guide bullet explaining front sprites. Preserve the bold Front Sprite label and translate it consistently with the sprite picker label."><b>Sprite frontal:</b> vizibil la apelul unui contact.</string>
+    <string name="characters_help_creating_sprites_back" comment="Character Guide bullet explaining back sprites. Preserve the bold Back Sprite label and translate it consistently with the sprite picker label."><b>Sprite posterior:</b> personajul tău în lupte.</string>
+    <string name="characters_help_creation_title">Crearea unui personaj</string>
+    <string name="characters_help_creation_message">Dă-i personajului tău un nume și adaugă grafica sprite. Sprite-ul frontal este folosit atunci când personajul apare ca adversar, iar sprite-ul din spate reprezintă personajul din echipa ta în timpul luptelor.</string>
+    <string name="characters_help_sprites_title">Fișiere sprite și sfaturi pentru grafică</string>
+    <string name="characters_help_sprites_message">Alege un fișier imagine disponibil prin selectorul de imagini al dispozitivului. MonsterDialer nu impune o rezoluție fixă sau o limită de dimensiune a fișierului pentru sprite-urile personalizate. Pentru cel mai clar rezultat, folosește imagini PNG cu fundal transparent, menține personajul centrat cu cât mai puțin spațiu liber în jur și folosește o scară și o poziție similare pentru sprite-urile frontal și din spate.</string>
+    <string name="characters_help_radiant_title">Variante radiante</string>
+    <string name="characters_help_radiant_message">Doar pentru monștri, deschide secțiunea Avansat și activează opțiunea Radiant pentru a adăuga o variantă radiantă. La selectarea personajului vor fi afișate apoi versiunile normală și radiantă ale aceluiași monstru. Versiunea radiantă este inițial blocată și trebuie găsită în timpul luptelor înainte de a putea fi selectată. Este necesar un sprite frontal, deoarece funcția Găsește îl folosește pentru a descoperi și debloca varianta radiantă.</string>
+    <string name="characters_help_advanced_title" comment="Section heading in the Character Guide about optional monster settings.">Statistici avansate</string>
+    <string name="characters_help_advanced_message" comment="Character Guide explanation of monster settings. Advanced, Level, Max HP, and Radiant refer to UI labels; translate consistently with those labels.">Pentru monștri, setează nivelul și PS max în „Avansat”. Poți activa și starea „Radiant”.</string>
+    <string name="characters_help_sharing_title" comment="Section heading in the Character Guide about sharing and importing characters. Preserve the ampersand or use the locale's equivalent.">Partajare și import</string>
+    <string name="characters_help_sharing_message" comment="Character Guide introduction to the two shareable MonsterDialer file types. Keep the trailing colon or use equivalent punctuation.">MonsterDialer folosește două tipuri de fișiere:</string>
+    <string name="characters_help_sharing_files_character" comment="Character Guide bullet describing a .monstercharacter file. Preserve the bold file extension and do not translate it."><b>.monstercharacter:</b> un personaj cu statistici și ilustrații.</string>
+    <string name="characters_help_sharing_files_pack" comment="Character Guide bullet describing a .monsterpack file. Preserve the bold file extension and do not translate it."><b>.monsterpack:</b> o colecție de personaje.</string>
+    <string name="characters_help_sharing_how_to" comment="Character Guide instruction for exporting and importing characters. Do not translate the .monstercharacter extension; translate Import character consistently with the button label.">Ține apăsat un personaj propriu pentru a-l exporta. Pentru import, deschide un fișier primit sau folosește „Importă personaj”.</string>
+    <string name="characters_help_packs_title" comment="Section heading in the Character Guide about creating shareable character packs.">Crearea pachetelor</string>
+    <string name="characters_help_packs_message" comment="Character Guide instruction for creating a character pack. Character Packs and Create pack refer to UI labels; do not translate the .monsterpack extension.">În „Pachete de personaje”, creează un pachet, alege monștrii și exportă fișierul .monsterpack.</string>
+    <string name="characters_help_packs_import_title">Importarea pachetelor de personaje</string>
+    <string name="characters_help_packs_import_message">Atinge „Importă pachet” pentru a adăuga un fișier .monsterpack pe care cineva l-a partajat cu tine. Personajele importate devin disponibile pentru selectare când pachetul este activat. Importă doar ilustrații și sunete pe care le-ai creat sau pentru care ai licență de utilizare.</string>
+    <string name="characters_help_radiants_title" comment="Section heading in the Character Guide about discovering rare radiant monster variants.">Descoperire radiantă</string>
+    <string name="characters_help_radiants_message" comment="Character Guide explanation of radiant monsters. Radiant is the app's term for a rare sparkling variant; “in the wild” means a non-contact battle during a call.">Monștrii radianți sunt rari. Variantele din pachete se deblochează când le întâlnești în sălbăticie în timpul unui apel.</string>
+    <string name="characters_help_management_title" comment="Section heading in the Character Guide about managing characters in the player's roster.">Gestionarea colecției</string>
+    <string name="characters_help_management_message" comment="Character Guide instruction for managing custom characters. Your monsters, Your trainers, Edit, Share, and Delete refer to UI labels; translate them consistently.">Ține apăsat un personaj din „Monștrii tăi” sau „Antrenorii tăi” pentru a-l edita, partaja sau șterge.</string>
+    <string name="characters_help_character_list_title">Lista de personaje</string>
+    <string name="characters_help_player_character_list_message">Personajele sunt grupate după sursă: personajele încorporate vin cu aplicația; Antrenorii tăi și Monștrii tăi sunt personaje create de tine în aplicație; iar personajele importate sunt organizate după pachetul lor de personaje. Apasă lung un personaj creat de tine pentru a-l edita, partaja sau șterge.</string>
+    <string name="characters_help_contact_character_list_message">Personajele sunt grupate după sursă: Aleatoriu este disponibil numai pentru contacte și alege automat un personaj eligibil la fiecare apel; personajele încorporate vin cu aplicația; Antrenorii tăi și Monștrii tăi sunt personaje create de tine în aplicație; iar personajele importate sunt organizate după pachetul lor de personaje. Apasă lung un personaj creat de tine pentru a-l edita, partaja sau șterge.</string>
+    <string name="characters_help_assignments_title" comment="Section heading in the Character Guide about assigning characters for calls.">Personalizarea apelurilor</string>
+    <string name="characters_help_assignments_message" comment="Character Guide introduction to the two character-assignment modes. Keep the trailing colon or use equivalent punctuation.">Personajele pot fi folosite în două moduri:</string>
+    <string name="characters_help_assignments_player" comment="Character Guide bullet explaining Player Character. Preserve the bold label and translate it consistently with the settings title."><b>Personajul jucătorului:</b> avatarul tău la fiecare apel.</string>
+    <string name="characters_help_assignments_contact" comment="Character Guide bullet explaining Contact Characters. Preserve the bold label and translate it consistently with the settings title."><b>Personajele contactelor:</b> atribuie monștri sau antrenori contactelor; ei vor fi adversarii când te sună.</string>
+    <string name="online_profile_qr_action">Cod QR</string>
+    <string name="online_profile_more_options">Mai multe opțiuni de profil</string>
+    <string name="online_profile_sign_in_google">Conectează-te cu Google</string>
+    <string name="call" comment="Menu action that calls the selected phone number.">Apelează</string>
+    <string name="favorite_phone_type_number" comment="Favorite contact summary. %1$s is the phone type and %2$s is the phone number.">%1$s • %2$s</string>
+    <string name="call_log_just_now" comment="Call-log time shown for calls less than one minute old.">Chiar acum</string>
+    <string name="new_contact_short" comment="Compact command for creating a contact.">Nou</string>
+    <string name="variant_backup_retry">Reîncearcă backupul variantelor</string>
 </resources>
