@@ -392,9 +392,9 @@
     <string name="delete_action">Șterge</string>
 
     <string name="first_run_welcome_title">Bun venit în MonsterDialer!</string>
-    <string name="first_run_welcome_description">Salut! Sunt Dr. Bit. Apelurile pot porni întâlniri cu monștri. Să începem!</string>
-    <string name="first_run_phone_app_description">Mai întâi, setează MonsterDialer ca aplicație Telefon.</string>
-    <string name="first_run_setup_description">Apoi, permite notificările pe tot ecranul pentru afișarea corectă a apelurilor.</string>
+    <string name="first_run_welcome_description">Salut! Sunt Dr. Bit. Studiez întâlnirile misterioase ascunse în apelurile de zi cu zi!</string>
+    <string name="first_run_phone_app_description">Setează MonsterDialer ca aplicație Telefon. Voi fi gata când primești un apel.</string>
+    <string name="first_run_setup_description">Permite și notificările pe tot ecranul, ca să te pot saluta când te sună cineva!</string>
     <string name="first_run_next">Înainte</string>
     <string name="first_run_continue">Setează</string>
     <string name="first_encounter_prompt_title">Gata pentru prima ta întâlnire?</string>

@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="first_run_welcome_title">Welcome to MonsterDialer!</string>
-    <string name="first_run_welcome_description">Hello! I’m Dr. Bit. Calls can spark monster encounters. Let’s begin!</string>
-    <string name="first_run_phone_app_description">First, make MonsterDialer your phone app.</string>
-    <string name="first_run_setup_description">Then allow full-screen call notifications to show incoming calls correctly.</string>
+    <string name="first_run_welcome_description">Oh, hello! I’m Dr. Bit. I study the strange encounters hiding inside everyday calls!</string>
+    <string name="first_run_phone_app_description">First, set MonsterDialer as your phone app. Then I’ll be ready when a call comes in.</string>
+    <string name="first_run_setup_description">Allow full-screen call alerts too, so I can greet you as soon as someone calls!</string>
     <string name="first_run_next">Next</string>
     <string name="first_run_continue">Set up</string>
     <string name="first_encounter_prompt_title">Ready for your first encounter?</string>

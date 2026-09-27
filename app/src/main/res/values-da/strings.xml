@@ -382,9 +382,9 @@
     <string name="delete_action">Slet</string>
 
     <string name="first_run_welcome_title">Velkommen til MonsterDialer!</string>
-    <string name="first_run_welcome_description">Hej! Jeg er Dr. Bit. Opkald kan føre til monstermøder. Lad os komme i gang!</string>
-    <string name="first_run_phone_app_description">Gør først MonsterDialer til din telefonapp.</string>
-    <string name="first_run_setup_description">Tillad derefter fuldskærmsnotifikationer, så indgående opkald vises korrekt.</string>
+    <string name="first_run_welcome_description">Hej med dig! Jeg er Dr. Bit. Jeg forsker i de mystiske møder, der gemmer sig i hverdagens opkald!</string>
+    <string name="first_run_phone_app_description">Vælg først MonsterDialer som telefonapp. Så er jeg klar, når du bliver ringet op.</string>
+    <string name="first_run_setup_description">Tillad også opkaldsnotifikationer i fuld skærm, så jeg kan hilse på dig, når nogen ringer!</string>
     <string name="first_run_next">Næste</string>
     <string name="first_run_continue">Opsæt</string>
     <string name="first_encounter_prompt_title">Klar til dit første møde?</string>

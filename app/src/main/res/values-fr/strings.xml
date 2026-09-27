@@ -387,9 +387,9 @@
     <string name="delete_action">Supprimer</string>
 
     <string name="first_run_welcome_title">Bienvenue dans MonsterDialer !</string>
-    <string name="first_run_welcome_description">Bonjour ! Je suis le Dr Bit. Vos appels peuvent déclencher des rencontres avec des monstres. C’est parti !</string>
-    <string name="first_run_phone_app_description">Définissez d’abord MonsterDialer comme application Téléphone.</string>
-    <string name="first_run_setup_description">Autorisez ensuite les notifications d’appel en plein écran pour bien afficher les appels.</string>
+    <string name="first_run_welcome_description">Bonjour ! Je suis le Dr Bit. J’étudie les rencontres mystérieuses qui se cachent dans les appels du quotidien !</string>
+    <string name="first_run_phone_app_description">Choisissez MonsterDialer comme appli Téléphone. Je serai prêt dès qu’un appel arrivera.</string>
+    <string name="first_run_setup_description">Autorisez aussi les notifications en plein écran pour que je puisse vous saluer à chaque appel !</string>
     <string name="first_run_next">Suivant</string>
     <string name="first_run_continue">Configurer</string>
     <string name="first_encounter_prompt_title">Prêt pour votre première rencontre ?</string>

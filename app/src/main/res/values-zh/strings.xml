@@ -376,9 +376,9 @@
     <string name="delete_action">删除</string>
 
     <string name="first_run_welcome_title">欢迎使用 MonsterDialer！</string>
-    <string name="first_run_welcome_description">你好！我是 Bit 博士。通话可能触发怪物遭遇战。我们开始吧！</string>
-    <string name="first_run_phone_app_description">首先，将 MonsterDialer 设为电话应用。</string>
-    <string name="first_run_setup_description">然后允许全屏通话通知，以便正确显示来电。</string>
+    <string name="first_run_welcome_description">你好！我是 Bit 博士。我研究日常通话中隐藏的奇妙邂逅！</string>
+    <string name="first_run_phone_app_description">先将 MonsterDialer 设为电话应用，这样来电时我就能准备好。</string>
+    <string name="first_run_setup_description">再允许全屏通话通知，这样每次来电时我都能向你问好！</string>
     <string name="first_run_next">下一步</string>
     <string name="first_run_continue">设置</string>
     <string name="first_encounter_prompt_title">准备好进行第一次遭遇战了吗？</string>
