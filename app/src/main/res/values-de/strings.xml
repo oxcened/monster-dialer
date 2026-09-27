@@ -387,9 +387,14 @@
     <string name="delete_action">Löschen</string>
 
     <string name="first_run_welcome_title">Willkommen bei MonsterDialer!</string>
-    <string name="first_run_welcome_description">Hallo! Ich bin Dr. Bit. Ich erforsche die geheimnisvollen Begegnungen, die in alltäglichen Anrufen stecken!</string>
-    <string name="first_run_phone_app_description">Lege MonsterDialer als Telefon-App fest. Dann bin ich bereit, wenn ein Anruf kommt.</string>
-    <string name="first_run_setup_description">Erlaube auch Vollbild-Anrufbenachrichtigungen, damit ich dich bei jedem Anruf begrüßen kann!</string>
+    <string name="first_run_greeting">Hallo! Entschuldige, dass du warten musstest!</string>
+    <string name="first_run_welcome_description">Willkommen bei MonsterDialer!</string>
+    <string name="first_run_guide_name">Ich heiße DR. BIT.</string>
+    <string name="first_run_guide_title">Alle nennen mich den MONSTERPROF!</string>
+    <string name="first_run_call_encounter">Wenn dein Telefon klingelt, beginnt eine Monsterbegegnung mit dem Anrufer!</string>
+    <string name="first_run_call_answer">Nimm ab, um sein Monster zu treffen, oder lehne ab und lauf davon!</string>
+    <string name="first_run_phone_app_description">Lege zuerst MonsterDialer als Telefon-App fest.</string>
+    <string name="first_run_setup_description">Erlaube danach Vollbild-Anrufbenachrichtigungen, damit Anrufe richtig angezeigt werden.</string>
     <string name="first_run_next">Weiter</string>
     <string name="first_run_continue">Einrichten</string>
     <string name="first_encounter_prompt_title">Bereit für deine erste Begegnung?</string>

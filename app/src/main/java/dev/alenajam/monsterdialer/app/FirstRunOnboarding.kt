@@ -28,18 +28,30 @@ import androidx.compose.ui.unit.dp
 import dev.alenajam.monsterdialer.R
 import dev.alenajam.monsterdialer.app.ui.RetroActionButton
 import dev.alenajam.monsterdialer.app.ui.RetroManualDialogueBox
+import dev.alenajam.monsterdialer.battle.data.BattleEncounterFactory
+import dev.alenajam.monsterdialer.battle.data.BattleTiming
+import dev.alenajam.monsterdialer.battle.data.EncounterType
+import dev.alenajam.monsterdialer.battle.ui.BattleScreen
 
 @Composable
 fun FirstRunWelcomeScreen(
     onContinue: () -> Unit,
 ) {
     var dialogueStep by rememberSaveable { mutableIntStateOf(0) }
-    val dialogueMessage = when (dialogueStep) {
-        0 -> stringResource(R.string.first_run_welcome_description)
-        1 -> stringResource(R.string.first_run_phone_app_description)
-        else -> stringResource(R.string.first_run_setup_description)
-    }
-    val isFinalStep = dialogueStep == 2
+    val dialogueMessages = listOf(
+        stringResource(R.string.first_run_greeting),
+        stringResource(R.string.first_run_welcome_description),
+        stringResource(R.string.first_run_guide_name),
+        stringResource(R.string.first_run_guide_title),
+        stringResource(R.string.first_run_call_encounter),
+        stringResource(R.string.first_run_call_answer),
+        stringResource(R.string.first_run_phone_app_description),
+        stringResource(R.string.first_run_setup_description),
+    )
+    val currentStep = dialogueStep.coerceIn(dialogueMessages.indices)
+    val dialogueMessage = dialogueMessages[currentStep]
+    val isFinalStep = currentStep == dialogueMessages.lastIndex
+    val showBattlePreview = currentStep == 4 || currentStep == 5
 
     Surface(modifier = Modifier.fillMaxSize()) {
         Column(
@@ -59,12 +71,23 @@ fun FirstRunWelcomeScreen(
                     verticalArrangement = Arrangement.spacedBy(12.dp),
                     modifier = Modifier.fillMaxWidth(),
                 ) {
-                    Image(
-                        painter = painterResource(R.drawable.first_run_guide),
-                        contentDescription = null,
-                        contentScale = ContentScale.Fit,
-                        modifier = Modifier.size(160.dp),
-                    )
+                    if (showBattlePreview) {
+                        BattleScreen(
+                            encounter = BattleEncounterFactory.preview(EncounterType.Trainer),
+                            timing = BattleTiming.Instant,
+                            staticPreview = true,
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .height(260.dp),
+                        )
+                    } else {
+                        Image(
+                            painter = painterResource(R.drawable.first_run_guide),
+                            contentDescription = null,
+                            contentScale = ContentScale.Fit,
+                            modifier = Modifier.size(160.dp),
+                        )
+                    }
                     RetroManualDialogueBox(
                         message = dialogueMessage,
                         modifier = Modifier.fillMaxWidth(),
@@ -82,7 +105,7 @@ fun FirstRunWelcomeScreen(
                         if (isFinalStep) R.string.first_run_continue else R.string.first_run_next,
                     ),
                     onClick = {
-                        if (isFinalStep) onContinue() else dialogueStep += 1
+                        if (isFinalStep) onContinue() else dialogueStep = currentStep + 1
                     },
                 )
             }

@@ -406,9 +406,14 @@
     <string name="delete_action">حذف</string>
 
     <string name="first_run_welcome_title">مرحبًا بك في MonsterDialer!</string>
-    <string name="first_run_welcome_description">أهلًا! أنا الدكتور بِت. أدرس المواجهات الغريبة التي تخفيها المكالمات اليومية!</string>
-    <string name="first_run_phone_app_description">أولًا، عيّن MonsterDialer كتطبيق الهاتف لأكون مستعدًا عند ورود مكالمة.</string>
-    <string name="first_run_setup_description">واسمح بإشعارات المكالمات بملء الشاشة لأرحب بك فور اتصال أحدهم!</string>
+    <string name="first_run_greeting">مرحبًا! آسف لأنني جعلتك تنتظر!</string>
+    <string name="first_run_welcome_description">مرحبًا بك في MonsterDialer!</string>
+    <string name="first_run_guide_name">اسمي DR. BIT.</string>
+    <string name="first_run_guide_title">ينادونني أستاذ الوحوش!</string>
+    <string name="first_run_call_encounter">عندما يرن هاتفك، ينضم المتصل إلى مواجهة مع وحش!</string>
+    <string name="first_run_call_answer">أجب لتقابل وحشه، أو ارفض المكالمة واهرب!</string>
+    <string name="first_run_phone_app_description">أولًا، عيّن MonsterDialer كتطبيق الهاتف.</string>
+    <string name="first_run_setup_description">ثم اسمح بإشعارات المكالمات بملء الشاشة لعرض المكالمات الواردة بشكل صحيح.</string>
     <string name="first_run_next">التالي</string>
     <string name="first_run_continue">إعداد</string>
     <string name="first_encounter_prompt_title">هل أنت مستعد لمواجهتك الأولى؟</string>
