@@ -388,20 +388,19 @@
 
     <string name="first_run_welcome_title">Willkommen bei MONSTERDIALER!</string>
     <string name="first_run_welcome_description">Hallo, willkommen bei MONSTERDIALER.</string>
-    <string name="first_run_guide_name">Ich heiße PROF. WILLOW.</string>
+    <string name="first_run_guide_name">Ich heiße PROF. PURPLE.</string>
     <string name="first_run_guide_title">Ich helfe dir, dich auf deinen ersten Anrufkampf vorzubereiten!</string>
     <string name="first_run_battle_starts">Bei einem Anruf startet automatisch eine Kampfsimulation.</string>
     <string name="first_run_battle_watch_only">Du kannst zusehen, statt mitzuspielen, und dich so auf deinen Anruf konzentrieren.</string>
     <string name="first_run_choose_team">Jetzt wählen wir deinen Trainer und dein Monster aus.</string>
     <string name="first_run_phone_app_description">Lege als Nächstes MONSTERDIALER als deine Standard-Telefon-App fest.</string>
     <string name="first_run_setup_description">Erlaube danach Vollbild-Anrufbenachrichtigungen, damit Anrufe richtig angezeigt werden.</string>
+    <string name="first_run_setup_complete">Alles ist bereit! Du kannst jetzt telefonieren.</string>
+    <string name="first_run_start_dialing">Weiter</string>
     <string name="first_run_next">Weiter</string>
     <string name="setup_default_phone_help_action">Hilfe</string>
     <string name="setup_help_intro">Wenn Android dich daran gehindert hat, %1$s als Standard-Telefon-App festzulegen, folge diesen Schritten.</string>
-    <string name="setup_help_step_1">1. Öffne auf deinem Android-Gerät die Einstellungen.</string>
-    <string name="setup_help_step_2">2. Tippe auf &lt;b&gt;Apps&lt;/b&gt;.</string>
-    <string name="setup_help_step_3">3. Tippe auf die App, für die du eine eingeschränkte Einstellung aktivieren möchtest.</string>
-    <string name="setup_help_tip">&lt;b&gt;Tipp:&lt;/b&gt; Falls du sie nicht findest, tippe zuerst auf &lt;b&gt;Alle Apps ansehen&lt;/b&gt; oder &lt;b&gt;App-Info&lt;/b&gt;.</string>
+    <string name="setup_help_open_app_info">1. Tippe auf „App-Info öffnen“.</string>
     <string name="setup_help_step_4">4. Tippe auf &lt;b&gt;Mehr&lt;/b&gt; → &lt;b&gt;Eingeschränkte Einstellungen erlauben&lt;/b&gt;.</string>
     <string name="setup_help_step_5">5. Folge der Anleitung auf dem Bildschirm.</string>
     <string name="first_run_continue">Einrichten</string>

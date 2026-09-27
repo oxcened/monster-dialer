@@ -34,6 +34,13 @@ class OnboardingStore @Inject constructor(
         preferences.edit().putBoolean(KEY_FIRST_RUN_WELCOME_COMPLETED, true).apply()
     }
 
+    fun shouldShowSetupCompletion(): Boolean =
+        !preferences.getBoolean(KEY_SETUP_COMPLETION_SHOWN, false)
+
+    fun markSetupCompletionShown() {
+        preferences.edit().putBoolean(KEY_SETUP_COMPLETION_SHOWN, true).apply()
+    }
+
     private fun migrateExistingInstallIfNeeded() {
         if (preferences.getBoolean(KEY_ONBOARDING_MIGRATED, false)) return
 
@@ -55,6 +62,7 @@ class OnboardingStore @Inject constructor(
     private companion object {
         const val PREFERENCES_NAME = "monster_onboarding"
         const val KEY_FIRST_RUN_WELCOME_COMPLETED = "first_run_welcome_completed"
+        const val KEY_SETUP_COMPLETION_SHOWN = "setup_completion_shown"
         const val KEY_ONBOARDING_MIGRATED = "onboarding_migrated"
     }
 }

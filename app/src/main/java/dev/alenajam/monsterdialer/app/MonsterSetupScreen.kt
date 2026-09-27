@@ -168,21 +168,8 @@ private fun RestrictedSettingsHelpDialog(
                 style = bodyStyle,
             )
             Text(
-                text = stringResource(R.string.setup_help_step_1),
+                text = stringResource(R.string.setup_help_open_app_info),
                 style = bodyStyle,
-            )
-            Text(
-                text = setupHelpRichText(stringResource(R.string.setup_help_step_2)),
-                style = bodyStyle,
-            )
-            Text(
-                text = stringResource(R.string.setup_help_step_3),
-                style = bodyStyle,
-            )
-            Text(
-                text = setupHelpRichText(stringResource(R.string.setup_help_tip)),
-                style = bodyStyle,
-                modifier = Modifier.padding(start = 14.dp),
             )
             Text(
                 text = setupHelpRichText(stringResource(R.string.setup_help_step_4)),

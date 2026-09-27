@@ -383,20 +383,19 @@
 
     <string name="first_run_welcome_title">Velkommen til MONSTERDIALER!</string>
     <string name="first_run_welcome_description">Hej, velkommen til MONSTERDIALER.</string>
-    <string name="first_run_guide_name">Jeg hedder PROF. WILLOW.</string>
+    <string name="first_run_guide_name">Jeg hedder PROF. PURPLE.</string>
     <string name="first_run_guide_title">Jeg hjælper dig med at blive klar til din første kamp over telefonen!</string>
     <string name="first_run_battle_starts">Når nogen ringer, starter en kampsimulation automatisk.</string>
     <string name="first_run_battle_watch_only">Du kan se med uden at spille, så du kan fokusere på dit opkald.</string>
     <string name="first_run_choose_team">Lad os nu vælge din træner og dit monster.</string>
     <string name="first_run_phone_app_description">Vælg derefter MONSTERDIALER som din standardtelefonapp.</string>
     <string name="first_run_setup_description">Tillad derefter fuldskærmsnotifikationer, så indgående opkald vises korrekt.</string>
+    <string name="first_run_setup_complete">Så er du klar! Du er nu klar til at foretage opkald.</string>
+    <string name="first_run_start_dialing">Næste</string>
     <string name="first_run_next">Næste</string>
     <string name="setup_default_phone_help_action">Hjælp</string>
     <string name="setup_help_intro">Hvis Android forhindrede dig i at angive %1$s som din standardtelefonapp, skal du følge disse trin.</string>
-    <string name="setup_help_step_1">1. Åbn appen Indstillinger på din Android-enhed.</string>
-    <string name="setup_help_step_2">2. Tryk på &lt;b&gt;Apps&lt;/b&gt;.</string>
-    <string name="setup_help_step_3">3. Tryk på den app, du vil aktivere en begrænset indstilling for.</string>
-    <string name="setup_help_tip">&lt;b&gt;Tip:&lt;/b&gt; Hvis du ikke kan finde den, skal du først trykke på &lt;b&gt;Se alle apps&lt;/b&gt; eller &lt;b&gt;Appoplysninger&lt;/b&gt;.</string>
+    <string name="setup_help_open_app_info">1. Tryk på "Åbn appinfo".</string>
     <string name="setup_help_step_4">4. Tryk på &lt;b&gt;Mere&lt;/b&gt; → &lt;b&gt;Tillad begrænsede indstillinger&lt;/b&gt;.</string>
     <string name="setup_help_step_5">5. Følg vejledningen på skærmen.</string>
     <string name="first_run_continue">Opsæt</string>
