@@ -260,12 +260,16 @@ private fun FirstRunCharacterChoice(
             onAssign = { reference ->
                 when (type) {
                     CharacterType.Trainer -> {
-                        viewModel.assignTrainer(reference)
-                        onTrainerChosen()
+                        viewModel.assignTrainer(reference, onCompleted = onTrainerChosen)
                     }
                     CharacterType.Monster -> {
-                        reference?.let(viewModel::assignMonster)
-                        onMonsterChosen()
+                        reference?.let {
+                            viewModel.assignMonster(
+                                reference = it,
+                                makeActive = true,
+                                onCompleted = onMonsterChosen,
+                            )
+                        }
                     }
                 }
             },

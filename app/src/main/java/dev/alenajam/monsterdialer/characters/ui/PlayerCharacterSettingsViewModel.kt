@@ -110,18 +110,25 @@ class PlayerCharacterSettingsViewModel @Inject constructor(
         _filter.value = filter
     }
 
-    fun assignTrainer(reference: CharacterReference?) {
+    fun assignTrainer(reference: CharacterReference?, onCompleted: () -> Unit = {}) {
         viewModelScope.launch {
             assignmentRepository.setPlayerCharacter(CharacterType.Trainer, reference)
             _assignedTrainer.value = reference
             analytics.playerCharacterAssigned(CharacterType.Trainer.name.lowercase())
+            onCompleted()
         }
     }
 
-    fun assignMonster(reference: CharacterReference) {
+    fun assignMonster(
+        reference: CharacterReference,
+        makeActive: Boolean = false,
+        onCompleted: () -> Unit = {},
+    ) {
         viewModelScope.launch {
             val slotIndex = _targetSlotIndex.value
-            if (slotIndex != null) {
+            if (makeActive) {
+                assignmentRepository.setPlayerCharacter(CharacterType.Monster, reference)
+            } else if (slotIndex != null) {
                 assignmentRepository.replacePlayerMonsterInRoster(slotIndex, reference)
             } else {
                 assignmentRepository.addPlayerMonsterToRoster(reference)
@@ -129,6 +136,7 @@ class PlayerCharacterSettingsViewModel @Inject constructor(
             _assignedMonster.value = assignmentRepository.getPlayerCharacter(CharacterType.Monster)
             _monsterRoster.value = assignmentRepository.getPlayerMonsterRoster()
             analytics.playerCharacterAssigned(CharacterType.Monster.name.lowercase())
+            onCompleted()
         }
     }
 
