@@ -1,112 +1,223 @@
 package dev.alenajam.monsterdialer.app
 
+import androidx.compose.foundation.Image
+import androidx.compose.animation.Crossfade
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.Button
-import androidx.compose.material3.MaterialTheme
+import androidx.compose.foundation.layout.safeDrawing
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import dev.alenajam.monsterdialer.R
-import dev.alenajam.monsterdialer.battle.data.BattleEncounterFactory
-import dev.alenajam.monsterdialer.battle.data.BattleTiming
-import dev.alenajam.monsterdialer.battle.data.EncounterType
-import dev.alenajam.monsterdialer.battle.ui.BattleScreen
+import dev.alenajam.monsterdialer.app.ui.RetroActionButton
+import dev.alenajam.monsterdialer.app.ui.RetroManualDialogueBox
+import dev.alenajam.monsterdialer.characters.data.BuiltInCharacters
+import dev.alenajam.monsterdialer.characters.ui.MonsterFilter
+import dev.alenajam.monsterdialer.characters.ui.PlayerCharacterSettingsViewModel
+import dev.alenajam.monsterdialer.characters.ui.RetroCharacterPicker
+import dev.alenajam.monsterdialer.packs.data.CharacterType
+
+private enum class FirstRunDialogueStep(
+    val messageResource: Int,
+    val showsMonster: Boolean = false,
+) {
+    Welcome(R.string.first_run_welcome_description),
+    GuideName(R.string.first_run_guide_name),
+    GuideTitle(R.string.first_run_guide_title),
+    BattleStarts(R.string.first_run_battle_starts, showsMonster = true),
+    BattleIsWatchOnly(R.string.first_run_battle_watch_only, showsMonster = true),
+    ChooseTeam(R.string.first_run_choose_team);
+
+    fun next(): FirstRunDialogueStep = when (this) {
+        Welcome -> GuideName
+        GuideName -> GuideTitle
+        GuideTitle -> BattleStarts
+        BattleStarts -> BattleIsWatchOnly
+        BattleIsWatchOnly -> ChooseTeam
+        ChooseTeam -> this
+    }
+
+    fun previous(): FirstRunDialogueStep? = when (this) {
+        Welcome -> null
+        GuideName -> Welcome
+        GuideTitle -> GuideName
+        BattleStarts -> GuideTitle
+        BattleIsWatchOnly -> BattleStarts
+        ChooseTeam -> BattleIsWatchOnly
+    }
+}
 
 @Composable
 fun FirstRunWelcomeScreen(
     onContinue: () -> Unit,
 ) {
+    var dialogueStep by rememberSaveable { mutableStateOf(FirstRunDialogueStep.Welcome) }
+    var advanceDialogue by remember { mutableStateOf<() -> Unit>({}) }
+    var characterChoiceType by rememberSaveable { mutableStateOf<CharacterType?>(null) }
+    val dialogueMessage = stringResource(dialogueStep.messageResource)
+
+    if (characterChoiceType != null) {
+        FirstRunCharacterChoice(
+            type = requireNotNull(characterChoiceType),
+            onBack = {
+                characterChoiceType = when (characterChoiceType) {
+                    CharacterType.Trainer -> null
+                    CharacterType.Monster -> CharacterType.Trainer
+                    null -> null
+                }
+            },
+            onTrainerChosen = { characterChoiceType = CharacterType.Monster },
+            onMonsterChosen = {
+                characterChoiceType = null
+                onContinue()
+            },
+        )
+        return
+    }
+
     Surface(modifier = Modifier.fillMaxSize()) {
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .verticalScroll(rememberScrollState())
-                .padding(horizontal = 20.dp, vertical = 28.dp),
-            horizontalAlignment = Alignment.Start,
-            verticalArrangement = Arrangement.Center,
+                .windowInsetsPadding(WindowInsets.safeDrawing)
+                .padding(horizontal = 16.dp, vertical = 12.dp),
+            horizontalAlignment = Alignment.CenterHorizontally,
         ) {
-            Text(
-                text = stringResource(R.string.first_run_welcome_title),
-                style = MaterialTheme.typography.headlineMedium,
-                textAlign = TextAlign.Start,
-            )
-            Spacer(Modifier.height(8.dp))
-            Text(
-                text = stringResource(R.string.first_run_welcome_description),
-                style = MaterialTheme.typography.bodyLarge,
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
-                textAlign = TextAlign.Start,
-            )
-            Spacer(Modifier.height(20.dp))
-            BattlePreviewCard(
+            Box(
                 modifier = Modifier
-                    .fillMaxWidth()
-                    .height(360.dp),
-            )
-            Spacer(Modifier.height(20.dp))
-            Text(
-                text = stringResource(R.string.first_run_setup_description),
-                style = MaterialTheme.typography.bodyMedium,
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
-                textAlign = TextAlign.Start,
-            )
-            Spacer(Modifier.height(20.dp))
-            Button(
-                onClick = onContinue,
-                modifier = Modifier.fillMaxWidth(),
+                    .weight(1f)
+                    .fillMaxWidth(),
+                contentAlignment = Alignment.Center,
             ) {
-                Text(stringResource(R.string.first_run_continue))
+                Column(
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.spacedBy(12.dp),
+                    modifier = Modifier.fillMaxWidth(),
+                ) {
+                    Crossfade(
+                        targetState = dialogueStep.showsMonster,
+                        label = "onboarding-sprite",
+                    ) { showMonster ->
+                        Image(
+                            painter = painterResource(
+                                if (showMonster) R.drawable.battle_enemy_monster
+                                else R.drawable.first_run_guide,
+                            ),
+                            contentDescription = null,
+                            contentScale = ContentScale.Fit,
+                            modifier = Modifier.size(128.dp),
+                        )
+                    }
+                    RetroManualDialogueBox(
+                        message = dialogueMessage,
+                        modifier = Modifier.fillMaxWidth(),
+                        animationKey = dialogueStep,
+                        onAdvanceActionChanged = { advanceDialogue = it },
+                        onMessageFinished = {
+                            when (dialogueStep) {
+                                FirstRunDialogueStep.ChooseTeam -> {
+                                    characterChoiceType = CharacterType.Trainer
+                                }
+                                else -> dialogueStep = dialogueStep.next()
+                            }
+                        },
+                    )
+                }
+            }
+            Spacer(Modifier.height(8.dp))
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween,
+            ) {
+                RetroActionButton(
+                    key = stringResource(R.string.retro_key_a),
+                    label = stringResource(R.string.first_run_next),
+                    onClick = advanceDialogue,
+                )
+                dialogueStep.previous()?.let { previousStep ->
+                    RetroActionButton(
+                        key = stringResource(R.string.retro_key_b),
+                        label = stringResource(R.string.retro_action_back_label),
+                        onClick = { dialogueStep = previousStep },
+                    )
+                }
             }
         }
     }
 }
 
 @Composable
-private fun BattlePreviewCard(modifier: Modifier) {
-    Box(
-        modifier = modifier,
-    ) {
-        BattleScreen(
-            encounter = BattleEncounterFactory.preview(EncounterType.Trainer),
-            timing = BattleTiming.Instant,
-            staticPreview = true,
-            modifier = Modifier.fillMaxSize(),
+private fun FirstRunCharacterChoice(
+    type: CharacterType,
+    onBack: () -> Unit,
+    onTrainerChosen: () -> Unit,
+    onMonsterChosen: () -> Unit,
+) {
+    val viewModel: PlayerCharacterSettingsViewModel = hiltViewModel()
+    val assignedTrainer by viewModel.assignedTrainer.collectAsStateWithLifecycle()
+    val assignedMonster by viewModel.assignedMonster.collectAsStateWithLifecycle()
+    val trainers by viewModel.trainers.collectAsStateWithLifecycle()
+    val monsters by viewModel.monsters.collectAsStateWithLifecycle()
+    val unlockedVariants by viewModel.unlockedVariants.collectAsStateWithLifecycle()
+
+    Surface(modifier = Modifier.fillMaxSize()) {
+        RetroCharacterPicker(
+            modifier = Modifier
+                .fillMaxSize()
+                .windowInsetsPadding(WindowInsets.safeDrawing)
+                .padding(horizontal = 16.dp, vertical = 12.dp),
+            type = type,
+            selected = when (type) {
+                CharacterType.Trainer -> assignedTrainer ?: BuiltInCharacters.defaultTrainerReference
+                CharacterType.Monster -> assignedMonster ?: BuiltInCharacters.defaultMonsterReference
+            },
+            characters = if (type == CharacterType.Trainer) trainers else monsters,
+            unlockedVariants = unlockedVariants,
+            filter = MonsterFilter.All,
+            defaultCharacter = if (type == CharacterType.Trainer) {
+                BuiltInCharacters.trainer
+            } else {
+                BuiltInCharacters.monster.character
+            },
+            defaultArtwork = { contactArtwork.resource },
+            onAssign = { reference ->
+                when (type) {
+                    CharacterType.Trainer -> {
+                        viewModel.assignTrainer(reference)
+                        onTrainerChosen()
+                    }
+                    CharacterType.Monster -> {
+                        reference?.let(viewModel::assignMonster)
+                        onMonsterChosen()
+                    }
+                }
+            },
+            onBack = onBack,
+            isGuidedFirstStep = true,
+            showOptions = false,
+            showFilterOptions = false,
         )
     }
-}
-
-@Composable
-fun FirstEncounterPrompt(
-    onMakeFirstCall: () -> Unit,
-    onDismiss: () -> Unit,
-) {
-    androidx.compose.material3.AlertDialog(
-        onDismissRequest = onDismiss,
-        title = { Text(stringResource(R.string.first_encounter_prompt_title)) },
-        text = { Text(stringResource(R.string.first_encounter_prompt_description)) },
-        confirmButton = {
-            Button(onClick = onMakeFirstCall) {
-                Text(stringResource(R.string.first_encounter_prompt_action))
-            }
-        },
-        dismissButton = {
-            androidx.compose.material3.TextButton(onClick = onDismiss) {
-                Text(stringResource(R.string.first_encounter_prompt_later))
-            }
-        },
-    )
 }
