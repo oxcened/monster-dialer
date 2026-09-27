@@ -404,8 +404,8 @@
     <string name="are_you_sure">Sei sicuro?</string>
     <string name="delete_action">Elimina</string>
 
-    <string name="first_run_welcome_title">Trasforma le chiamate in incontri con mostri</string>
-    <string name="first_run_welcome_description">MonsterDialer aggiunge un momento di lotta originale alle tue chiamate. Il tuo primo incontro funziona subito con i personaggi inclusi.</string>
+    <string name="first_run_welcome_title">Benvenuto in MonsterDialer!</string>
+    <string name="first_run_welcome_description">Ciao! Sono il Dott. Bit, la tua guida in MonsterDialer. Le chiamate possono portare a incontri con i mostri, e il primo è già pronto con i personaggi inclusi.</string>
     <string name="first_run_setup_description">Poi Android ti chiederà di impostare MonsterDialer come app del telefono e di consentire le notifiche delle chiamate a schermo intero. Servono per mostrare correttamente le chiamate in arrivo.</string>
     <string name="first_run_continue">Configura MonsterDialer</string>
     <string name="first_encounter_prompt_title">Pronto per il tuo primo incontro?</string>

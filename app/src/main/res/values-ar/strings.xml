@@ -405,8 +405,8 @@
     <string name="are_you_sure">هل أنت متأكد؟</string>
     <string name="delete_action">حذف</string>
 
-    <string name="first_run_welcome_title">حوّل المكالمات إلى مواجهات مع الوحوش</string>
-    <string name="first_run_welcome_description">يضيف MonsterDialer لحظة معركة أصلية إلى مكالماتك. تبدأ مواجهتك الأولى فورًا باستخدام الشخصيات المدمجة.</string>
+    <string name="first_run_welcome_title">مرحبًا بك في MonsterDialer!</string>
+    <string name="first_run_welcome_description">مرحبًا! أنا الدكتور بِت، دليلك في MonsterDialer. قد تقودك المكالمات إلى مواجهات مع الوحوش، ومواجهتك الأولى جاهزة مع الشخصيات المدمجة.</string>
     <string name="first_run_setup_description">بعد ذلك، سيطلب منك Android تعيين MonsterDialer كتطبيق الهاتف والسماح بإشعارات المكالمات بملء الشاشة. يلزم ذلك لعرض المكالمات الواردة بشكل صحيح.</string>
     <string name="first_run_continue">إعداد MonsterDialer</string>
     <string name="first_encounter_prompt_title">هل أنت مستعد لمواجهتك الأولى؟</string>

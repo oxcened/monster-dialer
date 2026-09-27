@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="first_run_welcome_title">Turn calls into monster encounters</string>
-    <string name="first_run_welcome_description">MonsterDialer adds an original battle moment to your calls. Your first encounter works immediately with the built-in characters.</string>
+    <string name="first_run_welcome_title">Welcome to MonsterDialer!</string>
+    <string name="first_run_welcome_description">Hello! I’m Dr. Bit, your MonsterDialer guide. Calls can lead to monster encounters, and your first one is ready with the built-in characters.</string>
     <string name="first_run_setup_description">Next, Android will ask you to make MonsterDialer your phone app and allow full-screen call notifications. These are needed to show incoming calls correctly.</string>
     <string name="first_run_continue">Set up MonsterDialer</string>
     <string name="first_encounter_prompt_title">Ready for your first encounter?</string>

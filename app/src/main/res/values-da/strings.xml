@@ -381,8 +381,8 @@
     <string name="are_you_sure">Er du sikker?</string>
     <string name="delete_action">Slet</string>
 
-    <string name="first_run_welcome_title">Gør opkald til monstermøder</string>
-    <string name="first_run_welcome_description">MonsterDialer føjer et unikt kampøjeblik til dine opkald. Dit første møde fungerer med det samme med de indbyggede figurer.</string>
+    <string name="first_run_welcome_title">Velkommen til MonsterDialer!</string>
+    <string name="first_run_welcome_description">Hej! Jeg er Dr. Bit, din guide til MonsterDialer. Opkald kan føre til monstermøder, og dit første møde er klar med de indbyggede figurer.</string>
     <string name="first_run_setup_description">Som det næste vil Android bede dig om at gøre MonsterDialer til din telefonapp og tillade opkaldsnotifikationer i fuld skærm. Det er nødvendigt for at vise indgående opkald korrekt.</string>
     <string name="first_run_continue">Konfigurer MonsterDialer</string>
     <string name="first_encounter_prompt_title">Klar til dit første møde?</string>

@@ -7,8 +7,10 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.foundation.Image
 import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
@@ -16,6 +18,9 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.FilterQuality
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -24,10 +29,6 @@ import dev.alenajam.monsterdialer.app.ui.RetroActionButton
 import dev.alenajam.monsterdialer.app.ui.RetroDoubleBorderBox
 import dev.alenajam.monsterdialer.app.ui.RetroMenuWindow
 import dev.alenajam.monsterdialer.app.ui.RetroSelectableRow
-import dev.alenajam.monsterdialer.battle.data.BattleEncounterFactory
-import dev.alenajam.monsterdialer.battle.data.BattleTiming
-import dev.alenajam.monsterdialer.battle.data.EncounterType
-import dev.alenajam.monsterdialer.battle.ui.BattleScreen
 
 @Composable
 fun FirstRunWelcomeScreen(
@@ -44,8 +45,17 @@ fun FirstRunWelcomeScreen(
         ) {
             Text(
                 text = stringResource(R.string.first_run_welcome_title),
-                style = MaterialTheme.typography.titleLarge,
+                style = MaterialTheme.typography.titleMedium,
                 textAlign = TextAlign.Start,
+            )
+            Image(
+                painter = painterResource(R.drawable.first_run_guide),
+                contentDescription = null,
+                contentScale = ContentScale.Fit,
+                filterQuality = FilterQuality.None,
+                modifier = Modifier
+                    .align(Alignment.CenterHorizontally)
+                    .size(184.dp),
             )
             RetroDoubleBorderBox(
                 modifier = Modifier.fillMaxWidth(),
@@ -58,14 +68,9 @@ fun FirstRunWelcomeScreen(
                     textAlign = TextAlign.Start,
                 )
             }
-            BattlePreviewCard(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(300.dp),
-            )
             RetroDoubleBorderBox(
                 modifier = Modifier.fillMaxWidth(),
-                height = 128.dp,
+                height = 148.dp,
             ) {
                 Text(
                     text = stringResource(R.string.first_run_setup_description),
@@ -86,18 +91,6 @@ fun FirstRunWelcomeScreen(
                 }
             }
         }
-    }
-}
-
-@Composable
-private fun BattlePreviewCard(modifier: Modifier) {
-    RetroDoubleBorderBox(modifier = modifier) {
-        BattleScreen(
-            encounter = BattleEncounterFactory.preview(EncounterType.Trainer),
-            timing = BattleTiming.Instant,
-            staticPreview = true,
-            modifier = Modifier.fillMaxSize(),
-        )
     }
 }
 
