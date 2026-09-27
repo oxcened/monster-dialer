@@ -395,13 +395,12 @@
     <string name="first_run_choose_team">Maintenant, choisissons votre dresseur et votre monstre.</string>
     <string name="first_run_phone_app_description">Ensuite, définissez MONSTERDIALER comme application Téléphone par défaut.</string>
     <string name="first_run_setup_description">Autorisez ensuite les notifications d’appel en plein écran pour bien afficher les appels.</string>
+    <string name="first_run_setup_complete">Tout est prêt ! Vous pouvez maintenant passer des appels.</string>
+    <string name="first_run_start_dialing">Suivant</string>
     <string name="first_run_next">Suivant</string>
     <string name="setup_default_phone_help_action">Aide</string>
     <string name="setup_help_intro">Si Android vous a empêché de définir %1$s comme application Téléphone par défaut, suivez ces étapes.</string>
-    <string name="setup_help_step_1">1. Sur votre appareil Android, ouvrez l’application Paramètres.</string>
-    <string name="setup_help_step_2">2. Appuyez sur &lt;b&gt;Applications&lt;/b&gt;.</string>
-    <string name="setup_help_step_3">3. Appuyez sur l’application pour laquelle vous souhaitez activer un paramètre restreint.</string>
-    <string name="setup_help_tip">&lt;b&gt;Astuce :&lt;/b&gt; Si vous ne la trouvez pas, appuyez d’abord sur &lt;b&gt;Afficher toutes les applications&lt;/b&gt; ou &lt;b&gt;Infos sur l’application&lt;/b&gt;.</string>
+    <string name="setup_help_open_app_info">1. Appuyez sur « Ouvrir les infos de l’application ».</string>
     <string name="setup_help_step_4">4. Appuyez sur &lt;b&gt;Plus&lt;/b&gt; → &lt;b&gt;Autoriser les paramètres restreints&lt;/b&gt;.</string>
     <string name="setup_help_step_5">5. Suivez les instructions à l’écran.</string>
     <string name="first_run_continue">Configurer</string>

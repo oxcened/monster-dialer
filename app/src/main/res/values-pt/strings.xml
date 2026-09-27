@@ -395,13 +395,12 @@
     <string name="first_run_choose_team">Agora, vamos escolher o teu treinador e o teu monstro.</string>
     <string name="first_run_phone_app_description">A seguir, define o MONSTERDIALER como aplicação de telefone predefinida.</string>
     <string name="first_run_setup_description">Depois, permite notificações de chamada em ecrã inteiro para mostrar bem as chamadas.</string>
+    <string name="first_run_setup_complete">Está tudo pronto! Já podes fazer chamadas.</string>
+    <string name="first_run_start_dialing">Seguinte</string>
     <string name="first_run_next">Seguinte</string>
     <string name="setup_default_phone_help_action">Ajuda</string>
     <string name="setup_help_intro">Se o Android não te permitiu definir o %1$s como app de telefone predefinida, segue estes passos.</string>
-    <string name="setup_help_step_1">1. No teu dispositivo Android, abre a app Definições.</string>
-    <string name="setup_help_step_2">2. Toca em &lt;b&gt;Apps&lt;/b&gt;.</string>
-    <string name="setup_help_step_3">3. Toca na app para a qual queres ativar uma definição restrita.</string>
-    <string name="setup_help_tip">&lt;b&gt;Sugestão:&lt;/b&gt; Se não a encontrares, toca primeiro em &lt;b&gt;Ver todas as apps&lt;/b&gt; ou &lt;b&gt;Informações da app&lt;/b&gt;.</string>
+    <string name="setup_help_open_app_info">1. Toca em «Abrir informações da app».</string>
     <string name="setup_help_step_4">4. Toca em &lt;b&gt;Mais&lt;/b&gt; → &lt;b&gt;Permitir definições restritas&lt;/b&gt;.</string>
     <string name="setup_help_step_5">5. Segue as instruções no ecrã.</string>
     <string name="first_run_continue">Configurar</string>

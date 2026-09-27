@@ -169,6 +169,61 @@ fun FirstRunWelcomeScreen(
 }
 
 @Composable
+fun FirstRunCompletionScreen(
+    onContinue: () -> Unit,
+) {
+    var advanceDialogue by remember { mutableStateOf<() -> Unit>({}) }
+
+    Surface(modifier = Modifier.fillMaxSize()) {
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .windowInsetsPadding(WindowInsets.safeDrawing)
+                .padding(horizontal = 16.dp, vertical = 12.dp),
+            horizontalAlignment = Alignment.CenterHorizontally,
+        ) {
+            Box(
+                modifier = Modifier
+                    .weight(1f)
+                    .fillMaxWidth(),
+                contentAlignment = Alignment.Center,
+            ) {
+                Column(
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.spacedBy(12.dp),
+                    modifier = Modifier.fillMaxWidth(),
+                ) {
+                    Image(
+                        painter = painterResource(R.drawable.first_run_guide),
+                        contentDescription = null,
+                        contentScale = ContentScale.Fit,
+                        modifier = Modifier.size(128.dp),
+                    )
+                    RetroManualDialogueBox(
+                        message = stringResource(R.string.first_run_setup_complete),
+                        modifier = Modifier.fillMaxWidth(),
+                        animationKey = "setup-complete",
+                        onAdvanceActionChanged = { advanceDialogue = it },
+                        onMessageFinished = onContinue,
+                    )
+                }
+            }
+            Spacer(Modifier.height(8.dp))
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.Start,
+            ) {
+                RetroActionButton(
+                    key = stringResource(R.string.retro_key_a),
+                    label = stringResource(R.string.first_run_start_dialing),
+                    onClick = advanceDialogue,
+                )
+            }
+        }
+    }
+}
+
+@Composable
 private fun FirstRunCharacterChoice(
     type: CharacterType,
     onBack: () -> Unit,

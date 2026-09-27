@@ -2,6 +2,7 @@ package dev.alenajam.monsterdialer.app
 
 import android.content.Intent
 import android.content.ContentResolver
+import android.app.NotificationManager
 import android.os.Build
 import android.net.Uri
 import android.os.Bundle
@@ -124,11 +125,13 @@ class MainActivity : AppCompatActivity() {
     private var incomingImport by mutableStateOf<IncomingImport?>(null)
     private var sharedProfileImportId by mutableStateOf<String?>(null)
     private var showFirstRunWelcome by mutableStateOf(false)
+    private var showSetupCompletion by mutableStateOf(false)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         incomingImport = intent.incomingImport(contentResolver)
         showFirstRunWelcome = onboardingStore.shouldShowWelcome()
+        showSetupCompletion = isSetupComplete() && onboardingStore.shouldShowSetupCompletion()
         enableEdgeToEdge()
         hideStatusBar()
 
@@ -192,7 +195,17 @@ class MainActivity : AppCompatActivity() {
                             )
                         }
                     } else {
-                        DialerApp(
+                        if (showSetupCompletion) {
+                            AppTheme(darkTheme = false) {
+                                FirstRunCompletionScreen(
+                                    onContinue = {
+                                        onboardingStore.markSetupCompletionShown()
+                                        showSetupCompletion = false
+                                    },
+                                )
+                            }
+                        } else {
+                            DialerApp(
                         defaultPhoneManager = remember(defaultPhoneManager) {
                             SafeDefaultPhoneManager(defaultPhoneManager, packageManager, analytics)
                         },
@@ -556,6 +569,7 @@ class MainActivity : AppCompatActivity() {
                             )
                         },
                         )
+                        }
                     }
                     LaunchedEffect(incomingImport) {
                         incomingImport?.let { incoming ->
@@ -585,6 +599,18 @@ class MainActivity : AppCompatActivity() {
         super.onWindowFocusChanged(hasFocus)
         if (hasFocus) hideStatusBar()
     }
+
+    override fun onResume() {
+        super.onResume()
+        if (::onboardingStore.isInitialized && isSetupComplete() && onboardingStore.shouldShowSetupCompletion()) {
+            showSetupCompletion = true
+        }
+    }
+
+    private fun isSetupComplete(): Boolean =
+        defaultPhoneManager.isDefaultDialer() &&
+            (Build.VERSION.SDK_INT < Build.VERSION_CODES.UPSIDE_DOWN_CAKE ||
+                getSystemService(NotificationManager::class.java)?.canUseFullScreenIntent() == true)
 
     private fun hideStatusBar() {
         WindowInsetsControllerCompat(window, window.decorView).apply {

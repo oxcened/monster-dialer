@@ -384,13 +384,12 @@
     <string name="first_run_choose_team">现在来选你的训练师和怪物吧。</string>
     <string name="first_run_phone_app_description">接下来，将 MONSTERDIALER 设为默认电话应用。</string>
     <string name="first_run_setup_description">然后允许全屏通话通知，以便正确显示来电。</string>
+    <string name="first_run_setup_complete">一切就绪！现在可以拨打电话了。</string>
+    <string name="first_run_start_dialing">下一步</string>
     <string name="first_run_next">下一步</string>
     <string name="setup_default_phone_help_action">帮助</string>
     <string name="setup_help_intro">如果 Android 阻止你将 %1$s 设为默认电话应用，请按以下步骤操作。</string>
-    <string name="setup_help_step_1">1. 在 Android 设备上打开“设置”应用。</string>
-    <string name="setup_help_step_2">2. 点按&lt;b&gt;应用&lt;/b&gt;。</string>
-    <string name="setup_help_step_3">3. 点按要为其开启受限设置的应用。</string>
-    <string name="setup_help_tip">&lt;b&gt;提示：&lt;/b&gt;如果找不到该应用，请先点按&lt;b&gt;查看所有应用&lt;/b&gt;或&lt;b&gt;应用信息&lt;/b&gt;。</string>
+    <string name="setup_help_open_app_info">1. 点按“打开应用信息”。</string>
     <string name="setup_help_step_4">4. 点按&lt;b&gt;更多&lt;/b&gt; → &lt;b&gt;允许受限设置&lt;/b&gt;。</string>
     <string name="setup_help_step_5">5. 按照屏幕上的说明操作。</string>
     <string name="first_run_continue">设置</string>
