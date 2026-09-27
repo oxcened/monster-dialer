@@ -28,10 +28,6 @@ import androidx.compose.ui.unit.dp
 import dev.alenajam.monsterdialer.R
 import dev.alenajam.monsterdialer.app.ui.RetroActionButton
 import dev.alenajam.monsterdialer.app.ui.RetroManualDialogueBox
-import dev.alenajam.monsterdialer.battle.data.BattleEncounterFactory
-import dev.alenajam.monsterdialer.battle.data.BattleTiming
-import dev.alenajam.monsterdialer.battle.data.EncounterType
-import dev.alenajam.monsterdialer.battle.ui.BattleScreen
 
 @Composable
 fun FirstRunWelcomeScreen(
@@ -51,7 +47,7 @@ fun FirstRunWelcomeScreen(
     val currentStep = dialogueStep.coerceIn(dialogueMessages.indices)
     val dialogueMessage = dialogueMessages[currentStep]
     val isFinalStep = currentStep == dialogueMessages.lastIndex
-    val showBattlePreview = currentStep == 4 || currentStep == 5
+    val showMonsterSprite = currentStep == 4 || currentStep == 5
 
     Surface(modifier = Modifier.fillMaxSize()) {
         Column(
@@ -71,14 +67,12 @@ fun FirstRunWelcomeScreen(
                     verticalArrangement = Arrangement.spacedBy(12.dp),
                     modifier = Modifier.fillMaxWidth(),
                 ) {
-                    if (showBattlePreview) {
-                        BattleScreen(
-                            encounter = BattleEncounterFactory.preview(EncounterType.Trainer),
-                            timing = BattleTiming.Instant,
-                            staticPreview = true,
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .height(320.dp),
+                    if (showMonsterSprite) {
+                        Image(
+                            painter = painterResource(R.drawable.battle_enemy_monster),
+                            contentDescription = null,
+                            contentScale = ContentScale.Fit,
+                            modifier = Modifier.size(192.dp),
                         )
                     } else {
                         Image(
