@@ -12,6 +12,7 @@ import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
+import androidx.activity.viewModels
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -54,7 +55,6 @@ import androidx.lifecycle.Lifecycle
 import dagger.hilt.android.AndroidEntryPoint
 import dev.alenajam.monsterdialer.R
 import dev.alenajam.monsterdialer.analytics.MonsterAnalytics
-import dev.alenajam.monsterdialer.app.data.OnboardingStore
 import dev.alenajam.monsterdialer.app.ui.LocalMonsterAppIcons
 import dev.alenajam.monsterdialer.app.ui.RetroScreenHorizontalPadding
 import dev.alenajam.monsterdialer.app.ui.PixelRoundedSquareShape
@@ -119,19 +119,14 @@ class MainActivity : AppCompatActivity() {
     @Inject
     lateinit var analytics: MonsterAnalytics
 
-    @Inject
-    lateinit var onboardingStore: OnboardingStore
+    private val onboardingViewModel: OnboardingViewModel by viewModels()
 
     private var incomingImport by mutableStateOf<IncomingImport?>(null)
     private var sharedProfileImportId by mutableStateOf<String?>(null)
-    private var showFirstRunWelcome by mutableStateOf(false)
-    private var showSetupCompletion by mutableStateOf(false)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         incomingImport = intent.incomingImport(contentResolver)
-        showFirstRunWelcome = onboardingStore.shouldShowWelcome()
-        showSetupCompletion = isSetupComplete() && onboardingStore.shouldShowSetupCompletion()
         enableEdgeToEdge()
         hideStatusBar()
 
@@ -141,6 +136,8 @@ class MainActivity : AppCompatActivity() {
 
         setContent {
             val characterPackSettingsViewModel: CharacterPackSettingsViewModel = hiltViewModel()
+            val showFirstRunWelcome by onboardingViewModel.showWelcome.collectAsStateWithLifecycle()
+            val showSetupCompletion by onboardingViewModel.showSetupCompletion.collectAsStateWithLifecycle()
             val characterSharingViewModel: CharacterSharingViewModel = hiltViewModel()
             val importLauncher = rememberLauncherForActivityResult(ActivityResultContracts.OpenDocument()) { uri ->
                 if (uri == null) return@rememberLauncherForActivityResult
@@ -177,9 +174,8 @@ class MainActivity : AppCompatActivity() {
                         AppTheme(darkTheme = false) {
                             FirstRunWelcomeScreen(
                                 onContinue = {
-                                    onboardingStore.markWelcomeCompleted()
+                                    onboardingViewModel.completeWelcome()
                                     analytics.welcomeCompleted()
-                                    showFirstRunWelcome = false
                                 },
                             )
                         }
@@ -199,8 +195,7 @@ class MainActivity : AppCompatActivity() {
                             AppTheme(darkTheme = false) {
                                 FirstRunCompletionScreen(
                                     onContinue = {
-                                        onboardingStore.markSetupCompletionShown()
-                                        showSetupCompletion = false
+                                        onboardingViewModel.completeSetupCompletion()
                                     },
                                 )
                             }
@@ -602,9 +597,7 @@ class MainActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
-        if (::onboardingStore.isInitialized && isSetupComplete() && onboardingStore.shouldShowSetupCompletion()) {
-            showSetupCompletion = true
-        }
+        onboardingViewModel.refreshSetupCompletion(isSetupComplete())
     }
 
     private fun isSetupComplete(): Boolean =
