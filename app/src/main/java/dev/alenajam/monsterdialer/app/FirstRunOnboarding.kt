@@ -78,7 +78,7 @@ fun FirstRunWelcomeScreen(
                             staticPreview = true,
                             modifier = Modifier
                                 .fillMaxWidth()
-                                .height(260.dp),
+                                .height(300.dp),
                         )
                     } else {
                         Image(
