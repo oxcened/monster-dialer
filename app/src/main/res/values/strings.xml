@@ -2,7 +2,7 @@
 <resources>
     <string name="first_run_welcome_title">Welcome to MONSTERDIALER!</string>
     <string name="first_run_welcome_description">Hello there, welcome to MONSTERDIALER!</string>
-    <string name="first_run_guide_name">My name is PROF. WILLOW.</string>
+    <string name="first_run_guide_name">My name is PROF. PURPLE.</string>
     <string name="first_run_guide_title">I’ll help you get ready for your first call battle!</string>
     <string name="first_run_battle_starts">When someone calls, a battle simulation starts automatically.</string>
     <string name="first_run_battle_watch_only">You can watch, but you can’t play, so you can focus on your call.</string>

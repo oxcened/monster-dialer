@@ -388,7 +388,7 @@
 
     <string name="first_run_welcome_title">Willkommen bei MONSTERDIALER!</string>
     <string name="first_run_welcome_description">Hallo, willkommen bei MONSTERDIALER.</string>
-    <string name="first_run_guide_name">Ich heiße PROF. WILLOW.</string>
+    <string name="first_run_guide_name">Ich heiße PROF. PURPLE.</string>
     <string name="first_run_guide_title">Ich helfe dir, dich auf deinen ersten Anrufkampf vorzubereiten!</string>
     <string name="first_run_battle_starts">Bei einem Anruf startet automatisch eine Kampfsimulation.</string>
     <string name="first_run_battle_watch_only">Du kannst zusehen, statt mitzuspielen, und dich so auf deinen Anruf konzentrieren.</string>
