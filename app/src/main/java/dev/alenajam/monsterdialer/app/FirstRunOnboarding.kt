@@ -1,31 +1,29 @@
 package dev.alenajam.monsterdialer.app
 
-import java.util.Locale
-
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Button
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import dev.alenajam.monsterdialer.R
-import dev.alenajam.monsterdialer.app.ui.RetroDoubleBorderBox
-import dev.alenajam.monsterdialer.app.ui.RetroSelectableRow
+import dev.alenajam.monsterdialer.app.ui.RetroActionButton
+import dev.alenajam.monsterdialer.app.ui.RetroDoubleBorderTextBox
 
 @Composable
 fun FirstRunWelcomeScreen(
@@ -51,28 +49,22 @@ fun FirstRunWelcomeScreen(
                     modifier = Modifier.size(212.dp),
                 )
             }
-            RetroDoubleBorderBox(modifier = Modifier.fillMaxWidth()) {
-                Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
-                    Text(
-                        text = stringResource(R.string.first_run_welcome_description),
-                        style = MaterialTheme.typography.bodySmall,
-                        color = MaterialTheme.colorScheme.onSurface,
-                        textAlign = TextAlign.Start,
-                    )
-                    Text(
-                        text = stringResource(R.string.first_run_setup_description),
-                        style = MaterialTheme.typography.bodySmall,
-                        color = MaterialTheme.colorScheme.onSurface,
-                        textAlign = TextAlign.Start,
-                    )
-                    RetroSelectableRow(selected = true, onClick = onContinue) {
-                        Text(
-                            text = stringResource(R.string.first_run_continue).uppercase(Locale.ROOT),
-                            style = MaterialTheme.typography.titleSmall,
-                            color = Color.Black,
-                        )
-                    }
-                }
+            RetroDoubleBorderTextBox(
+                message = stringResource(R.string.first_run_welcome_description) + "\n" +
+                    stringResource(R.string.first_run_setup_description),
+                modifier = Modifier.fillMaxWidth(),
+                height = 104.dp,
+            )
+            Spacer(Modifier.height(8.dp))
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.End,
+            ) {
+                RetroActionButton(
+                    key = stringResource(R.string.retro_key_a),
+                    label = stringResource(R.string.first_run_continue),
+                    onClick = onContinue,
+                )
             }
         }
     }
