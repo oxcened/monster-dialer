@@ -2,20 +2,19 @@
 <resources>
     <string name="first_run_welcome_title">¡Te damos la bienvenida a MONSTERDIALER!</string>
     <string name="first_run_welcome_description">Hola, te damos la bienvenida a MONSTERDIALER.</string>
-    <string name="first_run_guide_name">Me llamo PROF. WILLOW.</string>
+    <string name="first_run_guide_name">Me llamo PROF. PURPLE.</string>
     <string name="first_run_guide_title">¡Te ayudaré a prepararte para tu primer combate por llamada!</string>
     <string name="first_run_battle_starts">Cuando alguien te llama, la simulación de batalla comienza automáticamente.</string>
     <string name="first_run_battle_watch_only">Puedes verla sin jugar y así centrarte en la llamada.</string>
     <string name="first_run_choose_team">Ahora, elijamos a tu entrenador y a tu monstruo.</string>
     <string name="first_run_phone_app_description">A continuación, establece MONSTERDIALER como aplicación de teléfono predeterminada.</string>
     <string name="first_run_setup_description">Después, permite las notificaciones a pantalla completa para mostrar bien las llamadas.</string>
+    <string name="first_run_setup_complete">¡Todo listo! Ya puedes hacer llamadas.</string>
+    <string name="first_run_start_dialing">Siguiente</string>
     <string name="first_run_next">Siguiente</string>
     <string name="setup_default_phone_help_action">Ayuda</string>
     <string name="setup_help_intro">Si Android no te permitió establecer %1$s como aplicación de teléfono predeterminada, sigue estos pasos.</string>
-    <string name="setup_help_step_1">1. En tu dispositivo Android, abre la aplicación Ajustes.</string>
-    <string name="setup_help_step_2">2. Toca &lt;b&gt;Aplicaciones&lt;/b&gt;.</string>
-    <string name="setup_help_step_3">3. Toca la aplicación para la que quieras activar un ajuste restringido.</string>
-    <string name="setup_help_tip">&lt;b&gt;Consejo:&lt;/b&gt; Si no la encuentras, toca primero &lt;b&gt;Ver todas las aplicaciones&lt;/b&gt; o &lt;b&gt;Información de la aplicación&lt;/b&gt;.</string>
+    <string name="setup_help_open_app_info">1. Toca «Abrir información de la aplicación».</string>
     <string name="setup_help_step_4">4. Toca &lt;b&gt;Más&lt;/b&gt; → &lt;b&gt;Permitir ajustes restringidos&lt;/b&gt;.</string>
     <string name="setup_help_step_5">5. Sigue las instrucciones en pantalla.</string>
     <string name="first_run_continue">Configurar</string>
