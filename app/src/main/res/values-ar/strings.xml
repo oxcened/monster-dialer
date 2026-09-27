@@ -405,19 +405,27 @@
     <string name="are_you_sure">هل أنت متأكد؟</string>
     <string name="delete_action">حذف</string>
 
-    <string name="first_run_welcome_title">مرحبًا بك في MonsterDialer!</string>
-    <string name="first_run_greeting">مرحبًا! آسف لأنني جعلتك تنتظر!</string>
-    <string name="first_run_welcome_description">مرحبًا بك في MonsterDialer!</string>
-    <string name="first_run_guide_name">اسمي DR. BIT.</string>
-    <string name="first_run_guide_title">ينادونني أستاذ الوحوش!</string>
-    <string name="first_run_call_encounter">عندما يرن هاتفك، ينضم المتصل إلى مواجهة مع وحش!</string>
-    <string name="first_run_call_answer">أجب لتقابل وحشه، أو ارفض المكالمة واهرب!</string>
-    <string name="first_run_phone_app_description">أولًا، عيّن MonsterDialer كتطبيق الهاتف.</string>
+    <string name="first_run_welcome_title">مرحبًا بك في MONSTERDIALER!</string>
+    <string name="first_run_welcome_description">مرحبًا بك في MONSTERDIALER.</string>
+    <string name="first_run_guide_name">اسمي PROF. WILLOW.</string>
+    <string name="first_run_guide_title">سأساعدك على الاستعداد لأول معركة عبر مكالمة!</string>
+    <string name="first_run_battle_starts">عندما يتصل بك أحد، تبدأ محاكاة المعركة تلقائيًا.</string>
+    <string name="first_run_battle_watch_only">يمكنك المشاهدة دون اللعب، لتتمكن من التركيز على مكالمتك.</string>
+    <string name="first_run_choose_team">والآن، لنختر المدرّب والوحش الخاصين بك.</string>
+    <string name="first_run_phone_app_description">بعد ذلك، عيّن MONSTERDIALER كتطبيق الهاتف الافتراضي.</string>
     <string name="first_run_setup_description">ثم اسمح بإشعارات المكالمات بملء الشاشة لعرض المكالمات الواردة بشكل صحيح.</string>
     <string name="first_run_next">التالي</string>
+    <string name="setup_default_phone_help_action">مساعدة</string>
+    <string name="setup_help_intro">إذا منعك Android من تعيين %1$s كتطبيق الهاتف الافتراضي، فاتبع هذه الخطوات.</string>
+    <string name="setup_help_step_1">1. على جهاز Android، افتح تطبيق الإعدادات.</string>
+    <string name="setup_help_step_2">2. انقر على &lt;b&gt;التطبيقات&lt;/b&gt;.</string>
+    <string name="setup_help_step_3">3. انقر على التطبيق الذي تريد تفعيل إعداد مقيّد له.</string>
+    <string name="setup_help_tip">&lt;b&gt;تلميح:&lt;/b&gt; إذا لم تجده، فانقر أولاً على &lt;b&gt;عرض كل التطبيقات&lt;/b&gt; أو &lt;b&gt;معلومات التطبيق&lt;/b&gt;.</string>
+    <string name="setup_help_step_4">4. انقر على &lt;b&gt;المزيد&lt;/b&gt; ← &lt;b&gt;السماح بالإعدادات المقيّدة&lt;/b&gt;.</string>
+    <string name="setup_help_step_5">5. اتبع التعليمات التي تظهر على الشاشة.</string>
     <string name="first_run_continue">إعداد</string>
     <string name="first_encounter_prompt_title">هل أنت مستعد لمواجهتك الأولى؟</string>
-    <string name="first_encounter_prompt_description">أجرِ مكالمة أو تلقَّ مكالمة لترى MonsterDialer أثناء العمل. يمكنك تخصيص مدربك ووحشك وجهات اتصالك لاحقًا.</string>
+    <string name="first_encounter_prompt_description">أجرِ مكالمة أو تلقَّ مكالمة لترى MONSTERDIALER أثناء العمل. يمكنك تخصيص مدربك ووحشك وجهات اتصالك لاحقًا.</string>
     <string name="first_encounter_prompt_action">فتح لوحة الاتصال</string>
     <string name="first_encounter_prompt_later">ربما لاحقًا</string>
     <string name="app_name" comment="Application name shown by Android and in the About screen." translatable="false">MonsterDialer</string>

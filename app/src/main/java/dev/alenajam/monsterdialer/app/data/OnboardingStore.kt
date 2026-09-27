@@ -34,13 +34,6 @@ class OnboardingStore @Inject constructor(
         preferences.edit().putBoolean(KEY_FIRST_RUN_WELCOME_COMPLETED, true).apply()
     }
 
-    fun shouldShowFirstEncounterPrompt(): Boolean =
-        !preferences.getBoolean(KEY_FIRST_ENCOUNTER_PROMPT_SHOWN, false)
-
-    fun markFirstEncounterPromptShown() {
-        preferences.edit().putBoolean(KEY_FIRST_ENCOUNTER_PROMPT_SHOWN, true).apply()
-    }
-
     private fun migrateExistingInstallIfNeeded() {
         if (preferences.getBoolean(KEY_ONBOARDING_MIGRATED, false)) return
 
@@ -62,7 +55,6 @@ class OnboardingStore @Inject constructor(
     private companion object {
         const val PREFERENCES_NAME = "monster_onboarding"
         const val KEY_FIRST_RUN_WELCOME_COMPLETED = "first_run_welcome_completed"
-        const val KEY_FIRST_ENCOUNTER_PROMPT_SHOWN = "first_encounter_prompt_shown"
         const val KEY_ONBOARDING_MIGRATED = "onboarding_migrated"
     }
 }

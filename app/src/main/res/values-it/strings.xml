@@ -404,19 +404,27 @@
     <string name="are_you_sure">Sei sicuro?</string>
     <string name="delete_action">Elimina</string>
 
-    <string name="first_run_welcome_title">Benvenuto in MonsterDialer!</string>
-    <string name="first_run_greeting">Ciao! Scusa se ti ho fatto aspettare!</string>
-    <string name="first_run_welcome_description">Benvenuto in MonsterDialer!</string>
-    <string name="first_run_guide_name">Mi chiamo DR. BIT.</string>
-    <string name="first_run_guide_title">Mi chiamano il PROF DEI MOSTRI!</string>
-    <string name="first_run_call_encounter">Quando squilla il telefono, chi chiama entra in un incontro con un mostro!</string>
-    <string name="first_run_call_answer">Rispondi per incontrare il suo mostro o rifiuta la chiamata per fuggire!</string>
-    <string name="first_run_phone_app_description">Per prima cosa, imposta MonsterDialer come app Telefono.</string>
+    <string name="first_run_welcome_title">Benvenuto in MONSTERDIALER!</string>
+    <string name="first_run_welcome_description">Ciao, benvenuto in MONSTERDIALER.</string>
+    <string name="first_run_guide_name">Mi chiamo PROF. WILLOW.</string>
+    <string name="first_run_guide_title">Ti aiuterò a prepararti per la tua prima battaglia al telefono!</string>
+    <string name="first_run_battle_starts">Quando qualcuno ti chiama, la simulazione della lotta inizia automaticamente.</string>
+    <string name="first_run_battle_watch_only">Puoi guardarla senza giocare, così puoi concentrarti sulla chiamata.</string>
+    <string name="first_run_choose_team">Ora scegliamo il tuo allenatore e il tuo mostro.</string>
+    <string name="first_run_phone_app_description">Poi imposta MONSTERDIALER come app Telefono predefinita.</string>
     <string name="first_run_setup_description">Poi consenti le notifiche a schermo intero per mostrare le chiamate in arrivo.</string>
     <string name="first_run_next">Avanti</string>
+    <string name="setup_default_phone_help_action">Aiuto</string>
+    <string name="setup_help_intro">Se Android ti ha impedito di impostare %1$s come app Telefono predefinita, segui questi passaggi.</string>
+    <string name="setup_help_step_1">1. Sul tuo dispositivo Android, apri l’app Impostazioni.</string>
+    <string name="setup_help_step_2">2. Tocca &lt;b&gt;App&lt;/b&gt;.</string>
+    <string name="setup_help_step_3">3. Tocca l’app per cui vuoi attivare un’impostazione con restrizioni.</string>
+    <string name="setup_help_tip">&lt;b&gt;Suggerimento:&lt;/b&gt; Se non la trovi, tocca prima &lt;b&gt;Vedi tutte le app&lt;/b&gt; o &lt;b&gt;Info app&lt;/b&gt;.</string>
+    <string name="setup_help_step_4">4. Tocca &lt;b&gt;Altro&lt;/b&gt; → &lt;b&gt;Consenti impostazioni con restrizioni&lt;/b&gt;.</string>
+    <string name="setup_help_step_5">5. Segui le istruzioni sullo schermo.</string>
     <string name="first_run_continue">Imposta</string>
     <string name="first_encounter_prompt_title">Pronto per il tuo primo incontro?</string>
-    <string name="first_encounter_prompt_description">Effettua o ricevi una chiamata per vedere MonsterDialer in azione. Potrai personalizzare più tardi il tuo allenatore, mostro e contatti.</string>
+    <string name="first_encounter_prompt_description">Effettua o ricevi una chiamata per vedere MONSTERDIALER in azione. Potrai personalizzare più tardi il tuo allenatore, mostro e contatti.</string>
     <string name="first_encounter_prompt_action">Apri tastierino</string>
     <string name="first_encounter_prompt_later">Forse più tardi</string>
     <string name="app_name" comment="Application name shown by Android and in the About screen." translatable="false">MonsterDialer</string>

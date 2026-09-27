@@ -2,7 +2,6 @@ package dev.alenajam.monsterdialer.app
 
 import android.content.Intent
 import android.content.ContentResolver
-import android.app.NotificationManager
 import android.os.Build
 import android.net.Uri
 import android.os.Bundle
@@ -28,7 +27,6 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
@@ -52,7 +50,6 @@ import androidx.core.view.WindowInsetsControllerCompat
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.compose.LocalLifecycleOwner
 import dagger.hilt.android.AndroidEntryPoint
 import dev.alenajam.monsterdialer.R
 import dev.alenajam.monsterdialer.analytics.MonsterAnalytics
@@ -140,23 +137,6 @@ class MainActivity : AppCompatActivity() {
         }
 
         setContent {
-            var showFirstEncounterPrompt by remember { mutableStateOf(false) }
-            val lifecycleOwner = LocalLifecycleOwner.current
-
-            DisposableEffect(lifecycleOwner) {
-                val observer = androidx.lifecycle.LifecycleEventObserver { _, event ->
-                    if (event == Lifecycle.Event.ON_RESUME &&
-                        !showFirstRunWelcome &&
-                        isReadyForCalls() &&
-                        onboardingStore.shouldShowFirstEncounterPrompt()
-                    ) {
-                        showFirstEncounterPrompt = true
-                    }
-                }
-                lifecycleOwner.lifecycle.addObserver(observer)
-                onDispose { lifecycleOwner.lifecycle.removeObserver(observer) }
-            }
-
             val characterPackSettingsViewModel: CharacterPackSettingsViewModel = hiltViewModel()
             val characterSharingViewModel: CharacterSharingViewModel = hiltViewModel()
             val importLauncher = rememberLauncherForActivityResult(ActivityResultContracts.OpenDocument()) { uri ->
@@ -197,11 +177,6 @@ class MainActivity : AppCompatActivity() {
                                     onboardingStore.markWelcomeCompleted()
                                     analytics.welcomeCompleted()
                                     showFirstRunWelcome = false
-                                    if (isReadyForCalls() &&
-                                        onboardingStore.shouldShowFirstEncounterPrompt()
-                                    ) {
-                                        showFirstEncounterPrompt = true
-                                    }
                                 },
                             )
                         }
@@ -223,6 +198,11 @@ class MainActivity : AppCompatActivity() {
                         },
                         icons = appIcons,
                         themeExtension = appThemeExtension,
+                        setupContent = { setup ->
+                            AppTheme(darkTheme = false) {
+                                MonsterSetupScreen(setup)
+                            }
+                        },
                         forceLightTheme = true,
                         homeContent = { callbacks ->
                             AppTheme(darkTheme = false) {
@@ -576,19 +556,6 @@ class MainActivity : AppCompatActivity() {
                             )
                         },
                         )
-                        if (showFirstEncounterPrompt) {
-                            FirstEncounterPrompt(
-                                onMakeFirstCall = {
-                                    onboardingStore.markFirstEncounterPromptShown()
-                                    showFirstEncounterPrompt = false
-                                    startActivity(Intent(Intent.ACTION_DIAL, Uri.parse("tel:")))
-                                },
-                                onDismiss = {
-                                    onboardingStore.markFirstEncounterPromptShown()
-                                    showFirstEncounterPrompt = false
-                                },
-                            )
-                        }
                     }
                     LaunchedEffect(incomingImport) {
                         incomingImport?.let { incoming ->
@@ -631,11 +598,6 @@ class MainActivity : AppCompatActivity() {
         setIntent(intent)
         incomingImport = intent.incomingImport(contentResolver)
     }
-
-    private fun isReadyForCalls(): Boolean =
-        defaultPhoneManager.isDefaultDialer() &&
-            (Build.VERSION.SDK_INT < Build.VERSION_CODES.UPSIDE_DOWN_CAKE ||
-                getSystemService(NotificationManager::class.java)?.canUseFullScreenIntent() == true)
 
 }
 

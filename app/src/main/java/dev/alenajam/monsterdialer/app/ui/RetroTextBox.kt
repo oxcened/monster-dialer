@@ -5,9 +5,12 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.AnnotatedString
@@ -37,19 +40,10 @@ internal fun RetroManualDialogueBox(
     animationKey: Any? = message,
     height: androidx.compose.ui.unit.Dp = 96.dp,
     characterDelayMillis: Long = 22,
+    onAdvanceActionChanged: ((() -> Unit) -> Unit),
+    onMessageFinished: () -> Unit,
 ) {
     val lifecycleOwner = LocalLifecycleOwner.current
-    var displayedMessage by remember(animationKey, message) { mutableStateOf("") }
-    LaunchedEffect(animationKey, message, lifecycleOwner) {
-        lifecycleOwner.lifecycle.repeatOnLifecycle(Lifecycle.State.RESUMED) {
-            withFrameNanos { }
-            displayedMessage = ""
-            message.indices.forEach { index ->
-                displayedMessage = message.take(index + 1)
-                delay(characterDelayMillis)
-            }
-        }
-    }
     val style = TextStyle(
         fontFamily = RetroDoubleBorderTextBoxFont,
         fontSize = 18.sp,
@@ -60,9 +54,51 @@ internal fun RetroManualDialogueBox(
         modifier = modifier.fillMaxWidth(0.95f),
         height = height,
     ) {
+        val textMeasurer = rememberTextMeasurer()
+        val textWidth = with(androidx.compose.ui.platform.LocalDensity.current) {
+            (maxWidth - 10.dp).roundToPx().coerceAtLeast(0)
+        }
+        val pages = remember(message, textWidth) {
+            retroTextPages(message, textMeasurer, style, textWidth)
+        }
+        var pageIndex by remember(animationKey, message) { mutableIntStateOf(0) }
+        var displayedMessage by remember(animationKey, message) { mutableStateOf("") }
+        var animationComplete by remember(animationKey, message) { mutableStateOf(false) }
+        val page = pages.getOrElse(pageIndex) { "" }
+        val latestOnMessageFinished by rememberUpdatedState(onMessageFinished)
+
+        LaunchedEffect(animationKey, message, pageIndex, lifecycleOwner) {
+            lifecycleOwner.lifecycle.repeatOnLifecycle(Lifecycle.State.RESUMED) {
+                withFrameNanos { }
+                displayedMessage = ""
+                animationComplete = false
+                page.indices.forEach { index ->
+                    if (animationComplete) return@repeatOnLifecycle
+                    displayedMessage = page.take(index + 1)
+                    delay(characterDelayMillis)
+                }
+                animationComplete = true
+            }
+        }
+
+        SideEffect {
+            onAdvanceActionChanged {
+                when {
+                    !animationComplete -> {
+                        displayedMessage = page
+                        animationComplete = true
+                    }
+                    pageIndex < pages.lastIndex -> pageIndex++
+                    else -> latestOnMessageFinished()
+                }
+            }
+        }
+
         Text(
             text = displayedMessage,
             style = style,
+            maxLines = 3,
+            overflow = TextOverflow.Clip,
             modifier = Modifier.padding(5.dp),
         )
     }

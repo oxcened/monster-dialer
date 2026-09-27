@@ -375,19 +375,27 @@
     <string name="are_you_sure">确定要继续吗？</string>
     <string name="delete_action">删除</string>
 
-    <string name="first_run_welcome_title">欢迎使用 MonsterDialer！</string>
-    <string name="first_run_greeting">你好！抱歉让你久等了！</string>
-    <string name="first_run_welcome_description">欢迎使用 MonsterDialer！</string>
-    <string name="first_run_guide_name">我叫 DR. BIT。</string>
-    <string name="first_run_guide_title">大家都叫我怪物教授！</string>
-    <string name="first_run_call_encounter">电话响起时，来电者会加入一场怪物遭遇战！</string>
-    <string name="first_run_call_answer">接听来认识对方的怪物，或拒接逃跑！</string>
-    <string name="first_run_phone_app_description">首先，将 MonsterDialer 设为电话应用。</string>
+    <string name="first_run_welcome_title">欢迎使用 MONSTERDIALER！</string>
+    <string name="first_run_welcome_description">你好，欢迎来到 MONSTERDIALER。</string>
+    <string name="first_run_guide_name">我叫 PROF. WILLOW。</string>
+    <string name="first_run_guide_title">我来帮你为第一场来电对战做好准备！</string>
+    <string name="first_run_battle_starts">有人来电时，对战模拟会自动开始。</string>
+    <string name="first_run_battle_watch_only">你可以观看而无需操作，这样就能专心接听电话。</string>
+    <string name="first_run_choose_team">现在来选你的训练师和怪物吧。</string>
+    <string name="first_run_phone_app_description">接下来，将 MONSTERDIALER 设为默认电话应用。</string>
     <string name="first_run_setup_description">然后允许全屏通话通知，以便正确显示来电。</string>
     <string name="first_run_next">下一步</string>
+    <string name="setup_default_phone_help_action">帮助</string>
+    <string name="setup_help_intro">如果 Android 阻止你将 %1$s 设为默认电话应用，请按以下步骤操作。</string>
+    <string name="setup_help_step_1">1. 在 Android 设备上打开“设置”应用。</string>
+    <string name="setup_help_step_2">2. 点按&lt;b&gt;应用&lt;/b&gt;。</string>
+    <string name="setup_help_step_3">3. 点按要为其开启受限设置的应用。</string>
+    <string name="setup_help_tip">&lt;b&gt;提示：&lt;/b&gt;如果找不到该应用，请先点按&lt;b&gt;查看所有应用&lt;/b&gt;或&lt;b&gt;应用信息&lt;/b&gt;。</string>
+    <string name="setup_help_step_4">4. 点按&lt;b&gt;更多&lt;/b&gt; → &lt;b&gt;允许受限设置&lt;/b&gt;。</string>
+    <string name="setup_help_step_5">5. 按照屏幕上的说明操作。</string>
     <string name="first_run_continue">设置</string>
     <string name="first_encounter_prompt_title">准备好进行第一次遭遇战了吗？</string>
-    <string name="first_encounter_prompt_description">拨打或接听电话，看看 MonsterDialer 如何运作。之后你可以自定义训练师、怪物和联系人。</string>
+    <string name="first_encounter_prompt_description">拨打或接听电话，看看 MONSTERDIALER 如何运作。之后你可以自定义训练师、怪物和联系人。</string>
     <string name="first_encounter_prompt_action">打开拨号盘</string>
     <string name="first_encounter_prompt_later">稍后再说</string>
     <string name="app_name" comment="Application name shown by Android and in the About screen." translatable="false">MonsterDialer</string>
