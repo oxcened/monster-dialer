@@ -34,6 +34,7 @@ private val RetroDoubleBorderTextBoxFont = FontFamily(Font(dev.alenajam.monsterd
 internal fun RetroManualDialogueBox(
     message: String,
     modifier: Modifier = Modifier,
+    height: androidx.compose.ui.unit.Dp = 128.dp,
 ) {
     val style = TextStyle(
         fontFamily = RetroDoubleBorderTextBoxFont,
@@ -41,7 +42,10 @@ internal fun RetroManualDialogueBox(
         lineHeight = 21.sp,
         color = androidx.compose.ui.graphics.Color.Black,
     )
-    RetroDoubleBorderBox(modifier = modifier.fillMaxWidth(0.95f)) {
+    RetroDoubleBorderBox(
+        modifier = modifier.fillMaxWidth(0.95f),
+        height = height,
+    ) {
         Text(
             text = message,
             style = style,
