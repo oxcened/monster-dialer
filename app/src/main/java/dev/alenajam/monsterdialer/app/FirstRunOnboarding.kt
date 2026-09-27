@@ -91,6 +91,7 @@ fun FirstRunWelcomeScreen(
                     RetroManualDialogueBox(
                         message = dialogueMessage,
                         modifier = Modifier.fillMaxWidth(),
+                        animationKey = currentStep,
                     )
                 }
             }

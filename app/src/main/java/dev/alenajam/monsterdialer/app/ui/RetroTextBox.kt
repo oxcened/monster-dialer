@@ -34,8 +34,22 @@ private val RetroDoubleBorderTextBoxFont = FontFamily(Font(dev.alenajam.monsterd
 internal fun RetroManualDialogueBox(
     message: String,
     modifier: Modifier = Modifier,
-    height: androidx.compose.ui.unit.Dp = 128.dp,
+    animationKey: Any? = message,
+    height: androidx.compose.ui.unit.Dp = 96.dp,
+    characterDelayMillis: Long = 22,
 ) {
+    val lifecycleOwner = LocalLifecycleOwner.current
+    var displayedMessage by remember(animationKey, message) { mutableStateOf("") }
+    LaunchedEffect(animationKey, message, lifecycleOwner) {
+        lifecycleOwner.lifecycle.repeatOnLifecycle(Lifecycle.State.RESUMED) {
+            withFrameNanos { }
+            displayedMessage = ""
+            message.indices.forEach { index ->
+                displayedMessage = message.take(index + 1)
+                delay(characterDelayMillis)
+            }
+        }
+    }
     val style = TextStyle(
         fontFamily = RetroDoubleBorderTextBoxFont,
         fontSize = 18.sp,
@@ -47,7 +61,7 @@ internal fun RetroManualDialogueBox(
         height = height,
     ) {
         Text(
-            text = message,
+            text = displayedMessage,
             style = style,
             modifier = Modifier.padding(5.dp),
         )
