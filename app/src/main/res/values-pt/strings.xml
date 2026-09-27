@@ -391,7 +391,7 @@
     <string name="first_run_phone_app_description">Primeiro, define o MonsterDialer como aplicação Telefone.</string>
     <string name="first_run_setup_description">Depois, permite notificações de chamada em ecrã inteiro para mostrar bem as chamadas.</string>
     <string name="first_run_next">Seguinte</string>
-    <string name="first_run_continue">Configurar o MonsterDialer</string>
+    <string name="first_run_continue">Configurar</string>
     <string name="first_encounter_prompt_title">Pronto para o teu primeiro encontro?</string>
     <string name="first_encounter_prompt_description">Faz ou recebe uma chamada para veres o MonsterDialer em ação. Podes personalizar mais tarde o teu treinador, monstro e contactos.</string>
     <string name="first_encounter_prompt_action">Abrir teclado numérico</string>

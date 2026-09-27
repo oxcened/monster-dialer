@@ -52,19 +52,25 @@ fun FirstRunWelcomeScreen(
                 modifier = Modifier
                     .weight(1f)
                     .fillMaxWidth(),
-                contentAlignment = Alignment.BottomCenter,
+                contentAlignment = Alignment.Center,
             ) {
-                Image(
-                    painter = painterResource(R.drawable.first_run_guide),
-                    contentDescription = null,
-                    contentScale = ContentScale.Fit,
-                    modifier = Modifier.size(212.dp),
-                )
+                Column(
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.spacedBy(12.dp),
+                    modifier = Modifier.fillMaxWidth(),
+                ) {
+                    Image(
+                        painter = painterResource(R.drawable.first_run_guide),
+                        contentDescription = null,
+                        contentScale = ContentScale.Fit,
+                        modifier = Modifier.size(160.dp),
+                    )
+                    RetroManualDialogueBox(
+                        message = dialogueMessage,
+                        modifier = Modifier.fillMaxWidth(),
+                    )
+                }
             }
-            RetroManualDialogueBox(
-                message = dialogueMessage,
-                modifier = Modifier.fillMaxWidth(),
-            )
             Spacer(Modifier.height(8.dp))
             Row(
                 modifier = Modifier.fillMaxWidth(),

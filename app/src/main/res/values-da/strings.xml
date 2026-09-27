@@ -386,7 +386,7 @@
     <string name="first_run_phone_app_description">Gør først MonsterDialer til din telefonapp.</string>
     <string name="first_run_setup_description">Tillad derefter fuldskærmsnotifikationer, så indgående opkald vises korrekt.</string>
     <string name="first_run_next">Næste</string>
-    <string name="first_run_continue">Konfigurer MonsterDialer</string>
+    <string name="first_run_continue">Opsæt</string>
     <string name="first_encounter_prompt_title">Klar til dit første møde?</string>
     <string name="first_encounter_prompt_description">Foretag eller modtag et opkald for at se MonsterDialer i aktion. Du kan tilpasse din træner, dit monster og dine kontakter senere.</string>
     <string name="first_encounter_prompt_action">Åbn opkaldstastaturet</string>

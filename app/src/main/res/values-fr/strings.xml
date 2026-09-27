@@ -391,7 +391,7 @@
     <string name="first_run_phone_app_description">Définissez d’abord MonsterDialer comme application Téléphone.</string>
     <string name="first_run_setup_description">Autorisez ensuite les notifications d’appel en plein écran pour bien afficher les appels.</string>
     <string name="first_run_next">Suivant</string>
-    <string name="first_run_continue">Configurer MonsterDialer</string>
+    <string name="first_run_continue">Configurer</string>
     <string name="first_encounter_prompt_title">Prêt pour votre première rencontre ?</string>
     <string name="first_encounter_prompt_description">Passez ou recevez un appel pour voir MonsterDialer en action. Vous pourrez personnaliser votre dresseur, votre monstre et vos contacts plus tard.</string>
     <string name="first_encounter_prompt_action">Ouvrir le clavier</string>

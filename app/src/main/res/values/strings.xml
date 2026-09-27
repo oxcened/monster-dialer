@@ -5,7 +5,7 @@
     <string name="first_run_phone_app_description">First, make MonsterDialer your phone app.</string>
     <string name="first_run_setup_description">Then allow full-screen call notifications to show incoming calls correctly.</string>
     <string name="first_run_next">Next</string>
-    <string name="first_run_continue">Set up MonsterDialer</string>
+    <string name="first_run_continue">Set up</string>
     <string name="first_encounter_prompt_title">Ready for your first encounter?</string>
     <string name="first_encounter_prompt_description">Make or receive a call to see MonsterDialer in action. You can customize your trainer, monster, and contacts later.</string>
     <string name="first_encounter_prompt_action">Open dialpad</string>

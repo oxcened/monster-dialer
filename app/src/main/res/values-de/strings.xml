@@ -391,7 +391,7 @@
     <string name="first_run_phone_app_description">Lege zuerst MonsterDialer als Telefon-App fest.</string>
     <string name="first_run_setup_description">Erlaube danach Vollbild-Anrufbenachrichtigungen, damit Anrufe richtig angezeigt werden.</string>
     <string name="first_run_next">Weiter</string>
-    <string name="first_run_continue">MonsterDialer einrichten</string>
+    <string name="first_run_continue">Einrichten</string>
     <string name="first_encounter_prompt_title">Bereit für deine erste Begegnung?</string>
     <string name="first_encounter_prompt_description">Tätige oder empfange einen Anruf, um MonsterDialer in Aktion zu erleben. Deinen Trainer, dein Monster und deine Kontakte kannst du später anpassen.</string>
     <string name="first_encounter_prompt_action">Wähltastatur öffnen</string>

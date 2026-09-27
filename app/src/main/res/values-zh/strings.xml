@@ -380,7 +380,7 @@
     <string name="first_run_phone_app_description">首先，将 MonsterDialer 设为电话应用。</string>
     <string name="first_run_setup_description">然后允许全屏通话通知，以便正确显示来电。</string>
     <string name="first_run_next">下一步</string>
-    <string name="first_run_continue">设置 MonsterDialer</string>
+    <string name="first_run_continue">设置</string>
     <string name="first_encounter_prompt_title">准备好进行第一次遭遇战了吗？</string>
     <string name="first_encounter_prompt_description">拨打或接听电话，看看 MonsterDialer 如何运作。之后你可以自定义训练师、怪物和联系人。</string>
     <string name="first_encounter_prompt_action">打开拨号盘</string>

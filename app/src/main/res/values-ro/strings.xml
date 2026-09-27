@@ -396,7 +396,7 @@
     <string name="first_run_phone_app_description">Mai întâi, setează MonsterDialer ca aplicație Telefon.</string>
     <string name="first_run_setup_description">Apoi, permite notificările pe tot ecranul pentru afișarea corectă a apelurilor.</string>
     <string name="first_run_next">Înainte</string>
-    <string name="first_run_continue">Configurează MonsterDialer</string>
+    <string name="first_run_continue">Setează</string>
     <string name="first_encounter_prompt_title">Gata pentru prima ta întâlnire?</string>
     <string name="first_encounter_prompt_description">Efectuează sau primește un apel pentru a vedea MonsterDialer în acțiune. Îți poți personaliza antrenorul, monstrul și contactele mai târziu.</string>
     <string name="first_encounter_prompt_action">Deschide tastatura</string>
