@@ -406,8 +406,10 @@
     <string name="delete_action">حذف</string>
 
     <string name="first_run_welcome_title">مرحبًا بك في MonsterDialer!</string>
-    <string name="first_run_welcome_description">مرحبًا! أنا الدكتور بِت، دليلك في MonsterDialer. قد تقودك المكالمات إلى مواجهات مع الوحوش، ومواجهتك الأولى جاهزة مع الشخصيات المدمجة.</string>
-    <string name="first_run_setup_description">بعد ذلك، سيطلب منك Android تعيين MonsterDialer كتطبيق الهاتف والسماح بإشعارات المكالمات بملء الشاشة. يلزم ذلك لعرض المكالمات الواردة بشكل صحيح.</string>
+    <string name="first_run_welcome_description">مرحبًا! أنا الدكتور بِت. قد تبدأ المكالمات مواجهات مع الوحوش. لنبدأ!</string>
+    <string name="first_run_phone_app_description">أولًا، عيّن MonsterDialer كتطبيق الهاتف.</string>
+    <string name="first_run_setup_description">ثم اسمح بإشعارات المكالمات بملء الشاشة لعرض المكالمات الواردة بشكل صحيح.</string>
+    <string name="first_run_next">التالي</string>
     <string name="first_run_continue">إعداد MonsterDialer</string>
     <string name="first_encounter_prompt_title">هل أنت مستعد لمواجهتك الأولى؟</string>
     <string name="first_encounter_prompt_description">أجرِ مكالمة أو تلقَّ مكالمة لترى MonsterDialer أثناء العمل. يمكنك تخصيص مدربك ووحشك وجهات اتصالك لاحقًا.</string>

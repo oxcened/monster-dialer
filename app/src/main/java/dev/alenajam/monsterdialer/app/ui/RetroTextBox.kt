@@ -29,6 +29,27 @@ import androidx.lifecycle.repeatOnLifecycle
 
 private val RetroDoubleBorderTextBoxFont = FontFamily(Font(dev.alenajam.monsterdialer.R.font.ui_pixel_font))
 
+/** Static single-step GSC dialogue; callers control when the message changes. */
+@Composable
+internal fun RetroManualDialogueBox(
+    message: String,
+    modifier: Modifier = Modifier,
+) {
+    val style = TextStyle(
+        fontFamily = RetroDoubleBorderTextBoxFont,
+        fontSize = 18.sp,
+        lineHeight = 21.sp,
+        color = androidx.compose.ui.graphics.Color.Black,
+    )
+    RetroDoubleBorderBox(modifier = modifier.fillMaxWidth(0.95f)) {
+        Text(
+            text = message,
+            style = style,
+            modifier = Modifier.padding(5.dp),
+        )
+    }
+}
+
 /** Reusable Game Boy-style text box for menus and other non-battle screens. */
 @Composable
 internal fun RetroDoubleBorderTextBox(

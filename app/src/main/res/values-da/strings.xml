@@ -382,8 +382,10 @@
     <string name="delete_action">Slet</string>
 
     <string name="first_run_welcome_title">Velkommen til MonsterDialer!</string>
-    <string name="first_run_welcome_description">Hej! Jeg er Dr. Bit, din guide til MonsterDialer. Opkald kan føre til monstermøder, og dit første møde er klar med de indbyggede figurer.</string>
-    <string name="first_run_setup_description">Som det næste vil Android bede dig om at gøre MonsterDialer til din telefonapp og tillade opkaldsnotifikationer i fuld skærm. Det er nødvendigt for at vise indgående opkald korrekt.</string>
+    <string name="first_run_welcome_description">Hej! Jeg er Dr. Bit. Opkald kan føre til monstermøder. Lad os komme i gang!</string>
+    <string name="first_run_phone_app_description">Gør først MonsterDialer til din telefonapp.</string>
+    <string name="first_run_setup_description">Tillad derefter fuldskærmsnotifikationer, så indgående opkald vises korrekt.</string>
+    <string name="first_run_next">Næste</string>
     <string name="first_run_continue">Konfigurer MonsterDialer</string>
     <string name="first_encounter_prompt_title">Klar til dit første møde?</string>
     <string name="first_encounter_prompt_description">Foretag eller modtag et opkald for at se MonsterDialer i aktion. Du kan tilpasse din træner, dit monster og dine kontakter senere.</string>

@@ -376,8 +376,10 @@
     <string name="delete_action">删除</string>
 
     <string name="first_run_welcome_title">欢迎使用 MonsterDialer！</string>
-    <string name="first_run_welcome_description">你好！我是 Bit 博士，MonsterDialer 的向导。通话可能带来怪物遭遇战，你可以立即使用内置角色开始第一次遭遇。</string>
-    <string name="first_run_setup_description">接下来，Android 会要求你将 MonsterDialer 设为电话应用，并允许全屏通话通知。这些权限用于正确显示来电。</string>
+    <string name="first_run_welcome_description">你好！我是 Bit 博士。通话可能触发怪物遭遇战。我们开始吧！</string>
+    <string name="first_run_phone_app_description">首先，将 MonsterDialer 设为电话应用。</string>
+    <string name="first_run_setup_description">然后允许全屏通话通知，以便正确显示来电。</string>
+    <string name="first_run_next">下一步</string>
     <string name="first_run_continue">设置 MonsterDialer</string>
     <string name="first_encounter_prompt_title">准备好进行第一次遭遇战了吗？</string>
     <string name="first_encounter_prompt_description">拨打或接听电话，看看 MonsterDialer 如何运作。之后你可以自定义训练师、怪物和联系人。</string>

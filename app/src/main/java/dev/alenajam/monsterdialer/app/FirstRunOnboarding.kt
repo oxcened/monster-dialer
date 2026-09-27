@@ -15,6 +15,10 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
@@ -23,12 +27,20 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import dev.alenajam.monsterdialer.R
 import dev.alenajam.monsterdialer.app.ui.RetroActionButton
-import dev.alenajam.monsterdialer.app.ui.RetroDoubleBorderTextBox
+import dev.alenajam.monsterdialer.app.ui.RetroManualDialogueBox
 
 @Composable
 fun FirstRunWelcomeScreen(
     onContinue: () -> Unit,
 ) {
+    var dialogueStep by rememberSaveable { mutableIntStateOf(0) }
+    val dialogueMessage = when (dialogueStep) {
+        0 -> stringResource(R.string.first_run_welcome_description)
+        1 -> stringResource(R.string.first_run_phone_app_description)
+        else -> stringResource(R.string.first_run_setup_description)
+    }
+    val isFinalStep = dialogueStep == 2
+
     Surface(modifier = Modifier.fillMaxSize()) {
         Column(
             modifier = Modifier
@@ -49,11 +61,9 @@ fun FirstRunWelcomeScreen(
                     modifier = Modifier.size(212.dp),
                 )
             }
-            RetroDoubleBorderTextBox(
-                message = stringResource(R.string.first_run_welcome_description) + "\n" +
-                    stringResource(R.string.first_run_setup_description),
+            RetroManualDialogueBox(
+                message = dialogueMessage,
                 modifier = Modifier.fillMaxWidth(),
-                height = 104.dp,
             )
             Spacer(Modifier.height(8.dp))
             Row(
@@ -62,8 +72,12 @@ fun FirstRunWelcomeScreen(
             ) {
                 RetroActionButton(
                     key = stringResource(R.string.retro_key_a),
-                    label = stringResource(R.string.first_run_continue),
-                    onClick = onContinue,
+                    label = stringResource(
+                        if (isFinalStep) R.string.first_run_continue else R.string.first_run_next,
+                    ),
+                    onClick = {
+                        if (isFinalStep) onContinue() else dialogueStep += 1
+                    },
                 )
             }
         }

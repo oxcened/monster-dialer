@@ -392,8 +392,10 @@
     <string name="delete_action">Șterge</string>
 
     <string name="first_run_welcome_title">Bun venit în MonsterDialer!</string>
-    <string name="first_run_welcome_description">Salut! Sunt Dr. Bit, ghidul tău MonsterDialer. Apelurile pot duce la întâlniri cu monștri, iar prima este pregătită cu personajele incluse.</string>
-    <string name="first_run_setup_description">În continuare, Android îți va cere să setezi MonsterDialer ca aplicație de telefon și să permiți notificările apelurilor pe tot ecranul. Acestea sunt necesare pentru afișarea corectă a apelurilor primite.</string>
+    <string name="first_run_welcome_description">Salut! Sunt Dr. Bit. Apelurile pot porni întâlniri cu monștri. Să începem!</string>
+    <string name="first_run_phone_app_description">Mai întâi, setează MonsterDialer ca aplicație Telefon.</string>
+    <string name="first_run_setup_description">Apoi, permite notificările pe tot ecranul pentru afișarea corectă a apelurilor.</string>
+    <string name="first_run_next">Înainte</string>
     <string name="first_run_continue">Configurează MonsterDialer</string>
     <string name="first_encounter_prompt_title">Gata pentru prima ta întâlnire?</string>
     <string name="first_encounter_prompt_description">Efectuează sau primește un apel pentru a vedea MonsterDialer în acțiune. Îți poți personaliza antrenorul, monstrul și contactele mai târziu.</string>
