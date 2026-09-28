@@ -36,6 +36,7 @@ import androidx.compose.foundation.layout.windowInsetsPadding
 import dev.alenajam.monsterdialer.R
 import dev.alenajam.monsterdialer.app.ui.RetroActionButton
 import dev.alenajam.monsterdialer.app.ui.RetroFooter
+import dev.alenajam.monsterdialer.app.ui.RetroThemeDefaults
 import dev.alenajam.monsterdialer.app.ui.RetroSelectableRow
 import dev.alenajam.monsterdialer.characters.ui.ContactCharacterSettingsViewModel
 import dev.alenajam.monsterdialer.characters.ui.ContextualGuideDialog
@@ -43,8 +44,6 @@ import dev.alenajam.monsterdialer.characters.ui.RetroContactPickerScreen
 import kotlinx.coroutines.launch
 
 private val SharedProfileFont = FontFamily(Font(R.font.ui_pixel_font))
-private val SharedProfileInk = Color(0xFF202020)
-private val SharedProfilePaper = Color(0xFFF9F7FC)
 
 /** Selects the local contact that should use a profile opened from a shared link. */
 @Composable
@@ -61,7 +60,7 @@ fun SharedProfileImportScreen(
     val linkFailedMessage = stringResource(R.string.shared_profile_import_link_failed)
     BackHandler(enabled = !isChoosingContact, onBack = onNavigateBack)
 
-    Surface(modifier = Modifier.fillMaxSize(), color = SharedProfilePaper) {
+    Surface(modifier = Modifier.fillMaxSize(), color = RetroThemeDefaults.colors.panel, contentColor = RetroThemeDefaults.colors.ink) {
         if (isChoosingContact) {
             RetroContactPickerScreen(
                 onNavigateBack = { isChoosingContact = false },
@@ -106,14 +105,14 @@ fun SharedProfileImportScreen(
                                 fontFamily = SharedProfileFont,
                                 fontSize = 20.sp,
                                 lineHeight = 25.sp,
-                                color = SharedProfileInk,
+                                color = RetroThemeDefaults.colors.ink,
                             )
                             Text(
                                 text = stringResource(R.string.shared_profile_import_description),
                                 fontFamily = SharedProfileFont,
                                 fontSize = 15.sp,
                                 lineHeight = 21.sp,
-                                color = SharedProfileInk.copy(alpha = 0.78f),
+                                color = RetroThemeDefaults.colors.ink.copy(alpha = 0.78f),
                             )
                         }
                         Column(verticalArrangement = Arrangement.spacedBy(0.dp)) {
@@ -132,7 +131,7 @@ fun SharedProfileImportScreen(
                                         .padding(start = 8.dp, top = 8.dp, bottom = 8.dp),
                                     fontFamily = SharedProfileFont,
                                     fontSize = 17.sp,
-                                    color = SharedProfileInk,
+                                    color = RetroThemeDefaults.colors.ink,
                                 )
                             }
                             RetroSelectableRow(
@@ -149,7 +148,7 @@ fun SharedProfileImportScreen(
                                         .padding(start = 8.dp, top = 8.dp, bottom = 8.dp),
                                     fontFamily = SharedProfileFont,
                                     fontSize = 17.sp,
-                                    color = SharedProfileInk,
+                                    color = RetroThemeDefaults.colors.ink,
                                 )
                             }
                         }

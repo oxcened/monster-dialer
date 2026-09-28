@@ -65,6 +65,7 @@ import dev.alenajam.monsterdialer.app.ui.RetroContextMenuItem
 import dev.alenajam.monsterdialer.app.ui.RetroMenuWindow
 import dev.alenajam.monsterdialer.app.ui.RetroSelectableRow
 import dev.alenajam.monsterdialer.app.ui.RetroSearchButton
+import dev.alenajam.monsterdialer.app.ui.RetroThemeDefaults
 import dev.alenajam.opendialer.core.common.ui.AppIcon
 import dev.alenajam.opendialer.core.common.ui.LocalAppIcons
 import dev.alenajam.monsterdialer.characters.data.BuiltInCharacters
@@ -201,7 +202,7 @@ fun ColumnScope.ContactCharacterSettingsContent(
                     text = stringResource(if (pendingOnlineProfileId != null) R.string.online_profile_choose_contact_prompt else R.string.contact_chooser_prompt),
                     style = MaterialTheme.typography.bodyLarge,
                     textAlign = TextAlign.Center,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                    color = RetroThemeDefaults.colors.mutedInk,
                 )
             }
         }
@@ -426,7 +427,7 @@ fun ColumnScope.ContactCharacterSettingsContent(
                                 text = stringResource(R.string.contact_random_pool_description),
                                 modifier = Modifier.fillMaxWidth().padding(top = 8.dp, bottom = 8.dp),
                                 style = MaterialTheme.typography.bodySmall,
-                                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                                color = RetroThemeDefaults.colors.mutedInk,
                             )
                         }
                     }
@@ -529,13 +530,13 @@ private fun ContactCharacterInheritedSummary(
                 text = stringResource(R.string.contact_character_inherited_title),
                 fontFamily = ContactInheritedFont,
                 fontSize = 22.sp,
-                color = RetroInk,
+                color = RetroThemeDefaults.colors.ink,
             )
             Text(
                 text = stringResource(R.string.contact_character_inherited_message, typeLabel),
                 fontFamily = ContactInheritedFont,
                 fontSize = 18.sp,
-                color = RetroInk,
+                color = RetroThemeDefaults.colors.ink,
             )
             RetroSelectableRow(
                 selected = selectedAction == 0,
@@ -549,7 +550,7 @@ private fun ContactCharacterInheritedSummary(
                     text = stringResource(R.string.contact_character_customize).uppercase(),
                     fontFamily = RetroPickerFont,
                     fontSize = 16.sp,
-                    color = RetroInk,
+                    color = RetroThemeDefaults.colors.ink,
                 )
             }
             RetroSelectableRow(
@@ -564,7 +565,7 @@ private fun ContactCharacterInheritedSummary(
                     text = stringResource(R.string.contact_character_edit_global_defaults).uppercase(),
                     fontFamily = RetroPickerFont,
                     fontSize = 16.sp,
-                    color = RetroInk,
+                    color = RetroThemeDefaults.colors.ink,
                 )
             }
         }
@@ -610,21 +611,21 @@ private fun CharacterSettingsDropdowns(
             shape = buttonShape,
         ) {
             DropdownMenuItem(
-                text = { Text(stringResource(R.string.contact_character_source_global)) },
+                text = { Text(stringResource(R.string.contact_character_source_global), color = RetroThemeDefaults.colors.ink) },
                 onClick = {
                     onModeChanged(ContactAssignmentMode.Global)
                     sourceMenuExpanded = false
                 },
             )
             DropdownMenuItem(
-                text = { Text(stringResource(chooseCharacterLabel)) },
+                text = { Text(stringResource(chooseCharacterLabel), color = RetroThemeDefaults.colors.ink) },
                 onClick = {
                     onModeChanged(ContactAssignmentMode.Custom)
                     sourceMenuExpanded = false
                 },
             )
             DropdownMenuItem(
-                text = { Text(stringResource(R.string.randomize)) },
+                text = { Text(stringResource(R.string.randomize), color = RetroThemeDefaults.colors.ink) },
                 onClick = {
                     onModeChanged(ContactAssignmentMode.Random)
                     sourceMenuExpanded = false
@@ -651,6 +652,7 @@ private fun CharacterTypeSwitch(
         ) {
             Text(
                 text = stringResource(R.string.character_type_trainer),
+                color = RetroThemeDefaults.colors.ink,
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis,
             )
@@ -663,6 +665,7 @@ private fun CharacterTypeSwitch(
         ) {
             Text(
                 text = stringResource(R.string.character_type_monster),
+                color = RetroThemeDefaults.colors.ink,
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis,
             )
@@ -715,8 +718,8 @@ private fun CompactDropdown(
             .fillMaxWidth()
             .height(36.dp)
             .clip(shape)
-            .background(MaterialTheme.colorScheme.surfaceContainerLow)
-            .border(1.dp, MaterialTheme.colorScheme.outline, shape)
+            .background(RetroThemeDefaults.colors.paper)
+            .border(1.dp, RetroThemeDefaults.colors.border, shape)
             .clickable { onExpandedChange(true) }
             .padding(horizontal = 10.dp),
         contentAlignment = Alignment.Center,
@@ -730,6 +733,7 @@ private fun CompactDropdown(
                 text = label,
                 modifier = Modifier.weight(1f).padding(end = 8.dp),
                 style = MaterialTheme.typography.labelLarge,
+                color = RetroThemeDefaults.colors.ink,
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis,
             )
@@ -737,6 +741,7 @@ private fun CompactDropdown(
                 icon = LocalAppIcons.current.arrowDown,
                 contentDescription = null,
                 modifier = Modifier.size(18.dp),
+                tint = RetroThemeDefaults.colors.ink,
             )
         }
         DropdownMenu(

@@ -27,6 +27,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import dev.alenajam.monsterdialer.R
+import dev.alenajam.monsterdialer.app.ui.RetroThemeDefaults
 import dev.alenajam.monsterdialer.characters.data.SharedCharacterArchive
 
 @Composable
@@ -72,7 +73,7 @@ internal fun ShareCharacterDialog(
 
     AlertDialog(
         onDismissRequest = onDismiss,
-        title = { Text(stringResource(R.string.share_character_title, characterName)) },
+        title = { Text(stringResource(R.string.share_character_title, characterName), color = RetroThemeDefaults.colors.ink) },
         text = {
             androidx.compose.foundation.layout.Column {
                 ContextualGuideButton(
@@ -90,13 +91,15 @@ internal fun ShareCharacterDialog(
                 OutlinedTextField(
                     value = creator,
                     onValueChange = { creator = it },
-                    label = { Text(stringResource(R.string.creator_label)) },
+                    label = { Text(stringResource(R.string.creator_label), color = RetroThemeDefaults.colors.mutedInk) },
+                    textStyle = androidx.compose.ui.text.TextStyle(color = RetroThemeDefaults.colors.ink),
                     singleLine = true
                 )
                 OutlinedTextField(
                     value = license,
                     onValueChange = { license = it },
-                    label = { Text(stringResource(R.string.license_label)) },
+                    label = { Text(stringResource(R.string.license_label), color = RetroThemeDefaults.colors.mutedInk) },
+                    textStyle = androidx.compose.ui.text.TextStyle(color = RetroThemeDefaults.colors.ink),
                     singleLine = true
                 )
             }
@@ -111,7 +114,7 @@ internal fun ShareCharacterDialog(
                     onClick = {
                         viewModel.exportForSharing(context, characterId, creator, license, fileName)
                     },
-                ) { Text(stringResource(R.string.share)) }
+                ) { Text(stringResource(R.string.share), color = RetroThemeDefaults.colors.paper) }
                 Row(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.spacedBy(8.dp, Alignment.End),
@@ -119,8 +122,8 @@ internal fun ShareCharacterDialog(
                     TextButton(
                         enabled = creator.isNotBlank() && license.isNotBlank(),
                         onClick = { createDocument.launch(fileName) },
-                    ) { Text(stringResource(R.string.save_to_device)) }
-                    TextButton(onClick = onDismiss) { Text(stringResource(R.string.cancel)) }
+                    ) { Text(stringResource(R.string.save_to_device), color = RetroThemeDefaults.colors.accent) }
+                    TextButton(onClick = onDismiss) { Text(stringResource(R.string.cancel), color = RetroThemeDefaults.colors.accent) }
                 }
             }
         },

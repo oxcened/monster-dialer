@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.rememberLazyListState
@@ -44,6 +45,7 @@ import dev.alenajam.monsterdialer.app.ui.RetroContextMenuItem
 import dev.alenajam.monsterdialer.app.ui.RetroContextMenuOverlay
 import dev.alenajam.monsterdialer.app.ui.RetroFooterAction
 import dev.alenajam.monsterdialer.app.ui.RetroSearchButton
+import dev.alenajam.monsterdialer.app.ui.RetroThemeDefaults
 import dev.alenajam.monsterdialer.characters.data.BuiltInCharacters
 import dev.alenajam.monsterdialer.characters.data.CharactersRepository
 import dev.alenajam.monsterdialer.characters.data.VariantUnlockStore
@@ -213,9 +215,9 @@ fun RadiantCollectionScreen(viewModel: RadiantCollectionViewModel = hiltViewMode
         listState.scrollToItem(0)
     }
 
-    Box(modifier = Modifier.fillMaxSize()) {
+    Box(modifier = Modifier.fillMaxSize().background(RetroThemeDefaults.colors.panel)) {
         Column(modifier = Modifier.fillMaxSize()) {
-        Row(modifier = Modifier.fillMaxWidth()) {
+        Row(modifier = Modifier.fillMaxWidth().background(RetroThemeDefaults.colors.panel)) {
             RetroSearchButton(
                 label = selectedTypeLabel,
                 onClick = {
@@ -392,14 +394,14 @@ private fun RadiantVariantUnlockDialog(
     }
     AlertDialog(
         onDismissRequest = onDismiss,
-        title = { Text(stringResource(R.string.radiant_variant_locked_title)) },
-        text = { Text(stringResource(R.string.radiant_variant_locked_message, characterName)) },
+        title = { Text(stringResource(R.string.radiant_variant_locked_title), color = RetroThemeDefaults.colors.ink) },
+        text = { Text(stringResource(R.string.radiant_variant_locked_message, characterName), color = RetroThemeDefaults.colors.ink) },
         confirmButton = {
-            TextButton(onClick = onDismiss) { Text(stringResource(R.string.cancel)) }
+            TextButton(onClick = onDismiss) { Text(stringResource(R.string.cancel), color = RetroThemeDefaults.colors.accent) }
         },
         dismissButton = {
             TextButton(onClick = { showGuide = true }) {
-                Text(stringResource(R.string.learn_about_radiants))
+                Text(stringResource(R.string.learn_about_radiants), color = RetroThemeDefaults.colors.accent)
             }
         },
     )
@@ -460,7 +462,7 @@ private fun CollectionSectionHeader(title: String) {
         modifier = Modifier.fillMaxWidth().padding(top = 6.dp, bottom = 2.dp),
         fontFamily = RetroPickerFont,
         fontSize = 13.sp,
-        color = RetroInk,
+        color = RetroThemeDefaults.colors.ink,
     )
 }
 
@@ -520,7 +522,7 @@ private fun CollectionMonsterRowContent(entry: RadiantCollectionEntry) {
                 text = entry.name.uppercase(),
                 fontFamily = RetroPickerFont,
                 fontSize = 16.sp,
-                color = RetroInk,
+                color = RetroThemeDefaults.colors.ink,
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis,
             )
@@ -544,7 +546,7 @@ private fun CollectionMonsterRowContent(entry: RadiantCollectionEntry) {
                         text = metadata,
                         fontFamily = RetroPickerFont,
                         fontSize = 13.sp,
-                        color = RetroInk.copy(alpha = 0.75f),
+                        color = RetroThemeDefaults.colors.ink.copy(alpha = 0.75f),
                     )
                 }
             }

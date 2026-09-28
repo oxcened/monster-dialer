@@ -18,6 +18,7 @@ import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -31,6 +32,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.core.view.WindowCompat
 import dev.alenajam.monsterdialer.battle.data.AssignedCharacterEncounterFactory
 import dev.alenajam.monsterdialer.analytics.MonsterAnalytics
 import dev.alenajam.monsterdialer.characters.data.RadiantVariantUnlockNotifier
@@ -39,12 +41,13 @@ import dev.alenajam.monsterdialer.battle.data.BattleEncounter
 import dev.alenajam.monsterdialer.battle.ui.BattleScreen
 import dev.alenajam.monsterdialer.app.ui.rememberMonsterIcons
 import dev.alenajam.monsterdialer.app.ui.rememberMonsterTypography
+import dev.alenajam.monsterdialer.app.ui.RetroTheme
 import dev.alenajam.monsterdialer.onlineprofiles.data.OnlineOpponentResolver
 import dev.alenajam.opendialer.core.common.getActivity
 import dev.alenajam.opendialer.core.common.ui.AppProviders
-import dev.alenajam.opendialer.core.common.ui.AppTheme
 import dev.alenajam.opendialer.core.common.ui.AppThemeExtension
 import dev.alenajam.opendialer.core.common.ui.InCallUI
+import dev.alenajam.opendialer.core.common.ui.rememberAppIsDarkTheme
 import dev.alenajam.opendialer.feature.inCall.ui.CallStatus
 import dev.alenajam.opendialer.feature.inCall.ui.InCallDetails
 import dev.alenajam.opendialer.feature.inCall.ui.InCallViewModel
@@ -68,6 +71,14 @@ class MonsterInCallUI @Inject constructor(
         val durationMillis by viewModel.activeCallDuration.collectAsStateWithLifecycle(0L)
         val onlineOpponentCacheVersion by onlineOpponentResolver.cacheVersion.collectAsStateWithLifecycle()
         val context = LocalContext.current
+        val darkTheme = rememberAppIsDarkTheme()
+        SideEffect {
+            val activity = context.getActivity() as? Activity
+            activity?.let {
+                WindowCompat.getInsetsController(it.window, it.window.decorView)
+                    .isAppearanceLightStatusBars = !darkTheme
+            }
+        }
         val unknownCallerName = stringResource(R.string.unknown)
         val hasSecondaryCall = uiState.hasSecondaryCall
         val secondaryCallerName = uiState.secondaryCallerName
@@ -131,13 +142,13 @@ class MonsterInCallUI @Inject constructor(
 
         // Here you provide the MonsterDialer specific UI!
         AppProviders(
-            icons = rememberMonsterIcons(forceLightDialpad = true),
+            icons = rememberMonsterIcons(),
             themeExtension = AppThemeExtension(
                 typography = rememberMonsterTypography(MaterialTheme.typography)
                 // backgroundPainter = { painterResource(R.drawable.monster_bg) }
             )
         ) {
-            AppTheme(darkTheme = false) {
+            RetroTheme {
             if (showManageSheet && canManageConference) {
                 ModalBottomSheet(
                     onDismissRequest = { showManageSheet = false },
@@ -234,7 +245,7 @@ class MonsterInCallUI @Inject constructor(
 
                             if (uiState.isIncoming) {
                                 MonsterIncomingCallControls(
-                                    icons = rememberMonsterIcons(forceLightDialpad = true),
+                                    icons = rememberMonsterIcons(),
                                     controlsEnabled = true,
                                     onHangup = viewModel::hangup,
                                     onAnswer = viewModel::answer,
@@ -242,7 +253,7 @@ class MonsterInCallUI @Inject constructor(
                                 )
                             } else {
                                 MonsterInCallControls(
-                                    icons = rememberMonsterIcons(forceLightDialpad = true),
+                                    icons = rememberMonsterIcons(),
                                     isMuted = uiState.isMuted,
                                     isSpeaker = uiState.isSpeaker,
                                     audioRoutes = uiState.audioRoutes,

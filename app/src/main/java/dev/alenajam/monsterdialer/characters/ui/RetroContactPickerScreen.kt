@@ -51,6 +51,7 @@ import dev.alenajam.monsterdialer.app.ui.RetroActionButton
 import dev.alenajam.monsterdialer.app.ui.RetroFastScroller
 import dev.alenajam.monsterdialer.app.ui.RetroSearchBar
 import dev.alenajam.monsterdialer.app.ui.RetroSelectionArrow
+import dev.alenajam.monsterdialer.app.ui.RetroThemeDefaults
 import dev.alenajam.monsterdialer.app.ui.RetroScreenFooterVerticalPadding
 import dev.alenajam.opendialer.core.common.PermissionUtils
 import dev.alenajam.opendialer.core.common.ui.AppIcon
@@ -60,8 +61,6 @@ import dev.alenajam.opendialer.core.common.ui.contactAvatarColorKey
 import dev.alenajam.opendialer.data.contacts.DialerContactSummary
 import dev.alenajam.opendialer.feature.contacts.ContactsViewModel
 
-private val ContactPickerPaper = Color(0xFFF9F7FC)
-private val ContactPickerInk = Color(0xFF202020)
 private val ContactPickerFont = FontFamily(Font(R.font.ui_pixel_font))
 
 @Composable
@@ -118,7 +117,7 @@ internal fun RetroContactPickerScreen(
         }
     }
 
-    Surface(modifier = Modifier.fillMaxSize(), color = ContactPickerPaper) {
+    Surface(modifier = Modifier.fillMaxSize(), color = RetroThemeDefaults.colors.panel) {
         Box(
             modifier = Modifier
                 .fillMaxSize()
@@ -249,7 +248,7 @@ private fun ContactPickerRow(
         verticalAlignment = Alignment.CenterVertically,
     ) {
         if (selected) {
-            RetroSelectionArrow(tint = ContactPickerInk, size = 14.dp)
+            RetroSelectionArrow(tint = RetroThemeDefaults.colors.ink, size = 14.dp)
             Spacer(Modifier.size(2.dp))
         } else {
             Spacer(Modifier.size(16.dp))
@@ -281,11 +280,11 @@ private fun ContactPickerSectionHeader(label: String, favorite: Boolean) {
                 icon = LocalAppIcons.current.favorite,
                 contentDescription = null,
                 modifier = Modifier.size(16.dp),
-                tint = ContactPickerInk,
+                tint = RetroThemeDefaults.colors.ink,
             )
             Spacer(Modifier.size(8.dp))
         }
-        ContactPickerText(label, 13.sp, ContactPickerInk.copy(alpha = 0.75f))
+        ContactPickerText(label, 13.sp, RetroThemeDefaults.colors.ink.copy(alpha = 0.75f))
     }
 }
 
@@ -308,7 +307,7 @@ private fun ContactPickerCommand(label: String, onClick: () -> Unit) {
 private fun ContactPickerText(
     text: String,
     size: TextUnit,
-    color: Color = ContactPickerInk,
+    color: Color = RetroThemeDefaults.colors.ink,
     modifier: Modifier = Modifier,
     maxLines: Int = Int.MAX_VALUE,
     textAlign: TextAlign? = null,

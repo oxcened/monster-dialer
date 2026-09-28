@@ -13,6 +13,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.res.stringResource
 import dev.alenajam.monsterdialer.R
+import dev.alenajam.monsterdialer.app.ui.RetroThemeDefaults
 import dev.alenajam.monsterdialer.packs.data.CharacterReference
 import dev.alenajam.monsterdialer.packs.data.CharacterType
 import dev.alenajam.opendialer.feature.settings.LocalSettingsBackInterceptor
@@ -39,11 +40,11 @@ internal fun RandomPoolEditorBackHandling(
     if (showWarning) {
         AlertDialog(
             onDismissRequest = { showWarning = false },
-            title = { Text(stringResource(R.string.contact_random_pool_empty_title)) },
-            text = { Text(stringResource(R.string.contact_random_pool_empty_exit_message)) },
+            title = { Text(stringResource(R.string.contact_random_pool_empty_title), color = RetroThemeDefaults.colors.ink) },
+            text = { Text(stringResource(R.string.contact_random_pool_empty_exit_message), color = RetroThemeDefaults.colors.ink) },
             confirmButton = {
                 TextButton(onClick = { showWarning = false }) {
-                    Text(stringResource(R.string.contact_random_pool_continue_editing))
+                    Text(stringResource(R.string.contact_random_pool_continue_editing), color = RetroThemeDefaults.colors.accent)
                 }
             },
             dismissButton = {
@@ -52,7 +53,7 @@ internal fun RandomPoolEditorBackHandling(
                     showWarning = false
                     navigator?.navigateBack()
                 }) {
-                    Text(stringResource(R.string.contact_random_pool_discard_changes))
+                    Text(stringResource(R.string.contact_random_pool_discard_changes), color = RetroThemeDefaults.colors.accent)
                 }
             },
         )

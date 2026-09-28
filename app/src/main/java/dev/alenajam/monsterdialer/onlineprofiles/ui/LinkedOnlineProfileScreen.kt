@@ -1,6 +1,7 @@
 package dev.alenajam.monsterdialer.onlineprofiles.ui
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
@@ -31,13 +32,13 @@ import dev.alenajam.monsterdialer.R
 import dev.alenajam.monsterdialer.app.ui.RetroConfirmationDialog
 import dev.alenajam.monsterdialer.app.ui.RetroFooter
 import dev.alenajam.monsterdialer.app.ui.RetroSelectableRow
+import dev.alenajam.monsterdialer.app.ui.RetroThemeDefaults
+import dev.alenajam.monsterdialer.app.ui.RetroScreenHorizontalPadding
 import dev.alenajam.monsterdialer.characters.ui.ContactCharacterSettingsViewModel
 import dev.alenajam.monsterdialer.characters.ui.ContextualGuideDialog
 import dev.alenajam.opendialer.feature.settings.LocalSettingsSubpageNavigator
 
 private val LinkedProfileFont = FontFamily(Font(R.font.ui_pixel_font))
-private val LinkedProfileInk = Color(0xFF202020)
-
 /** Shows and removes the Online Profile associated with the selected contact. */
 @Composable
 fun ColumnScope.LinkedOnlineProfileContent(
@@ -53,7 +54,9 @@ fun ColumnScope.LinkedOnlineProfileContent(
 
     Column(
         modifier = Modifier
-            .fillMaxSize(),
+            .fillMaxSize()
+            .background(RetroThemeDefaults.colors.panel)
+            .padding(horizontal = RetroScreenHorizontalPadding),
         verticalArrangement = Arrangement.spacedBy(16.dp),
     ) {
         if (profileId == null) {
@@ -73,13 +76,13 @@ fun ColumnScope.LinkedOnlineProfileContent(
                     text = stringResource(R.string.linked_online_profile_id_label),
                     fontFamily = LinkedProfileFont,
                     fontSize = 15.sp,
-                    color = LinkedProfileInk.copy(alpha = 0.72f),
+                    color = RetroThemeDefaults.colors.mutedInk,
                 )
                 Text(
                     text = requireNotNull(profileId),
                     fontFamily = LinkedProfileFont,
                     fontSize = 16.sp,
-                    color = LinkedProfileInk,
+                    color = RetroThemeDefaults.colors.ink,
                 )
             }
         }
@@ -97,7 +100,7 @@ fun ColumnScope.LinkedOnlineProfileContent(
                         modifier = Modifier.padding(start = 8.dp, top = 4.dp, bottom = 4.dp),
                         fontFamily = LinkedProfileFont,
                         fontSize = 17.sp,
-                        color = LinkedProfileInk,
+                        color = RetroThemeDefaults.colors.ink,
                     )
                 }
             }
@@ -113,7 +116,7 @@ fun ColumnScope.LinkedOnlineProfileContent(
                     modifier = Modifier.padding(start = 8.dp, top = 4.dp, bottom = 4.dp),
                     fontFamily = LinkedProfileFont,
                     fontSize = 17.sp,
-                    color = LinkedProfileInk,
+                    color = RetroThemeDefaults.colors.ink,
                 )
             }
         }
@@ -174,14 +177,14 @@ private fun LinkedProfileCard(title: String, message: String, isLinked: Boolean)
             fontFamily = LinkedProfileFont,
             fontSize = 20.sp,
             lineHeight = 26.sp,
-            color = LinkedProfileInk,
+            color = RetroThemeDefaults.colors.ink,
         )
         Text(
             text = message,
             fontFamily = LinkedProfileFont,
             fontSize = 15.sp,
             lineHeight = 21.sp,
-            color = LinkedProfileInk.copy(alpha = 0.72f),
+            color = RetroThemeDefaults.colors.mutedInk,
         )
     }
 }

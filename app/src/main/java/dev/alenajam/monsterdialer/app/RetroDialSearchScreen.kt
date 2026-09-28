@@ -51,6 +51,7 @@ import dev.alenajam.monsterdialer.app.ui.RetroFooterAction
 import dev.alenajam.monsterdialer.app.ui.RetroSearchBar
 import dev.alenajam.monsterdialer.app.ui.RetroSelectableRow
 import dev.alenajam.monsterdialer.app.ui.RetroScreenHorizontalPadding
+import dev.alenajam.monsterdialer.app.ui.RetroThemeDefaults
 import dev.alenajam.opendialer.core.common.PermissionUtils
 import dev.alenajam.opendialer.core.common.getActivity
 import dev.alenajam.opendialer.core.common.telecom.CallAccount
@@ -61,8 +62,6 @@ import dev.alenajam.opendialer.data.contactsSearch.DialerSearchContact
 import dev.alenajam.opendialer.feature.contactsSearch.R as SearchR
 import dev.alenajam.opendialer.feature.contactsSearch.SearchContactsViewModel
 
-private val DialSearchPaper = Color(0xFFF9F7FC)
-private val DialSearchInk = Color(0xFF202020)
 private val DialSearchFont = FontFamily(Font(R.font.ui_pixel_font))
 
 /** MonsterDialer's GSC-styled dialpad, search results, and number actions. */
@@ -160,7 +159,7 @@ internal fun RetroDialSearchScreen(
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(DialSearchPaper)
+            .background(RetroThemeDefaults.colors.panel)
             .windowInsetsPadding(WindowInsets.safeDrawing),
     ) {
         RetroSearchBar(
@@ -300,7 +299,7 @@ private fun RetroPermissionPrompt(onPermissionGranted: () -> Unit) {
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center,
     ) {
-        Text(stringResource(SearchR.string.placeholder_search_permissions), fontFamily = DialSearchFont, fontSize = 16.sp, color = DialSearchInk)
+        Text(stringResource(SearchR.string.placeholder_search_permissions), fontFamily = DialSearchFont, fontSize = 16.sp, color = RetroThemeDefaults.colors.ink)
         RetroActionButton(label = stringResource(SearchR.string.turn_on), onClick = {
             launcher.launch(PermissionUtils.searchPermissions)
         })
@@ -323,12 +322,12 @@ private fun RetroSearchMatches(
                 modifier = Modifier.padding(horizontal = 14.dp),
             ) {
                 Column(modifier = Modifier.weight(1f).padding(vertical = 4.dp)) {
-                    Text(contact.name.ifBlank { contact.number }.uppercase(), fontFamily = DialSearchFont, fontSize = 17.sp, color = DialSearchInk, maxLines = 1, overflow = TextOverflow.Ellipsis)
-                    if (contact.name.isNotBlank()) Text(contact.number, fontFamily = DialSearchFont, fontSize = 13.sp, color = DialSearchInk.copy(alpha = .72f), maxLines = 1)
+                    Text(contact.name.ifBlank { contact.number }.uppercase(), fontFamily = DialSearchFont, fontSize = 17.sp, color = RetroThemeDefaults.colors.ink, maxLines = 1, overflow = TextOverflow.Ellipsis)
+                    if (contact.name.isNotBlank()) Text(contact.number, fontFamily = DialSearchFont, fontSize = 13.sp, color = RetroThemeDefaults.colors.ink.copy(alpha = .72f), maxLines = 1)
                 }
             }
         }
-        if (query.isNotBlank() && contacts.isEmpty()) item { Text(query, fontFamily = DialSearchFont, fontSize = 16.sp, color = DialSearchInk.copy(alpha = .6f), modifier = Modifier.padding(top = 24.dp)) }
+        if (query.isNotBlank() && contacts.isEmpty()) item { Text(query, fontFamily = DialSearchFont, fontSize = 16.sp, color = RetroThemeDefaults.colors.ink.copy(alpha = .6f), modifier = Modifier.padding(top = 24.dp)) }
     }
 }
 
@@ -437,14 +436,14 @@ private fun RetroDialKey(
                 text = label,
                 fontFamily = DialSearchFont,
                 fontSize = 18.sp,
-                color = if (enabled) DialSearchInk else DialSearchInk.copy(alpha = 0.35f),
+                color = if (enabled) RetroThemeDefaults.colors.ink else RetroThemeDefaults.colors.ink.copy(alpha = 0.35f),
             )
             if (subtitle.isNotEmpty()) {
                 Text(
                     text = subtitle,
                     fontFamily = DialSearchFont,
                     fontSize = 10.sp,
-                    color = if (enabled) DialSearchInk.copy(alpha = 0.72f) else DialSearchInk.copy(alpha = 0.25f),
+                    color = if (enabled) RetroThemeDefaults.colors.ink.copy(alpha = 0.72f) else RetroThemeDefaults.colors.ink.copy(alpha = 0.25f),
                 )
             }
         }

@@ -26,7 +26,6 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalLocale
 import androidx.compose.ui.res.painterResource
@@ -52,6 +51,7 @@ import dev.alenajam.monsterdialer.app.ui.RetroContextMenuOverlay
 import dev.alenajam.monsterdialer.app.ui.RetroFooter
 import dev.alenajam.monsterdialer.app.ui.RetroSearchButton
 import dev.alenajam.monsterdialer.app.ui.RetroScreenHorizontalPadding
+import dev.alenajam.monsterdialer.app.ui.RetroThemeDefaults
 import dev.alenajam.monsterdialer.battle.data.BattleJournalEntry
 import dev.alenajam.monsterdialer.battle.data.BattleJournalStore
 import dev.alenajam.monsterdialer.battle.data.BattleJournalSprite
@@ -64,8 +64,6 @@ import coil.compose.AsyncImage
 import kotlinx.coroutines.launch
 
 private val BattleJournalPixelFont = FontFamily(Font(R.font.ui_pixel_font))
-private val BattleJournalInk = Color(0xFF202020)
-
 private enum class BattleJournalFilter(val labelRes: Int) {
     All(R.string.filter_all),
     RadiantFound(R.string.radiant),
@@ -95,10 +93,10 @@ fun BattleJournalScreen(viewModel: BattleJournalViewModel = hiltViewModel()) {
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .background(Color(0xFFF9F7FC)),
+            .background(RetroThemeDefaults.colors.panel),
     ) {
         Column(modifier = Modifier.fillMaxSize()) {
-            Row(modifier = Modifier.fillMaxWidth()) {
+            Row(modifier = Modifier.fillMaxWidth().background(RetroThemeDefaults.colors.panel)) {
                 RetroSearchButton(
                     label = stringResource(selectedFilter.labelRes),
                     onClick = { isFilterMenuVisible = true },
@@ -192,7 +190,7 @@ private fun JournalDateHeader(timestampMillis: Long) {
         modifier = Modifier.fillMaxWidth().padding(top = 6.dp, bottom = 2.dp),
         fontFamily = BattleJournalPixelFont,
         fontSize = 13.sp,
-        color = BattleJournalInk,
+        color = RetroThemeDefaults.colors.ink,
     )
 }
 
@@ -210,21 +208,21 @@ private fun JournalEmptyState(title: String, description: String) {
                 icon = LocalMonsterAppIcons.current.battleJournal,
                 contentDescription = null,
                 modifier = Modifier.size(48.dp),
-                tint = BattleJournalInk,
+                tint = RetroThemeDefaults.colors.ink,
             )
             Text(
                 text = title.uppercase(),
                 fontFamily = BattleJournalPixelFont,
                 fontSize = 18.sp,
                 textAlign = TextAlign.Center,
-                color = BattleJournalInk,
+                color = RetroThemeDefaults.colors.ink,
             )
             Text(
                 text = description.uppercase(),
                 fontFamily = BattleJournalPixelFont,
                 fontSize = 13.sp,
                 textAlign = TextAlign.Center,
-                color = BattleJournalInk.copy(alpha = 0.75f),
+                color = RetroThemeDefaults.colors.ink.copy(alpha = 0.75f),
             )
         }
     }
@@ -285,9 +283,9 @@ private fun BattleJournalEntryRow(
                         fontFamily = BattleJournalPixelFont,
                         fontSize = 13.sp,
                         color = if (isRadiantEncounter) {
-                            BattleJournalInk
+                            RetroThemeDefaults.colors.ink
                         } else {
-                            BattleJournalInk.copy(alpha = 0.75f)
+                            RetroThemeDefaults.colors.ink.copy(alpha = 0.75f)
                         },
                     )
                     if (isRadiantEncounter) {
@@ -303,14 +301,14 @@ private fun BattleJournalEntryRow(
                         .format(Date(entry.timestampMillis)),
                     fontFamily = BattleJournalPixelFont,
                     fontSize = 13.sp,
-                    color = BattleJournalInk.copy(alpha = 0.75f),
+                    color = RetroThemeDefaults.colors.ink.copy(alpha = 0.75f),
                 )
             }
             Text(
                 text = opponentName.uppercase(locale),
                 fontFamily = BattleJournalPixelFont,
                 fontSize = 16.sp,
-                color = BattleJournalInk,
+                color = RetroThemeDefaults.colors.ink,
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis,
             )
@@ -330,13 +328,13 @@ private fun BattleJournalEntryRow(
                         icon = LocalAppIcons.current.person,
                         contentDescription = null,
                         modifier = Modifier.size(14.dp),
-                        tint = BattleJournalInk.copy(alpha = 0.75f),
+                        tint = RetroThemeDefaults.colors.ink.copy(alpha = 0.75f),
                     )
                     Text(
                         text = trainerName,
                         fontFamily = BattleJournalPixelFont,
                         fontSize = 13.sp,
-                        color = BattleJournalInk.copy(alpha = 0.75f),
+                        color = RetroThemeDefaults.colors.ink.copy(alpha = 0.75f),
                     )
                 }
             }

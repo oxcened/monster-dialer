@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Text
@@ -20,7 +21,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.font.FontFamily
@@ -77,7 +77,7 @@ internal fun RetroContextMenu(
                     text = it.uppercase(),
                     fontFamily = fontFamily,
                     fontSize = fontSize.sp,
-                    color = Color(0xFF202020),
+                    color = RetroThemeDefaults.colors.ink,
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis,
                 )
@@ -232,9 +232,9 @@ private fun RetroConfirmationContent(
         modifier = Modifier.padding(8.dp),
         verticalArrangement = Arrangement.spacedBy(2.dp),
     ) {
-        Text(title.uppercase(), fontFamily = fontFamily, fontSize = 18.sp, color = Color(0xFF202020))
+        Text(title.uppercase(), fontFamily = fontFamily, fontSize = 18.sp, color = RetroThemeDefaults.colors.ink)
         message?.takeIf { it.isNotBlank() }?.let {
-            Text(it.uppercase(), fontFamily = fontFamily, fontSize = 18.sp, color = Color(0xFF202020))
+            Text(it.uppercase(), fontFamily = fontFamily, fontSize = 18.sp, color = RetroThemeDefaults.colors.ink)
         }
         Spacer(modifier = Modifier.height(4.dp))
         ConfirmationActionRow(noLabel, true, fontFamily, onCancel)
@@ -254,7 +254,7 @@ private fun ConfirmationActionRow(
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .height(30.dp)
+            .heightIn(min = 30.dp)
             .clickable(enabled = enabled, onClick = onClick)
             .semantics { contentDescription = label },
         horizontalArrangement = Arrangement.spacedBy(5.dp),
@@ -263,7 +263,7 @@ private fun ConfirmationActionRow(
         if (showCursor) {
             RetroSelectionArrow(
                 modifier = Modifier.padding(start = 4.dp),
-                tint = Color(0xFF202020),
+                tint = RetroThemeDefaults.colors.ink,
                 size = 14.dp,
             )
         } else {
@@ -272,11 +272,17 @@ private fun ConfirmationActionRow(
         if (loading) {
             CircularProgressIndicator(
                 modifier = Modifier.size(14.dp),
-                color = Color(0xFF202020),
+                color = RetroThemeDefaults.colors.ink,
                 strokeWidth = 2.dp,
             )
         } else {
-            Text(label.uppercase(), fontFamily = fontFamily, fontSize = 18.sp, color = Color(0xFF202020))
+            Text(
+                text = label.uppercase(),
+                modifier = Modifier.weight(1f),
+                fontFamily = fontFamily,
+                fontSize = 18.sp,
+                color = RetroThemeDefaults.colors.ink,
+            )
         }
     }
 }
@@ -292,7 +298,7 @@ private fun RetroContextMenuItemRow(
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .height(30.dp)
+            .heightIn(min = 30.dp)
             .clickable(onClick = onClick)
             .semantics { contentDescription = item.label },
         horizontalArrangement = Arrangement.spacedBy(5.dp),
@@ -301,7 +307,7 @@ private fun RetroContextMenuItemRow(
         if (showCursor) {
             RetroSelectionArrow(
                 modifier = Modifier.padding(start = 4.dp),
-                tint = Color(0xFF202020),
+                tint = RetroThemeDefaults.colors.ink,
                 size = 14.dp
             )
         } else {
@@ -309,9 +315,10 @@ private fun RetroContextMenuItemRow(
         }
         Text(
             text = item.label.uppercase(),
+            modifier = Modifier.weight(1f),
             fontFamily = fontFamily,
             fontSize = fontSize.sp,
-            color = Color(0xFF202020),
+            color = RetroThemeDefaults.colors.ink,
         )
     }
 }

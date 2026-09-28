@@ -48,7 +48,7 @@ internal fun RetroManualDialogueBox(
         fontFamily = RetroDoubleBorderTextBoxFont,
         fontSize = 18.sp,
         lineHeight = 21.sp,
-        color = androidx.compose.ui.graphics.Color.Black,
+        color = RetroThemeDefaults.colors.ink,
     )
     RetroDoubleBorderBox(
         modifier = modifier.fillMaxWidth(0.95f),
@@ -120,7 +120,7 @@ internal fun RetroDoubleBorderTextBox(
         fontFamily = RetroDoubleBorderTextBoxFont,
         fontSize = 18.sp * textScale,
         lineHeight = 21.sp * textScale,
-        color = androidx.compose.ui.graphics.Color.Black,
+        color = RetroThemeDefaults.colors.ink,
     )
     val textMeasurer = rememberTextMeasurer()
     val lifecycleOwner = LocalLifecycleOwner.current

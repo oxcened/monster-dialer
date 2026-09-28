@@ -32,7 +32,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
@@ -46,6 +45,7 @@ import dev.alenajam.monsterdialer.app.ui.RetroFastScroller
 import dev.alenajam.monsterdialer.app.ui.RetroFooter
 import dev.alenajam.monsterdialer.app.ui.RetroSelectionArrow
 import dev.alenajam.monsterdialer.app.ui.RetroSelectionArrowSize
+import dev.alenajam.monsterdialer.app.ui.RetroThemeDefaults
 import dev.alenajam.monsterdialer.calls.ui.ContactArtworkPreferencesViewModel
 import dev.alenajam.monsterdialer.characters.data.ContactArtworkPriority
 import dev.alenajam.monsterdialer.characters.ui.CharacterSettingsPage
@@ -53,8 +53,6 @@ import dev.alenajam.opendialer.core.common.SharedPreferenceHelper
 import dev.alenajam.opendialer.feature.appShell.SettingsScreenCallbacks
 import dev.alenajam.opendialer.feature.settings.R as SettingsR
 
-private val SettingsPaper = Color(0xFFF9F7FC)
-private val SettingsInk = Color(0xFF202020)
 private val SettingsFont = FontFamily(Font(R.font.pixel_operator))
 
 @Composable
@@ -72,6 +70,13 @@ internal fun MonsterSettingsScreen(
     }
     val entries = buildList {
         add(MonsterSettingsEntry.Section(stringResource(R.string.settings_section_general)))
+        add(
+            MonsterSettingsEntry.Action(
+                title = stringResource(SettingsR.string.display_options),
+                description = stringResource(SettingsR.string.display_options_description, stringResource(R.string.app_name)),
+                onClick = callbacks.onOpenDisplayOptions,
+            ),
+        )
         add(
         MonsterSettingsEntry.Action(
             title = stringResource(SettingsR.string.customize_quick_responses),
@@ -153,7 +158,7 @@ internal fun MonsterSettingsScreen(
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(SettingsPaper)
+            .background(RetroThemeDefaults.colors.panel)
             .windowInsetsPadding(WindowInsets.statusBarsIgnoringVisibility),
     ) {
         androidx.compose.foundation.layout.Box(modifier = Modifier.weight(1f)) {
@@ -202,7 +207,7 @@ private fun SettingsSectionLabel(label: String) {
         text = label.uppercase(),
         fontFamily = SettingsFont,
         fontSize = 16.sp,
-        color = SettingsInk,
+        color = RetroThemeDefaults.colors.ink,
         modifier = Modifier.padding(start = 8.dp, top = 10.dp, end = 8.dp, bottom = 4.dp),
     )
 }
@@ -218,7 +223,7 @@ private fun RetroSettingsRow(
         verticalAlignment = Alignment.CenterVertically,
     ) {
         if (selected) {
-            RetroSelectionArrow(tint = SettingsInk, size = 14.dp)
+            RetroSelectionArrow(tint = RetroThemeDefaults.colors.ink, size = 14.dp)
             Spacer(Modifier.size(2.dp))
         } else {
             Spacer(Modifier.size(RetroSelectionArrowSize))
@@ -228,7 +233,7 @@ private fun RetroSettingsRow(
                 text = entry.title,
                 fontFamily = SettingsFont,
                 fontSize = 20.sp,
-                color = SettingsInk,
+                color = RetroThemeDefaults.colors.ink,
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis,
             )
@@ -236,7 +241,7 @@ private fun RetroSettingsRow(
                 text = entry.description,
                 fontFamily = SettingsFont,
                 fontSize = 16.sp,
-                color = SettingsInk.copy(alpha = 0.75f),
+                color = RetroThemeDefaults.colors.ink.copy(alpha = 0.75f),
                 maxLines = 2,
                 overflow = TextOverflow.Ellipsis,
             )

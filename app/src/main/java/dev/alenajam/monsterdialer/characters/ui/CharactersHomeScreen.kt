@@ -70,6 +70,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil.compose.AsyncImage
 import dev.alenajam.monsterdialer.R
+import dev.alenajam.monsterdialer.app.ui.RetroThemeDefaults
 import dev.alenajam.monsterdialer.app.ui.LocalMonsterAppIcons
 import dev.alenajam.monsterdialer.app.ui.RetroScreenHorizontalPadding
 import dev.alenajam.monsterdialer.characters.data.DefaultMonsterLevel
@@ -93,7 +94,6 @@ private val ProfilePixelFont = FontFamily(Font(R.font.ui_pixel_font))
 private val ProfilePixelTextStyle = androidx.compose.ui.text.TextStyle(
     fontFamily = ProfilePixelFont,
 )
-private val ProfileBackground = Color(0xFF4B376D)
 
 private enum class ProfileCharacterSection { Trainer, Monster }
 
@@ -118,7 +118,7 @@ fun CharactersHomeScreen(
 
     val pageModifier = Modifier
         .fillMaxSize()
-        .background(ProfileBackground)
+        .background(RetroThemeDefaults.colors.profileBackground)
         .then(
             Modifier.verticalScroll(rememberScrollState()),
         )
@@ -240,7 +240,11 @@ private fun GameBoyProfileLayout(
                 RetroMenuWindow(modifier = Modifier.weight(1f).fillMaxHeight()) {
                     RetroTypewriterText(
                         text = stringResource(R.string.profile_roster_description),
-                        style = ProfilePixelTextStyle.copy(fontSize = 18.sp, lineHeight = 20.sp),
+                        style = ProfilePixelTextStyle.copy(
+                            fontSize = 18.sp,
+                            lineHeight = 20.sp,
+                            color = RetroThemeDefaults.colors.ink,
+                        ),
                     )
                 }
                 RetroMenuWindow(modifier = Modifier.width(220.dp).fillMaxHeight()) {
@@ -309,7 +313,7 @@ private fun String.withProfileCursor(selected: Boolean): String =
 private fun GameBoyText(
     text: String,
     size: androidx.compose.ui.unit.TextUnit,
-    color: Color = RetroInk,
+    color: Color = RetroThemeDefaults.colors.ink,
 ) {
     Text(text, style = androidx.compose.ui.text.TextStyle(fontFamily = ProfilePixelFont, fontSize = size, lineHeight = size * 1.15f), color = color)
 }
@@ -358,7 +362,7 @@ private fun RosterSection(
             Text(
                 text = stringResource(R.string.profile_roster_title),
                 style = MaterialTheme.typography.titleMedium.merge(ProfilePixelTextStyle),
-                color = RetroInk,
+                color = RetroThemeDefaults.colors.ink,
             )
             ContextualGuideButton(
                 contents = listOf(GuideContent(R.string.characters_help_roster_title, R.string.characters_help_roster_message)),
@@ -479,10 +483,11 @@ private fun RosterMonsterTile(
 
         DropdownMenu(
             expanded = showMenu,
-            onDismissRequest = { showMenu = false }
+            onDismissRequest = { showMenu = false },
+            containerColor = RetroThemeDefaults.colors.panel
         ) {
             DropdownMenuItem(
-                text = { Text(stringResource(R.string.remove_roster_monster)) },
+                text = { Text(stringResource(R.string.remove_roster_monster), color = RetroThemeDefaults.colors.ink) },
                 onClick = {
                     showMenu = false
                     onRemove()
@@ -539,11 +544,18 @@ private fun RosterMonsterContent(
                 modifier = Modifier.fillMaxWidth().padding(horizontal = 8.dp),
                 horizontalAlignment = Alignment.Start,
             ) {
-                Text(monster.character.name, style = MaterialTheme.typography.labelMedium, maxLines = 1, overflow = TextOverflow.Ellipsis, fontFamily = ProfilePixelFont)
+                Text(
+                    monster.character.name,
+                    style = MaterialTheme.typography.labelMedium,
+                    color = RetroThemeDefaults.colors.ink,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis,
+                    fontFamily = ProfilePixelFont,
+                )
                 Text(
                     text = stringResource(R.string.roster_monster_level, monster.character.level ?: DefaultMonsterLevel),
                     style = MaterialTheme.typography.labelSmall,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    color = RetroThemeDefaults.colors.mutedInk,
                     fontFamily = ProfilePixelFont,
                 )
             }
@@ -553,13 +565,13 @@ private fun RosterMonsterContent(
 
 @Composable
 private fun RosterAddTile(onClick: () -> Unit) {
-    val outlineColor = RetroInk
+    val outlineColor = RetroThemeDefaults.colors.border
     Box(
         contentAlignment = Alignment.Center,
         modifier = Modifier
             .width(92.dp)
             .height(RosterAddTileHeight)
-            .background(RetroPaper, androidx.compose.ui.graphics.RectangleShape)
+            .background(RetroThemeDefaults.colors.paper, androidx.compose.ui.graphics.RectangleShape)
             .drawBehind {
                 val strokeWidth = 1.dp.toPx()
                 drawRoundRect(
@@ -575,7 +587,7 @@ private fun RosterAddTile(onClick: () -> Unit) {
             }
             .clickable(onClick = onClick),
     ) {
-        Text(stringResource(R.string.profile_add_roster), style = MaterialTheme.typography.displaySmall, color = RetroInk, fontFamily = ProfilePixelFont)
+        Text(stringResource(R.string.profile_add_roster), style = MaterialTheme.typography.displaySmall, color = RetroThemeDefaults.colors.ink, fontFamily = ProfilePixelFont)
     }
 }
 
@@ -594,8 +606,8 @@ private fun TeamProfileCard(
     Box(
         modifier = Modifier
             .fillMaxWidth()
-            .border(2.dp, RetroInk, androidx.compose.ui.graphics.RectangleShape)
-            .background(RetroPaper, androidx.compose.ui.graphics.RectangleShape)
+            .border(2.dp, RetroThemeDefaults.colors.border, androidx.compose.ui.graphics.RectangleShape)
+            .background(RetroThemeDefaults.colors.paper, androidx.compose.ui.graphics.RectangleShape)
             .padding(14.dp),
     ) {
         Column(verticalArrangement = Arrangement.spacedBy(10.dp)) {
@@ -603,7 +615,7 @@ private fun TeamProfileCard(
                 Text(
                     text = stringResource(R.string.profile_player_label),
                     style = MaterialTheme.typography.headlineSmall.merge(ProfilePixelTextStyle),
-                    color = RetroInk,
+                    color = RetroThemeDefaults.colors.ink,
                 )
                 Spacer(Modifier.weight(1f))
                 ContextualGuideButton(
@@ -630,7 +642,7 @@ private fun TeamProfileCard(
                     modifier = Modifier.size(112.dp),
                 )
             }
-            HorizontalDivider(color = RetroInk, thickness = 1.dp)
+            HorizontalDivider(color = RetroThemeDefaults.colors.border, thickness = 1.dp)
             Row(
                 modifier = Modifier.fillMaxWidth().clickable(onClick = onChangeMonster),
                 verticalAlignment = Alignment.CenterVertically,
@@ -659,12 +671,12 @@ private fun RetroProfileLine(label: String, value: String) {
         Text(
             label,
             style = MaterialTheme.typography.bodyMedium.merge(ProfilePixelTextStyle),
-            color = RetroInk,
+            color = RetroThemeDefaults.colors.ink,
         )
         Text(
             value,
             style = MaterialTheme.typography.bodyMedium.merge(ProfilePixelTextStyle),
-            color = RetroInk,
+            color = RetroThemeDefaults.colors.ink,
             maxLines = 1,
             overflow = TextOverflow.Ellipsis,
         )
@@ -681,9 +693,9 @@ private fun ProfileMetricColumn(metrics: ProfileMetrics) {
         ).forEach { metric ->
             Row(horizontalArrangement = Arrangement.spacedBy(6.dp), verticalAlignment = Alignment.CenterVertically) {
                 metric.value?.let { value ->
-                Text(value.toString(), style = MaterialTheme.typography.titleSmall, color = RetroInk, fontFamily = ProfilePixelFont)
+                Text(value.toString(), style = MaterialTheme.typography.titleSmall, color = RetroThemeDefaults.colors.ink, fontFamily = ProfilePixelFont)
                 }
-                Text(metric.label.uppercase(), style = MaterialTheme.typography.labelSmall, color = RetroInk, maxLines = 1, fontFamily = ProfilePixelFont)
+                Text(metric.label.uppercase(), style = MaterialTheme.typography.labelSmall, color = RetroThemeDefaults.colors.ink, maxLines = 1, fontFamily = ProfilePixelFont)
             }
         }
     }
@@ -730,11 +742,11 @@ fun SharedCharacterImportHandler(sharingViewModel: CharacterSharingViewModel) {
     if (hasImportError) {
         AlertDialog(
             onDismissRequest = sharingViewModel::dismissImportError,
-            title = { Text(stringResource(R.string.shared_character_import_failed_title)) },
-            text = { Text(stringResource(R.string.shared_character_import_failed_message)) },
+            title = { Text(stringResource(R.string.shared_character_import_failed_title), color = RetroThemeDefaults.colors.ink) },
+            text = { Text(stringResource(R.string.shared_character_import_failed_message), color = RetroThemeDefaults.colors.ink) },
             confirmButton = {
                 TextButton(onClick = sharingViewModel::dismissImportError) {
-                    Text(stringResource(R.string.close))
+                    Text(stringResource(R.string.close), color = RetroThemeDefaults.colors.accent)
                 }
             }
         )
@@ -758,6 +770,7 @@ private fun SharedCharacterImportDialog(
         Surface(
             shape = RoundedCornerShape(28.dp),
             color = MaterialTheme.colorScheme.surfaceContainerHigh,
+            contentColor = RetroThemeDefaults.colors.ink,
             tonalElevation = 6.dp,
             modifier = Modifier.fillMaxWidth()
         ) {
@@ -767,7 +780,8 @@ private fun SharedCharacterImportDialog(
             ) {
                 Text(
                     stringResource(R.string.shared_character_import_title, shared.character.name),
-                    style = MaterialTheme.typography.headlineSmall
+                    style = MaterialTheme.typography.headlineSmall,
+                    color = RetroThemeDefaults.colors.ink,
                 )
                 Row(
                     verticalAlignment = Alignment.CenterVertically,
@@ -779,20 +793,20 @@ private fun SharedCharacterImportDialog(
                         AppIcon(LocalMonsterAppIcons.current.frontSprite, contentDescription = null, modifier = Modifier.size(48.dp))
                     }
                     Column(verticalArrangement = Arrangement.spacedBy(6.dp)) {
-                        Text(stringResource(R.string.creator_label), style = MaterialTheme.typography.labelMedium, color = MaterialTheme.colorScheme.onSurfaceVariant)
-                        Text(shared.character.creator, style = MaterialTheme.typography.bodyLarge)
-                        Text(stringResource(R.string.license_label), style = MaterialTheme.typography.labelMedium, color = MaterialTheme.colorScheme.onSurfaceVariant)
-                        Text(shared.character.license, style = MaterialTheme.typography.bodyLarge)
+                        Text(stringResource(R.string.creator_label), style = MaterialTheme.typography.labelMedium, color = RetroThemeDefaults.colors.mutedInk)
+                        Text(shared.character.creator, style = MaterialTheme.typography.bodyLarge, color = RetroThemeDefaults.colors.ink)
+                        Text(stringResource(R.string.license_label), style = MaterialTheme.typography.labelMedium, color = RetroThemeDefaults.colors.mutedInk)
+                        Text(shared.character.license, style = MaterialTheme.typography.bodyLarge, color = RetroThemeDefaults.colors.ink)
                     }
                 }
                 Text(
                     stringResource(R.string.shared_character_import_description, characterType),
                     style = MaterialTheme.typography.bodyMedium,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                    color = RetroThemeDefaults.colors.mutedInk
                 )
                 Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp, Alignment.End)) {
-                    TextButton(onClick = onDismiss) { Text(stringResource(R.string.cancel)) }
-                    TextButton(onClick = onConfirm) { Text(stringResource(R.string.add_to_your_characters)) }
+                    TextButton(onClick = onDismiss) { Text(stringResource(R.string.cancel), color = RetroThemeDefaults.colors.accent) }
+                    TextButton(onClick = onConfirm) { Text(stringResource(R.string.add_to_your_characters), color = RetroThemeDefaults.colors.accent) }
                 }
             }
         }

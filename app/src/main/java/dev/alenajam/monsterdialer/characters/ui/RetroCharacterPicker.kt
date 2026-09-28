@@ -2,6 +2,7 @@ package dev.alenajam.monsterdialer.characters.ui
 
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -45,6 +46,7 @@ import dev.alenajam.monsterdialer.app.ui.RetroDoubleBorderTextBox
 import dev.alenajam.monsterdialer.app.ui.RetroFooter
 import dev.alenajam.monsterdialer.app.ui.RetroFooterAction
 import dev.alenajam.monsterdialer.app.ui.RetroFastScroller
+import dev.alenajam.monsterdialer.app.ui.RetroThemeDefaults
 import dev.alenajam.monsterdialer.characters.data.BuiltInCharacter
 import dev.alenajam.monsterdialer.characters.data.BuiltInCharacters
 import dev.alenajam.monsterdialer.packs.data.CharacterAssignmentTarget
@@ -133,7 +135,7 @@ internal fun RetroCharacterPicker(
     }
     BackHandler(enabled = optionsOpen) { optionsOpen = false }
 
-    Box(modifier = modifier.fillMaxSize()) {
+    Box(modifier = modifier.fillMaxSize().background(RetroThemeDefaults.colors.panel)) {
         Column(modifier = Modifier.fillMaxSize()) {
         Row(
             modifier = Modifier.fillMaxWidth(),
@@ -169,7 +171,7 @@ internal fun RetroCharacterPicker(
                             modifier = Modifier.fillMaxWidth().padding(top = 5.dp, bottom = 2.dp),
                             fontFamily = RetroPickerFont,
                             fontSize = 13.sp,
-                            color = RetroInk,
+                            color = RetroThemeDefaults.colors.ink,
                         )
                     }
                     RetroCharacterRow(
@@ -361,7 +363,7 @@ private fun RetroCharacterRow(
                 text = stringResource(if (it) R.string.contact_picker_pool_included else R.string.contact_picker_pool_excluded),
                 fontFamily = RetroPickerFont,
                 fontSize = 16.sp,
-                color = RetroInk,
+                color = RetroThemeDefaults.colors.ink,
                 modifier = Modifier.padding(end = 2.dp),
             )
         }
@@ -384,7 +386,7 @@ private fun RetroCharacterRow(
                 text = entry.name.uppercase(),
                 fontFamily = RetroPickerFont,
                 fontSize = 16.sp,
-                color = RetroInk,
+                color = RetroThemeDefaults.colors.ink,
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis,
             )
@@ -408,7 +410,7 @@ private fun RetroCharacterRow(
                         text = metadata,
                         fontFamily = RetroPickerFont,
                         fontSize = 13.sp,
-                        color = RetroInk.copy(alpha = 0.75f),
+                        color = RetroThemeDefaults.colors.ink.copy(alpha = 0.75f),
                     )
                 }
             }

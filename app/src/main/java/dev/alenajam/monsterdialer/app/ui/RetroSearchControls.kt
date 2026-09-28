@@ -39,7 +39,6 @@ import androidx.compose.ui.unit.sp
 import dev.alenajam.monsterdialer.R
 
 private val RetroSearchPixelFont = FontFamily(Font(R.font.ui_pixel_font))
-private val RetroSearchInk = Color(0xFF202020)
 
 /** A Game Boy-style command with consistent horizontal insets. */
 @Composable
@@ -63,7 +62,7 @@ internal fun RetroSearchButton(
                 .padding(start = 16.dp, top = 14.dp, end = 16.dp, bottom = 6.dp),
             fontFamily = RetroSearchPixelFont,
             fontSize = 18.sp,
-            color = RetroSearchInk,
+            color = RetroThemeDefaults.colors.ink,
         )
     }
 }
@@ -139,20 +138,20 @@ private fun RetroSearchInput(
                 text = label.uppercase(),
                 fontFamily = RetroSearchPixelFont,
                 fontSize = 18.sp,
-                color = RetroSearchInk,
+                color = RetroThemeDefaults.colors.ink,
             )
             Text(
                 text = query.uppercase(),
                 fontFamily = RetroSearchPixelFont,
                 fontSize = 18.sp,
-                color = RetroSearchInk,
+                color = RetroThemeDefaults.colors.ink,
             )
             Text(
                 text = "█",
                 modifier = Modifier.graphicsLayer(alpha = cursorAlpha),
                 fontFamily = RetroSearchPixelFont,
                 fontSize = 18.sp,
-                color = RetroSearchInk,
+                color = RetroThemeDefaults.colors.ink,
             )
         }
     }
