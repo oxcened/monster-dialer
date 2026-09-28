@@ -378,12 +378,24 @@ internal fun BattlePanelView(
     modifier: Modifier = Modifier
 ) {
     if (panel == BattlePanel.Hidden || monster == null) return
+    val darkTheme = rememberAppIsDarkTheme()
     if (panel == BattlePanel.Roster) {
-        val resourceName = if (isEnemy) "battle_enemy_roster" else "battle_player_roster"
+        val resource = when {
+            darkTheme && isEnemy -> R.drawable.battle_enemy_roster_dark
+            darkTheme -> R.drawable.battle_player_roster_dark
+            isEnemy -> R.drawable.battle_enemy_roster
+            else -> R.drawable.battle_player_roster
+        }
+        val resourceName = when {
+            darkTheme && isEnemy -> "battle_enemy_roster_dark"
+            darkTheme -> "battle_player_roster_dark"
+            isEnemy -> "battle_enemy_roster"
+            else -> "battle_player_roster"
+        }
         Image(
             bitmap = pixelBitmapResource(
                 BattleVisualAsset.AppDrawable(
-                    if (isEnemy) R.drawable.battle_enemy_roster else R.drawable.battle_player_roster,
+                    resource,
                     resourceName
                 )
             ),
@@ -395,7 +407,6 @@ internal fun BattlePanelView(
         return
     }
 
-    val darkTheme = rememberAppIsDarkTheme()
     val image = when {
         darkTheme && isEnemy -> R.drawable.battle_enemy_life_bar_dark
         darkTheme -> R.drawable.battle_player_life_bar_dark
