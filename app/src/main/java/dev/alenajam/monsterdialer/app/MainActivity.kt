@@ -60,6 +60,7 @@ import dev.alenajam.monsterdialer.app.ui.RetroScreenTopContentPadding
 import dev.alenajam.monsterdialer.app.ui.rememberMonsterIcons
 import dev.alenajam.monsterdialer.app.ui.rememberMonsterTypography
 import dev.alenajam.monsterdialer.app.ui.RetroTheme
+import dev.alenajam.monsterdialer.app.ui.RetroThemeDefaults
 import dev.alenajam.monsterdialer.characters.ui.AddCharacterScreen
 import dev.alenajam.monsterdialer.calls.ui.RetroCallsScreen
 import dev.alenajam.monsterdialer.calls.ui.RetroCallDetailScreen
@@ -471,7 +472,7 @@ class MainActivity : AppCompatActivity() {
                                     SettingsSubpageDestination(id = "browse-packs", title = stringResource(R.string.radiant_collection_browse_packs)) { _, _ ->
                                         Surface(
                                             modifier = Modifier.fillMaxSize(),
-                                            color = Color.White,
+                                            color = RetroThemeDefaults.colors.panel,
                                         ) {
                                             Column(
                                                 modifier = Modifier

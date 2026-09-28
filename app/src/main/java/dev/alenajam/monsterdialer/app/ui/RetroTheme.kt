@@ -1,10 +1,17 @@
 package dev.alenajam.monsterdialer.app.ui
 
+import android.app.Activity
+import android.content.Context
+import android.content.ContextWrapper
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Immutable
 import androidx.compose.runtime.compositionLocalOf
+import androidx.compose.runtime.SideEffect
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.toArgb
+import androidx.compose.ui.platform.LocalView
+import androidx.core.view.WindowCompat
 import dev.alenajam.opendialer.core.common.ui.rememberAppIsDarkTheme
 
 @Immutable
@@ -83,9 +90,22 @@ fun RetroTheme(content: @Composable () -> Unit) {
         palette
     }
 
+    val view = LocalView.current
+    SideEffect {
+        val window = view.context.findActivity()?.window ?: return@SideEffect
+        window.statusBarColor = colors.panel.toArgb()
+        WindowCompat.getInsetsController(window, view).isAppearanceLightStatusBars = !darkTheme
+    }
+
     androidx.compose.runtime.CompositionLocalProvider(LocalRetroColors provides colors) {
         content()
     }
+}
+
+private tailrec fun Context.findActivity(): Activity? = when (this) {
+    is Activity -> this
+    is ContextWrapper -> baseContext.findActivity()
+    else -> null
 }
 
 object RetroThemeDefaults {

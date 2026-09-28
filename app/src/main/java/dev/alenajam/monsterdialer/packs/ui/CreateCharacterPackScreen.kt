@@ -42,6 +42,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil.compose.AsyncImage
 import dev.alenajam.monsterdialer.R
+import dev.alenajam.monsterdialer.app.ui.RetroThemeDefaults
 import dev.alenajam.monsterdialer.characters.ui.ContextualGuideButton
 import dev.alenajam.monsterdialer.characters.ui.GuideContent
 import dev.alenajam.monsterdialer.packs.data.CharacterPackArchive
@@ -87,7 +88,7 @@ fun CreateCharacterPackScreen(
         }
     }
 
-    Scaffold(topBar = { TopAppBar(title = { Text(stringResource(R.string.create_character_pack)) }, navigationIcon = {
+    Scaffold(containerColor = RetroThemeDefaults.colors.panel, topBar = { TopAppBar(title = { Text(stringResource(R.string.create_character_pack)) }, navigationIcon = {
         IconButton(onClick = onNavigateBack) { AppIcon(LocalAppIcons.current.arrowLeft, null) }
     }) }) { padding ->
         LazyColumn(
