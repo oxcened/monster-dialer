@@ -23,7 +23,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
 private val RetroActionPixelFont = FontFamily(Font(dev.alenajam.monsterdialer.R.font.pixel_operator))
-private val RetroActionInk = Color(0xFF202020)
 
 @Composable
 internal fun RetroActionButton(
@@ -34,7 +33,7 @@ internal fun RetroActionButton(
     modifier: Modifier = Modifier,
     fontFamily: FontFamily = RetroActionPixelFont,
     fillWidth: Boolean = false,
-    surfaceColor: Color = RetroActionInk,
+    surfaceColor: Color = RetroThemeDefaults.colors.actionButton,
     compact: Boolean = false,
 ) {
     val displayedLabel = label.uppercase(Locale.ROOT)
@@ -58,16 +57,16 @@ internal fun RetroActionButton(
                 horizontalArrangement = Arrangement.spacedBy(6.dp),
             ) {
                 if (key != null) {
-                    Text(text = key, fontFamily = fontFamily, fontSize = 18.sp, color = Color.White)
-                    RetroSelectionArrow(tint = Color.White, size = 14.dp)
+                    Text(text = key, fontFamily = fontFamily, fontSize = 18.sp, color = RetroThemeDefaults.colors.onActionButton)
+                    RetroSelectionArrow(tint = RetroThemeDefaults.colors.onActionButton, size = 14.dp)
                 }
-                Text(text = displayedLabel, fontFamily = fontFamily, fontSize = 18.sp, color = Color.White)
+                Text(text = displayedLabel, fontFamily = fontFamily, fontSize = 18.sp, color = RetroThemeDefaults.colors.onActionButton)
             }
         }
     }
 }
 
-/** Black command key with the stepped corners used by the reference's pixel UI. */
+/** Raised command key with the stepped corners used by the reference's pixel UI. */
 @Composable
 private fun PixelActionSurface(
     enabled: Boolean,

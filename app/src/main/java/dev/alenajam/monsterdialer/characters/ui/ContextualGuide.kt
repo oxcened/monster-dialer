@@ -26,6 +26,7 @@ import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import dev.alenajam.monsterdialer.R
 import dev.alenajam.monsterdialer.app.ui.LocalMonsterAppIcons
+import dev.alenajam.monsterdialer.app.ui.RetroThemeDefaults
 import dev.alenajam.opendialer.core.common.ui.AppIcon
 
 internal data class GuideContent(
@@ -56,7 +57,7 @@ internal fun ContextualGuideButton(
 internal fun ContextualGuideDialog(contents: List<GuideContent>, onDismiss: () -> Unit) {
     AlertDialog(
         onDismissRequest = onDismiss,
-        title = { Text(stringResource(contents.first().title)) },
+        title = { Text(stringResource(contents.first().title), color = RetroThemeDefaults.colors.ink) },
         text = {
             Column(
                 modifier = Modifier.heightIn(max = 480.dp).verticalScroll(rememberScrollState()),
@@ -67,7 +68,7 @@ internal fun ContextualGuideDialog(contents: List<GuideContent>, onDismiss: () -
                 }
             }
         },
-        confirmButton = { TextButton(onClick = onDismiss) { Text(stringResource(R.string.close)) } },
+        confirmButton = { TextButton(onClick = onDismiss) { Text(stringResource(R.string.close), color = RetroThemeDefaults.colors.accent) } },
     )
 }
 
@@ -90,9 +91,9 @@ private fun GuideContentSection(content: GuideContent, showTitle: Boolean) {
         if (showTitle) {
             Text(stringResource(content.title), style = MaterialTheme.typography.titleMedium, color = MaterialTheme.colorScheme.primary)
         }
-        Text(parseGuideText(stringResource(content.message)), style = MaterialTheme.typography.bodyMedium)
-        content.details.forEach { detail ->
-            Text(parseGuideText(stringResource(detail)), style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onSurfaceVariant)
+            Text(parseGuideText(stringResource(content.message)), style = MaterialTheme.typography.bodyMedium, color = RetroThemeDefaults.colors.ink)
+            content.details.forEach { detail ->
+            Text(parseGuideText(stringResource(detail)), style = MaterialTheme.typography.bodyMedium, color = RetroThemeDefaults.colors.mutedInk)
         }
     }
 }

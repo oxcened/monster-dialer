@@ -17,7 +17,6 @@ import androidx.compose.foundation.lazy.grid.LazyGridState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
@@ -26,10 +25,6 @@ import kotlinx.coroutines.launch
 import kotlin.math.roundToInt
 
 private const val MinimumItemCount = 12
-private val RetroScrollerInk = Color(0xFF202020)
-private val RetroScrollerRail = Color(0xFFE6DDF0)
-private val RetroScrollerThumb = Color(0xFFBBA5D3)
-
 @Composable
 fun RetroFastScroller(
     listState: LazyListState,
@@ -114,12 +109,13 @@ private fun RetroFastScrollerTrack(
     modifier: Modifier,
 ) {
     val coroutineScope = rememberCoroutineScope()
+    val colors = RetroThemeDefaults.colors
     BoxWithConstraints(
         modifier = modifier
             .width(18.dp)
             .fillMaxHeight()
-            .background(RetroScrollerRail)
-            .border(2.dp, RetroScrollerInk)
+            .background(colors.accentFace)
+            .border(2.dp, colors.border)
             .semantics { this.contentDescription = contentDescription }
             .pointerInput(Unit) {
                 detectDragGestures(
@@ -142,7 +138,7 @@ private fun RetroFastScrollerTrack(
                 .padding(vertical = 3.dp)
                 .width(4.dp)
                 .fillMaxHeight()
-                .background(RetroScrollerInk.copy(alpha = 0.3f)),
+                .background(colors.ink.copy(alpha = 0.3f)),
         )
         val thumbHeight = (maxHeight * visibleFraction.coerceIn(0f, 1f)).coerceIn(48.dp, maxHeight)
         Box(
@@ -152,8 +148,8 @@ private fun RetroFastScrollerTrack(
                 .width(14.dp)
                 .height(thumbHeight)
                 .offset(y = (maxHeight - thumbHeight).coerceAtLeast(0.dp) * position)
-                .background(RetroScrollerThumb)
-                .border(2.dp, RetroScrollerInk),
+                .background(colors.accent)
+                .border(2.dp, colors.border),
         ) {
             Column(
                 modifier = Modifier.align(androidx.compose.ui.Alignment.Center),
@@ -164,7 +160,7 @@ private fun RetroFastScrollerTrack(
                         modifier = Modifier
                             .width(8.dp)
                             .height(2.dp)
-                            .background(RetroScrollerInk),
+                            .background(colors.ink),
                     )
                 }
             }

@@ -45,6 +45,7 @@ import dev.alenajam.monsterdialer.app.ui.RetroFooter
 import dev.alenajam.monsterdialer.app.ui.RetroFooterAction
 import dev.alenajam.monsterdialer.app.ui.RetroSelectableRow
 import dev.alenajam.monsterdialer.app.ui.RetroDoubleBorderTextBox
+import dev.alenajam.monsterdialer.app.ui.RetroThemeDefaults
 import dev.alenajam.monsterdialer.characters.data.BuiltInCharacters
 import dev.alenajam.monsterdialer.characters.data.ContactCharacterMode
 import dev.alenajam.monsterdialer.characters.data.ContactCharacterOverview
@@ -75,7 +76,7 @@ internal fun CustomizedContactsOverview(
     var confirmationContact by remember { mutableStateOf<ContactCharacterOverview?>(null) }
     var statusMessage by remember { mutableStateOf<String?>(null) }
     Box(
-        modifier = Modifier.fillMaxSize().background(MaterialTheme.colorScheme.background),
+        modifier = Modifier.fillMaxSize().background(RetroThemeDefaults.colors.panel),
     ) {
         Column(modifier = Modifier.fillMaxSize()) {
         val cursorContactKey = contacts.firstOrNull { it.contactKey == highlightedContactKey }?.contactKey
@@ -199,7 +200,7 @@ private fun ContactRosterRow(
                     fontFamily = ContactRosterPixelFont,
                     fontSize = 18.sp,
                 ),
-                color = RetroInk,
+                color = RetroThemeDefaults.colors.ink,
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis,
             )
@@ -241,7 +242,7 @@ private fun AssignmentSprite(
             selection.mode == ContactCharacterMode.Random -> AppIcon(
                 icon = LocalMonsterAppIcons.current.randomize,
                 contentDescription = null,
-                tint = RetroInk,
+                tint = RetroThemeDefaults.colors.ink,
                 modifier = Modifier.size(32.dp),
             )
             character == BuiltInCharacters.defaultTrainerReference -> Image(
@@ -288,7 +289,7 @@ private fun AssignmentName(
             fontFamily = ContactRosterPixelFont,
             fontSize = 14.sp,
         ),
-        color = RetroInk,
+        color = RetroThemeDefaults.colors.ink,
         textAlign = textAlign,
         maxLines = 1,
         overflow = TextOverflow.Ellipsis,

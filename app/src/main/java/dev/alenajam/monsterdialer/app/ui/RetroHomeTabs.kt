@@ -19,7 +19,6 @@ import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
@@ -27,12 +26,6 @@ import androidx.compose.ui.unit.dp
 import dev.alenajam.monsterdialer.R
 import dev.alenajam.opendialer.core.common.ui.AppIcon
 import dev.alenajam.opendialer.core.common.ui.LocalAppIcons
-
-private val RetroTabViolet = Color(0xFF7355A5)
-private val RetroTabFace = Color(0xFF9A7BC4)
-private val RetroTabHighlight = Color(0xFFEDE5F7)
-private val RetroTabShadow = Color(0xFFB8B0C2)
-private val RetroTabInk = Color(0xFF202020)
 
 internal enum class MonsterHomeTab {
     FAVORITES,
@@ -50,13 +43,14 @@ internal fun RetroHomeTabs(
     onContacts: () -> Unit,
     onProfile: () -> Unit,
 ) {
+    val colors = RetroThemeDefaults.colors
     val tabs = listOf(
         RetroHomeTab(R.string.favorites, MonsterHomeTab.FAVORITES, onFavorites) {
             AppIcon(
                 icon = LocalAppIcons.current.favorite,
                 contentDescription = null,
                 modifier = Modifier.size(28.dp),
-                tint = RetroTabInk,
+                tint = RetroThemeDefaults.colors.ink,
             )
         },
         RetroHomeTab(R.string.recents, MonsterHomeTab.CALLS, onCalls) { selected ->
@@ -64,7 +58,7 @@ internal fun RetroHomeTabs(
                 icon = if (selected) LocalAppIcons.current.recentsSelected else LocalAppIcons.current.recents,
                 contentDescription = null,
                 modifier = Modifier.size(28.dp),
-                tint = RetroTabInk,
+                tint = RetroThemeDefaults.colors.ink,
             )
         },
         RetroHomeTab(R.string.contacts, MonsterHomeTab.CONTACTS, onContacts) { selected ->
@@ -72,7 +66,7 @@ internal fun RetroHomeTabs(
                 icon = if (selected) LocalAppIcons.current.contactsSelected else LocalAppIcons.current.contacts,
                 contentDescription = null,
                 modifier = Modifier.size(28.dp),
-                tint = RetroTabInk,
+                tint = RetroThemeDefaults.colors.ink,
             )
         },
         RetroHomeTab(R.string.characters_navigation_label, MonsterHomeTab.PROFILE, onProfile) {
@@ -80,7 +74,7 @@ internal fun RetroHomeTabs(
                 icon = LocalAppIcons.current.person,
                 contentDescription = null,
                 modifier = Modifier.size(28.dp),
-                tint = RetroTabInk,
+                tint = RetroThemeDefaults.colors.ink,
             )
         },
     )
@@ -88,7 +82,7 @@ internal fun RetroHomeTabs(
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .background(RetroTabFace)
+            .background(colors.tabBackground)
             .windowInsetsPadding(WindowInsets.statusBarsIgnoringVisibility)
             .padding(start = 8.dp, end = 8.dp),
     ) {
@@ -97,7 +91,7 @@ internal fun RetroHomeTabs(
                 modifier = Modifier
                     .padding(top = 2.dp)
                     .height(54.dp)
-                    .background(RetroTabViolet)
+                    .background(colors.tabTrack)
                     .padding(3.dp),
                 horizontalArrangement = Arrangement.spacedBy(3.dp),
             ) {
@@ -117,11 +111,11 @@ internal fun RetroHomeTabs(
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .height(48.dp)
-                                .background(RetroTabHighlight)
+                                .background(colors.tabHighlight)
                                 .padding(start = 3.dp, top = 3.dp)
-                                .background(RetroTabShadow)
+                                .background(colors.tabShadow)
                                 .padding(end = 3.dp, bottom = 3.dp)
-                                .background(if (selected) RetroTabFace else RetroTabViolet),
+                                .background(if (selected) colors.tabFace else colors.tabTrack),
                             contentAlignment = Alignment.Center,
                         ) {
                             tab.icon(selected)
@@ -142,6 +136,7 @@ internal fun RetroHomeTabs(
 
 @Composable
 private fun RetroTabSelectionArrow(modifier: Modifier = Modifier) {
+    val colors = RetroThemeDefaults.colors
     Canvas(modifier = modifier.size(24.dp)) {
         val unit = size.minDimension / 8f
         val outer = androidx.compose.ui.graphics.Path().apply {
@@ -167,7 +162,7 @@ private fun RetroTabSelectionArrow(modifier: Modifier = Modifier) {
             lineTo(3f * unit, unit)
             close()
         }
-        drawPath(outer, RetroTabInk)
+        drawPath(outer, colors.ink)
         val inner = androidx.compose.ui.graphics.Path().apply {
             moveTo(3.5f * unit, unit)
             lineTo(4.5f * unit, unit)
@@ -187,7 +182,7 @@ private fun RetroTabSelectionArrow(modifier: Modifier = Modifier) {
             lineTo(3.5f * unit, 2f * unit)
             close()
         }
-        drawPath(inner, RetroTabFace)
+        drawPath(inner, colors.tabFace)
     }
 }
 

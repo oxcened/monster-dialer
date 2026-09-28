@@ -62,6 +62,7 @@ import dev.alenajam.monsterdialer.app.ui.RetroContextMenuOverlay
 import dev.alenajam.monsterdialer.app.ui.RetroFastScroller
 import dev.alenajam.monsterdialer.app.ui.PixelRoundedSquareShape
 import dev.alenajam.monsterdialer.app.ui.RetroSelectionArrow
+import dev.alenajam.monsterdialer.app.ui.RetroThemeDefaults
 import dev.alenajam.opendialer.core.common.CommonUtils
 import dev.alenajam.opendialer.core.common.PermissionUtils
 import dev.alenajam.opendialer.core.common.ui.AppIcon
@@ -74,8 +75,6 @@ import dev.alenajam.opendialer.feature.contacts.R as ContactsR
 import kotlinx.coroutines.launch
 import kotlin.math.roundToInt
 
-private val RetroContactsPaper = androidx.compose.ui.graphics.Color(0xFFF9F7FC)
-private val RetroContactsInk = androidx.compose.ui.graphics.Color(0xFF202020)
 private val RetroContactsFont = FontFamily(Font(R.font.ui_pixel_font))
 
 @Composable
@@ -126,7 +125,7 @@ fun RetroContactsScreen(
         artworkViewModel.setContactsForArtwork(filteredContacts)
     }
 
-    Surface(modifier = Modifier.fillMaxSize(), color = RetroContactsPaper) {
+    Surface(modifier = Modifier.fillMaxSize(), color = RetroThemeDefaults.colors.panel) {
         if (!hasPermission) {
             Column(
                 modifier = Modifier.fillMaxSize().padding(horizontal = 24.dp),
@@ -257,14 +256,14 @@ private fun RetroProfileContactRow(
     ) {
         ContactAvatar(contact.name, contact.image, colorKey = contactAvatarColorKey(contact.name), modifier = Modifier.size(42.dp), shape = PixelRoundedSquareShape)
         Column(modifier = Modifier.weight(1f).padding(horizontal = 10.dp)) {
-            RetroContactsText(stringResource(ContactsR.string.your_info), 13.sp, RetroContactsInk.copy(alpha = 0.75f))
+            RetroContactsText(stringResource(ContactsR.string.your_info), 13.sp, RetroThemeDefaults.colors.ink.copy(alpha = 0.75f))
             RetroContactsText(contact.name, 16.sp, maxLines = 1)
         }
         AppIcon(
             icon = LocalAppIcons.current.share,
             contentDescription = stringResource(ContactsR.string.share_contact),
             modifier = Modifier.size(24.dp).clickable(onClick = onShareProfile),
-            tint = RetroContactsInk,
+            tint = RetroThemeDefaults.colors.ink,
         )
     }
 }
@@ -281,7 +280,7 @@ private fun RetroContactRow(
         verticalAlignment = Alignment.CenterVertically,
     ) {
         if (selected) {
-            RetroSelectionArrow(tint = RetroContactsInk, size = 14.dp)
+            RetroSelectionArrow(tint = RetroThemeDefaults.colors.ink, size = 14.dp)
             androidx.compose.foundation.layout.Spacer(Modifier.size(2.dp))
         } else {
             androidx.compose.foundation.layout.Spacer(Modifier.size(16.dp))
@@ -302,10 +301,10 @@ private fun RetroContactSectionHeader(label: String, favorite: Boolean) {
         verticalAlignment = Alignment.CenterVertically,
     ) {
         if (favorite) {
-            AppIcon(LocalAppIcons.current.favorite, contentDescription = null, modifier = Modifier.size(16.dp), tint = RetroContactsInk)
+            AppIcon(LocalAppIcons.current.favorite, contentDescription = null, modifier = Modifier.size(16.dp), tint = RetroThemeDefaults.colors.ink)
             androidx.compose.foundation.layout.Spacer(Modifier.size(8.dp))
         }
-        RetroContactsText(label, 13.sp, RetroContactsInk.copy(alpha = 0.75f))
+        RetroContactsText(label, 13.sp, RetroThemeDefaults.colors.ink.copy(alpha = 0.75f))
     }
 }
 
@@ -320,7 +319,7 @@ private fun RetroContactsCommand(label: String, onClick: () -> Unit) {
 private fun RetroContactsText(
     text: String,
     size: TextUnit,
-    color: androidx.compose.ui.graphics.Color = RetroContactsInk,
+    color: androidx.compose.ui.graphics.Color = RetroThemeDefaults.colors.ink,
     modifier: Modifier = Modifier,
     maxLines: Int = Int.MAX_VALUE,
     textAlign: TextAlign? = null,

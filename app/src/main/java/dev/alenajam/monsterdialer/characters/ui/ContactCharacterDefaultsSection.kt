@@ -22,7 +22,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.Alignment
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.draw.clipToBounds
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
@@ -33,6 +32,7 @@ import dev.alenajam.monsterdialer.app.ui.RetroContextMenuItem
 import dev.alenajam.monsterdialer.app.ui.RetroContextMenuOverlay
 import dev.alenajam.monsterdialer.app.ui.RetroFooter
 import dev.alenajam.monsterdialer.app.ui.RetroSearchButton
+import dev.alenajam.monsterdialer.app.ui.RetroThemeDefaults
 import dev.alenajam.monsterdialer.characters.data.BuiltInCharacters
 import dev.alenajam.monsterdialer.characters.data.ContactCharacterDefaults
 import dev.alenajam.monsterdialer.packs.data.CharacterAssignmentTarget
@@ -91,7 +91,8 @@ internal fun ContactCharacterDefaultsSection(
 
     Surface(
         modifier = Modifier.fillMaxSize(),
-        color = Color.White,
+        color = RetroThemeDefaults.colors.panel,
+        contentColor = RetroThemeDefaults.colors.ink,
     ) {
     Box(modifier = Modifier.fillMaxSize()) {
     Column(modifier = Modifier.fillMaxSize()) {
@@ -125,7 +126,7 @@ internal fun ContactCharacterDefaultsSection(
                             text = stringResource(R.string.contact_random_pool_description),
                             modifier = Modifier.padding(top = 8.dp, bottom = 8.dp),
                             style = androidx.compose.material3.MaterialTheme.typography.bodySmall,
-                            color = androidx.compose.material3.MaterialTheme.colorScheme.onSurfaceVariant,
+                            color = RetroThemeDefaults.colors.mutedInk,
                         )
                     }
                 }

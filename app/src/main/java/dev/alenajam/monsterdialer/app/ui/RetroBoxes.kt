@@ -22,6 +22,7 @@ internal fun RetroDoubleBorderBox(
     height: Dp? = null,
     content: @Composable androidx.compose.foundation.layout.BoxWithConstraintsScope.() -> Unit,
 ) {
+    val colors = RetroThemeDefaults.colors
     BoxWithConstraints(
         modifier = modifier
             .then(if (height != null) Modifier.height(height) else Modifier)
@@ -45,9 +46,9 @@ internal fun RetroDoubleBorderBox(
                     close()
                 }
 
-                drawPath(pixelPath(0f), Color.Black)
+                drawPath(pixelPath(0f), colors.border)
                 drawRect(
-                    color = Color.White,
+                    color = colors.paper,
                     topLeft = androidx.compose.ui.geometry.Offset(2.dp.toPx(), 2.dp.toPx()),
                     size = androidx.compose.ui.geometry.Size(
                         size.width - 4.dp.toPx(),
@@ -55,7 +56,7 @@ internal fun RetroDoubleBorderBox(
                     ),
                 )
                 drawRect(
-                    color = Color.Black,
+                    color = colors.border,
                     topLeft = androidx.compose.ui.geometry.Offset(5.dp.toPx(), 5.dp.toPx()),
                     size = androidx.compose.ui.geometry.Size(
                         size.width - 10.dp.toPx(),
@@ -63,7 +64,7 @@ internal fun RetroDoubleBorderBox(
                     ),
                 )
                 drawRect(
-                    color = Color.White,
+                    color = colors.paper,
                     topLeft = androidx.compose.ui.geometry.Offset(9.dp.toPx(), 9.dp.toPx()),
                     size = androidx.compose.ui.geometry.Size(
                         size.width - 18.dp.toPx(),
@@ -85,8 +86,8 @@ internal fun RetroProfilePanel(
     androidx.compose.foundation.layout.Box(
         modifier = modifier
             .fillMaxWidth()
-            .border(2.dp, Color(0xFF202020), RectangleShape)
-            .background(Color.White, RectangleShape)
+            .border(2.dp, RetroThemeDefaults.colors.border, RectangleShape)
+            .background(RetroThemeDefaults.colors.panel, RectangleShape)
             .padding(12.dp),
     ) {
         content()
@@ -99,6 +100,7 @@ internal fun RetroMenuBorder(
     modifier: Modifier = Modifier,
     content: @Composable () -> Unit,
 ) {
+    val colors = RetroThemeDefaults.colors
     androidx.compose.foundation.layout.Box(
         modifier = modifier
             .drawBehind {
@@ -124,9 +126,9 @@ internal fun RetroMenuBorder(
                 }
 
                 // GSC menu chrome: pale outer casing, darker inset edge, then a crisp black keyline.
-                drawPath(pixelPath(0f), Color(0xFFC8C8C0))
+                drawPath(pixelPath(0f), colors.paper)
                 drawRect(
-                    color = Color(0xFF686860),
+                    color = colors.mutedInk,
                     topLeft = androidx.compose.ui.geometry.Offset(4.dp.toPx(), 4.dp.toPx()),
                     size = androidx.compose.ui.geometry.Size(
                         size.width - 8.dp.toPx(),
@@ -134,7 +136,7 @@ internal fun RetroMenuBorder(
                     ),
                 )
                 drawRect(
-                    color = Color(0xFF202020),
+                    color = colors.border,
                     topLeft = androidx.compose.ui.geometry.Offset(7.dp.toPx(), 7.dp.toPx()),
                     size = androidx.compose.ui.geometry.Size(
                         size.width - 14.dp.toPx(),
@@ -142,7 +144,7 @@ internal fun RetroMenuBorder(
                     ),
                 )
                 drawRect(
-                    color = Color.White,
+                    color = colors.panel,
                     topLeft = androidx.compose.ui.geometry.Offset(10.dp.toPx(), 10.dp.toPx()),
                     size = androidx.compose.ui.geometry.Size(
                         size.width - 20.dp.toPx(),

@@ -16,6 +16,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -39,6 +40,7 @@ import dev.alenajam.monsterdialer.app.ui.RetroActionButton
 import dev.alenajam.monsterdialer.app.ui.RetroConfirmationDialog
 import dev.alenajam.monsterdialer.app.ui.RetroContextMenuItem
 import dev.alenajam.monsterdialer.app.ui.RetroContextMenuOverlay
+import dev.alenajam.monsterdialer.app.ui.RetroThemeDefaults
 import dev.alenajam.opendialer.core.common.CommonUtils
 import dev.alenajam.opendialer.core.common.PermissionUtils
 import dev.alenajam.opendialer.core.common.formatRelativeTime
@@ -57,8 +59,6 @@ import dev.alenajam.opendialer.feature.callDetail.R as CallDetailR
 import dev.alenajam.opendialer.feature.calls.R as CallsR
 
 private val CallDetailPixelFont = FontFamily(Font(R.font.ui_pixel_font))
-private val CallDetailInk = Color(0xFF202020)
-private val CallDetailMutedInk = CallDetailInk.copy(alpha = 0.72f)
 
 @Composable
 fun RetroCallDetailScreen(
@@ -138,7 +138,7 @@ fun RetroCallDetailScreen(
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .background(Color(0xFFF9F7FC)),
+            .background(RetroThemeDefaults.colors.panel),
     ) {
         Column(
             modifier = Modifier
@@ -260,7 +260,11 @@ private fun RetroCallDetailRow(
         CallType.VOICEMAIL -> LocalAppIcons.current.voicemail
         CallType.BLOCKED -> LocalAppIcons.current.blockCall
     }
-    val color = if (!isVoicemailNumber && call.type == CallType.MISSED) Color(0xFFB3261E) else CallDetailInk
+    val color = if (!isVoicemailNumber && call.type == CallType.MISSED) {
+        MaterialTheme.colorScheme.error
+    } else {
+        RetroThemeDefaults.colors.ink
+    }
 
     Row(
         modifier = Modifier
@@ -271,13 +275,13 @@ private fun RetroCallDetailRow(
         AppIcon(icon = icon, contentDescription = null, tint = color, modifier = Modifier.size(20.dp))
         Column(modifier = Modifier.weight(1f).padding(start = 10.dp, end = 8.dp)) {
             RetroDetailText(label, 16.sp, color = color, maxLines = 1)
-            RetroDetailText(formatRelativeTime(call.date), 13.sp, color = CallDetailMutedInk, maxLines = 1)
+            RetroDetailText(formatRelativeTime(call.date), 13.sp, color = RetroThemeDefaults.colors.ink.copy(alpha = 0.72f), maxLines = 1)
         }
         if (call.duration > 0) {
             RetroDetailText(
                 CommonUtils.getDurationTimeStringMinimal(call.duration * 1000),
                 13.sp,
-                color = CallDetailMutedInk,
+                color = RetroThemeDefaults.colors.ink.copy(alpha = 0.72f),
                 maxLines = 1,
             )
         }
@@ -325,7 +329,7 @@ private fun RetroDetailText(
     text: String,
     size: androidx.compose.ui.unit.TextUnit,
     modifier: Modifier = Modifier,
-    color: Color = CallDetailInk,
+    color: Color = RetroThemeDefaults.colors.ink,
     maxLines: Int = Int.MAX_VALUE,
 ) {
     androidx.compose.material3.Text(

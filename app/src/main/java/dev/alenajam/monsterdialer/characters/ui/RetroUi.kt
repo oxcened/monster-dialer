@@ -16,6 +16,7 @@ import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import dev.alenajam.monsterdialer.R
+import dev.alenajam.monsterdialer.app.ui.RetroThemeDefaults
 
 internal val RetroInk = Color(0xFF202020)
 internal val RetroPaper = Color(0xFFF7F7F2)
@@ -32,8 +33,11 @@ internal fun RetroPanel(
 ) {
     Box(
         modifier = modifier
-            .border(2.dp, RetroInk, RectangleShape)
-            .background(if (selected) RetroLavender else RetroPaper, RectangleShape)
+            .border(2.dp, RetroThemeDefaults.colors.border, RectangleShape)
+            .background(
+                if (selected) RetroThemeDefaults.colors.accentFace else RetroThemeDefaults.colors.paper,
+                RectangleShape,
+            )
             .padding(10.dp),
     ) {
         content()
@@ -50,12 +54,12 @@ internal fun RetroActionLegend(modifier: Modifier = Modifier) {
         Text(
             text = stringResource(R.string.retro_action_select),
             style = MaterialTheme.typography.labelMedium,
-            color = RetroInk,
+            color = RetroThemeDefaults.colors.ink,
         )
         Text(
             text = stringResource(R.string.retro_action_back),
             style = MaterialTheme.typography.labelMedium,
-            color = RetroInk,
+            color = RetroThemeDefaults.colors.ink,
         )
     }
 }

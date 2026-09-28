@@ -44,7 +44,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.pluralStringResource
@@ -64,6 +63,7 @@ import dev.alenajam.monsterdialer.app.ui.RetroContextMenuItem
 import dev.alenajam.monsterdialer.app.ui.RetroContextMenuOverlay
 import dev.alenajam.monsterdialer.app.ui.RetroSearchButton
 import dev.alenajam.monsterdialer.app.ui.RetroSelectableRow
+import dev.alenajam.monsterdialer.app.ui.RetroThemeDefaults
 import dev.alenajam.monsterdialer.packs.data.CharacterPackImportDiagnostic
 import dev.alenajam.monsterdialer.packs.data.MonsterPack
 import dev.alenajam.opendialer.core.common.ui.AppIcon
@@ -106,7 +106,7 @@ fun ColumnScope.CharacterPackSettingsContent(
 
     Surface(
         modifier = Modifier.fillMaxSize(),
-        color = Color.White,
+        color = RetroThemeDefaults.colors.panel,
     ) {
         Box(modifier = Modifier.fillMaxSize()) {
     if (showImportUi) {
@@ -224,7 +224,7 @@ fun ColumnScope.CharacterPackSettingsContent(
                                     text = pack.name.uppercase(),
                                     fontFamily = PackPixelFont,
                                     fontSize = 18.sp,
-                                    color = Color(0xFF202020),
+                                    color = RetroThemeDefaults.colors.ink,
                                     maxLines = 1,
                                     overflow = TextOverflow.Ellipsis,
                                 )
@@ -244,7 +244,7 @@ fun ColumnScope.CharacterPackSettingsContent(
                                     },
                                     fontFamily = PackPixelFont,
                                     fontSize = 13.sp,
-                                    color = Color(0xFF202020).copy(alpha = 0.75f),
+                                    color = RetroThemeDefaults.colors.mutedInk,
                                     maxLines = 1,
                                     overflow = TextOverflow.Ellipsis,
                                 )

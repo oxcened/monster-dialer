@@ -6,6 +6,7 @@ import android.content.Context
 import android.widget.Toast
 import java.util.Locale
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
@@ -31,7 +32,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.Font
@@ -46,6 +46,7 @@ import dev.alenajam.monsterdialer.app.ui.RetroConfirmationDialog
 import dev.alenajam.monsterdialer.app.ui.RetroFooter
 import dev.alenajam.monsterdialer.app.ui.RetroMenuWindow
 import dev.alenajam.monsterdialer.app.ui.RetroSelectableRow
+import dev.alenajam.monsterdialer.app.ui.RetroThemeDefaults
 import dev.alenajam.monsterdialer.packs.data.RemotePackCatalogPack
 import dev.alenajam.opendialer.feature.settings.LocalSettingsSubpageNavigator
 
@@ -119,7 +120,7 @@ fun ColumnScope.CatalogsScreen(
             onDismiss = { if (!state.isAddingCatalog) addDialogOpen = false },
         )
     }
-    Box(modifier = Modifier.fillMaxSize()) {
+    Box(modifier = Modifier.fillMaxSize().background(RetroThemeDefaults.colors.panel)) {
         Column(
             modifier = Modifier.fillMaxSize(),
         ) {
@@ -131,7 +132,7 @@ fun ColumnScope.CatalogsScreen(
                 verticalArrangement = Arrangement.spacedBy(6.dp),
             ) {
                 Text(stringResource(R.string.catalogs_description))
-                HorizontalDivider(thickness = 1.dp, color = Color(0xFF202020))
+                HorizontalDivider(thickness = 1.dp, color = RetroThemeDefaults.colors.border)
                 RetroSelectableRow(selected = true, onClick = { addDialogOpen = true }) {
                     Text(stringResource(R.string.add_catalog).uppercase(Locale.ROOT), fontFamily = CatalogPixelFont, fontSize = 18.sp, modifier = Modifier.padding(vertical = 2.dp, horizontal = 6.dp))
                 }
@@ -210,7 +211,7 @@ private fun CatalogSourceContent(
                 CatalogLoad.Failed -> Text(stringResource(R.string.catalog_load_failed))
                 is CatalogLoad.Content -> Text(load.catalog.name, style = MaterialTheme.typography.titleMedium)
             }
-            HorizontalDivider(thickness = 1.dp, color = Color(0xFF202020))
+            HorizontalDivider(thickness = 1.dp, color = RetroThemeDefaults.colors.border)
             Column {
                 RetroSelectableRow(selected = false, onClick = onCopy) {
                     Text(stringResource(R.string.copy_catalog_url).uppercase(Locale.ROOT), fontFamily = CatalogPixelFont, fontSize = 18.sp, modifier = Modifier.padding(vertical = 2.dp, horizontal = 6.dp))
@@ -223,7 +224,7 @@ private fun CatalogSourceContent(
                 }
             }
             if (isLoading || hasLoadedPacks) {
-                HorizontalDivider(thickness = 1.dp, color = Color(0xFF202020))
+                HorizontalDivider(thickness = 1.dp, color = RetroThemeDefaults.colors.border)
             }
             when (load) {
                 null, CatalogLoad.Loading -> CircularProgressIndicator(
@@ -232,7 +233,7 @@ private fun CatalogSourceContent(
                 )
                 CatalogLoad.Failed -> Unit
                 is CatalogLoad.Content -> load.catalog.packs.forEachIndexed { index, pack ->
-                    if (index > 0) HorizontalDivider(thickness = 1.dp, color = Color(0xFF202020))
+                    if (index > 0) HorizontalDivider(thickness = 1.dp, color = RetroThemeDefaults.colors.border)
                     RetroSelectableRow(
                         selected = selectedPack == pack,
                         enabled = installingPackId == null,

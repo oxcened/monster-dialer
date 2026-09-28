@@ -24,7 +24,6 @@ import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.Font
@@ -40,10 +39,9 @@ import dev.alenajam.monsterdialer.R
 import dev.alenajam.monsterdialer.app.ui.RetroFastScroller
 import dev.alenajam.monsterdialer.app.ui.RetroFooter
 import dev.alenajam.monsterdialer.app.ui.RetroSelectableRow
+import dev.alenajam.monsterdialer.app.ui.RetroThemeDefaults
 import dev.alenajam.opendialer.feature.settings.R as SettingsR
 
-private val AboutPaper = Color(0xFFF9F7FC)
-private val AboutInk = Color(0xFF202020)
 private val AboutFont = FontFamily(Font(R.font.pixel_operator))
 
 @Composable
@@ -65,7 +63,7 @@ internal fun MonsterAboutScreen(onNavigateBack: () -> Unit) {
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(AboutPaper)
+            .background(RetroThemeDefaults.colors.panel)
             .windowInsetsPadding(WindowInsets.statusBarsIgnoringVisibility),
     ) {
         Box(modifier = Modifier.weight(1f)) {
@@ -79,7 +77,7 @@ internal fun MonsterAboutScreen(onNavigateBack: () -> Unit) {
                         text = stringResource(SettingsR.string.screen_about_title).uppercase(),
                         fontFamily = AboutFont,
                         fontSize = 16.sp,
-                        color = AboutInk,
+                        color = RetroThemeDefaults.colors.ink,
                         modifier = Modifier.padding(start = 8.dp, top = 10.dp, end = 8.dp, bottom = 4.dp),
                     )
                 }
@@ -147,7 +145,7 @@ private fun aboutEntries(packageName: String, version: String, appName: String):
 
 @Composable
 private fun AboutSectionLabel(title: String) {
-    Text(title.uppercase(), fontFamily = AboutFont, fontSize = 16.sp, color = AboutInk, modifier = Modifier.padding(start = 8.dp, top = 10.dp, end = 8.dp, bottom = 4.dp))
+    Text(title.uppercase(), fontFamily = AboutFont, fontSize = 16.sp, color = RetroThemeDefaults.colors.ink, modifier = Modifier.padding(start = 8.dp, top = 10.dp, end = 8.dp, bottom = 4.dp))
 }
 
 @Composable
@@ -171,9 +169,9 @@ private fun AboutLinkRow(entry: AboutEntry.Link, selected: Boolean, onClick: () 
 @Composable
 private fun androidx.compose.foundation.layout.RowScope.AboutText(title: String, description: String) {
     Column(modifier = Modifier.weight(1f).padding(horizontal = 10.dp, vertical = 3.dp)) {
-        Text(title, fontFamily = AboutFont, fontSize = 20.sp, color = AboutInk, maxLines = 1, overflow = TextOverflow.Ellipsis)
+        Text(title, fontFamily = AboutFont, fontSize = 20.sp, color = RetroThemeDefaults.colors.ink, maxLines = 1, overflow = TextOverflow.Ellipsis)
         if (description.isNotBlank()) {
-            Text(description, fontFamily = AboutFont, fontSize = 16.sp, color = AboutInk.copy(alpha = 0.75f), maxLines = 2, overflow = TextOverflow.Ellipsis)
+            Text(description, fontFamily = AboutFont, fontSize = 16.sp, color = RetroThemeDefaults.colors.ink.copy(alpha = 0.75f), maxLines = 2, overflow = TextOverflow.Ellipsis)
         }
     }
 }

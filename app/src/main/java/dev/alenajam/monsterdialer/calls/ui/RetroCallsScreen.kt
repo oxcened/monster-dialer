@@ -47,6 +47,7 @@ import dev.alenajam.monsterdialer.app.ui.RetroScreenBottomContentPadding
 import dev.alenajam.monsterdialer.app.ui.RetroScreenHorizontalPadding
 import dev.alenajam.monsterdialer.app.ui.RetroSelectionArrow
 import dev.alenajam.monsterdialer.app.ui.RetroSelectionArrowSize
+import dev.alenajam.monsterdialer.app.ui.RetroThemeDefaults
 import dev.alenajam.opendialer.core.common.formatRelativeTime
 import dev.alenajam.opendialer.core.common.ui.AppIcon
 import dev.alenajam.opendialer.core.common.ui.ContactAvatar
@@ -61,7 +62,6 @@ import java.time.ZoneId
 import java.time.LocalDate
 
 private val CallLogPixelFont = FontFamily(Font(R.font.ui_pixel_font))
-private val CallLogInk = Color(0xFF202020)
 
 private enum class RetroCallFilter(val labelRes: Int) {
     All(CallsR.string.filter_all),
@@ -131,7 +131,7 @@ fun RetroCallsScreen(
         LazyColumn(
             modifier = Modifier
                 .fillMaxSize()
-                .background(Color(0xFFF9F7FC)),
+                .background(RetroThemeDefaults.colors.panel),
             contentPadding = androidx.compose.foundation.layout.PaddingValues(
                 start = RetroScreenHorizontalPadding,
                 top = 0.dp,
@@ -313,7 +313,7 @@ private fun RetroFavoriteRow(
         verticalAlignment = Alignment.CenterVertically,
     ) {
         if (selected) {
-            RetroSelectionArrow(tint = CallLogInk, size = 14.dp)
+            RetroSelectionArrow(tint = RetroThemeDefaults.colors.ink, size = 14.dp)
             Spacer(Modifier.size(2.dp))
         } else {
             Spacer(Modifier.size(16.dp))
@@ -336,7 +336,7 @@ private fun RetroFavoriteRow(
                 stringResource(R.string.favorite_phone_type_number, phoneType, favorite.number),
                 13.sp,
                 maxLines = 1,
-                color = CallLogInk.copy(alpha = 0.75f),
+                color = RetroThemeDefaults.colors.ink.copy(alpha = 0.75f),
             )
         }
     }
@@ -418,7 +418,7 @@ private fun RetroCallLogRow(
         verticalAlignment = Alignment.CenterVertically,
     ) {
         if (selected) {
-            RetroSelectionArrow(tint = CallLogInk, size = 14.dp)
+            RetroSelectionArrow(tint = RetroThemeDefaults.colors.ink, size = 14.dp)
             Spacer(Modifier.size(2.dp))
         } else {
             Spacer(Modifier.size(16.dp))
@@ -441,7 +441,7 @@ private fun RetroCallLogRow(
                 subtitle,
                 13.sp,
                 maxLines = 1,
-                color = CallLogInk.copy(alpha = 0.75f),
+                color = RetroThemeDefaults.colors.ink.copy(alpha = 0.75f),
             )
         }
     }
@@ -499,7 +499,7 @@ private fun RetroCallText(
     size: androidx.compose.ui.unit.TextUnit,
     modifier: Modifier = Modifier,
     maxLines: Int = Int.MAX_VALUE,
-    color: Color = CallLogInk,
+    color: Color = RetroThemeDefaults.colors.ink,
 ) {
     androidx.compose.material3.Text(
         text = text.uppercase(),

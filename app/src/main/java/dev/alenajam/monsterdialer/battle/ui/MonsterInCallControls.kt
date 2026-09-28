@@ -51,6 +51,7 @@ import dev.alenajam.monsterdialer.app.ui.RetroMenuBorder
 import dev.alenajam.monsterdialer.app.ui.RetroContextMenuDialog
 import dev.alenajam.monsterdialer.app.ui.RetroContextMenuItem
 import dev.alenajam.monsterdialer.app.ui.RetroDialog
+import dev.alenajam.monsterdialer.app.ui.RetroThemeDefaults
 import dev.alenajam.opendialer.core.common.ui.AppIcons
 import dev.alenajam.opendialer.core.common.ui.AppIcon
 import dev.alenajam.opendialer.feature.inCall.service.CallAudioRouteUiState
@@ -59,8 +60,6 @@ import dev.alenajam.opendialer.feature.inCall.R as InCallR
 
 private val CommandFont = FontFamily(Font(R.font.ui_pixel_font))
 private val PixelOperatorFont = FontFamily(Font(R.font.pixel_operator))
-private val Ink = Color(0xFF202020)
-private val Active = Color(0xFF5B4D8E)
 private val RoundFace = Color(0xFF242541)
 private val RoundActiveFace = Color(0xFFE5DDF7)
 
@@ -125,8 +124,14 @@ internal fun MonsterIncomingCallControls(
     if (showCustomMessage) {
         AlertDialog(
             onDismissRequest = { showCustomMessage = false },
-            title = { Text(stringResource(InCallR.string.reply_with_message)) },
-            text = { TextField(value = customMessage, onValueChange = { customMessage = it }) },
+            title = { Text(stringResource(InCallR.string.reply_with_message), color = RetroThemeDefaults.colors.ink) },
+            text = {
+                TextField(
+                    value = customMessage,
+                    onValueChange = { customMessage = it },
+                    textStyle = androidx.compose.ui.text.TextStyle(color = RetroThemeDefaults.colors.ink),
+                )
+            },
             confirmButton = {
                 TextButton(
                     enabled = customMessage.isNotBlank(),
@@ -134,11 +139,11 @@ internal fun MonsterIncomingCallControls(
                         showCustomMessage = false
                         onMessage(customMessage)
                     },
-                ) { Text(stringResource(InCallR.string.action_send)) }
+                ) { Text(stringResource(InCallR.string.action_send), color = RetroThemeDefaults.colors.accent) }
             },
             dismissButton = {
                 TextButton(onClick = { showCustomMessage = false }) {
-                    Text(stringResource(InCallR.string.action_cancel))
+                    Text(stringResource(InCallR.string.action_cancel), color = RetroThemeDefaults.colors.accent)
                 }
             },
         )
@@ -284,12 +289,12 @@ private fun RetroKeypadDialog(
                 .padding(8.dp),
             verticalArrangement = Arrangement.spacedBy(2.dp),
         ) {
-            Text(label.uppercase(), fontFamily = CommandFont, fontSize = 18.sp, color = Ink)
+            Text(label.uppercase(), fontFamily = CommandFont, fontSize = 18.sp, color = RetroThemeDefaults.colors.ink)
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(42.dp)
-                    .border(2.dp, Ink, RectangleShape)
+                    .border(2.dp, RetroThemeDefaults.colors.border, RectangleShape)
                     .padding(horizontal = 8.dp),
                 contentAlignment = Alignment.CenterStart,
             ) {
@@ -300,7 +305,7 @@ private fun RetroKeypadDialog(
                         text = number,
                         fontFamily = CommandFont,
                         fontSize = 20.sp,
-                        color = Ink,
+                        color = RetroThemeDefaults.colors.ink,
                         maxLines = 1,
                         softWrap = false,
                     )
@@ -316,7 +321,7 @@ private fun RetroKeypadDialog(
                             modifier = Modifier
                                 .weight(1f)
                                 .height(54.dp)
-                                .border(2.dp, Ink, RectangleShape)
+                                .border(2.dp, RetroThemeDefaults.colors.border, RectangleShape)
                                 .retroDtmfKey(
                                     digit = digit,
                                     onDigit = onDigit,
@@ -326,7 +331,7 @@ private fun RetroKeypadDialog(
                                 .semantics { role = Role.Button },
                             contentAlignment = Alignment.Center,
                         ) {
-                            Text(digit.toString(), fontFamily = CommandFont, fontSize = 20.sp, color = Ink)
+                            Text(digit.toString(), fontFamily = CommandFont, fontSize = 20.sp, color = RetroThemeDefaults.colors.ink)
                         }
                     }
                 }
@@ -339,7 +344,7 @@ private fun RetroKeypadDialog(
                     .semantics { role = Role.Button },
                 contentAlignment = Alignment.Center,
             ) {
-                Text(stringResource(R.string.call_command_back), fontFamily = CommandFont, fontSize = 16.sp, color = Ink)
+                Text(stringResource(R.string.call_command_back), fontFamily = CommandFont, fontSize = 16.sp, color = RetroThemeDefaults.colors.ink)
             }
         }
     }
@@ -430,7 +435,7 @@ private fun GameBoyControlDeck(
                 text = endCallLabel.uppercase(),
                 fontFamily = CommandFont,
                 fontSize = 11.sp,
-                color = Ink,
+                color = RetroThemeDefaults.colors.ink,
             )
         }
     }
@@ -451,7 +456,7 @@ private fun MinimalCallControl(
             .semantics { role = Role.Button },
         contentAlignment = Alignment.Center,
     ) {
-        val color = if (active) Active else Ink
+        val color = if (active) RetroThemeDefaults.colors.accent else RetroThemeDefaults.colors.ink
         Column(
             modifier = Modifier.padding(vertical = 4.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
@@ -475,7 +480,7 @@ private fun MinimalCallControl(
                     modifier = Modifier
                         .width(24.dp)
                         .height(3.dp)
-                        .background(Active),
+                    .background(RetroThemeDefaults.colors.accent),
                 )
             }
         }
@@ -500,7 +505,7 @@ private fun CommandButton(
     enabled: Boolean,
     onClick: () -> Unit,
 ) {
-    RetroCommandButton(label, icon, enabled, if (active) Active else Ink, onClick)
+    RetroCommandButton(label, icon, enabled, if (active) RetroThemeDefaults.colors.accent else RetroThemeDefaults.colors.ink, onClick)
 }
 
 @Composable
@@ -520,14 +525,14 @@ private fun RetroCommandButton(
         contentAlignment = Alignment.Center,
     ) {
         Text(
-            text = if (color == Active) {
+            text = if (color == RetroThemeDefaults.colors.accent) {
                 stringResource(R.string.call_command_cursor, label.uppercase())
             } else {
                 label.uppercase()
             },
             fontFamily = CommandFont,
             fontSize = 15.sp,
-            color = if (enabled) color else Ink.copy(alpha = 0.35f),
+            color = if (enabled) color else RetroThemeDefaults.colors.ink.copy(alpha = 0.35f),
         )
     }
 }
@@ -541,14 +546,14 @@ private fun RetroCommandList(
 ) {
     RetroMenuBorder(modifier = Modifier.fillMaxWidth()) {
         Column(modifier = Modifier.padding(8.dp), verticalArrangement = Arrangement.spacedBy(4.dp)) {
-            Text(stringResource(R.string.call_command_section, label), fontFamily = CommandFont, fontSize = 16.sp, color = Ink)
+            Text(stringResource(R.string.call_command_section, label), fontFamily = CommandFont, fontSize = 16.sp, color = RetroThemeDefaults.colors.ink)
             actions.forEach { action ->
-                RetroCommandButton(action.label, action.icon, action.enabled, if (action.active) Active else Ink, {
+                RetroCommandButton(action.label, action.icon, action.enabled, if (action.active) RetroThemeDefaults.colors.accent else RetroThemeDefaults.colors.ink, {
                     action.onClick()
                     onClose()
                 })
             }
-            RetroCommandButton(stringResource(R.string.call_command_back), backIcon, true, Ink, onClose)
+            RetroCommandButton(stringResource(R.string.call_command_back), backIcon, true, RetroThemeDefaults.colors.ink, onClose)
         }
     }
 }
@@ -563,7 +568,7 @@ private fun RetroDialpadPanel(
 ) {
     RetroMenuBorder(modifier = Modifier.fillMaxWidth()) {
         Column(modifier = Modifier.padding(8.dp)) {
-            Text(stringResource(R.string.call_command_section, label), fontFamily = CommandFont, fontSize = 16.sp, color = Ink)
+            Text(stringResource(R.string.call_command_section, label), fontFamily = CommandFont, fontSize = 16.sp, color = RetroThemeDefaults.colors.ink)
             Spacer(modifier = Modifier.height(8.dp))
             stringResource(R.string.call_command_dialpad_digits).lines().forEach { row ->
                 Row(
@@ -580,13 +585,13 @@ private fun RetroDialpadPanel(
                                 },
                             contentAlignment = Alignment.Center,
                         ) {
-                            Text(digit.toString(), fontFamily = CommandFont, fontSize = 20.sp, color = Ink)
+                            Text(digit.toString(), fontFamily = CommandFont, fontSize = 20.sp, color = RetroThemeDefaults.colors.ink)
                         }
                     }
                 }
             }
             Spacer(modifier = Modifier.height(8.dp))
-            RetroCommandButton(stringResource(R.string.call_command_back), backIcon, true, Ink, onClose)
+            RetroCommandButton(stringResource(R.string.call_command_back), backIcon, true, RetroThemeDefaults.colors.ink, onClose)
         }
     }
 }

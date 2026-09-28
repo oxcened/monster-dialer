@@ -76,6 +76,7 @@ import dev.alenajam.monsterdialer.R
 import dev.alenajam.monsterdialer.app.ui.LocalMonsterAppIcons
 import dev.alenajam.monsterdialer.app.ui.RetroSelectionArrow
 import dev.alenajam.monsterdialer.app.ui.RetroSelectionArrowSize
+import dev.alenajam.monsterdialer.app.ui.RetroThemeDefaults
 import dev.alenajam.opendialer.core.common.ui.AppIcon
 import dev.alenajam.opendialer.core.common.ui.LocalAppIcons
 import dev.alenajam.monsterdialer.characters.data.BuiltInArtwork
@@ -639,7 +640,7 @@ internal fun CharacterAddButton(
 ) {
     TooltipBox(
         positionProvider = TooltipDefaults.rememberTooltipPositionProvider(),
-        tooltip = { PlainTooltip { Text(stringResource(R.string.add)) } },
+        tooltip = { PlainTooltip { Text(stringResource(R.string.add), color = RetroThemeDefaults.colors.ink) } },
         state = rememberTooltipState(),
     ) {
         FilledIconButton(
@@ -666,7 +667,7 @@ internal fun CharacterPoolActionButtons(
     Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
         TooltipBox(
             positionProvider = TooltipDefaults.rememberTooltipPositionProvider(),
-            tooltip = { PlainTooltip { Text(stringResource(R.string.contact_random_pool_reset)) } },
+            tooltip = { PlainTooltip { Text(stringResource(R.string.contact_random_pool_reset), color = RetroThemeDefaults.colors.ink) } },
             state = rememberTooltipState(),
         ) {
             OutlinedIconButton(onClick = onReset, modifier = Modifier.size(40.dp)) {
@@ -680,7 +681,7 @@ internal fun CharacterPoolActionButtons(
             positionProvider = TooltipDefaults.rememberTooltipPositionProvider(),
             tooltip = {
                 PlainTooltip {
-                    Text(stringResource(if (isAllSelected) R.string.contact_random_pool_deselect_all else R.string.contact_random_pool_select_all))
+                    Text(stringResource(if (isAllSelected) R.string.contact_random_pool_deselect_all else R.string.contact_random_pool_select_all), color = RetroThemeDefaults.colors.ink)
                 }
             },
             state = rememberTooltipState(),
@@ -719,11 +720,13 @@ internal fun MonsterFilterButton(
                     },
                 ),
                 modifier = Modifier.padding(start = 8.dp),
+                color = RetroThemeDefaults.colors.ink,
             )
         }
         DropdownMenu(
             expanded = filterExpanded,
             onDismissRequest = { filterExpanded = false },
+            containerColor = RetroThemeDefaults.colors.panel,
         ) {
             MonsterFilter.entries.forEach { entry ->
                 DropdownMenuItem(
@@ -736,6 +739,7 @@ internal fun MonsterFilterButton(
                                     MonsterFilter.RadiantUnlocked -> R.string.filter_unlocked_radiant
                                 },
                             ),
+                            color = RetroThemeDefaults.colors.ink,
                         )
                     },
                     onClick = {
@@ -784,6 +788,7 @@ internal fun CharacterSelectionActions(
                 DropdownMenu(
                     expanded = moreMenuExpanded,
                     onDismissRequest = { moreMenuExpanded = false },
+                    containerColor = RetroThemeDefaults.colors.panel,
                 ) {
                     poolActions { moreMenuExpanded = false }
                 }
@@ -809,13 +814,13 @@ internal fun CharacterSelectionActions(
                         selected = selectedTab == 0,
                         onClick = { onTabSelected(0) },
                         shape = SegmentedButtonDefaults.itemShape(index = 0, count = 2),
-                        label = { Text(stringResource(R.string.character_type_trainer)) },
+                        label = { Text(stringResource(R.string.character_type_trainer), color = RetroThemeDefaults.colors.ink) },
                     )
                     SegmentedButton(
                         selected = selectedTab == 1,
                         onClick = { onTabSelected(1) },
                         shape = SegmentedButtonDefaults.itemShape(index = 1, count = 2),
-                        label = { Text(stringResource(R.string.character_type_monster)) },
+                        label = { Text(stringResource(R.string.character_type_monster), color = RetroThemeDefaults.colors.ink) },
                     )
                 }
             }
@@ -858,7 +863,7 @@ private fun SectionHeader(title: String) {
     Text(
         text = title,
         style = MaterialTheme.typography.titleSmall,
-        color = MaterialTheme.colorScheme.onSurfaceVariant,
+        color = RetroThemeDefaults.colors.mutedInk,
         modifier = Modifier
             .fillMaxWidth()
             .padding(vertical = 8.dp)
@@ -875,7 +880,7 @@ fun CustomCharacterDeletionConfirmationDialog(
 ) {
     AlertDialog(
         onDismissRequest = onDismiss,
-        title = { Text(stringResource(R.string.remove_character_pack_title, characterName)) },
+        title = { Text(stringResource(R.string.remove_character_pack_title, characterName), color = RetroThemeDefaults.colors.ink) },
         text = { 
             Text(
                 stringResource(
@@ -886,7 +891,8 @@ fun CustomCharacterDeletionConfirmationDialog(
                         else -> R.string.remove_character_pack_message
                     },
                     characterName
-                )
+                ),
+                color = RetroThemeDefaults.colors.ink,
             ) 
         },
         confirmButton = {
@@ -897,11 +903,11 @@ fun CustomCharacterDeletionConfirmationDialog(
                     contentColor = MaterialTheme.colorScheme.onError
                 )
             ) {
-                Text(stringResource(R.string.remove))
+                Text(stringResource(R.string.remove), color = RetroThemeDefaults.colors.paper)
             }
         },
         dismissButton = {
-            TextButton(onClick = onDismiss) { Text(stringResource(R.string.cancel)) }
+            TextButton(onClick = onDismiss) { Text(stringResource(R.string.cancel), color = RetroThemeDefaults.colors.accent) }
         }
     )
 }
@@ -911,7 +917,7 @@ private fun NoCharacterOptionsPlaceholder(pluralTitle: String) {
     Text(
         text = stringResource(R.string.no_available_character_options, pluralTitle.lowercase()),
         style = MaterialTheme.typography.titleMedium,
-        color = MaterialTheme.colorScheme.onSurfaceVariant,
+        color = RetroThemeDefaults.colors.mutedInk,
         textAlign = TextAlign.Center,
         modifier = Modifier.fillMaxWidth().padding(horizontal = 24.dp, vertical = 32.dp),
     )
@@ -975,11 +981,11 @@ private fun CharacterOptionCard(
                         ),
                         fontFamily = RetroPickerFont,
                         fontSize = 16.sp,
-                        color = RetroInk,
+                        color = RetroThemeDefaults.colors.ink,
                         modifier = Modifier.size(RetroSelectionArrowSize),
                     )
                 } else if (isSelected) {
-                    RetroSelectionArrow(tint = RetroInk)
+                    RetroSelectionArrow(tint = RetroThemeDefaults.colors.ink)
                 } else {
                     Spacer(modifier = Modifier.size(RetroSelectionArrowSize))
                 }
@@ -997,7 +1003,7 @@ private fun CharacterOptionCard(
                         text = name.uppercase(),
                         fontFamily = RetroPickerFont,
                         fontSize = 16.sp,
-                        color = RetroInk,
+                        color = RetroThemeDefaults.colors.ink,
                         maxLines = 1,
                         overflow = TextOverflow.Ellipsis,
                     )
@@ -1019,7 +1025,7 @@ private fun CharacterOptionCard(
                                 text = stringResource(R.string.retro_picker_variant_and_level, variant, levelText),
                                 fontFamily = RetroPickerFont,
                                 fontSize = 13.sp,
-                                color = RetroInk.copy(alpha = 0.75f),
+                                color = RetroThemeDefaults.colors.ink.copy(alpha = 0.75f),
                             )
                         }
                     }
@@ -1037,11 +1043,12 @@ private fun CharacterOptionCard(
         if (onDelete != null || onEdit != null || onShare != null) {
             DropdownMenu(
                 expanded = showMenu,
-                onDismissRequest = { showMenu = false }
+                onDismissRequest = { showMenu = false },
+                containerColor = RetroThemeDefaults.colors.panel,
             ) {
                 if (onEdit != null) {
                     DropdownMenuItem(
-                        text = { Text(stringResource(R.string.edit)) },
+                        text = { Text(stringResource(R.string.edit), color = RetroThemeDefaults.colors.ink) },
                         onClick = {
                             showMenu = false
                             onEdit()
@@ -1053,7 +1060,7 @@ private fun CharacterOptionCard(
                 }
                 if (onShare != null) {
                     DropdownMenuItem(
-                        text = { Text(stringResource(R.string.share)) },
+                        text = { Text(stringResource(R.string.share), color = RetroThemeDefaults.colors.ink) },
                         onClick = {
                             showMenu = false
                             onShare()
@@ -1065,7 +1072,7 @@ private fun CharacterOptionCard(
                 }
                 if (onDelete != null) {
                     DropdownMenuItem(
-                        text = { Text(stringResource(R.string.remove)) },
+                        text = { Text(stringResource(R.string.remove), color = RetroThemeDefaults.colors.ink) },
                         onClick = {
                             showMenu = false
                             onDelete()
@@ -1105,8 +1112,8 @@ private fun CharacterGridItem(
         Box(
             modifier = Modifier
                 .fillMaxWidth()
-                .border(2.dp, if (isSelected) RetroInk else RetroInk.copy(alpha = 0.45f), RectangleShape)
-                .background(if (isSelected) RetroLavender else RetroPaper, RectangleShape)
+                .border(2.dp, if (isSelected) RetroThemeDefaults.colors.border else RetroThemeDefaults.colors.border.copy(alpha = 0.45f), RectangleShape)
+                .background(if (isSelected) RetroThemeDefaults.colors.accentFace else RetroThemeDefaults.colors.paper, RectangleShape)
                 .then(modifier),
         ) {
             Column(
@@ -1143,6 +1150,7 @@ private fun CharacterGridItem(
                 Text(
                     text = name,
                     style = MaterialTheme.typography.titleSmall,
+                    color = RetroThemeDefaults.colors.ink,
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis
                 )
@@ -1158,7 +1166,7 @@ private fun CharacterGridItem(
                             Text(
                                 text = stringResource(R.string.monster_variant_and_level, variant, levelText),
                                 style = MaterialTheme.typography.bodySmall,
-                                color = if (isRadiant) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurfaceVariant,
+                                color = if (isRadiant) MaterialTheme.colorScheme.primary else RetroThemeDefaults.colors.mutedInk,
                                 maxLines = 1
                             )
                             if (isRadiant) {
@@ -1180,13 +1188,13 @@ private fun CharacterGridItem(
                         Text(
                             text = stringResource(R.string.selected),
                             style = MaterialTheme.typography.labelLarge,
-                            color = MaterialTheme.colorScheme.primary
+                            color = RetroThemeDefaults.colors.ink
                         )
                     } else if (!isUnlocked) {
                         Text(
                             text = stringResource(R.string.locked),
                             style = MaterialTheme.typography.labelLarge,
-                            color = MaterialTheme.colorScheme.onSurfaceVariant
+                            color = RetroThemeDefaults.colors.mutedInk
                         )
                     }
                 }
@@ -1203,11 +1211,12 @@ private fun CharacterGridItem(
         if (onDelete != null || onEdit != null || onShare != null) {
             DropdownMenu(
                 expanded = showMenu,
-                onDismissRequest = { showMenu = false }
+                onDismissRequest = { showMenu = false },
+                containerColor = RetroThemeDefaults.colors.panel,
             ) {
                 if (onEdit != null) {
                     DropdownMenuItem(
-                        text = { Text(stringResource(R.string.edit)) },
+                        text = { Text(stringResource(R.string.edit), color = RetroThemeDefaults.colors.ink) },
                         onClick = {
                             showMenu = false
                             onEdit()
@@ -1219,7 +1228,7 @@ private fun CharacterGridItem(
                 }
                 if (onShare != null) {
                     DropdownMenuItem(
-                        text = { Text(stringResource(R.string.share)) },
+                        text = { Text(stringResource(R.string.share), color = RetroThemeDefaults.colors.ink) },
                         onClick = {
                             showMenu = false
                             onShare()
@@ -1231,7 +1240,7 @@ private fun CharacterGridItem(
                 }
                 if (onDelete != null) {
                     DropdownMenuItem(
-                        text = { Text(stringResource(R.string.remove)) },
+                        text = { Text(stringResource(R.string.remove), color = RetroThemeDefaults.colors.ink) },
                         onClick = {
                             showMenu = false
                             onDelete()
@@ -1257,15 +1266,15 @@ private fun RadiantVariantUnlockDialog(characterName: String, onDismiss: () -> U
     }
     AlertDialog(
         onDismissRequest = onDismiss,
-        title = { Text(stringResource(R.string.radiant_variant_locked_title)) },
-        text = { Text(stringResource(R.string.radiant_variant_locked_message, characterName)) },
+        title = { Text(stringResource(R.string.radiant_variant_locked_title), color = RetroThemeDefaults.colors.ink) },
+        text = { Text(stringResource(R.string.radiant_variant_locked_message, characterName), color = RetroThemeDefaults.colors.ink) },
         confirmButton = {
-            TextButton(onClick = onDismiss) { Text(stringResource(R.string.cancel)) }
+            TextButton(onClick = onDismiss) { Text(stringResource(R.string.cancel), color = RetroThemeDefaults.colors.accent) }
         },
         dismissButton = {
             TextButton(onClick = {
                 showGuide = true
-            }) { Text(stringResource(R.string.learn_about_radiants)) }
+            }) { Text(stringResource(R.string.learn_about_radiants), color = RetroThemeDefaults.colors.accent) }
         },
     )
 }

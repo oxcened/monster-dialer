@@ -11,10 +11,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
-
-private val RetroRowInk = Color(0xFF202020)
 
 /** A shared GSC-style row with a stable cursor column and content slot. */
 @Composable
@@ -34,7 +31,7 @@ internal fun RetroSelectableRow(
         horizontalArrangement = Arrangement.spacedBy(0.dp),
     ) {
         if (selected && enabled) {
-            RetroSelectionArrow(tint = RetroRowInk)
+            RetroSelectionArrow(tint = RetroThemeDefaults.colors.ink)
         } else {
             Spacer(modifier = Modifier.size(RetroSelectionArrowSize))
         }

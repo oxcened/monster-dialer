@@ -3,6 +3,7 @@ package dev.alenajam.monsterdialer.onlineprofiles.ui
 import android.content.Intent
 import android.widget.Toast
 import androidx.compose.foundation.Canvas
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.Box
@@ -53,8 +54,8 @@ import dev.alenajam.monsterdialer.characters.data.VariantBackupSynchronizer
 import dev.alenajam.monsterdialer.app.ui.RetroContextMenuDialog
 import dev.alenajam.monsterdialer.app.ui.RetroContextMenuItem
 import dev.alenajam.monsterdialer.app.ui.RetroSelectableRow
-import dev.alenajam.monsterdialer.app.ui.RetroMenuWindow
 import dev.alenajam.monsterdialer.app.ui.RetroActionButton
+import dev.alenajam.monsterdialer.app.ui.RetroThemeDefaults
 import dev.alenajam.monsterdialer.app.ui.RetroFooter
 import dev.alenajam.monsterdialer.app.ui.RetroScreenHorizontalPadding
 import dev.alenajam.monsterdialer.characters.ui.ContextualGuideDialog
@@ -67,7 +68,6 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 private val ProfilePixelFont = FontFamily(Font(R.font.ui_pixel_font))
-private val ProfileInk = Color(0xFF202020)
 
 @Composable
 fun OnlineProfileSection(viewModel: OnlineProfileSettingsViewModel = hiltViewModel()) {
@@ -155,7 +155,11 @@ fun OnlineProfileSection(viewModel: OnlineProfileSettingsViewModel = hiltViewMod
         linkIsOn -> regenerateIndex + 1
         else -> primaryIndex + 1
     }
-    Box(modifier = Modifier.fillMaxSize()) {
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(RetroThemeDefaults.colors.panel),
+    ) {
         Box(
             modifier = Modifier
                 .fillMaxWidth()
@@ -164,7 +168,12 @@ fun OnlineProfileSection(viewModel: OnlineProfileSettingsViewModel = hiltViewMod
                     vertical = 0.dp,
                 ),
         ) {
-            RetroMenuWindow {
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .background(RetroThemeDefaults.colors.panel)
+                    .padding(horizontal = 20.dp, vertical = 16.dp),
+            ) {
                 Column(verticalArrangement = Arrangement.spacedBy(3.dp)) {
                     Text(
                         text = stringResource(
@@ -174,7 +183,7 @@ fun OnlineProfileSection(viewModel: OnlineProfileSettingsViewModel = hiltViewMod
                         fontFamily = ProfilePixelFont,
                         fontSize = 16.sp,
                         lineHeight = 18.sp,
-                        color = ProfileInk,
+                        color = RetroThemeDefaults.colors.ink,
                     )
                     if (linkIsOn) {
                         RetroSelectableRow(
@@ -190,7 +199,7 @@ fun OnlineProfileSection(viewModel: OnlineProfileSettingsViewModel = hiltViewMod
                                 fontFamily = ProfilePixelFont,
                                 fontSize = 16.sp,
                                 lineHeight = 18.sp,
-                                color = ProfileInk,
+                                color = RetroThemeDefaults.colors.ink,
                             )
                         }
                     }
@@ -218,7 +227,7 @@ fun OnlineProfileSection(viewModel: OnlineProfileSettingsViewModel = hiltViewMod
                                 modifier = Modifier.padding(start = 8.dp),
                                 fontFamily = ProfilePixelFont,
                                 fontSize = 14.sp,
-                                color = ProfileInk.copy(alpha = 0.76f),
+                                color = RetroThemeDefaults.colors.ink.copy(alpha = 0.76f),
                             )
                         } else {
                             Text(
@@ -232,7 +241,7 @@ fun OnlineProfileSection(viewModel: OnlineProfileSettingsViewModel = hiltViewMod
                                 fontFamily = ProfilePixelFont,
                                 fontSize = 16.sp,
                                 lineHeight = 18.sp,
-                                color = if (linkIsOn) MaterialTheme.colorScheme.error else ProfileInk,
+                                color = if (linkIsOn) MaterialTheme.colorScheme.error else RetroThemeDefaults.colors.ink,
                             )
                         }
                     }
@@ -253,7 +262,7 @@ fun OnlineProfileSection(viewModel: OnlineProfileSettingsViewModel = hiltViewMod
                                     modifier = Modifier.padding(start = 8.dp),
                                     fontFamily = ProfilePixelFont,
                                     fontSize = 14.sp,
-                                    color = ProfileInk.copy(alpha = 0.76f),
+                                    color = RetroThemeDefaults.colors.ink.copy(alpha = 0.76f),
                                 )
                             } else {
                                 Text(
@@ -264,7 +273,7 @@ fun OnlineProfileSection(viewModel: OnlineProfileSettingsViewModel = hiltViewMod
                                     fontFamily = ProfilePixelFont,
                                     fontSize = 16.sp,
                                     lineHeight = 18.sp,
-                                    color = if (variantBackupEnabled) MaterialTheme.colorScheme.error else ProfileInk,
+                                    color = if (variantBackupEnabled) MaterialTheme.colorScheme.error else RetroThemeDefaults.colors.ink,
                                 )
                             }
                         }
@@ -300,7 +309,7 @@ fun OnlineProfileSection(viewModel: OnlineProfileSettingsViewModel = hiltViewMod
                                     modifier = Modifier.padding(start = 8.dp),
                                     fontFamily = ProfilePixelFont,
                                     fontSize = 14.sp,
-                                    color = ProfileInk.copy(alpha = 0.76f),
+                                    color = RetroThemeDefaults.colors.ink.copy(alpha = 0.76f),
                                 )
                             } else {
                                 Text(
@@ -308,7 +317,7 @@ fun OnlineProfileSection(viewModel: OnlineProfileSettingsViewModel = hiltViewMod
                                     fontFamily = ProfilePixelFont,
                                     fontSize = 16.sp,
                                     lineHeight = 18.sp,
-                                    color = ProfileInk,
+                                    color = RetroThemeDefaults.colors.ink,
                                 )
                             }
                         }
@@ -327,7 +336,7 @@ fun OnlineProfileSection(viewModel: OnlineProfileSettingsViewModel = hiltViewMod
                                 fontFamily = ProfilePixelFont,
                                 fontSize = 16.sp,
                                 lineHeight = 18.sp,
-                                color = ProfileInk,
+                                color = RetroThemeDefaults.colors.ink,
                             )
                         }
                         RetroSelectableRow(
@@ -345,7 +354,7 @@ fun OnlineProfileSection(viewModel: OnlineProfileSettingsViewModel = hiltViewMod
                                     modifier = Modifier.padding(start = 8.dp),
                                     fontFamily = ProfilePixelFont,
                                     fontSize = 14.sp,
-                                    color = ProfileInk.copy(alpha = 0.76f),
+                                    color = RetroThemeDefaults.colors.ink.copy(alpha = 0.76f),
                                 )
                             } else {
                                 Text(
@@ -370,7 +379,7 @@ fun OnlineProfileSection(viewModel: OnlineProfileSettingsViewModel = hiltViewMod
                             fontFamily = ProfilePixelFont,
                             fontSize = 16.sp,
                             lineHeight = 18.sp,
-                            color = ProfileInk,
+                            color = RetroThemeDefaults.colors.ink,
                         )
                     }
                 }

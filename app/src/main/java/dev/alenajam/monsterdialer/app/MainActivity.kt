@@ -47,8 +47,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.unit.dp
 import androidx.core.content.IntentCompat
-import androidx.core.view.WindowInsetsCompat
-import androidx.core.view.WindowInsetsControllerCompat
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.Lifecycle
@@ -61,6 +59,8 @@ import dev.alenajam.monsterdialer.app.ui.PixelRoundedSquareShape
 import dev.alenajam.monsterdialer.app.ui.RetroScreenTopContentPadding
 import dev.alenajam.monsterdialer.app.ui.rememberMonsterIcons
 import dev.alenajam.monsterdialer.app.ui.rememberMonsterTypography
+import dev.alenajam.monsterdialer.app.ui.RetroTheme
+import dev.alenajam.monsterdialer.app.ui.RetroThemeDefaults
 import dev.alenajam.monsterdialer.characters.ui.AddCharacterScreen
 import dev.alenajam.monsterdialer.calls.ui.RetroCallsScreen
 import dev.alenajam.monsterdialer.calls.ui.RetroCallDetailScreen
@@ -101,7 +101,6 @@ import dev.alenajam.monsterdialer.packs.ui.CreateCharacterPackScreen
 import dev.alenajam.opendialer.core.common.DefaultPhoneManager
 import dev.alenajam.opendialer.core.common.ui.AppThemeExtension
 import dev.alenajam.opendialer.core.common.ui.AppProviders
-import dev.alenajam.opendialer.core.common.ui.AppTheme
 import dev.alenajam.opendialer.core.common.ui.ContactAvatar
 import dev.alenajam.opendialer.feature.appShell.DialerApp
 import dev.alenajam.opendialer.feature.settings.LocalSettingsSubpageNavigator
@@ -128,7 +127,6 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         incomingImport = intent.incomingImport(contentResolver)
         enableEdgeToEdge()
-        hideStatusBar()
 
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.Q) {
             window.isNavigationBarContrastEnforced = false
@@ -170,35 +168,30 @@ class MainActivity : AppCompatActivity() {
                     typography = rememberMonsterTypography(MaterialTheme.typography)
                 )
                 AppProviders(icons = appIcons, themeExtension = appThemeExtension) {
+                    RetroTheme {
                     if (showFirstRunWelcome) {
-                        AppTheme(darkTheme = false) {
-                            FirstRunWelcomeScreen(
-                                onContinue = {
-                                    onboardingViewModel.completeWelcome()
-                                    analytics.welcomeCompleted()
-                                },
-                            )
-                        }
+                        FirstRunWelcomeScreen(
+                            onContinue = {
+                                onboardingViewModel.completeWelcome()
+                                analytics.welcomeCompleted()
+                            },
+                        )
                     } else if (sharedProfileImportId != null) {
-                        AppTheme(darkTheme = false) {
-                            SharedProfileImportScreen(
-                                viewModel = contactCharacterSettingsViewModel,
-                                onNavigateBack = {
-                                    contactCharacterSettingsViewModel.clearPendingOnlineProfile()
-                                    sharedProfileImportId = null
-                                },
-                                onProfileLinked = { sharedProfileImportId = null },
-                            )
-                        }
+                        SharedProfileImportScreen(
+                            viewModel = contactCharacterSettingsViewModel,
+                            onNavigateBack = {
+                                contactCharacterSettingsViewModel.clearPendingOnlineProfile()
+                                sharedProfileImportId = null
+                            },
+                            onProfileLinked = { sharedProfileImportId = null },
+                        )
                     } else {
                         if (showSetupCompletion) {
-                            AppTheme(darkTheme = false) {
-                                FirstRunCompletionScreen(
-                                    onContinue = {
-                                        onboardingViewModel.completeSetupCompletion()
-                                    },
-                                )
-                            }
+                            FirstRunCompletionScreen(
+                                onContinue = {
+                                    onboardingViewModel.completeSetupCompletion()
+                                },
+                            )
                         } else {
                             DialerApp(
                         defaultPhoneManager = remember(defaultPhoneManager) {
@@ -207,42 +200,31 @@ class MainActivity : AppCompatActivity() {
                         icons = appIcons,
                         themeExtension = appThemeExtension,
                         setupContent = { setup ->
-                            AppTheme(darkTheme = false) {
-                                MonsterSetupScreen(setup)
-                            }
+                            MonsterSetupScreen(setup)
                         },
-                        forceLightTheme = true,
                         homeContent = { callbacks ->
-                            AppTheme(darkTheme = false) {
-                                MonsterHomeScreen(
-                                    callbacks = callbacks,
-                                    contactCharacterSettingsViewModel = contactCharacterSettingsViewModel,
-                                    characterSharingViewModel = characterSharingViewModel,
-                                    playerProfile = playerProfile,
-                                    profileMetrics = profileMetrics,
-                                    characterSettingsSummaryViewModel = characterSettingsSummaryViewModel,
-                                )
-                            }
+                            MonsterHomeScreen(
+                                callbacks = callbacks,
+                                contactCharacterSettingsViewModel = contactCharacterSettingsViewModel,
+                                characterSharingViewModel = characterSharingViewModel,
+                                playerProfile = playerProfile,
+                                profileMetrics = profileMetrics,
+                                characterSettingsSummaryViewModel = characterSettingsSummaryViewModel,
+                            )
                         },
                         dialSearchContent = { prefilledNumber, onOpenHistory, onDialpadCallStarted, onNavigateBack ->
-                            AppTheme(darkTheme = false) {
-                                RetroDialSearchScreen(
-                                    prefilledNumber = prefilledNumber,
-                                    onOpenHistory = onOpenHistory,
-                                    onDialpadCallStarted = onDialpadCallStarted,
-                                    onNavigateBack = onNavigateBack,
-                                )
-                            }
+                            RetroDialSearchScreen(
+                                prefilledNumber = prefilledNumber,
+                                onOpenHistory = onOpenHistory,
+                                onDialpadCallStarted = onDialpadCallStarted,
+                                onNavigateBack = onNavigateBack,
+                            )
                         },
                         callDetailContent = { onNavigateBack ->
-                            AppTheme(darkTheme = false) {
-                                RetroCallDetailScreen(onNavigateBack = onNavigateBack)
-                            }
+                            RetroCallDetailScreen(onNavigateBack = onNavigateBack)
                         },
                         aboutContent = { onNavigateBack ->
-                            AppTheme(darkTheme = false) {
-                                MonsterAboutScreen(onNavigateBack = onNavigateBack)
-                            }
+                            MonsterAboutScreen(onNavigateBack = onNavigateBack)
                         },
                         settingsSubpages = listOf(
                         SettingsSubpage(
@@ -403,6 +385,7 @@ class MainActivity : AppCompatActivity() {
                             content = { LinkedOnlineProfileContent(contactCharacterSettingsViewModel) },
                             isScrollable = false,
                             topContentPadding = 0.dp,
+                            contentHorizontalPadding = 0.dp,
                             visibleInSettings = false,
                             showTopBar = false,
                         ),
@@ -466,7 +449,7 @@ class MainActivity : AppCompatActivity() {
                                     content = { _ -> OnlineProfileSection() },
                                     isScrollable = false,
                                     topContentPadding = 0.dp,
-                                    contentHorizontalPadding = RetroScreenHorizontalPadding,
+                                    contentHorizontalPadding = 0.dp,
                                     showTopBar = false,
                                     visibleInSettings = false,
                                 ),
@@ -489,7 +472,7 @@ class MainActivity : AppCompatActivity() {
                                     SettingsSubpageDestination(id = "browse-packs", title = stringResource(R.string.radiant_collection_browse_packs)) { _, _ ->
                                         Surface(
                                             modifier = Modifier.fillMaxSize(),
-                                            color = Color.White,
+                                            color = RetroThemeDefaults.colors.panel,
                                         ) {
                                             Column(
                                                 modifier = Modifier
@@ -586,13 +569,9 @@ class MainActivity : AppCompatActivity() {
                     SharedCharacterImportHandler(characterSharingViewModel)
                     CharacterPackImportHandler(characterPackSettingsViewModel)
                 }
+                }
             }
         }
-    }
-
-    override fun onWindowFocusChanged(hasFocus: Boolean) {
-        super.onWindowFocusChanged(hasFocus)
-        if (hasFocus) hideStatusBar()
     }
 
     override fun onResume() {
@@ -604,13 +583,6 @@ class MainActivity : AppCompatActivity() {
         defaultPhoneManager.isDefaultDialer() &&
             (Build.VERSION.SDK_INT < Build.VERSION_CODES.UPSIDE_DOWN_CAKE ||
                 getSystemService(NotificationManager::class.java)?.canUseFullScreenIntent() == true)
-
-    private fun hideStatusBar() {
-        WindowInsetsControllerCompat(window, window.decorView).apply {
-            hide(WindowInsetsCompat.Type.statusBars())
-            systemBarsBehavior = WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
-        }
-    }
 
     override fun onNewIntent(intent: Intent) {
         super.onNewIntent(intent)

@@ -70,6 +70,8 @@ import androidx.compose.ui.unit.sp
 import dev.alenajam.monsterdialer.R
 import dev.alenajam.monsterdialer.app.ui.RetroDoubleBorderBox
 import dev.alenajam.monsterdialer.app.ui.RetroDoubleBorderTextBox
+import dev.alenajam.monsterdialer.app.ui.RetroThemeDefaults
+import dev.alenajam.opendialer.core.common.ui.rememberAppIsDarkTheme
 import dev.alenajam.monsterdialer.battle.data.BattleEncounter
 import dev.alenajam.monsterdialer.battle.data.BattleMonster
 import dev.alenajam.monsterdialer.battle.data.BattlePanel
@@ -376,12 +378,24 @@ internal fun BattlePanelView(
     modifier: Modifier = Modifier
 ) {
     if (panel == BattlePanel.Hidden || monster == null) return
+    val darkTheme = rememberAppIsDarkTheme()
     if (panel == BattlePanel.Roster) {
-        val resourceName = if (isEnemy) "battle_enemy_roster" else "battle_player_roster"
+        val resource = when {
+            darkTheme && isEnemy -> R.drawable.battle_enemy_roster_dark
+            darkTheme -> R.drawable.battle_player_roster_dark
+            isEnemy -> R.drawable.battle_enemy_roster
+            else -> R.drawable.battle_player_roster
+        }
+        val resourceName = when {
+            darkTheme && isEnemy -> "battle_enemy_roster_dark"
+            darkTheme -> "battle_player_roster_dark"
+            isEnemy -> "battle_enemy_roster"
+            else -> "battle_player_roster"
+        }
         Image(
             bitmap = pixelBitmapResource(
                 BattleVisualAsset.AppDrawable(
-                    if (isEnemy) R.drawable.battle_enemy_roster else R.drawable.battle_player_roster,
+                    resource,
                     resourceName
                 )
             ),
@@ -393,9 +407,20 @@ internal fun BattlePanelView(
         return
     }
 
-    val image = if (isEnemy) R.drawable.battle_enemy_life_bar else R.drawable.battle_player_life_bar
-    val imageName = if (isEnemy) "battle_enemy_life_bar" else "battle_player_life_bar"
+    val image = when {
+        darkTheme && isEnemy -> R.drawable.battle_enemy_life_bar_dark
+        darkTheme -> R.drawable.battle_player_life_bar_dark
+        isEnemy -> R.drawable.battle_enemy_life_bar
+        else -> R.drawable.battle_player_life_bar
+    }
+    val imageName = when {
+        darkTheme && isEnemy -> "battle_enemy_life_bar_dark"
+        darkTheme -> "battle_player_life_bar_dark"
+        isEnemy -> "battle_enemy_life_bar"
+        else -> "battle_player_life_bar"
+    }
     val font = battleFontFamily()
+    val labelColor = RetroThemeDefaults.colors.ink
     Box(modifier.width(160.dp).height(if (isEnemy) 72.dp else 89.dp)) {
         Image(
             bitmap = pixelBitmapResource(BattleVisualAsset.AppDrawable(image, imageName)),
@@ -409,12 +434,12 @@ internal fun BattlePanelView(
         )
         androidx.compose.material3.Text(
             text = monster.name.uppercase(),
-            style = TextStyle(fontFamily = font, fontSize = 16.sp, color = Color.Black),
+            style = TextStyle(fontFamily = font, fontSize = 16.sp, color = labelColor),
             modifier = Modifier.align(if (isEnemy) Alignment.TopStart else Alignment.TopEnd)
         )
         androidx.compose.material3.Text(
             text = monster.level.toString(),
-            style = TextStyle(fontFamily = font, fontSize = 16.sp, color = Color.Black),
+            style = TextStyle(fontFamily = font, fontSize = 16.sp, color = labelColor),
             modifier = Modifier.offset(x = if (isEnemy) 105.dp else 100.dp, y = if (isEnemy) 18.dp else 16.dp)
         )
         if (!isEnemy) {
@@ -426,11 +451,11 @@ internal fun BattlePanelView(
             ) {
                 androidx.compose.material3.Text(
                     text = monster.hp.toString(),
-                    style = TextStyle(fontFamily = font, fontSize = 16.sp, color = Color.Black),
+                    style = TextStyle(fontFamily = font, fontSize = 16.sp, color = labelColor),
                 )
                 androidx.compose.material3.Text(
                     text = monster.maxHp.toString(),
-                    style = TextStyle(fontFamily = font, fontSize = 16.sp, color = Color.Black),
+                    style = TextStyle(fontFamily = font, fontSize = 16.sp, color = labelColor),
                 )
             }
         }
@@ -499,7 +524,8 @@ private fun enemyDescription(state: BattleUiState): String {
 private fun pixelBitmapResource(asset: BattleVisualAsset): ImageBitmap {
     val context = LocalContext.current
     val resources = LocalResources.current
-    return remember(resources, asset) {
+    val configuration = LocalConfiguration.current
+    return remember(resources, configuration, asset) {
         val bitmap = when (asset) {
             is BattleVisualAsset.AppDrawable -> {
                 val resolvedResource = asset.resource.takeIf { it != 0 } ?: asset.fallbackName?.let { name ->

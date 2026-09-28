@@ -1,6 +1,7 @@
 package dev.alenajam.monsterdialer.characters.ui
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -35,6 +36,7 @@ import dev.alenajam.monsterdialer.app.ui.RetroContextMenuOverlay
 import dev.alenajam.monsterdialer.app.ui.RetroConfirmationDialog
 import dev.alenajam.monsterdialer.app.ui.RetroFooter
 import dev.alenajam.monsterdialer.app.ui.RetroSelectableRow
+import dev.alenajam.monsterdialer.app.ui.RetroThemeDefaults
 import dev.alenajam.monsterdialer.characters.data.DefaultMonsterLevel
 import dev.alenajam.monsterdialer.characters.data.MaxPlayerMonsterTeamSize
 
@@ -62,7 +64,7 @@ internal fun PlayerRosterScreen(
         stringResource(R.string.roster_choose_monster_message)
     }
 
-    Box(modifier = Modifier.fillMaxSize()) {
+    Box(modifier = Modifier.fillMaxSize().background(RetroThemeDefaults.colors.panel)) {
         Column(modifier = Modifier.fillMaxWidth()) {
             repeat(MaxPlayerMonsterTeamSize) { slotIndex ->
                 val monster = roster.getOrNull(slotIndex)
@@ -181,7 +183,7 @@ private fun RosterSlotRow(
                 text = stringResource(R.string.roster_empty_slot),
                 fontFamily = RosterPixelFont,
                 fontSize = 18.sp,
-                color = RetroInk,
+                color = RetroThemeDefaults.colors.ink,
                 modifier = Modifier.padding(vertical = 14.dp),
             )
         } else {
@@ -225,7 +227,7 @@ private fun RosterMonsterRow(monster: PlayerRosterMonster) {
                 text = monster.character.name.uppercase(),
                 fontFamily = RosterPixelFont,
                 fontSize = 18.sp,
-                color = RetroInk,
+                color = RetroThemeDefaults.colors.ink,
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis,
             )
@@ -236,7 +238,7 @@ private fun RosterMonsterRow(monster: PlayerRosterMonster) {
                 ),
                 fontFamily = RosterPixelFont,
                 fontSize = 13.sp,
-                color = RetroInk.copy(alpha = 0.75f),
+                color = RetroThemeDefaults.colors.mutedInk,
             )
         }
     }

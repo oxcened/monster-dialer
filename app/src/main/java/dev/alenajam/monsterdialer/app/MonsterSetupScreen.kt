@@ -31,7 +31,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -49,6 +48,7 @@ import dev.alenajam.monsterdialer.app.ui.RetroActionButton
 import dev.alenajam.monsterdialer.app.ui.RetroDialog
 import dev.alenajam.monsterdialer.app.ui.RetroManualDialogueBox
 import dev.alenajam.monsterdialer.app.ui.RetroSelectableRow
+import dev.alenajam.monsterdialer.app.ui.RetroThemeDefaults
 import dev.alenajam.opendialer.feature.appShell.SetupScreenCallbacks
 import java.util.Locale
 
@@ -166,18 +166,22 @@ private fun RestrictedSettingsHelpDialog(
             Text(
                 text = stringResource(R.string.setup_help_intro, appName),
                 style = bodyStyle,
+                color = RetroThemeDefaults.colors.ink,
             )
             Text(
                 text = stringResource(R.string.setup_help_open_app_info),
                 style = bodyStyle,
+                color = RetroThemeDefaults.colors.ink,
             )
             Text(
                 text = setupHelpRichText(stringResource(R.string.setup_help_step_4)),
                 style = bodyStyle,
+                color = RetroThemeDefaults.colors.ink,
             )
             Text(
                 text = stringResource(R.string.setup_help_step_5),
                 style = bodyStyle,
+                color = RetroThemeDefaults.colors.ink,
             )
             Image(
                 painter = painterResource(R.drawable.restricted_settings_help),
@@ -192,7 +196,7 @@ private fun RestrictedSettingsHelpDialog(
                     text = openAppInfoLabel.uppercase(Locale.ROOT),
                     fontFamily = pixelFont,
                     fontSize = 16.sp,
-                    color = Color(0xFF202020),
+                    color = RetroThemeDefaults.colors.ink,
                 )
             }
             RetroSelectableRow(selected = false, onClick = onDismiss) {
@@ -200,7 +204,7 @@ private fun RestrictedSettingsHelpDialog(
                     text = backLabel.uppercase(Locale.ROOT),
                     fontFamily = pixelFont,
                     fontSize = 16.sp,
-                    color = Color(0xFF202020),
+                    color = RetroThemeDefaults.colors.ink,
                 )
             }
         }
