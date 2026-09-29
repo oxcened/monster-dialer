@@ -7,36 +7,42 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.7.0] - 2026-09-29
+
 ### Added
 
-- Online Profile account deletion, including cleanup of remotely backed-up
-  character variants.
-- Retro contact and call experience improvements.
-- Character roster and default-character selection improvements.
-- A redesigned retro contact roster, profile navigation, and onboarding activation flow.
-- Activation-funnel analytics for understanding the first-run experience.
-- Refreshed built-in character packs, roster content, radiant collections, and bundled character assets.
+- A new Collection screen for managing all trainers, monsters, character packs,
+  and variants.
+- Local backup import and export for the roster, character assignments, custom
+  characters, journal, unlocked variants, and character packs.
+- Optional Google account sync for unlocked character variants.
+- Character-pack catalogs for discovering and installing packs, including
+  catalog links and pack-management tools.
+- A new retro-style first-run setup flow featuring Prof. Purple.
+- Dark mode.
+- A new launcher icon and randomize icon.
+- Expanded The Odd Bunch pack with new trainers, monsters, and radiant variants.
 
 ### Changed
 
-- Online Profile account actions and sign-in progress now have clearer grouping
-  and feedback, with expanded localized account-management strings.
-- Contact assignment, character selection, and character-pack screens were reorganized around the retro roster experience.
-- Retro dialer and in-call controls now use refreshed artwork, pixel avatars, and more game-specific presentation.
-- Default-character controls now separate trainer and monster choices and make inherited, explicit, and random modes clearer.
-- Character picker controls, fast scrolling, avatar fallbacks, and navigation behavior were refined for large rosters.
-- Localized string resources were expanded across the updated contact, character, pack, and call flows.
-- Prerelease version names now produce valid increasing Android version codes for testing releases.
+- Favorites, Recents, Contacts, Profile, in-call, dialer, journal, settings,
+  contact picker, contact linking, call detail, catalog, local backup, and About
+  screens were redesigned with a consistent retro-inspired interface.
+- Favorites, Recents, and Contacts now show each contact's assigned or
+  encountered monster.
+- Profile account actions now provide clearer grouping, loading feedback, and
+  controls for regenerating sharing links, deleting cloud data and accounts,
+  clearing backed-up variants, and signing out.
+- Google Play and GitHub builds now use the same signing key, allowing future
+  updates to be installed normally across both distribution channels.
 
 ### Fixed
 
-- Restored Online Profile actions and Google sign-out, corrected account-action
-  ordering and deletion highlighting, and made both dialpads play DTMF tones.
-- Preserved explicit contact defaults and random fallback behavior when contacts have no assigned character.
-- Restored character-picker controls, pack creation navigation, and contextual help actions.
-- Refreshed contact artwork correctly when switching to light mode and guarded full-screen intent behavior by Android version.
-- Stabilized contact searching, scrolling, back navigation, system-inset handling, and profile action interactions.
-- Disabled analytics collection in debug builds.
+- Pack-screen behavior when no packs are installed.
+- Catalog and local-backup navigation, including restored back buttons and
+  loading states.
+- Various search, navigation, profile, and screen-layout issues, along with
+  other quality-of-life problems found during alpha testing.
 
 ## [0.6.0] - 2026-09-06
 
@@ -258,7 +264,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - The first published Monster Dialer release.
 
-[unreleased]: https://github.com/oxcened/monster-dialer/compare/v0.6.0...HEAD
+[unreleased]: https://github.com/oxcened/monster-dialer/compare/v0.7.0...HEAD
+[0.7.0]: https://github.com/oxcened/monster-dialer/compare/v0.6.0...v0.7.0
 [0.6.0]: https://github.com/oxcened/monster-dialer/compare/v0.5.0...v0.6.0
 [0.5.0]: https://github.com/oxcened/monster-dialer/compare/v0.4.0...v0.5.0
 [0.4.0]: https://github.com/oxcened/monster-dialer/compare/v0.3.0...v0.4.0
